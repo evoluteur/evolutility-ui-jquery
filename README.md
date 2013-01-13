@@ -1,0 +1,43 @@
+# evol.utility
+
+evol.utility is a generic Web UI for CRUD, dashboarding, and more.  
+
+It provides forms for:
+
+    * View
+    * Edit
+    * List
+    * Search
+    * Export
+    * Charts
+    * Mass Update
+    * Login
+
+Currently under development, only [Search](https://github.com/evoluteur/advancedSearch) is checked-in.
+
+Hopefully, I will get some help for the open source community. 
+
+## The Plan 
+
+    1- Build all UI forms widgets (using jQuery UI Themes)
+    2- Add a toolbar and a controller for all these forms
+    3- Define Meta-model and APIs
+
+Later will come
+
+    4- Build the server part (REST implemented on different stacks)
+    5- Build a centralized app dictionary (and have apps to build and modify other apps)
+    6- Build a mobile version
+    7- Build a community to share apps
+
+evol.utility will be a much improved version of [Evolutility](http://www.evolutility.org). 
+
+## Model 
+All views will use the same meta-model, some kind of [Minimalist Meta-Model for CRUD Applications](http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications).
+
+## License
+
+Copyright (c) 2013 Olivier Giulieri.
+
+evol.utility is released under the [AGPL license](http://github.com/evoluteur/evol.utility/raw/master/LICENSE.md).
+
