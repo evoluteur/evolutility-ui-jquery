@@ -10,16 +10,16 @@ It provides forms for:
     * Search
     * Export
     * Charts
+    * Dashboards
     * Mass Update
     * Login
 
 Currently under development, only [Search](https://github.com/evoluteur/advancedSearch) is checked-in.
 
-Hopefully, I will get some help for the open source community. 
 
 ## The Plan 
 
-    1- Build all UI forms widgets (using jQuery UI Themes)
+    1- Build all UI forms widgets
     2- Add a toolbar and a controller for all these forms
     3- Define Meta-model and APIs
 
@@ -39,5 +39,5 @@ All views will use the same meta-model, some kind of [Minimalist Meta-Model for 
 
 Copyright (c) 2013 Olivier Giulieri.
 
-evol.utility is released under the [AGPL license](http://github.com/evoluteur/evol.utility/raw/master/LICENSE.md).
+evol-utility is released under the [AGPL license](http://github.com/evoluteur/evol.utility/raw/master/LICENSE.md).
 
