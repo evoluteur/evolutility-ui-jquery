@@ -1,6 +1,6 @@
-# evol.utility
+# evol-utility
 
-evol.utility is a generic Web UI for CRUD, dashboarding, and more.  
+evol-utility is an evolving UI for your data.  
 
 It provides forms for:
 
@@ -30,7 +30,7 @@ Later will come
     6- Build a mobile version
     7- Build a community to share apps
 
-evol.utility will be a much improved version of [Evolutility](http://www.evolutility.org). 
+evol-utility is a natural evolution of [Evolutility](http://www.evolutility.org). 
 
 ## Model 
 All views will use the same meta-model, some kind of [Minimalist Meta-Model for CRUD Applications](http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications).
