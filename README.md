@@ -39,5 +39,5 @@ All views will use the same meta-model, some kind of [Minimalist Meta-Model for 
 
 Copyright (c) 2013 Olivier Giulieri.
 
-evol-utility is released under the [AGPL license](http://github.com/evoluteur/evol.utility/raw/master/LICENSE.md).
+evol-utility is released under the [MIT license](http://en.wikipedia.org/wiki/MIT_License).
 
