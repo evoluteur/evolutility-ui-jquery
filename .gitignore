@@ -1,0 +1,9 @@
+node_modules/
+
+# Windows stuff
+Thumbs.db
+Desktop.ini
+
+# Mac stuff
+.DS_Store
+
