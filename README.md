@@ -1,8 +1,8 @@
 # evol-utility
 
-evol-utility is an evolving UI for your data.  
+evol-utility is a generic web UI for Backbone.js. 
 
-It provides forms for:
+It will provide the following web forms (or Backbone.js Views).
 
     * View
     * Edit
@@ -19,21 +19,17 @@ Currently under development, only [Search](https://github.com/evoluteur/advanced
 
 ## The Plan 
 
-    1- Build all UI forms widgets
-    2- Add a toolbar and a controller for all these forms
-    3- Define Meta-model and APIs
-
-Later will come
-
-    4- Build the server part (REST implemented on different stacks)
-    5- Build a centralized app dictionary (and have apps to build and modify other apps)
-    6- Build a mobile version
-    7- Build a community to share apps
+    1- Define Meta-model and APIs
+    2- Build all UI forms
+    3- Add a toolbar and a controller for all these forms
 
 evol-utility is a natural evolution of [Evolutility](http://www.evolutility.org). 
 
-## Model 
-All views will use the same meta-model, some kind of [Minimalist Meta-Model for CRUD Applications](http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications).
+## UI Model 
+
+A UI model is a description of what the attributes of your Backbone.js model look like and how they behave on the web.
+
+Many different views can be generated based on the same UI model (combined with a Backbone model). This UI model will be some kind of [Minimalist Meta-Model for CRUD Applications](http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications).
 
 ## License
 
