@@ -1,35 +1,47 @@
 # evol-utility
 
-evol-utility is a generic web UI for Backbone.js. 
+evol-utility is a work in progress. Eventually it will be a generic UI to build applications who can change form, volume, and structure like living organisms.
 
-It will provide the following web forms (or Backbone.js Views).
+Evolutility (Bio.): The faculty possessed by all substances capable of self-nourishment of manifesting the nutritive acts by change of form, of volume, or of structure.
+
+A complete set of views should include the following:
 
     * View
     * Edit
     * List
-    * Search
+    * [Search](https://github.com/evoluteur/advancedSearch)
     * Export
     * Charts
     * Dashboards
     * Mass Update
-    * Login
 
-Currently under development, only [Search](https://github.com/evoluteur/advancedSearch) is checked-in.
+It may take a while, but I intend to build them.
 
+## Techno
+
+Javascript, HTML5, CSS3
+jQuery, Backbone, Underscore, Bootstrap3
+
+## Previous incarnation
+
+evol-utility.js is a re-write of [Evolutility] (http://www.evolutility.org) generic UI for CRUD.
 
 ## The Plan 
 
-    1- Define Meta-model and APIs
-    2- Build all UI forms
-    3- Add a toolbar and a controller for all these forms
+    1- Update Evolutility meta-model
+    2- Code the generic UI views based on the metamodel
+    3- Add a toolbar and a controller for all these views
+    4- Make demo apps
+    5- Make [an app to make apps] (http://www.codeproject.com/Articles/28810/Wizard-and-CRUD-Applications-to-Build-other-CRUD-A)
 
-evol-utility is a natural evolution of [Evolutility](http://www.evolutility.org). 
+## 1 - Meta-model
 
-## UI Model 
+To define applications we will need some kind of declarative language. It will be based on [Minimalist Meta-Model for CRUD Applications](http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications).
 
-A UI model is a description of what the attributes of your Backbone.js model look like and how they behave on the web.
+## 2 - Views
 
-Many different views can be generated based on the same UI model (combined with a Backbone model). This UI model will be some kind of [Minimalist Meta-Model for CRUD Applications](http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications).
+evol-utility views have a Backbone model (to define the data) and also a UI model (to define the UI to manipulate the data).
+These views can be instanciated for apps like addressbook, to do list, or anything you define it to be.
 
 ## License
 
