@@ -4,6 +4,9 @@ evol-utility is a work in progress. Eventually it will be a generic UI to build 
 
 Evolutility (Bio.): The faculty possessed by all substances capable of self-nourishment of manifesting the nutritive acts by change of form, of volume, or of structure.
 
+The idea is to build a set of generic (metadata driven) Backbone views to perform all CRUD (Create, Read, Update and Delete) on records of any data structure.
+These generic Backbone views will all be defined in a single UI-model containing the description of UI (layout, fields and behaviors)
+
 A complete set of views should include the following:
 
     * View
@@ -28,7 +31,7 @@ evol-utility.js is a re-write of [Evolutility] (http://www.evolutility.org) gene
 
 ## The Plan 
 
-    1- Update Evolutility meta-model
+    1- Update Evolutility metamodel (model of the UI models)
     2- Code the generic UI views based on the metamodel
     3- Add a toolbar and a controller for all these views
     4- Make demo apps
@@ -41,11 +44,11 @@ To define applications we will need some kind of declarative language. It will b
 ## 2 - Views
 
 evol-utility views have a Backbone model (to define the data) and also a UI model (to define the UI to manipulate the data).
-These views can be instanciated for apps like addressbook, to do list, or anything you define it to be.
+These views can be instanciated for apps like an address book, a to do list, or anything you define it to be.
 
 ## License
 
 Copyright (c) 2013 Olivier Giulieri.
 
-evol-utility is released under the [MIT license](http://en.wikipedia.org/wiki/MIT_License).
+evol-utility is released under the GNU Affero General Public License version 3 [GNU AGPLv3](http://www.gnu.org/licenses/agpl-3.0.html).
 
