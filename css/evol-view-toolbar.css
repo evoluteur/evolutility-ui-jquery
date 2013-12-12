@@ -1,0 +1,31 @@
+
+/ * evol-utility : evol-view-toolbar.css  */
+
+
+img.evol-table-icon{
+	margin-right: 6px !important;
+}
+
+.evol-list-grid > div {
+	min-width:140px;
+	width:28%;
+	float:left;
+	height:100px;
+}
+
+.table th span {
+	white-space:nowrap;
+	margin-right:5px;
+}
+.table th .icon-chevron-up {
+	margin-left:5px;
+}
+
+
+
+.navbar-nav>li>div {
+    padding: 15px 20px 15px 5px;
+    line-height: 20px;
+    color: #777;
+    border-radius: 4px;
+}

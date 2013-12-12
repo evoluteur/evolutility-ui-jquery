@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>evol.utility : Wine Cellar</title>
+    <meta charset="utf-8">
+
+    <link href="../css/demo.css" rel="stylesheet" />
+    <link href="../dist/evol-utility.css" rel="stylesheet" />
+    <link id="bwCSS" href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../css/bootstrap-glyphicons.css" rel="stylesheet">
+
+    <script src="../dist/vendors.min.js" type="text/javascript"></script>
+    <script src="../dist/evol-utility.js" type="text/javascript"></script>
+
+    <script src="../js/demo.js" type="text/javascript"></script>
+    <script src="../js/ui-models/winecellar.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+<div class="demo-links">
+    evol.utility ::
+    <a href="demo-todo.html">todo</a> -
+    <a href="demo-contact.html">addressbook</a> -
+    <a href="demo-winecellar.html" class="sel">wine cellar</a>
+</div>
+
+<a id="uideflink" href="javascript:showUIdef(wineCellar_ui)">See form definition</a>
+<div style="display:none;" id="uimodel"></div>
+
+<h1 id="title">Wine Cellar</h1>
+
+<div id="evol"></div>
+
+<script>
+
+    $(document).ready(function(){
+
+        var el =$('#evol'),
+                vw = new EvolView.Edit({
+                    el: el,
+                    mode: 'edit',
+                    //model: this.bbModel,
+                    //modelCollection:this.bbCollection,
+                    uiModel: wineCellar_ui
+                });
+        el.on('view.save',function(evt){
+            vw.validate(evt);
+        })
+    });
+
+</script>
+
+<p><br/>evol-utility on GitHub: <a href="https://github.com/evoluteur/evol-utility" target="download">https://github.com/evoluteur/evol-utility</a></p>
+
+<br/><br/>
+<div class="footer">&#169; 2013 Olivier Giulieri</div>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "evol-utility",
+  "version": "0.0.1",
+  "copyright": "(c) 2013 Olivier Giulieri",
+  "target": "dist",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-concat": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.1",
+    "grunt-contrib-less": "~0.5.2",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-jshint": "~0.4.3",
+    "grunt-bower-task": "~0.3.1"
+  },
+    "dependencies": {
+        "jquery": "2.0.3",
+        "backbone": "1.1.0",
+        "underscore": "1.5.2",
+        "underscore.string": "2.3.3",
+        "bootstrap": "3.0.3"
+    }
+}

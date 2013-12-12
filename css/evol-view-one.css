@@ -1,0 +1,67 @@
+
+/*  evol-utility : evol-view-one.css  */
+
+/* panels */
+
+.evol-pnls, .evol-pnl > div > fieldset{
+    margin-left: -16px;
+}
+.evol-fld, .evol-pnl, .evol-pnl-lst{
+    padding-left:16px !important;
+    margin-bottom: 6px;
+}
+
+.evol-tabs{
+    position:relative;
+    top: -10px;
+}
+
+.evol-required{
+    margin-left:3px;
+    color:#b94a48;
+    font-weight:bold;
+}
+
+.evol-buttons {
+    margin-top:0 !important;
+}
+.evol-buttons > button{
+    margin-right:1em;
+}
+.evol-title-toggle{
+    float:right;
+}
+.evol-json{
+    width:100%;
+    height:350px;
+    margin-bottom:10px;
+}
+.glyphicon{
+    cursor: pointer;
+}
+.glyphicon-wrench{
+    margin-left: 5px;
+    display: inline !important;
+}
+
+/* bootstrap modifications*/
+.table {
+    margin-bottom: 0 !important;
+}
+.evol-fld > .text-danger{
+    margin-bottom: 0 !important;
+}
+
+.evo-mini-label{
+    float:left;
+    width:22%;
+    padding-right:10px;
+    clear:left;
+}
+.evo-mini-content{
+    float:left;
+    width:78%;
+}
+.w-100{
+    width: 100%;
+}

@@ -1,0 +1,75 @@
+
+/*  evol-utility : evol-view-many.css  */
+
+img.evol-table-icon{
+	margin-right: 6px !important;
+}
+
+.evol-list > div.panel {
+	min-width:140px;
+	width:300px;
+	float:left;
+	height:150px;
+    margin: 5px;
+    padding:10px;
+    border: 1px solid grey;
+    border-radius: 10px;
+}
+
+.table th span {
+	white-space:nowrap;
+	margin-right:5px;
+}
+.table th .glyphicon-chevron-up {
+    width:50px;
+    cursor: pointer;
+}
+.table th .glyphicon {
+    display:none;
+    position:absolute;
+}
+.table th:hover .glyphicon {
+    display: inline !important;
+    cursor: pointer;
+}
+.table th .glyphicon.evol-last-sort {
+    display:none;
+    position:absolute;
+}
+
+.evol-sort-icons {
+    position: relative;
+}
+.evol-sort-icons > .glyphicon {
+    position: absolute;
+    top:2px;
+}
+.evol-sort-icons > .glyphicon-chevron-up {
+    left:7px;
+}
+.evol-sort-icons > .glyphicon-chevron-down {
+    left:24px;
+}
+
+.panel-heading > .evol-title-toggle{
+    display: none;
+}
+.panel-heading:hover > .evol-title-toggle{
+    display: inline;
+}
+
+
+.ChartHolder{
+    background-color :#FFFFFF;
+    padding: 10px 5px 5px 5px;
+    margin:10px;
+    float:left;
+    border:solid 2px #e0e0e0;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+.chartTitle{
+    text-align:center;
+    padding-bottom:20px;
+}
