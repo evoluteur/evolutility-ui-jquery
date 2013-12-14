@@ -54,14 +54,22 @@
 
 .evo-mini-label{
     float:left;
-    width:22%;
+    width:38%;
+    max-width:200px;
     padding-right:10px;
     clear:left;
 }
 .evo-mini-content{
     float:left;
-    width:78%;
+    width:62%;
+    width:calc(100% - 200px);
 }
+
+@media only screen and (max-width: 500px) {
+    .evo-mini-label{float:none;width:auto;}
+    .evo-mini-content{float:none;width:auto;}
+}
+
 .w-100{
     width: 100%;
 }
