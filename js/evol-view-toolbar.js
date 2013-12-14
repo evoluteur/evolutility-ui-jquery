@@ -68,7 +68,6 @@ EvolView.Toolbar = Backbone.View.extend({
 	render: function() {
 		var e=this.$el;
         e.html(this._toolbarHTML());
-        //this._setupToolbar();
 		this.setView(this.options.defaultView || 'list');
 /*
 		//customize icons
@@ -96,23 +95,22 @@ EvolView.Toolbar = Backbone.View.extend({
         }
 
         function linkDropDowns(){
-            h.push('<li class="dropdown">');
-            h.push('<a href="#" class="dropdown-toggle" data-toggle="dropdown">',htmlIcon('th-list'),' <b class="caret"></b></a>');
-            h.push('<ul class="dropdown-menu">');
+            h.push('<li class="dropdown">',
+            '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',htmlIcon('th-list'),' <b class="caret"></b></a>',
+            '<ul class="dropdown-menu">');
             link('list','List','th-list');
             link('list-grid','Cards','th-large');
             link('charts','Chart','signal');
             //link('list-json','JSON','barcode');
-            h.push('</ul>');
-            h.push('</li>');
-            h.push('<li class="dropdown">');
-            h.push('<a href="#" class="dropdown-toggle" data-toggle="dropdown">',htmlIcon('stop'),' <b class="caret"></b></a>');
-            h.push('<ul class="dropdown-menu">');
+            h.push('</ul>',
+                '</li>','<li class="dropdown">',
+                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',htmlIcon('stop'),' <b class="caret"></b></a>',
+                '<ul class="dropdown-menu">');
             link('edit','All fields','th');
             link('mini','Important fields','th-large'),
             link('json','JSON','barcode');
-            h.push('</ul>');
-            h.push('</li>');
+            h.push('</ul>',
+                '</li>');
         }
 
         var opts = this.options,
@@ -127,7 +125,7 @@ EvolView.Toolbar = Backbone.View.extend({
         //link('selections','','star');
         link('del','','trash','1');
         //link('export','','arrow-down','n');//'cloud-download');
-        //link('customize','','wrench');
+        link('customize','','wrench');
         //h.push(link('search','Search','search'));
         link('prev','','chevron-left','1');
         link('next','','chevron-right','1');

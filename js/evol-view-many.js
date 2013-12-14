@@ -40,7 +40,7 @@ EvolView.List = Backbone.View.extend({
                 that.render();
             });
         }
-    },/*
+    },
     customize: function () {
         if(!this.custOn){
             if(this.options.mode=='list-grid'){
@@ -53,7 +53,7 @@ EvolView.List = Backbone.View.extend({
             this.custOn=true;
         }
         return this;
-    },*/
+    },
 
     render: function () {
         var h = [];
@@ -166,13 +166,15 @@ EvolView.List = Backbone.View.extend({
                         cRow = data[r],
                         v = cRow.get(f.id);
                     h.push('<div data-id="', cRow.id, '">');
-                    //h.push(EvoUI.fieldLabel('test123','test123'));
                     if (i == 0) {
                         h.push('<h4><a href="#" id="fg-', f.id, '" class="evol-nav-id">');
                         if (icon) {
                             h.push('<img alt="" class="evol-table-icon" src="pix/', icon, '">');
                         }
                     }
+                    //if(i>0){
+                    //    h.push(EvoUI.fieldLabel(f.id,f.label));
+                    //}
                     if (f.type == EvoDico.fieldTypes.bool) {
                         if (v >0 || v == 'True') {
                             h.push(EvoUI.icon('ok'));
@@ -197,6 +199,7 @@ EvolView.List = Backbone.View.extend({
     },
 
     _HTMLcharts: function (h, fields, pSize, icon) {
+        // TODO real data...
         var urlGoogleChart = 'http://chart.apis.google.com/chart?chd=t:10,18,20,51,14,20,24&amp;chl=Travel (10)|Restaurant (18)|Hobby (20)|Finances (51)|Family (14)|Business (20)|%5bUnfiled%5d (24)&amp;cht=p&amp;chds=0,20&amp;chs=400x200';
         EvoUI.HTMLMsg(h,'Under construction','not live data yet');
         h.push('<div class="ChartHolder"><div class="chartTitle">Contacts per Category</div><img src="',urlGoogleChart,'"><br></div>');
@@ -204,7 +207,6 @@ EvolView.List = Backbone.View.extend({
     },
 
     _renderListHeader: function (h, field) {
-
         h.push('<th><span id="', field.id, '-lbl">',
             field.label,
             '<span class="evol-sort-icons" data-fid="',field.id,'">',
