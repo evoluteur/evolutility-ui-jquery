@@ -315,9 +315,7 @@ var contacts_ui = {
     id: 1,
     label: "Address book",
     icon: "contact.gif",
-    entity: "contact", entities: "contacts",
-    topfieldid: 'lastname',
-//	dbcolumnlead:"lastname" dbtable:"EVOL_Contact" dborder:"t.lastname,t.firstname"
+    entity: "contact", entities: "contacts"
 
     elements: [
         { type: "panel", label: "Identity", width: 62,
@@ -371,7 +369,7 @@ var contacts_ui = {
         },
         {type: "panel", label: "Misc.", width: "38",
             elements: [
-                {type: "lov", id: "CategoryID", label: "Category", width: "100", //dbtablelov:"EVOL_ContactCategory" dborderlov:"id" ,
+                {type: "lov", id: "CategoryID", label: "Category", width: "100",
                     search: "1", searchlist: "1",
                     list: contacts_LOVs.categories
                 },
