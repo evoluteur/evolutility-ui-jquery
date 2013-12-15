@@ -17,9 +17,9 @@ For a model (one):
 For a collection (many):
 
     * List
-    * [Selections] (https://github.com/evoluteur/advancedSearch)
     * Charts
     * Dashboards
+    * Selections ([some kind of filters] (http://github.com/evoluteur/advancedSearch))
     * Export
     * Mass Update
 
