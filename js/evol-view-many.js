@@ -204,11 +204,42 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     _HTMLcharts: function (h, fields, pSize, icon) {
-        // TODO real data...
-        var urlGoogleChart = 'http://chart.apis.google.com/chart?chd=t:10,18,20,51,14,20,24&amp;chl=Travel (10)|Restaurant (18)|Hobby (20)|Finances (51)|Family (14)|Business (20)|%5bUnfiled%5d (24)&amp;cht=p&amp;chds=0,20&amp;chs=400x200';
-        EvoUI.HTMLMsg(h,'Under construction','not live data yet');
-        h.push('<div class="ChartHolder"><div class="chartTitle">Contacts per Category</div><img src="',urlGoogleChart,'"><br></div>');
+        var that=this,
+            uiModel =this.options.uiModel,
+            model = this.model,
+            models = model.collection.models,
+            lovFields = EvoDico.fields(uiModel, function(f){
+                return (f.type==EvoDico.fieldTypes.lov);
+            }),
+            groups={};
+
+        _.each(lovFields, function(f){
+            groups[f.id] = _.countBy(models, function(model) {
+                return model.get(f.id);
+            });
+        });
+
+        _.each(lovFields, function(f){
+            var groupData = groups[f.id],
+                data=[],
+                labels=[];
+            for(var dataSetName in groupData) {
+                data.push(groupData[dataSetName]);
+                labels.push(dataSetName+' ('+groupData[dataSetName]+')');
+            }
+            that._HTMLchartsPie(h,f.label,data,labels);
+        });
         h.push('<div class="clearer"></div>');
+    },
+
+    _HTMLchartsPie: function (h,label,data,labels){
+        var urlGoogleChart = ['http://chart.apis.google.com/chart?chd=t:',
+            data.join(','),
+            '&amp;chl=',
+            labels.join('|'),
+            '&amp;cht=p&amp;chds=0,20&amp;chs=400x200'].join('');
+        //EvoUI.HTMLMsg(h,'Under construction','not live data yet');
+        h.push('<div class="evol-chart-holder"><div class="evol-chart-title">',label,'</div><img src="',urlGoogleChart,'"><br></div>');
     },
 
     _renderListHeader: function (h, field) {

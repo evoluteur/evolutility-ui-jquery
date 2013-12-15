@@ -59,7 +59,7 @@ img.evol-table-icon{
 }
 
 
-.ChartHolder{
+.evol-chart-holder{
     background-color :#FFFFFF;
     padding: 10px 5px 5px 5px;
     margin:10px;
@@ -69,7 +69,7 @@ img.evol-table-icon{
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
 }
-.chartTitle{
+.evol-chart-title{
     text-align:center;
     padding-bottom:20px;
 }

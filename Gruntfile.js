@@ -49,8 +49,8 @@ module.exports = function (grunt) {
             js:{
                   src: [
                       'js/evol-*.js',
-                      //'js/dico-models/dico--*.js',
-                      'js/dico-models/dico-field.js',
+                      //'js/dico-models/dico-*.js',
+                      //'js/dico-models/dico-field.js',
                       'js/i18n/EN.js'
 
                   ],
