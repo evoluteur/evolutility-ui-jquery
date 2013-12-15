@@ -9,6 +9,7 @@ css/bootstrap*.css
 
 doc
 demo/pix/
+dico/pix/
 
 # Windows stuff
 Thumbs.db

@@ -8,6 +8,7 @@ var EvolLang={
 	LOCALE:"EN",    // ENGLISH
 
     nodata: 'No data.',
+
     // validation
 	intro:'You are not finished yet:',
 	empty:'"{0}" must have a value.',
@@ -28,7 +29,6 @@ var EvolLang={
     NoChange:"No Change",
     NoX:"No {0}",
 
-
     // --- toolbar ---
     View:"View",
     Edit:"Edit",
@@ -37,7 +37,7 @@ var EvolLang={
     NewItem:"New Item",
     NewUpload:"New Upload",
     Search:"Search",
-    AdvSearch:"Advanced Search",
+    //AdvSearch:"Advanced Search",
     NewSearch:"New Search",
     Selections:"Selections",
     Selection:"Selection",

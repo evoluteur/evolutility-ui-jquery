@@ -10,7 +10,9 @@
  *
  *************************************************************************** */
 
-var EvoDico = {
+var Evol = Evol || {};
+
+Evol.Dico = {
 
     fieldTypes: {
         text: 'text',
@@ -63,21 +65,34 @@ var EvoDico = {
         return this;
     },
 
-    showDesigner: function(id, type, el){
+    showDesigner: function(id, type, $el){
         var h=[],
-            $el=$(el),
             $elDes=$('<div class="evol-des-'+type+'">designer</div>');
-        this.$el.append($elDes);
-        $elDes.position({
-            my: "left top",
-            at: "right bottom",
-            of: $el
-        }).Edit({
-                toolbar:true,
-                model: null,
-                uiModel: evodicofield,
-                defaultView: 'new' //edit'
-            });
+        $el.closest('.evol-fld').append($elDes);
+
+
+        //$elDes.position({
+        //    my: "left top",
+        //    at: "right bottom",
+        //    of: $el
+        //});
+
+        vw = new Evol.ViewOne({
+            toolbar:true,
+            model: null,
+            uiModel: dico_field_ui,
+            defaultView: 'edit',
+            el: $elDes,
+            button_addAnother: false
+        });
+        vw.render();
+
+        //$elDes.popover('show')
+        $elDes.on('button#save,button#cancel', function(evt){
+            alert('fld click button')
+            $elDes.remove();
+        });
+
         return this;
     },
 
@@ -98,26 +113,15 @@ var EvoDico = {
 ;
 /*! ***************************************************************************
  *
- * evol-utility : evol-selection.js
- *
- * Copyright (c) 2013, Olivier Giulieri 
- *
- *************************************************************************** */
-
-var EvoSel = {
-
-
-
-};
-/*! ***************************************************************************
- *
  * evol-utility : evol-ui.js
  *
  * Copyright (c) 2013, Olivier Giulieri 
  *
  *************************************************************************** */
 
-var EvoUI = {
+var Evol = Evol || {};
+
+Evol.UI = {
 
     html: {
         trTableEnd: '</tr></table>',
@@ -281,25 +285,27 @@ var EvoUI = {
  *
  *************************************************************************** */
 
-var EvolView = EvolView || {};
+var Evol = Evol || {},
+    EvoUI = Evol.UI,
+    EvoDico = Evol.Dico;
 
-EvolView.List = Backbone.View.extend({
+Evol.ViewMany = Backbone.View.extend({
 
     cardinality: 'many',
     viewName: 'list',
     className: 'evol-v-list',
 
     options: {
-
         fnFilter : function (f) {
             return f.searchlist;
         }
     },
 
     events: {
-        "click a.evol-nav-id": "click_navigate",
-        "click .evol-sort-icons > span": "click_sort",
-        "click .button.edit": "click_pagination"
+        'click a.evol-nav-id': 'click_navigate',
+        'click .evol-sort-icons > span': 'click_sort',
+        'click .button.edit': 'click_pagination',
+        'click .evol-field-label .glyphicon-wrench': 'click_customize'
     },
 
     initialize: function () {
@@ -315,20 +321,23 @@ EvolView.List = Backbone.View.extend({
                 that.render();
             });
         }
-    },/*
+    },
     customize: function () {
-        if(!this.custOn){
-            if(this.options.mode=='list-grid'){
-                this.$el.find('h4 a.evol-nav-id')
-                    .after(EvoUI.icons.customize('', 'field'));
-            }else{
-                this.$el.find('th > span')
-                    .append(EvoUI.icons.customize('', 'field'));
-            }
+        var labels;
+        if(this.options.mode=='list-grid'){
+            labels = this.$el.find('h4 a.evol-nav-id');
+        }else{
+            labels = this.$el.find('th > span')
+        }
+        if(this.custOn){
+            labels.find('i').remove();
+            this.custOn=false;
+        }else{
+            labels.append(EvoUI.icons.customize('id','field'));
             this.custOn=true;
         }
         return this;
-    },*/
+    },
 
     render: function () {
         var h = [];
@@ -411,7 +420,7 @@ EvolView.List = Backbone.View.extend({
                 }
             }
             switch(f.type) {
-                case 'boolean':
+                case EvoDico.fieldTypes.bool:
                     if (v == '1' || v == 'true'){ // TODO: fix bool types
                         h.push(EvoUI.icon('ok'));
                     }
@@ -441,13 +450,15 @@ EvolView.List = Backbone.View.extend({
                         cRow = data[r],
                         v = cRow.get(f.id);
                     h.push('<div data-id="', cRow.id, '">');
-                    //h.push(EvoUI.fieldLabel('test123','test123'));
                     if (i == 0) {
                         h.push('<h4><a href="#" id="fg-', f.id, '" class="evol-nav-id">');
                         if (icon) {
                             h.push('<img alt="" class="evol-table-icon" src="pix/', icon, '">');
                         }
                     }
+                    //if(i>0){
+                    //    h.push(EvoUI.fieldLabel(f.id,f.label));
+                    //}
                     if (f.type == EvoDico.fieldTypes.bool) {
                         if (v >0 || v == 'True') {
                             h.push(EvoUI.icon('ok'));
@@ -472,6 +483,7 @@ EvolView.List = Backbone.View.extend({
     },
 
     _HTMLcharts: function (h, fields, pSize, icon) {
+        // TODO real data...
         var urlGoogleChart = 'http://chart.apis.google.com/chart?chd=t:10,18,20,51,14,20,24&amp;chl=Travel (10)|Restaurant (18)|Hobby (20)|Finances (51)|Family (14)|Business (20)|%5bUnfiled%5d (24)&amp;cht=p&amp;chds=0,20&amp;chs=400x200';
         EvoUI.HTMLMsg(h,'Under construction','not live data yet');
         h.push('<div class="ChartHolder"><div class="chartTitle">Contacts per Category</div><img src="',urlGoogleChart,'"><br></div>');
@@ -479,7 +491,6 @@ EvolView.List = Backbone.View.extend({
     },
 
     _renderListHeader: function (h, field) {
-
         h.push('<th><span id="', field.id, '-lbl">',
             field.label,
             '<span class="evol-sort-icons" data-fid="',field.id,'">',
@@ -548,6 +559,15 @@ EvolView.List = Backbone.View.extend({
 
     click_pagination: function (evt) {
         this.$el.trigger('list.paginate', {id: $(evt.currentTarget).closest('li').data('id')});
+    },
+
+    click_customize: function (evt) {
+        var $e=$(evt.currentTarget),
+            id=$e.data('id'),
+            eType=$e.data('type');
+
+        EvoDico.showDesigner(id, eType, $e);
+        this.$el.trigger(eType+'.customize', {id: id});
     }
 
 });
@@ -565,9 +585,11 @@ String.prototype.trim = function () {
     return this.replace(/^\s+|\s+$/g, '');
 }
 
-var EvolView = EvolView || {};
+var Evol = Evol || {},
+    EvoUI = Evol.UI,
+    EvoDico = Evol.Dico;
 
-EvolView.Edit = Backbone.View.extend({
+Evol.ViewOne = Backbone.View.extend({
 
     events: {
         'click .evol-buttons > button': 'click_button',
@@ -1056,11 +1078,11 @@ EvolView.Edit = Backbone.View.extend({
     },
 
     validate: function () {
-        var flds =  this.getFields();
+        var fs =  this.getFields();
         this.clearErrors();
-        if (_.isArray(flds)) {
+        if (_.isArray(fs)) {
             this.$el.trigger('view.validate');
-            return EvoVal.checkFields(this.$el, flds, this.prefix);
+            return EvoVal.checkFields(this.$el, fs, this.prefix);
         }
         return false;
     },
@@ -1100,9 +1122,18 @@ EvolView.Edit = Backbone.View.extend({
     },
 
     customize: function(){
-        if(!this.custOn){
-            this.$el.find('.evol-field-label > label').append(EvoUI.icons.customize('id','field'));
-            this.$el.find('.evol-pnl .panel-title').append(EvoUI.icons.customize('id','panel'));
+        var labelSelector = '.evol-field-label > label',
+            panelSelector ='.evol-pnl .panel-title';
+        if(this.custOn){
+            this.$el.find(labelSelector + ' > i, '+ panelSelector + ' > i').remove();
+            this.custOn=false;
+        }else{
+            _.each(this.$el.find(labelSelector),function(elem){
+                var $el=$(elem),
+                    id=$el.attr('for');
+                $el.append(EvoUI.icons.customize(id,'field'));
+            });
+            this.$el.find(panelSelector).append(EvoUI.icons.customize('id','panel'));
             this.custOn=true;
         }
         return this;
@@ -1185,8 +1216,12 @@ EvolView.Edit = Backbone.View.extend({
     },
 
     click_customize: function (evt) {
-        var bId = $(evt.currentTarget).data('id');
-        this.$el.trigger('field.customize', {id: bId});
+        var $e=$(evt.currentTarget),
+            id=$e.data('id'),
+            eType=$e.data('type');
+
+        EvoDico.showDesigner(id, eType, $e);
+        this.$el.trigger(eType+'.customize', {id: id});
     }
 
 });
@@ -1364,15 +1399,14 @@ var EvoVal = {
  *
  *************************************************************************** */
 
+var Evol = Evol || {},
+    EvoUI = Evol.UI;
 
-var EvolView = EvolView || {};
-
-EvolView.Toolbar = Backbone.View.extend({
+Evol.ViewToolbar = Backbone.View.extend({
 
     events: {
         'click .nav a': 'click_toolbar',
-        'list.navigate div': 'click_navigate'/*,
-        '.glyphicon-wrench': 'click_customize'*/
+        'list.navigate div': 'click_navigate'
     },
 
     prefix: 'tbr',
@@ -1426,17 +1460,7 @@ EvolView.Toolbar = Backbone.View.extend({
 	render: function() {
 		var e=this.$el;
         e.html(this._toolbarHTML());
-        //this._setupToolbar();
 		this.setView(this.options.defaultView || 'list');
-/*
-		//customize icons
-		e.on('click','.glyphicon-wrench', function(evt){
-			var $this=$(this),
-				id=$this.data('id'),
-				etype=$this.data('type');
-			that.curView.showDesigner(id, etype, this);
-		})
-*/
 	},
 
     _toolbarHTML: function(){
@@ -1454,23 +1478,22 @@ EvolView.Toolbar = Backbone.View.extend({
         }
 
         function linkDropDowns(){
-            h.push('<li class="dropdown">');
-            h.push('<a href="#" class="dropdown-toggle" data-toggle="dropdown">',htmlIcon('th-list'),' <b class="caret"></b></a>');
-            h.push('<ul class="dropdown-menu">');
+            h.push('<li class="dropdown">',
+            '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',htmlIcon('th-list'),' <b class="caret"></b></a>',
+            '<ul class="dropdown-menu">');
             link('list','List','th-list');
             link('list-grid','Cards','th-large');
             link('charts','Chart','signal');
             //link('list-json','JSON','barcode');
-            h.push('</ul>');
-            h.push('</li>');
-            h.push('<li class="dropdown">');
-            h.push('<a href="#" class="dropdown-toggle" data-toggle="dropdown">',htmlIcon('stop'),' <b class="caret"></b></a>');
-            h.push('<ul class="dropdown-menu">');
+            h.push('</ul>',
+                '</li>','<li class="dropdown">',
+                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',htmlIcon('stop'),' <b class="caret"></b></a>',
+                '<ul class="dropdown-menu">');
             link('edit','All fields','th');
             link('mini','Important fields','th-large'),
             link('json','JSON','barcode');
-            h.push('</ul>');
-            h.push('</li>');
+            h.push('</ul>',
+                '</li>');
         }
 
         var opts = this.options,
@@ -1567,7 +1590,7 @@ EvolView.Toolbar = Backbone.View.extend({
                     case 'mini':
 					case 'view':
                     case 'json':
-                        var vw = new EvolView.Edit(config);
+                        var vw = new Evol.ViewOne(config);
                         if(mode!=='json'){
                             this.cardinality='one';
                         }
@@ -1579,7 +1602,7 @@ EvolView.Toolbar = Backbone.View.extend({
                         }
 						break;/*
                     case 'export':
-                        var vw = new EvolView.Export(config);
+                        var vw = new Evol.ViewExport(config);
                         this.viewsHash[mode]=vw;
                         this.views.push(vw);
                         break;*/
@@ -1592,14 +1615,14 @@ EvolView.Toolbar = Backbone.View.extend({
                                 fields: this.fields('list'),
                                 pageSize: 50
                             });
-						var vw = new EvolView.List(config);
+						var vw = new Evol.ViewMany(config);
 						this.viewsHash['list']=vw;
 						this.setToolbar(mode);
 						break;
                     case 'charts':
                         this.cardinality='many';
                         mode='charts';
-                        var vw = new EvolView.List(config);
+                        var vw = new Evol.ViewMany(config);
                         this.viewsHash['charts']=vw;
                         this.setToolbar(mode);
                         break;
@@ -1733,14 +1756,269 @@ EvolView.Toolbar = Backbone.View.extend({
         // todo: change model for all views
         this.curView.render();
         evt.stopImmediatePropagation();
-    },
-
-    click_customize: function(evt,ui){
-
     }
 
 });
 
+;
+var dico_field_ui = {
+    icon: "evodico/edi_fld.png",
+    entity: "property",
+    entities: "properties",
+    elements: [
+        {
+            type: "panel",
+            label: "Field",
+            width: "100",
+            elements: [
+                { etype: 'field',
+                    id:'label',
+                    label: "Label",
+                    type: "text",
+                    cssclass: "FieldMain",
+                    cssclassview: "FieldMain",
+                    help: "Field title for the user",
+                    maxlength: "100",
+                    required: "1",
+                    search: "1",
+                    searchlist: "1",
+                    width: "100"
+                }
+            ]
+        },
+        {
+            type: "tab",
+            label: "Definition",
+            elements: [
+                {
+                    type: "panel",
+                    label: "Validation",
+                    width: "100",
+                    elements: [
+                        { etype: 'field',
+                            id: 'type',
+                            label: "Type",
+                            help: "User Type for the field on screen. Text, or emails can be char, varchar or nvarchar...",
+                            type: "lov",
+                            list:[
+                                {id:'text',label:"text", icon:'pix/evodico/ft-txt.gif'},
+                                {id:'txtm',label:"textmultiline", icon:'pix/evodico/ft-txtml.gif'},
+                                {id:'bool',label:"boolean", icon:'pix/evodico/ft-bool.gif'},
+                                {id:'dec',label:"decimal", icon:'pix/evodico/ft-dec.gif'},
+                                {id:'integer',label:"integer", icon:'pix/evodico/ft-int.gif'},
+                                {id:'date',label:"date", icon:'pix/evodico/ft-date.gif'},
+                                {id:'time',label:"time", icon:'pix/evodico/ft-time.gif'},
+                                {id:'datetime',label:"datetime", icon:'pix/evodico/ft-datehm.gif'},
+                                {id:'pix',label:"image", icon:'pix/evodico/ft-img.gif'},
+                                // {id:'doc',label:"document", icon:'pix/evodico/ft-doc.gif'},
+                                // {id:'color',label:"color"}
+                                {id:'lov',label:"lov", icon:'pix/evodico/ft-lov.gif'},
+                                // {id:'formula',label:"formula", icon:'pix/evodico/ft-.gif'},
+                                // {id:'html',label:"html", icon:'pix/evodico/ft-htm.gif'},
+                                {id:'email',label:"email", icon:'pix/evodico/ft-email.gif'},
+                                {id:'url',label:"url", icon:'pix/evodico/ft-url.gif'}
+                            ],
+                            maxlength: "100",
+                            required: "1",
+                            search: "1",
+                            searchlist: "1",
+                            width: "62"
+                        },
+                        { etype: 'field',
+                            id:'req',
+                            label: "Required",
+                            default: false,
+                            help: "Mandatory field",
+                            type: "boolean",
+                            maxlength: "100",
+                            search: "1",
+                            searchlist:'1',
+                            width: "38",
+                            img: "checkr.gif"
+                        },
+                        { etype: 'field',
+                            id:'max',
+                            label: "Max. length",
+                            help: "Maximum number of characters allowed",
+                            type: "integer",
+                            maxlength: "100",
+                            width: "62"
+                        },
+                        { etype: 'field',
+                            id:'readonly',
+                            label: "Read only",
+                            default:false,
+                            help: "Users can view this field value but cannot modify it",
+                            type: "boolean",
+                            maxlength: "100",
+                            search: "1",
+                            width: "38",
+                            img: "checkr.gif"
+                        },
+                        { etype: 'field',
+                            id:'maxval',
+                            label: "Maximum value",
+                            conditions: [{
+                                'visible': function(m,uim){
+                                    return m.get('')
+                                }
+                            }],
+                            labellist: "Max.",
+                            type: "integer",
+                            maxlength: "4",
+                            width: "62",
+                            height: "1"
+                        },
+                        { etype: 'field',
+                            id:'minval',
+                            label: "Minimum value",
+                            labellist: "Min.",
+                            type: "integer",
+                            maxlength: "4",
+                            width: "38",
+                            height: "1"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            type: "tab",
+            label: "Display",
+            elements: [
+                {
+                    type: "panel",
+                    label: "Display",
+                    width: "100",
+                    elements: [
+                        { etype: 'field',
+                            id:'pos',
+                            label: "Position",
+                            help: "Integer (gaps OK)",
+                            type: "integer",
+                            maxlength: "3",
+                            width: "38"
+                        },
+                        { etype: 'field',
+                            id:'height',
+                            label: "Height",
+                            help: "Height in number of lines (for ''Textmultiline'' fields)",
+                            type: "integer",
+                            maxlength: "3",
+                            width: "32"
+                        },
+                        { etype: 'field',
+                            id:'width',
+                            label: "Width",
+                            default: 100,
+                            help: "Relative width of the field (in percentage)",
+                            type: "integer",
+                            format: "0 '%'",
+                            maxlength: "3",
+                            width: "30"
+                        },
+                        { etype: 'field',
+                            id:'format',
+                            label: "Format",
+                            type: "text",
+                            help: "example '$ 0.00'",
+                            maxlength: "30",
+                            width: "38"
+                        },
+                        { etype: 'field',
+                            id: 'css',
+                            label: "CSS Field Edit",
+                            labellist: "CSS Edit",
+                            help: "Stylesheet class name for the field in edit mode.",
+                            type: "text",
+                            maxlength: "20",
+                            search: "1",
+                            width: "32"
+                        },
+                        { etype: 'field',
+                            id:'searchlist',
+                            label: "Result List",
+                            help: "Field shows as header field for lists",
+                            labellist: "List",
+                            type: "boolean",
+                            search: "1",
+                            searchlist: "1",
+                            width: "100"
+                        },
+                        { etype: 'field',
+                            id:'search',
+                            label: "Search",
+                            default:true,
+                            help: "Field shows in the search form",
+                            type: "boolean",
+                            search: "1",
+                            searchlist: "1",
+                            width: "38"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            type: "tab",
+            id: 'tab-model',
+            label: "Model",
+            elements: [
+                {
+                    type: "panel",
+                    id: 'map',
+                    optional: "1",
+                    label: "Model",
+                    width: "100",
+                    elements: [
+                        { etype: 'field',
+                            id: "attribute",
+                            label: "Attribute",
+                            help: "Attribute name",
+                            required: "1",
+                            type: "text",
+                            maxlength: "100",
+                            search: "1",
+                            width: "100"
+                        },
+                        { etype: 'field',
+                            id: 'colpix',
+                            label: "UI name",
+                            help: "",
+                            required: "",
+                            type: "text",
+                            maxlength: "100",
+                            width: "100"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            type: "tab",
+            label: "User Help",
+            elements: [
+                {
+                    type: "panel",
+                    optional: "1",
+                    label: "Field Help",
+                    width: "100",
+                    elements: [
+                        { etype: 'field',
+                            id: 'help',
+                            label: "Help",
+                            help: "Help on the field for edition",
+                            type: "textmultiline",
+                            maxlength: "500",
+                            width: "100",
+                            height: "8"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+};
 ;
 //   Evolutility Localization Library ENGLISH
 //   (c) 2013 Olivier Giulieri
@@ -1752,6 +2030,7 @@ var EvolLang={
 	LOCALE:"EN",    // ENGLISH
 
     nodata: 'No data.',
+
     // validation
 	intro:'You are not finished yet:',
 	empty:'"{0}" must have a value.',
@@ -1772,7 +2051,6 @@ var EvolLang={
     NoChange:"No Change",
     NoX:"No {0}",
 
-
     // --- toolbar ---
     View:"View",
     Edit:"Edit",
@@ -1781,7 +2059,7 @@ var EvolLang={
     NewItem:"New Item",
     NewUpload:"New Upload",
     Search:"Search",
-    AdvSearch:"Advanced Search",
+    //AdvSearch:"Advanced Search",
     NewSearch:"New Search",
     Selections:"Selections",
     Selection:"Selection",

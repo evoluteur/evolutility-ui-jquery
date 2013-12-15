@@ -10,9 +10,11 @@ String.prototype.trim = function () {
     return this.replace(/^\s+|\s+$/g, '');
 }
 
-var EvolView = EvolView || {};
+var Evol = Evol || {},
+    EvoUI = Evol.UI,
+    EvoDico = Evol.Dico;
 
-EvolView.Edit = Backbone.View.extend({
+Evol.ViewOne = Backbone.View.extend({
 
     events: {
         'click .evol-buttons > button': 'click_button',
@@ -501,11 +503,11 @@ EvolView.Edit = Backbone.View.extend({
     },
 
     validate: function () {
-        var flds =  this.getFields();
+        var fs =  this.getFields();
         this.clearErrors();
-        if (_.isArray(flds)) {
+        if (_.isArray(fs)) {
             this.$el.trigger('view.validate');
-            return EvoVal.checkFields(this.$el, flds, this.prefix);
+            return EvoVal.checkFields(this.$el, fs, this.prefix);
         }
         return false;
     },
@@ -545,9 +547,18 @@ EvolView.Edit = Backbone.View.extend({
     },
 
     customize: function(){
-        if(!this.custOn){
-            this.$el.find('.evol-field-label > label').append(EvoUI.icons.customize('id','field'));
-            this.$el.find('.evol-pnl .panel-title').append(EvoUI.icons.customize('id','panel'));
+        var labelSelector = '.evol-field-label > label',
+            panelSelector ='.evol-pnl .panel-title';
+        if(this.custOn){
+            this.$el.find(labelSelector + ' > i, '+ panelSelector + ' > i').remove();
+            this.custOn=false;
+        }else{
+            _.each(this.$el.find(labelSelector),function(elem){
+                var $el=$(elem),
+                    id=$el.attr('for');
+                $el.append(EvoUI.icons.customize(id,'field'));
+            });
+            this.$el.find(panelSelector).append(EvoUI.icons.customize('id','panel'));
             this.custOn=true;
         }
         return this;
@@ -630,8 +641,12 @@ EvolView.Edit = Backbone.View.extend({
     },
 
     click_customize: function (evt) {
-        var bId = $(evt.currentTarget).data('id');
-        this.$el.trigger('field.customize', {id: bId});
+        var $e=$(evt.currentTarget),
+            id=$e.data('id'),
+            eType=$e.data('type');
+
+        EvoDico.showDesigner(id, eType, $e);
+        this.$el.trigger(eType+'.customize', {id: id});
     }
 
 });

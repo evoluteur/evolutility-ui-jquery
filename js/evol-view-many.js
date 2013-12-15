@@ -6,25 +6,27 @@
  *
  *************************************************************************** */
 
-var EvolView = EvolView || {};
+var Evol = Evol || {},
+    EvoUI = Evol.UI,
+    EvoDico = Evol.Dico;
 
-EvolView.List = Backbone.View.extend({
+Evol.ViewMany = Backbone.View.extend({
 
     cardinality: 'many',
     viewName: 'list',
     className: 'evol-v-list',
 
     options: {
-
         fnFilter : function (f) {
             return f.searchlist;
         }
     },
 
     events: {
-        "click a.evol-nav-id": "click_navigate",
-        "click .evol-sort-icons > span": "click_sort",
-        "click .button.edit": "click_pagination"
+        'click a.evol-nav-id': 'click_navigate',
+        'click .evol-sort-icons > span': 'click_sort',
+        'click .button.edit': 'click_pagination',
+        'click .evol-field-label .glyphicon-wrench': 'click_customize'
     },
 
     initialize: function () {
@@ -42,14 +44,17 @@ EvolView.List = Backbone.View.extend({
         }
     },
     customize: function () {
-        if(!this.custOn){
-            if(this.options.mode=='list-grid'){
-                this.$el.find('h4 a.evol-nav-id')
-                    .after(EvoUI.icons.customize('', 'field'));
-            }else{
-                this.$el.find('th > span')
-                    .append(EvoUI.icons.customize('', 'field'));
-            }
+        var labels;
+        if(this.options.mode=='list-grid'){
+            labels = this.$el.find('h4 a.evol-nav-id');
+        }else{
+            labels = this.$el.find('th > span')
+        }
+        if(this.custOn){
+            labels.find('i').remove();
+            this.custOn=false;
+        }else{
+            labels.append(EvoUI.icons.customize('id','field'));
             this.custOn=true;
         }
         return this;
@@ -136,7 +141,7 @@ EvolView.List = Backbone.View.extend({
                 }
             }
             switch(f.type) {
-                case 'boolean':
+                case EvoDico.fieldTypes.bool:
                     if (v == '1' || v == 'true'){ // TODO: fix bool types
                         h.push(EvoUI.icon('ok'));
                     }
@@ -275,6 +280,15 @@ EvolView.List = Backbone.View.extend({
 
     click_pagination: function (evt) {
         this.$el.trigger('list.paginate', {id: $(evt.currentTarget).closest('li').data('id')});
+    },
+
+    click_customize: function (evt) {
+        var $e=$(evt.currentTarget),
+            id=$e.data('id'),
+            eType=$e.data('type');
+
+        EvoDico.showDesigner(id, eType, $e);
+        this.$el.trigger(eType+'.customize', {id: id});
     }
 
 });

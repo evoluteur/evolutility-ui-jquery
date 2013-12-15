@@ -6,7 +6,9 @@
  *
  *************************************************************************** */
 
-var EvoDico = {
+var Evol = Evol || {};
+
+Evol.Dico = {
 
     fieldTypes: {
         text: 'text',
@@ -59,21 +61,34 @@ var EvoDico = {
         return this;
     },
 
-    showDesigner: function(id, type, el){
+    showDesigner: function(id, type, $el){
         var h=[],
-            $el=$(el),
             $elDes=$('<div class="evol-des-'+type+'">designer</div>');
-        this.$el.append($elDes);
-        $elDes.position({
-            my: "left top",
-            at: "right bottom",
-            of: $el
-        }).Edit({
-                toolbar:true,
-                model: null,
-                uiModel: evodicofield,
-                defaultView: 'new' //edit'
-            });
+        $el.closest('.evol-fld').append($elDes);
+
+
+        //$elDes.position({
+        //    my: "left top",
+        //    at: "right bottom",
+        //    of: $el
+        //});
+
+        vw = new Evol.ViewOne({
+            toolbar:true,
+            model: null,
+            uiModel: dico_field_ui,
+            defaultView: 'edit',
+            el: $elDes,
+            button_addAnother: false
+        });
+        vw.render();
+
+        //$elDes.popover('show')
+        $elDes.on('button#save,button#cancel', function(evt){
+            alert('fld click button')
+            $elDes.remove();
+        });
+
         return this;
     },
 

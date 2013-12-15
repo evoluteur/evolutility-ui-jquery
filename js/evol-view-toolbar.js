@@ -6,15 +6,14 @@
  *
  *************************************************************************** */
 
+var Evol = Evol || {},
+    EvoUI = Evol.UI;
 
-var EvolView = EvolView || {};
-
-EvolView.Toolbar = Backbone.View.extend({
+Evol.ViewToolbar = Backbone.View.extend({
 
     events: {
         'click .nav a': 'click_toolbar',
-        'list.navigate div': 'click_navigate'/*,
-        '.glyphicon-wrench': 'click_customize'*/
+        'list.navigate div': 'click_navigate'
     },
 
     prefix: 'tbr',
@@ -69,15 +68,6 @@ EvolView.Toolbar = Backbone.View.extend({
 		var e=this.$el;
         e.html(this._toolbarHTML());
 		this.setView(this.options.defaultView || 'list');
-/*
-		//customize icons
-		e.on('click','.glyphicon-wrench', function(evt){
-			var $this=$(this),
-				id=$this.data('id'),
-				etype=$this.data('type');
-			that.curView.showDesigner(id, etype, this);
-		})
-*/
 	},
 
     _toolbarHTML: function(){
@@ -125,7 +115,7 @@ EvolView.Toolbar = Backbone.View.extend({
         //link('selections','','star');
         link('del','','trash','1');
         //link('export','','arrow-down','n');//'cloud-download');
-        link('customize','','wrench');
+        //link('customize','','wrench');
         //h.push(link('search','Search','search'));
         link('prev','','chevron-left','1');
         link('next','','chevron-right','1');
@@ -207,7 +197,7 @@ EvolView.Toolbar = Backbone.View.extend({
                     case 'mini':
 					case 'view':
                     case 'json':
-                        var vw = new EvolView.Edit(config);
+                        var vw = new Evol.ViewOne(config);
                         if(mode!=='json'){
                             this.cardinality='one';
                         }
@@ -219,7 +209,7 @@ EvolView.Toolbar = Backbone.View.extend({
                         }
 						break;/*
                     case 'export':
-                        var vw = new EvolView.Export(config);
+                        var vw = new Evol.ViewExport(config);
                         this.viewsHash[mode]=vw;
                         this.views.push(vw);
                         break;*/
@@ -232,14 +222,14 @@ EvolView.Toolbar = Backbone.View.extend({
                                 fields: this.fields('list'),
                                 pageSize: 50
                             });
-						var vw = new EvolView.List(config);
+						var vw = new Evol.ViewMany(config);
 						this.viewsHash['list']=vw;
 						this.setToolbar(mode);
 						break;
                     case 'charts':
                         this.cardinality='many';
                         mode='charts';
-                        var vw = new EvolView.List(config);
+                        var vw = new Evol.ViewMany(config);
                         this.viewsHash['charts']=vw;
                         this.setToolbar(mode);
                         break;
@@ -373,10 +363,6 @@ EvolView.Toolbar = Backbone.View.extend({
         // todo: change model for all views
         this.curView.render();
         evt.stopImmediatePropagation();
-    },
-
-    click_customize: function(evt,ui){
-
     }
 
 });

@@ -49,6 +49,8 @@ module.exports = function (grunt) {
             js:{
                   src: [
                       'js/evol-*.js',
+                      //'js/dico-models/dico--*.js',
+                      'js/dico-models/dico-field.js',
                       'js/i18n/EN.js'
 
                   ],
@@ -62,6 +64,7 @@ module.exports = function (grunt) {
               src: [
                     //'app/css/demo.css',
                   'css/evol-ui.css',
+                  'css/evol-dico.css',
                   'css/evol-view-*.css'
               ],
               dest: '<%= pkg.target %>/evol-utility.css'

@@ -39,6 +39,32 @@
     font-size: 0;
 }
 
+/* evol-utility : evol-dico.css */
+
+.evol-des-field,
+.evol-des-panel {
+    position: absolute;
+    overflow: auto;
+    background-color: white;
+    box-shadow: 6px 6px 3px #a0a0a0;
+    border: #696969 1px solid;
+    padding:4px;
+}
+
+.evol-des-field {
+    width:500px;
+    height:600px;
+}
+
+.evol-des-panel {
+    width:400px;
+    height:500px;
+}
+
+
+
+
+
 /*  evol-utility : evol-view-many.css  */
 
 img.evol-table-icon{
@@ -170,14 +196,22 @@ img.evol-table-icon{
 
 .evo-mini-label{
     float:left;
-    width:22%;
+    width:38%;
+    max-width:200px;
     padding-right:10px;
     clear:left;
 }
 .evo-mini-content{
     float:left;
-    width:78%;
+    width:62%;
+    width:calc(100% - 200px);
 }
+
+@media only screen and (max-width: 500px) {
+    .evo-mini-label{float:none;width:auto;}
+    .evo-mini-content{float:none;width:auto;}
+}
+
 .w-100{
     width: 100%;
 }

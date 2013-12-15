@@ -35,7 +35,7 @@ function setDemoEvol(collName){
             }
             var contact = contacts.models[0];
             var el =$('#evol'),
-                vw = new EvolView.Toolbar({
+                vw = new Evol.ViewToolbar({
                     el: el,
                     mode: 'list',
                     style:'panel-primary',

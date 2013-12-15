@@ -1,0 +1,25 @@
+
+/* evol-utility : evol-dico.css */
+
+.evol-des-field,
+.evol-des-panel {
+    position: absolute;
+    overflow: auto;
+    background-color: white;
+    box-shadow: 6px 6px 3px #a0a0a0;
+    border: #696969 1px solid;
+    padding:4px;
+}
+
+.evol-des-field {
+    width:500px;
+    height:600px;
+}
+
+.evol-des-panel {
+    width:400px;
+    height:500px;
+}
+
+
+
