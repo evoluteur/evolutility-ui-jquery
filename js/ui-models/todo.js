@@ -38,7 +38,7 @@ var todo_ui = {
         {type: "panel", label: "Notes", width: "100",
             elements: [
                 {id: "notes", type: "textmultiline", label: "Notes", maxlength: "1000",
-                    width: "100", height: "6", searchlist: "0" }
+                    width: "100", height: "6", searchlist: false }
             ]
         }
     ]};

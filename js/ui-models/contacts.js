@@ -315,7 +315,7 @@ var contacts_ui = {
     id: 1,
     label: "Address book",
     icon: "contact.gif",
-    entity: "contact", entities: "contacts"
+    entity: "contact", entities: "contacts",
 
     elements: [
         { type: "panel", label: "Identity", width: 62,
