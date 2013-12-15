@@ -55,3 +55,39 @@ function setDemoEvol(collName){
     });
 
 }
+
+
+function setDemo(uiModel, localStorage, mode){
+    M = Backbone.Model.extend({
+        localStorage: new Backbone.LocalStorage(localStorage)
+    });
+    Ms = Backbone.Collection.extend({
+        model: M,
+        localStorage: new Backbone.LocalStorage(localStorage)
+    });
+
+    var ms = new Ms();
+    ms.fetch({
+        success: function(collection){
+            var m = ms.models[0];
+            var el =$('#evol'),
+                vw = new Evol.ViewToolbar({
+                    el: el,
+                    mode: 'one',
+                    style:'panel-primary',
+                    model: m,
+                    collection: ms,
+                    uiModel: uiModel
+                });
+            el.on('view.save',function(evt){
+                vw.validate(evt);
+            })
+
+            $('#recs > a').on('click', function(evt){
+                var id=$(evt.target).index();
+                vw.setModel(ms.get(id));
+            })
+        }
+    });
+
+}
