@@ -19,9 +19,10 @@ For a collection (many):
     * List
     * Charts
     * Dashboards
-    * Selections ([some kind of filters] (http://github.com/evoluteur/advancedSearch))
+    * Selections
     * Export
     * Mass Update
+    
 
 ## Techno
 
