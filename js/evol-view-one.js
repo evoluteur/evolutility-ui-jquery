@@ -20,6 +20,7 @@ Evol.ViewOne = Backbone.View.extend({
         'click .evol-buttons > button': 'click_button',
         'click .evol-pnl > div > div > .evol-title-toggle': 'click_toggle',
         'click ul.evol-tabs > li > a': 'click_tab',
+        'click label > .glyphicon-question-sign': 'click_help',
         'click .evol-field-label .glyphicon-wrench': 'click_customize'
         // extra evt for $(window) resize
     },
@@ -81,10 +82,10 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     getFields: function (){
-        if(!this.fields){
-            this.fields=EvoDico.fields(this.options.uiModel);
+        if(!this._fields){
+            this._fields=EvoDico.fields(this.options.uiModel);
         }
-        return this.fields;
+        return this._fields;
     },
 
     setModel: function(model) {
@@ -118,9 +119,6 @@ Evol.ViewOne = Backbone.View.extend({
                     case ft.bool:
                         vs[f.id] = $f.prop('checked');
                         break;
-                    case ft.lov:
-                        vs[f.id] = $f.val(); //TODO
-                        break;
                     default:
                         vs[f.id] = $f.val();
                 }
@@ -130,7 +128,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     setData: function (m) {
-        var fs = this.getFields(), //this.$el.find('.Field'),
+        var fs = this.getFields(),
             mode=this.options.mode,
             that=this,
             $f,
@@ -145,9 +143,6 @@ Evol.ViewOne = Backbone.View.extend({
                         case 'boolean':
                             $f.prop('checked',m.get(f.id));
                             break;
-                        case 'lov':
-                            $f.val(m.get(f.id)); //TODO
-                            break;
                         default:
                             $f.val(m.get(f.id));
                     }
@@ -157,7 +152,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     clear: function (m) {
-        var fs = this.getFields(), //this.$el.find('.Field'),
+        var fs = this.getFields(),
             mode=this.options.mode,
             that=this,
             $f,
@@ -226,7 +221,7 @@ Evol.ViewOne = Backbone.View.extend({
                 };
             this.renderPanel(h,miniUIModel,'evo-mini',mode);
         }else{
-            //this.fieldsHash={};
+            //this._fieldsHash={};
             for (var i = 0, iMax = model.length; i < iMax; i++) {
                 var p = model[i];
                 switch (p.type) {
@@ -400,7 +395,9 @@ Evol.ViewOne = Backbone.View.extend({
                     if (mode === 'view') {
                         h.push(EvoUI.link(fid, fv, 'mailto:' + HttpUtility.HtmlEncode(fv)));
                     } else {
+                        //h.push('<div class="input-group"><span class="input-group-addon">@</span>');
                         h.push(EvoUI.inputText(fid, fv, fld.maxlength));
+                        //h.push('</div>');
                     }
                     break;
                 case types.url:
@@ -483,7 +480,6 @@ Evol.ViewOne = Backbone.View.extend({
 //        if (fType.Equals(types.pix))
 //          h.push("img').src='").Append(_PathPixToolbar).Append("imgupdate.gif';e$('").Append(fieldName);
 //        h.push("_dp').value=''\"><br/></div>");
-//        nbFileUploads += 1;
                     break;
             }
         }
@@ -498,6 +494,9 @@ Evol.ViewOne = Backbone.View.extend({
         h.push('<div class="evol-field-label" id="', fld.id, '-lbl"><label class="control-label" for="', fld.id, '">', fld.label);
         if (mode != 'view' && fld.required > 0){
             h.push('<span class="evol-required">*</span>');
+        }
+        if (fld.help && fld.help!=''){
+            h.push(EvoUI.icon('question-sign', ''));
         }
         h.push('</label></div>');
     },
@@ -518,29 +517,6 @@ Evol.ViewOne = Backbone.View.extend({
         this.$el.find('.has-error').removeClass('has-error');
         this.$el.find('.text-danger').remove();
     },
-/*
-    fields: function (view) { // TODO: str view should be func filter
-        var ps = this.options.uiModel.elements,
-            fs = [];
-
-        function collectFields(te) {
-            if (te.elements && te.elements.length > 0) {
-                _.each(te.elements, function (te) {
-                    collectFields(te);
-                });
-            } else {
-                fs.push(te);
-            }
-        }
-
-        collectFields(this.options.uiModel);
-        //if (view === 'list') {
-            _.filter(fs, function (f) {
-                return f.list == 1;
-            })
-        //}
-        return fs;
-    },  */
 
     fieldViewId: function(fid){
         return this.prefix + '-' + fid;
@@ -560,6 +536,23 @@ Evol.ViewOne = Backbone.View.extend({
             });
             this.$el.find(panelSelector).append(EvoUI.icons.customize('id','panel'));
             this.custOn=true;
+        }
+        return this;
+    },
+
+    showHelp:function(id, type, $el){
+        var fs=EvoDico.fields(this.options.uiModel),
+            fld=_.findWhere(fs,{id:id});
+
+        if(fld||fld.help){
+            var $f=$el.closest('.evol-fld'),
+                $fh=$f.find('.help-block');
+            if($fh.length>0){
+                $fh.remove();
+            }else{
+                var $elDes=$('<span class="help-block">'+ _.escape(fld.help) + '</span>');
+                $f.append($elDes);
+            }
         }
         return this;
     },
@@ -621,8 +614,8 @@ Evol.ViewOne = Backbone.View.extend({
                 content.slideUp(400, function() {
                     $this.closest('.panel').css('height','40px');
                 }).data('expState', 'down');
-                $this.addClass('glyphicon-chevron-down')
-                    .removeClass('glyphicon-chevron-up');
+                $this.removeClass('glyphicon-chevron-up')
+                    .addClass('glyphicon-chevron-down');
             }
         }
         this.$el.trigger('panel.toggle');
@@ -640,13 +633,33 @@ Evol.ViewOne = Backbone.View.extend({
         }
     },
 
+    click_help: function (evt) {
+        var $e=$(evt.currentTarget),
+            id=$e.closest('label').attr('for'),
+            eType=$e.data('type');
+
+        evt.stopImmediatePropagation();
+        if(evt.shiftKey){
+            id=0;
+            var flds=$e.closest('#evolw-edit').find('label > .glyphicon-question-sign');
+            // TODO finish and test
+            _.each(flds, function(f){
+                // this.showHelp(id, eType, $e);
+            });
+
+        }else{
+            this.showHelp(id, eType, $e);
+        }
+        this.$el.trigger(eType+'.help', {id: id});
+    },
+
     click_customize: function (evt) {
         var $e=$(evt.currentTarget),
             id=$e.data('id'),
             eType=$e.data('type');
 
         EvoDico.showDesigner(id, eType, $e);
-        this.$el.trigger(eType+'.customize', {id: id});
+        this.$el.trigger(eType+'.customize', {id: id, type:eType});
     }
 
 });

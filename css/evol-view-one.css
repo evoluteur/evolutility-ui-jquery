@@ -51,6 +51,9 @@
 .evol-fld > .text-danger{
     margin-bottom: 0 !important;
 }
+.evol-field-label .glyphicon-question-sign{
+    padding-left: 4px;
+}
 
 .evo-mini-label{
     float:left;
