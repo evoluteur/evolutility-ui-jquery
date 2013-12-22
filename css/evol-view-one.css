@@ -54,7 +54,9 @@
 .evol-field-label .glyphicon-question-sign{
     padding-left: 4px;
 }
-
+.evo-mini-holder > div{
+    margin-left:-16px;
+}
 .evo-mini-label{
     float:left;
     width:38%;

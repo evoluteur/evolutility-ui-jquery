@@ -215,7 +215,7 @@ Evol.ViewOne = Backbone.View.extend({
                     return  f.searchlist || f.required || f.mini;
                 },opts.mode),
                 miniUIModel= {
-                    type: "panel", label: EvoUI.capFirstLetter(opts.uiModel.entity), width: "100",
+                    type: 'panel', class:'evo-mini-holder', label: EvoUI.capFirstLetter(opts.uiModel.entity), width: 100,
                     elements: flds
                 };
             this.renderPanel(h,miniUIModel,'evo-mini',mode);
@@ -309,7 +309,7 @@ Evol.ViewOne = Backbone.View.extend({
         var that = this;
         if(mode==='mini'){
             // build the html for 1 panel (in 'edit' or 'view' modes)
-            h.push('<div data-p-width="', p.width, '" class="w-100 evol-pnl">',
+            h.push('<div data-p-width="', p.width, '" class="w-100 evol-pnl ', (p.class || ''), '">',
                 '<div class="panel ', this.options.style, '">',
                 EvoUI.HTMLPanelLabel(p.label, pid, 'PanelLabel'),
                 '<fieldset data-pid="', pid, '">');
@@ -606,7 +606,8 @@ Evol.ViewOne = Backbone.View.extend({
         }else{
             if (state === 'down') {
                 $this.closest('.panel').css('height','');
-                content.slideDown(400).data('expState', 'up');
+                content.slideDown(400)
+                    .data('expState', 'up');
                 $this.addClass('glyphicon-chevron-up')
                     .removeClass('glyphicon-chevron-down');
             } else {

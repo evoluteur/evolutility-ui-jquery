@@ -138,9 +138,6 @@ Evol.UI = {
     icon: function (icon, cls) {
         return ['<span class="', cls? cls+' ':'', 'glyphicon glyphicon-', icon, '"></span>'].join('');
     },
-    icone: function (icon) {
-        return ['<span data-sort="',icon,'" class="glyphicon glyphicon-chevron-', icon, '"></span>'].join('');
-    },
 
     iconClose: function () {
         return '<button type="button" class="close" data-dismiss="alert">&times;</button>';
@@ -155,8 +152,15 @@ Evol.UI = {
 
     HTMLMsg: function (title, content) {
         return ['<div class="alert alert-info">',
-            '<h4>',title,'</h4>',
+            '<strong>',title,'</strong>',
             '<p>',content,'</p></div>'].join('');
+    },
+
+    formatDate: function(d){
+        return (d.getMonth()+1) + "/" + (d.getDate()+1) + "/" + d.getFullYear();
+    },
+    formatTime: function(d){
+        return (d.getHours()) + ":" + (d.getMinutes());
     },
 
     // get w/ automatic create if not in DOM

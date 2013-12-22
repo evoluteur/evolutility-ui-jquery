@@ -227,13 +227,13 @@ Evol.ViewMany = Backbone.View.extend({
                         var dv=''
                         //return myDate.toLocaleDateString("en-US");
                         if(f.type!=EvoDico.fieldTypes.time){
-                            dv+=(myDate.getMonth()+1) + "/" + (myDate.getDate()+1) + "/" + myDate.getFullYear();
+                            dv+=EvoUI.formatDate(myDate);
                         }
                         if(f.type==EvoDico.fieldTypes.datetime){
                             dv+=' ';
                         }
                         if(f.type!=EvoDico.fieldTypes.date){
-                            dv+=(myDate.getMonth()+1) + "/" + (myDate.getDate()+1) + "/" + myDate.getFullYear();
+                            dv+=EvoUI.formatTime(myDate);
                         }
                         return dv;
                     }
@@ -284,8 +284,8 @@ Evol.ViewMany = Backbone.View.extend({
         h.push('<th><span id="', field.id, '-lbl">',
             field.label,
             '<span class="evol-sort-icons" data-fid="',field.id,'">',
-            EvoUI.icone('up'),
-            EvoUI.icone('down'),
+            EvoUI.icon('chevron-up'),
+            EvoUI.icon('chevron-down'),
             '</span></span></th>'
         );
     },
