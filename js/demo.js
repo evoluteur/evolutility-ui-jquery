@@ -15,49 +15,7 @@ function showUIdef(uiModel){
     }
 }
 
-function setDemoEvol(collName){
-    Contact = Backbone.Model.extend({
-        initialize: function(){
-            //alert("Welcome to this world");
-        },
-        localStorage: new Backbone.LocalStorage("evol-contacts")
-    });
-    Contacts = Backbone.Collection.extend({
-        model: Contact,
-        localStorage: new Backbone.LocalStorage("evol-contacts")
-    });
-
-    var contacts = new Contacts();
-    contacts.fetch({
-        success: function(collection){
-            if(collection.length==0){
-                collection.reset(contacts_data);
-            }
-            var contact = contacts.models[0];
-            var el =$('#evol'),
-                vw = new Evol.ViewToolbar({
-                    el: el,
-                    mode: 'list',
-                    style:'panel-primary',
-                    model: contact,
-                    collection: contacts,
-                    uiModel: contacts_ui // field_ui
-                });
-            el.on('view.save',function(evt){
-                vw.validate(evt);
-            })
-
-            $('#recs > a').on('click', function(evt){
-                var id=$(evt.target).index();
-                vw.setModel(contacts.get(id));
-            })
-        }
-    });
-
-}
-
-
-function setDemo(uiModel, localStorage, mode){
+function setDemo(uiModel, localStorage, data){
     M = Backbone.Model.extend({
         localStorage: new Backbone.LocalStorage(localStorage)
     });
@@ -69,12 +27,14 @@ function setDemo(uiModel, localStorage, mode){
     var ms = new Ms();
     ms.fetch({
         success: function(collection){
+            EvoUI.insertCollection(collection, data);
             var m = ms.models[0];
             var el =$('#evol'),
                 vw = new Evol.ViewToolbar({
                     el: el,
                     mode: 'one',
                     style:'panel-primary',
+                    customize:false,
                     model: m,
                     collection: ms,
                     uiModel: uiModel

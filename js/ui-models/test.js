@@ -1,220 +1,220 @@
 var test_ui = {
-    entity: "test",
-    entities: "tests",
-    title: "Test Object",
+    entity: 'test',
+    entities: 'tests',
+    title: 'Test Object',
     elements: [
         {
-            type: "panel",
-            eindex: "1",
-            label: "Panel 1",
-            width: "100",
+            type: 'panel',
+            eindex: '1',
+            label: 'Panel 1',
+            width: '100',
             elements: [
                 {
                     id:'name',
-                    type: "text",
-                    label: "Text field",
-                    required: "1",
-                    maxlength: "150",
-                    search: "1",
-                    searchlist: "1",
-                    width: "62"
+                    type: 'text',
+                    label: 'Text field',
+                    required: '1',
+                    maxlength: '150',
+                    search: '1',
+                    searchlist: '1',
+                    width: '62'
                 },
                 {
                     id:'name2',
-                    type: "text",
-                    label: "Text (readonly)",
-                    readonly: "1",
-                    search: "1",
-                    searchlist: "1",
-                    width: "38"
+                    type: 'text',
+                    label: 'Text (readonly)',
+                    readonly: '1',
+                    search: '1',
+                    searchlist: '1',
+                    width: '38'
                 },
             ]
         },
         {
-            type: "tab",
-            label: "General",
+            type: 'tab',
+            label: 'General',
             elements: [
                 {
-                    type: "panel",
-                    eindex: "1",
-                    label: "Date",
-                    width: "33",
+                    type: 'panel',
+                    eindex: '1',
+                    label: 'Date',
+                    width: '33',
                     elements: [
                         {
-                            type: "date",
+                            type: 'date',
                             id:'fd1',
-                            label: "Date 1",
-                            required: "1",
-                            width: "100"
+                            label: 'Date 1',
+                            required: '1',
+                            width: '100'
                         },
                         {
-                            type: "date",
+                            type: 'date',
                             id:'fd2',
-                            label: "Date 2",
-                            width: "100"
+                            label: 'Date 2',
+                            width: '100'
                         },
                         {
-                            type: "datetime",
+                            type: 'datetime',
                             id:'fdt',
-                            label: "DateTime field",
-                            maxlength: "100",
-                            required: "1",
-                            width: "100"
+                            label: 'DateTime field',
+                            maxlength: '100',
+                            required: '1',
+                            width: '100'
                         },
                         {
-                            type: "time",
+                            type: 'time',
                             id:'ft',
-                            label: "Time field",
-                            maxlength: "100",
-                            required: "1",
-                            width: "100"
+                            label: 'Time field',
+                            maxlength: '100',
+                            required: '1',
+                            width: '100'
                         }
 
                     ]
                 },
                 {
-                    type: "panel",
-                    eindex: "1",
-                    label: "LOVs",
-                    width: "33",
+                    type: 'panel',
+                    eindex: '1',
+                    label: 'LOVs',
+                    width: '33',
                     elements: [
                         {
-                            type: "lov",
+                            type: 'lov',
                             id:'bsize',
-                            label: "Bottle Size (LOV)",
-                            labellist: "Bottle",
-                            required: "1",
-                            width: "100",
+                            label: 'Bottle Size (LOV)',
+                            labellist: 'Bottle',
+                            required: '1',
+                            width: '100',
                             list:[
-                                {id:750, label:'750 ml'},
-                                {id:500, label:'500 ml'},
-                                {id:375, label:'375 cl'},
-                                {id:1500, label:'1.5 L'},
-                                {id:3000, label:'3.0 L'},
-                                {id:6000, label:'6.0 L'},
-                                {id:8000, label:'8.0 L'}
+                                {id:750, text: '750 ml'},
+                                {id:500, text: '500 ml'},
+                                {id:375, text: '375 cl'},
+                                {id:1500, text: '1.5 L'},
+                                {id:3000, text: '3.0 L'},
+                                {id:6000, text: '6.0 L'},
+                                {id:8000, text: '8.0 L'}
                             ]
                         },
                         {
-                            type: "lov",
+                            type: 'lov',
                             id:'bsize2',
-                            label: "Bottle Size again",
-                            labellist: "Bottle",
-                            width: "100",
+                            label: 'Bottle Size again',
+                            labellist: 'Bottle',
+                            width: '100',
                             list:[
-                                {id:750, label:'750 ml'},
-                                {id:500, label:'500 ml'},
-                                {id:375, label:'375 cl'},
-                                {id:1500, label:'1.5 L'},
-                                {id:3000, label:'3.0 L'},
-                                {id:6000, label:'6.0 L'},
-                                {id:8000, label:'8.0 L'}
+                                {id:750, text: '750 ml'},
+                                {id:500, text: '500 ml'},
+                                {id:375, text: '375 cl'},
+                                {id:1500, text: '1.5 L'},
+                                {id:3000, text: '3.0 L'},
+                                {id:6000, text: '6.0 L'},
+                                {id:8000, text: '8.0 L'}
                             ]
                         },
                         {
-                            type: "lov",
+                            type: 'lov',
                             id:'grape',
-                            label: "Grape (big LOV)",
-                            search: "1",
-                            searchlist: "1",
-                            width: "100",
+                            label: 'Grape (big LOV)',
+                            search: '1',
+                            searchlist: '1',
+                            width: '100',
                             list:[
-                                {label:'Chardonnay'},
-                                {label:'Shiraz'},
-                                {label:'Merlot'},
-                                {label:'Pinot Noir'},
-                                {label:'Cabernet'},
-                                {label:'Zinfandel'},
-                                {label:'Sauvignon'},
-                                {label:'Cabernet Sauvignon'},
-                                {label:'Aligoté'},
-                                {label:'Alvarinho'},
-                                {label:'Blanc Fumé'},
-                                {label:'Bual'},
-                                {label:'Carignan'},
-                                {label:'Chasselas'},
-                                {label:'Chemin Blanc'},
-                                {label:'Cinsault'},
-                                {label:'Clairette'},
-                                {label:'Colombard'},
-                                {label:'Counoise'},
-                                {label:'Fendant'},
-                                {label:'Folle Blanche'},
-                                {label:'Fürmint'},
-                                {label:'Gamay'},
-                                {label:'Gewürztraminer'},
-                                {label:'Grauburgunder'},
-                                {label:'Grechetto'},
-                                {label:'Grenache Blanc'},
-                                {label:'Grenache Noir'},
-                                {label:'Gros Plan'},
-                                {label:'Grüner Veltliner'},
-                                {label:'Italienischer Riestling'},
-                                {label:'Kadarka'},
-                                {label:'Kerner'},
-                                {label:'Macabeo'},
-                                {label:'Malmsey'},
-                                {label:'Malvasier'},
-                                {label:'Marsanne'},
-                                {label:'Melon de Bourgogne'},
-                                {label:'Mourvèdre'},
-                                {label:'Müller-Thurgau'},
-                                {label:'Muscadelle'},
-                                {label:'Muscadet'},
-                                {label:'Musca'},
-                                {label:'Musca d\'Alsace'},
-                                {label:'Muskateller'},
-                                {label:'Nebbiolo'},
-                                {label:'Palomino'},
-                                {label:'Pedro Ximérez'},
-                                {label:'Petit Verdot'},
-                                {label:'Pinot Blanc'},
-                                {label:'Pinot Gris'},
-                                {label:'Pinot Noir'},
-                                {label:'Pinotage'},
-                                {label:'Riesling'},
-                                {label:'Ruländer'},
-                                {label:'Sangiovese'},
-                                {label:'Sauvignon Blanc'},
-                                {label:'Scheurebe'},
-                                {label:'Sémilion'},
-                                {label:'Sercial'},
-                                {label:'Seyval Blanc'},
-                                {label:'Siegerrebe'},
-                                {label:'Silvaner'},
-                                {label:'Spätburgunder'},
-                                {label:'Steen'},
-                                {label:'Syrah'},
-                                {label:'Tempranillo'},
-                                {label:'Tokay'},
-                                {label:'Traminer'},
-                                {label:'Trebbiano'},
-                                {label:'Ugni Blanc'},
-                                {label:'Verdejo'},
-                                {label:'Verdelho'},
-                                {label:'Vermentino'},
-                                {label:'Vernaccia'},
-                                {label:'Viognier'},
-                                {label:'Viura'},
-                                {label:'Weißburgunder'}
+                                {text: 'Chardonnay'},
+                                {text: 'Shiraz'},
+                                {text: 'Merlot'},
+                                {text: 'Pinot Noir'},
+                                {text: 'Cabernet'},
+                                {text: 'Zinfandel'},
+                                {text: 'Sauvignon'},
+                                {text: 'Cabernet Sauvignon'},
+                                {text: 'Aligoté'},
+                                {text: 'Alvarinho'},
+                                {text: 'Blanc Fumé'},
+                                {text: 'Bual'},
+                                {text: 'Carignan'},
+                                {text: 'Chasselas'},
+                                {text: 'Chemin Blanc'},
+                                {text: 'Cinsault'},
+                                {text: 'Clairette'},
+                                {text: 'Colombard'},
+                                {text: 'Counoise'},
+                                {text: 'Fendant'},
+                                {text: 'Folle Blanche'},
+                                {text: 'Fürmint'},
+                                {text: 'Gamay'},
+                                {text: 'Gewürztraminer'},
+                                {text: 'Grauburgunder'},
+                                {text: 'Grechetto'},
+                                {text: 'Grenache Blanc'},
+                                {text: 'Grenache Noir'},
+                                {text: 'Gros Plan'},
+                                {text: 'Grüner Veltliner'},
+                                {text: 'Italienischer Riestling'},
+                                {text: 'Kadarka'},
+                                {text: 'Kerner'},
+                                {text: 'Macabeo'},
+                                {text: 'Malmsey'},
+                                {text: 'Malvasier'},
+                                {text: 'Marsanne'},
+                                {text: 'Melon de Bourgogne'},
+                                {text: 'Mourvèdre'},
+                                {text: 'Müller-Thurgau'},
+                                {text: 'Muscadelle'},
+                                {text: 'Muscadet'},
+                                {text: 'Musca'},
+                                {text: 'Musca d\'Alsace'},
+                                {text: 'Muskateller'},
+                                {text: 'Nebbiolo'},
+                                {text: 'Palomino'},
+                                {text: 'Pedro Ximérez'},
+                                {text: 'Petit Verdot'},
+                                {text: 'Pinot Blanc'},
+                                {text: 'Pinot Gris'},
+                                {text: 'Pinot Noir'},
+                                {text: 'Pinotage'},
+                                {text: 'Riesling'},
+                                {text: 'Ruländer'},
+                                {text: 'Sangiovese'},
+                                {text: 'Sauvignon Blanc'},
+                                {text: 'Scheurebe'},
+                                {text: 'Sémilion'},
+                                {text: 'Sercial'},
+                                {text: 'Seyval Blanc'},
+                                {text: 'Siegerrebe'},
+                                {text: 'Silvaner'},
+                                {text: 'Spätburgunder'},
+                                {text: 'Steen'},
+                                {text: 'Syrah'},
+                                {text: 'Tempranillo'},
+                                {text: 'Tokay'},
+                                {text: 'Traminer'},
+                                {text: 'Trebbiano'},
+                                {text: 'Ugni Blanc'},
+                                {text: 'Verdejo'},
+                                {text: 'Verdelho'},
+                                {text: 'Vermentino'},
+                                {text: 'Vernaccia'},
+                                {text: 'Viognier'},
+                                {text: 'Viura'},
+                                {text: 'Weißburgunder'}
                             ]
                         }
 
                     ]
                 },
                 {
-                    type: "panel",
-                    label: "An Image",
-                    width: "34",
+                    type: 'panel',
+                    label: 'An Image',
+                    width: '34',
                     elements: [
                         {
-                            type: "image",
-                            label: "",
-                            labeledit: "",
-                            labellist: "Label",
-                            maxlength: "200",
-                            width: "100",
-                            searchlist: "1"
+                            type: 'image',
+                            label: '',
+                            labeledit: '',
+                            labellist: 'Label',
+                            maxlength: '200',
+                            width: '100',
+                            searchlist: '1'
                         }
 
                     ]
@@ -223,92 +223,92 @@ var test_ui = {
             ]
         },
         {
-            type: "tab",
-            label: "Numbers",
+            type: 'tab',
+            label: 'Numbers',
             elements: [
                 {
-                    type: "panel",
-                    eindex: "1",
-                    label: "Integers",
-                    width: "33",
+                    type: 'panel',
+                    eindex: '1',
+                    label: 'Integers',
+                    width: '33',
                     elements: [
                         {
-                            type: "integer",
+                            type: 'integer',
                             id:'int1',
-                            label: "Integer (min=0 max=10)",
-                            required: "1",
-                            maxlength: "10",
+                            label: 'Integer (min=0 max=10)',
+                            required: '1',
+                            maxlength: '10',
                             min: 0,
                             max: 10,
-                            width: "100"
+                            width: '100'
                         },
                         {
-                            type: "integer",
+                            type: 'integer',
                             id:'int2',
-                            label: "Integer 2",
-                            maxlength: "10",
-                            width: "100"
+                            label: 'Integer 2',
+                            maxlength: '10',
+                            width: '100'
                         }
                     ]
                 },
                 {
-                    type: "panel",
-                    eindex: "1",
-                    label: "Decimals",
-                    width: "33",
+                    type: 'panel',
+                    eindex: '1',
+                    label: 'Decimals',
+                    width: '33',
                     elements: [
                         {
-                            type: "decimal",
+                            type: 'decimal',
                             id:'dec1',
-                            label: "Decimal 1",
-                            required: "1",
-                            maxlength: "10",
-                            search: "1",
-                            width: "100",
-                            format: "$ 0.00"
+                            label: 'Decimal 1',
+                            required: '1',
+                            maxlength: '10',
+                            search: '1',
+                            width: '100',
+                            format: '$ 0.00'
                         },
                         {
-                            type: "decimal",
+                            type: 'decimal',
                             id:'dec2',
-                            label: "Decimal 2",
-                            maxlength: "10",
-                            search: "1",
-                            searchlist: "1",
-                            width: "100",
-                            format: "$ 0.00"
+                            label: 'Decimal 2',
+                            maxlength: '10',
+                            search: '1',
+                            searchlist: '1',
+                            width: '100',
+                            format: '$ 0.00'
                         }
                     ]
                 },
                 {
-                    type: "panel",
-                    eindex: "1",
-                    label: "Colors",
-                    width: "33",
+                    type: 'panel',
+                    eindex: '1',
+                    label: 'Colors',
+                    width: '33',
                     elements: [
                         {
-                            type: "color",
+                            type: 'color',
                             id:'color1',
-                            label: "Color",
+                            label: 'Color',
                             required: true,
-                            width: "50"
+                            width: '50'
                         },
                         {
-                            type: "color",
+                            type: 'color',
                             id:'color2',
-                            label: "Color 2",
-                            width: "50"
+                            label: 'Color 2',
+                            width: '50'
                         },
                         {
-                            type: "color",
+                            type: 'color',
                             id:'color3',
-                            label: "Color 3",
-                            width: "50"
+                            label: 'Color 3',
+                            width: '50'
                         },
                         {
-                            type: "color",
+                            type: 'color',
                             id:'color4',
-                            label: "Color 4",
-                            width: "50"
+                            label: 'Color 4',
+                            width: '50'
                         }
                     ]
                 }
@@ -316,21 +316,21 @@ var test_ui = {
             ]
         },
         {
-            type: "tab",
-            label: "Notes",
+            type: 'tab',
+            label: 'Notes',
             elements: [
                 {
-                    type: "panel",
-                    id: "bigtxt1",
-                    label: "Comments",
-                    width: "100",
+                    type: 'panel',
+                    id: 'bigtxt1',
+                    label: 'Comments',
+                    width: '100',
                     elements: [
                         {
-                            type: "textmultiline",
-                            label: "Comments",
-                            maxlength: "300",
-                            width: "100",
-                            height: "8"
+                            type: 'textmultiline',
+                            label: 'Comments',
+                            maxlength: '300',
+                            width: '100',
+                            height: '8'
                         }
 
                     ]
@@ -338,22 +338,22 @@ var test_ui = {
             ]
         },
         {
-            type: "tab",
-            label: "Collection",
+            type: 'tab',
+            label: 'Collection',
             elements: [
                 { type: 'panel-list',
-                    label: "Collection",
-                    width: "100",
-                    dbtabledetails: "WineDegustation",
-                    dbcolumndetails: "wineid",
-                    panelid: "1",
-                    dborder: "ddate desc",
+                    label: 'Collection',
+                    width: '100',
+                    dbtabledetails: 'WineDegustation',
+                    dbcolumndetails: 'wineid',
+                    panelid: '1',
+                    dborder: 'ddate desc',
                     elements: [
-                        {type: "text", panelid: "1", label: "Robe", maxlength: "100", dbcolumn: "Robe", dbcolumnread: "Robe", searchlist: "1"},
-                        {type: "date", panelid: "1", dbcolumn: "ddate", dbcolumnread: "ddate", label: "Date", maxlength: "20", searchlist: "1"},
-                        {type: "text", panelid: "1", label: "Nose", maxlength: "100", dbcolumn: "Nose", dbcolumnread: "Nose", searchlist: "1"},
-                        {type: "text", panelid: "1", label: "Taste", maxlength: "100", dbcolumn: "Taste", dbcolumnread: "Taste", searchlist: "1"},
-                        {type: "textmultiline", panelid: "1", dbcolumn: "notes", dbcolumnread: "notes", label: "Note", maxlength: "300", searchlist: "1", width: "100", height: "4"}
+                        {type: 'text', panelid: '1', label: 'Robe', maxlength: '100', dbcolumn: 'Robe', dbcolumnread: 'Robe', searchlist: '1'},
+                        {type: 'date', panelid: '1', dbcolumn: 'ddate', dbcolumnread: 'ddate', label: 'Date', maxlength: '20', searchlist: '1'},
+                        {type: 'text', panelid: '1', label: 'Nose', maxlength: '100', dbcolumn: 'Nose', dbcolumnread: 'Nose', searchlist: '1'},
+                        {type: 'text', panelid: '1', label: 'Taste', maxlength: '100', dbcolumn: 'Taste', dbcolumnread: 'Taste', searchlist: '1'},
+                        {type: 'textmultiline', panelid: '1', dbcolumn: 'notes', dbcolumnread: 'notes', label: 'Note', maxlength: '300', searchlist: '1', width: '100', height: '4'}
                     ]
                 }
             ]

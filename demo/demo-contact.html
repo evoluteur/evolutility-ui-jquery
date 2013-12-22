@@ -31,28 +31,13 @@
 
 <h1 id="title">Addressbook</h1>
 
-<div id="evol1"></div>
+<div id="evol"></div>
 
-<script> 
-
-$(document).ready(function(){
+<script>
 
     $(document).ready(function(){
-
-        var el =$('#evol1'),
-                vw = new Evol.ViewOne({
-                    el: el,
-                    mode: 'edit',
-                    //model: this.bbModel,
-                    //modelCollection:this.bbCollection,
-                    uiModel: contacts_ui
-                });
-        el.on('view.save',function(evt){
-            vw.validate(evt);
-        })
+        setDemo(contacts_ui,'evol-contact',contacts_data);
     });
-
-});
 
 </script>
  
