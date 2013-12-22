@@ -19,7 +19,18 @@ Evol.ViewToolbar = Backbone.View.extend({
     prefix: 'tbr',
 
     version: '0.0.1',
-	
+/*
+    modes: {
+        'new':'new',
+        'edit':'edit',
+        'mini':'mini',
+        'view':'view',
+        'json':'json',
+        'cards':'cards',
+        'list':'list',
+        'charts':'charts'
+    }, */
+
 	options: {
 		toolbar: true,
         cardinality: 'one',
@@ -100,36 +111,14 @@ Evol.ViewToolbar = Backbone.View.extend({
                 '<div class="navbar-collapse navbar-ex4-collapse">',
                 '<ul class="nav navbar-nav">',
                 '<li><div>evol-utility</div></li>',
-                '</ul><ul class="nav navbar-nav navbar-right">',
-                beginMenu('th-list'),
-                link('list','List','th-list'),
-                link('list-grid','Cards','th-large'),
-                menuDevider,
-                link('charts','Chart','signal'),
-                endMenu,
-                beginMenu('stop'),
-                link('edit','All fields','th'),
-                link('mini','Important fields','th-large'),
-                menuDevider,
-                link('json','JSON','barcode'),
-                endMenu,
-                //link('selections','','star'),
+                '</ul><ul class="nav navbar-nav">',
                 link('new','','plus'),
-                link('del','','trash','1')/*,
-                '<li data-cardinality="1">',
-                EvoUI.inputToggle([
-                    {id:'list',text:'All Fields'},
-                    {id:'list-grid',text:'Important fields'},
-                    {id:'charts',text:'JSON'}
-                ]),'</li>',
-                '<li data-cardinality="n">',
-                EvoUI.inputToggle([
-                    {id:'list',text:'List'},
-                    {id:'list-grid',text:'Cards'},
-                    {id:'charts',text:'Charts'}
-                ]),'</li>'*/
+                link('del','','trash','1'),
+                link('list','','th-list'),
+                link('charts','','signal')
+                //link('selections','','star'),
+                //link('search','','search','n');
             ];
-
         //link('export','','arrow-down','n');//'cloud-download'),
         //link('customize','','wrench'),
         if(this.options && this.options.customize){
@@ -141,10 +130,15 @@ Evol.ViewToolbar = Backbone.View.extend({
                 link('new-panel','New Panel','plus'),
                 endMenu);
         }
-        //h.push(link('search','Search','search'));
         h.push(
             link('prev','','chevron-left','1'),
             link('next','','chevron-right','1'),
+            '</ul><ul class="nav navbar-nav" style="float:right;">',
+            link('list','','th-list','n'),
+            link('cards','','th-large','n'),
+            link('edit','','th','1'),
+            link('mini','','th-large','1'),
+            link('json','','barcode','1'),
             '</ul></div></nav>');
         return h.join('');
     },
@@ -157,8 +151,8 @@ Evol.ViewToolbar = Backbone.View.extend({
 		if(this.viewsHash.list){
 			this.viewsHash.list.render();	
 		}
-		if(this.viewsHash.list-grid){
-			this.viewsHash.list-grid.render();	
+		if(this.viewsHash.cards){
+			this.viewsHash.cards.render();
 		}
 	},
 
@@ -237,9 +231,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                         this.viewsHash[mode]=vw;
                         this.views.push(vw);
                         break;*/
-					case 'list-grid':
+					case 'cards':
                         this.cardinality='many';
-						mode='grid';
 					case 'list':
                         $.extend(config,
                             {
@@ -273,26 +266,35 @@ Evol.ViewToolbar = Backbone.View.extend({
 			var ones=this.$el.find('li[data-cardinality="1"]'),
 				manys=this.$el.find('li[data-cardinality="n"]'),
 				prevNext=this.$el.find('[data-id="prev"],[data-id="next"]'),
-                isSearch=mode.indexOf('search')>-1;
-            if(mode=='json' || mode==='list-json' || isSearch){
-                this.$el.find('a[data-id="customize"]').parent().hide();
+                isSearch=mode.indexOf('search')>-1,
+                pc=this.$el.find('a[data-id="customize"]').parent();
+            if(mode=='json' || isSearch){
+                pc.hide();
             }else{
-                this.$el.find('a[data-id="customize"]').parent().show();
+                pc.parent().show();
             }
 			if(mode==='new'){
 				prevNext.hide();
+                ones.hide();
+                manys.hide();
 			}else{
 				prevNext.show();
-				if(mode==='list-grid' || mode==='list' || mode==='charts'|| mode==='list-json'){
+				if(mode==='cards' || mode==='list' || mode==='charts'){
 					ones.hide();
 					manys.show();
                     prevNext.hide();
 				}else if (isSearch){
                     ones.hide();
                     manys.hide();
+                    prevNext.hide();
                 }else{
 					ones.show();
 					manys.hide();
+                    if(mode==='new'){
+                        prevNext.hide();
+                    }else{
+                        prevNext.show();
+                    }
 				}
 			}
 		}
@@ -340,9 +342,8 @@ Evol.ViewToolbar = Backbone.View.extend({
             case 'customize':
                 this.curView.customize();
                 break;
-            case 'filter':
-
-                break;
+            //case 'filter':
+            //    break;
             case 'prev':
             case 'next':
                 if(this.model){
@@ -365,7 +366,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             case 'new-panel':
                 EvoDico.showDesigner('id', 'field', $el);
                 break;
-            default:// 'new' 'edit' 'mini' 'list' 'list-grid' 'export' 'json'
+            default:// 'new' 'edit' 'mini' 'list' 'cards' 'export' 'json'
                 if(viewId && viewId!==''){
                     this.setView(viewId);
                 }

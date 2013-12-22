@@ -43,7 +43,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
     customize: function () {
         var labels;
-        if(this.options.mode=='list-grid'){
+        if(this.options.mode=='cards'){
             labels = this.$el.find('h4 a.evol-nav-id');
         }else{
             labels = this.$el.find('th > span')
@@ -169,7 +169,7 @@ Evol.ViewMany = Backbone.View.extend({
         h.push('</tr>');
     },
 
-    _HTMLlist_grid: function (h, fields, pSize, icon) {
+    _HTMLcards: function (h, fields, pSize, icon) {
         var data = this.model.collection.models,
             datalen = _.min([data.length, pSize]);
         if (datalen > 0) {
