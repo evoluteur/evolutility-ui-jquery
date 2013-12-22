@@ -127,6 +127,26 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     _hashLov: {},
+    _lovText:function(f,v){
+        if(('list' in f) && f.list.length>0){
+            if(!(f.id in this._hashLov)){
+                this._hashLov[f.id]={};
+            }
+            var hashLov = this._hashLov[f.id];
+            if(v in hashLov){
+                return hashLov[v];
+            }else{
+                for(var j=0,jMax=f.list.length;j<jMax;j++){
+                    var tuple=f.list[j];
+                    if(tuple.id==v){
+                        hashLov[v]=tuple.text;
+                        return tuple.text;
+                    }
+                }
+            }
+        }
+        return '';
+    },
 
     _HTMLlistrow: function(h, fields, model, icon){
         h.push('<tr data-id="', model.cid, '">');
@@ -140,35 +160,7 @@ Evol.ViewMany = Backbone.View.extend({
                     h.push('<img alt="" class="evol-table-icon" src="pix/', icon, '">');
                 }
             }
-            switch(f.type) {
-                case EvoDico.fieldTypes.bool:
-                    if (v == '1' || v == 'true'){ // TODO: fix bool types
-                        h.push(EvoUI.icon('ok'));
-                    }
-                    break;
-                case 'lov':
-                    if(v!=''){
-                        if(!(f.id in this._hashLov)){
-                            this._hashLov[f.id]={};
-                        }
-                        var hashLov = this._hashLov[f.id];
-                        if(v in hashLov){
-                            v=hashLov[v];
-                        }else{
-                            for(var j=0,jMax=f.list.length;j<jMax;j++){
-                                var tuple=f.list[j];
-                                if(tuple.id==v){
-                                    hashLov[v]=tuple.text;
-                                    v=tuple.text;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    // -no break;
-                default:
-                    h.push(v);
-            }
+            h.push(this._HTMLField(f,v));
             if (i == 0) {
                 h.push('</a>');
             }
@@ -197,13 +189,7 @@ Evol.ViewMany = Backbone.View.extend({
                     //if(i>0){
                     //    h.push(EvoUI.fieldLabel(f.id,f.label));
                     //}
-                    if (f.type == EvoDico.fieldTypes.bool) {
-                        if (v >0 || v == 'True') {
-                            h.push(EvoUI.icon('ok'));
-                        }
-                    } else {
-                        h.push(v);
-                    }
+                    h.push(this._HTMLField(f,v));
                     if (i == 0) {
                         h.push('</a></h4>');
                     }
@@ -220,8 +206,48 @@ Evol.ViewMany = Backbone.View.extend({
         h.push(EvoUI.html.clearer);
     },
 
+    _HTMLField: function(f,v){
+        switch(f.type){
+            case EvoDico.fieldTypes.bool:
+                if (v >0 || v == 'True') {
+                    return EvoUI.icon('ok');
+                }
+                break;
+            case EvoDico.fieldTypes.lov:
+                if (v != '') {
+                    return this._lovText(f,v);
+                }
+                break;
+            case EvoDico.fieldTypes.date:
+            case EvoDico.fieldTypes.time:
+            case EvoDico.fieldTypes.datetime:
+                if (v != '') {
+                    var myDate=new Date(v);
+                    if(_.isDate(myDate)){
+                        var dv=''
+                        //return myDate.toLocaleDateString("en-US");
+                        if(f.type!=EvoDico.fieldTypes.time){
+                            dv+=(myDate.getMonth()+1) + "/" + (myDate.getDate()+1) + "/" + myDate.getFullYear();
+                        }
+                        if(f.type==EvoDico.fieldTypes.datetime){
+                            dv+=' ';
+                        }
+                        if(f.type!=EvoDico.fieldTypes.date){
+                            dv+=(myDate.getMonth()+1) + "/" + (myDate.getDate()+1) + "/" + myDate.getFullYear();
+                        }
+                        return dv;
+                    }
+                }
+                break;
+            default:
+                return v;
+        }
+        return '';
+    },
+
     _HTMLcharts: function (h, fields, pSize, icon) {
-        var uiModel =this.options.uiModel,
+        var that=this,
+            uiModel =this.options.uiModel,
             model = this.model,
             models = model.collection.models,
             chartFields = EvoDico.fields(uiModel, function(f){
@@ -238,16 +264,20 @@ Evol.ViewMany = Backbone.View.extend({
             for(var dataSetName in groupData) {
                 var g=groupData[dataSetName];
                 data.push(g);
-                labels.push(dataSetName+' ('+g+')');
+                if(f.type==EvoDico.fieldTypes.lov){
+                    labels.push(that._lovText(f,dataSetName)+' ('+g+')');
+                }else{
+                    labels.push(dataSetName+' ('+g+')');
+                }
             }
             var entityName=EvoUI.capFirstLetter(uiModel.entities)
             if(f.type==EvoDico.fieldTypes.lov){
-                h.push(EvoUI.chartsPie(entityName + ' by ' + f.label, data, labels));
+                h.push(EvoUI.Charts.Pie(entityName + ' by ' + f.label, data, labels));
             }else{
-                h.push(EvoUI.chartsBars(entityName + ': ' + f.label, data, labels));
+                h.push(EvoUI.Charts.Bars(entityName + ': ' + f.label, data, labels));
             }
         });
-        h.push('<div class="clearer"></div>');
+        h.push(EvoUI.html.clearer);
     },
 
     _renderListHeader: function (h, field) {

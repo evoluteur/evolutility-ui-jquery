@@ -213,10 +213,9 @@ Evol.ViewOne = Backbone.View.extend({
         if(mode==='mini'){
             var flds = EvoDico.fields(opts.uiModel,function(f){
                     return  f.searchlist || f.required || f.mini;
-                    //return f.readonly || f.searchlist || f.mini;
                 },opts.mode),
                 miniUIModel= {
-                    type: "panel", label: opts.uiModel.entity, width: "100",
+                    type: "panel", label: EvoUI.capFirstLetter(opts.uiModel.entity), width: "100",
                     elements: flds
                 };
             this.renderPanel(h,miniUIModel,'evo-mini',mode);

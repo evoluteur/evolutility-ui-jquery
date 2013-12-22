@@ -1,5 +1,5 @@
 
-/ * evol-utility : evol-view-toolbar.css  */
+/* evol-utility : evol-view-toolbar.css  */
 
 
 img.evol-table-icon{
@@ -21,7 +21,9 @@ img.evol-table-icon{
 	margin-left:5px;
 }
 
-
+.dropdown-menu > li > a > glyphicon{
+    padding-right:5px;
+}
 
 .navbar-nav>li>div {
     padding: 15px 20px 15px 5px;

@@ -34,7 +34,8 @@ Evol.Dico = {
         //widget: 'widget',
     },
 
-    fields: function (uiModel, fnFilter) { // TODO: str view should be func filter
+    fields: function (uiModel, fnFilter) {
+        // TODO fields details or not?
         var fs = [];
 
         function collectFields(te) {
@@ -54,37 +55,30 @@ Evol.Dico = {
         return fs;
     },
 
-    
-    customize: function() {
-        this.$el.find('.FieldLabel>label').append(EvoUI.icons.customize('id','field'));
-        this.$el.find('.table th,h4.PanelLabel').append(EvoUI.icons.customize('id','panel'));
-        return this;
-    },
-
     showDesigner: function(id, type, $el){
         var h=[],
-            $elDes=$('<div class="evol-des-'+type+'">designer</div>');
+            $elDes=$('<div class="evol-des-'+type+'"></div>'),
+            uiModel;
+
+        switch(type){
+            case 'field':
+                uiModel = dico_field_ui
+                break;
+                
+        }    
         $el.closest('.evol-fld').append($elDes);
-
-
-        //$elDes.position({
-        //    my: "left top",
-        //    at: "right bottom",
-        //    of: $el
-        //});
 
         vw = new Evol.ViewOne({
             toolbar:true,
             model: null,
-            uiModel: dico_field_ui,
+            uiModel: uiModel,
             defaultView: 'edit',
             el: $elDes,
             button_addAnother: false
         });
         vw.render();
 
-        //$elDes.popover('show')
-        $elDes.on('button#save,button#cancel', function(evt){
+        $elDes.on('click', 'button#save,button#cancel', function(evt){
             alert('fld click button')
             $elDes.remove();
         });

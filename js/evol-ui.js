@@ -126,6 +126,15 @@ Evol.UI = {
         return '<button type="button" id="' + id + '" class="btn' + (cls ? ' ' + cls : '') + '">' + label + '</button>';
     },
 
+    inputToggle: function  (items) {
+        var h=['<div class="btn-group" data-toggle="buttons">'];
+        _.each(items, function(item){
+            h.push('<label class="btn btn-info"><input type="radio" name="options" id="',item.id,'">',item.text,'</label>');
+        });
+        h.push('</div>');
+        return h.join('');
+    },
+
     icon: function (icon, cls) {
         return ['<span class="', cls? cls+' ':'', 'glyphicon glyphicon-', icon, '"></span>'].join('');
     },
@@ -170,33 +179,37 @@ Evol.UI = {
         }
     },
 
-    chartsURL: 'http://chart.apis.google.com/chart',
-    chartsHTML: function(title, urlPix){
-        return [ //class="panel ', this.options.style, '
-            '<div class="evol-chart-holder"><label class="evol-chart-title">',title,
-            '</label><img src="',urlPix,'"><br></div>'
-        ].join('');
-    },
+    Charts:{
 
-    chartsPie: function (label,data,labels){
-        var urlGoogleChart = [EvoUI.chartsURL,'?chd=t:',
-            data.join(','),
-            '&amp;chl=',
-            labels.join('|'),
-            '&amp;cht=p&amp;chds=0,20&amp;chs=400x200'].join('');
-        return EvoUI.chartsHTML(label, urlGoogleChart);
-    },
-
-    chartsBars: function (label,data,labels){
-        var maxCount = _.max(data),
-            urlGoogleChart = [EvoUI.chartsURL,'?chbh=a&amp;chs=380x200&cht=bvg&chco=A2C180,FF9900&chds=0,',
-                maxCount,
-                '&amp;chd=t:',
-                data.join('|'),
-                '&amp;chp=0.05&amp;chts=676767,10.5&amp;chdl=',
-                labels.join('|')
+        URL: 'http://chart.apis.google.com/chart',
+        _HTML: function(title, urlPix){
+            return [ //class="panel ', this.options.style, '
+                '<div class="evol-chart-holder panel"><label class="evol-chart-title">',title,
+                '</label><img src="',urlPix,'"><br></div>'
             ].join('');
-        return EvoUI.chartsHTML(label, urlGoogleChart);
+        },
+
+        Pie: function (label, data, labels){
+            var urlGoogleChart = [EvoUI.Charts.URL,'?chd=t:',
+                data.join(','),
+                '&amp;chl=',
+                labels.join('|'),
+                '&amp;cht=p&amp;chds=0,20&amp;chs=360x200'].join('');
+            return EvoUI.Charts._HTML(label, urlGoogleChart);
+        },
+
+        Bars: function (label, data, labels){
+            var maxCount = _.max(data),
+                urlGoogleChart = [EvoUI.Charts.URL,'?chbh=a&amp;chs=350x200&cht=bvg&chco=3a87ad,d9edf7&chds=0,',
+                    maxCount,
+                    '&amp;chd=t:',
+                    data.join('|'),
+                    '&amp;chp=0.05&amp;chts=676767,10.5&amp;chdl=',
+                    labels.join('|')
+                ].join('');
+            return EvoUI.Charts._HTML(label, urlGoogleChart);
+        }
+
     },
 
     capFirstLetter: function(word){

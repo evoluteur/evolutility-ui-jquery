@@ -26,7 +26,8 @@ Evol.ViewToolbar = Backbone.View.extend({
 		model: null,
 		uiModel: null,
 		defaultView: 'list',
-        style: 'normal'
+        style: 'normal',
+        customize:false
 	},
 
 	state:{},
@@ -71,55 +72,80 @@ Evol.ViewToolbar = Backbone.View.extend({
 	},
 
     _toolbarHTML: function(){
+        var menuDevider='<li role="presentation" class="divider"></li>';
+
         function link(id, label, icon, card){
+            var h=[];
             if(card){
                 h.push('<li data-cardinality="'+card,'">');
             }else{
                 h.push('<li>');
             }
             h.push('<a href="#" data-id="',id,'">',
-                htmlIcon(icon),label,'</a></li>');
-        }
-        function htmlIcon(icon){
-            return '<span class="glyphicon glyphicon-'+icon+'" ></span> ';
+                EvoUI.icon(icon),label,'</a></li>');
+            return h.join('');
         }
 
-        function linkDropDowns(){
-            h.push('<li class="dropdown">',
-            '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',htmlIcon('th-list'),' <b class="caret"></b></a>',
-            '<ul class="dropdown-menu">');
-            link('list','List','th-list');
-            link('list-grid','Cards','th-large');
-            link('charts','Chart','signal');
-            //link('list-json','JSON','barcode');
-            h.push('</ul>',
-                '</li>','<li class="dropdown">',
-                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',htmlIcon('stop'),' <b class="caret"></b></a>',
-                '<ul class="dropdown-menu">');
-            link('edit','All fields','th');
-            link('mini','Important fields','th-large'),
-            link('json','JSON','barcode');
-            h.push('</ul>',
-                '</li>');
+        function beginMenu(icon){
+            return ['<li class="dropdown">',
+                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',EvoUI.icon(icon),' <b class="caret"></b></a>',
+                '<ul class="dropdown-menu">'].join('');
         }
+        var endMenu='</ul></li>';
+
 
         var opts = this.options,
             h=[
                 '<nav class="navbar" role="navigation">',
                 '<div class="navbar-collapse navbar-ex4-collapse">',
-                '<ul class="nav navbar-nav">'];
-        h.push('<li><div>evol-utility</div></li>');
-        h.push('</ul><ul class="nav navbar-nav navbar-right">');
-        linkDropDowns();
-        link('new','','plus');
-        //link('selections','','star');
-        link('del','','trash','1');
-        //link('export','','arrow-down','n');//'cloud-download');
-        //link('customize','','wrench');
+                '<ul class="nav navbar-nav">',
+                '<li><div>evol-utility</div></li>',
+                '</ul><ul class="nav navbar-nav navbar-right">',
+                beginMenu('th-list'),
+                link('list','List','th-list'),
+                link('list-grid','Cards','th-large'),
+                menuDevider,
+                link('charts','Chart','signal'),
+                endMenu,
+                beginMenu('stop'),
+                link('edit','All fields','th'),
+                link('mini','Important fields','th-large'),
+                menuDevider,
+                link('json','JSON','barcode'),
+                endMenu,
+                //link('selections','','star'),
+                link('new','','plus'),
+                link('del','','trash','1')/*,
+                '<li data-cardinality="1">',
+                EvoUI.inputToggle([
+                    {id:'list',text:'All Fields'},
+                    {id:'list-grid',text:'Important fields'},
+                    {id:'charts',text:'JSON'}
+                ]),'</li>',
+                '<li data-cardinality="n">',
+                EvoUI.inputToggle([
+                    {id:'list',text:'List'},
+                    {id:'list-grid',text:'Cards'},
+                    {id:'charts',text:'Charts'}
+                ]),'</li>'*/
+            ];
+
+        //link('export','','arrow-down','n');//'cloud-download'),
+        //link('customize','','wrench'),
+        if(this.options && this.options.customize){
+            h.push(
+                beginMenu('wrench'),
+                link('customize','Customize this view','wrench'),
+                menuDevider,
+                link('new-field','New Field','plus'),
+                link('new-panel','New Panel','plus'),
+                endMenu);
+        }
         //h.push(link('search','Search','search'));
-        link('prev','','chevron-left','1');
-        link('next','','chevron-right','1');
-        h.push('</ul></div></nav>');
+        h.push(
+            link('prev','','chevron-left','1'),
+            link('next','','chevron-right','1'),
+            '</ul></div></nav>');
         return h.join('');
     },
 
@@ -138,7 +164,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 
 	setView:function(viewName){
 		var mode=viewName,//.toLowerCase(),
-			e=this.$el, // this.$el
+			e=this.$el,
             eid ='evolw-'+viewName,
 			v=e.find('#'+eid),
 			vw=this.curView;
@@ -159,10 +185,8 @@ Evol.ViewToolbar = Backbone.View.extend({
 					$ff=$('<div id="evol-filter" class="table table-bordered">'+
 						'<button type="button" class="close" data-dismiss="alert">&times;</button>'+
 						'<div class="evol-filter-content"></div></div>');
-					//this.$el.prepend($ff);
 					e.prepend($ff);
 					$ff.find('.evol-filter-content').advancedSearch({fields:contacts_search });
-
 				}
 				//this.viewsHash[viewName]=
 			//}
@@ -219,7 +243,9 @@ Evol.ViewToolbar = Backbone.View.extend({
 					case 'list':
                         $.extend(config,
                             {
-                                fields: this.fields('list'),
+                                fields: EvoDico.fields(this.options.uiModel, function(item){
+                                    return item.searchlist && item.searchlist!='0';
+                                }),
                                 pageSize: 50
                             });
 						var vw = new Evol.ViewMany(config);
@@ -244,7 +270,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     setToolbar: function(mode){
 		if(this.$el){
-			var ones=this.$el.find('li[data-cardinality="1"]'), // #evol-bnew,#evol-bedit,#evol-bdelete
+			var ones=this.$el.find('li[data-cardinality="1"]'),
 				manys=this.$el.find('li[data-cardinality="n"]'),
 				prevNext=this.$el.find('[data-id="prev"],[data-id="next"]'),
                 isSearch=mode.indexOf('search')>-1;
@@ -286,41 +312,30 @@ Evol.ViewToolbar = Backbone.View.extend({
 		return null;
 	},
 
-	fields: function(view){ // TODO: str view should be func filter
-        var ps=this.options.uiModel.elements,
-            fs=[];
-        function collectFields(te){
-            if(te.elements && te.elements.length>0){
-                _.each(te.elements, function(te){
-                    collectFields(te);
-                });
-            }else{
-                fs.push(te);
-            }
-        }
-        collectFields(this.options.uiModel);
-        if(view==='list'){
-            _.filter(fs, function(f){
-                return f.list==1;
-            })
-        }
-		return fs;
-	},
-
     click_toolbar: function(evt){
-        var e=$(evt.target);
-        if(e.tagName!=='A'){
-            e=e.closest('a');
+        var $e=$(evt.target);
+        if($e.tagName!=='A'){
+            $e=$e.closest('a');
         }
-        var viewId=e.data('id');
+        var viewId=$e.data('id');
         evt.preventDefault();
         evt.stopImmediatePropagation();
         switch(viewId){
             case 'del':
-                alert('to do');
-                //TODO confirmation prompt
-                //this.model.destroy();
-                //this.model=this.model.collection.models[0];
+                // TODO good looking msgbox
+                if (confirm('Are you sure you want to delete this record?')) {
+                    var collec = this.model.collection;
+                    this.model.destroy({
+                        success:function(model, response){
+
+                        },
+                        error:function(err){
+                            alert('error')
+                        }
+                    });
+                    this.model=collec.models[0];
+                    this.curView.setModel(collec.models[0]);
+                }
                 break;
             case 'customize':
                 this.curView.customize();
@@ -345,6 +360,10 @@ Evol.ViewToolbar = Backbone.View.extend({
                         v.setModel(m);
                     });
                 }
+                break;
+            case 'new-field':
+            case 'new-panel':
+                EvoDico.showDesigner('id', 'field', $el);
                 break;
             default:// 'new' 'edit' 'mini' 'list' 'list-grid' 'export' 'json'
                 if(viewId && viewId!==''){

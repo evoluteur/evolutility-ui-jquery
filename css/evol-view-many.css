@@ -12,7 +12,6 @@ img.evol-table-icon{
 	height:150px;
     margin: 5px;
     padding:10px;
-    border: 1px solid grey;
     border-radius: 10px;
 }
 
@@ -65,11 +64,7 @@ img.evol-table-icon{
     background-color :#FFFFFF;
     padding: 10px 5px 5px 5px;
     margin:10px;
-    border:solid 2px #e0e0e0;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    width: 440px;
+    width: 400px !important;
     min-height:300px;
 }
 .evol-chart-title{
