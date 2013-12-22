@@ -48,9 +48,12 @@ module.exports = function (grunt) {
                 },
             js:{
                   src: [
-                      'js/evol-*.js',
-                      //'js/dico-models/dico-*.js',
+                      'js/evol-dico.js',
+                      'js/evol-ui.js',
+                      'js/evol-ui-*.js',
+                      'js/evol-view-*.js',
                       //'js/dico-models/dico-field.js',
+                      //'js/dico-models/dico-panel.js',
                       'js/i18n/EN.js'
 
                   ],
@@ -101,6 +104,7 @@ module.exports = function (grunt) {
     // *************************************************************************************
     grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-contrib-concat');
+
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
 
@@ -111,10 +115,10 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['dev']);
 
     // Dev only task(s).
-    grunt.registerTask('dev', ['concat:js', 'concat:vendors', 'concat:css']);
+    grunt.registerTask('dev', ['concat:js', 'concat:css']);
 
     // Prod only task(s).
-    grunt.registerTask('prod', ['dev', 'uglify']);
+    grunt.registerTask('prod', ['dev', 'concat:vendors', 'uglify']);
 
 };
 

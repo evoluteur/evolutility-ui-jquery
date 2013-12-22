@@ -245,7 +245,7 @@ Evol.ViewMany = Backbone.View.extend({
         return '';
     },
 
-    _HTMLcharts: function (h, fields, pSize, icon) {
+    _HTMLcharts: function (h, chartFields) {
         var that=this,
             uiModel =this.options.uiModel,
             model = this.model,
@@ -255,8 +255,8 @@ Evol.ViewMany = Backbone.View.extend({
             });
 
         _.each(chartFields, function(f){
-            var groups = _.countBy(models, function(model) {
-                return model.get(f.id);
+            var groups = _.countBy(models, function(m) {
+                return m.get(f.id);
             });
             var groupData = groups,
                 data=[],
