@@ -10,6 +10,7 @@ var Evol = Evol || {};
 
 Evol.UI = {
 
+    // html fragments
     html: {
         trTableEnd: '</tr></table>',
         TdTrTableEnd: '</td></tr></table>',
@@ -22,10 +23,9 @@ Evol.UI = {
         }
     },
 
+    // reusable html
     html_more: function (label) {
-        return [
-            '<a href="javascript:void(0)" class="evol-more">', label, '</a>'//,'<div style="display:none;">'
-        ].join('');
+        return ['<a href="javascript:void(0)" class="evol-more">', label, '</a>'].join('');
     },
 
     fieldLabel: function (fID, fLbl) {
@@ -110,8 +110,8 @@ Evol.UI = {
     },
     inputLOV: function (fID, fV, fVLabel, fLOV) {
         var h = ['<select class="form-control Field" id="', fID, '"><option value="', fV, '" selected>', fVLabel, '</option>'];
-        _.each(fLOV, function (item) {
-            h.push(EvoUI.inputOption(item.id, item.label));
+        _.each(fLOV, function (f) {
+            h.push(EvoUI.inputOption(f.id, f.text));
         });
         h.push('</select>');
         return h.join('');
@@ -130,21 +130,11 @@ Evol.UI = {
         return ['<span class="', cls? cls+' ':'', 'glyphicon glyphicon-', icon, '"></span>'].join('');
     },
     icone: function (icon) {
-        //return ['<span data-sort="',icon,'" class="glyphicon glyphicon-', icon, '"></span>'].join('');
         return ['<span data-sort="',icon,'" class="glyphicon glyphicon-chevron-', icon, '"></span>'].join('');
     },
 
     iconClose: function () {
         return '<button type="button" class="close" data-dismiss="alert">&times;</button>';
-    },
-
-    getOrCreate: function (fID) {
-        var e = $('#' + fID);
-        if (e == null) {
-            e = $('<div id="' + fID + "></div>");
-            $(body).append(e);
-        }
-        return e;
     },
 
     HTMLPanelLabel: function (PanelLabel) {
@@ -159,6 +149,62 @@ Evol.UI = {
             '<h4>',title,'</h4>',
             '<p>',content,'</p>',
             '</div>'].join('');
+    },
+
+    // get w/ automatic create if not in DOM
+    getOrCreate: function (fID) {
+        var e = $('#' + fID);
+        if (e == null) {
+            e = $('<div id="' + fID + "></div>");
+            $(body).append(e);
+        }
+        return e;
+    },
+
+    // insert a dataSet into a Backbone collection
+    insertCollection: function (collection, dataSet){
+        if(collection.length==0){
+            _.each(dataSet,function(d){
+                collection.create(d);
+            })
+        }
+    },
+
+    chartsURL: 'http://chart.apis.google.com/chart',
+    chartsHTML: function(title, urlPix){
+        return [ //class="panel ', this.options.style, '
+            '<div class="evol-chart-holder"><label class="evol-chart-title">',title,
+            '</label><img src="',urlPix,'"><br></div>'
+        ].join('');
+    },
+
+    chartsPie: function (label,data,labels){
+        var urlGoogleChart = [EvoUI.chartsURL,'?chd=t:',
+            data.join(','),
+            '&amp;chl=',
+            labels.join('|'),
+            '&amp;cht=p&amp;chds=0,20&amp;chs=400x200'].join('');
+        return EvoUI.chartsHTML(label, urlGoogleChart);
+    },
+
+    chartsBars: function (label,data,labels){
+        var maxCount = _.max(data),
+            urlGoogleChart = [EvoUI.chartsURL,'?chbh=a&amp;chs=380x200&cht=bvg&chco=A2C180,FF9900&chds=0,',
+                maxCount,
+                '&amp;chd=t:',
+                data.join('|'),
+                '&amp;chp=0.05&amp;chts=676767,10.5&amp;chdl=',
+                labels.join('|')
+            ].join('');
+        return EvoUI.chartsHTML(label, urlGoogleChart);
+    },
+
+    capFirstLetter: function(word){
+        if(word && word.length>0){
+            return word.substring(0,1).toUpperCase() + word.substring(1);
+        }else{
+            return '';
+        }
     }
 
 }

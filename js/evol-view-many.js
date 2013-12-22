@@ -17,9 +17,7 @@ Evol.ViewMany = Backbone.View.extend({
     className: 'evol-v-list',
 
     options: {
-        fnFilter : function (f) {
-            return f.searchlist;
-        }
+
     },
 
     events: {
@@ -98,17 +96,18 @@ Evol.ViewMany = Backbone.View.extend({
         h.push('</div>');
     },
 
-    //EvoDico.fields(uim,fnFilter)
     getFields: function (){
         var opts=this.options;
         if(!this.fields){
-            this.fields=EvoDico.fields(opts.uiModel,opts.fnFilter,opts.mode);
+            this.fields=EvoDico.fields(opts.uiModel, function(f){
+                return f.searchlist;
+            });
         }
         return this.fields;
     },
 
     _HTMLlist: function (h, fields, pSize, icon) {
-        h.push('<table class="table table-bordered table-striped table-hover"><thead>');
+        h.push('<table class="table table-bordered table-hover"><thead>'); //table-striped
         for (var i = 0; i < fields.length; i++) {
             this._renderListHeader(h, fields[i]);
         }
@@ -119,7 +118,6 @@ Evol.ViewMany = Backbone.View.extend({
 
     _HTMLlistbody: function(h, fields, pSize, icon){
         var data = this.model.collection.models,
-        //var data = _.isArray(this.model)?this.model:this.model.models,
             datalen = _.min([data.length, pSize]);
         if (datalen > 0) {
             for (var r = 0; r < datalen; r++) {
@@ -127,6 +125,8 @@ Evol.ViewMany = Backbone.View.extend({
             }
         }
     },
+
+    _hashLov: {},
 
     _HTMLlistrow: function(h, fields, model, icon){
         h.push('<tr data-id="', model.cid, '">');
@@ -146,9 +146,26 @@ Evol.ViewMany = Backbone.View.extend({
                         h.push(EvoUI.icon('ok'));
                     }
                     break;
-                //case 'lov':
-                //    h.push(v); //TODO
-                //    break;
+                case 'lov':
+                    if(v!=''){
+                        if(!(f.id in this._hashLov)){
+                            this._hashLov[f.id]={};
+                        }
+                        var hashLov = this._hashLov[f.id];
+                        if(v in hashLov){
+                            v=hashLov[v];
+                        }else{
+                            for(var j=0,jMax=f.list.length;j<jMax;j++){
+                                var tuple=f.list[j];
+                                if(tuple.id==v){
+                                    hashLov[v]=tuple.text;
+                                    v=tuple.text;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    // -no break;
                 default:
                     h.push(v);
             }
@@ -204,42 +221,33 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     _HTMLcharts: function (h, fields, pSize, icon) {
-        var that=this,
-            uiModel =this.options.uiModel,
+        var uiModel =this.options.uiModel,
             model = this.model,
             models = model.collection.models,
-            lovFields = EvoDico.fields(uiModel, function(f){
-                return (f.type==EvoDico.fieldTypes.lov);
-            }),
-            groups={};
+            chartFields = EvoDico.fields(uiModel, function(f){
+                return (f.type==EvoDico.fieldTypes.lov || f.type==EvoDico.fieldTypes.bool);
+            });
 
-        _.each(lovFields, function(f){
-            groups[f.id] = _.countBy(models, function(model) {
+        _.each(chartFields, function(f){
+            var groups = _.countBy(models, function(model) {
                 return model.get(f.id);
             });
-        });
-
-        _.each(lovFields, function(f){
-            var groupData = groups[f.id],
+            var groupData = groups,
                 data=[],
                 labels=[];
             for(var dataSetName in groupData) {
-                data.push(groupData[dataSetName]);
-                labels.push(dataSetName+' ('+groupData[dataSetName]+')');
+                var g=groupData[dataSetName];
+                data.push(g);
+                labels.push(dataSetName+' ('+g+')');
             }
-            that._HTMLchartsPie(h,f.label,data,labels);
+            var entityName=EvoUI.capFirstLetter(uiModel.entities)
+            if(f.type==EvoDico.fieldTypes.lov){
+                h.push(EvoUI.chartsPie(entityName + ' by ' + f.label, data, labels));
+            }else{
+                h.push(EvoUI.chartsBars(entityName + ': ' + f.label, data, labels));
+            }
         });
         h.push('<div class="clearer"></div>');
-    },
-
-    _HTMLchartsPie: function (h,label,data,labels){
-        var urlGoogleChart = ['http://chart.apis.google.com/chart?chd=t:',
-            data.join(','),
-            '&amp;chl=',
-            labels.join('|'),
-            '&amp;cht=p&amp;chds=0,20&amp;chs=400x200'].join('');
-        //EvoUI.HTMLMsg(h,'Under construction','not live data yet');
-        h.push('<div class="evol-chart-holder"><div class="evol-chart-title">',label,'</div><img src="',urlGoogleChart,'"><br></div>');
     },
 
     _renderListHeader: function (h, field) {
