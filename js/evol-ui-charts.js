@@ -12,7 +12,7 @@ Evol.UI.Charts = {
 
     _HTML: function(title, urlPix){
         return [ //class="panel ', this.options.style, '
-            '<div class="evol-chart-holder panel"><label class="evol-chart-title">',title,
+            '<div class="evol-chart-holder panel panel-info"><label class="evol-chart-title">',title,
             '</label><img src="',urlPix,'"><br></div>'
         ].join('');
     },

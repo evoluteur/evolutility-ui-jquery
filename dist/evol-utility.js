@@ -43,7 +43,7 @@ Evol.Dico = {
         var fs = [];
 
         function collectFields(te) {
-            if (te.elements && te.elements.length > 0) {
+            if (te && te.elements && te.elements.length > 0) {
                 _.each(te.elements, function (te) {
                     collectFields(te);
                 });
@@ -178,7 +178,7 @@ Evol.UI = {
         ].join('');
     },
     inputTextMJSON: function (fID, fVobj, h) {
-        return ['<textarea rows="',h,'" class="Field evol-json">', _.escape(JSON.stringify(fVobj, null, '\t')), '</textarea>'].join('');
+        return ['<textarea rows="',h,'" class="evol-json">', _.escape(JSON.stringify(fVobj, null, '\t')), '</textarea>'].join('');
     },
     inputAny: function (type, fId, fVal) {
         return [
@@ -295,6 +295,14 @@ Evol.UI = {
         }else{
             return '';
         }
+    },
+
+    setVisible: function($e, visible){
+        if(visible){
+            $e.show();
+        }else{
+            $e.hide();
+        }
     }
 
 }
@@ -314,7 +322,7 @@ Evol.UI.Charts = {
 
     _HTML: function(title, urlPix){
         return [ //class="panel ', this.options.style, '
-            '<div class="evol-chart-holder panel"><label class="evol-chart-title">',title,
+            '<div class="evol-chart-holder panel panel-info"><label class="evol-chart-title">',title,
             '</label><img src="',urlPix,'"><br></div>'
         ].join('');
     },
@@ -357,9 +365,9 @@ var Evol = Evol || {},
 
 Evol.ViewMany = Backbone.View.extend({
 
-    cardinality: 'many',
+    cardinality: 'n',
     viewName: 'list',
-    className: 'evol-v-list',
+    className: 'evol-many-list',
 
     options: {
 
@@ -372,13 +380,10 @@ Evol.ViewMany = Backbone.View.extend({
         'click .evol-field-label .glyphicon-wrench': 'click_customize'
     },
 
-    initialize: function () {
+    initialize: function (opts) {
         var that=this;
-        /*
-        function nameComparator(a, b) {
-            return a.get('name').localeCompare(b.get('name'));
-        }
-        */
+        this.options.mode=opts.mode;
+        this.options.uiModel=opts.uiModel;
         this.render();
         if(this.model){
             this.model.collection.on('change', function(model){
@@ -389,9 +394,9 @@ Evol.ViewMany = Backbone.View.extend({
     customize: function () {
         var labels;
         if(this.options.mode=='cards'){
-            labels = this.$el.find('h4 a.evol-nav-id');
+            labels = this.$('h4 a.evol-nav-id');
         }else{
-            labels = this.$el.find('th > span')
+            labels = this.$('th > span')
         }
         if(this.custOn){
             labels.find('i').remove();
@@ -429,7 +434,7 @@ Evol.ViewMany = Backbone.View.extend({
             models = this.model.collection.models,
             pSize = opts.pageSize || 50,
             pSummary = this._paginationSummaryHTML(0, pSize, models.length, uim.entity, uim.entities);
-        h.push('<div class="evol-list evol-list-', mode, '">');
+        h.push('<div class="evol-many-', mode, '">');
         if(mode!='charts'){
             h.push(pSummary,EvoUI.html.clearer);
         }
@@ -519,7 +524,7 @@ Evol.ViewMany = Backbone.View.extend({
             datalen = _.min([data.length, pSize]);
         if (datalen > 0) {
             for (var r = 0; r < datalen; r++) {
-                h.push('<div class="panel ', this.options.style, '">');
+                h.push('<div class="panel panel-info', this.options.style, '">');
                 for (var i = 0; i < fields.length; i++) {
                     var f = fields[i],
                         cRow = data[r],
@@ -735,6 +740,9 @@ Evol.ViewOne = Backbone.View.extend({
         // extra evt for $(window) resize
     },
 
+    cardinality: '1',
+    viewName: 'list',
+    //className: 'evol-many-list',
     prefix: 'fe',
 
     options: {
@@ -745,9 +753,12 @@ Evol.ViewOne = Backbone.View.extend({
         style: 'panel-info'
     },
 
-    initialize: function () {
+    initialize: function (opts) {
         var that=this,
-            mode=this.options.mode;
+            mode=opts.mode;
+        this.options.mode=mode;
+        this.options.uiModel=opts.uiModel;
+
         this.render();
         if(this.model){
             this.model.on('change', function(model){
@@ -757,7 +768,7 @@ Evol.ViewOne = Backbone.View.extend({
         if(mode==='new' || mode==='edit'){
             this.windowSize='big';
             $(window).resize(function() {
-                var pnls = that.$el.find('.evol-pnl');
+                var pnls = that.$('.evol-pnl');
                 if($(window).width()>480){
                     if(that.windowSize!=='big'){
                         _.each(pnls, function (pnl){
@@ -847,7 +858,7 @@ Evol.ViewOne = Backbone.View.extend({
             this.$el.children('textarea').val(JSON.stringify(m, null, 2));
         }else{
             _.each(fs, function (f) {
-                $f=that.$el.find(prefix + f.id);
+                $f=that.$(prefix + f.id);
                 if(m){
                     switch(f.type) {
                         case 'boolean':
@@ -871,7 +882,7 @@ Evol.ViewOne = Backbone.View.extend({
             this.$el.children('textarea').val('');
         }else{
             _.each(fs, function (f) {
-                $f=that.$el.find(prefix + f.id);
+                $f=that.$(prefix + f.id);
                 switch(f.type) {
                     case 'boolean':
                         $f.prop('checked', f.default || '');
@@ -883,16 +894,16 @@ Evol.ViewOne = Backbone.View.extend({
         }
     },
     setFieldValue: function (fid, value){
-        this.$el.find('#'+this.fieldViewId(fid)).val(value);
+        this.$('#'+this.fieldViewId(fid)).val(value);
     },
 
     showTab: function (tabid) {
-        var tab = this.$el.find(tabid);
+        var tab = this.$(tabid);
         if (tab.length > 0) {
             tab.siblings('.tab-pane').hide();
             tab.show();
         }
-        tab = this.$el.find('.evol-tabs > li a[href="' + tabid + '"]').parent();
+        tab = this.$('.evol-tabs > li a[href="' + tabid + '"]').parent();
         if (tab.length > 0) {
             tab.siblings('li').removeClass('active');
             tab.addClass('active');
@@ -918,7 +929,7 @@ Evol.ViewOne = Backbone.View.extend({
         var iTab = -1,
             iPanel = -1,
             opts = this.options,
-            model = opts.uiModel.elements;
+            elems = opts.uiModel.elements;
 
         if(mode==='mini'){
             var flds = EvoDico.fields(opts.uiModel,function(f){
@@ -928,11 +939,12 @@ Evol.ViewOne = Backbone.View.extend({
                     type: 'panel', class:'evo-mini-holder', label: EvoUI.capFirstLetter(opts.uiModel.entity), width: 100,
                     elements: flds
                 };
-            this.renderPanel(h,miniUIModel,'evo-mini',mode);
+            this.renderPanel(h,miniUIModel,'evo-one-mini',mode);
         }else{
+            h.push('<div class="evo-one-',mode,'">');
             //this._fieldsHash={};
-            for (var i = 0, iMax = model.length; i < iMax; i++) {
-                var p = model[i];
+            for (var i = 0, iMax = elems.length; i < iMax; i++) {
+                var p = elems[i];
                 switch (p.type) {
                     case 'tab':
                         if (iPanel > 0) {
@@ -941,7 +953,7 @@ Evol.ViewOne = Backbone.View.extend({
                         }
                         if (iTab < 0) {
                             h.push(EvoUI.html.clearer);
-                            this.renderTabs(h, model, mode);
+                            this.renderTabs(h, elems, mode);
                             h.push('<div class="tab-content">');
                         }
                         iTab++;
@@ -970,6 +982,7 @@ Evol.ViewOne = Backbone.View.extend({
             if (iPanel > 0) {
                 h.push('</div>');
             }
+            h.push('</div>');//for
         }
         //##### BUTTONS #####
         this._renderButtons(h, mode);
@@ -979,7 +992,6 @@ Evol.ViewOne = Backbone.View.extend({
         if(this.model){
             var jsonStr=JSON.stringify(this.model.toJSON(), null, 2);
             h.push(EvoUI.inputTextMJSON('',jsonStr,10));
-            //h.push('<textarea rows="10" class="Field evol-json">', _.escape(jsonStr ), '</textarea>');
         }
         //##### BUTTONS #####
         this._renderButtons(h, mode);
@@ -1094,7 +1106,7 @@ Evol.ViewOne = Backbone.View.extend({
         }
         if(fld.readonly>0){
             // TODO: css for readonly fields
-            h.push('<div id="',fid, '" class="Field">',fv, '&nbsp;</div>');
+            h.push('<div id="',fid, '" class="FieldReadOnly">',fv, '&nbsp;</div>');
         }else{
             switch (fld.type) {
                 case types.text:
@@ -1221,10 +1233,10 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     clearErrors: function () {
-        this.$el.find('.control-group.error').removeClass("control-group error");
-        //this.$el.find('.evol-warn-error').remove();
-        this.$el.find('.has-error').removeClass('has-error');
-        this.$el.find('.text-danger').remove();
+        this.$('.control-group.error').removeClass("control-group error");
+        //this.$('.evol-warn-error').remove();
+        this.$('.has-error').removeClass('has-error');
+        this.$('.text-danger').remove();
     },
 
     fieldViewId: function(fid){
@@ -1235,15 +1247,15 @@ Evol.ViewOne = Backbone.View.extend({
         var labelSelector = '.evol-field-label > label',
             panelSelector ='.evol-pnl .panel-title';
         if(this.custOn){
-            this.$el.find(labelSelector + ' > i, '+ panelSelector + ' > i').remove();
+            this.$(labelSelector + ' > i, '+ panelSelector + ' > i').remove();
             this.custOn=false;
         }else{
-            _.each(this.$el.find(labelSelector),function(elem){
+            _.each(this.$(labelSelector),function(elem){
                 var $el=$(elem),
                     id=$el.attr('for');
                 $el.append(EvoUI.icons.customize(id,'field'));
             });
-            this.$el.find(panelSelector).append(EvoUI.icons.customize('id','panel'));
+            this.$(panelSelector).append(EvoUI.icons.customize('id','panel'));
             this.custOn=true;
         }
         return this;
@@ -1305,12 +1317,12 @@ Evol.ViewOne = Backbone.View.extend({
         evt.preventDefault();
         evt.stopImmediatePropagation();
         if(evt.shiftKey){
-            $this = this.$el.find('.evol-title-toggle');
+            $this = this.$('.evol-title-toggle');
             if (state === 'collapsed') {
-                $this = this.$el.find('.evol-title-toggle.glyphicon-chevron-down')
+                $this = this.$('.evol-title-toggle.glyphicon-chevron-down')
                     .trigger('click');
             } else {
-                $this = this.$el.find('.evol-title-toggle.glyphicon-chevron-up')
+                $this = this.$('.evol-title-toggle.glyphicon-chevron-up')
                     .trigger('click');
             }
         }else{
@@ -1337,7 +1349,7 @@ Evol.ViewOne = Backbone.View.extend({
         evt.stopImmediatePropagation();
         evt.preventDefault();
         if(evt.shiftKey){
-            this.$el.find('.tab-content > div').show();
+            this.$('.tab-content > div').show();
         }else{
             this.showTab(id);
         }
@@ -1575,8 +1587,6 @@ Evol.ViewToolbar = Backbone.View.extend({
 	options: {
 		toolbar: true,
         cardinality: 'one',
-		model: null,
-		uiModel: null,
 		defaultView: 'list',
         style: 'normal',
         customize:false
@@ -1588,33 +1598,13 @@ Evol.ViewToolbar = Backbone.View.extend({
 	curView:null,
 	curViewName:'',
 
-    initialize: function () {
+    initialize: function (opts) {
+        this.options.mode=opts.mode;
+        this.options.uiModel=opts.uiModel;
+        this.options.defaultView=opts.defaultView;
         this.render();
         $('.dropdown-toggle').dropdown();
         //this.model.on("change", function(m){that.refresh(m)});
-
-/*
-
-        var AppRouter = Backbone.Router.extend({
-            routes: {
-                "posts/:id": "getPost",
-                "*actions": "defaultRoute" // Backbone will try match the route above first
-            }
-        });
-        // Instantiate the router
-        this.app_router = new AppRouter;
-        this.app_router.on('route:getPost', function (id) {
-            // Note the variable in the route definition being passed in here
-            alert( "Get post number " + id );
-        });
-        this.app_router.on('route:defaultRoute', function (actions) {
-            alert( actions );
-        });
-        // Start Backbone history a necessary step for bookmarkable URL's
-        Backbone.history.start();
-
-*/
-
     },
 
 	render: function() {
@@ -1624,8 +1614,13 @@ Evol.ViewToolbar = Backbone.View.extend({
 	},
 
     _toolbarHTML: function(){
-        var menuDevider='<li role="presentation" class="divider"></li>';
-
+        var endMenu='</ul></li>',
+            menuDevider='<li role="presentation" class="divider"></li>';
+        function beginMenu(icon){
+            return ['<li class="dropdown">',
+                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',EvoUI.icon(icon),' <b class="caret"></b></a>',
+                '<ul class="dropdown-menu">'].join('');
+        }
         function link(id, label, icon, card){
             var h=[];
             if(card){
@@ -1633,30 +1628,16 @@ Evol.ViewToolbar = Backbone.View.extend({
             }else{
                 h.push('<li>');
             }
-            h.push('<a href="#" data-id="',id,'">',
-                EvoUI.icon(icon),label,'</a></li>');
+            h.push('<a href="#" data-id="',id,'">',EvoUI.icon(icon),label,'</a></li>');
             return h.join('');
         }
 
-        function beginMenu(icon){
-            return ['<li class="dropdown">',
-                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',EvoUI.icon(icon),' <b class="caret"></b></a>',
-                '<ul class="dropdown-menu">'].join('');
-        }
-        var endMenu='</ul></li>';
-
-
         var opts = this.options,
-            h=[
-                '<nav class="navbar" role="navigation">',
-                '<div class="navbar-collapse navbar-ex4-collapse">',
-                '<ul class="nav navbar-nav">',
-                '<li><div>evol-utility</div></li>',
-                '</ul><ul class="nav navbar-nav">',
+            h=['<ul class="nav nav-pills" style="float:left;">',
                 link('new','','plus'),
                 link('del','','trash','1'),
                 link('list','','th-list'),
-                link('charts','','signal')
+                link('charts','','stats')
                 //link('selections','','star'),
                 //link('search','','search','n');
             ];
@@ -1674,13 +1655,13 @@ Evol.ViewToolbar = Backbone.View.extend({
         h.push(
             link('prev','','chevron-left','1'),
             link('next','','chevron-right','1'),
-            '</ul><ul class="nav navbar-nav" style="float:right;">',
+            '</ul><ul class="nav nav-pills" style="float:right;">',
             link('list','','th-list','n'),
             link('cards','','th-large','n'),
             link('edit','','th','1'),
             link('mini','','th-large','1'),
             link('json','','barcode','1'),
-            '</ul></div></nav>');
+            '</ul>',EvoUI.html.clearer);
         return h.join('');
     },
 
@@ -1699,15 +1680,10 @@ Evol.ViewToolbar = Backbone.View.extend({
 
 	setView:function(viewName){
 		var mode=viewName,//.toLowerCase(),
-			e=this.$el,
+			$e=this.$el,
             eid ='evolw-'+viewName,
-			v=e.find('#'+eid),
+			$v=this.$('[data-vid="'+eid+'"]'),
 			vw=this.curView;
-
-        if(!e.length){
-            e.append('<div id="'+eid+'"></div>');
-            e=e.children().last();
-        }
 
 		if(viewName==='customize'){
 			if(vw && vw.customize){
@@ -1720,122 +1696,99 @@ Evol.ViewToolbar = Backbone.View.extend({
 					$ff=$('<div id="evol-filter" class="table table-bordered">'+
 						'<button type="button" class="close" data-dismiss="alert">&times;</button>'+
 						'<div class="evol-filter-content"></div></div>');
-					e.prepend($ff);
+					$e.prepend($ff);
 					$ff.find('.evol-filter-content').advancedSearch({fields:contacts_search });
 				}
 				//this.viewsHash[viewName]=
 			//}
 		}else{
-			//$('#title').html(viewName);
-			e.children().not('nav').hide();
-			if(v.length){
+            if(this.curView){
+                this.curView.$el.hide();
+            }
+			if($v.length){
 				this.curView=this.viewsHash[viewName];
 				this.curViewName=viewName;
+                this.curView.options.mode=viewName;
                 this.curView.setModel(this.model);
                 if(mode==='new'){
                     this.curView.clear();
                 }
-                v.show();
+                $v.show();
 				this.setToolbar(viewName);
 			}else{
-				v=$('<div id="evolw-'+viewName+'"></div>');
-				e.append(v);
+				$v=$('<div data-vid="evolw-'+viewName+'"></div>');
+				$e.append($v);
              // TODO fix that one
-                if(mode=='list-json'){
-                    mode='json';
-                }
                 var config = {
-                    el: v,
+                    el: $v,
                     mode: mode,
                     model: this.model,
                     uiModel: this.options.uiModel
                 }
-				switch(mode){
+				switch(viewName){
 					case 'new':
                     case 'edit':
                     case 'mini':
 					case 'view':
                     case 'json':
-                        var vw = new Evol.ViewOne(config);
-                        if(mode!=='json'){
-                            this.cardinality='one';
-                        }
-                        this.setToolbar(mode);
+                        vw = new Evol.ViewOne(config);
 						this.viewsHash[mode]=vw;
                         this.views.push(vw);
-                        if(mode==='new'){
+                        if(viewName==='new'){
                             vw.clear();
                         }
-						break;/*
-                    case 'export':
-                        var vw = new Evol.ViewExport(config);
-                        this.viewsHash[mode]=vw;
-                        this.views.push(vw);
-                        break;*/
-					case 'cards':
-                        this.cardinality='many';
-					case 'list':
-                        $.extend(config,
-                            {
-                                fields: EvoDico.fields(this.options.uiModel, function(item){
-                                    return item.searchlist && item.searchlist!='0';
-                                }),
-                                pageSize: 50
-                            });
-						var vw = new Evol.ViewMany(config);
-						this.viewsHash['list']=vw;
-						this.setToolbar(mode);
 						break;
                     case 'charts':
-                        this.cardinality='many';
-                        mode='charts';
-                        var vw = new Evol.ViewMany(config);
-                        this.viewsHash['charts']=vw;
-                        this.setToolbar(mode);
-                        break;
+					case 'cards':
+					case 'list':
+						vw = new Evol.ViewMany(config);
+						break;/*
+                 case 'export':
+                 var vw = new Evol.ViewExport(config);
+                 this.viewsHash[mode]=vw;
+                 this.views.push(vw);
+                 break;*/
 				}
 				this.curView=vw;
 				this.curViewName=viewName;
 				this.viewsHash[viewName]=vw;
-				this.setToolbar(mode);
+				this.setToolbar(viewName);
 			}
 		}
 	},
 
-    setToolbar: function(mode){
-		if(this.$el){
-			var ones=this.$el.find('li[data-cardinality="1"]'),
-				manys=this.$el.find('li[data-cardinality="n"]'),
-				prevNext=this.$el.find('[data-id="prev"],[data-id="next"]'),
-                isSearch=mode.indexOf('search')>-1,
-                pc=this.$el.find('a[data-id="customize"]').parent();
-            if(mode=='json' || isSearch){
-                pc.hide();
-            }else{
-                pc.parent().show();
+    getToolbarButtons: function(){
+        if(!this._toolbarButtons){
+            this._toolbarButtons = {
+                ones: this.$el.find('li[data-cardinality="1"]'),
+                manys: this.$el.find('li[data-cardinality="n"]'),
+                prevNext: this.$el.find('[data-id="prev"],[data-id="next"]'),
+                customize: this.$el.find('a[data-id="customize"]').parent()
             }
+        }
+        return this._toolbarButtons;
+    },
+
+    setToolbar: function(mode){
+        function onemany(showOne, showMany){
+            EvoUI.setVisible(tbBs.ones, showOne);
+            EvoUI.setVisible(tbBs.manys, showMany);
+        }
+		if(this.$el){
+			var tbBs=this.getToolbarButtons(),
+                isSearch=mode.indexOf('search')>-1;
+            EvoUI.setVisible(tbBs.customize,mode!='json' && !isSearch);
+            tbBs.prevNext.hide();
 			if(mode==='new'){
-				prevNext.hide();
-                ones.hide();
-                manys.hide();
+                onemany(false, false);
 			}else{
-				prevNext.show();
 				if(mode==='cards' || mode==='list' || mode==='charts'){
-					ones.hide();
-					manys.show();
-                    prevNext.hide();
+                    onemany(false, true);
 				}else if (isSearch){
-                    ones.hide();
-                    manys.hide();
-                    prevNext.hide();
+                    onemany(false, false);
                 }else{
-					ones.show();
-					manys.hide();
-                    if(mode==='new'){
-                        prevNext.hide();
-                    }else{
-                        prevNext.show();
-                    }
+                    onemany(true, false);
+                    tbBs.prevNext.show();
 				}
 			}
 		}
@@ -1905,7 +1858,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 break;
             case 'new-field':
             case 'new-panel':
-                EvoDico.showDesigner('id', 'field', $el);
+                EvoDico.showDesigner('id', 'field', $e);
                 break;
             default:// 'new' 'edit' 'mini' 'list' 'cards' 'export' 'json'
                 if(viewId && viewId!==''){

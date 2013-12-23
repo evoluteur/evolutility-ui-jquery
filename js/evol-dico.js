@@ -39,7 +39,7 @@ Evol.Dico = {
         var fs = [];
 
         function collectFields(te) {
-            if (te.elements && te.elements.length > 0) {
+            if (te && te.elements && te.elements.length > 0) {
                 _.each(te.elements, function (te) {
                     collectFields(te);
                 });

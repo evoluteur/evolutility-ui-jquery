@@ -71,7 +71,7 @@ Evol.UI = {
         ].join('');
     },
     inputTextMJSON: function (fID, fVobj, h) {
-        return ['<textarea rows="',h,'" class="Field evol-json">', _.escape(JSON.stringify(fVobj, null, '\t')), '</textarea>'].join('');
+        return ['<textarea rows="',h,'" class="evol-json">', _.escape(JSON.stringify(fVobj, null, '\t')), '</textarea>'].join('');
     },
     inputAny: function (type, fId, fVal) {
         return [
@@ -187,6 +187,14 @@ Evol.UI = {
             return word.substring(0,1).toUpperCase() + word.substring(1);
         }else{
             return '';
+        }
+    },
+
+    setVisible: function($e, visible){
+        if(visible){
+            $e.show();
+        }else{
+            $e.hide();
         }
     }
 

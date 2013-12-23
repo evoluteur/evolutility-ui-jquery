@@ -34,8 +34,6 @@ Evol.ViewToolbar = Backbone.View.extend({
 	options: {
 		toolbar: true,
         cardinality: 'one',
-		model: null,
-		uiModel: null,
 		defaultView: 'list',
         style: 'normal',
         customize:false
@@ -47,33 +45,13 @@ Evol.ViewToolbar = Backbone.View.extend({
 	curView:null,
 	curViewName:'',
 
-    initialize: function () {
+    initialize: function (opts) {
+        this.options.mode=opts.mode;
+        this.options.uiModel=opts.uiModel;
+        this.options.defaultView=opts.defaultView;
         this.render();
         $('.dropdown-toggle').dropdown();
         //this.model.on("change", function(m){that.refresh(m)});
-
-/*
-
-        var AppRouter = Backbone.Router.extend({
-            routes: {
-                "posts/:id": "getPost",
-                "*actions": "defaultRoute" // Backbone will try match the route above first
-            }
-        });
-        // Instantiate the router
-        this.app_router = new AppRouter;
-        this.app_router.on('route:getPost', function (id) {
-            // Note the variable in the route definition being passed in here
-            alert( "Get post number " + id );
-        });
-        this.app_router.on('route:defaultRoute', function (actions) {
-            alert( actions );
-        });
-        // Start Backbone history a necessary step for bookmarkable URL's
-        Backbone.history.start();
-
-*/
-
     },
 
 	render: function() {
@@ -83,8 +61,13 @@ Evol.ViewToolbar = Backbone.View.extend({
 	},
 
     _toolbarHTML: function(){
-        var menuDevider='<li role="presentation" class="divider"></li>';
-
+        var endMenu='</ul></li>',
+            menuDevider='<li role="presentation" class="divider"></li>';
+        function beginMenu(icon){
+            return ['<li class="dropdown">',
+                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',EvoUI.icon(icon),' <b class="caret"></b></a>',
+                '<ul class="dropdown-menu">'].join('');
+        }
         function link(id, label, icon, card){
             var h=[];
             if(card){
@@ -92,30 +75,16 @@ Evol.ViewToolbar = Backbone.View.extend({
             }else{
                 h.push('<li>');
             }
-            h.push('<a href="#" data-id="',id,'">',
-                EvoUI.icon(icon),label,'</a></li>');
+            h.push('<a href="#" data-id="',id,'">',EvoUI.icon(icon),label,'</a></li>');
             return h.join('');
         }
 
-        function beginMenu(icon){
-            return ['<li class="dropdown">',
-                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',EvoUI.icon(icon),' <b class="caret"></b></a>',
-                '<ul class="dropdown-menu">'].join('');
-        }
-        var endMenu='</ul></li>';
-
-
         var opts = this.options,
-            h=[
-                '<nav class="navbar" role="navigation">',
-                '<div class="navbar-collapse navbar-ex4-collapse">',
-                '<ul class="nav navbar-nav">',
-                '<li><div>evol-utility</div></li>',
-                '</ul><ul class="nav navbar-nav">',
+            h=['<ul class="nav nav-pills" style="float:left;">',
                 link('new','','plus'),
                 link('del','','trash','1'),
                 link('list','','th-list'),
-                link('charts','','signal')
+                link('charts','','stats')
                 //link('selections','','star'),
                 //link('search','','search','n');
             ];
@@ -133,13 +102,13 @@ Evol.ViewToolbar = Backbone.View.extend({
         h.push(
             link('prev','','chevron-left','1'),
             link('next','','chevron-right','1'),
-            '</ul><ul class="nav navbar-nav" style="float:right;">',
+            '</ul><ul class="nav nav-pills" style="float:right;">',
             link('list','','th-list','n'),
             link('cards','','th-large','n'),
             link('edit','','th','1'),
             link('mini','','th-large','1'),
             link('json','','barcode','1'),
-            '</ul></div></nav>');
+            '</ul>',EvoUI.html.clearer);
         return h.join('');
     },
 
@@ -158,15 +127,10 @@ Evol.ViewToolbar = Backbone.View.extend({
 
 	setView:function(viewName){
 		var mode=viewName,//.toLowerCase(),
-			e=this.$el,
+			$e=this.$el,
             eid ='evolw-'+viewName,
-			v=e.find('#'+eid),
+			$v=this.$('[data-vid="'+eid+'"]'),
 			vw=this.curView;
-
-        if(!e.length){
-            e.append('<div id="'+eid+'"></div>');
-            e=e.children().last();
-        }
 
 		if(viewName==='customize'){
 			if(vw && vw.customize){
@@ -179,122 +143,99 @@ Evol.ViewToolbar = Backbone.View.extend({
 					$ff=$('<div id="evol-filter" class="table table-bordered">'+
 						'<button type="button" class="close" data-dismiss="alert">&times;</button>'+
 						'<div class="evol-filter-content"></div></div>');
-					e.prepend($ff);
+					$e.prepend($ff);
 					$ff.find('.evol-filter-content').advancedSearch({fields:contacts_search });
 				}
 				//this.viewsHash[viewName]=
 			//}
 		}else{
-			//$('#title').html(viewName);
-			e.children().not('nav').hide();
-			if(v.length){
+            if(this.curView){
+                this.curView.$el.hide();
+            }
+			if($v.length){
 				this.curView=this.viewsHash[viewName];
 				this.curViewName=viewName;
+                this.curView.options.mode=viewName;
                 this.curView.setModel(this.model);
                 if(mode==='new'){
                     this.curView.clear();
                 }
-                v.show();
+                $v.show();
 				this.setToolbar(viewName);
 			}else{
-				v=$('<div id="evolw-'+viewName+'"></div>');
-				e.append(v);
+				$v=$('<div data-vid="evolw-'+viewName+'"></div>');
+				$e.append($v);
              // TODO fix that one
-                if(mode=='list-json'){
-                    mode='json';
-                }
                 var config = {
-                    el: v,
+                    el: $v,
                     mode: mode,
                     model: this.model,
                     uiModel: this.options.uiModel
                 }
-				switch(mode){
+				switch(viewName){
 					case 'new':
                     case 'edit':
                     case 'mini':
 					case 'view':
                     case 'json':
-                        var vw = new Evol.ViewOne(config);
-                        if(mode!=='json'){
-                            this.cardinality='one';
-                        }
-                        this.setToolbar(mode);
+                        vw = new Evol.ViewOne(config);
 						this.viewsHash[mode]=vw;
                         this.views.push(vw);
-                        if(mode==='new'){
+                        if(viewName==='new'){
                             vw.clear();
                         }
-						break;/*
-                    case 'export':
-                        var vw = new Evol.ViewExport(config);
-                        this.viewsHash[mode]=vw;
-                        this.views.push(vw);
-                        break;*/
-					case 'cards':
-                        this.cardinality='many';
-					case 'list':
-                        $.extend(config,
-                            {
-                                fields: EvoDico.fields(this.options.uiModel, function(item){
-                                    return item.searchlist && item.searchlist!='0';
-                                }),
-                                pageSize: 50
-                            });
-						var vw = new Evol.ViewMany(config);
-						this.viewsHash['list']=vw;
-						this.setToolbar(mode);
 						break;
                     case 'charts':
-                        this.cardinality='many';
-                        mode='charts';
-                        var vw = new Evol.ViewMany(config);
-                        this.viewsHash['charts']=vw;
-                        this.setToolbar(mode);
-                        break;
+					case 'cards':
+					case 'list':
+						vw = new Evol.ViewMany(config);
+						break;/*
+                 case 'export':
+                 var vw = new Evol.ViewExport(config);
+                 this.viewsHash[mode]=vw;
+                 this.views.push(vw);
+                 break;*/
 				}
 				this.curView=vw;
 				this.curViewName=viewName;
 				this.viewsHash[viewName]=vw;
-				this.setToolbar(mode);
+				this.setToolbar(viewName);
 			}
 		}
 	},
 
-    setToolbar: function(mode){
-		if(this.$el){
-			var ones=this.$el.find('li[data-cardinality="1"]'),
-				manys=this.$el.find('li[data-cardinality="n"]'),
-				prevNext=this.$el.find('[data-id="prev"],[data-id="next"]'),
-                isSearch=mode.indexOf('search')>-1,
-                pc=this.$el.find('a[data-id="customize"]').parent();
-            if(mode=='json' || isSearch){
-                pc.hide();
-            }else{
-                pc.parent().show();
+    getToolbarButtons: function(){
+        if(!this._toolbarButtons){
+            this._toolbarButtons = {
+                ones: this.$el.find('li[data-cardinality="1"]'),
+                manys: this.$el.find('li[data-cardinality="n"]'),
+                prevNext: this.$el.find('[data-id="prev"],[data-id="next"]'),
+                customize: this.$el.find('a[data-id="customize"]').parent()
             }
+        }
+        return this._toolbarButtons;
+    },
+
+    setToolbar: function(mode){
+        function onemany(showOne, showMany){
+            EvoUI.setVisible(tbBs.ones, showOne);
+            EvoUI.setVisible(tbBs.manys, showMany);
+        }
+		if(this.$el){
+			var tbBs=this.getToolbarButtons(),
+                isSearch=mode.indexOf('search')>-1;
+            EvoUI.setVisible(tbBs.customize,mode!='json' && !isSearch);
+            tbBs.prevNext.hide();
 			if(mode==='new'){
-				prevNext.hide();
-                ones.hide();
-                manys.hide();
+                onemany(false, false);
 			}else{
-				prevNext.show();
 				if(mode==='cards' || mode==='list' || mode==='charts'){
-					ones.hide();
-					manys.show();
-                    prevNext.hide();
+                    onemany(false, true);
 				}else if (isSearch){
-                    ones.hide();
-                    manys.hide();
-                    prevNext.hide();
+                    onemany(false, false);
                 }else{
-					ones.show();
-					manys.hide();
-                    if(mode==='new'){
-                        prevNext.hide();
-                    }else{
-                        prevNext.show();
-                    }
+                    onemany(true, false);
+                    tbBs.prevNext.show();
 				}
 			}
 		}
@@ -364,7 +305,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 break;
             case 'new-field':
             case 'new-panel':
-                EvoDico.showDesigner('id', 'field', $el);
+                EvoDico.showDesigner('id', 'field', $e);
                 break;
             default:// 'new' 'edit' 'mini' 'list' 'cards' 'export' 'json'
                 if(viewId && viewId!==''){

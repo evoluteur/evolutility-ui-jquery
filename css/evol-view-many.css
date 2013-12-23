@@ -5,9 +5,9 @@ img.evol-table-icon{
 	margin-right: 6px !important;
 }
 
-.evol-list > div.panel {
+.evol-many-cards > div.panel {
 	min-width:140px;
-	width:300px;
+	width:240px;
 	float:left;
 	height:150px;
     margin: 5px;

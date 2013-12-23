@@ -12,9 +12,9 @@ var Evol = Evol || {},
 
 Evol.ViewMany = Backbone.View.extend({
 
-    cardinality: 'many',
+    cardinality: 'n',
     viewName: 'list',
-    className: 'evol-v-list',
+    className: 'evol-many-list',
 
     options: {
 
@@ -27,13 +27,10 @@ Evol.ViewMany = Backbone.View.extend({
         'click .evol-field-label .glyphicon-wrench': 'click_customize'
     },
 
-    initialize: function () {
+    initialize: function (opts) {
         var that=this;
-        /*
-        function nameComparator(a, b) {
-            return a.get('name').localeCompare(b.get('name'));
-        }
-        */
+        this.options.mode=opts.mode;
+        this.options.uiModel=opts.uiModel;
         this.render();
         if(this.model){
             this.model.collection.on('change', function(model){
@@ -44,9 +41,9 @@ Evol.ViewMany = Backbone.View.extend({
     customize: function () {
         var labels;
         if(this.options.mode=='cards'){
-            labels = this.$el.find('h4 a.evol-nav-id');
+            labels = this.$('h4 a.evol-nav-id');
         }else{
-            labels = this.$el.find('th > span')
+            labels = this.$('th > span')
         }
         if(this.custOn){
             labels.find('i').remove();
@@ -84,7 +81,7 @@ Evol.ViewMany = Backbone.View.extend({
             models = this.model.collection.models,
             pSize = opts.pageSize || 50,
             pSummary = this._paginationSummaryHTML(0, pSize, models.length, uim.entity, uim.entities);
-        h.push('<div class="evol-list evol-list-', mode, '">');
+        h.push('<div class="evol-many-', mode, '">');
         if(mode!='charts'){
             h.push(pSummary,EvoUI.html.clearer);
         }
@@ -174,7 +171,7 @@ Evol.ViewMany = Backbone.View.extend({
             datalen = _.min([data.length, pSize]);
         if (datalen > 0) {
             for (var r = 0; r < datalen; r++) {
-                h.push('<div class="panel ', this.options.style, '">');
+                h.push('<div class="panel panel-info', this.options.style, '">');
                 for (var i = 0; i < fields.length; i++) {
                     var f = fields[i],
                         cRow = data[r],

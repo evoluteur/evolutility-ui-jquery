@@ -5,31 +5,6 @@
 
 /* evol-utility : evol-ui.css */
 
-.bs-callout{
-    padding: 10px 16px;
-}
-.bs-callout-danger {
-    background-color: #fdf7f7;
-    border-color: #eed3d7;
-}
-.bs-callout-danger h4 {
-    color: #b94a48;
-}
-.bs-callout-warning {
-    background-color: #faf8f0;
-    border-color: #faebcc;
-}
-.bs-callout-warning h4 {
-    color: #8a6d3b;
-}
-.bs-callout-info {
-    background-color: #f4f8fa;
-    border-color: #bce8f1;
-}
-.bs-callout-info h4 {
-    color: #34789a;
-}
-
 .clearer{
     content: ".";
     display: block;
@@ -71,9 +46,9 @@ img.evol-table-icon{
 	margin-right: 6px !important;
 }
 
-.evol-list > div.panel {
+.evol-many-cards > div.panel {
 	min-width:140px;
-	width:300px;
+	width:240px;
 	float:left;
 	height:150px;
     margin: 5px;
@@ -144,17 +119,23 @@ img.evol-table-icon{
 
 /* panels */
 
-.evol-pnls, .evol-pnl > div > fieldset{
-    margin-left: -16px;
+.evol-pnls,
+.evol-pnl > div > fieldset{
+    padding: 10px 10px 5px 2px;
 }
-.evol-fld, .evol-pnl, .evol-pnl-lst{
-    padding-left:16px !important;
+.evol-fld{
+    padding-left:10px !important;
     margin-bottom: 6px;
+}
+
+.evol-pnl, .evol-pnl-lst{
+    padding-left:10px !important;
 }
 
 .evol-tabs{
     position:relative;
     top: -10px;
+    margin: 0 10px;
 }
 
 .evol-required{
@@ -175,7 +156,7 @@ img.evol-table-icon{
 .evol-json{
     width:100%;
     height:350px;
-    margin-bottom:10px;
+    margin: 10px 0;
 }
 .glyphicon{
     cursor: pointer;
@@ -195,8 +176,8 @@ img.evol-table-icon{
 .evol-field-label .glyphicon-question-sign{
     padding-left: 4px;
 }
-.evo-mini-holder > div{
-    margin-left:-16px;
+.evo-mini-holder{
+    margin: 10px -10px;
 }
 .evo-mini-label{
     float:left;
@@ -218,6 +199,10 @@ img.evol-table-icon{
 
 .w-100{
     width: 100%;
+}
+
+.evo-one-edit{
+    margin-left:-10px;
 }
 
 /* evol-utility : evol-view-toolbar.css  */
@@ -246,7 +231,7 @@ img.evol-table-icon{
     padding-right:5px;
 }
 
-.navbar-nav>li>div {
+.navbar-nav > li > div {
     padding: 15px 20px 15px 5px;
     line-height: 20px;
     color: #777;

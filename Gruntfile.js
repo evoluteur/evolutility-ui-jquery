@@ -11,23 +11,6 @@ module.exports = function (grunt) {
         banner :  '/*   <%= pkg.name  %> <%= pkg.version %> */\n\n/*   <%= pkg.copyright %> */\n\n',
 
         // *************************************************************************************
-        //      BOWER options
-        // *************************************************************************************
-        
-        bower: {
-            install: {
-                options: {
-                    targetDir: './lib',
-                    layout: 'byComponent',
-                    install: true,
-                    verbose: false,
-                    cleanTargetDir: false,
-                    cleanBowerDir: false
-                }
-            }
-        },
-
-        // *************************************************************************************
         //      CONCAT options
         // *************************************************************************************
         concat: {

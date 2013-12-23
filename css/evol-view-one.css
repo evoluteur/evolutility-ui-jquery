@@ -3,17 +3,23 @@
 
 /* panels */
 
-.evol-pnls, .evol-pnl > div > fieldset{
-    margin-left: -16px;
+.evol-pnls,
+.evol-pnl > div > fieldset{
+    padding: 10px 10px 5px 2px;
 }
-.evol-fld, .evol-pnl, .evol-pnl-lst{
-    padding-left:16px !important;
+.evol-fld{
+    padding-left:10px !important;
     margin-bottom: 6px;
+}
+
+.evol-pnl, .evol-pnl-lst{
+    padding-left:10px !important;
 }
 
 .evol-tabs{
     position:relative;
     top: -10px;
+    margin: 0 10px;
 }
 
 .evol-required{
@@ -34,7 +40,7 @@
 .evol-json{
     width:100%;
     height:350px;
-    margin-bottom:10px;
+    margin: 10px 0;
 }
 .glyphicon{
     cursor: pointer;
@@ -54,8 +60,8 @@
 .evol-field-label .glyphicon-question-sign{
     padding-left: 4px;
 }
-.evo-mini-holder > div{
-    margin-left:-16px;
+.evo-mini-holder{
+    margin: 10px -10px;
 }
 .evo-mini-label{
     float:left;
@@ -77,4 +83,8 @@
 
 .w-100{
     width: 100%;
+}
+
+.evo-one-edit{
+    margin-left:-10px;
 }

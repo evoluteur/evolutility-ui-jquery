@@ -22,9 +22,12 @@ To define applications we will need some kind of declarative language.
 It will be based on [Minimalist Meta-Model for CRUD Applications](http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications)
 using JSON rather than XML this time.
 
+Elements: tabs, panels, panel-list, fields.
+
 Sample UI Models:
+[To Do list](http://github.com/evoluteur/evol-utility/blob/master/js/ui-models/todo.js),
 [AddressBook](http://github.com/evoluteur/evol-utility/blob/master/js/ui-models/contacts.js),
-[To Do list](http://github.com/evoluteur/evol-utility/blob/master/js/ui-models/todo.js).
+[Wine Cellar](http://github.com/evoluteur/evol-utility/blob/master/js/ui-models/winecellar.js).
 
 ## 2 - Views
 
