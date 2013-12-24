@@ -3,17 +3,6 @@
 /*   (c) 2013 Olivier Giulieri */
 
 
-/* evol-utility : evol-ui.css */
-
-.clearer{
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-    font-size: 0;
-}
-
 /* evol-utility : evol-dico.css */
 
 .evol-des-field,
@@ -42,21 +31,15 @@
 
 /*  evol-utility : evol-view-many.css  */
 
+/* --- list --- */
+
 img.evol-table-icon{
 	margin-right: 6px !important;
 }
-
-.evol-many-cards > div.panel {
-	min-width:140px;
-	width:240px;
-	float:left;
-	height:150px;
-    margin: 5px;
-    padding:10px;
-    border-radius: 10px;
+.table {
+    margin-bottom: 0 !important;
 }
-
-.table th span {
+.table th > span {
 	white-space:nowrap;
 	margin-right:5px;
 }
@@ -77,8 +60,13 @@ img.evol-table-icon{
     position:absolute;
 }
 
+/* --- list > sort icons --- */
+
 .evol-sort-icons {
     position: relative;
+    top:3px;
+    padding: 3px;
+    width:300px;
 }
 .evol-sort-icons > .glyphicon {
     position: absolute;
@@ -98,6 +86,19 @@ img.evol-table-icon{
     display: inline;
 }
 
+/* --- cards --- */
+
+.evol-many-cards > div.panel {
+    float:left;
+    width:240px;
+    min-width:140px;
+    height:150px;
+    margin: 5px;
+    padding:10px;
+    border-radius: 10px;
+}
+
+/* --- charts --- */
 
 .evol-chart-holder{
     float:left;
@@ -110,18 +111,20 @@ img.evol-table-icon{
 }
 .evol-chart-title{
     text-align:center;
-    padding-top:10px 20px;
-    padding-bottom:30px;
+    padding:10px 20px 30px;
 }
 
 
 /*  evol-utility : evol-view-one.css  */
 
-/* panels */
+/* --- panels & tabs --- */
 
 .evol-pnls,
 .evol-pnl > div > fieldset{
     padding: 10px 10px 5px 2px;
+}
+.evol-pnl > .panel{
+    margin-bottom: 12px;
 }
 .evol-fld{
     padding-left:10px !important;
@@ -133,10 +136,10 @@ img.evol-table-icon{
 }
 
 .evol-tabs{
-    position:relative;
-    top: -10px;
     margin: 0 10px;
 }
+
+/* --- fields --- */
 
 .evol-required{
     margin-left:3px;
@@ -144,7 +147,7 @@ img.evol-table-icon{
     font-weight:bold;
 }
 
-.evol-buttons {
+.evol-buttons{
     margin-top:0 !important;
 }
 .evol-buttons > button{
@@ -158,23 +161,19 @@ img.evol-table-icon{
     height:350px;
     margin: 10px 0;
 }
-.glyphicon{
-    cursor: pointer;
-}
 .glyphicon-wrench{
     margin-left: 5px;
     display: inline !important;
 }
 
 /* bootstrap modifications*/
-.table {
-    margin-bottom: 0 !important;
-}
 .evol-fld > .text-danger{
     margin-bottom: 0 !important;
 }
-.evol-field-label .glyphicon-question-sign{
+.evol-field-label > label > .glyphicon-question-sign{
+    cursor: pointer;
     padding-left: 4px;
+    color: silver;
 }
 .evo-mini-holder{
     margin: 10px -10px;
@@ -206,26 +205,6 @@ img.evol-table-icon{
 }
 
 /* evol-utility : evol-view-toolbar.css  */
-
-
-img.evol-table-icon{
-	margin-right: 6px !important;
-}
-
-.evol-list-grid > div {
-	min-width:140px;
-	width:28%;
-	float:left;
-	height:100px;
-}
-
-.table th span {
-	white-space:nowrap;
-	margin-right:5px;
-}
-.table th .icon-chevron-up {
-	margin-left:5px;
-}
 
 .dropdown-menu > li > a > glyphicon{
     padding-right:5px;

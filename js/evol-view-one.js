@@ -2,6 +2,9 @@
  *
  * evol-utility : evol-view-one.js
  *
+ * View one
+ * modes: edit, mini, json
+ *
  * Copyright (c) 2013, Olivier Giulieri
  *
  *************************************************************************** */
@@ -18,7 +21,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     events: {
         'click .evol-buttons > button': 'click_button',
-        'click .evol-pnl > div > div > .evol-title-toggle': 'click_toggle',
+        'click .evol-title-toggle': 'click_toggle',
         'click ul.evol-tabs > li > a': 'click_tab',
         'click label > .glyphicon-question-sign': 'click_help',
         'click .evol-field-label .glyphicon-wrench': 'click_customize'
@@ -27,13 +30,11 @@ Evol.ViewOne = Backbone.View.extend({
 
     cardinality: '1',
     viewName: 'list',
-    //className: 'evol-many-list',
     prefix: 'fe',
 
     options: {
-        mode: 'edit', // possible modes: new, edit, view, json, export?
+        mode: 'edit',
         compactView: false,
-        fields: null,
         button_addAnother: true,
         style: 'panel-info'
     },
@@ -41,9 +42,9 @@ Evol.ViewOne = Backbone.View.extend({
     initialize: function (opts) {
         var that=this,
             mode=opts.mode;
+
         this.options.mode=mode;
         this.options.uiModel=opts.uiModel;
-
         this.render();
         if(this.model){
             this.model.on('change', function(model){
@@ -238,7 +239,7 @@ Evol.ViewOne = Backbone.View.extend({
                         }
                         if (iTab < 0) {
                             h.push(EvoUI.html.clearer);
-                            this.renderTabs(h, elems, mode);
+                            this.renderTabs(h, elems);
                             h.push('<div class="tab-content">');
                         }
                         iTab++;
@@ -267,7 +268,7 @@ Evol.ViewOne = Backbone.View.extend({
             if (iPanel > 0) {
                 h.push('</div>');
             }
-            h.push('</div>');//for
+            h.push('</div>');
         }
         //##### BUTTONS #####
         this._renderButtons(h, mode);
@@ -282,7 +283,7 @@ Evol.ViewOne = Backbone.View.extend({
         this._renderButtons(h, mode);
     },
 
-    renderTabs: function (h, ts, mode) {
+    renderTabs: function (h, ts) {
         var isFirst = true;
         h.push('<ul class="nav nav-tabs evol-tabs">');
         _.each(ts, function (t, idx) {
@@ -315,7 +316,6 @@ Evol.ViewOne = Backbone.View.extend({
     renderPanel: function (h, p, pid, mode) {
         var that = this;
         if(mode==='mini'){
-            // build the html for 1 panel (in 'edit' or 'view' modes)
             h.push('<div data-p-width="', p.width, '" class="w-100 evol-pnl ', (p.class || ''), '">',
                 '<div class="panel ', this.options.style, '">',
                 EvoUI.HTMLPanelLabel(p.label, pid, 'PanelLabel'),
@@ -326,7 +326,6 @@ Evol.ViewOne = Backbone.View.extend({
                 h.push("</div>");
             });
         }else{
-            // build the html for 1 panel (in 'edit' or 'view' modes)
             h.push('<div style="width:', p.width, '%" data-p-width="', p.width, '" class="pull-left evol-pnl">',
                 '<div class="panel ', this.options.style, '">',
                 EvoUI.HTMLPanelLabel(p.label, pid, 'PanelLabel'),
@@ -556,7 +555,7 @@ Evol.ViewOne = Backbone.View.extend({
             if($fh.length>0){
                 $fh.remove();
             }else{
-                var $elDes=$('<span class="help-block">'+ _.escape(fld.help) + '</span>');
+                var $elDes=$('<span class="help-block">' + _.escape(fld.help) + '</span>');
                 $f.append($elDes);
             }
         }
@@ -603,7 +602,7 @@ Evol.ViewOne = Backbone.View.extend({
         evt.stopImmediatePropagation();
         if(evt.shiftKey){
             $this = this.$('.evol-title-toggle');
-            if (state === 'collapsed') {
+            if (state === 'down') {
                 $this = this.$('.evol-title-toggle.glyphicon-chevron-down')
                     .trigger('click');
             } else {
@@ -645,18 +644,16 @@ Evol.ViewOne = Backbone.View.extend({
             id=$e.closest('label').attr('for'),
             eType=$e.data('type');
 
-        evt.stopImmediatePropagation();
-        if(evt.shiftKey){
+        this.showHelp(id, eType, $e);
+        /*if(evt.shiftKey){
             id=0;
-            var flds=$e.closest('#evolw-edit').find('label > .glyphicon-question-sign');
-            // TODO finish and test
+            var flds=$e.closest('.evo-one-edit').find('label > .glyphicon-question-sign');
             _.each(flds, function(f){
-                // this.showHelp(id, eType, $e);
+                // that.showHelp(id, eType, $e);
             });
-
         }else{
             this.showHelp(id, eType, $e);
-        }
+        }*/
         this.$el.trigger(eType+'.help', {id: id});
     },
 

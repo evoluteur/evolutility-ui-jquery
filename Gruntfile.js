@@ -49,7 +49,6 @@ module.exports = function (grunt) {
                 },
               src: [
                     //'app/css/demo.css',
-                  'css/evol-ui.css',
                   'css/evol-dico.css',
                   'css/evol-view-*.css'
               ],

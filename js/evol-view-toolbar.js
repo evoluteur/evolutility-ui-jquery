@@ -71,7 +71,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         function link(id, label, icon, card){
             var h=[];
             if(card){
-                h.push('<li data-cardinality="'+card,'">');
+                h.push('<li data-cardi="'+card,'">');
             }else{
                 h.push('<li>');
             }
@@ -207,8 +207,8 @@ Evol.ViewToolbar = Backbone.View.extend({
     getToolbarButtons: function(){
         if(!this._toolbarButtons){
             this._toolbarButtons = {
-                ones: this.$el.find('li[data-cardinality="1"]'),
-                manys: this.$el.find('li[data-cardinality="n"]'),
+                ones: this.$el.find('li[data-cardi="1"]'),
+                manys: this.$el.find('li[data-cardi="n"]'),
                 prevNext: this.$el.find('[data-id="prev"],[data-id="next"]'),
                 customize: this.$el.find('a[data-id="customize"]').parent()
             }

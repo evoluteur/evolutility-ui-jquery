@@ -1,21 +1,15 @@
 
 /*  evol-utility : evol-view-many.css  */
 
+/* --- list --- */
+
 img.evol-table-icon{
 	margin-right: 6px !important;
 }
-
-.evol-many-cards > div.panel {
-	min-width:140px;
-	width:240px;
-	float:left;
-	height:150px;
-    margin: 5px;
-    padding:10px;
-    border-radius: 10px;
+.table {
+    margin-bottom: 0 !important;
 }
-
-.table th span {
+.table th > span {
 	white-space:nowrap;
 	margin-right:5px;
 }
@@ -36,8 +30,13 @@ img.evol-table-icon{
     position:absolute;
 }
 
+/* --- list > sort icons --- */
+
 .evol-sort-icons {
     position: relative;
+    top:3px;
+    padding: 3px;
+    width:300px;
 }
 .evol-sort-icons > .glyphicon {
     position: absolute;
@@ -57,6 +56,19 @@ img.evol-table-icon{
     display: inline;
 }
 
+/* --- cards --- */
+
+.evol-many-cards > div.panel {
+    float:left;
+    width:240px;
+    min-width:140px;
+    height:150px;
+    margin: 5px;
+    padding:10px;
+    border-radius: 10px;
+}
+
+/* --- charts --- */
 
 .evol-chart-holder{
     float:left;
@@ -69,6 +81,5 @@ img.evol-table-icon{
 }
 .evol-chart-title{
     text-align:center;
-    padding-top:10px 20px;
-    padding-bottom:30px;
+    padding:10px 20px 30px;
 }

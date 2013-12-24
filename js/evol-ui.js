@@ -139,10 +139,6 @@ Evol.UI = {
         return ['<span class="', cls? cls+' ':'', 'glyphicon glyphicon-', icon, '"></span>'].join('');
     },
 
-    iconClose: function () {
-        return '<button type="button" class="close" data-dismiss="alert">&times;</button>';
-    },
-
     HTMLPanelLabel: function (PanelLabel) {
         return [
             '<div class="panel-heading">', EvoUI.icon('chevron-up', 'evol-title-toggle'),
@@ -150,10 +146,14 @@ Evol.UI = {
         ].join('');
     },
 
-    HTMLMsg: function (title, content) {
-        return ['<div class="alert alert-info">',
-            '<strong>',title,'</strong>',
-            '<p>',content,'</p></div>'].join('');
+    HTMLMsg: function (title, content, style, dismissable) {
+        return [
+            '<div class="alert alert-',style,
+            dismissable?
+                ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'
+                :'">',
+            '<strong>',title,'</strong> ', content,'</div>'
+        ].join('');
     },
 
     formatDate: function(d){

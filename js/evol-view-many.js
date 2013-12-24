@@ -2,6 +2,9 @@
  *
  * evol-utility : evol-view-many.js
  *
+ * View many
+ * modes: list, cards, charts
+ *
  * Copyright (c) 2013, Olivier Giulieri
  *
  *************************************************************************** */
@@ -17,7 +20,8 @@ Evol.ViewMany = Backbone.View.extend({
     className: 'evol-many-list',
 
     options: {
-
+        style: 'panel-info',
+        pageSize: 20
     },
 
     events: {
@@ -41,16 +45,16 @@ Evol.ViewMany = Backbone.View.extend({
     customize: function () {
         var labels;
         if(this.options.mode=='cards'){
-            labels = this.$('h4 a.evol-nav-id');
+            labels = this.$('h4 > a.evol-nav-id');
         }else{
             labels = this.$('th > span')
         }
-        if(this.custOn){
+        if(this._custOn){
             labels.find('i').remove();
-            this.custOn=false;
+            this._custOn=false;
         }else{
             labels.append(EvoUI.icons.customize('id','field'));
-            this.custOn=true;
+            this._custOn=true;
         }
         return this;
     },
@@ -60,10 +64,9 @@ Evol.ViewMany = Backbone.View.extend({
         if(this.model){
             this.renderList(h, this.options.mode);
         }else{
-            h.push(EvoUI.HTMLMsg(EvolLang.nodata));
+            h.push(EvoUI.HTMLMsg(EvolLang.nodata,'','info'));
         }
         this.$el.html(h.join(''));
-        this.custOn=false;
         return this;
     },
 
@@ -94,30 +97,30 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     getFields: function (){
-        var opts=this.options;
-        if(!this.fields){
-            this.fields=EvoDico.fields(opts.uiModel, function(f){
+        if(!this._fields){
+            this._fields=EvoDico.fields(this.options.uiModel, function(f){
                 return f.searchlist;
             });
         }
-        return this.fields;
+        return this._fields;
     },
 
     _HTMLlist: function (h, fields, pSize, icon) {
-        h.push('<table class="table table-bordered table-hover"><thead>'); //table-striped
-        for (var i = 0; i < fields.length; i++) {
+        h.push('<div class="panel ',this.options.style,'">');
+        h.push('<table class="table table-bordered table-hover"><thead>');
+        for (var i=0; i<fields.length; i++) {
             this._renderListHeader(h, fields[i]);
         }
         h.push('</thead><tbody>');
         this._HTMLlistbody(h, fields, pSize, icon);
-        h.push('</tbody></table>');
+        h.push('</tbody></table></div>');
     },
 
     _HTMLlistbody: function(h, fields, pSize, icon){
         var data = this.model.collection.models,
-            datalen = _.min([data.length, pSize]);
-        if (datalen > 0) {
-            for (var r = 0; r < datalen; r++) {
+            rMax = _.min([data.length, pSize]);
+        if (rMax > 0) {
+            for (var r = 0; r < rMax; r++) {
                 this._HTMLlistrow(h, fields, data[r], icon);
             }
         }
@@ -147,14 +150,14 @@ Evol.ViewMany = Backbone.View.extend({
 
     _HTMLlistrow: function(h, fields, model, icon){
         h.push('<tr data-id="', model.cid, '">');
-        for (var i = 0; i < fields.length; i++) {
+        for (var i=0; i<fields.length; i++) {
             var f = fields[i],
                 v = model.get(f.id);
             h.push('<td>');
             if (i == 0) {
                 h.push('<a href="javascript:void(0)" id="fv-', f.id, '" class="evol-nav-id">');
                 if (icon) {
-                    h.push('<img alt="" class="evol-table-icon" src="pix/', icon, '">');
+                    h.push('<img class="evol-table-icon" src="pix/', icon, '">');
                 }
             }
             h.push(this._HTMLField(f,v));
@@ -168,10 +171,10 @@ Evol.ViewMany = Backbone.View.extend({
 
     _HTMLcards: function (h, fields, pSize, icon) {
         var data = this.model.collection.models,
-            datalen = _.min([data.length, pSize]);
-        if (datalen > 0) {
-            for (var r = 0; r < datalen; r++) {
-                h.push('<div class="panel panel-info', this.options.style, '">');
+            rMax = _.min([data.length, pSize]);
+        if (rMax > 0) {
+            for (var r=0; r<rMax; r++) {
+                h.push('<div class="panel ',this.options.style,'">');
                 for (var i = 0; i < fields.length; i++) {
                     var f = fields[i],
                         cRow = data[r],
@@ -180,27 +183,22 @@ Evol.ViewMany = Backbone.View.extend({
                     if (i == 0) {
                         h.push('<h4><a href="#" id="fg-', f.id, '" class="evol-nav-id">');
                         if (icon) {
-                            h.push('<img alt="" class="evol-table-icon" src="pix/', icon, '">');
+                            h.push('<img class="evol-table-icon" src="pix/', icon, '">');
                         }
-                    }
-                    //if(i>0){
-                    //    h.push(EvoUI.fieldLabel(f.id,f.label));
-                    //}
-                    h.push(this._HTMLField(f,v));
-                    if (i == 0) {
+                        h.push(this._HTMLField(f,v));
                         h.push('</a></h4>');
+                    }else{
+                        //h.push(EvoUI.fieldLabel(f.id,f.label));
+                        h.push(this._HTMLField(f,v));
                     }
                     h.push('</div>');
                 }
                 h.push('</div>');
-                if (r > 99) {
-                    break;
-                }
             }
+            h.push(EvoUI.html.clearer);
         }else{
-            h.push(EvoUI.HTMLMsg(EvolLang.nodata));
+            h.push(EvoUI.HTMLMsg(EvolLang.nodata,'','info'));
         }
-        h.push(EvoUI.html.clearer);
     },
 
     _HTMLField: function(f,v){
@@ -242,7 +240,7 @@ Evol.ViewMany = Backbone.View.extend({
         return '';
     },
 
-    _HTMLcharts: function (h, chartFields) {
+    _HTMLcharts: function (h) {
         var that=this,
             uiModel =this.options.uiModel,
             model = this.model,
@@ -303,20 +301,20 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     _paginationHTML: function (pIdx, pSize, allCount) {
-        var h = ['<div class="pagination"><ul>'];
-        if (pIdx > 0) {
-            h.push('<li data-id="prev"><a href="#">Prev</a></li>');
-        }
         var iMin = pIdx * pSize + 1,
             allPages = parseInt(allCount / pSize, 10),
-            iMax = (allPages > 5) ? 5 : allPages;
-        for (var i = iMin; i < iMax; i++) {
+            iMax = (allPages > 5) ? 5 : allPages,
+            h = ['<ul class="pagination pagination-sm">'];
+        if (pIdx > 0) {
+            h.push('<li data-id="prev"><a href="#">&laquo;</a></li>');
+        }
+        for (var i=iMin; i<iMax; i++) {
             h.push('<li data-id="', i, '"><a href="#">', i, '</a></li>');
         }
         if (allCount > (pIdx + 1) * pSize) {
-            h.push('<li data-id="next"><a href="#">Next</a></li>');
+            h.push('<li data-id="next"><a href="#">&raquo;</a></li>');
         }
-        h.push('</ul></div>');
+        h.push('</ul>');
         return h.join('');
     },
 
@@ -328,20 +326,20 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     click_sort: function (evt) {
-        var collec =this.model.collection,
-            target =$(evt.currentTarget),
+        var collec=this.model.collection,
+            target=$(evt.currentTarget),
             fid=target.parent().data('fid'),
-            sdir=target.data('sort');
+            up=target.attr('class').indexOf('-up')>0;
         collec.comparator = function(model) {
             return model.get(fid);
         }
         collec.sort();
-        if(sdir==='down'){
+        if(up){
             collec.models.reverse();
         }
         this.render(); //todo: renderBody
         target.addClass('evol-last-sort');
-        this.$el.trigger('list.sort', {id: fid});
+        this.$el.trigger('list.sort', {id: fid, up:up});
     },
 
     click_pagination: function (evt) {
@@ -354,7 +352,7 @@ Evol.ViewMany = Backbone.View.extend({
             eType=$e.data('type');
 
         EvoDico.showDesigner(id, eType, $e);
-        this.$el.trigger(eType+'.customize', {id: id});
+        this.$el.trigger(eType+'.customize', {id: id, type:eType});
     }
 
 });
