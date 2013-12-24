@@ -20,12 +20,14 @@ module.exports = function (grunt) {
             },
             vendors:{
                   src: [
-                      'js/vendors/jquery.js',
-                      'js/vendors/underscore.js',
-                      //'js/vendors/underscore.string.js',
-                      'js/vendors/bootstrap.js',
-                      //'js/vendors/backbone.js'
-                      'js/vendors/backbone*.js'
+                      'bower_components/jquery/jquery.js',
+                      'bower_components/underscore/underscore.js',
+                      //'bower_components/underscore.string/lib/underscore.string.js',
+                      'bower_components/backbone/backbone.js',
+                      'bower_components/backbone.localStorage/backbone.localStorage.js',
+                      'bower_components/bootstrap/js/modal.js',
+                      //'bower_components/bootstrap/js/tooltip.js',
+                      'bower_components/bootstrap/js/dropdown.js'
                   ],
                   dest: '<%= pkg.target %>/vendors.js'
                 },
