@@ -1,13 +1,14 @@
 
 /* evol-utility : evol-view-toolbar.css  */
 
-.dropdown-menu > li > a > glyphicon{
-    padding-right:5px;
+.evo-toolbar{
+    border: 1px solid #bce8f1;
+    border-radius: 4px;
+    margin-bottom:10px;
+    padding:3px;
 }
 
-.navbar-nav > li > div {
-    padding: 15px 20px 15px 5px;
-    line-height: 20px;
-    color: #777;
-    border-radius: 4px;
+.evo-filters{
+    display:none;
+    padding:5px;
 }

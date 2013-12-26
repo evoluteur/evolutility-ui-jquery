@@ -16,9 +16,13 @@ Evol.ViewToolbar = Backbone.View.extend({
         'list.navigate div': 'click_navigate'
     },
 
-    prefix: 'tbr',
-
-    version: '0.0.1',
+    options: {
+        toolbar: true,
+        cardinality: 'one',
+        defaultView: 'list',
+        style: 'normal',
+        customize:true
+    },
 /*
     modes: {
         'new':'new',
@@ -31,14 +35,6 @@ Evol.ViewToolbar = Backbone.View.extend({
         'charts':'charts'
     }, */
 
-	options: {
-		toolbar: true,
-        cardinality: 'one',
-		defaultView: 'list',
-        style: 'normal',
-        customize:false
-	},
-
 	state:{},
 	views:[],
 	viewsHash:{},
@@ -46,10 +42,12 @@ Evol.ViewToolbar = Backbone.View.extend({
 	curViewName:'',
 
     initialize: function (opts) {
-        this.options.mode=opts.mode;
-        this.options.uiModel=opts.uiModel;
-        this.options.defaultView=opts.defaultView;
+        var o=this.options;
+        o.mode=opts.mode;
+        o.uiModel=opts.uiModel;
+        o.defaultView=opts.defaultView;
         this.render();
+        $('[data-cid="views"] > li').tooltip();
         $('.dropdown-toggle').dropdown();
         //this.model.on("change", function(m){that.refresh(m)});
     },
@@ -57,58 +55,70 @@ Evol.ViewToolbar = Backbone.View.extend({
 	render: function() {
 		var e=this.$el;
         e.html(this._toolbarHTML());
+        e.append('<div class="evo-filters panel panel-primary" data-id="filters"></div>');
 		this.setView(this.options.defaultView || 'list');
 	},
 
     _toolbarHTML: function(){
-        var endMenu='</ul></li>',
+        var h=[],
+            endMenu='</ul></li>',
             menuDevider='<li role="presentation" class="divider"></li>';
+
         function beginMenu(icon){
             return ['<li class="dropdown">',
                 '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',EvoUI.icon(icon),' <b class="caret"></b></a>',
                 '<ul class="dropdown-menu">'].join('');
         }
-        function link(id, label, icon, card){
+
+        function link(id, label, icon, card, tooltip){
             var h=[];
             if(card){
-                h.push('<li data-cardi="'+card,'">');
+                h.push('<li data-cardi="'+card,'"');
             }else{
-                h.push('<li>');
+                h.push('<li');
             }
-            h.push('<a href="#" data-id="',id,'">',EvoUI.icon(icon),label,'</a></li>');
+            if(tooltip && tooltip!=''){
+                h.push(' data-toggle="tooltip" data-placement="bottom" title="" data-original-title="',tooltip,'"');
+            }
+            h.push('><a href="#" data-id="',id,'">',EvoUI.icon(icon));
+            if(label && label!=''){
+                h.push('&nbsp;',label);
+            }
+            h.push('</a></li>');
             return h.join('');
         }
 
-        var opts = this.options,
-            h=['<ul class="nav nav-pills" style="float:left;">',
-                link('new','','plus'),
-                link('del','','trash','1'),
-                link('list','','th-list'),
-                link('charts','','stats')
-                //link('selections','','star'),
-                //link('search','','search','n');
-            ];
-        //link('export','','arrow-down','n');//'cloud-download'),
-        //link('customize','','wrench'),
+        h.push('<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-cid="main">',
+            link('list','All','th-list'),
+            link('new','New','plus'),
+            link('del','Delete','trash','1')
+            //link('filter','Filter','filter','n')
+            //link('export','Export','cloud-download'),
+            //link('selections','','star');
+        );
+        h.push(
+            link('prev','','chevron-left','1'),
+            link('next','','chevron-right','1'),
+            '</ul><ul class="nav nav-pills pull-right" data-cid="views">',
+            link('list','','th-list','n','List'),
+            link('cards','','th-large','n','Cards'),
+            link('charts','','stats','n','Charts'),
+            link('edit','','th','1','All Fields'),
+            link('mini','','th-large','1','Important Fields only'),
+            link('json','','barcode','1','JSON')
+        );
         if(this.options && this.options.customize){
+            //link('customize','','wrench'),
             h.push(
                 beginMenu('wrench'),
                 link('customize','Customize this view','wrench'),
                 menuDevider,
                 link('new-field','New Field','plus'),
                 link('new-panel','New Panel','plus'),
-                endMenu);
+                endMenu
+            );
         }
-        h.push(
-            link('prev','','chevron-left','1'),
-            link('next','','chevron-right','1'),
-            '</ul><ul class="nav nav-pills" style="float:right;">',
-            link('list','','th-list','n'),
-            link('cards','','th-large','n'),
-            link('edit','','th','1'),
-            link('mini','','th-large','1'),
-            link('json','','barcode','1'),
-            '</ul>',EvoUI.html.clearer);
+        h.push('</ul>',EvoUI.html.clearer,'</div>');
         return h.join('');
     },
 
@@ -137,17 +147,16 @@ Evol.ViewToolbar = Backbone.View.extend({
 				vw.customize();
 			}
 		}else if(viewName==='filter'){
-			//if(this.viewsHash[viewName]){
-				var $ff=$('#evol-filter');
-				if($ff.length===0){
-					$ff=$('<div id="evol-filter" class="table table-bordered">'+
-						'<button type="button" class="close" data-dismiss="alert">&times;</button>'+
-						'<div class="evol-filter-content"></div></div>');
-					$e.prepend($ff);
-					$ff.find('.evol-filter-content').advancedSearch({fields:contacts_search });
-				}
-				//this.viewsHash[viewName]=
-			//}
+            var $ff=this.$('[data-id="filters"]'),
+                visible=$ff.data('visible');
+
+            if(visible){
+                $ff.data('visible', false).slideUp();
+            }else{
+                $ff.hide().html('TEST TEST TEST filters...');
+                //$ff.advancedSearch();
+                $ff.data('visible', true).slideDown();
+            }
 		}else{
             if(this.curView){
                 this.curView.$el.hide();
