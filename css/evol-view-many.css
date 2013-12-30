@@ -6,14 +6,8 @@
 img.evol-table-icon{
 	margin-right: 6px !important;
 }
-.table {
-    margin-bottom: 0 !important;
-}
-.table th > span {
-	white-space:nowrap;
-	margin-right:5px;
-}
-.table th .glyphicon-chevron-up {
+.table th .glyphicon-chevron-up,
+.table th .glyphicon-chevron-down{
     width:50px;
     cursor: pointer;
 }

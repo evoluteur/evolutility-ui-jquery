@@ -3,6 +3,7 @@
 
 .evol-des-field,
 .evol-des-panel {
+    z-index: 2000;
     position: absolute;
     overflow: auto;
     background-color: white;
@@ -12,14 +13,16 @@
 }
 
 .evol-des-field {
-    width:500px;
-    height:600px;
+    width:400px;
+    height:500px;
 }
 
 .evol-des-panel {
     width:400px;
     height:500px;
 }
-
+label > .glyphicon-wrench {
+    cursor: pointer;
+}
 
 
