@@ -309,7 +309,7 @@ contacts_LOVs = {
         {text: 'Zambia', id: 'ZM'},
         {text: 'Zimbabwe', id: 'ZW'}
     ]
-}
+};
 
 var contacts_ui = {
     id: 1,
@@ -321,17 +321,17 @@ var contacts_ui = {
         { type: 'panel', label: 'Identity', width: 62,
             elements: [
                 { type: 'text', id: 'lastname', label: 'Lastname', maxlength: '50',
-                    required: '1', cssclass: 'FieldMain',
-                    width: '62', search: '1', searchlist: '1'},
+                    required: true, cssclass: 'FieldMain',
+                    width: '62', viewmany: true},
                 { type: 'text', id: 'Firstname', label: 'Firstname', maxlength: '50',
-                    required: '1', cssclass: 'FieldMain',
-                    width: '38', search: '2', searchlist: '1', searchadv: '2'},
+                    required: true, cssclass: 'FieldMain',
+                    width: '38', search: '2', viewmany: '1', searchadv: '2'},
                 { type: 'text', id: 'JobTitle', label: 'Title', maxlength: '50',
                     width: '62'},
                 { type: 'text', id: 'Company', label: 'Company', maxlength: '50',
-                    width: '38', search: '4', searchlist: '1'},
+                    width: '38', search: '4', viewmany: '1'},
                 { type: 'email', id: 'emailaddress', label: 'email', maxlength: '255',
-                    width: 100, search: '1', searchlist: '1'},
+                    width: 100, viewmany: true}
             ]
         },
         {type: 'panel', label: 'Contact Info', width: '38',
@@ -370,7 +370,7 @@ var contacts_ui = {
         {type: 'panel', label: 'Misc.', width: '38',
             elements: [
                 {type: 'lov', id: 'Category', label: 'Category', width: '100',
-                    search: '1', searchlist: '1',
+                    viewmany: true,
                     list: contacts_LOVs.categories
                 },
                 {type: 'text', id: 'Custom1', label: 'Custom 1', maxlength: '250',
@@ -381,9 +381,10 @@ var contacts_ui = {
                     width: '100'}
             ]
         }
-    ]}
+    ]
+};
 
-contacts_data = [
+var contacts_data = [
     {ID: '690', lastname: 'Smallwood', Firstname: 'Vincent', JobTitle: 'Director', Company: 'EasyDoesIt',
         emailaddress: '', phone: 'dsadfsf', phoneh: 'dsafsaf', phonem: 'dsafsaf', Fax: '', url: '',
         Addressline1: '12, Liverpool Street', Addressline2: '', City: 'Bury', State: '', Zip: '', Country: 'EN', Category: '2'},
@@ -397,19 +398,18 @@ contacts_data = [
         emailaddress: 'sreina@innovacreaciones.es', phone: '411 444 2222', phoneh: '411 576 4566', phonem: '411 579 4566', Fax: '411 444 2224', url: '', Addressline1: '',
         Addressline2: '', City: '', State: 'NA', Zip: '', Country: 'US', CategoryID: '0', Category: '3'},
     {ID: '770', lastname: 'Paulus', Firstname: 'Henry', JobTitle: '', Company: 'TEST the TEST',
-        emailaddress: '', phone: '652 491 2345', phoneh: '', phonem: '', Fax: '', url: '', Addressline1: '1234 That Street',
-        Addressline2: '', City: '', State: '', Zip: '', Country: '', CategoryID: '0', Category: '2'},
+        phone: '652 491 2345', Addressline1: '1234 That Street',
+        City: '', State: '', Zip: '', Country: '', CategoryID: '0', Category: '2'},
     {ID: '775', lastname: 'Dupond', Firstname: 'Patrick', JobTitle: 'whatever', Company: 'Groep S',
         emailaddress: '', phone: '', phoneh: '', phonem: '', Fax: '', url: '', Addressline1: '',
         Addressline2: '', City: 'Paris', State: '', Zip: '', Country: 'FR', CategoryID: '5', Category: '1'},
-    {ID: '779', lastname: 'Doe', Firstname: 'John', JobTitle: '', Company: 'Evolutility',
-        emailaddress: 'evolutility@evolutility.org', phone: '', phoneh: '', phonem: '', url: 'http://www.evol-utility.org',
-        Addressline1: '', Addressline2: '', City: '', State: '', Zip: '', Country: '', Category: ''},
+    {ID: '779', lastname: 'Doe', Firstname: 'John', Company: 'Evolutility',
+        emailaddress: 'evolutility@evolutility.org', url: 'http://www.evol-utility.org'},
     {ID: '802', lastname: 'Mannion', Firstname: 'Paul', JobTitle: 'President', Company: 'Unity',
         emailaddress: 'pm@unity.com', phone: '444-8807007', phoneh: '4495550230', phonem: '5894992020', Fax: '', url: '',
         Addressline1: '123 Redville Lane', Addressline2: '', City: 'Musnonville', State: 'NH', Zip: '03434', Country: '', CategoryID: '6', Category: '1'},
     {ID: '812', lastname: 'Munar', Firstname: 'Roman', JobTitle: 'Mr', Company: 'Informatics',
         emailaddress: 'romano@yehey.com', phone: '643518', phoneh: '68463168', phonem: '68435138', Fax: '6461354', url: 'http://roman.munar.com',
         Addressline1: 'Washington', Addressline2: 'Buendia', City: 'Makati', State: '', Zip: '1300', Country: 'PH', Category: '3'}
-]
+];
 

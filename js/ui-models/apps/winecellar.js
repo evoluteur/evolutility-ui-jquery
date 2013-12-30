@@ -8,6 +8,7 @@ var winecellar_lovs = {
         {id:6000, text:'6.0 L'},
         {id:8000, text:'8.0 L'}
     ],
+    
     grape: [
         {id:'chard', text:'Chardonnay'},
         {id:'shiraz', text:'Shiraz'},
@@ -136,17 +137,16 @@ var winecellar_ui = {
                     required: true,
                     maxlength: 150,
                     search: '1',
-                    searchlist: '1',
+                    viewmany: true,
                     width: '62'
                 },
                 {
-                    id:'vin',
+                    id:'vintage',
                     type: 'integer',
                     label: 'Vintage',
                     required: true,
                     maxlength: 100,
-                    search: '1',
-                    searchlist: '1',
+                    viewmany: true,
                     width: 38,
                     min: 1900,
                     max: 2012,
@@ -165,42 +165,41 @@ var winecellar_ui = {
                     width: 80,
                     elements: [
                         {
-                            type: 'text',
                             id:'winery',
+                            type: 'text',
                             label: 'Winery',
                             maxlength: 100,
                             required: true,
-                            search: '1',
-                            searchlist: '1',
+                            viewmany: true,
                             width: '62',
                             help: 'The establishment where wine is made.'
                         },
                         {
-                            type: 'lov',
                             id:'bsize',
+                            type: 'lov',
                             label: 'Bottle Size',
                             labellist: 'Bottle',
                             width: '38',
                             list: winecellar_lovs.bottleSize
                         },
                         {
-                            type: 'lov',
                             id:'grape',
+                            type: 'lov',
                             label: 'Grape',
-                            search: '1',
-                            searchlist: '1',
+                            viewmany: true,
                             width: '62',
                             list: winecellar_lovs.grape
                         },
                         {
+                            id:'type',
                             type: 'lov',
                             label: 'Type',
-                            search: '1',
-                            searchlist: '1',
+                            viewmany: true,
                             width: '38',
                             list: winecellar_lovs.type
                         },
                         {
+                            id:'appellation',
                             type: 'text',
                             optional: '1',
                             label: 'Appellation',
@@ -209,6 +208,7 @@ var winecellar_ui = {
                             help: 'An appellation is a legally defined and protected geographical indication used to identify where the grapes for a wine were grown.'
                         },
                         {
+                            id:'country',
                             type: 'lov',
                             label: 'Country',
                             search: '1',
@@ -216,12 +216,14 @@ var winecellar_ui = {
                             list: winecellar_lovs.country
                         },
                         {
+                            id:'region',
                             type: 'text',
                             label: 'Region',
                             maxlength: '100',
                             width: '30'
                         },
                         {
+                            id:'area',
                             type: 'text',
                             label: 'Area',
                             maxlength: '100',
@@ -236,12 +238,12 @@ var winecellar_ui = {
                     width: '20',
                     elements: [
                         {
+                            id:'label_img',
                             type: 'image',
                             label: 'Label',  
                             maxlength: '200',
                             width: 100,
-                            height: '1',
-                            searchlist: '1'
+                            viewmany: true
                         }
                     ]
                 }
@@ -257,49 +259,53 @@ var winecellar_ui = {
                     width: 100,
                     elements: [
                         {
+                            id:'buying_date',
                             type: 'date',
                             label: 'Buying Date',
                             search: '1',
                             width: '40'
                         },
                         {
+                            id:'price',
                             type: 'decimal',
                             label: 'Price',
-                            maxlength: '10',
-                            search: '1',
-                            searchlist: '1',
+                            maxlength: 10,
+                            viewmany: true,
                             width: '30',
                             format: '$ 0.00'
                         },
                         {
+                            id:'value',
                             type: 'decimal',
                             label: 'Value',
-                            maxlength: '10',
+                            maxlength: 10,
                             search: '1',
                             width: '30',
                             format: '$ 0.00'
                         },
                         {
+                            id:'purchased',
                             type: 'integer',
                             label: 'Bottles Purchased',
                             labellist: 'Purchased',
-                            maxlength: '10',
+                            maxlength: 10,
                             width: '40'
                         },
                         {
+                            id:'remaining',
                             type: 'integer',
                             label: 'Remaining',
                             labeledit: 'Bottles Remaining',
-                            maxlength: '10',
+                            maxlength: 10,
                             width: '60'
                         },
                         {
+                            id:'notes',
                             type: 'textmultiline',
-                            label: 'Note',
-                            maxlength: '150',
-                            search: '1',
+                            label: 'Notes',
+                            maxlength: 150,
                             width: 100,
-                            height: '2'
+                            height: 2
                         }
 
                     ]
@@ -317,17 +323,19 @@ var winecellar_ui = {
                     width: '62',
                     elements: [
                         {
+                            id:'drink_from',
                             type: 'integer',
                             label: 'Drink from (year)',
                             placeholder: '2013',
                             labellist: 'Drink',
-                            maxlength: '10',
-                            searchlist: '1',
+                            maxlength: 10,
+                            viewmany: true,
                             width: 50,
                             min: 1900,
-                            max: '2100'
+                            max: 2100
                         },
                         {
+                            id:'drink_to',
                             type: 'integer',
                             label: 'to',
                             maxlength: '10',
@@ -336,6 +344,7 @@ var winecellar_ui = {
                             max: '2100'
                         },
                         {
+                            id:'peak_from',
                             type: 'integer',
                             label: 'Peak from',
                             labellist: 'Peak',
@@ -345,6 +354,7 @@ var winecellar_ui = {
                             max: 2100
                         },
                         {
+                            id:'peak_to',
                             type: 'integer',
                             label: 'to',
                             maxlength: '10',
@@ -353,6 +363,7 @@ var winecellar_ui = {
                             max: 2100
                         },
                         {
+                            id:'meal',
                             type: 'textmultiline',
                             label: 'Meal',
                             maxlength: '200',
@@ -369,6 +380,7 @@ var winecellar_ui = {
                     width: '38',
                     elements: [
                         {
+                            id:'score',
                             type: 'lov',
                             label: 'My Score',
                             labellist: 'Score',
@@ -381,21 +393,22 @@ var winecellar_ui = {
                                 {id:4, text:'****', icon:'s4.gif'},
                                 {id:5, text:'*****', icon:'s5.gif'}
                             ],
-                            maxlength: '100',
-                            search: '1',
-                            searchlist: '1',
+                            maxlength: 100,
+                            viewmany: true,
                             width: 100
                         },
                         {
+                            id:'score_parker',
                             type: 'integer',
                             label: 'Parker',
-                            maxlength: '10',
+                            maxlength: 10,
                             width: 100
                         },
                         {
+                            id:'score_winespectator',
                             type: 'integer',
                             label: 'WineSpectator',
-                            maxlength: '10',
+                            maxlength: 10,
                             width: 100
                         }
 
@@ -409,18 +422,15 @@ var winecellar_ui = {
             elements: [
 
                 { type: 'panel-list',
+                    id:'pnl-Degustations',
                     label: 'Degustations',
                     width: 100,
-                    dbtabledetails: 'WineDegustation',
-                    dbcolumndetails: 'wineid',
-                    panelid: '1',
-                    dborder: 'ddate desc',
                     elements: [
-                        {type: 'text', panelid: '1', label: 'Robe', maxlength: '100', dbcolumn: 'Robe', dbcolumnread: 'Robe', searchlist: '1'},
-                        {type: 'date', panelid: '1', dbcolumn: 'ddate', dbcolumnread: 'ddate', label: 'Date', maxlength: '20', searchlist: '1'},
-                        {type: 'text', panelid: '1', label: 'Nose', maxlength: '100', dbcolumn: 'Nose', dbcolumnread: 'Nose', searchlist: '1'},
-                        {type: 'text', panelid: '1', label: 'Taste', maxlength: '100', dbcolumn: 'Taste', dbcolumnread: 'Taste', searchlist: '1'},
-                        {type: 'textmultiline', panelid: '1', dbcolumn: 'notes', dbcolumnread: 'notes', label: 'Note', maxlength: '300', searchlist: '1', width: 100, height: '4'}
+                        {id: 'Robe',  type: 'text', label: 'Robe', maxlength: 100, viewmany: '1'},
+                        {id: 'ddate', type: 'date', label: 'Date', maxlength: 20, viewmany: '1'},
+                        {id: 'Nose', type: 'text', label: 'Nose', maxlength: 100, viewmany: '1'},
+                        {id: 'Taste', type: 'text', label: 'Taste', maxlength: 100, viewmany: '1'},
+                        {id: 'notes', type: 'textmultiline', label: 'Note', maxlength: 300, viewmany: '1', width: 100, height: '4'}
                     ]
                 }
             ]
@@ -461,8 +471,7 @@ winetasting = {
                 {
                     type: 'lov',
                     label: 'Wine',
-                    search: '1',
-                    searchlist: '1',
+                    viewmany: '1',
                     width: '62',
                     required: '1',
                     link: 'demo_winecellar.aspx?ID=@itemid'
@@ -471,39 +480,34 @@ winetasting = {
                     type: 'date',
                     label: 'Date',
                     maxlength: '20',
-                    search: '1',
-                    searchlist: '1',
+                    viewmany: '1',
                     width: '38'
                 },
                 {
                     type: 'text',
                     label: 'Robe',
                     maxlength: '100',
-                    search: '1',
-                    searchlist: '1',
+                    viewmany: '1',
                     width: '30'
                 },
                 {
                     type: 'text',
                     label: 'Nose',
                     maxlength: '100',
-                    search: '1',
-                    searchlist: '1',
+                    viewmany: '1',
                     width: '32'
                 },
                 {
                     type: 'text',
                     label: 'Taste',
                     maxlength: '100',
-                    search: '1',
-                    searchlist: '1',
+                    viewmany: '1',
                     width: '38'
                 },
                 {
                     type: 'textmultiline',
                     label: 'Note',
                     maxlength: '300',
-                    search: '1',
                     width: 100,
                     height: '4'
                 }

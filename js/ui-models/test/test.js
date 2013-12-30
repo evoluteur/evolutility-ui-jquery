@@ -16,7 +16,7 @@ var test_ui = {
                     required: '1',
                     maxlength: '150',
                     search: '1',
-                    searchlist: '1',
+                    viewmany: '1',
                     width: '62'
                 },
                 {
@@ -25,7 +25,7 @@ var test_ui = {
                     label: 'Text (readonly)',
                     readonly: '1',
                     search: '1',
-                    searchlist: '1',
+                    viewmany: '1',
                     width: '38'
                 },
             ]
@@ -116,7 +116,7 @@ var test_ui = {
                             id:'grape',
                             label: 'Grape (big LOV)',
                             search: '1',
-                            searchlist: '1',
+                            viewmany: '1',
                             width: '100',
                             list:[
                                 {text: 'Chardonnay'},
@@ -214,7 +214,7 @@ var test_ui = {
                             labellist: 'Label',
                             maxlength: '200',
                             width: '100',
-                            searchlist: '1'
+                            viewmany: '1'
                         }
 
                     ]
@@ -273,7 +273,7 @@ var test_ui = {
                             label: 'Decimal 2',
                             maxlength: '10',
                             search: '1',
-                            searchlist: '1',
+                            viewmany: '1',
                             width: '100',
                             format: '$ 0.00'
                         }
@@ -349,11 +349,11 @@ var test_ui = {
                     panelid: '1',
                     dborder: 'ddate desc',
                     elements: [
-                        {type: 'text', panelid: '1', label: 'Robe', maxlength: '100', dbcolumn: 'Robe', dbcolumnread: 'Robe', searchlist: '1'},
-                        {type: 'date', panelid: '1', dbcolumn: 'ddate', dbcolumnread: 'ddate', label: 'Date', maxlength: '20', searchlist: '1'},
-                        {type: 'text', panelid: '1', label: 'Nose', maxlength: '100', dbcolumn: 'Nose', dbcolumnread: 'Nose', searchlist: '1'},
-                        {type: 'text', panelid: '1', label: 'Taste', maxlength: '100', dbcolumn: 'Taste', dbcolumnread: 'Taste', searchlist: '1'},
-                        {type: 'textmultiline', panelid: '1', dbcolumn: 'notes', dbcolumnread: 'notes', label: 'Note', maxlength: '300', searchlist: '1', width: '100', height: '4'}
+                        {type: 'text', panelid: '1', label: 'Robe', maxlength: '100', dbcolumn: 'Robe', dbcolumnread: 'Robe', viewmany: '1'},
+                        {type: 'date', panelid: '1', dbcolumn: 'ddate', dbcolumnread: 'ddate', label: 'Date', maxlength: '20', viewmany: '1'},
+                        {type: 'text', panelid: '1', label: 'Nose', maxlength: '100', dbcolumn: 'Nose', dbcolumnread: 'Nose', viewmany: '1'},
+                        {type: 'text', panelid: '1', label: 'Taste', maxlength: '100', dbcolumn: 'Taste', dbcolumnread: 'Taste', viewmany: '1'},
+                        {type: 'textmultiline', panelid: '1', dbcolumn: 'notes', dbcolumnread: 'notes', label: 'Note', maxlength: '300', viewmany: '1', width: '100', height: '4'}
                     ]
                 }
             ]

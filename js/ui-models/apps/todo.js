@@ -11,9 +11,9 @@ var todo_ui = {
                 {id: 'title', type: 'text', label: 'Title', required: true,
                     placeholder: 'Call John',
                     cssclass: 'FieldMain', maxlength: 255,
-                    width: 100, search: true, searchlist: true},
-                {id: 'duedate', type: 'date', label: 'Due Date', width: 40, search: true, searchlist: true},
-                {id: 'category', type: 'lov', label: 'Category', width: 60, search: true, searchlist: true,
+                    width: 100, search: true, viewmany: true},
+                {id: 'duedate', type: 'date', label: 'Due Date', width: 40, search: true, viewmany: true},
+                {id: 'category', type: 'lov', label: 'Category', width: 60, search: true, viewmany: true,
                     list: [
                         {id: 'home', text: 'Home'},
                         {id: 'work', text: 'Work'},
@@ -26,7 +26,7 @@ var todo_ui = {
         {type: 'panel', label: 'Status', width: 38,
             elements: [
                 {id: 'priority', type: 'lov', label: 'Priority', required: true,
-                    width: 100, search: 2, searchlist: 2, 
+                    width: 100, search: 2, viewmany: true,
                     list: [
                         {id: '1', text: '1 - ASAP'},
                         {id: '2', text: '2 - Urgent'},
@@ -35,12 +35,12 @@ var todo_ui = {
                         {id: '5', text: '5 - Low'}
                     ]
                 },
-                {id: 'complete', type: 'boolean', label: 'Complete', width: 100, search: true, searchlist: true}
+                {id: 'complete', type: 'boolean', label: 'Complete', width: 100, search: true, viewmany: true}
             ] },
         {type: 'panel', label: 'Notes', width: 100,
             elements: [
                 {id: 'notes', type: 'textmultiline', label: 'Notes', maxlength: 1000,
-                    width: 100, height: 6, searchlist: false }
+                    width: 100, height: 6, viewmany: false }
             ]
         }
     ]};
