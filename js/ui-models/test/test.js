@@ -5,29 +5,26 @@ var test_ui = {
     elements: [
         {
             type: 'panel',
-            eindex: '1',
             label: 'Panel 1',
-            width: '100',
+            width: 100,
             elements: [
                 {
                     id:'name',
                     type: 'text',
                     label: 'Text field',
-                    required: '1',
+                    required: true,
                     maxlength: '150',
-                    search: '1',
-                    viewmany: '1',
-                    width: '62'
+                    viewmany: true,
+                    width: 62
                 },
                 {
                     id:'name2',
                     type: 'text',
                     label: 'Text (readonly)',
                     readonly: '1',
-                    search: '1',
-                    viewmany: '1',
+                    viewmany: true,
                     width: '38'
-                },
+                }
             ]
         },
         {
@@ -36,38 +33,37 @@ var test_ui = {
             elements: [
                 {
                     type: 'panel',
-                    eindex: '1',
                     label: 'Date',
-                    width: '33',
+                    width: 33,
                     elements: [
                         {
                             type: 'date',
                             id:'fd1',
                             label: 'Date 1',
-                            required: '1',
-                            width: '100'
+                            required: true,
+                            width: 100
                         },
                         {
                             type: 'date',
                             id:'fd2',
                             label: 'Date 2',
-                            width: '100'
+                            width: 100
                         },
                         {
                             type: 'datetime',
                             id:'fdt',
                             label: 'DateTime field',
-                            maxlength: '100',
-                            required: '1',
-                            width: '100'
+                            maxlength: 100,
+                            required: true,
+                            width: 100
                         },
                         {
                             type: 'time',
                             id:'ft',
                             label: 'Time field',
-                            maxlength: '100',
-                            required: '1',
-                            width: '100'
+                            maxlength: 100,
+                            required: true,
+                            width: 100
                         }
 
                     ]
@@ -83,8 +79,8 @@ var test_ui = {
                             id:'bsize',
                             label: 'Bottle Size (LOV)',
                             labellist: 'Bottle',
-                            required: '1',
-                            width: '100',
+                            required: true,
+                            width: 100,
                             list:[
                                 {id:750, text: '750 ml'},
                                 {id:500, text: '500 ml'},
@@ -100,7 +96,7 @@ var test_ui = {
                             id:'bsize2',
                             label: 'Bottle Size again',
                             labellist: 'Bottle',
-                            width: '100',
+                            width: 100,
                             list:[
                                 {id:750, text: '750 ml'},
                                 {id:500, text: '500 ml'},
@@ -116,8 +112,8 @@ var test_ui = {
                             id:'grape',
                             label: 'Grape (big LOV)',
                             search: '1',
-                            viewmany: '1',
-                            width: '100',
+                            viewmany: true,
+                            width: 100,
                             list:[
                                 {text: 'Chardonnay'},
                                 {text: 'Shiraz'},
@@ -213,8 +209,8 @@ var test_ui = {
                             labeledit: '',
                             labellist: 'Label',
                             maxlength: '200',
-                            width: '100',
-                            viewmany: '1'
+                            width: 100,
+                            viewmany: true
                         }
 
                     ]
@@ -236,18 +232,18 @@ var test_ui = {
                             type: 'integer',
                             id:'int1',
                             label: 'Integer (min=0 max=10)',
-                            required: '1',
-                            maxlength: '10',
+                            required: true,
+                            maxlength: 10,
                             min: 0,
                             max: 10,
-                            width: '100'
+                            width: 100
                         },
                         {
                             type: 'integer',
                             id:'int2',
                             label: 'Integer 2',
-                            maxlength: '10',
-                            width: '100'
+                            maxlength: 10,
+                            width: 100
                         }
                     ]
                 },
@@ -261,20 +257,20 @@ var test_ui = {
                             type: 'decimal',
                             id:'dec1',
                             label: 'Decimal 1',
-                            required: '1',
-                            maxlength: '10',
+                            required: true,
+                            maxlength: 10,
                             search: '1',
-                            width: '100',
+                            width: 100,
                             format: '$ 0.00'
                         },
                         {
                             type: 'decimal',
                             id:'dec2',
                             label: 'Decimal 2',
-                            maxlength: '10',
+                            maxlength: 10,
                             search: '1',
-                            viewmany: '1',
-                            width: '100',
+                            viewmany: true,
+                            width: 100,
                             format: '$ 0.00'
                         }
                     ]
@@ -290,25 +286,25 @@ var test_ui = {
                             id:'color1',
                             label: 'Color',
                             required: true,
-                            width: '50'
+                            width: 50
                         },
                         {
                             type: 'color',
                             id:'color2',
                             label: 'Color 2',
-                            width: '50'
+                            width: 50
                         },
                         {
                             type: 'color',
                             id:'color3',
                             label: 'Color 3',
-                            width: '50'
+                            width: 50
                         },
                         {
                             type: 'color',
                             id:'color4',
                             label: 'Color 4',
-                            width: '50'
+                            width: 50
                         }
                     ]
                 }
@@ -323,13 +319,13 @@ var test_ui = {
                     type: 'panel',
                     id: 'bigtxt1',
                     label: 'Comments',
-                    width: '100',
+                    width: 100,
                     elements: [
                         {
                             type: 'textmultiline',
                             label: 'Comments',
                             maxlength: '300',
-                            width: '100',
+                            width: 100,
                             height: '8'
                         }
 
@@ -343,21 +339,21 @@ var test_ui = {
             elements: [
                 { type: 'panel-list',
                     label: 'Collection',
-                    width: '100',
+                    width: 100,
                     dbtabledetails: 'WineDegustation',
                     dbcolumndetails: 'wineid',
                     panelid: '1',
                     dborder: 'ddate desc',
                     elements: [
-                        {type: 'text', panelid: '1', label: 'Robe', maxlength: '100', dbcolumn: 'Robe', dbcolumnread: 'Robe', viewmany: '1'},
-                        {type: 'date', panelid: '1', dbcolumn: 'ddate', dbcolumnread: 'ddate', label: 'Date', maxlength: '20', viewmany: '1'},
-                        {type: 'text', panelid: '1', label: 'Nose', maxlength: '100', dbcolumn: 'Nose', dbcolumnread: 'Nose', viewmany: '1'},
-                        {type: 'text', panelid: '1', label: 'Taste', maxlength: '100', dbcolumn: 'Taste', dbcolumnread: 'Taste', viewmany: '1'},
-                        {type: 'textmultiline', panelid: '1', dbcolumn: 'notes', dbcolumnread: 'notes', label: 'Note', maxlength: '300', viewmany: '1', width: '100', height: '4'}
+                        {type: 'text', panelid: '1', label: 'Robe', maxlength: 100, dbcolumn: 'Robe', dbcolumnread: 'Robe', viewmany: true},
+                        {type: 'date', panelid: '1', dbcolumn: 'ddate', dbcolumnread: 'ddate', label: 'Date', maxlength: '20', viewmany: true},
+                        {type: 'text', panelid: '1', label: 'Nose', maxlength: 100, dbcolumn: 'Nose', dbcolumnread: 'Nose', viewmany: true},
+                        {type: 'text', panelid: '1', label: 'Taste', maxlength: 100, dbcolumn: 'Taste', dbcolumnread: 'Taste', viewmany: true},
+                        {type: 'textmultiline', panelid: '1', dbcolumn: 'notes', dbcolumnread: 'notes', label: 'Note', maxlength: '300', viewmany: true, width: 100, height: '4'}
                     ]
                 }
             ]
         }
     ]
-}
+};
 

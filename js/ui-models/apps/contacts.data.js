@@ -1,4 +1,4 @@
-var contacts_LOVs = {
+contacts_LOVs = {
 
     categories: [
         {id: '1', text: 'Work'},
@@ -318,95 +318,98 @@ var contacts_ui = {
     entity: 'contact', entities: 'contacts',
 
     elements: [
-        {type: 'panel', label: 'Identity', width: 62,
+        { type: 'panel', label: 'Identity', width: 62,
             elements: [
-                {
-                    type: 'text', id: 'lastname', label: 'Lastname', maxlength: 50,
-                    required: true, css: 'FieldMain', width: '62', viewmany: true
-                },
-                {
-                    type: 'text', id: 'firstname', label: 'Firstname', maxlength: 50,
-                    required: true, css: 'FieldMain',
-                    width: 38, viewmany: true
-                },
-                {
-                    type: 'text', id: 'jobtitle', label: 'Title', maxlength: 50,
-                    width: 62
-                },
-                {
-                    type: 'text', id: 'company', label: 'Company', maxlength: 50,
-                    width: 38, viewmany: true
-                },
-                {
-                    type: 'email', id: 'email', label: 'email', maxlength: 255,
-                    width: 100, viewmany: true
-                }
+                { type: 'text', id: 'lastname', label: 'Lastname', maxlength: 50,
+                    required: true, cssclass: 'FieldMain',
+                    width: '62', viewmany: true},
+                { type: 'text', id: 'firstname', label: 'Firstname', maxlength: 50,
+                    required: true, cssclass: 'FieldMain',
+                    width: 38, viewmany: true},
+                { type: 'text', id: 'jobtitle', label: 'Title', maxlength: 50,
+                    width: 62},
+                { type: 'text', id: 'company', label: 'Company', maxlength: 50,
+                    width: 38, viewmany: true},
+                { type: 'email', id: 'email', label: 'email', maxlength: 255,
+                    width: 100, viewmany: true}
             ]
         },
-        {
-            type: 'panel', label: 'Contact Info', width: 38,
+        {type: 'panel', label: 'Contact Info', width: '38',
             elements: [
-                {
-                    type: 'text', id: 'phone', label: 'Work Phone', maxlength: 20, width: 50
-                },
-                {
-                    type: 'text', id: 'phonehome', label: 'Home Phone', maxlength: 20, width: 50
-                },
-                {
-                    type: 'text', id: 'phonecell', label: 'Cell.', maxlength: 20, width: 50, mini:'1'
-                },
-                {
-                    type: 'text', id: 'fax', label: 'Fax', maxlength: 20, width: 50
-                },
-                {
-                    type: 'url', id: 'web', label: 'web', maxlength: 255, width: 100
-                }
+                {type: 'text', id: 'phone', label: 'Work Phone', maxlength: 20,
+                    width: '50'},
+                {type: 'text', id: 'phonehome', label: 'Home Phone', maxlength: 20,
+                    width: '50'},
+                {type: 'text', id: 'phonecell', label: 'Cell.', maxlength: 20,
+                    width: '50', mini:'1'},
+                {type: 'text', id: 'fax', label: 'Fax', maxlength: 20,
+                    width: '50'},
+                {type: 'url', id: 'web', label: 'web', maxlength: 255,
+                    width: '100'}
             ]
         },
         {type: 'panel', label: 'Address', width: 62,
             elements: [
-                {
-                    type: 'text', id: 'address1', label: 'Address', maxlength: 150, width: 100
-                },
-                {
-                    type: 'text', id: 'address2', label: '', labellist: 'Address 2', maxlength: 150, width: 100
-                },
-                {
-                    type: 'text', id: 'city', label: 'City', maxlength: 100, width: 62
-                },
-                {
-                    type: 'lov', id: 'state', label: 'State', maxlength: 3, width: 15,
+                {type: 'text', id: 'address1', label: 'Address', maxlength: 150,
+                    width: 100},
+                {type: 'text', id: 'address2', label: '', labellist: 'Address 2', maxlength: '150',
+                    width: 100},
+                {type: 'text', id: 'city', label: 'City', maxlength: 100,
+                    width: 62},
+                {type: 'lov', id: 'state', label: 'State', maxlength: 3,
+                    width: 15,
                     list: contacts_LOVs.states
                 },
-                {
-                    type: 'text', id: 'zip', label: 'Zip', maxlength: 12, width: 23
-                },
-                {
-                    type: 'lov', id: 'country', label: 'Country', maxlength: 60, width: 100,
+                {type: 'text', id: 'zip', label: 'Zip', maxlength: 12,
+                    width: 23},
+                {type: 'lov', id: 'country', label: 'Country', maxlength: 60, width: 100,
                     list: contacts_LOVs.countries
                 }
             ]
         },
-        {type: 'panel', label: 'Misc.', width: 38,
+        {type: 'panel', label: 'Misc.', width: '38',
             elements: [
-                {
-                    type: 'lov', id: 'category', label: 'Category', width: 100,
+                {type: 'lov', id: 'category', label: 'Category', width: 100,
                     viewmany: true,
                     list: contacts_LOVs.categories
                 },
-                {
-                    type: 'text', id: 'custom1', label: 'Custom 1', maxlength: 250,
-                    width: 100
-                },
-                {
-                    type: 'text', id: 'custom2', label: 'Custom 2', maxlength: 250,
-                    width: 100
-                },
-                {
-                    type: 'text', id: 'custom3', label: 'Custom 3', maxlength: 250,
-                    width: 100
-                }
+                {type: 'text', id: 'custom1', label: 'Custom 1', maxlength: 250,
+                    width: 100},
+                {type: 'text', id: 'custom2', label: 'Custom 2', maxlength: 250,
+                    width: 100},
+                {type: 'text', id: 'custom3', label: 'Custom 3', maxlength: 250,
+                    width: 100}
             ]
         }
     ]
 };
+
+var contacts_data = [
+    {id: '690', lastname: 'Smallwood', firstname: 'Vincent', jobtitle: 'Director', company: 'EasyDoesIt',
+        email: '', phone: '415 234 4323', phonehome: '415 378 3577', phonecell: '415 135 3454',
+        address1: '12, Liverpool Street', city: 'San Francisco', state: 'CA', zip: '94123', country: 'US', category: '2'},
+    {id: '733', lastname: 'Shackleford ', firstname: 'Rusty ',
+        email: 'rustyshackleford@gmail.com', phone: '', address1: '123 Main Street',
+        city: 'Dallas', state: 'TX', zip: '', country: 'US', category: ''},
+    {id: '749', lastname: 'Test', firstname: 'Testing', jobtitle: 'QA Engineer', company: 'Testing evol-utility',
+        email: 'test@test.com', phone: '423523', phonehome: '23523523', phonecell: '242342', fax: '3423423', url: 'sdfsdf',
+        address1: '5665 Poplar Street', city: 'San Jose', state: 'CA', zip: '93112', country: 'US', category: 'Travel'},
+    {id: '759', lastname: 'Reina Moyano', firstname: 'Sergio', jobtitle: 'Mr', company: 'Innova Creaciones',
+        email: 'sreina@innovacreaciones.es', phone: '411 444 2222', phonehome: '411 576 4566', phonecell: '411 579 4566', fax: '411 444 2224',
+        address1: '654 Union Street', address2: '#203', city: 'San Francisco', state: 'CA', zip: '94567', country: 'US', category: '3'},
+    {id: '770', lastname: 'Paulus', firstname: 'Henry', jobtitle: '', company: 'TEST the TEST',
+        phone: '652 491 2345', address1: '1234 That Street',
+        city: '', state: '', zip: '', country: 'US', category: '2'},
+    {id: '775', lastname: 'Dupond', firstname: 'Patrick', jobtitle: 'Sales Manager', company: 'Au Bon Pain',
+        email: 'pdupond@aubonpain.fr', phone: '45 456 454 45', url: 'http://aubonpain.fr',
+        city: 'Paris', country: 'FR', category: '1'},
+    {id: '779', lastname: 'Doe', firstname: 'John', company: 'Evolutility',
+        email: 'evolutility@evolutility.org', url: 'http://www.evol-utility.org'},
+    {id: '802', lastname: 'Mannion', firstname: 'Paul', jobtitle: 'President', company: 'Unity',
+        email: 'pm@unity.com', phone: '444-8807007', phonehome: '4495550230', phonecell: '5894992020', fax: '', url: '',
+        address1: '123 Redville Lane', city: 'Musnonville', state: 'NH', zip: '03434', country: '', category: '1'},
+    {id: '812', lastname: 'Munar', firstname: 'Roman', jobtitle: 'Mr', company: 'Informatics',
+        email: 'romano@yehey.com', phone: '322 234 5343', phonehome: '322 784 3453', phonecell: '322 538 2568', fax: '322 234 5345', url: 'http://roman.munar.com',
+        address1: 'Washington', address2: 'Buendia', city: 'Makati', state: '', zip: '1300', country: 'PH', category: '3'}
+];
+

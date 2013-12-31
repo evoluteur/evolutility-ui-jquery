@@ -118,7 +118,7 @@ var winecellar_lovs = {
         {id: 'CH', text:'Switzerland'},
         {id: 'US', text:'United States'}
     ]
-}
+};
 
 var winecellar_ui = {
     entity: 'wine',
@@ -136,9 +136,8 @@ var winecellar_ui = {
                     label: 'Name',
                     required: true,
                     maxlength: 150,
-                    search: '1',
                     viewmany: true,
-                    width: '62'
+                    width: 62
                 },
                 {
                     id:'vintage',
@@ -201,9 +200,7 @@ var winecellar_ui = {
                         {
                             id:'appellation',
                             type: 'text',
-                            optional: '1',
                             label: 'Appellation',
-                            search: '1',
                             width: 100,
                             help: 'An appellation is a legally defined and protected geographical indication used to identify where the grapes for a wine were grown.'
                         },
@@ -211,8 +208,7 @@ var winecellar_ui = {
                             id:'country',
                             type: 'lov',
                             label: 'Country',
-                            search: '1',
-                            width: '32',
+                            width: 32,
                             list: winecellar_lovs.country
                         },
                         {
@@ -241,7 +237,7 @@ var winecellar_ui = {
                             id:'label_img',
                             type: 'image',
                             label: 'Label',  
-                            maxlength: '200',
+                            maxlength: 200,
                             width: 100,
                             viewmany: true
                         }
@@ -262,8 +258,7 @@ var winecellar_ui = {
                             id:'buying_date',
                             type: 'date',
                             label: 'Buying Date',
-                            search: '1',
-                            width: '40'
+                            width: 40
                         },
                         {
                             id:'price',
@@ -279,8 +274,7 @@ var winecellar_ui = {
                             type: 'decimal',
                             label: 'Value',
                             maxlength: 10,
-                            search: '1',
-                            width: '30',
+                            width: 30,
                             format: '$ 0.00'
                         },
                         {
@@ -289,7 +283,7 @@ var winecellar_ui = {
                             label: 'Bottles Purchased',
                             labellist: 'Purchased',
                             maxlength: 10,
-                            width: '40'
+                            width: 40
                         },
                         {
                             id:'remaining',
@@ -297,7 +291,7 @@ var winecellar_ui = {
                             label: 'Remaining',
                             labeledit: 'Bottles Remaining',
                             maxlength: 10,
-                            width: '60'
+                            width: 60
                         },
                         {
                             id:'notes',
@@ -366,10 +360,9 @@ var winecellar_ui = {
                             id:'meal',
                             type: 'textmultiline',
                             label: 'Meal',
-                            maxlength: '200',
-                            search: '1',
+                            maxlength: 200,
                             width: 100,
-                            height: '2'
+                            height: 2
                         }
 
                     ]
@@ -457,7 +450,7 @@ var winecellar_ui = {
             ]
         }
     ]
-}
+};
 
 /*
 winetasting = {
@@ -514,5 +507,5 @@ winetasting = {
             ]
         }
     ]
-}
+};
 */
