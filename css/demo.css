@@ -2,7 +2,7 @@
 /* evol-utility : demo.css */
 
 body{
-	padding: 10px 20px;
+	padding: 60px 20px 10px;
 	font-size: 11pt;
 	font-family: "Century Gothic",arial;	
 	color: #777;
@@ -13,10 +13,13 @@ body{
     padding:6px;
 }
 #evo-toolbar{
-    width:100%;
     background-color:  lightblue;
-    position: relative;
-    border-radius: 6px;
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    padding:2px 5px 2px 10px;
+    z-index: 3000;
 }
 .evol-logo{
     float:left;
