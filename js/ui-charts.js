@@ -1,8 +1,8 @@
 /*! ***************************************************************************
  *
- * evol-utility : evol-ui-charts.js
+ * evol-utility : ui-charts.js
  *
- * Copyright (c) 2013, Olivier Giulieri 
+ * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -38,5 +38,5 @@ Evol.UI.Charts = {
         return EvoUI.Charts._HTML(label, urlGoogleChart);
     }
 
-}
+};
 

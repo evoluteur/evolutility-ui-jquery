@@ -26,24 +26,27 @@ module.exports = function (grunt) {
                       'bower_components/backbone/backbone.js',
                       'bower_components/backbone.localStorage/backbone.localStorage.js',
                       'bower_components/bootstrap/js/modal.js',
-                      //'bower_components/bootstrap/js/tooltip.js',
+                      'bower_components/bootstrap/js/tooltip.js',
+                      'bower_components/bootstrap/js/button.js',
                       'bower_components/bootstrap/js/dropdown.js'
                   ],
                   dest: '<%= pkg.target %>/vendors.js'
                 },
             js:{
                   src: [
-                      'js/evol-dico.js',
-                      'js/evol-ui.js',
-                      'js/evol-ui-*.js',
-                      'js/evol-view-*.js',
-                      //'js/dico-models/dico-field.js',
-                      //'js/dico-models/dico-panel.js',
-                      'js/i18n/EN.js'
+                      'js/ui.js',
+                      'js/ui-*.js',
+                      'js/i18n/EN.js',
 
+                      'js/many.js',
+                      'js/many-*.js',
+                      'js/one.js',
+                      'js/one-*.js',
+
+                      'js/toolbar.js'
                   ],
                   dest: '<%= pkg.target %>/evol-utility.js'
-                },
+               },
             css: {
                 options: {
                     banner: '<%= banner %>',
@@ -51,8 +54,10 @@ module.exports = function (grunt) {
                 },
               src: [
                     //'app/css/demo.css',
-                  'css/evol-dico.css',
-                  'css/evol-view-*.css'
+                  'css/one.css',
+                  'css/many.css',
+                  'css/toolbar.css',
+                  'css/one.css'
               ],
               dest: '<%= pkg.target %>/evol-utility.css'
             }
@@ -88,7 +93,6 @@ module.exports = function (grunt) {
     // *************************************************************************************
     grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-contrib-concat');
-
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
 

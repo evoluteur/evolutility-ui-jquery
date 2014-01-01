@@ -7,11 +7,10 @@ css/bootstrap*.css
 *-nogit.*
 *.xml
 
-doc
-dico
 demo/pix/
 dico/pix/
-dist/vendors.js
+doc/pix/
+doc/Doc_*
 
 # Windows stuff
 Thumbs.db

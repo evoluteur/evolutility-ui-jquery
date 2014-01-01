@@ -1,8 +1,8 @@
 /*! ***************************************************************************
  *
- * evol-utility : evol-dico.js
+ * evol-utility : ui-dico.js
  *
- * Copyright (c) 2013, Olivier Giulieri 
+ * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -41,7 +41,9 @@ Evol.Dico = {
         function collectFields(te) {
             if (te && te.elements && te.elements.length > 0) {
                 _.each(te.elements, function (te) {
-                    collectFields(te);
+                    if(te.type!='panel-list'){
+                        collectFields(te);
+                    }
                 });
             } else {
                 fs.push(te);
@@ -55,31 +57,32 @@ Evol.Dico = {
         return fs;
     },
 
+    isTypeDateOrTime: function(fType){
+        return fType == fType==EvoDico.fieldTypes.datetime || EvoDico.fieldTypes.date || fType==EvoDico.fieldTypes.time;
+    },
+
     showDesigner: function(id, type, $el){
-        var h=[],
-            $elDes=$('<div class="evol-des-'+type+'"></div>'),
+        var $elDes=$('<div class="evol-des-'+type+'"></div>'),
             uiModel;
 
         switch(type){
             case 'field':
-                uiModel = dico_field_ui
+                uiModel = dico_field_ui;
                 break;
-                
         }    
-        $el.closest('.evol-fld').append($elDes);
+        $el.closest('.evol-fld').after($elDes);
 
         vw = new Evol.ViewOne({
-            toolbar:true,
             model: null,
             uiModel: uiModel,
             defaultView: 'edit',
             el: $elDes,
+            style:'panel-primary',
             button_addAnother: false
         });
-        vw.render();
 
         $elDes.on('click', 'button#save,button#cancel', function(evt){
-            alert('fld click button')
+            //TODO save field => dependency: uiModel persistence...
             $elDes.remove();
         });
 
@@ -96,7 +99,18 @@ Evol.Dico = {
             this.$el.prepend(m);
         }
         return this;
+    },
+
+    bbComparator: function(fid){
+        return function(model) {
+            return model.get(fid);
+        };
+    },
+
+    bbComparatorText: function(fid){
+        return function(modela,modelb) {
+            return (modela.get(fid)||'').localeCompare(modelb.get(fid)||'');
+        };
     }
 
-}
-
+};

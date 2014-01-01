@@ -1,3 +1,12 @@
+/*! ***************************************************************************
+ *
+ * evol-utility : demo.js
+ *
+ * Demo
+ *
+ * Copyright (c) 2014, Olivier Giulieri
+ *
+ *************************************************************************** */
 
 var uidef=null;
 function showUIdef(uiModel){
@@ -39,9 +48,6 @@ function setDemo(uiModel, localStorage, data){
                     collection: ms,
                     uiModel: uiModel
                 });
-            el.on('view.save',function(evt){
-                vw.validate(evt);
-            })
 
             $('#recs > a').on('click', function(evt){
                 var id=$(evt.target).index();

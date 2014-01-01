@@ -1,17 +1,12 @@
 /*! ***************************************************************************
  *
- * evol-utility : evol-view-one.js
+ * evol-utility : one.js
  *
  * View one
- * modes: edit, mini, json
  *
- * Copyright (c) 2013, Olivier Giulieri
+ * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
-
-String.prototype.trim = function () {
-    return this.replace(/^\s+|\s+$/g, '');
-}
 
 var Evol = Evol || {},
     EvoUI = Evol.UI,
@@ -20,7 +15,7 @@ var Evol = Evol || {},
 Evol.ViewOne = Backbone.View.extend({
 
     events: {
-        'click .evol-buttons > button': 'click_button',
+        'click > .evol-buttons > button': 'click_button',
         'click .evol-title-toggle': 'click_toggle',
         'click ul.evol-tabs > li > a': 'click_tab',
         'click label > .glyphicon-question-sign': 'click_help',
@@ -29,14 +24,11 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     cardinality: '1',
-    viewName: 'list',
-    prefix: 'fe',
 
     options: {
-        mode: 'edit',
-        compactView: false,
-        button_addAnother: true,
-        style: 'panel-info'
+        button_addAnother: false,
+        style: 'panel-info',
+        titleSelector: ''
     },
 
     initialize: function (opts) {
@@ -45,33 +37,12 @@ Evol.ViewOne = Backbone.View.extend({
 
         this.options.mode=mode;
         this.options.uiModel=opts.uiModel;
-        this.render();
         if(this.model){
             this.model.on('change', function(model){
                 that.setModel(model);
             });
         }
-        if(mode==='new' || mode==='edit'){
-            this.windowSize='big';
-            $(window).resize(function() {
-                var pnls = that.$('.evol-pnl');
-                if($(window).width()>480){
-                    if(that.windowSize!=='big'){
-                        _.each(pnls, function (pnl){
-                            var $p=$(pnl),
-                                ps=$p.data('p-width');
-                            $p.attr('style', 'width:'+ps+'%;');
-                        });
-                        that.windowSize='big';
-                    }
-                }else{
-                    if(that.windowSize!=='small'){
-                        pnls.attr('style', 'width:100%');
-                        that.windowSize='small';
-                    }
-                }
-            });
-        }
+        //TODO set responsive layout
     },
 
     render: function () {
@@ -83,22 +54,35 @@ Evol.ViewOne = Backbone.View.extend({
             this.renderEdit(h, mode);
         }
         this.$el.html(h.join(''));
-        this.setData(this.model); // todo fix lov in render => no need for this line
+        this.setData(this.model);
+        this._updateTitle();
         this.custOn=false;
         return this;
     },
 
-    getFields: function (){
+    getFields: function (condition){
         if(!this._fields){
-            this._fields=EvoDico.fields(this.options.uiModel);
+            this._fields=EvoDico.fields(this.options.uiModel,condition);
+            this._fieldHash={};
+            var that=this;
+            _.each(this._fields,function(f){
+                that._fieldHash[f.id]=f;
+            });
         }
         return this._fields;
     },
 
     setModel: function(model) {
         this.model = model;
-        this.clearErrors();
+        this.clearMessages();
         this.setData(model);
+    },
+
+    setUIModel: function(uimodel) {
+        this.options.uiModel = uimodel;
+        var d=this.getData();
+        this.render()
+            .setData(d);
     },
 
     modelUpdate: function (model) {
@@ -109,78 +93,75 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     getData: function () {
-        var mode = this.options.mode,
-            ft = EvoDico.fieldTypes,
+        var that = this,
             vs = {},
-            fs = this.getFields(),
-            $el=this.$el,
-            selPrefix='#'+this.prefix+'-';
+            fs = this.getFields();
 
-        if(mode && mode==='json'){
-            var jsonStr = $el.children('textarea').val();
-            vs = $.parseJSON(jsonStr);
-        }else{
-            _.each(fs, function (f) {
-                var $f=$el.find(selPrefix+f.id);
-                switch(f.type) {
-                    case ft.bool:
-                        vs[f.id] = $f.prop('checked');
-                        break;
-                    default:
-                        vs[f.id] = $f.val();
-                }
-            });
-        }
+        _.each(fs, function(f){
+            vs[f.id]=that.getFieldValue(f);
+        });
         return vs;
     },
 
     setData: function (m) {
         var fs = this.getFields(),
-            mode=this.options.mode,
             that=this,
             $f,
             prefix='#'+ that.prefix + '-';
-        if(mode && mode==='json'){
-            this.$el.children('textarea').val(JSON.stringify(m, null, 2));
-        }else{
-            _.each(fs, function (f) {
-                $f=that.$(prefix + f.id);
-                if(m){
-                    switch(f.type) {
-                        case 'boolean':
-                            $f.prop('checked',m.get(f.id));
-                            break;
-                        default:
-                            $f.val(m.get(f.id));
-                    }
+        _.each(fs, function (f) {
+            $f=that.$(prefix + f.id);
+            if(m){
+                switch(f.type) {
+                    case 'boolean':
+                        $f.prop('checked',m.get(f.id));
+                        break;
+                    default:
+                        $f.val(m.get(f.id));
                 }
-            });
-        }
+            }
+        });
+        this._updateTitle();
     },
 
-    clear: function (m) {
+    _updateTitle: function (){/*
+        var selector=this.options.titleSelector
+        if(selector && selector!=''){
+            $(selector).html(this.model.get('title'));
+        }*/
+    },
+
+    clear: function () {
         var fs = this.getFields(),
-            mode=this.options.mode,
             that=this,
             $f,
             prefix='#'+ that.prefix + '-';
-        if(mode && mode==='json'){
-            this.$el.children('textarea').val('');
-        }else{
+            this.clearMessages();
             _.each(fs, function (f) {
                 $f=that.$(prefix + f.id);
                 switch(f.type) {
                     case 'boolean':
-                        $f.prop('checked', f.default || '');
+                        $f.prop('checked', f.defaultvalue || '');
                         break;
                     default:
-                        $f.val(f.default || '');
+                        $f.val(f.defaultvalue || '');
                 }
             });
-        }
+        return this;
     },
+
     setFieldValue: function (fid, value){
         this.$('#'+this.fieldViewId(fid)).val(value);
+        return this;
+    },
+    getFieldValue: function (f){
+        var $f=this.$('#'+this.prefix+'-'+f.id);
+        switch(f.type) {
+            case EvoDico.fieldTypes.bool:
+                return $f.prop('checked');
+                break;
+            default:
+                return $f.val();
+        }
     },
 
     showTab: function (tabid) {
@@ -200,14 +181,14 @@ Evol.ViewOne = Backbone.View.extend({
     _renderButtons: function (h, mode) {
         h.push(
             EvoUI.html.clearer,
-            '<div class="evol-buttons form-actions">',
+            '<div class="evol-buttons">',
+            EvoUI.inputButton('cancel', EvolLang.Cancel, 'btn-default'),
             EvoUI.inputButton('save', EvolLang.Save, 'btn-primary')
         );
         if (this.options.button_addAnother && mode!=='json') {
-            h.push(EvoUI.inputButton('save-add', EvolLang.SaveAdd));
+            h.push(EvoUI.inputButton('save-add', EvolLang.SaveAdd, 'btn-default'));
         }
-        h.push(EvoUI.inputButton('cancel', EvolLang.Cancel),
-            '</div>');
+        h.push('</div>');
     },
 
     renderEdit: function (h, mode) {
@@ -270,17 +251,8 @@ Evol.ViewOne = Backbone.View.extend({
             }
             h.push('</div>');
         }
-        //##### BUTTONS #####
         this._renderButtons(h, mode);
-    },
-
-    renderJSON: function (h, mode) {
-        if(this.model){
-            var jsonStr=JSON.stringify(this.model.toJSON(), null, 2);
-            h.push(EvoUI.inputTextMJSON('',jsonStr,10));
-        }
-        //##### BUTTONS #####
-        this._renderButtons(h, mode);
+        this._updateTitle();
     },
 
     renderTabs: function (h, ts) {
@@ -331,7 +303,7 @@ Evol.ViewOne = Backbone.View.extend({
                 EvoUI.HTMLPanelLabel(p.label, pid, 'PanelLabel'),
                 '<fieldset data-pid="', pid, '">');
             _.each(p.elements, function (elem) {
-                h.push('<div style="width:', parseInt(elem.width), '%" class="pull-left evol-fld">');
+                h.push('<div style="width:', parseInt(elem.width, 10), '%" class="pull-left evol-fld">');
                 that.renderField(h, elem, mode);
                 h.push("</div>");
             });
@@ -363,7 +335,7 @@ Evol.ViewOne = Backbone.View.extend({
         }
         var types=EvoDico.fieldTypes,
             fid, fv, fwidth;
-        if (fld.id && fld.id != '') {
+        if (fld.id && fld.id !== '') {
             fid = fld.id;
         } else {
             fid = cleanId(fld.label);
@@ -372,8 +344,8 @@ Evol.ViewOne = Backbone.View.extend({
         if(this.model && this.model.has(fid)){
             if (mode != 'new') {
                 fv = this.model.get(fid);
-            }else if (fld.default){
-                fv = fld.default;
+            }else if (fld.defaultvalue){
+                fv = fld.defaultvalue;
             }else{
                 fv = '';
             }
@@ -422,10 +394,10 @@ Evol.ViewOne = Backbone.View.extend({
                 case types.txtm:
                 case types.html:
 //////    fv = HttpUtility.HtmlEncode(fv);
-                    if (fld.height == null) {
+                    if (fld.height === null) {
                         fld.height = 5;
                     } else {
-                        fHeight = parseInt(fld.height);
+                        fHeight = parseInt(fld.height,10);
                         if (fHeight < 1) {
                             fld.height = 5;
                         }
@@ -452,7 +424,7 @@ Evol.ViewOne = Backbone.View.extend({
                     break;
 //      case types.doc:
                 case types.pix:
-                    if(fv==''){
+                    if(fv===''){
                         h.push('<p class="">No picture</p>');
                     }else{
                         h.push('<img src="',fv,'" class="img-thumbnail">');
@@ -500,7 +472,7 @@ Evol.ViewOne = Backbone.View.extend({
         if (mode != 'view' && fld.required > 0){
             h.push('<span class="evol-required">*</span>');
         }
-        if (fld.help && fld.help!=''){
+        if (fld.help && fld.help!==''){
             h.push(EvoUI.icon('question-sign', ''));
         }
         h.push('</label></div>');
@@ -508,7 +480,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     validate: function () {
         var fs =  this.getFields();
-        this.clearErrors();
+        this.clearMessages();
         if (_.isArray(fs)) {
             this.$el.trigger('view.validate');
             return EvoVal.checkFields(this.$el, fs, this.prefix);
@@ -521,6 +493,28 @@ Evol.ViewOne = Backbone.View.extend({
         //this.$('.evol-warn-error').remove();
         this.$('.has-error').removeClass('has-error');
         this.$('.text-danger').remove();
+        return this;
+    },
+
+    commit: function(fnSuccess, fnError){
+        var msg=this.validate();
+        if(msg===''){
+            if(this.options.mode==='new'){
+                this.model.collection.create(this.getData(), {
+                    success: fnSuccess,
+                    error: fnError
+                });
+            }else{
+                this.model.set(this.getData());
+                this.model.save({
+                    success: fnSuccess,
+                    error: fnError
+                });
+            }
+        }else{
+            this.setMessage('Invalid data', msg, 'warning');
+        }
+        return this;
     },
 
     fieldViewId: function(fid){
@@ -553,45 +547,74 @@ Evol.ViewOne = Backbone.View.extend({
             var $f=$el.closest('.evol-fld'),
                 $fh=$f.find('.help-block');
             if($fh.length>0){
-                $fh.remove();
+                $fh.slideUp(300, function(){
+                    $fh.remove();
+                });
             }else{
-                var $elDes=$('<span class="help-block">' + _.escape(fld.help) + '</span>');
+                var $elDes=$('<span class="help-block">' + _.escape(fld.help) + '</span>').hide();
                 $f.append($elDes);
+                $elDes.slideDown(300);
             }
         }
         return this;
     },
 
-    click_button: function (evt) {
-        evt.preventDefault();
-        var bId = $(evt.currentTarget).attr('id');
-        var msg=this.validate()
-        if(msg==''){
-            //if ((bId=='save' || bId=='save-add')) {
-            //    return;
-            //}
-            if(this.options.mode==='new'){
-                this.model.collection.create(this.getData(), {
-                    success: function(m){
-                        debugger
-                    },
-                    error: function(m){
-                        debugger
+    /*
+     _setResponsive: function (evt) {
+         if(mode==='new' || mode==='edit'){
+            this.windowSize='big';
+            $(window).resize(function() {
+                var pnls = that.$('.evol-pnl');
+                 if($(window).width()>480){
+                    if(that.windowSize!=='big'){
+                        _.each(pnls, function (pnl){
+                            var $p=$(pnl),
+                            ps=$p.data('p-width');
+                            $p.attr('style', 'width:'+ps+'%;');
+                        });
+                        that.windowSize='big';
                     }
-                });
-            }else{
-                this.model.set(this.getData());
-                this.model.save({
-                    success: function(m){
-                        debugger
-                    },
-                    error: function(m){
-                        debugger
-                    }
-                });
-            }
-            this.$el.trigger('button.' + bId);
+                 }else{
+                     if(that.windowSize!=='small'){
+                         pnls.attr('style', 'width:100%');
+                         that.windowSize='small';
+                     }
+                }
+             });
+         }
+     }*/
+
+    setMessage: function(title, content,style){
+        var $msg=this.$('[data-id="msg"]');
+        if($msg.length){
+            $msg.html('<strong>'+title+'</strong>'+ content);
+        }else{
+            this.$el.prepend(EvoUI.HTMLMsg(title, content,style));
         }
+    },
+
+    clearMessage: function(){
+        var $msg=this.$('[data-id="msg"]').fadeOut(300,function(){
+            $msg.remove();
+        })
+    },
+
+    clearMessages: function(){
+        return this.clearErrors().clearMessage();
+    },
+
+    click_button: function (evt) {
+        var that=this,
+            bId = $(evt.currentTarget).attr('id');
+        evt.stopImmediatePropagation();
+        this.commit(function(){
+            that.setMessage('Record Saved', 'Record was saved.', 'success');
+            if ((bId=='save-add')) {
+                //that.new();
+            }
+        },function(){
+            alert('error'); //TODO make it nice looking
+        });
     },
 
     click_toggle: function (evt) {
@@ -644,6 +667,7 @@ Evol.ViewOne = Backbone.View.extend({
             id=$e.closest('label').attr('for'),
             eType=$e.data('type');
 
+        evt.stopImmediatePropagation();
         this.showHelp(id, eType, $e);
         /*if(evt.shiftKey){
             id=0;
@@ -662,6 +686,7 @@ Evol.ViewOne = Backbone.View.extend({
             id=$e.data('id'),
             eType=$e.data('type');
 
+        evt.stopImmediatePropagation();
         EvoDico.showDesigner(id, eType, $e);
         this.$el.trigger(eType+'.customize', {id: id, type:eType});
     }
@@ -671,17 +696,20 @@ Evol.ViewOne = Backbone.View.extend({
 
 // ############ Validation #################################################################
 
+// this is some very old code from Evolutility ASP.net version
+// TODO rewrite or use another open source
 var EvoVal = {
 
     checkMaxLen: function (F, maxL) {
-        if (F.value.length > maxL)
-            F.value = F.value.substring(0, maxL - 1)
+        if (F.value.length > maxL){
+            F.value = F.value.substring(0, maxL - 1);
+        }
     },
 
     checkNum: function (F, t) {
         var nv, fv = F.value;
         if (t.substring(0, 1) == 'i')
-            nv = parseInt(fv, 10)
+            nv = parseInt(fv, 10);
         else {
             var ln = EvolLang.LOCALE;
             if (ln == 'FR' || ln == 'DA')
@@ -689,7 +717,7 @@ var EvoVal = {
             nv = parseFloat(fv);
         }
         if (isNaN(nv))
-            F.value = ''
+            F.value = '';
         else if (fv != nv)
             F.value = nv;
     },
@@ -721,12 +749,13 @@ var EvoVal = {
                 $f.val(nicEditors.findEditor(f.id).getContent());
             }
             if ($f.length > 0) {
-                var noErr = true;
+                var noErr = true,
+                    p, msgf;
                 // Check empty & type
                 if (fd.required > 0) {
                     if (isEmpty($f, isHTML)) {
-                        var msgf = labMsg(EvolLang.empty),
-                            p = $f.parent();
+                        p = $f.parent();
+                        msgf = labMsg(EvolLang.validation.empty);
                         EvoVal.setValidationFlags(p, msgf);
                         noErr = false;
                     } else {
@@ -738,45 +767,45 @@ var EvoVal = {
                     typeCheck();
                 }
                 // Check regexp
-                if (fd.rg != null) {
+                if (fd.rg !== null && fd.rg !== undefined) {
                     var rg = new RegExp(fd.rg);
                     if (!$f.val().match(rg)) {
-                        var msgf = labMsg(EvolLang.reg, fd.rg),
-                            p = $f.parent();
+                        p = $f.parent();
+                        msgf = labMsg(EvolLang.validation.reg, fd.rg);
                         EvoVal.setValidationFlags($f.parent(), msgf);
                     }
-                }
+                }/*
                 // Check custom
-                if (fd.jsv != null) {
+                if (fd.jsv !== null) {
                     p = eval([fd.jsv, '("', Evol.prefix, fd.id, '","', fd.label, '")'].join(''));
-                    if (p != null && p.length > 0) {
+                    if (p !== null && p.length > 0) {
                         EvoVal.setValidationFlags($f.parent(), labMsg(p));
                     }
-                }
+                }*/
                 // Check min & max
                 if (noErr) {
-                    var fv = $f.val().trim();
-                    if (fv != '') {
-                        if (fd.max != null && parseFloat(fv) > fd.max) {
-                            EvoVal.setValidationFlags($f.parent(), labMsg(EvolLang.max, fd.max));
+                    var fv = EvoUI.trim($f.val());
+                    if (fv !== '') {
+                        if (fd.max !== null && parseFloat(fv) > fd.max) {
+                            EvoVal.setValidationFlags($f.parent(), labMsg(EvolLang.validation.max, fd.max));
                         }
-                        if (fd.min != null && parseFloat(fv) < fd.min) {
-                            EvoVal.setValidationFlags($f.parent(), labMsg(EvolLang.min, fd.min));
+                        if (fd.min !== null && parseFloat(fv) < fd.min) {
+                            EvoVal.setValidationFlags($f.parent(), labMsg(EvolLang.validation.min, fd.min));
                         }
                     }
                 }
             }
         }
         if (msgs.length > 0) {
-            return [EvolLang.intro, '<ul><li>', msgs.join('<li>'), '</li></ul>'].join('');
+            return [EvolLang.validation.intro, '<ul><li>', msgs.join('<li>'), '</li></ul>'].join('');
         } else {
             return '';
         }
 
         function typeCheck() {
             var ft = EvoDico.fieldTypes,
-                fv = $f.val().trim();
-            if (fv != '')
+                fv = EvoUI.trim($f.val());
+            if (fv !== '')
                 switch (fd.type) {
                     case ft.integer:
                     case ft.email:
@@ -786,7 +815,7 @@ var EvoVal = {
                         break;
                     case ft.dec:
                         var myRegExp = evoRegEx[fd.type + EvolLang.LOCALE];
-                        if (myRegExp == null) {
+                        if (myRegExp === null) {
                             myRegExp = evoRegEx[fd.type + "EN"]; // default to English with "."
                         }
                         if (!myRegExp.test(fv))
@@ -795,7 +824,7 @@ var EvoVal = {
                     case ft.date:
                     case ft.datetime:
                     //case ft.time:
-                        if ((fv != '') && (!_.isDate(new Date(fv)))) {
+                        if ((fv !== '') && (!_.isDate(new Date(fv)))) {
                             EvoVal.setValidationFlags($f.parent(), labMsg(EvolLang[fd.type]));
                         }
                         break;
@@ -815,14 +844,14 @@ var EvoVal = {
                  v = $f.val().trim() == '';
                  }   */
             } else {
-                v = $f.val().trim() == '';
+                v = EvoUI.trim($f.val()) === '';
             }
             return v;
         }
 
         function labMsg(msg, r2) {
             var m = msg.replace('{0}', fd.label);
-            if (r2 != null) {
+            if (r2 !== null) {
                 m = m.replace('{1}', r2);
             }
             msgs.push(m);
@@ -831,4 +860,4 @@ var EvoVal = {
 
     }
 
-}
+};

@@ -1,8 +1,8 @@
 /*! ***************************************************************************
  *
- * evol-utility : evol-ui.js
+ * evol-utility : ui.js
  *
- * Copyright (c) 2013, Olivier Giulieri 
+ * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -10,17 +10,27 @@ var Evol = Evol || {};
 
 Evol.UI = {
 
+    version: '0.0.1',
+
     // html fragments
     html: {
         trTableEnd: '</tr></table>',
         TdTrTableEnd: '</td></tr></table>',
-        clearer: '<div class="clearfix"></div>'
+        clearer: '<div class="clearfix"></div>',
+        emptyOption: '<option value=""></option>'
     },
 
     icons: {
         customize: function (id, type) {
             return ['<i class="glyphicon glyphicon-wrench" data-id="', id, '" data-type="', type, '"></i>'].join('');
         }
+    },
+
+    styles:{
+        'success':'success',
+        'info':'info',
+        'warning':'warning',
+        'danger':'danger'
     },
 
     // reusable html
@@ -39,13 +49,13 @@ Evol.UI = {
         return ['<a class="Field" href="', url, '" id="', fID, '">', label, '</a>'].join('');
     },
     linkEmail: function (fID, label, email) {
-        return ['<a class="Field" href="mailto:', email, '" id="', fID, '">', label, '</a>'].join('');
+        return EvoUI.link(fID, label, email ? 'mailto:' + email : '');
     },
     inputText: function (fID, fV, fd) {
         var h = ['<input class="form-control" type="text" id="', fID, '" value="', fV];
         if (fd) {
             _.each(['min', 'max', 'maxlength', 'max-width', 'min-width', 'placeholder'], function (item) {
-                if (fd[item] != undefined) {
+                if (fd[item] !== 'undefined') {
                     h.push('" ', item, '="', fd[item]);
                 }
             });
@@ -96,11 +106,20 @@ Evol.UI = {
     },
     inputCheckbox: function (fID, fV) {
         var fh = ['<input type="checkbox" id="', fID, '"'];
-        if (fV != null && fV != '' && fV != '0') {
+        if (fV !== null && fV !== '' && fV !== '0') {
             fh.push(' checked="checked"');
         }
         fh.push(' value="1">');
         return fh.join('');
+    },
+    inputCheckboxLOV:function(fLOV){
+        var h=[];
+        for(var i in fLOV){
+            var lv=fLOV[i];
+            h.push('<input type="checkbox" id="',lv.id,'" value="',lv.id,'"/>',
+                '<label for="',lv.id,'">',lv.text,'</label> ');
+        }
+        return h.join('');
     },
     inputRadio: function (fN, fV, fLbl, sel, fID) {
         return ['<label for="', fID, '"><input id="', fID, '" name="', fN, '" type="radio" value="', fV,
@@ -119,8 +138,22 @@ Evol.UI = {
     inputHidden: function (fID, fV) {
         return ['<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>'].join('');
     },
+    inputSelectBegin: function (fID, css, emptyOption) {
+        var h=['<select id="', fID, '" class="form-control ',css,'">'];
+        if(emptyOption){
+            h.push(Evol.UI.html.emptyOption);
+        }
+        return h.join('');
+    },
     inputOption: function (fID, fV) {
         return ['<option value="', fID, '">', fV, '</option>'].join('');
+    },
+    inputOptions: function (fields) {
+        var opts=[];
+        _.each(fields,function(f){
+            opts.push(EvoUI.inputOption(f.id, f.text));
+        });
+        return opts.join('');
     },
     inputButton: function (id, label, cls) {
         return '<button type="button" id="' + id + '" class="btn' + (cls ? ' ' + cls : '') + '">' + label + '</button>';
@@ -146,9 +179,13 @@ Evol.UI = {
         ].join('');
     },
 
+    HTMLEmptyPanel: function(id, css, style){
+        return '<div class="'+css+' panel panel-'+style+'" data-id="'+id+'"></div>';
+    },
+
     HTMLMsg: function (title, content, style, dismissable) {
         return [
-            '<div class="alert alert-',style,
+            '<div data-id="msg" class="alert alert-',style || 'info',
             dismissable?
                 ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'
                 :'">',
@@ -164,27 +201,37 @@ Evol.UI = {
     },
 
     // get w/ automatic create if not in DOM
-    getOrCreate: function (fID) {
-        var e = $('#' + fID);
-        if (e == null) {
-            e = $('<div id="' + fID + "></div>");
-            $(body).append(e);
+    getOrCreate: function (fID,$holder) {
+        var e = $holder.find('#' + fID);
+        if (e.length===0) {
+            $('<div id="' + fID + '"></div>');
+            ($holder || $(body)).append(e);
+            e = $holder.find('#' + fID);
         }
         return e;
     },
 
     // insert a dataSet into a Backbone collection
     insertCollection: function (collection, dataSet){
-        if(collection.length==0){
+        if(collection.length===0){
             _.each(dataSet,function(d){
                 collection.create(d);
-            })
+            });
         }
     },
 
-    capFirstLetter: function(word){
+    capFirstLetter: function(word){ // TODO use _.capitalize(word);
         if(word && word.length>0){
+            //return _.capitalize(word);
             return word.substring(0,1).toUpperCase() + word.substring(1);
+        }else{
+            return '';
+        }
+    },
+
+    trim: function(stringValue){ // TODO use _.trim(word);
+        if(stringValue){
+            return stringValue.replace(/^\s+|\s+$/g,'');
         }else{
             return '';
         }
@@ -198,5 +245,4 @@ Evol.UI = {
         }
     }
 
-}
-
+};
