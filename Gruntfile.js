@@ -44,6 +44,8 @@ module.exports = function (grunt) {
                     'js/one-*.js',
 
                     'js/toolbar.js',
+                    'js/export.js',
+                    'js/filter.js',
                     'js/ui-models/dico/field.js'
                 ],
                 dest: '<%= pkg.target %>/evol-utility.js'
@@ -59,7 +61,8 @@ module.exports = function (grunt) {
                     'css/many.css',
                     'css/ui-dico.css',
                     'css/toolbar.css',
-                    'css/one.css'
+                    'js/export.css',
+                    'js/filter.css'
                 ],
                 dest: '<%= pkg.target %>/evol-utility.css'
             }
@@ -71,20 +74,19 @@ module.exports = function (grunt) {
         jshint: {
             dev: [
                 // --- tools ---
-                //'Gruntfile.js',
+                'Gruntfile.js',
                 'package.json',
 
                 // --- dist ---
-                'js/ui.js',
-                'js/ui-*.js',
+                'js/ui*.js',
                 'js/i18n/EN.js',
 
-                'js/many.js',
-                'js/many-*.js',
-                'js/one.js',
-                'js/one-*.js',
+                'js/many*.js',
+                'js/one*.js',
 
                 'js/toolbar.js',
+                'js/export.js',
+                'js/filter.js',
                 'js/ui-models/dico/field.js',
 
                 // --- ui models ---

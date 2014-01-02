@@ -1,0 +1,65 @@
+/*! ***************************************************************************
+ *
+ * evol-utility : evol-view-filter.js
+ *
+ * Copyright (c) 2013, Olivier Giulieri
+ *
+ *************************************************************************** */
+
+.evo-bNew, .evo-bAdd, .evo-bDel, .evo-bSubmit {
+	margin:1px 6px 6px 1px;	
+}
+.evo-lBold{
+	font-weight: bold;
+}
+.evo-lLight{
+	font-weight: normal;
+}
+.evo-filters{
+    min-height:20px;
+    padding:6px 1px 1px 6px;
+}
+.evo-editFilter > #value > label{
+    margin-left:6px;
+}
+.evo-filters button {
+    margin:1px 6px 6px 1px;
+    padding-right:6px;
+}
+.evo-filters button span.ui-button-text{
+	padding: 4px 33px 4px 12px;
+}
+.evo-filters .glyphicon-remove{
+    margin:0 6px;
+}
+
+.evo-editFilter{
+	vertical-align: middle;
+}
+.evo-editFilter:after{
+    clear: left;
+}
+.evo-editFilter > select,
+.evo-editFilter > input,
+.evo-editFilter > span{
+    float: left;
+	margin:1px 6px 6px 1px;
+	font-size: 1.1em;
+    width:auto;
+}
+.evo-editFilter span#value {
+	margin-right:5px;
+}
+.evo-editFilter #value input[type="checkbox"] {
+	margin-left:5px;
+}
+.evo-editFilter input[type="number"]#value,
+.evo-editFilter input[type="time"]#value,
+.evo-editFilter input[type="time"]#value2 {
+	width:6em;
+}
+
+.evo-editFilter input.hasDatepicker{
+	width:7em;
+}
+
