@@ -1,6 +1,5 @@
 node_modules
 bower_components
-fonts
 js/vendors
 css/bootstrap*.css
 *-nogit
