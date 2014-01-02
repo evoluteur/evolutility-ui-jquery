@@ -7,7 +7,6 @@ css/bootstrap*.css
 *-nogit.*
 *.xml
 
-demo/pix/
 dico/
 dico/pix/
 doc/pix/
