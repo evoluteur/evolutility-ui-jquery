@@ -3,118 +3,6 @@
 /*   (c) 2013 Olivier Giulieri */
 
 
-/* evol-utility : evol-dico.css */
-
-.evol-des-field,
-.evol-des-panel {
-    position: absolute;
-    overflow: auto;
-    background-color: white;
-    box-shadow: 6px 6px 3px #a0a0a0;
-    border: #696969 1px solid;
-    padding:4px;
-}
-
-.evol-des-field {
-    width:500px;
-    height:600px;
-}
-
-.evol-des-panel {
-    width:400px;
-    height:500px;
-}
-
-
-
-
-
-/*  evol-utility : evol-view-many.css  */
-
-/* --- list --- */
-
-img.evol-table-icon{
-	margin-right: 6px !important;
-}
-.table {
-    margin-bottom: 0 !important;
-}
-.table th > span {
-	white-space:nowrap;
-	margin-right:5px;
-}
-.table th .glyphicon-chevron-up {
-    width:50px;
-    cursor: pointer;
-}
-.table th .glyphicon {
-    display:none;
-    position:absolute;
-}
-.table th:hover .glyphicon {
-    display: inline !important;
-    cursor: pointer;
-}
-.table th .glyphicon.evol-last-sort {
-    display:none;
-    position:absolute;
-}
-
-/* --- list > sort icons --- */
-
-.evol-sort-icons {
-    position: relative;
-    top:3px;
-    padding: 3px;
-    width:300px;
-}
-.evol-sort-icons > .glyphicon {
-    position: absolute;
-    top:2px;
-}
-.evol-sort-icons > .glyphicon-chevron-up {
-    left:7px;
-}
-.evol-sort-icons > .glyphicon-chevron-down {
-    left:24px;
-}
-
-.panel-heading > .evol-title-toggle{
-    display: none;
-}
-.panel-heading:hover > .evol-title-toggle{
-    display: inline;
-}
-
-/* --- cards --- */
-
-.evol-many-cards > div.panel {
-    float:left;
-    width:240px;
-    min-width:140px;
-    height:150px;
-    margin: 5px;
-    padding:10px;
-    border-radius: 10px;
-}
-
-/* --- charts --- */
-
-.evol-chart-holder{
-    float:left;
-    text-align: center;
-    background-color :#FFFFFF;
-    padding: 10px 5px 5px 5px;
-    margin:10px;
-    width: 400px !important;
-    min-height:300px;
-}
-.evol-chart-title{
-    text-align:center;
-    padding:10px 20px 30px;
-}
-
-
 /*  evol-utility : evol-view-one.css  */
 
 /* --- panels & tabs --- */
@@ -204,15 +92,127 @@ img.evol-table-icon{
     margin-left:-10px;
 }
 
-/* evol-utility : evol-view-toolbar.css  */
+/*  evol-utility : evol-view-many.css  */
 
-.dropdown-menu > li > a > glyphicon{
-    padding-right:5px;
+/* --- list --- */
+
+img.evol-table-icon{
+	margin-right: 6px !important;
+}
+.table th .glyphicon-chevron-up,
+.table th .glyphicon-chevron-down{
+    width:50px;
+    cursor: pointer;
+}
+.table th .glyphicon {
+    display:none;
+    position:absolute;
+}
+.table th:hover .glyphicon {
+    display: inline !important;
+    cursor: pointer;
+}
+.table th .glyphicon.evol-last-sort {
+    display:none;
+    position:absolute;
 }
 
-.navbar-nav > li > div {
-    padding: 15px 20px 15px 5px;
-    line-height: 20px;
-    color: #777;
+/* --- list > sort icons --- */
+
+.evol-sort-icons {
+    position: relative;
+    top:3px;
+    padding: 3px;
+    width:300px;
+}
+.evol-sort-icons > .glyphicon {
+    position: absolute;
+    top:2px;
+}
+.evol-sort-icons > .glyphicon-chevron-up {
+    left:7px;
+}
+.evol-sort-icons > .glyphicon-chevron-down {
+    left:24px;
+}
+
+.panel-heading > .evol-title-toggle{
+    display: none;
+}
+.panel-heading:hover > .evol-title-toggle{
+    display: inline;
+}
+
+/* --- cards --- */
+
+.evol-many-cards > div.panel {
+    float:left;
+    width:240px;
+    min-width:140px;
+    height:150px;
+    margin: 5px;
+    padding:10px;
+    border-radius: 10px;
+}
+
+/* --- charts --- */
+
+.evol-chart-holder{
+    float:left;
+    text-align: center;
+    background-color :#FFFFFF;
+    padding: 10px 5px 5px 5px;
+    margin:10px;
+    width: 400px !important;
+    min-height:300px;
+}
+.evol-chart-title{
+    text-align:center;
+    padding:10px 20px 30px;
+}
+
+
+/* evol-utility : evol-dico.css */
+
+.evol-des-field,
+.evol-des-panel {
+    z-index: 2000;
+    position: absolute;
+    overflow: auto;
+    background-color: white;
+    box-shadow: 6px 6px 3px #a0a0a0;
+    border: #696969 1px solid;
+    padding:4px;
+}
+
+.evol-des-field {
+    width:400px;
+    height:500px;
+}
+
+.evol-des-panel {
+    width:400px;
+    height:500px;
+}
+label > .glyphicon-wrench {
+    cursor: pointer;
+}
+
+
+
+
+/* evol-utility : evol-view-toolbar.css  */
+
+.evo-toolbar{
+    border: 1px solid #bce8f1;
     border-radius: 4px;
+    margin-bottom:10px;
+    padding:3px;
+}
+.evo-toolbar > [data-cid="views"]{
+    color:black;
+}
+
+.evo-toolbar > ul > .evo-sel .glyphicon:before{
+    color:black;
 }
