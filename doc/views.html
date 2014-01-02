@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Views</title>
+    <link href="../css/demo.css" rel="stylesheet" />
+    <link href="../dist/evol-utility.css" rel="stylesheet" />
+    <link id="bwCSS" href="../dist/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+
+<div id="evo-toolbar" class="">
+    <div class="evol-logo"><a href="../index.html">evol-utility.js</a></div>
+    <ul class="evo-nav-tabs">
+        <li><a href="../demo/index.html">demo</a></li>
+        <li><a href="../doc/index.html" class="sel">documentation</a></li>
+        <li><a href="https://github.com/evoluteur/evol-utility" target="_new">GitHub</a></li>
+    </ul>
+    <div class="doc-links">
+        <a href="ui-model.html">ui-model</a> -
+        <a href="views.html" class="sel">views</a> -
+        <a href="actions.html">actions</a>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<h1><strong>Views</strong></h1>
+
+<p>
+    2 sets of views:
+<ul>
+    <li>for <strong>one</strong> model</li>
+    <li>for a collection of <strong>many</strong> models</li>
+</ul>
+</p>
+
+<h2><strong>Views for Many</strong></h2>
+
+<p>Backbone views to see a collection w/ many records.</p>
+<p>All views are defined by the same <a href="ui-model.html">ui-model</a> defines</p>
+
+
+<h3>list</h3>
+<p>Tabular view</p>
+<code>
+    new Evol.ViewMany.List(myConfig);</code>
+
+<h3>cards</h3>
+<p>Cards view</p>
+<code>
+    new Evol.ViewMany.Cards(myConfig);</code>
+
+
+<h3>charts</h3>
+<p>Charts</p>
+<code>
+    new Evol.ViewMany.Charts(myConfig);</code>
+
+
+
+<h2><strong>Views for One</strong></h2>
+
+<p>Backbone views to edit one model (a record at a time)</p>
+<h3>edit</h3>
+<p>All fields</p>
+<code>
+    new Evol.ViewOne.Edit(myConfig);</code>
+
+<h3>mini</h3>
+<p>Only important fields</p>
+<code>
+    new Evol.ViewOne.Mini(myConfig);</code>
+
+<h3>json</h3>
+<p>JSON representation of the data.</p>
+<code>
+    new Evol.ViewOne.JSON(myConfig);</code>
+
+<h2>Methods</h2>
+
+<h3>All views</h3>
+
+getFields(): returns the list of fields used by the view.
+
+
+<h3>One</h3>
+
+<p>getData()</p>
+<p>setData(data)</p>
+<p>getFields()</p>
+<p>clear()</p>
+setFieldValue: function (fid, value)
+
+<h3>Many</h3>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meta Model</title>
+    <link href="../css/demo.css" rel="stylesheet" />
+    <link href="../dist/evol-utility.css" rel="stylesheet" />
+    <link id="bwCSS" href="../dist/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+
+<div id="evo-toolbar" class="">
+    <div class="evol-logo"><a href="../index.html">evol-utility.js</a></div>
+    <ul class="evo-nav-tabs">
+        <li><a href="../demo/index.html">demo</a></li>
+        <li><a href="../doc/index.html" class="sel">documentation</a></li>
+        <li><a href="https://github.com/evoluteur/evol-utility" target="_new">GitHub</a></li>
+    </ul>
+    <div class="doc-links">
+        <a href="ui-model.html" class="sel">ui-model</a> -
+        <a href="views.html">views</a> -
+        <a href="actions.html">actions</a>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<ul style="float:right;padding:40px 5px;">
+    <li><a href="#object">object</a></li>
+    <li><a href="#field">field</a></li>
+    <li><a href="#section">section</a></li>
+    <li><a href="#sample">sample ui-models</a></li>
+</ul>
+
+
+<h1>ui-model</h1>
+
+<p>Let's make a model for the UI the same way Backbone.js provides you a model for your data.</p>
+
+<p>An object containing tabs containing panels containing fields. This ui-model defines all <a href="views.html">views</a>.</p>
+
+<p>This is not implemented yet but a work in progress based on <a href="http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications" target="evomm">Evolutility minimalist meta-model</a>.</p>
+
+
+<section id="object">
+<h2>object</h2>
+
+<p><code>form</code> is the root element. It doesn't represent one
+    single web form, but all necessary web forms (Edit, View, List, Search,
+    Advanced Search, Export) at once.
+    It has the optional attributes <code>label</code>, <code>description</code> and <code>version</code>, and the required namespace <code>xmlns</code>.
+</p>
+
+<p>The <code>form</code> element contains one element <code>
+    data</code> and one or more elements <code>panel</code>. Fields are displayed or not on each web form based on
+    the attributes <code>search</code>, <code>
+        searchlist</code>, and <code>searchadv</code>.</p>
+
+<p>
+
+
+<table class="table table-bordered">
+    <tbody><tr>
+        <td style="width: 120px; ">entity
+        </td>
+        <td>User's object name for the database object (for example: &quot;task&quot; for a
+            to do list application).
+        </td>
+    </tr>
+    <tr>
+        <td>entities
+        </td>
+        <td>Plural for <code>entity</code> (example &quot;tasks&quot; for the to do list).
+        </td>
+    </tr>
+    <tr>
+        <td>elements[]
+        </td>
+        <td>
+            Array of tabs or panels.
+        </td>
+    </tr>
+    <tr>
+        <td>icon
+        </td>
+        <td>Filename of the records icon (same one for all records).
+            <br />
+            Example: <code>icon</code> =&quot;todo.png&quot;
+        </td>
+    </tr>
+    <tr>
+        <td>$title</td>
+        <td>jQuery selector for an element outside of the View to show item main fild as a title on navigation.
+            <br />
+            Example: <code>$title</code>=&quot;#title&quot; </td>
+    </tr>
+    </tbody></table>
+</section>
+
+<section id="field">
+    <h2>field</h2>
+    <p>The elements <code>field</code> represents fields on the screen, and database columns at once. It is
+        the most used element and the element with the most attributes. Database
+        columns hidden to the user (like the primary key of the driving table) are not
+        declared.</p>
+
+    <table class="table table-bordered">
+        <tbody>
+
+        <tr>
+            <th colspan="2">Identity</th>
+        </tr>
+        <tr>
+            <td>attribute </td>
+            <td>Model attribute mapping to the field.</td>
+        </tr>
+        <tr>
+            <td>id </td>
+            <td>Field Id in the UI.</td>
+        </tr>
+        <tr>
+            <td>label, labelone,<br /> labelmany
+            </td>
+            <td>Field title (in different views). Only <code>label</code> is mandatory and will be the default for all other modes if not specified.
+            </td>
+        </tr>
+        <tr>
+            <td>type
+            </td>
+            <td>
+                The type of the field in the UI.
+
+                <ul class="indent list-unstyled">
+                    <li><span data-id="#boolean"><img src="pix/dico/ft-bool.gif" alt="" class="Icon">boolean</span></li>
+                    <li><span data-id="#date"><img src="pix/dico/ft-date.gif" alt="" class="Icon">date, datetime, time</span></li>
+                    <li><span data-id="#decimal"><img src="pix/dico/ft-dec.gif" alt="" class="Icon">decimal, integer</span></li>
+                    <li><span data-id="#document"><img src="pix/dico/ft-doc.gif" alt="" class="Icon">document</span></li>
+                    <li><span data-id="#email"><img src="pix/dico/ft-email.gif" alt="" class="Icon">email, url</span></li>
+                    <li><span data-id="#formula"><img src="pix/dico/ft-fn.gif" alt="" class="Icon">formula</span></li>
+                    <li><span data-id="#html"><img alt="" class="Icon" src="pix/dico/ft-htm.gif">html (RTF)</span></li>
+                    <li><span data-id="#image"><img src="pix/dico/ft-img.gif" alt="" class="Icon">image</span></li>
+                    <li><span data-id="#lov"><img src="pix/dico/ft-lov.gif" alt="" class="Icon">lov (list of values)</span></li>
+                    <li><span data-id="#text"><img src="pix/dico/ft-txt.gif" alt="" class="Icon">text</span></li>
+                    <li><span data-id="#textmultiline"><img src="pix/dico/ft-txtml.gif" alt="" class="Icon">textmultiline</span></li>
+                </ul>
+            </td>
+        </tr>
+
+        <tr>
+            <th colspan="2">Layout</th>
+        </tr>
+        <tr>
+            <td >css
+            </td>
+            <td>CSS class name for the specific field.
+            </td>
+        </tr>
+        <tr>
+            <td>csslabel
+            </td>
+            <td>CSS class name for the specific field label (in modes Edit and View).
+            </td>
+        </tr>
+        <tr>
+            <td>format
+            </td>
+            <td>Field format (for fields of type boolean, date, decimal, or integer).
+                <br />
+                Example: <code>format</code>=&quot;'$'#,##0.00&quot;
+            </td>
+        </tr>
+        <tr>
+            <td>height
+            </td>
+            <td>Height of the field, in number of rows (default to 1 for all field except
+                fields of type TextMultilines).
+            </td>
+        </tr>
+        <tr>
+            <td>help
+            </td>
+            <td>Help tooltip for the field (only used in Edit mode).
+            </td>
+        </tr>
+        <tr>
+            <td>img
+            </td>
+            <td>Image to display (for fields of type &quot;boolean&quot; or &quot;url&quot;) in Edit or View modes.
+            </td>
+        </tr>
+        <tr>
+            <td>width
+            </td>
+            <td><p>Width of the field in percentage of the Panel it belongs to.
+            </p></td>
+        </tr>
+
+
+        <tr>
+            <th colspan="2">Validation</th>
+        </tr>
+        <tr>
+            <td>defaultvalue
+            </td>
+            <td>Default value for the field displayed while creating a new record.
+            </td>
+        </tr>
+        <tr>
+            <td>max</td>
+            <td>Maximum value allowed for the field.</td>
+        </tr>
+        <tr>
+            <td>maxlength</td>
+            <td>Maximum number of characters allowed for the field value.
+            </td>
+        </tr>
+        <tr>
+            <td>min</td>
+            <td><p>Minimum value allowed for the field.</p></td>
+        </tr>
+        <tr>
+            <td>minlength</td>
+            <td>Minimum number of characters allowed for the field value to be valid.
+            </td>
+        </tr>
+        <tr>
+            <td>regexp
+            </td>
+            <td>Regular expression to validate the field value against.
+            </td>
+        </tr>
+        <tr>
+            <td>required
+            </td>
+            <td>Determines if the field is required for saving the record. The Javascript for client-side
+                validation is automatically generated.
+            </td>
+        </tr>
+        <tr>
+            <td>jsvalidation</td>
+            <td>Name of the Javascript method for the field validation.</td>
+        </tr>
+
+
+        <tr>
+            <th colspan="2">Behavior</th>
+        </tr>
+        <tr>
+            <td>link
+            </td>
+            <td>Forces the field to be displayed as a link to another web page. It can use
+                the following variables @itemid, @userid, @fieldid.
+            </td>
+        </tr>
+        <tr>
+            <td>linklabel
+            </td>
+            <td>Display a sentence or an image as the link. Can also be a function (model)
+            </td>
+        </tr>
+        <tr>
+            <td>linktarget
+            </td>
+            <td>Direct link click to a new browser.
+            </td>
+        </tr>
+        <tr>
+            <td>optional
+            </td>
+            <td>Filter condition to hide the field. Example: function(model){return model.get('type')=='integer';}
+            </td>
+        </tr>
+        <tr>
+            <td>readonly
+            </td>
+            <td>
+                <code>readonly</code>=1 presents edition of the field. <code>
+                readonly</code>=2 presents edition of the field, but allows typing in
+                insertion.&nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td>sortable
+            </td>
+            <td>Column can be sorted by the field value (using ViewMany).
+            </td>
+        </tr>
+        <tr>
+            <td>tooltip
+            </td>
+            <td>Tooltip when the mouse is over the field.
+            </td>
+        </tr>
+        <tr>
+            <td>viewcharts
+            </td>
+            <td>Determines if a chart of record grouped by the field is shown (using ViewMany in chart mode).
+            </td>
+        </tr>
+        <tr>
+            <td>viewmany, viewlist, <br/>
+                viewcards, viewedit, <br/>
+                viewmini, viewexport
+            </td>
+            <td>Determines if the field is available in specific views.
+            </td>
+        </tr>
+        </tbody></table>
+</section>
+
+<section id="sections">
+    <h2>sections</h2>
+
+    <h3>panel</h3>
+    <p>The <code>panel</code> element is used to visually group fields together on the screen.</p>
+
+    <table class="table table-bordered">
+        <tbody><tr>
+            <td style="width: 120px; ">css
+            </td>
+            <td>CSS class for the panel. The default value is &quot;Panel&quot;.
+            </td>
+        </tr>
+        <tr>
+            <td>csslabel
+            </td>
+            <td>
+                CSS class for the panel title. The default value is &quot;PanelLabel&quot;.
+            </td>
+        </tr>
+        <tr>
+            <td>elements[]
+            </td>
+            <td>
+                Array of fields.
+            </td>
+        </tr>
+        <tr>
+            <td>label
+            </td>
+            <td>Panel title.
+            </td>
+        </tr>
+        <tr>
+            <td>optional
+            </td>
+            <td>
+                Skips the panel from displaying, if every field contained is empty and
+                optional (in View mode only).
+            </td>
+        </tr>
+        <tr>
+            <td>width
+            </td>
+            <td>Width of the panel in percentage of the total width of the form.<br />
+                Example: <code>width</code>=&quot;100&quot; for the full width.
+            </td>
+        </tr>
+        </tbody></table>
+
+        <h3>tab</h3>
+    <p>
+        The <code>tab</code> element can be used to group panels together and view them a group at a time. This element is optional.</p>
+    <table class="table table-bordered">
+        <tbody><tr>
+            <td style="width: 120px; ">
+                css
+            </td>
+            <td>
+                CSS class for the tab. The default value is &quot;Tab&quot;.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                csslabel
+            </td>
+            <td>
+                CSS class for the tab title. The default value is &quot;TabLabel&quot;.
+            </td>
+        </tr>
+        <tr>
+            <td>elements[]
+            </td>
+            <td>
+                Array of panels.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                label
+            </td>
+            <td>
+                Tab title.
+            </td>
+        </tr>
+        </tbody></table>
+</section>
+
+<section id="sample">
+
+    <h2>Sample UI-models</h2>
+
+    <p>UI-model for a task list:</p>
+
+    <iframe style="width:100%;height:300px" src="../js/ui-models/apps/todo.js"></iframe>
+
+
+    <p>UI-model for an addressbook:</p>
+
+    <iframe style="width:100%;height:300px" src="../js/ui-models/apps/contacts.js"></iframe>
+
+</section>
+</body>
+</html>

@@ -8,6 +8,7 @@ css/bootstrap*.css
 *.xml
 
 demo/pix/
+dico/
 dico/pix/
 doc/pix/
 doc/Doc_*

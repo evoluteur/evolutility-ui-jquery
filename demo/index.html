@@ -1,18 +1,10 @@
-<html xmlns="http://www.w3.org/1999/xhtml" > 
+<html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
-<title>evol.utility : ToDo</title>
+    <title>evol.utility : demos</title>
     <meta charset="utf-8">
 
     <link href="../css/demo.css" rel="stylesheet" />
-    <link href="../dist/evol-utility.css" rel="stylesheet" />
     <link id="bwCSS" href="../dist/bootstrap.min.css" rel="stylesheet" />
-
-    <script src="../dist/vendors.min.js" type="text/javascript"></script>
-    <script src="../dist/evol-utility.js" type="text/javascript"></script>
-
-    <script src="../js/demo.js" type="text/javascript"></script>
-    <script src="../js/ui-models/apps/todo.js" type="text/javascript"></script>
-    <script src="../js/ui-models/apps/todo.data.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -25,27 +17,27 @@
         <li><a href="https://github.com/evoluteur/evol-utility" target="_new">GitHub</a></li>
     </ul>
     <div class="demo-links">
-        <a href="demo-todo.html" class="sel">todo</a> -
+        <a href="demo-todo.html">todo</a> -
         <a href="demo-contact.html">addressbook</a> -
         <a href="demo-winecellar.html">wine cellar</a>
     </div>
     <div class="clearfix"></div>
 </div>
 
-<h1 id="title">To Do</h1>
+<h1 id="title">demos :: evol-utility.js</h1>
 
-<div id="evol"></div>
+<p>These sample applications are not anything you haven't seen before.
+    The cool thing is that these are entirely defined by their UI-model
+    and do not require any Javascript code at all.</p>
 
-<p><a id="uimodellink" href="javascript:showUIdef(todo_ui)">See the UI model</a>.</p>
-<div style="display:none;" id="uimodel"></div>
+<ul class="">
+    <li><a href="demo-todo.html">todo</a></li>
+    <li><a href="demo-contact.html">addressbook</a></li>
+    <li><a href="demo-winecellar.html">wine cellar</a></li>
+</ul>
 
-<script>
-
-$(document).ready(function(){
-    setDemo(todo_ui,'evol-todo',todo_data());
-});
-
-</script>
+<p>The data for these demos is stored in your browser local storage
+    (using <a href="https://github.com/jeromegn/Backbone.localStorage" target"bbls">Backbone.localStorage</a>).</p>
  
 <p><br/>evol-utility on GitHub: <a href="https://github.com/evoluteur/evol-utility" target="download">https://github.com/evoluteur/evol-utility</a></p>
 

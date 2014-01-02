@@ -64,7 +64,7 @@ evol-utility.js is a re-write of [Evolutility] (http://www.evolutility.org) gene
 
 ## License
 
-Copyright (c) 2013 Olivier Giulieri.
+Copyright (c) 2014 Olivier Giulieri.
 
 evol-utility is released under the GNU Affero General Public License version 3 [GNU AGPLv3](http://www.gnu.org/licenses/agpl-3.0.html).
 
