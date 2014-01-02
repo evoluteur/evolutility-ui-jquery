@@ -158,7 +158,6 @@ Evol.ViewOne = Backbone.View.extend({
         switch(f.type) {
             case EvoDico.fieldTypes.bool:
                 return $f.prop('checked');
-                break;
             default:
                 return $f.val();
         }
@@ -594,9 +593,10 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     clearMessage: function(){
-        var $msg=this.$('[data-id="msg"]').fadeOut(300,function(){
-            $msg.remove();
-        })
+        var $msg=this.$('[data-id="msg"]')
+            .fadeOut(300,function(){
+                $msg.remove();
+            });
     },
 
     clearMessages: function(){

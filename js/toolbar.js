@@ -336,22 +336,22 @@ Evol.ViewToolbar = Backbone.View.extend({
 	},
 
     browse: function(toolId){ // toolId = "prev" or "next"
+        var cModel = this.curView.model;
         if(this.model && this.model.collection && this.model.collection.length){
             var collec=this.model.collection,
                 l=collec.length-1,
-                m = this.curView.model,
-                idx =_.indexOf(collec.models, m);
+                idx =_.indexOf(collec.models, cModel);
             if(toolId==='prev'){
                 idx=(idx>0)?idx-1:l;
             }else{
                 idx=(idx<l)?idx+1:0;
             }
-            m = collec.models[idx];
+            cModel = collec.models[idx];
         }else{
-            m=null;
+            cModel = null;
         }
-        this.model = m;
-        this.curView.setModel(m);
+        this.model = cModel;
+        this.curView.setModel(cModel);
         return this;
     },
 
