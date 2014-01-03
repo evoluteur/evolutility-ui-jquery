@@ -59,6 +59,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         o.mode=opts.mode;
         o.uiModel=opts.uiModel;
         o.defaultView=opts.defaultView;
+        this.collection=opts.collection;
         this.render();
         this.$('[data-cid="views"] > li').tooltip();
         this.$('.dropdown-toggle').dropdown();
@@ -186,6 +187,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     el: $v,
                     mode: viewName,
                     model: this.model,
+                    collection: this.collection,
                     uiModel: this.options.uiModel
                 };
                 this.$('[data-id="new"]').show();

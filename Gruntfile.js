@@ -64,7 +64,7 @@ module.exports = function (grunt) {
                     'js/export.css',
                     'js/filter.css'
                 ],
-                dest: '<%= pkg.target %>/evol-utility.css'
+                dest: '<%= pkg.target %>/css/evol-utility.css'
             }
         },
 

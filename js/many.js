@@ -31,17 +31,20 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        var that=this;
+        var that=this,
+            collec;
         this.options.mode=opts.mode;
         this.options.uiModel=opts.uiModel;
-        if(this.model){
-            this.model.collection.on('change', function(model){
+        if(this.collection){
+            collec = this.collection;
+        }else if(this.model && this.model.collection){
+            collec = this.model.collection;
+        }
+        if(collec){
+            collec.on('change', function(model){
                 that.render();
             });
         }
-        //if(){
-
-        //}
     },
     customize: function () {
         var labels = this.$('th > span');

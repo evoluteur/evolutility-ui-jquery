@@ -15,7 +15,7 @@ var Evol = Evol || {},
 Evol.ViewOne = Backbone.View.extend({
 
     events: {
-        'click > .evol-buttons > button': 'click_button',
+        'click .evol-buttons > button': 'click_button',
         'click .evol-title-toggle': 'click_toggle',
         'click ul.evol-tabs > li > a': 'click_tab',
         'click label > .glyphicon-question-sign': 'click_help',
@@ -37,6 +37,7 @@ Evol.ViewOne = Backbone.View.extend({
 
         this.options.mode=mode;
         this.options.uiModel=opts.uiModel;
+        this.collection=opts.collection;
         if(this.model){
             this.model.on('change', function(model){
                 that.setModel(model);
@@ -60,9 +61,9 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 
-    getFields: function (condition){
+    getFields: function (){
         if(!this._fields){
-            this._fields=EvoDico.fields(this.options.uiModel,condition);
+            this._fields=EvoDico.fields(this.options.uiModel, this.getFieldsCondition);
             this._fieldHash={};
             var that=this;
             _.each(this._fields,function(f){
@@ -499,10 +500,20 @@ Evol.ViewOne = Backbone.View.extend({
         var msg=this.validate();
         if(msg===''){
             if(this.options.mode==='new'){
-                this.model.collection.create(this.getData(), {
-                    success: fnSuccess,
-                    error: fnError
-                });
+                var collec;
+                if(this.model && this.model.collection){
+                    collec = this.model.collection;
+                }else if(this.collection){
+                    collec = this.collection;
+                }
+                if(collec){
+                    collec.create(this.getData(), {
+                        success: fnSuccess,
+                        error: fnError
+                    });
+                }else{
+                    alert('No collection specified'); //TODO pretty
+                }
             }else{
                 this.model.set(this.getData());
                 this.model.save({
