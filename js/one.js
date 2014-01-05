@@ -35,8 +35,12 @@ Evol.ViewOne = Backbone.View.extend({
         var that=this,
             mode=opts.mode;
 
+        //TODO _.extend
         this.options.mode=mode;
         this.options.uiModel=opts.uiModel;
+        if(opts.style){
+            this.options.style=opts.style;
+        }
         this.collection=opts.collection;
         if(this.model){
             this.model.on('change', function(model){
@@ -114,7 +118,7 @@ Evol.ViewOne = Backbone.View.extend({
             if(m){
                 switch(f.type) {
                     case 'boolean':
-                        $f.prop('checked',m.get(f.id));
+                        $f.prop('checked', m.get(f.id));
                         break;
                     default:
                         $f.val(m.get(f.id));
@@ -179,14 +183,15 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
     _renderButtons: function (h, mode) {
+        var css=EvoUI.getSizeCSS(this.options.size);
         h.push(
             EvoUI.html.clearer,
             '<div class="evol-buttons">',
-            EvoUI.inputButton('cancel', EvolLang.Cancel, 'btn-default'),
-            EvoUI.inputButton('save', EvolLang.Save, 'btn-primary')
+            EvoUI.inputButton('cancel', EvolLang.Cancel, 'btn-default'+css),
+            EvoUI.inputButton('save', EvolLang.Save, 'btn-primary'+css)
         );
         if (this.options.button_addAnother && mode!=='json') {
-            h.push(EvoUI.inputButton('save-add', EvolLang.SaveAdd, 'btn-default'));
+            h.push(EvoUI.inputButton('save-add', EvolLang.SaveAdd, 'btn-default'+css));
         }
         h.push('</div>');
     },
@@ -327,30 +332,19 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     renderField: function (h, fld, mode) {
-        function cleanId(id) {
-            return id.toLocaleLowerCase()
-                .replace(/ /g, '_')
-                .replace(/\(/g, '')
-                .replace(/\)/g, '');
-        }
         var types=EvoDico.fieldTypes,
-            fid, fv, fwidth;
-        if (fld.id && fld.id !== '') {
-            fid = fld.id;
-        } else {
-            fid = cleanId(fld.label);
-            fld.id = fid;
-        }
-        if(this.model && this.model.has(fid)){
-            if (mode != 'new') {
-                fv = this.model.get(fid);
-            }else if (fld.defaultvalue){
-                fv = fld.defaultvalue;
+            fid = this.fieldViewId(fld.id),
+            fv,
+            fwidth,
+            size = this.options.size;
+        if(this.model && this.model.has(fld.id)){
+            if (mode !== 'new') {
+                fv = this.model.get(fld.id);
             }else{
-                fv = '';
+                fv = fld.defaultvalue || '';
             }
         }
-        fid = this.fieldViewId(fid);
+        // --- field label ---
         if(mode==='mini'){
             fwidth=fld.width;
             fld.width=100;
@@ -366,7 +360,7 @@ Evol.ViewOne = Backbone.View.extend({
         }else{
             switch (fld.type) {
                 case types.text:
-                    h.push(EvoUI.inputText(fid, fv, fld));
+                    h.push(EvoUI.inputText(fid, fv, fld, null, size));
                     break;
                 case types.email:
                     if (mode === 'view') {
@@ -422,41 +416,13 @@ Evol.ViewOne = Backbone.View.extend({
                 case types.integer:
                     h.push(EvoUI.inputTextInt(fid, fv, fld.type, fld.max, fld.min));
                     break;
-//      case types.doc:
+                //case types.doc:
                 case types.pix:
                     if(fv===''){
                         h.push('<p class="">No picture</p>');
                     }else{
                         h.push('<img src="',fv,'" class="img-thumbnail">');
                     }
-//        h.push(SMALL_tag);
-//        if (fieldValue != string.Empty)
-//          h.push("<span class=\"FieldReadOnly\">").Append(fieldValue).Append("</span><br/>");
-//        if (fType.Equals(types.pix))
-//        {
-//          h.push("<br/><img src=\"");
-//          if (string.IsNullOrEmpty(fieldValue))
-//            h.push(_PathPixToolbar).Append("imgno.gif\" ID=\"");
-//          else
-//            h.push(_PathPix).Append(fieldValue).Append("\" ID=\"");
-//          h.push(fieldName).Append("img\" alt=\"\" class=\"FieldImg\"/><br/>");
-//        }
-//        buffer = string.Format("UP-evol{0}", i);
-//        h.push(EvoUI.HTMLInputHidden(fieldName + "_dp", string.Empty));
-//        if (IEbrowser)
-//          h.push(EvoUI.HTMLLinkShowVanish(buffer, EvolLang.NewUpload));
-//        if (fieldValue != string.Empty)
-//        {
-//          h.push("<br/>&nbsp;<a href=\"Javascript:Evol.");
-//          string pJS = (fType.Equals(types.pix)) ? "pixM" : "docM";
-//          h.pushFormat("{0}('{1}')\">{2}</a>", pJS, fieldName, EvolLang.Delete);
-//        }
-//        h.push("</small><br/>").Append(EvoUI.HTMLDiv(buffer, !IEbrowser));
-//        h.push("<input type=\"file\" class=\"Field\" name=\"").AppendFormat("{0}\" id=\"{0}", fieldName);
-//        h.push("\" value=\"").Append(HttpUtility.HtmlEncode(fieldValue)).Append("\" width=\"120\" onchange=\"e$('").Append(fieldName);
-//        if (fType.Equals(types.pix))
-//          h.push("img').src='").Append(_PathPixToolbar).Append("imgupdate.gif';e$('").Append(fieldName);
-//        h.push("_dp').value=''\"><br/></div>");
                     break;
             }
         }
@@ -467,9 +433,9 @@ Evol.ViewOne = Backbone.View.extend({
         }
     },
 
-    renderFieldLabel: function (h, fld, mode) {
+    renderFieldLabel: function (h, fld) {
         h.push('<div class="evol-field-label" id="', fld.id, '-lbl"><label class="control-label" for="', fld.id, '">', fld.label);
-        if (mode != 'view' && fld.required > 0){
+        if (fld.required){//mode != 'view' &&
             h.push('<span class="evol-required">*</span>');
         }
         if (fld.help && fld.help!==''){
@@ -541,9 +507,9 @@ Evol.ViewOne = Backbone.View.extend({
             _.each(this.$(labelSelector),function(elem){
                 var $el=$(elem),
                     id=$el.attr('for');
-                $el.append(EvoUI.icons.customize(id,'field'));
+                $el.append(EvoUI.iconCustomize(id,'field'));
             });
-            this.$(panelSelector).append(EvoUI.icons.customize('id','panel'));
+            this.$(panelSelector).append(EvoUI.iconCustomize('id','panel'));
             this.custOn=true;
         }
         return this;

@@ -29,7 +29,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
             labels.find('i').remove();
             this._custOn=false;
         }else{
-            labels.append(EvoUI.icons.customize('id','field'));
+            labels.append(EvoUI.iconCustomize('id','field'));
             this._custOn=true;
         }
         return this;

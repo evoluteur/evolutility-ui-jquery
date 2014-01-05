@@ -19,7 +19,7 @@ Evol.ViewOne.Edit = Evol.ViewOne.extend({
 
     render: function () {
         var h = [];
-        this.renderEdit(h, 'edit');
+        this.renderEdit(h);
         this.$el.html(h.join(''));
         this.setData(this.model);
         this._updateTitle();
@@ -68,7 +68,7 @@ Evol.ViewOne.Edit = Evol.ViewOne.extend({
                         h.push('');
                         iPanel = 1;
                     }
-                    this.renderPanelList(h, p, 'pe-' + i, mode);
+                    this.renderPanelList(h, p, 'pl-' + i, mode);
                     break;
             }
         }

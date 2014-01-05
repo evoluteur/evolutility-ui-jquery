@@ -2,9 +2,6 @@
  *
  * evol-utility : filter.js
  *
- * Depends:
- *	backbone/button.js
- *
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
@@ -32,7 +29,7 @@ Evol.ViewFilter = Backbone.View.extend({
 
     events: {
         'click .evo-filters > button > .glyphicon-remove': 'click_remove'
-        //'list.navigate div': 'click_navigate'
+        // TODO move other events here
     },
 
     options: {
@@ -589,6 +586,16 @@ Evol.ViewFilter = Backbone.View.extend({
         e.find('.evo-bNew,.evo-bAdd,.evo-bDel,.evo-filters').off();
         this._editor.off();
         e.empty();
+    },
+
+    click_filter: function(evt){
+        var idx=$(evt.target).index();
+        this.removeFilter(idx);
+    },
+
+    click_remove: function(evt){
+        var idx=$(evt.target).parent().index();
+        this.removeFilter(idx);
     }
 
 });

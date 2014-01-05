@@ -12,7 +12,7 @@ Evol.UI = {
 
     version: '0.0.1',
 
-    // html fragments
+    // --- static html fragments ---
     html: {
         trTableEnd: '</tr></table>',
         TdTrTableEnd: '</td></tr></table>',
@@ -20,24 +20,7 @@ Evol.UI = {
         emptyOption: '<option value=""></option>'
     },
 
-    icons: {
-        customize: function (id, type) {
-            return ['<i class="glyphicon glyphicon-wrench" data-id="', id, '" data-type="', type, '"></i>'].join('');
-        }
-    },
-
-    styles:{
-        'success':'success',
-        'info':'info',
-        'warning':'warning',
-        'danger':'danger'
-    },
-
-    // reusable html
-    html_more: function (label) {
-        return ['<a href="javascript:void(0)" class="evol-more">', label, '</a>'].join('');
-    },
-
+    // --- field labels ---
     fieldLabel: function (fID, fLbl) {
         return ['<div class="evol-field-label"><label for="', fID, '">', fLbl, '</label></div>'].join('');
     },
@@ -45,37 +28,38 @@ Evol.UI = {
         return ['<span class="evol-field-label"><label for="', fID, '">', fLbl, '</label></span>'].join('');
     },
 
-    link: function (fID, label, url) {
-        return ['<a class="Field" href="', url, '" id="', fID, '">', label, '</a>'].join('');
-    },
-    linkEmail: function (fID, label, email) {
-        return EvoUI.link(fID, label, email ? 'mailto:' + email : '');
-    },
-    inputText: function (fID, fV, fd) {
-        var h = ['<input class="form-control" type="text" id="', fID, '" value="', fV];
-        if (fd) {
-            _.each(['min', 'max', 'maxlength', 'max-width', 'min-width', 'placeholder'], function (item) {
-                if (fd[item] !== 'undefined') {
+    // --- input fields ---
+    inputText: function (fID, fV, fd, css, size) {
+        var fCss= 'evo-field form-control ' + (css || '') + Evol.UI.getSizeCSS(size),
+            h = ['<input type="text" id="',fID,'" value="', fV];
+        if(fd) {
+            // properties mapping to html attributes
+            _.each(['id', 'min', 'max', 'maxlength', 'placeholder'], function (item) { // 'max-width', 'min-width',
+                if (fd[item] !== undefined) {
                     h.push('" ', item, '="', fd[item]);
                 }
             });
-            _.each(['readonly'], function (item) {
-                var fi = fd[item];
+            //other fields attributes
+            if(fd.readonly){
+                var fi = fd.readonly;
                 if (fi || fi == '1') {
                     h.push('" ', item, '="', item);
                 }
-            });
+            }
+            if(fCss && fCss!==''){
+                    h.push('" class="', fCss);
+            }
         }
-        h.push('" class="Field">');
+        h.push('">');
         return h.join('');
     },
     inputTextInt: function (fID, fV) {
-        return ['<input class="form-control" type="number" id="', fID, '" value="', fV,
-            '" class="Field" maxlength="12">'].join('');
+        return ['<input class="evo-field form-control" type="number" id="', fID, '" value="', fV,
+            '" maxlength="12">'].join('');
     },
     inputTextM: function (fID, fV, ml, h) {
         return [
-            '<textarea name="', fID, '" id="', fID, '" class="Field form-control"" rows="', h,
+            '<textarea name="', fID, '" id="', fID, '" class="evo-field form-control"" rows="', h,
             (ml > 0) ? '" onKeyUp="EvoVal.checkMaxLen(this,' + ml + ')' : '',
             '">', fV, '</textarea>'
         ].join('');
@@ -86,7 +70,7 @@ Evol.UI = {
     inputAny: function (type, fId, fVal) {
         return [
             '<input type="', type, '" id="', fId, '" value="', fVal,
-            '" class="Field form-control" size="15">'
+            '" class="evo-field form-control" size="15">'
         ].join('');
     },
     inputDate: function (fID, fV) {
@@ -128,7 +112,7 @@ Evol.UI = {
         ].join('');
     },
     inputLOV: function (fID, fV, fVLabel, fLOV) {
-        var h = ['<select class="form-control Field" id="', fID, '"><option value="', fV, '" selected>', fVLabel, '</option>'];
+        var h = ['<select class="evo-field form-control" id="', fID, '"><option value="', fV, '" selected>', fVLabel, '</option>'];
         _.each(fLOV, function (f) {
             h.push(EvoUI.inputOption(f.id, f.text));
         });
@@ -155,8 +139,8 @@ Evol.UI = {
         });
         return opts.join('');
     },
-    inputButton: function (id, label, cls) {
-        return '<button type="button" id="' + id + '" class="btn' + (cls ? ' ' + cls : '') + '">' + label + '</button>';
+    inputButton: function (id, label, css) {
+        return '<button type="button" id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
     },
 
     inputToggle: function  (items) {
@@ -168,10 +152,27 @@ Evol.UI = {
         return h.join('');
     },
 
+    // --- links ---
+    link: function (fID, label, url) {
+        return ['<a class="evo-field" href="', url, '" id="', fID, '">', label, '</a>'].join('');
+    },
+    linkEmail: function (fID, label, email) {
+        return EvoUI.link(fID, label, email ? 'mailto:' + email : '');
+    },
+    //html_more: function (label) {
+    //    return ['<a href="javascript:void(0)" class="evol-more">', label, '</a>'].join('');
+    //},
+
+    // --- icons ---
     icon: function (icon, cls) {
-        return ['<span class="', cls? cls+' ':'', 'glyphicon glyphicon-', icon, '"></span>'].join('');
+        return ['<i class="', cls? cls+' ':'', 'glyphicon glyphicon-', icon, '"></i>'].join('');
     },
 
+    iconCustomize: function (id, type) {
+        return ['<i class="glyphicon glyphicon-wrench" data-id="', id, '" data-type="', type, '"></i>'].join('');
+    },
+
+    // --- panels ---
     HTMLPanelLabel: function (PanelLabel) {
         return [
             '<div class="panel-heading">', EvoUI.icon('chevron-up', 'evol-title-toggle'),
@@ -183,6 +184,7 @@ Evol.UI = {
         return '<div class="'+css+' panel panel-'+style+'" data-id="'+id+'"></div>';
     },
 
+
     HTMLMsg: function (title, content, style, dismissable) {
         return [
             '<div data-id="msg" class="alert alert-',style || 'info',
@@ -193,11 +195,23 @@ Evol.UI = {
         ].join('');
     },
 
+    // --- date formats ---
     formatDate: function(d){
         return (d.getMonth()+1) + "/" + (d.getDate()+1) + "/" + d.getFullYear();
     },
     formatTime: function(d){
         return (d.getHours()) + ":" + (d.getMinutes());
+    },
+
+    // ---   ---
+    getSizeCSS: function(size){
+        switch(size){
+            case 'S':
+                return ' input-sm';
+            case 'L':
+                return ' input-lg';
+        }
+        return '';
     },
 
     // get w/ automatic create if not in DOM

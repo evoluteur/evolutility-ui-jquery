@@ -112,7 +112,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         //linkOpt2h('group','Group','resize-horizontal','n');
         //linkOpt2h('export','Export','cloud-download','n');
         //linkOpt2h('selections','','star');
-        if(opts){
+        if(opts.toolbar){
             link2h('prev','','chevron-left','1');
             link2h('next','','chevron-right','1');
             h.push('</ul><ul class="nav nav-pills pull-right" data-cid="views">');
@@ -122,8 +122,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             linkOpt2h('edit','','th','1','All Fields');
             linkOpt2h('mini','','th-large','1','Important Fields only');
             linkOpt2h('json','','barcode','1','JSON');
-            /*if(opts.buttons.customize){
-                //link('customize','','wrench'),
+            //linkOpt2h('customize','','wrench', '1', 'Customize');
+            /*
+            if(opts.buttons.customize){
                 h.push(beginMenu('wrench'));
                 link2h('customize','Customize this view','wrench');
                 h.push(menuDevider);
@@ -158,11 +159,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             config;
 
         if(viewName==='new'){
-            if(this._prevOne){
-                viewName=this._prevOne;
-            }else{
-                viewName='edit';
-            }
+            viewName=this._prevOne?this._prevOne:'edit';
             this.setView(viewName);
             this._isNew = true;
             this.curView.clear();
@@ -220,7 +217,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             }
             this.curView.options.mode=viewName;
         }
-        this.setToolbar(viewName, this._isNew);
+        this.setToolbar(viewName);
         return this;
 	},
 
@@ -238,7 +235,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     setToolbar: function(mode){
-        function onemany(showOne, showMany){
+        function oneMany(showOne, showMany){
             EvoUI.setVisible(tbBs.ones, showOne);
             EvoUI.setVisible(tbBs.manys, showMany);
         }
@@ -248,42 +245,37 @@ Evol.ViewToolbar = Backbone.View.extend({
             EvoUI.setVisible(tbBs.customize,mode!='json');
             tbBs.prevNext.hide();
 			if(this._isNew || mode==='export'){
-                onemany(false, false);
+                oneMany(false, false);
 			}else{
 				if(mode==='cards' || mode==='list' || mode==='charts'){
                     this._prevMany=mode;
-                    onemany(false, true);
+                    oneMany(false, true);
                 }else{
                     this._prevOne=mode;
-                    onemany(true, false);
+                    oneMany(true, false);
                     tbBs.prevNext.show();
 				}
 			}
-            if(mode==='cards'){
-                tbBs.manys.filter('[data-id="group"]').show();
-            }else{
-                tbBs.manys.filter('[data-id="group"]').hide();
-            }
+            EvoUI.setVisible(tbBs.manys.filter('[data-id="group"]'), mode==='cards');
 		}
 	},
-    /*
+
     showFilter: function(){
         var that=this,
             $ff;
-        if(this._$filters){
-            $ff=this._$filters.$el;
-        }else{
-            $ff=$(EvoUI.HTMLEmptyPanel('filters', 'evo-filters', 'primary'));
+        if(!this._$filters){
+            $ff=$(EvoUI.HTMLEmptyPanel('filters', 'evo-filters', 'info'));
             this.$('.evo-toolbar').after($ff);
             this._$filters = new Evol.ViewFilter({
                 el:$ff,
                 fields:EvoDico.fields(this.options.uiModel)
             }).render();
             $ff.on('change.filter', function(evt){
+                // TODO
+                var ff=that._filters.getData();
 
                 //TEST
                 that.curView.model.collection.filter(function(model){
-                    //var ok=true;
                     //filter
 
                     //for(var filter in filters){
@@ -299,29 +291,6 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
         return this;
     },
-
-    showGroup: function(){
-        var $fg;
-        if(this._$groups){
-            $fg=this._$groups;
-        }else{
-            $fg=$(EvoUI.HTMLEmptyPanel('groups', 'evo-groups', 'primary'));
-            this.$('.evo-toolbar').after($fg);
-            this._$groups=$fg;
-            this._$filters = new Evol.ViewFilter({
-                el:$fg,
-                fields:EvoDico.fields(this.options.uiModel)
-            }).render();
-        }
-        var visible=$fg.data('visible');
-        if(visible){
-            $fg.data('visible', false).slideUp();
-        }else{
-            $fg.hide().html('groups TEST TEST TEST groups...');
-            $fg.data('visible', true).slideDown();
-        }
-        return this;
-    },*/
 
 	setData: function(data){
 		if(this.curView){
@@ -399,9 +368,9 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.browse(toolId);
                 break;
             case 'new-field':// ui-dico
-            case 'new-panel':// ui-dico
-                EvoDico.showDesigner('id', 'field', $e);
+                EvoDico.showDesigner('', 'field', $e);
                 break;
+            //case 'new-panel':// ui-dico
             default:// 'edit', 'mini', 'list', 'cards', 'export', 'json', 'new'
                 if(toolId && toolId!==''){
                     this.setView(toolId);

@@ -25,7 +25,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     events: {
         'click a.evol-nav-id': 'click_navigate',
-        'click .evol-sort-icons > span': 'click_sort',
+        'click .evol-sort-icons > i': 'click_sort',
         'click .button.edit': 'click_pagination',
         'click .evol-field-label .glyphicon-wrench': 'click_customize'
     },
@@ -52,7 +52,7 @@ Evol.ViewMany = Backbone.View.extend({
             labels.find('i').remove();
             this._custOn=false;
         }else{
-            labels.append(EvoUI.icons.customize('id','field'));
+            labels.append(EvoUI.iconCustomize('id','field'));
             this._custOn=true;
         }
         return this;

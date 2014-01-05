@@ -72,14 +72,15 @@ Evol.Dico = {
         }    
         $el.closest('.evol-fld').after($elDes);
 
-        vw = new Evol.ViewOne({
+        vw = new Evol.ViewOne.Edit({
             model: null,
             uiModel: uiModel,
             defaultView: 'edit',
             el: $elDes,
             style:'panel-primary',
+            size:'S',
             button_addAnother: false
-        });
+        }).render();
 
         $elDes.on('click', 'button#save,button#cancel', function(evt){
             //TODO save field => dependency: uiModel persistence...
