@@ -51,27 +51,27 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
     },
 
     _HTMLlist: function (h, fields, pSize, icon) {
-        h.push('<div class="panel ',this.options.style,'">');
+        //h.push('<div class="panel ',this.options.style,'">');
         h.push('<table class="table table-bordered table-hover"><thead>');
         for (var i=0; i<fields.length; i++) {
-            this._renderListHeader(h, fields[i]);
+            this._HTMLlistHeader(h, fields[i]);
         }
         h.push('</thead><tbody>');
-        this._HTMLlistbody(h, fields, pSize, icon);
-        h.push('</tbody></table></div>');
+        this._HTMLlistBody(h, fields, pSize, icon);
+        h.push('</tbody></table>'); //</div>
     },
 
-    _HTMLlistbody: function(h, fields, pSize, icon){
+    _HTMLlistBody: function(h, fields, pSize, icon){
         var data = this.model.collection.models,
             rMax = _.min([data.length, pSize]);
         if (rMax > 0) {
             for (var r = 0; r < rMax; r++) {
-                this._HTMLlistrow(h, fields, data[r], icon);
+                this._HTMLlistRow(h, fields, data[r], icon);
             }
         }
     },
 
-    _HTMLlistrow: function(h, fields, model, icon){
+    _HTMLlistRow: function(h, fields, model, icon){
         h.push('<tr data-id="', model.cid, '">');
         for (var i=0; i<fields.length; i++) {
             var f = fields[i],
@@ -81,6 +81,9 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
                 h.push('<a href="javascript:void(0)" id="fv-', f.id, '" class="evol-nav-id">');
                 if (icon) {
                     h.push('<img class="evol-table-icon" src="pix/', icon, '">');
+                }
+                if(v===''){
+                    v='('+model.id+')';
                 }
             }
             h.push(this._HTMLField(f,v));
@@ -92,12 +95,14 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         h.push('</tr>');
     },
 
-    _renderListHeader: function (h, field) {
+    _HTMLlistHeader: function (h, field) {
         h.push('<th><span id="', field.id, '-lbl">',
-            field.label,
+            field.labellist || field.label,
             '<span class="evol-sort-icons" data-fid="',field.id,'">',
             EvoUI.icon('chevron-up'),
             EvoUI.icon('chevron-down'),
+            //EvoUI.icon('sort-by-alphabet'),
+            //EvoUI.icon('sort-by-alphabet-alt'),
             '</span></span></th>'
         );
     }

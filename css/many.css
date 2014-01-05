@@ -1,25 +1,26 @@
 
-/*  evol-utility : evol-view-many.css  */
+/*  evol-utility : many.css  */
 
 /* --- list --- */
 
 img.evol-table-icon{
 	margin-right: 6px !important;
 }
-.table th .glyphicon-chevron-up,
-.table th .glyphicon-chevron-down{
-    width:50px;
-    cursor: pointer;
-}
-.table th .glyphicon {
+.evol-many-list > .table th .glyphicon {
     display:none;
     position:absolute;
+    opacity: .8;
+    margin-left: 6px;
+    background-color: white;
+    cursor: pointer;
+    width:22px;
+    height: 22px;
 }
-.table th:hover .glyphicon {
+.evol-many-list > .table th:hover .glyphicon {
     display: inline !important;
     cursor: pointer;
 }
-.table th .glyphicon.evol-last-sort {
+.evol-many-list > .table th .glyphicon.evol-last-sort {
     display:none;
     position:absolute;
 }
