@@ -1,10 +1,9 @@
-/*! ***************************************************************************
+/*!
+ *  evolutility : filter.css
  *
- * evol-utility : evol-view-filter.js
- *
- * Copyright (c) 2013, Olivier Giulieri
- *
- *************************************************************************** */
+ *  https://github.com/evoluteur/evolutility
+ *  Copyright (c) 2014, Olivier Giulieri
+*/
 
 .evo-bNew, .evo-bAdd, .evo-bDel, .evo-bSubmit {
 	margin:1px 6px 6px 1px;	
@@ -15,12 +14,9 @@
 .evo-lLight{
 	font-weight: normal;
 }
-.evo-filters{
+.evo-filters.panel{
     min-height:20px;
     padding:6px 1px 1px 6px;
-}
-.evo-editFilter > #value > label{
-    margin-left:6px;
 }
 .evo-filters button {
     margin:1px 6px 6px 1px;
@@ -36,8 +32,12 @@
 .evo-editFilter{
 	vertical-align: middle;
 }
-.evo-editFilter:after{
+.evo-editFilter:after,
+.evo-editFilter > button{
     clear: left;
+}
+.evo-editFilter > #value > label{
+    margin-left:6px;
 }
 .evo-editFilter > select,
 .evo-editFilter > input,
@@ -62,4 +62,3 @@
 .evo-editFilter input.hasDatepicker{
 	width:7em;
 }
-

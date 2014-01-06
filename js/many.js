@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evol-utility : many.js
+ * evolutility :: many.js
  *
  * View many
  *
@@ -31,21 +31,71 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        var that=this,
-            collec;
+        var that=this;
         this.options.mode=opts.mode;
         this.options.uiModel=opts.uiModel;
+        this._filter=[];
         if(this.collection){
-            collec = this.collection;
-        }else if(this.model && this.model.collection){
-            collec = this.model.collection;
-        }
-        if(collec){
-            collec.on('change', function(model){
+            this.collection.on('change', function(model){
                 that.render();
             });
         }
     },
+
+    render:function(){
+        var models=this.collection.models;
+        if(this.collection.length){
+            if(this._filter.length){
+                var that=this;
+                models=models.filter(function(model){
+                    var filters=that._filter,
+                        want=true;
+                    for(var i= 0, iMax=filters.length;i<iMax && want;i++){
+                        var filter=filters[i],
+                            vf=filter.value.value,
+                            fv=model.get(filter.field.value);
+                        if(fv===undefined){
+                            fv='';
+                        }
+                        switch(filter.operator.value){
+                            case 'eq':
+                                want=vf===fv;
+                                break;
+                            case 'ne':
+                                want=vf!==fv;
+                                break;
+                            case 'sw':
+                                want=fv.indexOf(vf)===0;
+                                break;
+                            case 'ct':
+                                want=fv.indexOf(vf)>-1;
+                                break;
+                            case 'fw':
+                                want=fv.indexOf(vf)===fv.length-vf.length;
+                                break;
+                            case 'null':
+                                want=fv==='' || fv===undefined;
+                                break;
+                            case 'nn':
+                                want=fv!=='' || fv!==undefined;
+                                break;
+                        }
+                    }
+                    return want;
+                });
+            }
+            this._render(models);
+        }else{
+            this.$el.html(EvoUI.HTMLMsg(EvolLang.nodata,'','info'));
+        }
+        this._updateTitle();
+        return this;
+    },
+
+    _render:function(models){
+        alert('_render must be overwritten');
+    },
+
     customize: function () {
         var labels = this.$('th > span');
         if(this._custOn){
@@ -58,26 +108,26 @@ Evol.ViewMany = Backbone.View.extend({
         return this;
     },
 
-    render: function () {
-        var h = [];
-        if(this.model && this.model.collection && this.model.collection.length>0){
-            this.renderList(h, this.options.mode);
-        }else{
-            h.push(EvoUI.HTMLMsg(EvolLang.nodata,'','info'));
-        }
-        this._updateTitle();
-        this.$el.html(h.join(''));
-        return this;
-    },
-
     setModel: function(model) {
-        this.model = model;
+        this.collection = model.collection;
         this.render();
         return this;
     },
-    updateModel: function () {
-        alert('updateModel');
+
+    setCollection: function(collection){
+        this.collection = collection;
+        this.render();
+        return this;
     },
+
+    setFilter: function(filter){
+        this._filter=filter;
+        return this;
+    },
+
+    //updateModel: function () {
+    //    alert('updateModel');
+    //},
 
     _updateTitle: function (){
         //$(this.options.title).html(this.model.get('title'));
@@ -111,16 +161,17 @@ Evol.ViewMany = Backbone.View.extend({
             if(v in hashLov){
                 return hashLov[v];
             }else{
-                _.each(f.list,function(obj){
-                    if(obj.id==v){
-                        var txt=obj.text;
-                        if(obj.icon){
-                            txt='<img src="'+obj.icon+'"> '+txt;
-                        }
-                        hashLov[v]=obj.text;
-                        return obj.text;
-                    }
+                var listItem=_.find(f.list,function(item){
+                    return item.id===v;
                 });
+                if(listItem){
+                    var txt=listItem.text;
+                    if(listItem.icon){
+                        txt='<img src="'+listItem.icon+'"> '+txt;
+                    }
+                    hashLov[v]=txt;
+                    return txt;
+                }
             }
         }
         return '';
@@ -203,7 +254,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     sortList: function(f, down){
-        var collec=this.model.collection;
+        var collec=this.collection;
         if(f.type==EvoDico.fieldTypes.text || f.type==EvoDico.fieldTypes.txtm || f.type==EvoDico.fieldTypes.email){
             collec.comparator = EvoDico.bbComparatorText(f.id);
         }else{

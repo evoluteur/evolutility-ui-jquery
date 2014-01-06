@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evol-utility : toolbar.js
+ * evolutility :: toolbar.js
  *
  * Copyright (c) 2014, Olivier Giulieri
  *
@@ -108,7 +108,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         linkOpt2h('list',EvolLang.All,'th-list');
         linkOpt2h('new',EvolLang.New,'plus');
         linkOpt2h('del',EvolLang.Delete,'trash','1');
-        //linkOpt2h('filter','Filter','filter','n');
+        linkOpt2h('filter','Filter','filter','n');
         //linkOpt2h('group','Group','resize-horizontal','n');
         //linkOpt2h('export','Export','cloud-download','n');
         //linkOpt2h('selections','','star');
@@ -215,9 +215,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.curViewName=viewName;
                 this.viewsHash[viewName]=vw;
             }
-            this.curView.options.mode=viewName;
         }
-        this.setToolbar(viewName);
+        this.setButtons(viewName);
         return this;
 	},
 
@@ -234,7 +233,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this._toolbarButtons;
     },
 
-    setToolbar: function(mode){
+    setButtons: function(mode){
         function oneMany(showOne, showMany){
             EvoUI.setVisible(tbBs.ones, showOne);
             EvoUI.setVisible(tbBs.manys, showMany);
@@ -261,32 +260,17 @@ Evol.ViewToolbar = Backbone.View.extend({
 	},
 
     showFilter: function(){
-        var that=this,
-            $ff;
-        if(!this._$filters){
-            $ff=$(EvoUI.HTMLEmptyPanel('filters', 'evo-filters', 'info'));
+        if(!this._filters){
+            var that=this,
+                $ff=$(EvoUI.HTMLEmptyPanel('filters', 'evo-filters', 'info'));
             this.$('.evo-toolbar').after($ff);
-            this._$filters = new Evol.ViewFilter({
+            this._filters = new Evol.ViewFilter({
                 el:$ff,
                 fields:EvoDico.fields(this.options.uiModel)
             }).render();
-            $ff.on('change.filter', function(evt){
-                // TODO
-                var ff=that._filters.getData();
-
-                //TEST
-                that.curView.model.collection.filter(function(model){
-                    //filter
-
-                    //for(var filter in filters){
-
-                        return model.get('title')=='abc';
-
-                    //}
-                    //return ok;
-                });
-                that.curView.render();
-
+            $ff.on('change.filter', function(){
+                that.curView.setFilter(that._filters.val())
+                    .render();
             });
         }
         return this;
@@ -326,9 +310,34 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
     },
 
+    deleteItem: function(){
+        // TODO good looking msgbox
+        if (confirm('Are you sure you want to delete this record?')) {
+            var that=this,
+                collec=this.curView.model.collection,
+                delModel=this.curView.model,
+                modelIdx=_.indexOf(collec.models, delModel);
+            delModel.destroy({
+                success:function(){
+                    that.curView.setMessage('Record Deleted', 'Record was removed.', 'success');
+                    if(collec.length===0){
+                        that.curView.clear();
+                    }else{
+                        var newIdx=(modelIdx>=collec.length)?collec.length-1:modelIdx,
+                            newModel = delModel.collection.at(newIdx);
+                        this.model = newModel;
+                        that.curView.setModel(newModel);
+                    }
+                },
+                error:function(err){
+                    alert('error');
+                }
+            });
+        }
+    },
+
     click_toolbar: function(evt){
-        var that=this,
-            $e=$(evt.target);
+        var $e=$(evt.target);
         if($e.tagName!=='A'){
             $e=$e.closest('a');
         }
@@ -337,22 +346,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         evt.stopImmediatePropagation();
         switch(toolId){
             case 'del':
-                // TODO good looking msgbox
-                if (confirm('Are you sure you want to delete this record?')) {
-                    var delModel=this.curView.model,
-                        newModel = delModel.collection.at(0);
-                    this.model = newModel;
-                    that.curView.setModel(newModel);
-
-                    delModel.destroy({
-                        success:function(){
-                            that.curView.setMessage('Record Deleted', 'Record was removed.', 'success');
-                        },
-                        error:function(err){
-                            alert('error');
-                        }
-                    });
-                }
+                this.deleteItem();
                 break;
             case 'customize':
                 this.curView.customize();

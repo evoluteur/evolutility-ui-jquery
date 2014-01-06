@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evol-utility : filter.js
+ * evolutility :: filter.js
  *
  * Copyright (c) 2014, Olivier Giulieri
  *
@@ -28,7 +28,8 @@ var evoAPI={
 Evol.ViewFilter = Backbone.View.extend({
 
     events: {
-        'click .evo-filters > button > .glyphicon-remove': 'click_remove'
+        'click .evo-filters > button': 'click_editFilter',
+        'click .evo-filters > button > span >.glyphicon-remove': 'click_remove'
         // TODO move other events here
     },
 
@@ -48,17 +49,17 @@ Evol.ViewFilter = Backbone.View.extend({
     },
 
     render: function(){
-        var bClass='btn btn-sm',
+        var bClass='btn',
             bLabels=this.options.buttonLabels,
             that=this,
             e=this.$el,
-            h=['<div class="evo-filters"></div>',
+            h=['<div class="evo-filters-btns"></div>',
                 '<button class="evo-bNew btn-primary ',bClass,'">',evoLang.bNewFilter,'</button>'];
         if(this.options.submitButton){
             h.push('<button class="evo-bSubmit">',evoLang.bSubmit,'</button>');
         }
         h.push('<div class="evo-editFilter"></div>',
-            '<button class="evo-bAdd btn-primary ',bClass,'" style="display:none;">',EvoUI.icon('ok'),'</button>',//, '&nbsp;', evoLang.bAddFilter
+            '<button class="evo-bAdd ',bClass,' btn-primary" style="display:none;">',EvoUI.icon('ok'),'</button>',//, '&nbsp;', evoLang.bAddFilter
             '<button class="evo-bDel ',bClass,'" style="display:none;">',EvoUI.icon('remove'),'</button>');//, '&nbsp;', evoLang.bCancel
         this._step=0;
         e.html(h.join(''));
@@ -69,7 +70,7 @@ Evol.ViewFilter = Backbone.View.extend({
         if(this.options.submitButton){
             this._bSubmit=e.find('.evo-bSubmit').button({
                 text: bLabels
-            }).on('click', function(e){
+            }).on('click', function(){
                 that.$el.trigger('submit.filter');
             });
         }
@@ -79,7 +80,7 @@ Evol.ViewFilter = Backbone.View.extend({
                 that._setEditorField();
                 that._step=1;
             }
-            that._bAdd.find('.ui-button-text').html(evoLang.bAddFilter);
+            //that._bAdd.find('.ui-button-text').html(evoLang.bAddFilter);
             });
         // - editor button add
         this._bAdd=e.find('.evo-bAdd').button().on('click', function(evt){
@@ -154,9 +155,9 @@ Evol.ViewFilter = Backbone.View.extend({
                     allChecks.removeAttr('checked');
                 }
             });
-        this._filters=e.find('.evo-filters').on('click', 'a', function(){
+        this._filters=e.find('.evo-filters-btns').on('click', 'button', function(){
             that._editFilter($(this));
-        }).on('click', 'a .ui-button-icon-secondary', function(evt){
+        }).on('click', 'btn-secondary', function(evt){
             evt.stopPropagation();
             var filter=$(this).parent();
             if(!filter.hasClass('ui-state-disabled')){
@@ -525,7 +526,7 @@ Evol.ViewFilter = Backbone.View.extend({
         if (typeof value=='undefined'){
             // --- get value
             var v=[];
-            this._filters.find('a').each(function(){
+            this._filters.children().each(function(){
                 v.push($(this).data('filter'));
             });
             return v;
@@ -588,12 +589,13 @@ Evol.ViewFilter = Backbone.View.extend({
         e.empty();
     },
 
-    click_filter: function(evt){
-        var idx=$(evt.target).index();
-        this.removeFilter(idx);
+    click_editFilter: function(evt){
+        //var idx=$(evt.target).index();
+        this._setEditorValue( );
     },
 
     click_remove: function(evt){
+        evt.stopPropagation();
         var idx=$(evt.target).parent().index();
         this.removeFilter(idx);
     }

@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evol-utility : many-charts.js
+ * evolutility :: many-charts.js
  *
  * View many charts
  *
@@ -29,7 +29,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
 
     render: function () {
         var h = [];
-        if(this.model && this.model.collection && this.model.collection.length>0){
+        if(this.collection && this.collection.length>0){
             var opts = this.options,
                 uim = opts.uiModel,
                 pSize = opts.pageSize || 50;
@@ -47,8 +47,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
     _HTMLcharts: function (h) {
         var that=this,
             uiModel =this.options.uiModel,
-            model = this.model,
-            models = model.collection.models,
+            models = this.collection.models,
             chartFields = EvoDico.fields(uiModel, function(f){
                 return (f.type==EvoDico.fieldTypes.lov || f.type==EvoDico.fieldTypes.bool);
             });

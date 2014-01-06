@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evol-utility : many-cards.js
+ * evolutility :: many-cards.js
  *
  * View many cards
  *
@@ -35,35 +35,26 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
         return this;
     },
 
-    render: function () {
+    _render: function (models) {
         var h = [];
-        if(this.model && this.model.collection && this.model.collection.length>0){
-            this._render(h, this.options.mode);
+        if(models && models.length>0){
+            var opts = this.options,
+                uim = opts.uiModel,
+                pSize = opts.pageSize || 50,
+                pSummary = this._paginationSummaryHTML(0, pSize, models.length, uim.entity, uim.entities);
+            h.push('<div class="evol-many-cards">');
+            this._HTMLcards(h, this.getFields(), pSize, uim.icon);
+            h.push(pSummary, this._paginationHTML(0, pSize, models.length),
+                '</div>');
         }else{
             h.push(EvoUI.HTMLMsg(EvolLang.nodata,'','info'));
         }
-        this._updateTitle();
         this.$el.html(h.join(''));
         return this;
     },
 
-    _render: function (h, mode) {
-        var opts = this.options,
-            uim = opts.uiModel,
-            models = this.model.collection.models,
-            pSize = opts.pageSize || 50,
-            pSummary = this._paginationSummaryHTML(0, pSize, models.length, uim.entity, uim.entities);
-        h.push('<div class="evol-many-', mode, '">');
-        this._HTMLcards(h, this.getFields(), pSize, uim.icon);
-        if(mode!='charts'){
-            h.push(pSummary,
-                this._paginationHTML(0, pSize, models.length));
-        }
-        h.push('</div>');
-    },
-
     _HTMLcards: function (h, fields, pSize, icon) {
-        var data = this.model.collection.models,
+        var data = this.collection.models,
             rMax = _.min([data.length, pSize]);
         if (rMax > 0) {
             for (var r=0; r<rMax; r++) {

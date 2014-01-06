@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evol-utility : many-list.js
+ * evolutility :: many-list.js
  *
  * View many list
  *
@@ -23,46 +23,30 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         selectable: true
     },
 
-    render: function () {
-        var h = [];
-        if(this.model && this.model.collection && this.model.collection.length>0){
-            this._render(h, this.options.mode);
-        }else{
-            h.push(EvoUI.HTMLMsg(EvolLang.nodata,'','info'));
-        }
-        this._updateTitle();
-        this.$el.html(h.join(''));
-        return this;
-    },
-
-    _render: function (h, mode) {
-        var opts = this.options,
+    _render: function (models) {
+        var h = [],
+            fields = this.getFields(),
+            opts = this.options,
             uim = opts.uiModel,
-            models = this.model.collection.models,
             pSize = opts.pageSize || 50,
             pSummary = this._paginationSummaryHTML(0, pSize, models.length, uim.entity, uim.entities);
-        h.push('<div class="evol-many-', mode, '">');
-        this['_HTML' + mode.replace(/-/g,'_')](h, this.getFields(), pSize, uim.icon);
-        if(mode!='charts'){
-            h.push(pSummary,
-                this._paginationHTML(0, pSize, models.length));
-        }
-        h.push('</div>');
-    },
-
-    _HTMLlist: function (h, fields, pSize, icon) {
+        this._models=models;
+        h.push('<div class="evol-many-list">');
         //h.push('<div class="panel ',this.options.style,'">');
         h.push('<table class="table table-bordered table-hover"><thead>');
         for (var i=0; i<fields.length; i++) {
             this._HTMLlistHeader(h, fields[i]);
         }
         h.push('</thead><tbody>');
-        this._HTMLlistBody(h, fields, pSize, icon);
+        this._HTMLlistBody(h, fields, pSize, uim.icon);
         h.push('</tbody></table>'); //</div>
+        h.push(pSummary, this._paginationHTML(0, pSize, models.length));
+        h.push('</div>');
+        this.$el.html(h.join(''));
     },
 
     _HTMLlistBody: function(h, fields, pSize, icon){
-        var data = this.model.collection.models,
+        var data = this._models,
             rMax = _.min([data.length, pSize]);
         if (rMax > 0) {
             for (var r = 0; r < rMax; r++) {
@@ -77,9 +61,9 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             var f = fields[i],
                 v = model.escape(f.id);
             h.push('<td>');
-            if (i === 0) {
+            if(i===0){
                 h.push('<a href="javascript:void(0)" id="fv-', f.id, '" class="evol-nav-id">');
-                if (icon) {
+                if(icon){
                     h.push('<img class="evol-table-icon" src="pix/', icon, '">');
                 }
                 if(v===''){
@@ -87,7 +71,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
                 }
             }
             h.push(this._HTMLField(f,v));
-            if (i === 0) {
+            if(i===0){
                 h.push('</a>');
             }
             h.push('</td>');
@@ -99,10 +83,8 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         h.push('<th><span id="', field.id, '-lbl">',
             field.labellist || field.label,
             '<span class="evol-sort-icons" data-fid="',field.id,'">',
-            EvoUI.icon('chevron-up'),
-            EvoUI.icon('chevron-down'),
-            //EvoUI.icon('sort-by-alphabet'),
-            //EvoUI.icon('sort-by-alphabet-alt'),
+            EvoUI.icon('chevron-up'),//'sort-by-alphabet'
+            EvoUI.icon('chevron-down'),//'sort-by-alphabet-alt'
             '</span></span></th>'
         );
     }
