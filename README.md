@@ -1,52 +1,53 @@
-# evol-utility
+# evolutility.js
 
-evol-utility is a work in progress. Eventually it will be a generic UI to build applications who can change form, volume, and structure like living organisms.
+evolutility.js is a work in progress. Eventually it will be a generic UI to build applications who can change form, volume, and structure like living organisms.
 
-Evolutility (Bio.): The faculty possessed by all substances capable of self-nourishment of manifesting the nutritive acts by change of form, of volume, or of structure.
-
-The idea is to build a set of generic Backbone views to perform all CRUD (Create, Read, Update and Delete) on records of any data structure.
+The idea is to build a set of generic Backbone views to perform all CRUD (Create, Read, Update and Delete) operations on records of any data structure.
 These generic Backbone views will all be defined in a single UI-model containing the description of UI (layout, fields and behaviors).
 
 ## The Plan 
 
- * Update [Evolutility metamodel] (http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications) (model of the UI models)
- * Code the generic UI views based on the metamodel
- * Add a toolbar and a controller for all these views
- * Make demo apps
- * Make [an app to make apps] (http://www.codeproject.com/Articles/28810/Wizard-and-CRUD-Applications-to-Build-other-CRUD-A)
+1 Update [Evolutility metamodel] (http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications) (model of the UI models)
+2 Code the generic UI views based on the metamodel
+3 Add a toolbar and a controller for all these views
+4 Make demo apps
+5 Make [an app to make apps] (http://www.codeproject.com/Articles/28810/Wizard-and-CRUD-Applications-to-Build-other-CRUD-A)
 
 
-## 1 - Meta-model
+## 1 - UI-model
 
-To define applications we will need some kind of declarative language.
-It will be based on [Minimalist Meta-Model for CRUD Applications](http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications)
+To define UI-models evolutility uses some kind of UI language.
+It is not fully defined yet but the syntax of UI-models will be based on [Minimalist Meta-Model for CRUD Applications](http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications)
 using JSON rather than XML this time.
 
 Elements: tabs, panels, panel-list, fields.
 
 Sample UI Models:
-[To Do list](http://github.com/evoluteur/evol-utility/blob/master/js/ui-models/todo.js),
-[AddressBook](http://github.com/evoluteur/evol-utility/blob/master/js/ui-models/contacts.js),
-[Wine Cellar](http://github.com/evoluteur/evol-utility/blob/master/js/ui-models/winecellar.js).
+[To Do list](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/todo.js),
+[AddressBook](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/contacts.js),
+[Wine Cellar](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/winecellar.js).
 
 ## 2 - Views
 
-evol-utility views have a Backbone model (to define the data) and also a UI model (to define the UI for interacting with the data).
+evolutility's views have a Backbone model (to define the data) and also a UI model (to define the UI for interacting with the data).
 
-Views for one record (one): new, edit, mini, json...
-Views for a collection (many): list, cards, charts...
-
-Extra views:  Dashboards, Selections, Export, Mass Update, Search.
-
-Based on its UI model, this set of views can be an address book, a to do list, or anything you want.
+Evolutility will have 3 types of view
+* Views for one record (one): new, edit, mini, json...
+* Views for a collection (many): list, cards, charts...
+* Views for actions on one record or a collection: export, filter, dashboards, Mass Update...
 
 ## 3 - Toolbar/Controller
 
+We will also need a toolbar and a controller (for now the same js class).
 
 ## 4 - Demo apps
 
+Soon. For now, please download the code and try it on your computer.
 
 ## 5 - The app to make other apps
+
+A set of ui-models and models for the ui-model itself: fields, panels, tabs.
+(...and some code in the view themselves to make it possible)
 
 
 ## Techno
@@ -59,12 +60,12 @@ Javascript, HTML5, CSS3,
 
 ## Previous incarnation
 
-evol-utility.js is a re-write of [Evolutility] (http://www.evolutility.org) generic UI for CRUD.
+evolutility.js is a re-write of [Evolutility] (http://www.evolutility.org) generic CRUD UI for ASP.net.
 
 
 ## License
 
 Copyright (c) 2014 Olivier Giulieri.
 
-evol-utility is released under the GNU Affero General Public License version 3 [GNU AGPLv3](http://www.gnu.org/licenses/agpl-3.0.html).
+evolutility.js is released under the GNU Affero General Public License version 3 [GNU AGPLv3](http://www.gnu.org/licenses/agpl-3.0.html).
 

@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evol-utility : ui-dico.js
+ * evolutility :: ui-dico.js
  *
  * Copyright (c) 2014, Olivier Giulieri
  *

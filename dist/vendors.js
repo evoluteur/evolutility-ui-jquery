@@ -1,6 +1,6 @@
-/*   evol-utility 0.0.1 */
+/*   evolutility 0.0.1 */
 
-/*   (c) 2013 Olivier Giulieri */
+/*   (c) 2014 Olivier Giulieri */
 
 /*!
  * jQuery JavaScript Library v2.0.3

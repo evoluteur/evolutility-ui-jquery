@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evol-utility : one.js
+ * evolutility :: one.js
  *
  * View one
  *
@@ -316,18 +316,23 @@ Evol.ViewOne = Backbone.View.extend({
         h.push('</fieldset></div></div>');
     },
 
-    renderPanelList: function (h, p, pid, mode) {
-        h.push('<div style="width:', p.width, '%" class="pull-left evol-pnl">',
+    renderPanelList: function (h, p, pid, mode) { // TODO implement
+        h.push('<div style="width:', p.width, '%" class="pull-left evol-pnl">not implemented yet',
             '<div class="panel ', this.options.style, '">',
             EvoUI.HTMLPanelLabel(p.label, pid, 'PanelLabel'),
-            '<table width="100%" class="table-striped"><tr>');
+            '<table class="table table-striped"><tr>');
         _.each(p.elements, function (elem) {
             h.push('<th>', elem.label, '</th>');
         });
-        h.push('</tr><tr>');
+        h.push('</tr>');
+        var testRow='<tr>';
         _.each(p.elements, function (elem) {
-            h.push('<td>', elem.label, '</td>');
+            testRow+='<td>test</td>';
         });
+        testRow+='</tr>';
+        for(var i=0;i<5;i++){
+            h.push(testRow);
+        }
         h.push('</tr></table></div></div>');
     },
 

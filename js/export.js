@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evol-utility : export.js
+ * evolutility :: export.js
  *
  * Copyright (c) 2014, Olivier Giulieri
  *

@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evol-utility : ui-charts.js
+ * evolutility :: ui-charts.js
  *
  * Copyright (c) 2014, Olivier Giulieri
  *

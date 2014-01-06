@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evol-utility : one-edit.js
+ * evolutility :: one-edit.js
  *
  * View one edit
  *

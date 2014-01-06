@@ -144,7 +144,7 @@ var winecellar_ui = {
                     type: 'integer',
                     label: 'Vintage',
                     required: true,
-                    maxlength: 100,
+                    maxlength: 4,
                     viewmany: true,
                     width: 38,
                     min: 1900,

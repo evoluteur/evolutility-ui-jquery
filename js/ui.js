@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evol-utility : ui.js
+ * evolutility :: ui.js
  *
  * Copyright (c) 2014, Olivier Giulieri
  *

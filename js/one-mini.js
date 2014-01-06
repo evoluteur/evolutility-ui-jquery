@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evol-utility : one-mini.js
+ * evolutility :: one-mini.js
  *
  * View one mini
  *
