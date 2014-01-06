@@ -4,7 +4,7 @@
 
 /*! ***************************************************************************
  *
- * evol-utility : ui.js
+ * evolutility :: ui.js
  *
  * Copyright (c) 2014, Olivier Giulieri
  *
@@ -267,7 +267,7 @@ Evol.UI = {
 ;
 /*! ***************************************************************************
  *
- * evol-utility : ui-charts.js
+ * evolutility :: ui-charts.js
  *
  * Copyright (c) 2014, Olivier Giulieri
  *
@@ -310,7 +310,7 @@ Evol.UI.Charts = {
 ;
 /*! ***************************************************************************
  *
- * evol-utility : ui-dico.js
+ * evolutility :: ui-dico.js
  *
  * Copyright (c) 2014, Olivier Giulieri
  *
@@ -542,7 +542,7 @@ var EvolLang={
 ;
 /*! ***************************************************************************
  *
- * evol-utility : many.js
+ * evolutility :: many.js
  *
  * View many
  *
@@ -844,7 +844,7 @@ Evol.ViewMany = Backbone.View.extend({
 ;
 /*! ***************************************************************************
  *
- * evol-utility : many-cards.js
+ * evolutility :: many-cards.js
  *
  * View many cards
  *
@@ -934,7 +934,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
 ;
 /*! ***************************************************************************
  *
- * evol-utility : many-charts.js
+ * evolutility :: many-charts.js
  *
  * View many charts
  *
@@ -1019,7 +1019,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
 ;
 /*! ***************************************************************************
  *
- * evol-utility : many-list.js
+ * evolutility :: many-list.js
  *
  * View many list
  *
@@ -1113,7 +1113,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
 ;
 /*! ***************************************************************************
  *
- * evol-utility : one.js
+ * evolutility :: one.js
  *
  * View one
  *
@@ -1959,7 +1959,7 @@ var EvoVal = {
 ;
 /*! ***************************************************************************
  *
- * evol-utility : one-edit.js
+ * evolutility :: one-edit.js
  *
  * View one edit
  *
@@ -2043,7 +2043,7 @@ Evol.ViewOne.Edit = Evol.ViewOne.extend({
 ;
 /*! ***************************************************************************
  *
- * evol-utility : one-json.js
+ * evolutility :: one-json.js
  *
  * View one json
  *
@@ -2101,7 +2101,7 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
 ;
 /*! ***************************************************************************
  *
- * evol-utility : one-mini.js
+ * evolutility :: one-mini.js
  *
  * View one mini
  *
@@ -2157,7 +2157,7 @@ Evol.ViewOne.Mini = Evol.ViewOne.extend({
 ;
 /*! ***************************************************************************
  *
- * evol-utility : toolbar.js
+ * evolutility :: toolbar.js
  *
  * Copyright (c) 2014, Olivier Giulieri
  *
@@ -2547,7 +2547,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 ;
 /*! ***************************************************************************
  *
- * evol-utility : export.js
+ * evolutility :: export.js
  *
  * Copyright (c) 2014, Olivier Giulieri
  *
@@ -2970,7 +2970,7 @@ var EvoExport = {
 ;
 /*! ***************************************************************************
  *
- * evol-utility : filter.js
+ * evolutility :: filter.js
  *
  * Copyright (c) 2014, Olivier Giulieri
  *
