@@ -48,7 +48,7 @@ module.exports = function (grunt) {
                     'js/filter.js',
                     'js/ui-models/dico/field.js'
                 ],
-                dest: '<%= pkg.target %>/evol-utility.js'
+                dest: '<%= pkg.target %>/evolutility.js'
             },
             css: {
                 options: {
@@ -64,7 +64,7 @@ module.exports = function (grunt) {
                     'js/export.css',
                     'js/filter.css'
                 ],
-                dest: '<%= pkg.target %>/css/evol-utility.css'
+                dest: '<%= pkg.target %>/css/evolutility.css'
             }
         },
 
@@ -107,8 +107,8 @@ module.exports = function (grunt) {
             all: {
                 files: [
                     {
-                        src: '<%= pkg.target %>/evol-utility.js',
-                        dest: '<%= pkg.target %>/evol-utility.min.js'
+                        src: '<%= pkg.target %>/evolutility.js',
+                        dest: '<%= pkg.target %>/evolutility.min.js'
                     },
                     {
                         src: '<%= pkg.target %>/vendors.js',

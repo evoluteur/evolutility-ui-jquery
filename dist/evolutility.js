@@ -427,8 +427,8 @@ Evol.Dico = {
 };
 ;
 //   Evolutility Localization Library ENGLISH
-//   (c) 2013 Olivier Giulieri
-//   www.evol-utility.org
+//   https://github.com/evoluteur/evolutility
+//   (c) 2014 Olivier Giulieri
 
 
 var EvolLang={

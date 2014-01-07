@@ -1,20 +1,22 @@
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<html xmlns="http://www.w3.org/1999/xhtml" > 
 <head>
-    <title>evolutility.js :: Wine Cellar</title>
+    <title>evolutility.js :: demo</title>
     <meta charset="utf-8">
 
     <link href="../css/demo.css" rel="stylesheet" />
-    <link href="../dist/css/evol-utility.css" rel="stylesheet" />
+    <link href="../dist/css/evolutility.css" rel="stylesheet" />
     <link id="bwCSS" href="../dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <script src="../dist/vendors.min.js" type="text/javascript"></script>
-    <script src="../dist/evol-utility.js" type="text/javascript"></script>
+    <script src="../dist/evolutility.js" type="text/javascript"></script>
 
     <script src="../js/demo.js" type="text/javascript"></script>
-    <script src="../js/ui-models/apps/winecellar.js" type="text/javascript"></script>
+    <script src="../js/ui-models/apps/contacts.js" type="text/javascript"></script>
+    <script src="../js/ui-models/apps/contacts.data.js" type="text/javascript"></script>
 </head>
 
 <body>
+
 
 <div id="evo-toolbar" class="">
     <div class="evol-logo"><a href="../index.html">evolutility.js</a></div>
@@ -24,29 +26,27 @@
         <li><a href="https://github.com/evoluteur/evolutility" target="_new">GitHub</a></li>
     </ul>
     <div class="demo-links">
-        <a href="demo-todo.html">todo</a> -
-        <a href="demo-contact.html">addressbook</a> -
-        <a href="demo-winecellar.html" class="sel">wine cellar</a>
+        <a href="todo.html">todo</a> -
+        <a href="contact.html" class="sel">addressbook</a> -
+        <a href="winecellar.html">wine cellar</a>
     </div>
     <div class="clearfix"></div>
 </div>
 
-
-<h1 id="title">Wine Cellar</h1>
+<h1 id="title">Addressbook</h1>
 
 <div id="evol"></div>
 
-<p>See the <a id="uideflink" href="javascript:showUIdef(winecellar_ui)">UI model of this wine cellar app</a>.</p>
+<p>See the <a id="uimodellink" href="javascript:showUIdef(contacts_ui)">UI model of this addressbook app</a>.</p>
 <div style="display:none;" id="uimodel"></div>
 
 <script>
 
     $(document).ready(function(){
-        setDemo(winecellar_ui,'evol-winecellar');
+        setDemo(contacts_ui,'evol-contact',contacts_data);
     });
 
 </script>
-
 
 <p><br/>evolutility.js at <a href="https://github.com/evoluteur/evolutility" target="download">GitHub</a></p>
 

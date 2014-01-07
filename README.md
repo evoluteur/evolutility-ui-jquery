@@ -7,11 +7,11 @@ These generic Backbone views will all be defined in a single UI-model containing
 
 ## The Plan 
 
-1 Update [Evolutility metamodel] (http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications) (model of the UI models)
-2 Code the generic UI views based on the metamodel
-3 Add a toolbar and a controller for all these views
-4 Make demo apps
-5 Make [an app to make apps] (http://www.codeproject.com/Articles/28810/Wizard-and-CRUD-Applications-to-Build-other-CRUD-A)
+1. Update [Evolutility metamodel] (http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications) (model of the UI models)
+2. Code the generic UI views based on the metamodel
+3. Add a toolbar and a controller for all these views
+4. Make demo apps
+5. Make [an app to make apps] (http://www.codeproject.com/Articles/28810/Wizard-and-CRUD-Applications-to-Build-other-CRUD-A)
 
 
 ## 1 - UI-model
@@ -50,7 +50,7 @@ A set of ui-models and models for the ui-model itself: fields, panels, tabs.
 (...and some code in the view themselves to make it possible)
 
 
-## Techno
+## Techno and Libraries
 
 Javascript, HTML5, CSS3,
 [Backbone] (http://backbonejs.org),
