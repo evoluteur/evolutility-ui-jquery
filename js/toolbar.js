@@ -20,7 +20,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     options: {
         toolbar: true,
         defaultView: 'list',
-        style: 'normal',
+        style: 'panel-default',
         buttons: {
             // --- views for one ---
             edit: true,
@@ -33,9 +33,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             // --- actions ---
             'new': true,
             del: true,
-            filter: true,
-            export: true,
-            group: true,
+            filter: false,
+            export: false,
+            group: false,
             customize:true
         }
     },
@@ -55,11 +55,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 	curViewName:'',
 
     initialize: function (opts) {
-        var o=this.options;
-        o.mode=opts.mode;
-        o.uiModel=opts.uiModel;
-        o.defaultView=opts.defaultView;
-        this.collection=opts.collection;
+        _.extend(this.options, opts);
         this.render();
         this.$('[data-cid="views"] > li').tooltip();
         this.$('.dropdown-toggle').dropdown();
@@ -75,7 +71,8 @@ Evol.ViewToolbar = Backbone.View.extend({
         var h=[],
             opts=this.options;
             endMenu='</ul></li>',
-            menuDevider='<li role="presentation" class="divider"></li>';
+            menuDevider='<li role="presentation" class="divider" data-cardi="1"></li>',
+            menuDeviderCard1='<li role="presentation" class="divider" data-cardi="1"></li>';
 
         function beginMenu(icon){
             return ['<li class="dropdown">',
@@ -108,7 +105,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         linkOpt2h('list',EvolLang.All,'th-list');
         linkOpt2h('new',EvolLang.New,'plus');
         linkOpt2h('del',EvolLang.Delete,'trash','1');
-        linkOpt2h('filter','Filter','filter','n');
+        //linkOpt2h('filter','Filter','filter','n');
         //linkOpt2h('group','Group','resize-horizontal','n');
         //linkOpt2h('export','Export','cloud-download','n');
         //linkOpt2h('selections','','star');
@@ -116,12 +113,22 @@ Evol.ViewToolbar = Backbone.View.extend({
             link2h('prev','','chevron-left','1');
             link2h('next','','chevron-right','1');
             h.push('</ul><ul class="nav nav-pills pull-right" data-cid="views">');
-            linkOpt2h('list','','th-list','n','List');
-            linkOpt2h('cards','','th-large','n','Cards');
-            linkOpt2h('charts','','stats','n','Charts');
-            linkOpt2h('edit','','th','1','All Fields');
-            linkOpt2h('mini','','th-large','1','Important Fields only');
-            linkOpt2h('json','','barcode','1','JSON');
+
+                h.push(beginMenu('eye-open'));
+                linkOpt2h('list','List','th-list','n');
+                linkOpt2h('cards','Cards','th-large','n');
+                linkOpt2h('charts','Charts','stats','n');
+                linkOpt2h('edit','All Fields','th','1');
+                linkOpt2h('mini','Important Fields only','th-large','1');
+                linkOpt2h('json','JSON','barcode','1');
+/*
+                h.push(menuDeviderCard1);
+                linkOpt2h('lg','Big','font','1');
+                linkOpt2h('','Normal','font','1');
+                linkOpt2h('sm','Small','font','1');
+*/
+                h.push(endMenu);
+
             //linkOpt2h('customize','','wrench', '1', 'Customize');
             /*
             if(opts.buttons.customize){
@@ -185,7 +192,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                     mode: viewName,
                     model: this.model,
                     collection: this.collection,
-                    uiModel: this.options.uiModel
+                    uiModel: this.options.uiModel,
+                    style: this.options.style
                 };
                 this.$('[data-id="new"]').show();
                 this.$('[data-cid="views"] > li').removeClass('evo-sel') // TODO optimize
