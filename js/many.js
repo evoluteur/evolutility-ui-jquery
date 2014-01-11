@@ -15,6 +15,7 @@ var Evol = Evol || {},
 Evol.ViewMany = Backbone.View.extend({
 
     cardinality: 'n',
+    _hashLov: {},
 
     options: {
         style: 'panel-info',
@@ -32,8 +33,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     initialize: function (opts) {
         var that=this;
-        this.options.mode=opts.mode;
-        this.options.uiModel=opts.uiModel;
+        _.extend(this.options, opts);
         this._filter=[];
         if(this.collection){
             this.collection.on('change', function(model){
@@ -151,32 +151,6 @@ Evol.ViewMany = Backbone.View.extend({
         return this._fieldHash[fid];
     },
 
-    _hashLov: {},
-    _lovText:function(f,v){
-        if(('list' in f) && f.list.length>0){
-            if(!(f.id in this._hashLov)){
-                this._hashLov[f.id]={};
-            }
-            var hashLov = this._hashLov[f.id];
-            if(v in hashLov){
-                return hashLov[v];
-            }else{
-                var listItem=_.find(f.list,function(item){
-                    return item.id===v;
-                });
-                if(listItem){
-                    var txt=listItem.text;
-                    if(listItem.icon){
-                        txt='<img src="'+listItem.icon+'"> '+txt;
-                    }
-                    hashLov[v]=txt;
-                    return txt;
-                }
-            }
-        }
-        return '';
-    },
-
     _HTMLField: function(f,v){
         switch(f.type){
             case EvoDico.fieldTypes.bool:
@@ -189,7 +163,7 @@ Evol.ViewMany = Backbone.View.extend({
                     //if(f.icon && f.list & f.list[0].icon){
                     //    return 'f.icon' + this._lovText(f,v);
                     //}else{
-                        return this._lovText(f,v);
+                        return EvoDico.lovText(this._hashLov, f, v);
                     //}
                 }
                 break;
@@ -255,17 +229,23 @@ Evol.ViewMany = Backbone.View.extend({
 
     sortList: function(f, down){
         var collec=this.collection;
-        if(f.type==EvoDico.fieldTypes.text || f.type==EvoDico.fieldTypes.txtm || f.type==EvoDico.fieldTypes.email){
-            collec.comparator = EvoDico.bbComparatorText(f.id);
-        }else{
-            collec.comparator = EvoDico.bbComparator(f.id);
+        if(collec!==undefined){
+            if(f.type==EvoDico.fieldTypes.text || f.type==EvoDico.fieldTypes.txtm || f.type==EvoDico.fieldTypes.email){
+                collec.comparator = EvoDico.bbComparatorText(f.id);
+            }else{
+                collec.comparator = EvoDico.bbComparator(f.id);
+            }
+            collec.sort();
+            if(down){
+                collec.models.reverse();
+            }
+            if(this.renderBody){
+                this.renderBody(collec.models);
+            }else{
+                this.render();
+            }
+            this.$el.trigger('list.sort', {id: f.id, direction:down?'down':'up'});
         }
-        collec.sort();
-        if(down){
-            collec.models.reverse();
-        }
-        this.render(); //todo: renderBody
-        this.$el.trigger('list.sort', {id: f.id, direction:down?'down':'up'});
     },
 
     click_navigate: function (evt) {

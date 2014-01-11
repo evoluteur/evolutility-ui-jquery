@@ -24,7 +24,7 @@ function showUIdef(uiModel){
     }
 }
 
-function setDemo(uiModel, localStorage, data){
+function setDemo(uiModel, localStorage, data, style){
     M = Backbone.Model.extend({
         localStorage: new Backbone.LocalStorage(localStorage)
     });
@@ -36,13 +36,13 @@ function setDemo(uiModel, localStorage, data){
     var ms = new Ms();
     ms.fetch({
         success: function(collection){
-            EvoUI.insertCollection(collection, data);
+            Evol.UI.insertCollection(collection, data);
             var m = ms.models[0];
             var el =$('#evol'),
                 vw = new Evol.ViewToolbar({
                     el: el,
                     mode: 'one',
-                    style:'panel-primary',
+                    style: style,// || 'panel-primary',
                     customize:false,
                     model: m,
                     collection: ms,
