@@ -34,7 +34,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             'new': true,
             del: true,
             filter: false,
-            export: false,
+            export: true,
             group: false,
             customize:true
         }
@@ -107,7 +107,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         linkOpt2h('del',EvolLang.Delete,'trash','1');
         //linkOpt2h('filter','Filter','filter','n');
         //linkOpt2h('group','Group','resize-horizontal','n');
-        //linkOpt2h('export','Export','cloud-download','n');
+        linkOpt2h('export','Export','cloud-download','n');
         //linkOpt2h('selections','','star');
         if(opts.toolbar){
             link2h('prev','','chevron-left','1');
@@ -176,7 +176,12 @@ Evol.ViewToolbar = Backbone.View.extend({
             if($v.length){
                 this.curView=this.viewsHash[viewName];
                 if(!this.isNew){
-                    this.curView.setModel(this.model);
+                    if(this.curView.setModel){
+                        this.curView.setModel(this.model);
+                    }else{
+                        this.curView.model = this.model;
+                    }
+
                 }
                 this.$('[data-cid="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');

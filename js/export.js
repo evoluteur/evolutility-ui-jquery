@@ -10,7 +10,6 @@
 
 var Evol = Evol || {},
     EvoUI = Evol.UI,
-    EvoDico = Evol.Dico,
     evoLangXpt = EvolLang.export;
 
 
@@ -19,11 +18,11 @@ Evol.ViewExport = Backbone.View.extend({
     version: '0.0.1',
 
     events: {
-        "change select.evol-xpt-format": "click_format",
+        "change #tbrevol-xpt-format": "click_format",
         'change input': 'click_preview', //[type="checkbox"],
         'click .evol-more': 'click_toggle_sel',
         'click #XP': 'click_submit'
-        //
+        // TODO #tbrevol-xpt-format is a bug if change prefix...
     },
 
     options: {
@@ -40,9 +39,7 @@ Evol.ViewExport = Backbone.View.extend({
     viewName: "export",
 
     initialize: function (opts) {
-        this.options.fields=opts.fields;
-        this.options.uiModel=opts.uiModel;
-        this.options.prefix=opts.prefix;
+        _.extend(this.options, opts);
         this.render();
         var e = this.$el;
         //###  html ###
@@ -111,11 +108,13 @@ Evol.ViewExport = Backbone.View.extend({
         h.push('</div><div id="', prefix, 'CSV">');
         //# field - separator
         //# - csv - any separator #######
-        h.push('<div id="', prefix, 'csv2" class="evol-w120">',
-            EvoExport.html_more2('options'),
+        h.push('<div data-id="csv2" class="evol-w120">',
+            //EvoExport.html_more2('options'),
+            //.evol-FLH
             EvoUI.fieldLabel('FLS_evol', evoLangXpt.ExportSeparator),
-            EvoUI.inputText('FLS_evol', ',', 0),
-            '</div></div>');
+            EvoUI.inputText(prefix+'FLS_evol', ',', 0),
+            '</div>'); // </div>
+           ;
         h.push('</div>');
         _.each(['XML','HTML','SQL','JSON'], function(f){
             h.push('<div id="', prefix, f, '" style="display:none;"></div>');
@@ -137,15 +136,15 @@ Evol.ViewExport = Backbone.View.extend({
     },
 
     showFormatOpts: function (xFormat) {
-        var prefix = '#'+(this.prefix||''),
+        var prefix = '#'+(this.options.prefix||''),
             e=this.$el;
         switch (xFormat) {
             case 'TAB':
                 xFormat = 'CSV';
-                this.$('#csv2').hide();
+                this.$('[data-id="csv2"]').hide();
                 break;
             case 'CSV':
-                this.$('#csv2').show();
+                this.$('[data-id="csv2"]').show();
                 break;
             case 'HTML':
             case 'XML':
@@ -171,7 +170,7 @@ Evol.ViewExport = Backbone.View.extend({
     getFields: function (){
         var opts=this.options;
         if(!this.fields){
-            this.fields=EvoDico.fields(opts.uiModel,opts.fnFilter,opts.mode);
+            this.fields=Evol.Dico.fields(opts.uiModel,opts.fnFilter,opts.mode);
         }
         return this.fields;
     },
@@ -181,7 +180,9 @@ Evol.ViewExport = Backbone.View.extend({
             flds = this.getFields(),
             h = ['<textarea class="Field evol-xpt-val form-control">'],
             fldsDom = this.$('.evol-xpt-flds > fieldset input:checked'),
-            fldsDomHash = {};
+            fldsDomHash = {},
+            prefix='#'+ this.options.prefix,
+            useHeader = this.$(prefix+'FLH').prop('checked');
 
         _.each(fldsDom, function(fd){
             fldsDomHash[fd.id.substring(3)]='';
@@ -197,8 +198,7 @@ Evol.ViewExport = Backbone.View.extend({
             case 'TAB':
             case 'TXT':
                 var iMax=flds.length-1,
-                    sep = this.$('#FLS_evol').val().trim(),
-                    useHeader = this.$('#FLH').prop('checked');
+                    sep = EvoUI.trim(this.$(prefix+'FLS_evol').val());
                 if(format=='TAB'){
                     sep='&#09;';
                 }
@@ -229,11 +229,14 @@ Evol.ViewExport = Backbone.View.extend({
                 break;
             case 'HTML':
                 //header
-                h.push('<table>\n<tr>');
-                _.each(flds, function(f){
-                    h.push('<th>', f.id, '</th>');
-                });
-                h.push('</tr>\n');
+                h.push('<table>\n');
+                if (useHeader) {
+                    h.push('<tr>\n');
+                    _.each(flds, function(f){
+                        h.push('<th>', f.id, '</th>');
+                    });
+                    h.push('</tr>\n');
+                }
                 //data
                 _.each(data, function(d,idx){
                     h.push('<tr>');
@@ -256,8 +259,12 @@ Evol.ViewExport = Backbone.View.extend({
                 var fMax = flds.length -1,
                     optTransaction = this.$('#evoxpTRS1').prop('checked'),
                     optIdInsert = this.$('#evoxpTRS2').prop('checked'),
-                    sqlTable = this.$('#evoTable').val().replace(/ /g,'_'), //this.options.uiModel.entity.replace(/ /g,'_'),
+                    sqlTable = this.$('#evoTable').val().replace(/ /g,'_'),
                     sql = ['INSERT INTO ',sqlTable,' ('];
+
+                if(sqlTable===''){
+                    sqlTable = this.options.uiModel.entity.replace(/ /g,'_');
+                }
                 _.each(flds, function(f,idx){
                     sql.push(f.id);
                     if(idx<fMax){
@@ -295,7 +302,7 @@ Evol.ViewExport = Backbone.View.extend({
                 }
                 break;
             case 'XML':
-                var elemName = this.$('#evoRoot').val();
+                var elemName = this.$('#evoRoot').val() || this.options.uiModel.entity.replace(/ /g,'_');
                 h.push('<xml>\n');
                 _.each(data, function(m){
                     h.push('<', elemName, ' ');
@@ -344,15 +351,14 @@ Evol.ViewExport = Backbone.View.extend({
     },
 
     click_format: function (evt) {
-        var format = this.$('.evol-xpt-format').val();
+        var format = $(evt.target).val();//this.$('.evol-xpt-format').val();
         if (format === 'XML') {
             this.$('#XML').html(EvoExport.formXML(this.options.uiModel.entity))
                 .show()
                 .siblings().not('.evol-FLH').hide();
             EvoExport.cFormat = 'XML';
-        } else {
-            this.showFormatOpts(format);
         }
+        this.showFormatOpts(format);
         this._preview(format);
         this.$el.trigger('change.export', 'format', format);//evt.currentTarget.val()
     },
@@ -389,11 +395,10 @@ var EvoExport = {
     },
 
     formXML: function (entity) {
-        var b2 = 'evoxpC2X';
         return [
             EvoExport.html_more2('options'),
             EvoExport.formEntityName('evoRoot', evoLangXpt.xpXMLroot, entity),
-            EvoUI.fieldLabel(b2, evoLangXpt.xpColMap),
+            EvoUI.fieldLabel('evoxpC2X', evoLangXpt.xpColMap),
             '</div>'
         ].join('');
     },
