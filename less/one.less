@@ -19,7 +19,8 @@
     margin-bottom: 6px;
 }
 
-.evol-pnl, .evol-pnl-lst{
+.evol-pnl,
+.evol-pnl-lst{
     padding-left:10px !important;
 }
 
@@ -36,13 +37,15 @@
 }
 
 .evol-buttons{
-    margin-top:0 !important;
-}
-.evol-buttons > button{
+  margin-top:0 !important;
+  > button{
     margin-right:1em;
+  }
 }
+
 .evol-title-toggle{
-    float:right;
+  cursor: pointer;
+  float:right;
 }
 .evol-json{
     width:100%;
@@ -54,7 +57,15 @@
     display: inline !important;
 }
 
-/* bootstrap modifications*/
+/* bootstrap customizations*/
+.evolw-mini,
+.evolw-edit {
+  .help-block{
+    color: #737373 !important;
+    clear: both;
+  }
+}
+
 .evol-fld > .text-danger{
     margin-bottom: 0 !important;
 }
@@ -90,4 +101,10 @@
 
 .evo-one-edit{
     margin-left:-10px;
+}
+
+/* bootstrap modifs */
+
+.help-block{
+  min-width:50px;
 }

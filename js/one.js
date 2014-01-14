@@ -24,6 +24,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     cardinality: '1',
+    //_hashLov: {},
 
     options: {
         button_addAnother: false,
@@ -32,16 +33,8 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        var that=this,
-            mode=opts.mode;
-
-        //TODO _.extend
-        this.options.mode=mode;
-        this.options.uiModel=opts.uiModel;
-        if(opts.style){
-            this.options.style=opts.style;
-        }
-        this.collection=opts.collection;
+        var that=this;
+        _.extend(this.options, opts);
         if(this.model){
             this.model.on('change', function(model){
                 that.setModel(model);
@@ -108,20 +101,32 @@ Evol.ViewOne = Backbone.View.extend({
         return vs;
     },
 
-    setData: function (m) {
+    setData: function (model) {
         var fs = this.getFields(),
             that=this,
             $f,
             prefix='#'+ that.prefix + '-';
         _.each(fs, function (f) {
-            $f=that.$(prefix + f.id);
-            if(m){
+            $f=that.$(prefix + f.id),
+            fv=model.get(f.id);
+            if(model){
                 switch(f.type) {
-                    case 'boolean':
-                        $f.prop('checked', m.get(f.id));
+                    case EvoDico.fieldTypes.lov:
+                        $f.children().removeAttr('selected')
+                            .filter('[value='+fv+']')
+                            .attr('selected', true);
+                        break;
+                    case EvoDico.fieldTypes.bool:
+                        $f.prop('checked', fv);
+                        break;
+                    case EvoDico.fieldTypes.pix:
+                        var $img=$f.prev();
+                        if($img.get(0).tagName=='IMG'){
+                            $img.attr('src',fv);
+                        }
                         break;
                     default:
-                        $f.val(m.get(f.id));
+                        $f.val(model.get(f.id));
                 }
             }
         });
@@ -159,7 +164,7 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
     getFieldValue: function (f){
-        var $f=this.$('#'+this.prefix+'-'+f.id);
+        var $f=this.$('#'+this.fieldViewId(f.id));
         switch(f.type) {
             case EvoDico.fieldTypes.bool:
                 return $f.prop('checked');
@@ -428,6 +433,7 @@ Evol.ViewOne = Backbone.View.extend({
                     }else{
                         h.push('<img src="',fv,'" class="img-thumbnail">');
                     }
+                    h.push(EvoUI.inputText(fid, fv, fld, null, size));
                     break;
             }
         }
@@ -470,7 +476,7 @@ Evol.ViewOne = Backbone.View.extend({
     commit: function(fnSuccess, fnError){
         var msg=this.validate();
         if(msg===''){
-            if(this.options.mode==='new'){
+            if(this.options.mode==='new'){// || this._isNew
                 var collec;
                 if(this.model && this.model.collection){
                     collec = this.model.collection;
@@ -749,11 +755,11 @@ var EvoVal = {
                     typeCheck();
                 }
                 // Check regexp
-                if (fd.rg !== null && fd.rg !== undefined) {
-                    var rg = new RegExp(fd.rg);
+                if (fd.regex !== null && fd.regex !== undefined) {
+                    var rg = new RegExp(fd.regex);
                     if (!$f.val().match(rg)) {
                         p = $f.parent();
-                        msgf = labMsg(EvolLang.validation.reg, fd.rg);
+                        msgf = labMsg(EvolLang.validation.regex, fd.label);
                         EvoVal.setValidationFlags($f.parent(), msgf);
                     }
                 }/*
@@ -805,7 +811,7 @@ var EvoVal = {
                         break;
                     case ft.date:
                     case ft.datetime:
-                    //case ft.time:
+                    case ft.time:
                         if ((fv !== '') && (!_.isDate(new Date(fv)))) {
                             EvoVal.setValidationFlags($f.parent(), labMsg(EvolLang[fd.type]));
                         }

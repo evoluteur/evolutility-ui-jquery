@@ -91,11 +91,11 @@ var winecellar_lovs = {
     ],
 
     type: [
-        {id:'red',text:'Red', icon:'winered.gif'},
-        {id:'white',text:'White', icon:'winewhite.gif'},
-        {id:'sweet',text:'Sweet', icon:'winesweet.gif'},
-        {id:'spark',text:'Sparkling', icon:'winespark.gif'},
-        {id:'rose',text:'Rose', icon:'winerose.gif'}
+        {id:'red',text:'Red', icon:'pix/wine/winered.gif'},
+        {id:'white',text:'White', icon:'pix/wine/winewhite.gif'},
+        {id:'sweet',text:'Sweet', icon:'pix/wine/winesweet.gif'},
+        {id:'spark',text:'Sparkling', icon:'pix/wine/winespark.gif'},
+        {id:'rose',text:'Rose', icon:'pix/wine/winerose.gif'}
     ],
 
     country: [
@@ -148,7 +148,7 @@ var winecellar_ui = {
                     viewmany: true,
                     width: 38,
                     min: 1900,
-                    max: 2012,
+                    max: 2020,
                     help: 'Year the wine was produced.'
                 }
 
@@ -451,6 +451,55 @@ var winecellar_ui = {
         }
     ]
 };
+
+var winecellar_data = [
+    {
+        name: 'Macrostie',
+        label_img: 'pix/wine/macrostie.gif',
+        vintage: 2010,
+        winery:'Mc Williams',
+        bsize: '750',
+        type: 'red',
+        price: 20
+    },
+    {
+        name: "Château d'Yquem",
+        label_img: 'pix/wine/yquem.gif',
+        vintage: 2012,
+        winery:'Lur Saluces',
+        bsize: '750',
+        type: '',
+        price: 240
+    },
+    {
+        name: 'Château St Jean',
+        label_img: 'pix/wine/stjean.gif',
+        vintage: 2008,
+        winery:'Ch St Jean',
+        bsize: '750',
+        type: 'red',
+        price: 34
+    },
+    {
+        name: 'Vine Cliff',
+        label_img: 'pix/wine/vinecliff.gif',
+        vintage: 2013,
+        winery:'Vine Cliff',
+        bsize: '750',
+        type: 'red',
+        price: 18
+    },
+    {
+        name: 'Château Montelena',
+        label_img: 'pix/wine/montelena.gif',
+        vintage: 2005,
+        winery:'Château Montelena',
+        bsize: '1500',
+        type: 'red',
+        region:'California',
+        price: 62
+    }
+];
 
 /*
 winetasting = {

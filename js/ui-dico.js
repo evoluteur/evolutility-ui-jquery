@@ -57,6 +57,31 @@ Evol.Dico = {
         return fs;
     },
 
+    lovText:function(hash, f,v){
+        if(('list' in f) && f.list.length>0){
+            if(!(f.id in hash)){
+                hash[f.id]={};
+            }
+            var hashLov = hash[f.id];
+            if(v in hashLov){
+                return hashLov[v];
+            }else{
+                var listItem=_.find(f.list,function(item){
+                    return item.id===v;
+                });
+                if(listItem){
+                    var txt=listItem.text;
+                    if(listItem.icon){
+                        txt='<img src="'+listItem.icon+'"> '+txt;
+                    }
+                    hashLov[v]=txt;
+                    return txt;
+                }
+            }
+        }
+        return '';
+    },
+
     isTypeDateOrTime: function(fType){
         return fType == fType==EvoDico.fieldTypes.datetime || EvoDico.fieldTypes.date || fType==EvoDico.fieldTypes.time;
     },
@@ -102,15 +127,15 @@ Evol.Dico = {
         return this;
     },
 
-    bbComparator: function(fid){
-        return function(model) {
-            return model.get(fid);
+    bbComparator:  function(fid){
+        return function(modelA,modelB) {
+            return modelA.get(fid)>modelB.get(fid);
         };
     },
 
     bbComparatorText: function(fid){
-        return function(modela,modelb) {
-            return (modela.get(fid)||'').localeCompare(modelb.get(fid)||'');
+        return function(modelA,modelB) {
+            return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
         };
     }
 

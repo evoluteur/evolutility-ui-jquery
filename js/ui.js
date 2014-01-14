@@ -122,12 +122,23 @@ Evol.UI = {
     inputHidden: function (fID, fV) {
         return ['<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>'].join('');
     },
+    inputHiddens: function (h, list) {
+        _.each(function (){
+            h.push('<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>');
+        });
+    },
     inputSelectBegin: function (fID, css, emptyOption) {
         var h=['<select id="', fID, '" class="form-control ',css,'">'];
         if(emptyOption){
             h.push(Evol.UI.html.emptyOption);
         }
         return h.join('');
+    },
+    inputSelect:function (fID, css, emptyOption, list) {
+        return [
+            Evol.UI.inputSelectBegin(fID, css, emptyOption),
+            Evol.UI.inputOptions(list),'</select>'
+        ].join('');
     },
     inputOption: function (fID, fV) {
         return ['<option value="', fID, '">', fV, '</option>'].join('');
@@ -142,7 +153,7 @@ Evol.UI = {
     inputButton: function (id, label, css) {
         return '<button type="button" id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
     },
-
+/*
     inputToggle: function  (items) {
         var h=['<div class="btn-group" data-toggle="buttons">'];
         _.each(items, function(item){
@@ -150,7 +161,7 @@ Evol.UI = {
         });
         h.push('</div>');
         return h.join('');
-    },
+    },*/
 
     // --- links ---
     link: function (fID, label, url) {
@@ -213,7 +224,7 @@ Evol.UI = {
         }
         return '';
     },
-
+/*
     // get w/ automatic create if not in DOM
     getOrCreate: function (fID,$holder) {
         var e = $holder.find('#' + fID);
@@ -223,7 +234,7 @@ Evol.UI = {
             e = $holder.find('#' + fID);
         }
         return e;
-    },
+    },*/
 
     // insert a dataSet into a Backbone collection
     insertCollection: function (collection, dataSet){

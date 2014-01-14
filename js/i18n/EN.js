@@ -41,7 +41,8 @@ var EvolLang={
         time:'"{0}" must be a valid date/time, format must be "hh:mm am/pm" like "10:30 am".',
         max:'"{0}" must be smaller or equal to {1}.',
         min:'"{0}" must be greater or equal to {1}.',
-        reg:'"{0}" must match the regular expression pattern "{1}".'
+        regex:'The value "{0}" is not of the expected format.'
+        //regex:'"{0}" must match the regular expression pattern for "{1}".'
     },
 
 

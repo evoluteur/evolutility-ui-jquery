@@ -20,15 +20,22 @@ module.exports = function (grunt) {
             },
             vendors:{
                 src: [
+                    // jQuery & jQuery UI
                     'bower_components/jquery/jquery.js',
+                    //'bower_components/jquery-ui/ui/jquery.ui.widget.js',
+
+                    // Backbone & Underscore
                     'bower_components/underscore/underscore.js',
                     //'bower_components/underscore.string/lib/underscore.string.js',
                     'bower_components/backbone/backbone.js',
                     'bower_components/backbone.localStorage/backbone.localStorage.js',
+
+                    // Twitter Bootstrap
                     'bower_components/bootstrap/js/modal.js',
                     'bower_components/bootstrap/js/tooltip.js',
                     'bower_components/bootstrap/js/button.js',
                     'bower_components/bootstrap/js/dropdown.js'
+
                 ],
                 dest: '<%= pkg.target %>/vendors.js'
             },
@@ -45,26 +52,10 @@ module.exports = function (grunt) {
 
                     'js/toolbar.js',
                     'js/export.js',
-                    'js/filter.js',
-                    'js/ui-models/dico/field.js'
+                    'js/filter.js'
+                    //'js/ui-models/dico/field.js'
                 ],
                 dest: '<%= pkg.target %>/evolutility.js'
-            },
-            css: {
-                options: {
-                    banner: '<%= banner %>',
-                    separator: '\n'
-                },
-                src: [
-                    //'app/css/demo.css',
-                    'css/one.css',
-                    'css/many.css',
-                    'css/ui-dico.css',
-                    'css/toolbar.css',
-                    'js/export.css',
-                    'js/filter.css'
-                ],
-                dest: '<%= pkg.target %>/css/evolutility.css'
             }
         },
 
@@ -116,6 +107,32 @@ module.exports = function (grunt) {
                     }
                 ]
             }
+        },
+
+        // *************************************************************************************
+        //      LESS
+        // *************************************************************************************
+        less: {
+            options: {
+            },
+            dev: {
+                files: {
+                    "dist/css/evolutility.css": "less/evol.less"
+                }
+            },
+            demo: {
+                files: {
+                    "dist/css/demo.css": "less/demo.less"
+                }
+            },
+            prod: {
+                options: {
+                    yuicompress: true
+                },
+                files: {
+                    "dist/css/evolutility.min.css": "less/evol.less"
+                }
+            }
         }
 
     });
@@ -128,6 +145,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
 
     // *************************************************************************************
@@ -137,10 +155,16 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['dev']);
 
     // Dev only task(s).
-    grunt.registerTask('dev', ['concat:js', 'concat:css']);
+    grunt.registerTask('dev', ['concat:js', 'less:dev', 'less:demo']);
 
     // Prod only task(s).
-    grunt.registerTask('prod', ['jshint', 'dev', 'concat:vendors', 'uglify']);
+    grunt.registerTask('prod', [
+        'jshint',
+        'dev',
+        'concat:vendors',
+        'less:prod',
+        'uglify'
+    ]);
 
 };
 

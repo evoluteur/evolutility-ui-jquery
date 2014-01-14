@@ -3,7 +3,7 @@
 evolutility.js is a work in progress. Eventually it will be a generic UI to build applications who can change form, volume, and structure like living organisms.
 
 The idea is to build a set of generic Backbone views to perform all CRUD (Create, Read, Update and Delete) operations on records of any data structure.
-These generic Backbone views will all be defined in a single UI-model containing the description of UI (layout, fields and behaviors).
+For each object the whole set of views is defined in a single UI-model containing the description of UI (layout, fields and behaviors).
 
 ## The Plan 
 

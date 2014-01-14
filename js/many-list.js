@@ -31,18 +31,29 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             pSize = opts.pageSize || 50,
             pSummary = this._paginationSummaryHTML(0, pSize, models.length, uim.entity, uim.entities);
         this._models=models;
-        h.push('<div class="evol-many-list">');
-        //h.push('<div class="panel ',this.options.style,'">');
-        h.push('<table class="table table-bordered table-hover"><thead>');
+        h.push('<div class="evol-many-list">',
+            //'<div class="panel ',this.options.style,'">',
+            '<table class="table table-bordered table-hover"><thead>');
         for (var i=0; i<fields.length; i++) {
             this._HTMLlistHeader(h, fields[i]);
         }
         h.push('</thead><tbody>');
         this._HTMLlistBody(h, fields, pSize, uim.icon);
-        h.push('</tbody></table>'); //</div>
-        h.push(pSummary, this._paginationHTML(0, pSize, models.length));
-        h.push('</div>');
+        h.push('</tbody></table>', //</div>
+            pSummary, this._paginationHTML(0, pSize, models.length),
+            '</div>');
         this.$el.html(h.join(''));
+    },
+
+    renderBody: function(models){
+        var h=[],
+            fields = this.getFields(),
+            opts = this.options,
+            uim = opts.uiModel,
+            pSize = opts.pageSize || 50;
+
+        this._HTMLlistBody(h, fields, pSize, uim.icon);
+        this.$('.table > tbody').html(h.join(''));
     },
 
     _HTMLlistBody: function(h, fields, pSize, icon){

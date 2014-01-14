@@ -1,99 +1,183 @@
-/*   evolutility 0.0.1 */
-
-/*   (c) 2014 Olivier Giulieri */
-
+/*!
+ *  evolutility : toolbar.css
+ *
+ *  https://github.com/evoluteur/evolutility
+ *  Copyright (c) 2014, Olivier Giulieri
+*/
+.evo-toolbar {
+  border: 1px solid #bce8f1;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 3px;
+}
+.evo-toolbar > [data-cid="views"] {
+  color: black;
+}
+.evo-toolbar > ul > .evo-sel .glyphicon:before {
+  color: black;
+}
+/*!
+ *  evolutility : filter.css
+ *
+ *  https://github.com/evoluteur/evolutility
+ *  Copyright (c) 2014, Olivier Giulieri
+*/
+.evo-bNew,
+.evo-bAdd,
+.evo-bDel,
+.evo-bSubmit {
+  margin: 1px 6px 6px 1px;
+}
+.evo-lBold {
+  font-weight: bold;
+}
+.evo-lLight {
+  font-weight: normal;
+}
+.evo-filters.panel {
+  min-height: 20px;
+  padding: 6px 1px 1px 6px;
+}
+.evo-filters button {
+  margin: 1px 6px 6px 1px;
+  padding-right: 6px;
+}
+.evo-filters button span.ui-button-text {
+  padding: 4px 33px 4px 12px;
+}
+.evo-filters .glyphicon-remove {
+  margin: 0 6px;
+}
+.evo-editFilter {
+  vertical-align: middle;
+}
+.evo-editFilter > #value > label {
+  margin-left: 6px;
+}
+.evo-editFilter > select,
+.evo-editFilter > input,
+.evo-editFilter > span {
+  float: left;
+  margin: 1px 6px 6px 1px;
+  font-size: 1.1em;
+  width: auto;
+}
+.evo-editFilter span#value {
+  margin-right: 5px;
+}
+.evo-editFilter #value input[type="checkbox"] {
+  margin-left: 5px;
+}
+.evo-editFilter input[type="number"]#value,
+.evo-editFilter input[type="time"]#value,
+.evo-editFilter input[type="time"]#value2 {
+  width: 6em;
+}
+.evo-editFilter input.hasDatepicker {
+  width: 7em;
+}
+.evo-editFilter:after,
+.evo-editFilter > button {
+  clear: left;
+}
 /*!
  *  evolutility : one.css
  *
  *  https://github.com/evoluteur/evolutility
  *  Copyright (c) 2014, Olivier Giulieri
 */
-
 /* --- panels & tabs --- */
-
 .evol-pnls,
-.evol-pnl > div > fieldset{
-    padding: 10px 10px 5px 2px;
+.evol-pnl > div > fieldset {
+  padding: 10px 10px 5px 2px;
 }
-.evol-pnl > .panel{
-    margin-bottom: 12px;
+.evol-pnl > .panel {
+  margin-bottom: 12px;
 }
-.evol-fld{
-    padding-left:10px !important;
-    margin-bottom: 6px;
+.evol-fld {
+  padding-left: 10px !important;
+  margin-bottom: 6px;
 }
-
-.evol-pnl, .evol-pnl-lst{
-    padding-left:10px !important;
+.evol-pnl,
+.evol-pnl-lst {
+  padding-left: 10px !important;
 }
-
-.evol-tabs{
-    margin: 0 10px;
+.evol-tabs {
+  margin: 0 10px;
 }
-
 /* --- fields --- */
-
-.evol-required{
-    margin-left:3px;
-    color:#b94a48;
-    font-weight:bold;
+.evol-required {
+  margin-left: 3px;
+  color: #b94a48;
+  font-weight: bold;
 }
-
-.evol-buttons{
-    margin-top:0 !important;
+.evol-buttons {
+  margin-top: 0 !important;
 }
-.evol-buttons > button{
-    margin-right:1em;
+.evol-buttons > button {
+  margin-right: 1em;
 }
-.evol-title-toggle{
-    float:right;
+.evol-title-toggle {
+  cursor: pointer;
+  float: right;
 }
-.evol-json{
-    width:100%;
-    height:350px;
-    margin: 10px 0;
+.evol-json {
+  width: 100%;
+  height: 350px;
+  margin: 10px 0;
 }
-.glyphicon-wrench{
-    margin-left: 5px;
-    display: inline !important;
+.glyphicon-wrench {
+  margin-left: 5px;
+  display: inline !important;
 }
-
-/* bootstrap modifications*/
-.evol-fld > .text-danger{
-    margin-bottom: 0 !important;
+/* bootstrap customizations*/
+.evolw-mini .help-block,
+.evolw-edit .help-block {
+  color: #737373 !important;
+  clear: both;
 }
-.evol-field-label > label > .glyphicon-question-sign{
-    cursor: pointer;
-    padding-left: 4px;
-    color: silver;
+.evol-fld > .text-danger {
+  margin-bottom: 0 !important;
 }
-.evo-mini-holder{
-    margin: 10px -10px;
+.evol-field-label > label > .glyphicon-question-sign {
+  cursor: pointer;
+  padding-left: 4px;
+  color: silver;
 }
-.evo-mini-label{
-    float:left;
-    width:38%;
-    max-width:200px;
-    padding-right:10px;
-    clear:left;
+.evo-mini-holder {
+  margin: 10px -10px;
 }
-.evo-mini-content{
-    float:left;
-    width:62%;
-    width:calc(100% - 200px);
+.evo-mini-label {
+  float: left;
+  width: 38%;
+  max-width: 200px;
+  padding-right: 10px;
+  clear: left;
 }
-
+.evo-mini-content {
+  float: left;
+  width: 62%;
+  width: calc(-100%);
+}
 @media only screen and (max-width: 500px) {
-    .evo-mini-label{float:none;width:auto;}
-    .evo-mini-content{float:none;width:auto;}
+  .evo-mini-label {
+    float: none;
+    width: auto;
+  }
+  .evo-mini-content {
+    float: none;
+    width: auto;
+  }
 }
-
-.w-100{
-    width: 100%;
+.w-100 {
+  width: 100%;
 }
-
-.evo-one-edit{
-    margin-left:-10px;
+.evo-one-edit {
+  margin-left: -10px;
+}
+/* bootstrap modifs */
+.help-block {
+  min-width: 50px;
 }
 /*!
  *  evolutility : many.css
@@ -101,135 +185,236 @@
  *  https://github.com/evoluteur/evolutility
  *  Copyright (c) 2014, Olivier Giulieri
 */
-
 /* --- list --- */
-
-img.evol-table-icon{
-	margin-right: 6px !important;
+img.evol-table-icon {
+  margin-right: 6px !important;
 }
 .evol-many-list > .table th .glyphicon {
-    display:none;
-    position:absolute;
-    opacity: .8;
-    margin-left: 6px;
-    background-color: white;
-    cursor: pointer;
-    width:22px;
-    height: 22px;
+  display: none;
+  position: absolute;
+  opacity: .8;
+  margin-left: 6px;
+  background-color: white;
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
 }
 .evol-many-list > .table th:hover .glyphicon {
-    display: inline !important;
-    cursor: pointer;
+  display: inline !important;
+  cursor: pointer;
 }
 .evol-many-list > .table th .glyphicon.evol-last-sort {
-    display:none;
-    position:absolute;
+  display: none;
+  position: absolute;
 }
-
 /* --- list > sort icons --- */
-
 .evol-sort-icons {
-    position: relative;
-    top:3px;
-    padding: 3px;
-    width:300px;
+  position: relative;
+  top: 3px;
+  padding: 3px;
+  width: 300px;
 }
 .evol-sort-icons > .glyphicon {
-    position: absolute;
-    top:2px;
+  position: absolute;
+  top: 2px;
 }
 .evol-sort-icons > .glyphicon-chevron-up {
-    left:7px;
+  left: 7px;
 }
 .evol-sort-icons > .glyphicon-chevron-down {
-    left:24px;
+  left: 24px;
 }
-
-.panel-heading > .evol-title-toggle{
-    display: none;
+.panel-heading > .evol-title-toggle {
+  display: none;
 }
-.panel-heading:hover > .evol-title-toggle{
-    display: inline;
+.panel-heading:hover > .evol-title-toggle {
+  display: inline;
 }
-
 /* --- cards --- */
-
 .evol-many-cards > div.panel {
-    float:left;
-    width:240px;
-    min-width:140px;
-    height:150px;
-    margin: 5px;
-    padding:10px;
-    border-radius: 10px;
+  float: left;
+  width: 240px;
+  min-width: 140px;
+  height: 150px;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 10px;
 }
-
 /* --- charts --- */
-
-.evol-chart-holder{
-    float:left;
-    text-align: center;
-    background-color :#FFFFFF;
-    padding: 10px 5px 5px 5px;
-    margin:10px;
-    width: 400px !important;
-    min-height:300px;
+.evol-chart-holder {
+  float: left;
+  text-align: center;
+  background-color: #FFFFFF;
+  padding: 10px 5px 5px 5px;
+  margin: 10px;
+  width: 400px !important;
+  min-height: 300px;
 }
-.evol-chart-title{
-    text-align:center;
-    padding:10px 20px 30px;
+.evol-chart-title {
+  text-align: center;
+  padding: 10px 20px 30px;
 }
-
 /*!
  *  evolutility : dico.css
  *
  *  https://github.com/evoluteur/evolutility
  *  Copyright (c) 2014, Olivier Giulieri
 */
-
 .evol-des-field,
 .evol-des-panel {
-    z-index: 2000;
-    position: absolute;
-    overflow: auto;
-    background-color: white;
-    box-shadow: 6px 6px 3px #a0a0a0;
-    border: #696969 1px solid;
-    padding:4px;
+  z-index: 2000;
+  position: absolute;
+  overflow: auto;
+  background-color: white;
+  box-shadow: 6px 6px 3px #a0a0a0;
+  border: #696969 1px solid;
+  padding: 4px;
 }
-
 .evol-des-field {
-    width:400px;
-    height:500px;
+  width: 400px;
+  height: 500px;
 }
-
 .evol-des-panel {
-    width:400px;
-    height:500px;
+  width: 500px;
+  height: 400px;
 }
 label > .glyphicon-wrench {
-    cursor: pointer;
+  cursor: pointer;
 }
-
-
-
 /*!
  *  evolutility : toolbar.css
  *
  *  https://github.com/evoluteur/evolutility
  *  Copyright (c) 2014, Olivier Giulieri
 */
-
-.evo-toolbar{
-    border: 1px solid #bce8f1;
-    border-radius: 4px;
-    margin-bottom:10px;
-    padding:3px;
+.evo-toolbar {
+  border: 1px solid #bce8f1;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 3px;
 }
-.evo-toolbar > [data-cid="views"]{
-    color:black;
+.evo-toolbar > [data-cid="views"] {
+  color: black;
 }
-
-.evo-toolbar > ul > .evo-sel .glyphicon:before{
-    color:black;
+.evo-toolbar > ul > .evo-sel .glyphicon:before {
+  color: black;
+}
+/*!
+ *  evolutility : export.css
+ *
+ *  https://github.com/evoluteur/evolutility
+ *  Copyright (c) 2014, Olivier Giulieri
+*/
+.evol-xpt-form {
+  border-collapse: collapse;
+  border: 0;
+  width: 100%;
+}
+.evol-xpt-form tr td {
+  padding: 15px;
+  vertical-align: top;
+}
+.evol-xpt-flds input[type="checkbox"] {
+  clear: left;
+  float: left;
+  margin-right: .5em;
+}
+td.evol-xpt-para {
+  width: 62%;
+  border-left: 0 !important;
+}
+td.evol-xpt-flds {
+  border-right: 0 !important;
+  width: 38%;
+}
+select.evol-xpt-format {
+  width: auto;
+  display: block;
+  margin-bottom: 6px;
+}
+.evol-xpt-val {
+  display: block;
+  padding: 5px;
+  height: 300px;
+  margin-top: 6px;
+}
+.evol-w120 {
+  max-width: 120px;
+}
+.evol-xpt-opts {
+  padding: 10px;
+}
+.evol-xpt-opts input[type="checkbox"] {
+  margin-right: .5em;
+}
+.evol-xpt-preview textarea {
+  min-height: 200px;
+}
+.evol-more-content {
+  clear: both;
+  display: none;
+}
+/*!
+ *  evolutility : filter.css
+ *
+ *  https://github.com/evoluteur/evolutility
+ *  Copyright (c) 2014, Olivier Giulieri
+*/
+.evo-bNew,
+.evo-bAdd,
+.evo-bDel,
+.evo-bSubmit {
+  margin: 1px 6px 6px 1px;
+}
+.evo-lBold {
+  font-weight: bold;
+}
+.evo-lLight {
+  font-weight: normal;
+}
+.evo-filters.panel {
+  min-height: 20px;
+  padding: 6px 1px 1px 6px;
+}
+.evo-filters button {
+  margin: 1px 6px 6px 1px;
+  padding-right: 6px;
+}
+.evo-filters button span.ui-button-text {
+  padding: 4px 33px 4px 12px;
+}
+.evo-filters .glyphicon-remove {
+  margin: 0 6px;
+}
+.evo-editFilter {
+  vertical-align: middle;
+}
+.evo-editFilter > #value > label {
+  margin-left: 6px;
+}
+.evo-editFilter > select,
+.evo-editFilter > input,
+.evo-editFilter > span {
+  float: left;
+  margin: 1px 6px 6px 1px;
+  font-size: 1.1em;
+  width: auto;
+}
+.evo-editFilter span#value {
+  margin-right: 5px;
+}
+.evo-editFilter #value input[type="checkbox"] {
+  margin-left: 5px;
+}
+.evo-editFilter input[type="number"]#value,
+.evo-editFilter input[type="time"]#value,
+.evo-editFilter input[type="time"]#value2 {
+  width: 6em;
+}
+.evo-editFilter input.hasDatepicker {
+  width: 7em;
+}
+.evo-editFilter:after,
+.evo-editFilter > button {
+  clear: left;
 }

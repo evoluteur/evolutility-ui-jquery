@@ -1,0 +1,84 @@
+/*!
+ *  evolutility : many.css
+ *
+ *  https://github.com/evoluteur/evolutility
+ *  Copyright (c) 2014, Olivier Giulieri
+*/
+
+/* --- list --- */
+
+img.evol-table-icon{
+	margin-right: 6px !important;
+}
+.evol-many-list > .table th .glyphicon {
+    display:none;
+    position:absolute;
+    opacity: .8;
+    margin-left: 6px;
+    background-color: white;
+    cursor: pointer;
+    width:22px;
+    height: 22px;
+}
+.evol-many-list > .table th:hover .glyphicon {
+    display: inline !important;
+    cursor: pointer;
+}
+.evol-many-list > .table th .glyphicon.evol-last-sort {
+    display:none;
+    position:absolute;
+}
+
+/* --- list > sort icons --- */
+
+.evol-sort-icons {
+  position: relative;
+  top:3px;
+  padding: 3px;
+  width:300px;
+  > .glyphicon {
+    position: absolute;
+    top:2px;
+  }
+  > .glyphicon-chevron-up {
+    left:7px;
+  }
+  > .glyphicon-chevron-down {
+    left:24px;
+  }
+}
+
+.panel-heading > .evol-title-toggle{
+    display: none;
+}
+.panel-heading:hover > .evol-title-toggle{
+    display: inline;
+}
+
+/* --- cards --- */
+
+.evol-many-cards > div.panel {
+    float:left;
+    width:240px;
+    min-width:140px;
+    height:150px;
+    margin: 5px;
+    padding:10px;
+    border-radius: 10px;
+}
+
+/* --- charts --- */
+
+.evol-chart-holder{
+    float:left;
+    text-align: center;
+    background-color :#FFFFFF;
+    padding: 10px 5px 5px 5px;
+    margin:10px;
+    width: 400px !important;
+    min-height:300px;
+}
+.evol-chart-title{
+    text-align:center;
+    padding:10px 20px 30px;
+}
