@@ -8,17 +8,17 @@
 	border-collapse:collapse;
 	border:0;
 	width:100%;
+
+  tr td {
+    padding:15px;
+    vertical-align:top;
+  }
 } 
-.evol-xpt-form tr td {
-	padding:15px; 
-	vertical-align:top; 
-}
+
 .evol-xpt-flds input[type="checkbox"]{
 	clear:left;
 	float:left;
 	margin-right:.5em;
-}
-.evol-xpt-flds label{
 }
 
 td.evol-xpt-para{
@@ -45,17 +45,16 @@ select.evol-xpt-format{
 	max-width:120px;
 }
 .evol-xpt-opts {
-	padding:10px;
+  padding:10px;
+  input[type="checkbox"]{
+    margin-right:.5em;
+  }
 }
-.evol-xpt-opts input[type="checkbox"]{
-	margin-right:.5em;
-}
+
 .evol-xpt-preview textarea{
 	min-height:200px;
 }
-.evol-more{
- /*   float:right; */
-}
+
 .evol-more-content{
     clear: both;
     display: none;

@@ -1,0 +1,70 @@
+/*!
+ *  evolutility : filter.css
+ *
+ *  https://github.com/evoluteur/evolutility
+ *  Copyright (c) 2014, Olivier Giulieri
+*/
+
+.evo-bNew, .evo-bAdd, .evo-bDel, .evo-bSubmit {
+	margin:1px 6px 6px 1px;	
+}
+.evo-lBold{
+	font-weight: bold;
+}
+.evo-lLight{
+	font-weight: normal;
+}
+.evo-filters{
+  &.panel{
+    min-height:20px;
+    padding:6px 1px 1px 6px;
+  }
+
+  button {
+    margin:1px 6px 6px 1px;
+    padding-right:6px;
+
+    span.ui-button-text{
+      padding: 4px 33px 4px 12px;
+    }
+  }
+
+  .glyphicon-remove{
+    margin:0 6px;
+  }
+}
+
+.evo-editFilter{
+	vertical-align: middle;
+
+  > #value > label{
+    margin-left:6px;
+  }
+  > select,
+  > input,
+  > span{
+    float: left;
+    margin:1px 6px 6px 1px;
+    font-size: 1.1em;
+    width:auto;
+  }
+  span#value {
+    margin-right:5px;
+  }
+  #value input[type="checkbox"] {
+    margin-left:5px;
+  }
+  input[type="number"]#value,
+  input[type="time"]#value,
+  input[type="time"]#value2 {
+    width:6em;
+  }
+
+  input.hasDatepicker{
+    width:7em;
+  }
+}
+.evo-editFilter:after,
+.evo-editFilter > button{
+    clear: left;
+}
