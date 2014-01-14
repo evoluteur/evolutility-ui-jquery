@@ -29,7 +29,7 @@ Evol.ViewFilter = Backbone.View.extend({
 
     events: {
         'click .evo-filters > button': 'click_editFilter',
-        'click .evo-filters > button > span >.glyphicon-remove': 'click_remove'
+        'click .evo-filters-btns > button > .glyphicon-remove': 'click_remove'
         // TODO move other events here
     },
 
@@ -43,8 +43,7 @@ Evol.ViewFilter = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        this.options.fields=opts.fields;
-        //this.options.uiModel=opts.uiModel;
+        _.extend(this.options, opts);
         return this;
     },
 
@@ -375,8 +374,8 @@ Evol.ViewFilter = Backbone.View.extend({
                             if(this._field.list.length>7){
                                 h.push(EvoUI.inputCheckbox('checkAll', true),'<label for="checkAll">',EvolLang.All,'</label>');
                             }
-                            h.push(EvoUI.inputCheckboxLOV(this._field.list));
-                            h.push('</span>');
+                            h.push(EvoUI.inputCheckboxLOV(this._field.list),
+                                '</span>');
                             break;
                         case evoTypes.bool:
                             h.push('<span id="value">',
@@ -595,7 +594,7 @@ Evol.ViewFilter = Backbone.View.extend({
     },
 
     click_remove: function(evt){
-        evt.stopPropagation();
+        evt.stopImmediatePropagation();
         var idx=$(evt.target).parent().index();
         this.removeFilter(idx);
     }

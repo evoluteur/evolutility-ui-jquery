@@ -122,7 +122,7 @@ Evol.ViewOne = Backbone.View.extend({
                     case EvoDico.fieldTypes.pix:
                         var $img=$f.prev();
                         if($img.get(0).tagName=='IMG'){
-                            $img.attr('src',fv)
+                            $img.attr('src',fv);
                         }
                         break;
                     default:

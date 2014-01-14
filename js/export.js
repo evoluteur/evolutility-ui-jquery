@@ -87,16 +87,15 @@ Evol.ViewExport = Backbone.View.extend({
         //##### export formats ########################################
         var fId = prefix + 'evol-xpt-format',
             myLabels = evoLangXpt.ExportFormats.split('-');
-        h.push('<label for="', fId, '">', evoLangXpt.ExportFormat, '</label>');
-        h.push(
-            EvoUI.inputSelectBegin(fId,'evol-xpt-format'),
-            EvoUI.inputOption('CSV', myLabels[0]),
-            EvoUI.inputOption('TAB', myLabels[3]),
-            EvoUI.inputOption('HTML', myLabels[1]),
-            EvoUI.inputOption('JSON', myLabels[5]),
-            EvoUI.inputOption('SQL', myLabels[2]),
-            EvoUI.inputOption('XML', myLabels[4]),
-            '</select>'
+        h.push('<label for="', fId, '">', evoLangXpt.ExportFormat, '</label>',
+            EvoUI.inputSelect(fId,'evol-xpt-format', false, [
+                {id: 'CSV', text: myLabels[0]},
+                {id: 'TAB', text: myLabels[3]},
+                {id: 'HTML', text: myLabels[1]},
+                {id: 'JSON', text: myLabels[5]},
+                {id: 'SQL', text: myLabels[2]},
+                {id: 'XML', text: myLabels[4]}
+            ])
         );
         h.push('<div class="evol-xpt-opts">');
         //# field (shared b/w formats - header #######
@@ -114,7 +113,6 @@ Evol.ViewExport = Backbone.View.extend({
             EvoUI.fieldLabel('FLS_evol', evoLangXpt.ExportSeparator),
             EvoUI.inputText(prefix+'FLS_evol', ',', 0),
             '</div>'); // </div>
-           ;
         h.push('</div>');
         _.each(['XML','HTML','SQL','JSON'], function(f){
             h.push('<div id="', prefix, f, '" style="display:none;"></div>');
