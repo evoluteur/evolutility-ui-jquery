@@ -192,8 +192,8 @@ Evol.ViewOne = Backbone.View.extend({
         h.push(
             EvoUI.html.clearer,
             '<div class="evol-buttons">',
-            EvoUI.inputButton('cancel', EvolLang.Cancel, 'btn-default'+css),
-            EvoUI.inputButton('save', EvolLang.Save, 'btn-primary'+css)
+            EvoUI.input.button('cancel', EvolLang.Cancel, 'btn-default'+css),
+            EvoUI.input.button('save', EvolLang.Save, 'btn-primary'+css)
         );
         if (this.options.button_addAnother && mode!=='json') {
             h.push(EvoUI.inputButton('save-add', EvolLang.SaveAdd, 'btn-default'+css));
@@ -370,14 +370,14 @@ Evol.ViewOne = Backbone.View.extend({
         }else{
             switch (fld.type) {
                 case types.text:
-                    h.push(EvoUI.inputText(fid, fv, fld, null, size));
+                    h.push(EvoUI.input.text(fid, fv, fld, null, size));
                     break;
                 case types.email:
                     if (mode === 'view') {
                         h.push(EvoUI.link(fid, fv, 'mailto:' + HttpUtility.HtmlEncode(fv)));
                     } else {
                         //h.push('<div class="input-group"><span class="input-group-addon">@</span>');
-                        h.push(EvoUI.inputText(fid, fv, fld.maxlength));
+                        h.push(EvoUI.input.text(fid, fv, fld.maxlength));
                         //h.push('</div>');
                     }
                     break;
@@ -385,15 +385,15 @@ Evol.ViewOne = Backbone.View.extend({
                     if (mode === 'view') {
                         h.push(EvoUI.link(fid, fv, HttpUtility.HtmlEncode(fv)));
                     } else {
-                        h.push(EvoUI.inputText(fid, fv, fld.maxlength));
+                        h.push(EvoUI.input.text(fid, fv, fld.maxlength));
                     }
                     break;
                 case types.integer:
                 case types.dec:
-                    h.push(EvoUI.inputTextInt(fid, fv));
+                    h.push(EvoUI.input.textInt(fid, fv));
                     break;
                 case types.bool:
-                    h.push(EvoUI.inputCheckbox(fid, fv));
+                    h.push(EvoUI.input.checkbox(fid, fv));
                     break;
                 case types.txtm:
                 case types.html:
@@ -406,25 +406,25 @@ Evol.ViewOne = Backbone.View.extend({
                             fld.height = 5;
                         }
                     }
-                    h.push(EvoUI.inputTextM(fid, fv, fld.maxlength, fld.height));
+                    h.push(EvoUI.input.textM(fid, fv, fld.maxlength, fld.height));
                     break;
                 case types.date:
-                    h.push(EvoUI.inputDate(fid, fv));
+                    h.push(EvoUI.input.date(fid, fv));
                     break;
                 case types.datetime:
-                    h.push(EvoUI.inputDateTime(fid, fv));
+                    h.push(EvoUI.input.dateTime(fid, fv));
                     break;
                 case types.time:
-                    h.push(EvoUI.inputTime(fid, fv));
+                    h.push(EvoUI.input.time(fid, fv));
                     break;
                 case types.color:
-                    h.push(EvoUI.inputColor(fid, fv));
+                    h.push(EvoUI.input.color(fid, fv));
                     break;
                 case types.lov:
-                    h.push(EvoUI.inputLOV(fid, fv, '', fld.list || []));
+                    h.push(EvoUI.input.select(fid,'',true, fld.list));
                     break;
                 case types.integer:
-                    h.push(EvoUI.inputTextInt(fid, fv, fld.type, fld.max, fld.min));
+                    h.push(EvoUI.input.textInt(fid, fv, fld.max, fld.min));
                     break;
                 //case types.doc:
                 case types.pix:
@@ -433,7 +433,7 @@ Evol.ViewOne = Backbone.View.extend({
                     }else{
                         h.push('<img src="',fv,'" class="img-thumbnail">');
                     }
-                    h.push(EvoUI.inputText(fid, fv, fld, null, size));
+                    h.push(EvoUI.input.text(fid, fv, fld, null, size));
                     break;
             }
         }

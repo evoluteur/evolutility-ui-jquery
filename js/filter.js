@@ -273,9 +273,9 @@ Evol.ViewFilter = Backbone.View.extend({
             this._bDel.show();
             if(!this._fList){
                 var fields=this.options.fields,
-                    h=[EvoUI.inputSelectBegin('field',null,true)];
+                    h=[EvoUI.input.selectBegin('field',null,true)];
                 _.each(fields, function(f){
-                    h.push(EvoUI.inputOption(f.id, f.label));
+                    h.push(EvoUI.input.option(f.id, f.label));
                 });
                 h.push('</select>');
                 this._fList=h.join('');
@@ -298,34 +298,34 @@ Evol.ViewFilter = Backbone.View.extend({
             switch (fType){
                 case evoTypes.lov:
                     //h.push(evoLang.sInList);
-                    h.push(EvoUI.inputHidden('operator',evoAPI.sInList));
+                    h.push(EvoUI.input.hidden('operator',evoAPI.sInList));
                     this._operator=evoAPI.sInList;
                     break;
                 case evoTypes.bool:
                     //h.push(evoLang.sEqual);
-                    h.push(EvoUI.inputHidden('operator',evoAPI.sEqual));
+                    h.push(EvoUI.input.hidden('operator',evoAPI.sEqual));
                     this._operator=evoAPI.sEqual;
                     break;
                 default:
-                    h.push(EvoUI.inputSelectBegin('operator','',true));
+                    h.push(EvoUI.input.selectBegin('operator','',true));
                     switch (fType){
                         case evoTypes.date:
                         case evoTypes.time:
                             if (fType==evoTypes.time){
-                                h.push(EvoUI.inputOption(evoAPI.sEqual, evoLang.sAt),
-                                    EvoUI.inputOption(evoAPI.sNotEqual, evoLang.sNotAt));
+                                h.push(EvoUI.input.option(evoAPI.sEqual, evoLang.sAt),
+                                    EvoUI.input.option(evoAPI.sNotEqual, evoLang.sNotAt));
                             }else{
-                                h.push(EvoUI.inputOption(evoAPI.sEqual, evoLang.sOn),
-                                    EvoUI.inputOption(evoAPI.sNotEqual, evoLang.sNotOn));
+                                h.push(EvoUI.input.option(evoAPI.sEqual, evoLang.sOn),
+                                    EvoUI.input.option(evoAPI.sNotEqual, evoLang.sNotOn));
                             }
-                            h.push(EvoUI.inputOptions([
+                            h.push(EvoUI.input.options([
                                 {id: evoAPI.sGreater, text: evoLang.sAfter},
                                 {id: evoAPI.sSmaller, text: evoLang.sBefore},
                                 {id: evoAPI.sBetween, text: evoLang.sBetween}
                             ]));
                             break;
                         case evoTypes.number:
-                            h.push(EvoUI.inputOptions([
+                            h.push(EvoUI.input.options([
                                 {id: evoAPI.sEqual, text: evoLang.sNumEqual},
                                 {id: evoAPI.sNotEqual, text: evoLang.sNumNotEqual},
                                 {id: evoAPI.sGreater, text: evoLang.sGreater},
@@ -333,7 +333,7 @@ Evol.ViewFilter = Backbone.View.extend({
                             ]));
                             break;
                         default:
-                            h.push(EvoUI.inputOptions([
+                            h.push(EvoUI.input.options([
                                 {id: evoAPI.sEqual, text: evoLang.sEqual},
                                 {id: evoAPI.sNotEqual, text: evoLang.sNotEqual},
                                 {id: evoAPI.sStart, text: evoLang.sStart},
@@ -341,8 +341,8 @@ Evol.ViewFilter = Backbone.View.extend({
                                 {id: evoAPI.sFinish, text: evoLang.sFinish}
                             ]));
                     }
-                    h.push(EvoUI.inputOption(evoAPI.sIsNull, evoLang.sIsNull),
-                        EvoUI.inputOption(evoAPI.sIsNotNull, evoLang.sIsNotNull));
+                    h.push(EvoUI.input.option(evoAPI.sIsNull, evoLang.sIsNull),
+                        EvoUI.input.option(evoAPI.sIsNotNull, evoLang.sIsNotNull));
                     h.push('</select>');
             }
             this._editor.append(h.join(''));
@@ -363,7 +363,7 @@ Evol.ViewFilter = Backbone.View.extend({
             addOK=true;
         if(opVal!==''){
             if(fType!=evoTypes.lov && (opVal==evoAPI.sIsNull || opVal==evoAPI.sIsNotNull)){
-                editor.append(EvoUI.inputHidden('value',''));
+                editor.append(EvoUI.input.hidden('value',''));
             }else{
                 if(this._step<3){
                     var h=[];
@@ -372,15 +372,15 @@ Evol.ViewFilter = Backbone.View.extend({
                         case evoTypes.lov:
                             h.push('<span id="value">');
                             if(this._field.list.length>7){
-                                h.push(EvoUI.inputCheckbox('checkAll', true),'<label for="checkAll">',EvolLang.All,'</label>');
+                                h.push(EvoUI.input.checkbox('checkAll', true),'<label for="checkAll">',EvolLang.All,'</label>');
                             }
-                            h.push(EvoUI.inputCheckboxLOV(this._field.list),
+                            h.push(EvoUI.input.checkboxLOV(this._field.list),
                                 '</span>');
                             break;
                         case evoTypes.bool:
                             h.push('<span id="value">',
-                                EvoUI.inputRadio('value', '1', evoLang.yes, v!='0', 'value1'),
-                                EvoUI.inputRadio('value', '0', evoLang.no, v=='0', 'value0'),
+                                EvoUI.input.radio('value', '1', evoLang.yes, v!='0', 'value1'),
+                                EvoUI.input.radio('value', '0', evoLang.no, v=='0', 'value0'),
                                 '</span>');
                             break;
                         case evoTypes.date:
@@ -395,7 +395,7 @@ Evol.ViewFilter = Backbone.View.extend({
                             addOK=false;
                             break;
                         default:
-                            h.push(EvoUI.inputText('value', '','evo-w-'));
+                            h.push(EvoUI.input.text('value', '','evo-w-'));
                             addOK=false;
                     }
                     editor.append(h.join(''));
@@ -494,19 +494,19 @@ Evol.ViewFilter = Backbone.View.extend({
     },
 
     _hiddenValue: function(h, filter, idx){
-        h.push(EvoUI.inputHidden('fld-'+idx, filter.field.value),
-            EvoUI.inputHidden('op-'+idx, filter.operator.value),
-            EvoUI.inputHidden('val-'+idx, filter.value.value));
+        h.push(EvoUI.input.hidden('fld-'+idx, filter.field.value),
+            EvoUI.input.hidden('op-'+idx, filter.operator.value),
+            EvoUI.input.hidden('val-'+idx, filter.value.value));
         var v2=filter.value.value2;
         if(v2){
-            h.push(EvoUI.inputHidden('val2-'+idx, v2));
+            h.push(EvoUI.input.hidden('val2-'+idx, v2));
         }
     },
 
     _setHiddenValues: function(){
         var vs=this.val(),
             iMax=vs.length,
-            h=[EvoUI.inputHidden('elem', iMax)];
+            h=[EvoUI.input.hidden('elem', iMax)];
         for(var i=0;i<iMax;i++){
             this._hiddenValue(h, vs[i], i+1);
         }
