@@ -21,7 +21,8 @@ Evol.UI = {
         trTableEnd: '</tr></table>',
         TdTrTableEnd: '</td></tr></table>',
         clearer: '<div class="clearfix"></div>',
-        emptyOption: '<option value=""></option>'
+        emptyOption: '<option value=""></option>',
+        glyphicon: 'glyphicon glyphicon-'
     },
 
     // --- field labels ---
@@ -33,139 +34,152 @@ Evol.UI = {
     },
 
     // --- input fields ---
-    inputText: function (fID, fV, fd, css, size) {
-        var fCss= 'evo-field form-control ' + (css || '') + Evol.UI.getSizeCSS(size),
-            h = ['<input type="text" id="',fID,'" value="', fV];
-        if(fd) {
-            // properties mapping to html attributes
-            _.each(['id', 'min', 'max', 'maxlength', 'placeholder'], function (item) { // 'max-width', 'min-width',
-                if (fd[item] !== undefined) {
-                    h.push('" ', item, '="', fd[item]);
+    input: {
+
+        text: function (fID, fV, fd, css, size) {
+            var fCss= 'evo-field form-control ' + (css || '') + Evol.UI.getSizeCSS(size),
+                h = ['<input type="text" id="',fID,'" value="', fV];
+            if(fd) {
+                // properties mapping to html attributes
+                _.each(['id', 'min', 'max', 'maxlength', 'placeholder'], function (item) { // 'max-width', 'min-width',
+                    if (fd[item] !== undefined) {
+                        h.push('" ', item, '="', fd[item]);
+                    }
+                });
+                //other fields attributes
+                if(fd.readonly){
+                    var fi = fd.readonly;
+                    if (fi || fi == '1') {
+                        h.push('" ', item, '="', item);
+                    }
                 }
-            });
-            //other fields attributes
-            if(fd.readonly){
-                var fi = fd.readonly;
-                if (fi || fi == '1') {
-                    h.push('" ', item, '="', item);
-                }
-            }
-            if(fCss && fCss!==''){
+                if(fCss && fCss!==''){
                     h.push('" class="', fCss);
+                }
             }
+            h.push('">');
+            return h.join('');
+        },
+        textInt: function (fID, fV, min, max) {
+            var minMax='';
+            if(min!==undefined){
+                minMax+='min="'+min+'" ';
+            }
+            if(max!==undefined){
+                minMax+='max="'+max+'" ';
+            }
+            return ['<input class="evo-field form-control" type="number" id="', fID, '" value="', fV,
+                '" maxlength="12">'].join('');
+        },
+        textM: function (fID, fV, ml, h) {
+            return [
+                '<textarea name="', fID, '" id="', fID, '" class="evo-field form-control"" rows="', h,
+                (ml > 0) ? '" onKeyUp="EvoVal.checkMaxLen(this,' + ml + ')' : '',
+                '">', fV, '</textarea>'
+            ].join('');
+        },
+        textMJSON: function (fID, fVobj, h) {
+            return ['<textarea rows="',h,'" class="evol-json">', _.escape(JSON.stringify(fVobj, null, '\t')), '</textarea>'].join('');
+        },
+        myType: function (type, fId, fVal) {
+            return [
+                '<input type="', type, '" id="', fId, '" value="', fVal,
+                '" class="evo-field form-control" size="15">'
+            ].join('');
+        },
+        date: function (fID, fV) {
+            return EvoUI.input.myType('date', fID, fV);
+            //+'&nbsp;<a href="javascript:ShowDatePicker(\'', fID, '\');" class="ico Calendar"></a></nobr>'
+        },
+        dateTime: function (fID, fV) {
+            return EvoUI.input.myType('datetime-local', fID, fV);
+        },
+        time: function (fID, fV) {
+            return EvoUI.input.myType('time', fID, fV);
+        },
+        color: function (fId, fVal) {
+            return [
+                '<input type="color" id="', fId, '" value="', fVal, '" size="15">'
+            ].join('');
+        },
+        checkbox: function (fID, fV) {
+            var fh = ['<input type="checkbox" id="', fID, '"'];
+            if (fV !== null && fV !== '' && fV !== '0') {
+                fh.push(' checked="checked"');
+            }
+            fh.push(' value="1">');
+            return fh.join('');
+        },
+        checkboxLOV:function(fLOV){
+            var h=[];
+            for(var i in fLOV){
+                var lv=fLOV[i];
+                h.push('<input type="checkbox" id="',lv.id,'" value="',lv.id,'"/>',
+                    '<label for="',lv.id,'">',lv.text,'</label> ');
+            }
+            return h.join('');
+        },
+        radio: function (fN, fV, fLbl, sel, fID) {
+            return ['<label for="', fID, '"><input id="', fID, '" name="', fN, '" type="radio" value="', fV,
+                (sel) ? '" checked="checked' : '',
+                '">', fLbl, '</label>&nbsp;'
+            ].join('');
+        },
+        lov: function (fID, fV, fVLabel, fLOV) {
+            var h = ['<select class="evo-field form-control" id="', fID, '"><option value="', fV, '" selected>', fVLabel, '</option>'];
+            _.each(fLOV, function (f) {
+                h.push(EvoUI.input.option(f.id, f.text));
+            });
+            h.push('</select>');
+            return h.join('');
+        },
+        img: function (fID, fV) {
+            return ['<img id=""', fID, '" src="', fV, '"/>'].join('');
+        },
+        hidden: function (fID, fV) {
+            return ['<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>'].join('');
+        },
+        hiddens: function (h, list) {
+            _.each(function (){
+                h.push('<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>');
+            });
+        },
+        selectBegin: function (fID, css, emptyOption) {
+            var h=['<select id="', fID, '" class="form-control ',css,'">'];
+            if(emptyOption){
+                h.push(Evol.UI.html.emptyOption);
+            }
+            return h.join('');
+        },
+        select:function (fID, css, emptyOption, list) {
+            return [
+                Evol.UI.input.selectBegin(fID, css, emptyOption),
+                Evol.UI.input.options(list),'</select>'
+            ].join('');
+        },
+        option: function (fID, fV) {
+            return ['<option value="', fID, '">', fV, '</option>'].join('');
+        },
+        options: function (fields) {
+            var opts=[];
+            _.each(fields,function(f){
+                opts.push(EvoUI.input.option(f.id, f.text));
+            });
+            return opts.join('');
+        },
+        button: function (id, label, css) {
+            return '<button type="button" id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
         }
-        h.push('">');
-        return h.join('');
+        /*
+         toggle: function  (items) {
+             var h=['<div class="btn-group" data-toggle="buttons">'];
+             _.each(items, function(item){
+                h.push('<label class="btn btn-info"><input type="radio" name="options" id="',item.id,'">',item.text,'</label>');
+             });
+             h.push('</div>');
+             return h.join('');
+         },*/
     },
-    inputTextInt: function (fID, fV) {
-        return ['<input class="evo-field form-control" type="number" id="', fID, '" value="', fV,
-            '" maxlength="12">'].join('');
-    },
-    inputTextM: function (fID, fV, ml, h) {
-        return [
-            '<textarea name="', fID, '" id="', fID, '" class="evo-field form-control"" rows="', h,
-            (ml > 0) ? '" onKeyUp="EvoVal.checkMaxLen(this,' + ml + ')' : '',
-            '">', fV, '</textarea>'
-        ].join('');
-    },
-    inputTextMJSON: function (fID, fVobj, h) {
-        return ['<textarea rows="',h,'" class="evol-json">', _.escape(JSON.stringify(fVobj, null, '\t')), '</textarea>'].join('');
-    },
-    inputAny: function (type, fId, fVal) {
-        return [
-            '<input type="', type, '" id="', fId, '" value="', fVal,
-            '" class="evo-field form-control" size="15">'
-        ].join('');
-    },
-    inputDate: function (fID, fV) {
-        return EvoUI.inputAny('date', fID, fV);
-        //+'&nbsp;<a href="javascript:ShowDatePicker(\'', fID, '\');" class="ico Calendar"></a></nobr>'
-    },
-    inputDateTime: function (fID, fV) {
-        return EvoUI.inputAny('datetime-local', fID, fV);
-    },
-    inputTime: function (fID, fV) {
-        return EvoUI.inputAny('time', fID, fV);
-    },
-    inputColor: function (fId, fVal) {
-        return [
-            '<input type="color" id="', fId, '" value="', fVal, '" size="15">'
-        ].join('');
-    },
-    inputCheckbox: function (fID, fV) {
-        var fh = ['<input type="checkbox" id="', fID, '"'];
-        if (fV !== null && fV !== '' && fV !== '0') {
-            fh.push(' checked="checked"');
-        }
-        fh.push(' value="1">');
-        return fh.join('');
-    },
-    inputCheckboxLOV:function(fLOV){
-        var h=[];
-        for(var i in fLOV){
-            var lv=fLOV[i];
-            h.push('<input type="checkbox" id="',lv.id,'" value="',lv.id,'"/>',
-                '<label for="',lv.id,'">',lv.text,'</label> ');
-        }
-        return h.join('');
-    },
-    inputRadio: function (fN, fV, fLbl, sel, fID) {
-        return ['<label for="', fID, '"><input id="', fID, '" name="', fN, '" type="radio" value="', fV,
-            (sel) ? '" checked="checked' : '',
-            '">', fLbl, '</label>&nbsp;'
-        ].join('');
-    },
-    inputLOV: function (fID, fV, fVLabel, fLOV) {
-        var h = ['<select class="evo-field form-control" id="', fID, '"><option value="', fV, '" selected>', fVLabel, '</option>'];
-        _.each(fLOV, function (f) {
-            h.push(EvoUI.inputOption(f.id, f.text));
-        });
-        h.push('</select>');
-        return h.join('');
-    },
-    inputHidden: function (fID, fV) {
-        return ['<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>'].join('');
-    },
-    inputHiddens: function (h, list) {
-        _.each(function (){
-            h.push('<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>');
-        });
-    },
-    inputSelectBegin: function (fID, css, emptyOption) {
-        var h=['<select id="', fID, '" class="form-control ',css,'">'];
-        if(emptyOption){
-            h.push(Evol.UI.html.emptyOption);
-        }
-        return h.join('');
-    },
-    inputSelect:function (fID, css, emptyOption, list) {
-        return [
-            Evol.UI.inputSelectBegin(fID, css, emptyOption),
-            Evol.UI.inputOptions(list),'</select>'
-        ].join('');
-    },
-    inputOption: function (fID, fV) {
-        return ['<option value="', fID, '">', fV, '</option>'].join('');
-    },
-    inputOptions: function (fields) {
-        var opts=[];
-        _.each(fields,function(f){
-            opts.push(EvoUI.inputOption(f.id, f.text));
-        });
-        return opts.join('');
-    },
-    inputButton: function (id, label, css) {
-        return '<button type="button" id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
-    },
-/*
-    inputToggle: function  (items) {
-        var h=['<div class="btn-group" data-toggle="buttons">'];
-        _.each(items, function(item){
-            h.push('<label class="btn btn-info"><input type="radio" name="options" id="',item.id,'">',item.text,'</label>');
-        });
-        h.push('</div>');
-        return h.join('');
-    },*/
 
     // --- links ---
     link: function (fID, label, url) {
@@ -180,11 +194,14 @@ Evol.UI = {
 
     // --- icons ---
     icon: function (icon, cls) {
-        return ['<i class="', cls? cls+' ':'', 'glyphicon glyphicon-', icon, '"></i>'].join('');
+        return ['<i class="', cls? cls+' ':'', Evol.UI.html.glyphicon, icon, '"></i>'].join('');
     },
 
     iconCustomize: function (id, type) {
-        return ['<i class="glyphicon glyphicon-wrench" data-id="', id, '" data-type="', type, '"></i>'].join('');
+        return EvoUI.iconId(id, type, 'wrench');
+    },
+    iconId: function (id, type, icon) {
+        return ['<i class="',Evol.UI.html.glyphicon, icon, '" data-id="', id, '" data-type="', type, '"></i>'].join('');
     },
 
     // --- panels ---
@@ -771,6 +788,11 @@ Evol.ViewMany = Backbone.View.extend({
                     }
                 }
                 break;
+            case EvoDico.fieldTypes.pix:
+                if (v.length) {
+                    return EvoUI.input.img(f.id, v);
+                }
+                break;
             default:
                 return v;
         }
@@ -1339,8 +1361,8 @@ Evol.ViewOne = Backbone.View.extend({
         h.push(
             EvoUI.html.clearer,
             '<div class="evol-buttons">',
-            EvoUI.inputButton('cancel', EvolLang.Cancel, 'btn-default'+css),
-            EvoUI.inputButton('save', EvolLang.Save, 'btn-primary'+css)
+            EvoUI.input.button('cancel', EvolLang.Cancel, 'btn-default'+css),
+            EvoUI.input.button('save', EvolLang.Save, 'btn-primary'+css)
         );
         if (this.options.button_addAnother && mode!=='json') {
             h.push(EvoUI.inputButton('save-add', EvolLang.SaveAdd, 'btn-default'+css));
@@ -1517,14 +1539,14 @@ Evol.ViewOne = Backbone.View.extend({
         }else{
             switch (fld.type) {
                 case types.text:
-                    h.push(EvoUI.inputText(fid, fv, fld, null, size));
+                    h.push(EvoUI.input.text(fid, fv, fld, null, size));
                     break;
                 case types.email:
                     if (mode === 'view') {
                         h.push(EvoUI.link(fid, fv, 'mailto:' + HttpUtility.HtmlEncode(fv)));
                     } else {
                         //h.push('<div class="input-group"><span class="input-group-addon">@</span>');
-                        h.push(EvoUI.inputText(fid, fv, fld.maxlength));
+                        h.push(EvoUI.input.text(fid, fv, fld.maxlength));
                         //h.push('</div>');
                     }
                     break;
@@ -1532,15 +1554,15 @@ Evol.ViewOne = Backbone.View.extend({
                     if (mode === 'view') {
                         h.push(EvoUI.link(fid, fv, HttpUtility.HtmlEncode(fv)));
                     } else {
-                        h.push(EvoUI.inputText(fid, fv, fld.maxlength));
+                        h.push(EvoUI.input.text(fid, fv, fld.maxlength));
                     }
                     break;
                 case types.integer:
                 case types.dec:
-                    h.push(EvoUI.inputTextInt(fid, fv));
+                    h.push(EvoUI.input.textInt(fid, fv));
                     break;
                 case types.bool:
-                    h.push(EvoUI.inputCheckbox(fid, fv));
+                    h.push(EvoUI.input.checkbox(fid, fv));
                     break;
                 case types.txtm:
                 case types.html:
@@ -1553,25 +1575,25 @@ Evol.ViewOne = Backbone.View.extend({
                             fld.height = 5;
                         }
                     }
-                    h.push(EvoUI.inputTextM(fid, fv, fld.maxlength, fld.height));
+                    h.push(EvoUI.input.textM(fid, fv, fld.maxlength, fld.height));
                     break;
                 case types.date:
-                    h.push(EvoUI.inputDate(fid, fv));
+                    h.push(EvoUI.input.date(fid, fv));
                     break;
                 case types.datetime:
-                    h.push(EvoUI.inputDateTime(fid, fv));
+                    h.push(EvoUI.input.dateTime(fid, fv));
                     break;
                 case types.time:
-                    h.push(EvoUI.inputTime(fid, fv));
+                    h.push(EvoUI.input.time(fid, fv));
                     break;
                 case types.color:
-                    h.push(EvoUI.inputColor(fid, fv));
+                    h.push(EvoUI.input.color(fid, fv));
                     break;
                 case types.lov:
-                    h.push(EvoUI.inputLOV(fid, fv, '', fld.list || []));
+                    h.push(EvoUI.input.select(fid,'',true, fld.list));
                     break;
                 case types.integer:
-                    h.push(EvoUI.inputTextInt(fid, fv, fld.type, fld.max, fld.min));
+                    h.push(EvoUI.input.textInt(fid, fv, fld.max, fld.min));
                     break;
                 //case types.doc:
                 case types.pix:
@@ -1580,7 +1602,7 @@ Evol.ViewOne = Backbone.View.extend({
                     }else{
                         h.push('<img src="',fv,'" class="img-thumbnail">');
                     }
-                    h.push(EvoUI.inputText(fid, fv, fld, null, size));
+                    h.push(EvoUI.input.text(fid, fv, fld, null, size));
                     break;
             }
         }
@@ -2110,7 +2132,7 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
         var h = [];
         if(this.model){
             var jsonStr=JSON.stringify(this.model, null, 2);
-            h.push(EvoUI.inputTextMJSON('',jsonStr,10));
+            h.push(EvoUI.input.textMJSON('',jsonStr,10));
         }
         this._renderButtons(h, 'json');
         this.$el.html(h.join(''));
@@ -2665,7 +2687,7 @@ Evol.ViewExport = Backbone.View.extend({
         h.push('<table class="evol-xpt-form"><tr><td class="evol-xpt-flds"><fieldset>');
         //### list of columns to export #########################################
         h.push('<div class="evol-id">', EvoUI.fieldLabel('', evoLangXpt.ExportFields),
-            EvoUI.inputCheckbox('showID','1'), '<label for="showID">', evoLangXpt.IDkey, '</label>',
+            EvoUI.input.checkbox('showID','1'), '<label for="showID">', evoLangXpt.IDkey, '</label>',
             '</div>'
         );
         for (var i = 0, iMax = fields.length; i < iMax; i++) {
@@ -2702,7 +2724,7 @@ Evol.ViewExport = Backbone.View.extend({
         fId = prefix + "FLH";
         h.push('<div class="evol-FLH clearfix">');
         //h.push('<label>', evoLangXpt.ExportHeader, '</label>');
-        h.push(EvoUI.inputCheckbox(fId, true), EvoUI.fieldLabelSpan(fId, evoLangXpt.ExportFirstLine));
+        h.push(EvoUI.input.checkbox(fId, true), EvoUI.fieldLabelSpan(fId, evoLangXpt.ExportFirstLine));
         //##### CSV, TAB - First line for field names #######
         h.push('</div><div id="', prefix, 'CSV">');
         //# field - separator
@@ -2711,7 +2733,7 @@ Evol.ViewExport = Backbone.View.extend({
             //EvoExport.html_more2('options'),
             //.evol-FLH
             EvoUI.fieldLabel('FLS_evol', evoLangXpt.ExportSeparator),
-            EvoUI.inputText(prefix+'FLS_evol', ',', 0),
+            EvoUI.input.text(prefix+'FLS_evol', ',', 0),
             '</div>'); // </div>
         h.push('</div>');
         _.each(['XML','HTML','SQL','JSON'], function(f){
@@ -3009,8 +3031,8 @@ var EvoExport = {
         return [
             EvoExport.html_more2('options'),
             EvoExport.formEntityName('evoTable', evoLangXpt.xpSQLTable, entity),
-            '<div>', EvoUI.inputCheckbox('evoxpTRS2', '0'), EvoUI.fieldLabelSpan('evoxpTRS2', evoLangXpt.xpSQLId), '</div>',
-            '<div>', EvoUI.inputCheckbox('evoxpTRS1', '0'), EvoUI.fieldLabelSpan('evoxpTRS1', evoLangXpt.xpSQLTrans), '</div>',
+            '<div>', EvoUI.input.checkbox('evoxpTRS2', '0'), EvoUI.fieldLabelSpan('evoxpTRS2', evoLangXpt.xpSQLId), '</div>',
+            '<div>', EvoUI.input.checkbox('evoxpTRS1', '0'), EvoUI.fieldLabelSpan('evoxpTRS1', evoLangXpt.xpSQLTrans), '</div>',
             '</div>'
            ].join('');
     },
@@ -3018,7 +3040,7 @@ var EvoExport = {
     formEntityName: function(id,label,entity){
         return [
             EvoUI.fieldLabel(id, label),
-            EvoUI.inputText(id, entity.replace(' ', '_'), 30),'<br/>'
+            EvoUI.input.text(id, entity.replace(' ', '_'), 30),'<br/>'
             ].join('');
     }
 
@@ -3299,9 +3321,9 @@ Evol.ViewFilter = Backbone.View.extend({
             this._bDel.show();
             if(!this._fList){
                 var fields=this.options.fields,
-                    h=[EvoUI.inputSelectBegin('field',null,true)];
+                    h=[EvoUI.input.selectBegin('field',null,true)];
                 _.each(fields, function(f){
-                    h.push(EvoUI.inputOption(f.id, f.label));
+                    h.push(EvoUI.input.option(f.id, f.label));
                 });
                 h.push('</select>');
                 this._fList=h.join('');
@@ -3324,34 +3346,34 @@ Evol.ViewFilter = Backbone.View.extend({
             switch (fType){
                 case evoTypes.lov:
                     //h.push(evoLang.sInList);
-                    h.push(EvoUI.inputHidden('operator',evoAPI.sInList));
+                    h.push(EvoUI.input.hidden('operator',evoAPI.sInList));
                     this._operator=evoAPI.sInList;
                     break;
                 case evoTypes.bool:
                     //h.push(evoLang.sEqual);
-                    h.push(EvoUI.inputHidden('operator',evoAPI.sEqual));
+                    h.push(EvoUI.input.hidden('operator',evoAPI.sEqual));
                     this._operator=evoAPI.sEqual;
                     break;
                 default:
-                    h.push(EvoUI.inputSelectBegin('operator','',true));
+                    h.push(EvoUI.input.selectBegin('operator','',true));
                     switch (fType){
                         case evoTypes.date:
                         case evoTypes.time:
                             if (fType==evoTypes.time){
-                                h.push(EvoUI.inputOption(evoAPI.sEqual, evoLang.sAt),
-                                    EvoUI.inputOption(evoAPI.sNotEqual, evoLang.sNotAt));
+                                h.push(EvoUI.input.option(evoAPI.sEqual, evoLang.sAt),
+                                    EvoUI.input.option(evoAPI.sNotEqual, evoLang.sNotAt));
                             }else{
-                                h.push(EvoUI.inputOption(evoAPI.sEqual, evoLang.sOn),
-                                    EvoUI.inputOption(evoAPI.sNotEqual, evoLang.sNotOn));
+                                h.push(EvoUI.input.option(evoAPI.sEqual, evoLang.sOn),
+                                    EvoUI.input.option(evoAPI.sNotEqual, evoLang.sNotOn));
                             }
-                            h.push(EvoUI.inputOptions([
+                            h.push(EvoUI.input.options([
                                 {id: evoAPI.sGreater, text: evoLang.sAfter},
                                 {id: evoAPI.sSmaller, text: evoLang.sBefore},
                                 {id: evoAPI.sBetween, text: evoLang.sBetween}
                             ]));
                             break;
                         case evoTypes.number:
-                            h.push(EvoUI.inputOptions([
+                            h.push(EvoUI.input.options([
                                 {id: evoAPI.sEqual, text: evoLang.sNumEqual},
                                 {id: evoAPI.sNotEqual, text: evoLang.sNumNotEqual},
                                 {id: evoAPI.sGreater, text: evoLang.sGreater},
@@ -3359,7 +3381,7 @@ Evol.ViewFilter = Backbone.View.extend({
                             ]));
                             break;
                         default:
-                            h.push(EvoUI.inputOptions([
+                            h.push(EvoUI.input.options([
                                 {id: evoAPI.sEqual, text: evoLang.sEqual},
                                 {id: evoAPI.sNotEqual, text: evoLang.sNotEqual},
                                 {id: evoAPI.sStart, text: evoLang.sStart},
@@ -3367,8 +3389,8 @@ Evol.ViewFilter = Backbone.View.extend({
                                 {id: evoAPI.sFinish, text: evoLang.sFinish}
                             ]));
                     }
-                    h.push(EvoUI.inputOption(evoAPI.sIsNull, evoLang.sIsNull),
-                        EvoUI.inputOption(evoAPI.sIsNotNull, evoLang.sIsNotNull));
+                    h.push(EvoUI.input.option(evoAPI.sIsNull, evoLang.sIsNull),
+                        EvoUI.input.option(evoAPI.sIsNotNull, evoLang.sIsNotNull));
                     h.push('</select>');
             }
             this._editor.append(h.join(''));
@@ -3389,7 +3411,7 @@ Evol.ViewFilter = Backbone.View.extend({
             addOK=true;
         if(opVal!==''){
             if(fType!=evoTypes.lov && (opVal==evoAPI.sIsNull || opVal==evoAPI.sIsNotNull)){
-                editor.append(EvoUI.inputHidden('value',''));
+                editor.append(EvoUI.input.hidden('value',''));
             }else{
                 if(this._step<3){
                     var h=[];
@@ -3398,15 +3420,15 @@ Evol.ViewFilter = Backbone.View.extend({
                         case evoTypes.lov:
                             h.push('<span id="value">');
                             if(this._field.list.length>7){
-                                h.push(EvoUI.inputCheckbox('checkAll', true),'<label for="checkAll">',EvolLang.All,'</label>');
+                                h.push(EvoUI.input.checkbox('checkAll', true),'<label for="checkAll">',EvolLang.All,'</label>');
                             }
-                            h.push(EvoUI.inputCheckboxLOV(this._field.list),
+                            h.push(EvoUI.input.checkboxLOV(this._field.list),
                                 '</span>');
                             break;
                         case evoTypes.bool:
                             h.push('<span id="value">',
-                                EvoUI.inputRadio('value', '1', evoLang.yes, v!='0', 'value1'),
-                                EvoUI.inputRadio('value', '0', evoLang.no, v=='0', 'value0'),
+                                EvoUI.input.radio('value', '1', evoLang.yes, v!='0', 'value1'),
+                                EvoUI.input.radio('value', '0', evoLang.no, v=='0', 'value0'),
                                 '</span>');
                             break;
                         case evoTypes.date:
@@ -3421,7 +3443,7 @@ Evol.ViewFilter = Backbone.View.extend({
                             addOK=false;
                             break;
                         default:
-                            h.push(EvoUI.inputText('value', '','evo-w-'));
+                            h.push(EvoUI.input.text('value', '','evo-w-'));
                             addOK=false;
                     }
                     editor.append(h.join(''));
@@ -3520,19 +3542,19 @@ Evol.ViewFilter = Backbone.View.extend({
     },
 
     _hiddenValue: function(h, filter, idx){
-        h.push(EvoUI.inputHidden('fld-'+idx, filter.field.value),
-            EvoUI.inputHidden('op-'+idx, filter.operator.value),
-            EvoUI.inputHidden('val-'+idx, filter.value.value));
+        h.push(EvoUI.input.hidden('fld-'+idx, filter.field.value),
+            EvoUI.input.hidden('op-'+idx, filter.operator.value),
+            EvoUI.input.hidden('val-'+idx, filter.value.value));
         var v2=filter.value.value2;
         if(v2){
-            h.push(EvoUI.inputHidden('val2-'+idx, v2));
+            h.push(EvoUI.input.hidden('val2-'+idx, v2));
         }
     },
 
     _setHiddenValues: function(){
         var vs=this.val(),
             iMax=vs.length,
-            h=[EvoUI.inputHidden('elem', iMax)];
+            h=[EvoUI.input.hidden('elem', iMax)];
         for(var i=0;i<iMax;i++){
             this._hiddenValue(h, vs[i], i+1);
         }

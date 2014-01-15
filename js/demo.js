@@ -17,7 +17,7 @@ function showUIdef(uiModel){
     }else{
         var $ui=$('#uimodel');
         if($ui.html()==''){
-            $ui.html(EvoUI.inputTextMJSON('uimodel2', uiModel, null, 12));
+            $ui.html(EvoUI.input.textMJSON('uimodel2', uiModel, null, 12));
         }
         $ui.slideDown();
         uidef=true;

@@ -27,7 +27,7 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
         var h = [];
         if(this.model){
             var jsonStr=JSON.stringify(this.model, null, 2);
-            h.push(EvoUI.inputTextMJSON('',jsonStr,10));
+            h.push(EvoUI.input.textMJSON('',jsonStr,10));
         }
         this._renderButtons(h, 'json');
         this.$el.html(h.join(''));

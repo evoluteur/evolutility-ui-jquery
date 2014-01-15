@@ -192,6 +192,11 @@ Evol.ViewMany = Backbone.View.extend({
                     }
                 }
                 break;
+            case EvoDico.fieldTypes.pix:
+                if (v.length) {
+                    return EvoUI.input.img(f.id, v);
+                }
+                break;
             default:
                 return v;
         }

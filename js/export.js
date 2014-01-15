@@ -65,7 +65,7 @@ Evol.ViewExport = Backbone.View.extend({
         h.push('<table class="evol-xpt-form"><tr><td class="evol-xpt-flds"><fieldset>');
         //### list of columns to export #########################################
         h.push('<div class="evol-id">', EvoUI.fieldLabel('', evoLangXpt.ExportFields),
-            EvoUI.inputCheckbox('showID','1'), '<label for="showID">', evoLangXpt.IDkey, '</label>',
+            EvoUI.input.checkbox('showID','1'), '<label for="showID">', evoLangXpt.IDkey, '</label>',
             '</div>'
         );
         for (var i = 0, iMax = fields.length; i < iMax; i++) {
@@ -102,7 +102,7 @@ Evol.ViewExport = Backbone.View.extend({
         fId = prefix + "FLH";
         h.push('<div class="evol-FLH clearfix">');
         //h.push('<label>', evoLangXpt.ExportHeader, '</label>');
-        h.push(EvoUI.inputCheckbox(fId, true), EvoUI.fieldLabelSpan(fId, evoLangXpt.ExportFirstLine));
+        h.push(EvoUI.input.checkbox(fId, true), EvoUI.fieldLabelSpan(fId, evoLangXpt.ExportFirstLine));
         //##### CSV, TAB - First line for field names #######
         h.push('</div><div id="', prefix, 'CSV">');
         //# field - separator
@@ -111,7 +111,7 @@ Evol.ViewExport = Backbone.View.extend({
             //EvoExport.html_more2('options'),
             //.evol-FLH
             EvoUI.fieldLabel('FLS_evol', evoLangXpt.ExportSeparator),
-            EvoUI.inputText(prefix+'FLS_evol', ',', 0),
+            EvoUI.input.text(prefix+'FLS_evol', ',', 0),
             '</div>'); // </div>
         h.push('</div>');
         _.each(['XML','HTML','SQL','JSON'], function(f){
@@ -409,8 +409,8 @@ var EvoExport = {
         return [
             EvoExport.html_more2('options'),
             EvoExport.formEntityName('evoTable', evoLangXpt.xpSQLTable, entity),
-            '<div>', EvoUI.inputCheckbox('evoxpTRS2', '0'), EvoUI.fieldLabelSpan('evoxpTRS2', evoLangXpt.xpSQLId), '</div>',
-            '<div>', EvoUI.inputCheckbox('evoxpTRS1', '0'), EvoUI.fieldLabelSpan('evoxpTRS1', evoLangXpt.xpSQLTrans), '</div>',
+            '<div>', EvoUI.input.checkbox('evoxpTRS2', '0'), EvoUI.fieldLabelSpan('evoxpTRS2', evoLangXpt.xpSQLId), '</div>',
+            '<div>', EvoUI.input.checkbox('evoxpTRS1', '0'), EvoUI.fieldLabelSpan('evoxpTRS1', evoLangXpt.xpSQLTrans), '</div>',
             '</div>'
            ].join('');
     },
@@ -418,7 +418,7 @@ var EvoExport = {
     formEntityName: function(id,label,entity){
         return [
             EvoUI.fieldLabel(id, label),
-            EvoUI.inputText(id, entity.replace(' ', '_'), 30),'<br/>'
+            EvoUI.input.text(id, entity.replace(' ', '_'), 30),'<br/>'
             ].join('');
     }
 
