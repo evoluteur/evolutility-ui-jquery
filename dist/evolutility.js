@@ -2710,7 +2710,7 @@ Evol.ViewExport = Backbone.View.extend({
         var fId = prefix + 'evol-xpt-format',
             myLabels = evoLangXpt.ExportFormats.split('-');
         h.push('<label for="', fId, '">', evoLangXpt.ExportFormat, '</label>',
-            EvoUI.inputSelect(fId,'evol-xpt-format', false, [
+            EvoUI.input.select(fId,'evol-xpt-format', false, [
                 {id: 'CSV', text: myLabels[0]},
                 {id: 'TAB', text: myLabels[3]},
                 {id: 'HTML', text: myLabels[1]},
@@ -2753,6 +2753,10 @@ Evol.ViewExport = Backbone.View.extend({
             '">');
         h.push('</div>');
         return h.join('');
+    },
+
+    setModel: function(model){
+        this.options.model=model;
     },
 
     showFormatOpts: function (xFormat) {
