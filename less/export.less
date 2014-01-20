@@ -4,6 +4,7 @@
  *  https://github.com/evoluteur/evolutility
  *  Copyright (c) 2014, Olivier Giulieri
 */
+
 .evol-xpt-form {
 	border-collapse:collapse;
 	border:0;
@@ -14,9 +15,16 @@
     vertical-align:top;
   }
 
+  .evol-buttons{
+    clear:left;
+  }
+
 } 
 
 .evol-xpt-flds {
+  float:left;
+  border-right: 0 !important;
+  width:38%;
 
   input[type="checkbox"]{
     clear:left;
@@ -30,16 +38,8 @@
   float:left;
     width:62%;
     border-left: 0 !important;
+}
 
-  &:after{
-    clear: left;
-  }
-}
-.evol-xpt-flds{
-  float:left;
-    border-right: 0 !important;
-    width:38%;
-}
 .evol-xpt-format{
     width:auto;
     display:block;
@@ -57,6 +57,7 @@
 }
 .evol-xpt-opts {
   padding:10px;
+
   input[type="checkbox"]{
     margin-right:.5em;
   }

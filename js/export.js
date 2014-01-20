@@ -61,9 +61,8 @@ Evol.ViewExport = Backbone.View.extend({
         h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds"><fieldset>');
         //### list of columns to export #########################################
         h.push('<div class="evol-id">', EvoUI.fieldLabel('', evoLangXpt.ExportFields),
-            EvoUI.input.checkbox('showID','1'), '<label for="showID">', evoLangXpt.IDkey, '</label>',
-            '</div>'
-        );
+            //EvoUI.input.checkbox('showID','1'), '<label for="showID">', evoLangXpt.IDkey, '</label>',
+            '</div>');
         for (var i = 0, iMax = fields.length; i < iMax; i++) {
             var f = fields[i],
                 fLabel = f.label,
@@ -72,11 +71,11 @@ Evol.ViewExport = Backbone.View.extend({
                 fLabel = '(' + fID + ')';
             }
             h.push('<div><input type="checkbox" value="1" id="', fID, '" checked="true"><label class="checkbox" for="', fID, '">', fLabel, '</label></div>');
-            if (i == 12 && iMax > 16){
+            if (i == 10 && iMax > 14){
                 h.push(EvoExport.html_more2(evoLangXpt.AllFields));
             }
         }
-        if (iMax > 16){
+        if (iMax > 14){
             h.push('</div>');
         }
         h.push('</fieldset></div><div class="evol-xpt-para">'); // table = 2 columns
