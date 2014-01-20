@@ -16,10 +16,10 @@ var todo_ui = {
                     width: 100, viewmany: true
                 },
                 {
-                    id: 'duedate', type: 'date', label: 'Due Date', width: 40, viewmany: true
+                    id: 'duedate', type: 'date', label: 'Due Date', width: 62, viewmany: true
                 },
                 {
-                    id: 'category', type: 'lov', label: 'Category', width: 60, viewmany: true,
+                    id: 'category', type: 'lov', label: 'Category', width: 38, viewmany: true,
                     list: [
                         {id: 'home', text: 'Home'},
                         {id: 'work', text: 'Work'},
