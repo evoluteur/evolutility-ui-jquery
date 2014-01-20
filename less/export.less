@@ -9,27 +9,38 @@
 	border:0;
 	width:100%;
 
-  tr td {
+  > div {
     padding:15px;
     vertical-align:top;
   }
+
 } 
 
-.evol-xpt-flds input[type="checkbox"]{
-	clear:left;
-	float:left;
-	margin-right:.5em;
+.evol-xpt-flds {
+
+  input[type="checkbox"]{
+    clear:left;
+    float:left;
+    margin-right:.5em;
+  }
+
 }
 
-td.evol-xpt-para{
+.evol-xpt-para{
+  float:left;
     width:62%;
     border-left: 0 !important;
+
+  &:after{
+    clear: left;
+  }
 }
-td.evol-xpt-flds{
+.evol-xpt-flds{
+  float:left;
     border-right: 0 !important;
     width:38%;
 }
-select.evol-xpt-format{
+.evol-xpt-format{
     width:auto;
     display:block;
     margin-bottom: 6px;

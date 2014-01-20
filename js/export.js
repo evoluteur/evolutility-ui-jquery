@@ -2,23 +2,21 @@
  *
  * evolutility :: export.js
  *
+ * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
 
-
-
 var Evol = Evol || {},
     EvoUI = Evol.UI,
     evoLangXpt = EvolLang.export;
-
 
 Evol.ViewExport = Backbone.View.extend({
 
     version: '0.0.1',
 
     events: {
-        "change #tbrevol-xpt-format": "click_format",
+        "change .evol-xpt-format": "click_format",
         'change input': 'click_preview', //[type="checkbox"],
         'click .evol-more': 'click_toggle_sel',
         'click #XP': 'click_submit'
@@ -27,10 +25,8 @@ Evol.ViewExport = Backbone.View.extend({
 
     options: {
         toolbar: true,
-        cardinality: 'one',
         model: null,
         uiModel: null,
-        defaultView: 'list',
         style: 'normal',
         prefix: 'tbr'
     },
@@ -62,7 +58,7 @@ Evol.ViewExport = Backbone.View.extend({
             fields = this.getFields();
 
         //string fieldName, fieldlabel, expOut, buffer;
-        h.push('<table class="evol-xpt-form"><tr><td class="evol-xpt-flds"><fieldset>');
+        h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds"><fieldset>');
         //### list of columns to export #########################################
         h.push('<div class="evol-id">', EvoUI.fieldLabel('', evoLangXpt.ExportFields),
             EvoUI.input.checkbox('showID','1'), '<label for="showID">', evoLangXpt.IDkey, '</label>',
@@ -83,7 +79,7 @@ Evol.ViewExport = Backbone.View.extend({
         if (iMax > 16){
             h.push('</div>');
         }
-        h.push('</fieldset></td><td class="evol-xpt-para">'); // table = 2 columns
+        h.push('</fieldset></div><div class="evol-xpt-para">'); // table = 2 columns
         //##### export formats ########################################
         var fId = prefix + 'evol-xpt-format',
             myLabels = evoLangXpt.ExportFormats.split('-');
@@ -121,15 +117,15 @@ Evol.ViewExport = Backbone.View.extend({
         //# Preview #######
         h.push('<label>Export Preview</label><div class="evol-xpt-preview"></div>');
 
-        h.push('</td></tr></table>');
+        h.push('</div>');
         // ## Samples
         //h.push(this._samples());
         // ## Download button
         h.push('<div class="evol-buttons form-actions">');
         h.push('<input class="btn btn-primary" id="XP" type="submit" value="',
             evoLangXpt.DownloadEntity.replace('{0}', this.options.uiModel.entities),
-            '">');
-        h.push('</div>');
+            '"/>');
+        h.push('</div></div>');
         return h.join('');
     },
 
