@@ -16,7 +16,7 @@
 }
 .evo-filters{
   &.panel{
-    min-height:20px;
+    min-height:50px;
     padding:6px 1px 1px 6px;
   }
 
@@ -35,7 +35,7 @@
 }
 
 .evo-editFilter{
-	vertical-align: middle;
+  vertical-align: middle;
 
   > #value > label{
     margin-left:6px;
@@ -63,6 +63,11 @@
   input.hasDatepicker{
     width:7em;
   }
+
+  &:last-child{
+    clear: left;
+  }
+;
 }
 .evo-editFilter:after,
 .evo-editFilter > button{

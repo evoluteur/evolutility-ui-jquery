@@ -29,7 +29,8 @@ Evol.ViewFilter = Backbone.View.extend({
 
     events: {
         'click .evo-filters > button': 'click_editFilter',
-        'click .evo-filters-btns > button > .glyphicon-remove': 'click_remove'
+        'click .evo-filters-btns > button > .glyphicon-remove': 'click_remove',
+        'click .evo-bDel': '_removeEditor'
         // TODO move other events here
     },
 
@@ -92,9 +93,7 @@ Evol.ViewFilter = Backbone.View.extend({
             that._removeEditor();
         });
         // - editor button cancel
-        this._bDel=e.find('.evo-bDel').button().on('click', function(evt){
-                that._removeEditor();
-            });
+        this._bDel=e.find('.evo-bDel').button();
         this._editor=e.find('.evo-editFilter')
             .on('change', '#field', function(evt){
                 evt.stopPropagation();
@@ -236,7 +235,7 @@ Evol.ViewFilter = Backbone.View.extend({
             //}
             if(filter){
                 this._cFilter.data('filter', filter)
-                    .find(':first-child').html(this._htmlFilter(filter));
+                    .html(this._htmlFilter(filter));
                 this._cFilter=null;
                 this._triggerChange();
             }else{
@@ -454,7 +453,7 @@ Evol.ViewFilter = Backbone.View.extend({
                 op.label=evoLang.sIsNull;
                 op.value=evoAPI.sIsNull;
                 fv.label=fv.value='';
-            }else if(vs.length==1){
+            }else if(vs.length===1){
                 op.label=evoLang.sEqual;
                 op.value=evoAPI.sEqual;
                 fv.label='"'+ls[0]+'"';
@@ -494,10 +493,10 @@ Evol.ViewFilter = Backbone.View.extend({
     },
 
     _hiddenValue: function(h, filter, idx){
+        var v2=filter.value.value2;
         h.push(EvoUI.input.hidden('fld-'+idx, filter.field.value),
             EvoUI.input.hidden('op-'+idx, filter.operator.value),
             EvoUI.input.hidden('val-'+idx, filter.value.value));
-        var v2=filter.value.value2;
         if(v2){
             h.push(EvoUI.input.hidden('val2-'+idx, v2));
         }
@@ -552,8 +551,9 @@ Evol.ViewFilter = Backbone.View.extend({
         var vs=this.val(),
             iMax=vs.length,
             url=['filters=',iMax];
-        if(iMax<1)
+        if(iMax<1){
             return '';
+        }
         for(var i=0;i<iMax;i++){
             var v=vs[i];
             url.push(

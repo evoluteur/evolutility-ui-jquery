@@ -25,7 +25,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     events: {
-        'click a.evol-nav-id': 'click_navigate',
+        'click .evol-nav-id': 'click_navigate',
         'click .evol-sort-icons > i': 'click_sort',
         'click .button.edit': 'click_pagination',
         'click .evol-field-label .glyphicon-wrench': 'click_customize'
@@ -79,6 +79,16 @@ Evol.ViewMany = Backbone.View.extend({
                             case 'nn':
                                 want=fv!=='' || fv!==undefined;
                                 break;
+                            case 'in':
+                                want= _.contains(vf.split(','),fv);
+                                break;
+                            case 1:
+                                want=fv;
+                                break;
+                            case 0:
+                                want=!fv;
+                                break;
+
                         }
                     }
                     return want;
