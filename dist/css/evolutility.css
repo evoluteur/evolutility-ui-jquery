@@ -16,6 +16,9 @@
 .evo-toolbar > ul > .evo-sel .glyphicon:before {
   color: black;
 }
+.evo-toolbar .evo-dropdown-icons {
+  min-width: 50px;
+}
 /*!
  *  evolutility : filter.css
  *
@@ -35,7 +38,7 @@
   font-weight: normal;
 }
 .evo-filters.panel {
-  min-height: 20px;
+  min-height: 50px;
   padding: 6px 1px 1px 6px;
 }
 .evo-filters button {
@@ -50,6 +53,9 @@
 }
 .evo-editFilter {
   vertical-align: middle;
+}
+.evo-editFilter:last-child {
+  clear: left;
 }
 .evo-editFilter > #value > label {
   margin-left: 6px;
@@ -76,7 +82,7 @@
 .evo-editFilter input.hasDatepicker {
   width: 7em;
 }
-.evo-editFilter:after,
+.evo-editFilter :after,
 .evo-editFilter > button {
   clear: left;
 }
@@ -115,7 +121,7 @@
   margin-top: 0 !important;
 }
 .evol-buttons > button {
-  margin-right: 1em;
+  margin: 1em;
 }
 .evol-title-toggle {
   cursor: pointer;
@@ -131,7 +137,7 @@
   display: inline !important;
 }
 /* bootstrap customizations*/
-.evolw-mini .help-block,
+.evol-mini-holder .help-block,
 .evolw-edit .help-block {
   color: #737373 !important;
   clear: both;
@@ -144,29 +150,27 @@
   padding-left: 4px;
   color: silver;
 }
-.evo-mini-holder {
+.evol-mini-holder {
   margin: 10px -10px;
 }
-.evo-mini-label {
+.evol-mini-label {
   float: left;
   width: 38%;
-  max-width: 200px;
   padding-right: 10px;
-  clear: left;
 }
-.evo-mini-content {
+.evol-mini-content {
   float: left;
   width: 62%;
-  width: calc(-100%);
+}
+.evol-mini-content > .help-block {
+  min-width: 50px;
+  clear: left;
 }
 @media only screen and (max-width: 500px) {
-  .evo-mini-label {
+  .evol-mini-label,
+  .evol-mini-content {
     float: none;
-    width: auto;
-  }
-  .evo-mini-content {
-    float: none;
-    width: auto;
+    width: 100%;
   }
 }
 .w-100 {
@@ -174,10 +178,6 @@
 }
 .evo-one-edit {
   margin-left: -10px;
-}
-/* bootstrap modifs */
-.help-block {
-  min-width: 50px;
 }
 /*!
  *  evolutility : many.css
@@ -203,7 +203,7 @@ img.evol-table-icon {
   display: inline !important;
   cursor: pointer;
 }
-.evol-many-list > .table th .glyphicon.evol-last-sort {
+.evol-many-list .glyphicon.evol-last-sort {
   display: none;
   position: absolute;
 }
@@ -239,6 +239,7 @@ img.evol-table-icon {
   margin: 5px;
   padding: 10px;
   border-radius: 10px;
+  overflow: auto;
 }
 /* --- charts --- */
 .evol-chart-holder {
@@ -299,6 +300,9 @@ label > .glyphicon-wrench {
 .evo-toolbar > ul > .evo-sel .glyphicon:before {
   color: black;
 }
+.evo-toolbar .evo-dropdown-icons {
+  min-width: 50px;
+}
 /*!
  *  evolutility : export.css
  *
@@ -310,24 +314,29 @@ label > .glyphicon-wrench {
   border: 0;
   width: 100%;
 }
-.evol-xpt-form tr td {
+.evol-xpt-form > div {
   padding: 15px;
   vertical-align: top;
+}
+.evol-xpt-form .evol-buttons {
+  clear: left;
+}
+.evol-xpt-flds {
+  float: left;
+  border-right: 0 !important;
+  width: 38%;
 }
 .evol-xpt-flds input[type="checkbox"] {
   clear: left;
   float: left;
   margin-right: .5em;
 }
-td.evol-xpt-para {
+.evol-xpt-para {
+  float: left;
   width: 62%;
   border-left: 0 !important;
 }
-td.evol-xpt-flds {
-  border-right: 0 !important;
-  width: 38%;
-}
-select.evol-xpt-format {
+.evol-xpt-format {
   width: auto;
   display: block;
   margin-bottom: 6px;
@@ -350,7 +359,7 @@ select.evol-xpt-format {
 .evol-xpt-preview textarea {
   min-height: 200px;
 }
-.evol-more-content {
+.evol-xpt-more-fields {
   clear: both;
   display: none;
 }
@@ -373,7 +382,7 @@ select.evol-xpt-format {
   font-weight: normal;
 }
 .evo-filters.panel {
-  min-height: 20px;
+  min-height: 50px;
   padding: 6px 1px 1px 6px;
 }
 .evo-filters button {
@@ -388,6 +397,9 @@ select.evol-xpt-format {
 }
 .evo-editFilter {
   vertical-align: middle;
+}
+.evo-editFilter:last-child {
+  clear: left;
 }
 .evo-editFilter > #value > label {
   margin-left: 6px;
@@ -414,7 +426,7 @@ select.evol-xpt-format {
 .evo-editFilter input.hasDatepicker {
   width: 7em;
 }
-.evo-editFilter:after,
+.evo-editFilter :after,
 .evo-editFilter > button {
   clear: left;
 }

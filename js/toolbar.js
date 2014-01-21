@@ -2,25 +2,26 @@
  *
  * evolutility :: toolbar.js
  *
+ * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
 
-var Evol = Evol || {},
-    EvoUI = Evol.UI,
-    EvoDico = Evol.Dico;
+var Evol = Evol || {};
 
 Evol.ViewToolbar = Backbone.View.extend({
 
     events: {
         'click .nav a': 'click_toolbar',
-        'list.navigate div': 'click_navigate'
+        'list.navigate div': 'click_navigate',
+        'click #XP': 'click_download'
     },
 
     options: {
         toolbar: true,
         defaultView: 'list',
-        style: 'panel-default',
+        style: 'panel-info',
+        display: 'tooltip', // tooltip, text, icon, none
         buttons: {
             // --- views for one ---
             edit: true,
@@ -54,67 +55,70 @@ Evol.ViewToolbar = Backbone.View.extend({
 	curView:null,
 	curViewName:'',
 
+    _group:false,
+
     initialize: function (opts) {
         _.extend(this.options, opts);
         this.render();
-        this.$('[data-cid="views"] > li').tooltip();
-        this.$('.dropdown-toggle').dropdown();
+        //this.$('[data-toggle]').tooltip();
+        this.$('.dropdown-toggle').dropdown();//[data-toggle=
     },
 
 	render: function() {
 		var e=this.$el;
         e.html(this._toolbarHTML());
 		this.setView(this.options.defaultView || 'list');
+        this._viewsIcon=this.$('.glyphicon-eye-open');
 	},
 
     _toolbarHTML: function(){
         var h=[],
-            opts=this.options;
+            opts=this.options,
             endMenu='</ul></li>',
             menuDevider='<li role="presentation" class="divider" data-cardi="1"></li>',
             menuDeviderCard1='<li role="presentation" class="divider" data-cardi="1"></li>';
 
-        function beginMenu(icon){
-            return ['<li class="dropdown">',
-                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',EvoUI.icon(icon),' <b class="caret"></b></a>',
-                '<ul class="dropdown-menu">'].join('');
+        function beginMenu(id, icon){
+            return ['<li class="dropdown" data-id="',id,'">',
+                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',Evol.UI.icon(icon),' <b class="caret"></b></a>',
+                '<ul class="dropdown-menu evo-dropdown-icons">'].join('');
         }
 
-        function link2h(id, label, icon, cardi, tooltip){
+        function link2h(id, label, icon, cardi, style){
             h.push('<li data-id="',id,'"');
             if(cardi){
                 h.push(' data-cardi="'+cardi,'"');
             }
-            if(tooltip && tooltip!==''){
-                h.push(' data-toggle="tooltip" data-placement="bottom" title="" data-original-title="',tooltip,'"');
+            if(style!=='label'){
+                h.push(' data-toggle="tooltip" data-placement="bottom" title="" data-original-title="',label,'"');
             }
-            h.push('><a href="#" data-id="',id,'">',EvoUI.icon(icon));
-            if(label && label!==''){
+            h.push('><a href="#" data-id="',id,'">',Evol.UI.icon(icon));
+            if(style!=='tooltip'){
                 h.push('&nbsp;',label);
             }
             h.push('</a></li>');
         }
 
-        function linkOpt2h (id, label, icon, cardi, tooltip){
+        function linkOpt2h (id, label, icon, cardi){
             if(opts.buttons && opts.buttons[id]){
-                link2h(id, label, icon, cardi, tooltip);
+                link2h(id, label, icon, cardi, 'tooltip');
             }
         }
 
-        h.push('<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-cid="main">');
-        linkOpt2h('list',EvolLang.All,'th-list');
-        linkOpt2h('new',EvolLang.New,'plus');
-        linkOpt2h('del',EvolLang.Delete,'trash','1');
-        //linkOpt2h('filter','Filter','filter','n');
+        h.push('<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-id="main">');
+        linkOpt2h('list',Evol.i18n.All,'th-list');
+        linkOpt2h('new',Evol.i18n.New,'plus');
+        linkOpt2h('del',Evol.i18n.Delete,'trash','1');
+        linkOpt2h('filter','Filter','filter','n');
         //linkOpt2h('group','Group','resize-horizontal','n');
         linkOpt2h('export','Export','cloud-download','n');
         //linkOpt2h('selections','','star');
         if(opts.toolbar){
             link2h('prev','','chevron-left','1');
             link2h('next','','chevron-right','1');
-            h.push('</ul><ul class="nav nav-pills pull-right" data-cid="views">');
+            h.push('</ul><ul class="nav nav-pills pull-right" data-id="views">');
 
-                h.push(beginMenu('eye-open'));
+                h.push(beginMenu('views','eye-open'));
                 linkOpt2h('list','List','th-list','n');
                 linkOpt2h('cards','Cards','th-large','n');
                 linkOpt2h('charts','Charts','stats','n');
@@ -132,7 +136,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             //linkOpt2h('customize','','wrench', '1', 'Customize');
             /*
             if(opts.buttons.customize){
-                h.push(beginMenu('wrench'));
+                h.push(beginMenu('cust','wrench'));
                 link2h('customize','Customize this view','wrench');
                 h.push(menuDevider);
                 link2h('new-field','New Field','plus');
@@ -140,7 +144,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 h.push(endMenu);
             }*/
         }
-        h.push('</ul>',EvoUI.html.clearer,'</div>');
+        h.push('</ul>',Evol.UI.html.clearer,'</div>');
         return h.join('');
     },
 
@@ -183,7 +187,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     }
 
                 }
-                this.$('[data-cid="views"] > li').removeClass('evo-sel') // TODO optimize
+                this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
                 $v.show()
                     .siblings().not('.evo-toolbar,.evo-filters,.clearfix').hide();
@@ -201,7 +205,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     style: this.options.style
                 };
                 this.$('[data-id="new"]').show();
-                this.$('[data-cid="views"] > li').removeClass('evo-sel') // TODO optimize
+                this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
 
                 switch(viewName){
@@ -222,6 +226,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                     // --- actions ---
                     case 'export':
                         vw = new Evol.ViewExport(config);
+                        $v.addClass('panel panel-info')
+                            .slideDown();
                         break;
                 }
                 this.curView=vw;
@@ -240,7 +246,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                 ones: lis.filter('[data-cardi="1"]'),
                 manys: lis.filter('li[data-cardi="n"]'),
                 prevNext: this.$('[data-id="prev"],[data-id="next"]'),
-                customize: this.$('a[data-id="customize"]').parent()
+                customize: this.$('a[data-id="customize"]').parent(),
+                views: this.$('[data-id="views"]')
             };
         }
         return this._toolbarButtons;
@@ -248,14 +255,26 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     setButtons: function(mode){
         function oneMany(showOne, showMany){
-            EvoUI.setVisible(tbBs.ones, showOne);
-            EvoUI.setVisible(tbBs.manys, showMany);
+            Evol.UI.setVisible(tbBs.ones, showOne);
+            Evol.UI.setVisible(tbBs.manys, showMany);
         }
 
 		if(this.$el){
-			var tbBs=this.getToolbarButtons();
-            EvoUI.setVisible(tbBs.customize,mode!='json');
+			var tbBs=this.getToolbarButtons(),
+                cssOpen='glyphicon-eye-open',
+                cssClose='glyphicon-eye-close';
+            Evol.UI.setVisible(tbBs.customize,mode!='json');
             tbBs.prevNext.hide();
+            Evol.UI.setVisible(tbBs.views, mode!=='export');
+            if(this._viewsIcon){
+                if(mode==='mini' || mode==='json'){
+                    this._viewsIcon
+                        .removeClass(cssOpen).addClass(cssClose);
+                }else{
+                    this._viewsIcon
+                        .removeClass(cssClose).addClass(cssOpen);
+                }
+            }
 			if(this._isNew || mode==='export'){
                 oneMany(false, false);
 			}else{
@@ -268,24 +287,30 @@ Evol.ViewToolbar = Backbone.View.extend({
                     tbBs.prevNext.show();
 				}
 			}
-            EvoUI.setVisible(tbBs.manys.filter('[data-id="group"]'), mode==='cards');
+            Evol.UI.setVisible(tbBs.manys.filter('[data-id="group"]'), mode==='cards');
 		}
 	},
 
     showFilter: function(){
         if(!this._filters){
             var that=this,
-                $ff=$(EvoUI.HTMLEmptyPanel('filters', 'evo-filters', 'info'));
+                $ff=$(Evol.UI.HTMLEmptyPanel('filters', 'evo-filters', 'info'));
             this.$('.evo-toolbar').after($ff);
             this._filters = new Evol.ViewFilter({
                 el:$ff,
-                fields:EvoDico.fields(this.options.uiModel)
+                fields:Evol.Dico.fields(this.options.uiModel)
             }).render();
             $ff.on('change.filter', function(){
                 that.curView.setFilter(that._filters.val())
                     .render();
             });
         }
+        return this;
+    },
+
+    showGroup: function(){
+        this._group = true;
+        this.curView.showGroup();
         return this;
     },
 
@@ -375,7 +400,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.browse(toolId);
                 break;
             case 'new-field':// ui-dico
-                EvoDico.showDesigner('', 'field', $e);
+                Evol.Dico.showDesigner('', 'field', $e);
                 break;
             //case 'new-panel':// ui-dico
             default:// 'edit', 'mini', 'list', 'cards', 'export', 'json', 'new'
@@ -396,6 +421,10 @@ Evol.ViewToolbar = Backbone.View.extend({
         // todo: change model for all views / or model event
         this.curView.render();
         evt.stopImmediatePropagation();
+    },
+
+    click_download: function(evt){
+        alert('Sorry, no demo server yet...');
     }
 
 });

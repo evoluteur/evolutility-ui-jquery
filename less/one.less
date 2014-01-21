@@ -39,7 +39,7 @@
 .evol-buttons{
   margin-top:0 !important;
   > button{
-    margin-right:1em;
+    margin:1em;
   }
 }
 
@@ -58,7 +58,7 @@
 }
 
 /* bootstrap customizations*/
-.evolw-mini,
+.evol-mini-holder,
 .evolw-edit {
   .help-block{
     color: #737373 !important;
@@ -74,25 +74,32 @@
     padding-left: 4px;
     color: silver;
 }
-.evo-mini-holder{
+
+.evol-mini-holder{
     margin: 10px -10px;
 }
-.evo-mini-label{
+.evol-mini-label{
     float:left;
     width:38%;
-    max-width:200px;
     padding-right:10px;
-    clear:left;
 }
-.evo-mini-content{
+.evol-mini-content{
     float:left;
     width:62%;
-    width:calc(100% - 200px);
+
+  > .help-block{
+    min-width:50px;
+    clear:left;
+  }
+
 }
 
 @media only screen and (max-width: 500px) {
-    .evo-mini-label{float:none;width:auto;}
-    .evo-mini-content{float:none;width:auto;}
+  .evol-mini-label,
+  .evol-mini-content{
+    float:none;
+    width:100%;
+  }
 }
 
 .w-100{
@@ -101,10 +108,4 @@
 
 .evo-one-edit{
     margin-left:-10px;
-}
-
-/* bootstrap modifs */
-
-.help-block{
-  min-width:50px;
 }

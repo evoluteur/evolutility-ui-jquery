@@ -4,6 +4,7 @@
  *
  * Demo
  *
+ * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
@@ -17,7 +18,7 @@ function showUIdef(uiModel){
     }else{
         var $ui=$('#uimodel');
         if($ui.html()==''){
-            $ui.html(EvoUI.input.textMJSON('uimodel2', uiModel, null, 12));
+            $ui.html(Evol.UI.input.textMJSON('uimodel2', uiModel, null, 12));
         }
         $ui.slideDown();
         uidef=true;

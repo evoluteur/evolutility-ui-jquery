@@ -4,13 +4,12 @@
  *
  * View many list
  *
+ * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
 
-var Evol = Evol || {},
-    EvoUI = Evol.UI,
-    EvoDico = Evol.Dico;
+var Evol = Evol || {};
 
 Evol.ViewMany.List = Evol.ViewMany.extend({
 
@@ -94,10 +93,9 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         h.push('<th><span id="', field.id, '-lbl">',
             field.labellist || field.label,
             '<span class="evol-sort-icons" data-fid="',field.id,'">',
-            EvoUI.icon('chevron-up'),//'sort-by-alphabet'
-            EvoUI.icon('chevron-down'),//'sort-by-alphabet-alt'
-            '</span></span></th>'
-        );
+            Evol.UI.icon('chevron-up'),//'sort-by-alphabet'
+            Evol.UI.icon('chevron-down'),//'sort-by-alphabet-alt'
+            '</span></span></th>');
     }
 
 });

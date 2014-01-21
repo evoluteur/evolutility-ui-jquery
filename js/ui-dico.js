@@ -2,6 +2,9 @@
  *
  * evolutility :: ui-dico.js
  *
+ * Library of helpers for dictionary
+ *
+ * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
@@ -57,7 +60,7 @@ Evol.Dico = {
         return fs;
     },
 
-    lovText:function(hash, f,v){
+    lovText:function(hash, f, v){
         if(('list' in f) && f.list.length>0){
             if(!(f.id in hash)){
                 hash[f.id]={};
@@ -83,7 +86,7 @@ Evol.Dico = {
     },
 
     isTypeDateOrTime: function(fType){
-        return fType == fType==EvoDico.fieldTypes.datetime || EvoDico.fieldTypes.date || fType==EvoDico.fieldTypes.time;
+        return fType == EvoDico.fieldTypes.datetime || EvoDico.fieldTypes.date || fType==EvoDico.fieldTypes.time;
     },
 
     showDesigner: function(id, type, $el){
@@ -121,7 +124,7 @@ Evol.Dico = {
             $m.html(msg);
         }else{
             var m=['<div class="evol-head-info alert alert-',type,'">',
-                EvoUI.iconClose(),msg,'</div>'].join('');
+                Evol.UI.iconClose(),msg,'</div>'].join('');
             this.$el.prepend(m);
         }
         return this;

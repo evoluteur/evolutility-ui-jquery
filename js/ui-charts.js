@@ -2,6 +2,7 @@
  *
  * evolutility :: ui-charts.js
  *
+ * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
@@ -18,24 +19,24 @@ Evol.UI.Charts = {
     },
 
     Pie: function (label, data, labels, style){
-        var urlGoogleChart = [EvoUI.Charts.URL,'?chd=t:',
+        var urlGoogleChart = [this.URL,'?chd=t:',
             data.join(','),
             '&amp;chl=',
             labels.join('|'),
             '&amp;cht=p&amp;chds=0,20&amp;chs=360x200'].join('');
-        return EvoUI.Charts._HTML(label, urlGoogleChart, style || 'panel-default');
+        return this._HTML(label, urlGoogleChart, style || 'panel-default');
     },
 
     Bars: function (label, data, labels, style){
         var maxCount = _.max(data),
-            urlGoogleChart = [EvoUI.Charts.URL,'?chbh=a&amp;chs=350x200&cht=bvg&chco=3a87ad,d9edf7&chds=0,',
+            urlGoogleChart = [this.URL,'?chbh=a&amp;chs=350x200&cht=bvg&chco=3a87ad,d9edf7&chds=0,',
                 maxCount,
                 '&amp;chd=t:',
                 data.join('|'),
                 '&amp;chp=0.05&amp;chts=676767,10.5&amp;chdl=',
                 labels.join('|')
             ].join('');
-        return EvoUI.Charts._HTML(label, urlGoogleChart, style);
+        return this._HTML(label, urlGoogleChart, style);
     }
 
 };

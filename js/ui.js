@@ -2,6 +2,7 @@
  *
  * evolutility :: ui.js
  *
+ * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
@@ -18,7 +19,8 @@ Evol.UI = {
         TdTrTableEnd: '</td></tr></table>',
         clearer: '<div class="clearfix"></div>',
         emptyOption: '<option value=""></option>',
-        glyphicon: 'glyphicon glyphicon-'
+        glyphicon: 'glyphicon glyphicon-',
+        required: '<span class="evol-required">*</span>'
     },
 
     // --- field labels ---
@@ -57,15 +59,16 @@ Evol.UI = {
             return h.join('');
         },
         textInt: function (fID, fV, min, max) {
-            var minMax='';
+            var h=['<input class="evo-field form-control" type="number" id="', fID,
+                '" value="', fV];
             if(min!==undefined){
-                minMax+='min="'+min+'" ';
+                h.push('" min="', min);
             }
             if(max!==undefined){
-                minMax+='max="'+max+'" ';
+                h.push('" max="', max);
             }
-            return ['<input class="evo-field form-control" type="number" id="', fID, '" value="', fV,
-                '" maxlength="12">'].join('');
+            h.push('" maxlength="12">');
+            return h.join('');
         },
         textM: function (fID, fV, ml, h) {
             return [
@@ -84,14 +87,14 @@ Evol.UI = {
             ].join('');
         },
         date: function (fID, fV) {
-            return EvoUI.input.myType('date', fID, fV);
+            return this.myType('date', fID, fV);
             //+'&nbsp;<a href="javascript:ShowDatePicker(\'', fID, '\');" class="ico Calendar"></a></nobr>'
         },
         dateTime: function (fID, fV) {
-            return EvoUI.input.myType('datetime-local', fID, fV);
+            return this.myType('datetime-local', fID, fV);
         },
         time: function (fID, fV) {
-            return EvoUI.input.myType('time', fID, fV);
+            return this.myType('time', fID, fV);
         },
         color: function (fId, fVal) {
             return [
@@ -124,7 +127,7 @@ Evol.UI = {
         lov: function (fID, fV, fVLabel, fLOV) {
             var h = ['<select class="evo-field form-control" id="', fID, '"><option value="', fV, '" selected>', fVLabel, '</option>'];
             _.each(fLOV, function (f) {
-                h.push(EvoUI.input.option(f.id, f.text));
+                h.push(this.option(f.id, f.text));
             });
             h.push('</select>');
             return h.join('');
@@ -143,28 +146,29 @@ Evol.UI = {
         selectBegin: function (fID, css, emptyOption) {
             var h=['<select id="', fID, '" class="form-control ',css,'">'];
             if(emptyOption){
-                h.push(Evol.UI.html.emptyOption);
+                h.push(this.emptyOption);
             }
             return h.join('');
         },
         select:function (fID, css, emptyOption, list) {
             return [
-                Evol.UI.input.selectBegin(fID, css, emptyOption),
-                Evol.UI.input.options(list),'</select>'
+                this.selectBegin(fID, css, emptyOption),
+                this.options(list),'</select>'
             ].join('');
         },
         option: function (fID, fV) {
             return ['<option value="', fID, '">', fV, '</option>'].join('');
         },
         options: function (fields) {
-            var opts=[];
+            var fnOpt = Evol.UI.input.option,
+                opts=[];
             _.each(fields,function(f){
-                opts.push(EvoUI.input.option(f.id, f.text));
+                opts.push(fnOpt(f.id, f.text));
             });
             return opts.join('');
         },
         button: function (id, label, css) {
-            return '<button type="button" id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
+            return '<button type="button" data-id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
         }
         /*
          toggle: function  (items) {
@@ -182,7 +186,7 @@ Evol.UI = {
         return ['<a class="evo-field" href="', url, '" id="', fID, '">', label, '</a>'].join('');
     },
     linkEmail: function (fID, label, email) {
-        return EvoUI.link(fID, label, email ? 'mailto:' + email : '');
+        return Evol.UI.link(fID, label, email ? 'mailto:' + email : '');
     },
     //html_more: function (label) {
     //    return ['<a href="javascript:void(0)" class="evol-more">', label, '</a>'].join('');
@@ -194,7 +198,7 @@ Evol.UI = {
     },
 
     iconCustomize: function (id, type) {
-        return EvoUI.iconId(id, type, 'wrench');
+        return Evol.UI.iconId(id, type, 'wrench');
     },
     iconId: function (id, type, icon) {
         return ['<i class="',Evol.UI.html.glyphicon, icon, '" data-id="', id, '" data-type="', type, '"></i>'].join('');
@@ -203,7 +207,7 @@ Evol.UI = {
     // --- panels ---
     HTMLPanelLabel: function (PanelLabel) {
         return [
-            '<div class="panel-heading">', EvoUI.icon('chevron-up', 'evol-title-toggle'),
+            '<div class="panel-heading">', Evol.UI.icon('chevron-up', 'evol-title-toggle'),
             '<h3 class="panel-title">', PanelLabel, '</h3></div>'
         ].join('');
     },
@@ -231,7 +235,7 @@ Evol.UI = {
         return (d.getHours()) + ":" + (d.getMinutes());
     },
 
-    // ---   ---
+    // ---  Misc. ---
     getSizeCSS: function(size){
         switch(size){
             case 'S':

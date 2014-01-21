@@ -4,13 +4,12 @@
  *
  * View one json
  *
+ * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
 
-var Evol = Evol || {},
-    EvoUI = Evol.UI,
-    EvoDico = Evol.Dico;
+var Evol = Evol || {};
 
 Evol.ViewOne.JSON = Evol.ViewOne.extend({
 
@@ -21,18 +20,16 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
     },
 
     viewName: 'json',
-    prefix: 'oj',
 
     render: function () {
         var h = [];
         if(this.model){
             var jsonStr=JSON.stringify(this.model, null, 2);
-            h.push(EvoUI.input.textMJSON('',jsonStr,10));
+            h.push(Evol.UI.input.textMJSON('',jsonStr,10));
         }
         this._renderButtons(h, 'json');
         this.$el.html(h.join(''));
         this.setData(this.model);
-        this._updateTitle();
         this.custOn=false;
         return this;
     },
@@ -43,10 +40,9 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
     },
 
     setData: function (m) {
-        var that=this,
-            prefix='#'+ that.prefix + '-';
-        this.$el.children('textarea').val(JSON.stringify(m, null, 2));
-        this._updateTitle();
+        this.$el.children('textarea')
+            .val(JSON.stringify(m, null, 2));
+        return this._updateTitle();
     },
 
     clear: function () {

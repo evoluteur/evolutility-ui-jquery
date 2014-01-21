@@ -37,6 +37,10 @@
 .evo-editFilter{
   vertical-align: middle;
 
+  &:last-child{
+    clear:left;
+  }
+
   > #value > label{
     margin-left:6px;
   }
@@ -64,12 +68,12 @@
     width:7em;
   }
 
-  &:last-child{
+}
+.evo-editFilter{
+  :after,
+  > button{
     clear: left;
   }
-;
 }
-.evo-editFilter:after,
-.evo-editFilter > button{
-    clear: left;
-}
+
+

@@ -1,4 +1,5 @@
 var winecellar_lovs = {
+
     bottleSize: [
         {id:750, text:'750 ml'},
         {id:500, text:'500 ml'},
@@ -98,6 +99,16 @@ var winecellar_lovs = {
         {id:'rose',text:'Rose', icon:'pix/wine/winerose.gif'}
     ],
 
+    score: [
+        //{id:'', text:'NR', icon:'s00.gif'},
+        {id:0, text:'', icon:'s0.gif'},
+        {id:1, text:'*', icon:'s1.gif'},
+        {id:2, text:'**', icon:'s2.gif'},
+        {id:3, text:'***', icon:'s3.gif'},
+        {id:4, text:'****', icon:'s4.gif'},
+        {id:5, text:'*****', icon:'s5.gif'}
+    ],
+
     country: [
         {id: 'AR', text: 'Argentina'},
         {id: 'AT', text: 'Austria'},
@@ -118,12 +129,14 @@ var winecellar_lovs = {
         {id: 'CH', text:'Switzerland'},
         {id: 'US', text:'United States'}
     ]
+
 };
 
 var winecellar_ui = {
     entity: 'wine',
     entities: 'wines',
     label: 'Wine Cellar',
+    icon: 'wine.gif',
     elements: [
         {
             type: 'panel',
@@ -377,15 +390,7 @@ var winecellar_ui = {
                             type: 'lov',
                             label: 'My Score',
                             labellist: 'Score',
-                            list: [
-                                //{id:'', text:'NR', icon:'s00.gif'},
-                                {id:0, text:'', icon:'s0.gif'},
-                                {id:1, text:'*', icon:'s1.gif'},
-                                {id:2, text:'**', icon:'s2.gif'},
-                                {id:3, text:'***', icon:'s3.gif'},
-                                {id:4, text:'****', icon:'s4.gif'},
-                                {id:5, text:'*****', icon:'s5.gif'}
-                            ],
+                            list: winecellar_lovs.score,
                             maxlength: 100,
                             viewmany: true,
                             width: 100
@@ -416,13 +421,14 @@ var winecellar_ui = {
 
                 { type: 'panel-list',
                     id:'pnl-Degustations',
+                    attr:'degustation',
                     label: 'Degustations',
                     width: 100,
                     elements: [
-                        {id: 'Robe',  type: 'text', label: 'Robe', maxlength: 100, viewmany: '1'},
                         {id: 'ddate', type: 'date', label: 'Date', maxlength: 20, viewmany: '1'},
-                        {id: 'Nose', type: 'text', label: 'Nose', maxlength: 100, viewmany: '1'},
-                        {id: 'Taste', type: 'text', label: 'Taste', maxlength: 100, viewmany: '1'},
+                        {id: 'robe',  type: 'text', label: 'Robe', maxlength: 100, viewmany: '1'},
+                        {id: 'nose', type: 'text', label: 'Nose', maxlength: 100, viewmany: '1'},
+                        {id: 'taste', type: 'text', label: 'Taste', maxlength: 100, viewmany: '1'},
                         {id: 'notes', type: 'textmultiline', label: 'Note', maxlength: 300, viewmany: '1', width: 100, height: '4'}
                     ]
                 }
@@ -468,7 +474,8 @@ var winecellar_data = [
         vintage: 2012,
         winery:'Lur Saluces',
         bsize: '750',
-        type: '',
+        type: 'white',
+        grape: "cb",
         price: 240
     },
     {

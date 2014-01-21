@@ -4,13 +4,12 @@
  *
  * View one edit
  *
+ * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
 
-var Evol = Evol || {},
-    EvoUI = Evol.UI,
-    EvoDico = Evol.Dico;
+var Evol = Evol || {};
 
 Evol.ViewOne.Edit = Evol.ViewOne.extend({
 
@@ -22,7 +21,6 @@ Evol.ViewOne.Edit = Evol.ViewOne.extend({
         this.renderEdit(h);
         this.$el.html(h.join(''));
         this.setData(this.model);
-        this._updateTitle();
         this.custOn=false;
         return this;
     },
@@ -45,7 +43,7 @@ Evol.ViewOne.Edit = Evol.ViewOne.extend({
                         iPanel = -1;
                     }
                     if (iTab < 0) {
-                        h.push(EvoUI.html.clearer);
+                        h.push(Evol.UI.html.clearer);
                         this.renderTabs(h, elems);
                         h.push('<div class="tab-content">');
                     }
@@ -65,7 +63,6 @@ Evol.ViewOne.Edit = Evol.ViewOne.extend({
                     break;
                 case 'panel-list':
                     if (iPanel < 0) {
-                        h.push('');
                         iPanel = 1;
                     }
                     this.renderPanelList(h, p, 'pl-' + i, mode);
@@ -77,7 +74,6 @@ Evol.ViewOne.Edit = Evol.ViewOne.extend({
         }
         h.push('</div>');
         this._renderButtons(h, mode);
-        this._updateTitle();
     }
 
 });

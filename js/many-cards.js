@@ -4,13 +4,12 @@
  *
  * View many cards
  *
+ * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
 
-var Evol = Evol || {},
-    EvoUI = Evol.UI,
-    EvoDico = Evol.Dico;
+var Evol = Evol || {};
 
 Evol.ViewMany.Cards = Evol.ViewMany.extend({
 
@@ -29,7 +28,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
             labels.find('i').remove();
             this._custOn=false;
         }else{
-            labels.append(EvoUI.iconCustomize('id','field'));
+            labels.append(Evol.UI.iconCustomize('id','field'));
             this._custOn=true;
         }
         return this;
@@ -47,7 +46,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
             h.push(pSummary, this._paginationHTML(0, pSize, models.length),
                 '</div>');
         }else{
-            h.push(EvoUI.HTMLMsg(EvolLang.nodata,'','info'));
+            h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
         this.$el.html(h.join(''));
         return this;
@@ -63,25 +62,24 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
                     var f = fields[i],
                         cRow = data[r],
                         v = cRow.get(f.id);
-                    h.push('<div data-id="', cRow.id, '">');
                     if (i === 0) {
-                        h.push('<h4><a href="#" id="fg-', f.id, '" class="evol-nav-id">');
+                        h.push('<div data-id="', cRow.id, '">',
+                            '<h4><a href="#" id="fg-', f.id, '" class="evol-nav-id">');
                         if (icon) {
                             h.push('<img class="evol-table-icon" src="pix/', icon, '">');
                         }
-                        h.push(this._HTMLField(f,v));
-                        h.push('</a></h4>');
+                        h.push(this._HTMLField(f,v),
+                            '</a></h4></div>');
                     }else{
-                        //h.push(EvoUI.fieldLabel(f.id,f.label));
-                        h.push(this._HTMLField(f,v));
+                        //h.push(Evol.UI.fieldLabel(f.id,f.label));
+                        h.push('<div>', this._HTMLField(f,v),'</div>');
                     }
-                    h.push('</div>');
                 }
                 h.push('</div>');
             }
-            h.push(EvoUI.html.clearer);
+            h.push(Evol.UI.html.clearer);
         }else{
-            h.push(EvoUI.HTMLMsg(EvolLang.nodata,'','info'));
+            h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
     }
 

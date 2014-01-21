@@ -8,8 +8,7 @@
  *************************************************************************** */
 
 var Evol = Evol || {},
-    EvoUI = Evol.UI,
-    evoLangXpt = EvolLang.export;
+    evoLangXpt = Evol.i18n.export;
 
 Evol.ViewExport = Backbone.View.extend({
 
@@ -18,7 +17,7 @@ Evol.ViewExport = Backbone.View.extend({
     events: {
         "change .evol-xpt-format": "click_format",
         'change input': 'click_preview', //[type="checkbox"],
-        'click .evol-more': 'click_toggle_sel',
+        'click .evol-xpt-more': 'click_toggle_sel',
         'click #XP': 'click_submit'
         // TODO #tbrevol-xpt-format is a bug if change prefix...
     },
@@ -53,6 +52,7 @@ Evol.ViewExport = Backbone.View.extend({
 
     _renderHTML: function () {
         var h = [],
+            EvoUI = Evol.UI,
             opts = this.options,
             prefix = opts.prefix || '',
             fields = this.getFields();
@@ -195,7 +195,7 @@ Evol.ViewExport = Backbone.View.extend({
             case 'TAB':
             case 'TXT':
                 var iMax=flds.length-1,
-                    sep = EvoUI.trim(this.$(prefix+'FLS_evol').val());
+                    sep = Evol.UI.trim(this.$(prefix+'FLS_evol').val());
                 if(format=='TAB'){
                     sep='&#09;';
                 }
@@ -383,7 +383,7 @@ var EvoExport = {
 
     html_more2: function (label) {
         return [
-            '<a href="javascript:void(0)" class="evol-more">', label, '</a><div class="evol-more-content">'
+            '<a href="javascript:void(0)" class="evol-xpt-more">', label, '</a><div style="display:none;">'
         ].join('');
     },
 
@@ -395,7 +395,7 @@ var EvoExport = {
         return [
             EvoExport.html_more2('options'),
             EvoExport.formEntityName('evoRoot', evoLangXpt.xpXMLroot, entity),
-            EvoUI.fieldLabel('evoxpC2X', evoLangXpt.xpColMap),
+            Evol.UI.fieldLabel('evoxpC2X', evoLangXpt.xpColMap),
             '</div>'
         ].join('');
     },
@@ -408,16 +408,16 @@ var EvoExport = {
         return [
             EvoExport.html_more2('options'),
             EvoExport.formEntityName('evoTable', evoLangXpt.xpSQLTable, entity),
-            '<div>', EvoUI.input.checkbox('evoxpTRS2', '0'), EvoUI.fieldLabelSpan('evoxpTRS2', evoLangXpt.xpSQLId), '</div>',
-            '<div>', EvoUI.input.checkbox('evoxpTRS1', '0'), EvoUI.fieldLabelSpan('evoxpTRS1', evoLangXpt.xpSQLTrans), '</div>',
+            '<div>', Evol.UI.input.checkbox('evoxpTRS2', '0'), Evol.UI.fieldLabelSpan('evoxpTRS2', evoLangXpt.xpSQLId), '</div>',
+            '<div>', Evol.UI.input.checkbox('evoxpTRS1', '0'), Evol.UI.fieldLabelSpan('evoxpTRS1', evoLangXpt.xpSQLTrans), '</div>',
             '</div>'
            ].join('');
     },
 
     formEntityName: function(id,label,entity){
         return [
-            EvoUI.fieldLabel(id, label),
-            EvoUI.input.text(id, entity.replace(' ', '_'), 30),'<br/>'
+            Evol.UI.fieldLabel(id, label),
+            Evol.UI.input.text(id, entity.replace(' ', '_'), 30),'<br/>'
             ].join('');
     }
 

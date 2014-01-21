@@ -10,23 +10,33 @@
 img.evol-table-icon{
 	margin-right: 6px !important;
 }
-.evol-many-list > .table th .glyphicon {
+.evol-many-list{
+
+  > .table th {
+
+    .glyphicon {
+      display:none;
+      position:absolute;
+      opacity: .8;
+      margin-left: 6px;
+      background-color: white;
+      cursor: pointer;
+      width:22px;
+      height: 22px;
+    }
+
+    &:hover .glyphicon {
+      display: inline !important;
+      cursor: pointer;
+    }
+
+  }
+
+  .glyphicon.evol-last-sort {
     display:none;
     position:absolute;
-    opacity: .8;
-    margin-left: 6px;
-    background-color: white;
-    cursor: pointer;
-    width:22px;
-    height: 22px;
-}
-.evol-many-list > .table th:hover .glyphicon {
-    display: inline !important;
-    cursor: pointer;
-}
-.evol-many-list > .table th .glyphicon.evol-last-sort {
-    display:none;
-    position:absolute;
+  }
+
 }
 
 /* --- list > sort icons --- */
@@ -48,11 +58,16 @@ img.evol-table-icon{
   }
 }
 
-.panel-heading > .evol-title-toggle{
+.panel-heading {
+
+  > .evol-title-toggle{
     display: none;
-}
-.panel-heading:hover > .evol-title-toggle{
+  }
+
+  &:hover > .evol-title-toggle{
     display: inline;
+  }
+
 }
 
 /* --- cards --- */
@@ -65,6 +80,7 @@ img.evol-table-icon{
     margin: 5px;
     padding:10px;
     border-radius: 10px;
+    overflow: auto;
 }
 
 /* --- charts --- */

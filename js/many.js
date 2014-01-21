@@ -4,13 +4,12 @@
  *
  * View many
  *
+ * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
 
-var Evol = Evol || {},
-    EvoUI = Evol.UI,
-    EvoDico = Evol.Dico;
+var Evol = Evol || {};
 
 Evol.ViewMany = Backbone.View.extend({
 
@@ -96,7 +95,7 @@ Evol.ViewMany = Backbone.View.extend({
             }
             this._render(models);
         }else{
-            this.$el.html(EvoUI.HTMLMsg(EvolLang.nodata,'','info'));
+            this.$el.html(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
         this._updateTitle();
         return this;
@@ -112,7 +111,7 @@ Evol.ViewMany = Backbone.View.extend({
             labels.find('i').remove();
             this._custOn=false;
         }else{
-            labels.append(EvoUI.iconCustomize('id','field'));
+            labels.append(Evol.UI.iconCustomize('id','field'));
             this._custOn=true;
         }
         return this;
@@ -149,7 +148,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     getFields: function (){
         if(!this._fields){
-            this._fields=EvoDico.fields(this.options.uiModel, function(f){
+            this._fields=Evol.Dico.fields(this.options.uiModel, function(f){
                 return f.viewmany;
             });
             this._fieldHash={};
@@ -166,45 +165,46 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     _HTMLField: function(f,v){
+        var fTypes = Evol.Dico.fieldTypes;
         switch(f.type){
-            case EvoDico.fieldTypes.bool:
+            case fTypes.bool:
                 if (v==='true' || v=='1') {
-                    return EvoUI.icon('ok');
+                    return Evol.UI.icon('ok');
                 }
                 break;
-            case EvoDico.fieldTypes.lov:
+            case fTypes.lov:
                 if (v !== '') {
                     //if(f.icon && f.list & f.list[0].icon){
                     //    return 'f.icon' + this._lovText(f,v);
                     //}else{
-                        return EvoDico.lovText(this._hashLov, f, v);
+                        return Evol.Dico.lovText(this._hashLov, f, v);
                     //}
                 }
                 break;
-            case EvoDico.fieldTypes.date:
-            case EvoDico.fieldTypes.time:
-            case EvoDico.fieldTypes.datetime:
+            case fTypes.date:
+            case fTypes.time:
+            case fTypes.datetime:
                 if (v !== '') {
-                    var myDate=new Date(v);
+                    var myDate = new Date(v);
                     if(_.isDate(myDate)){
                         var dv='';
                         //return myDate.toLocaleDateString("en-US");
-                        if(f.type!=EvoDico.fieldTypes.time){
-                            dv+=EvoUI.formatDate(myDate);
+                        if(f.type!=fTypes.time){
+                            dv+=Evol.UI.formatDate(myDate);
                         }
-                        if(f.type==EvoDico.fieldTypes.datetime){
+                        if(f.type==fTypes.datetime){
                             dv+=' ';
                         }
-                        if(f.type!=EvoDico.fieldTypes.date){
-                            dv+=EvoUI.formatTime(myDate);
+                        if(f.type!=fTypes.date){
+                            dv+=Evol.UI.formatTime(myDate);
                         }
                         return dv;
                     }
                 }
                 break;
-            case EvoDico.fieldTypes.pix:
+            case fTypes.pix:
                 if (v.length) {
-                    return EvoUI.input.img(f.id, v);
+                    return Evol.UI.input.img(f.id, v);
                 }
                 break;
             default:
@@ -247,12 +247,13 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     sortList: function(f, down){
-        var collec=this.collection;
+        var collec=this.collection,
+            ft=Evol.Dico.fieldTypes;
         if(collec!==undefined){
-            if(f.type==EvoDico.fieldTypes.text || f.type==EvoDico.fieldTypes.txtm || f.type==EvoDico.fieldTypes.email){
-                collec.comparator = EvoDico.bbComparatorText(f.id);
+            if(f.type==ft.text || f.type==ft.txtm || f.type==ft.email){
+                collec.comparator = Evol.Dico.bbComparatorText(f.id);
             }else{
-                collec.comparator = EvoDico.bbComparator(f.id);
+                collec.comparator = Evol.Dico.bbComparator(f.id);
             }
             collec.sort();
             if(down){
@@ -292,7 +293,7 @@ Evol.ViewMany = Backbone.View.extend({
             id=$e.data('id'),
             eType=$e.data('type');
 
-        EvoDico.showDesigner(id, eType, $e);
+        Evol.Dico.showDesigner(id, eType, $e);
         this.$el.trigger(eType+'.customize', {id: id, type:eType});
     }
 

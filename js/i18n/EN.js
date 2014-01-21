@@ -2,8 +2,9 @@
 //   https://github.com/evoluteur/evolutility
 //   (c) 2014 Olivier Giulieri
 
+var Evol = Evol || {};
 
-var EvolLang={
+Evol.i18n = {
 
 	LOCALE:"EN",    // ENGLISH
 
