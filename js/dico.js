@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evolutility :: ui-dico.js
+ * evolutility :: dico.js
  *
  * Library of helpers for dictionary
  *
@@ -29,15 +29,15 @@ Evol.Dico = {
         //html:'html',
         email: 'email',
         url: 'url',
-        pwd: 'password',
+        //pwd: 'password',
         color: 'color',
         hidden: 'hidden',
-        rating: 'rating',
+        //rating: 'rating',
         tag: 'tag'
         //widget: 'widget',
     },
 
-    fields: function (uiModel, fnFilter) {
+    getFields: function (uiModel, fnFilter) {
         // TODO fields details or not?
         var fs = [];
 

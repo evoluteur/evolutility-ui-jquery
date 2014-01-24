@@ -298,7 +298,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             this.$('.evo-toolbar').after($ff);
             this._filters = new Evol.ViewFilter({
                 el:$ff,
-                fields:Evol.Dico.fields(this.options.uiModel)
+                fields:Evol.Dico.getFields(this.options.uiModel)
             }).render();
             $ff.on('change.filter', function(){
                 that.curView.setFilter(that._filters.val())

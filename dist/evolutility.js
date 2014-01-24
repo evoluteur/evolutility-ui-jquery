@@ -232,11 +232,40 @@ Evol.UI = {
     },
 
     // --- date formats ---
-    formatDate: function(d){
-        return (d.getMonth()+1) + "/" + (d.getDate()+1) + "/" + d.getFullYear();
+    formatDate: function(d){ // TODO use date not string as param
+        return d;
+        //return d.toLocaleDateString();
+        //return (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
     },
-    formatTime: function(d){
-        return (d.getHours()) + ":" + (d.getMinutes());
+    formatTime: function(d){ // TODO use date not string as param
+        return d;
+        //return d.toLocaleTimeString();
+        //return (d.getHours()) + ":" + (d.getMinutes());
+    },
+    formatDateTime: function(d){ // TODO use date not string as param
+        if(d!==undefined && d!==''){
+            var dateParts= d.split('-');
+            if(dateParts.length>1){
+                return dateParts[1]+'/'+dateParts[2]+'/'+dateParts[0];
+            }
+        }
+        return '';
+        /*
+        //var myDate = new Date(v);
+        //if(_.isDate(myDate)){
+            var dv='';
+            //return myDate.toLocaleDateString("en-US");
+            if(f.type!=fTypes.time){
+                dv+=this.formatDate(myDate);
+                if(f.type==fTypes.datetime){
+                    dv+=' ';
+                }
+            }
+            if(f.type!=fTypes.date){
+                dv+=this.formatTime(myDate);
+            }
+            return dv;
+        //}*/
     },
 
     // ---  Misc. ---
@@ -343,9 +372,9 @@ Evol.UI.Charts = {
 ;
 /*! ***************************************************************************
  *
- * evolutility :: ui-dico.js
+ * evolutility :: ui-validation.js
  *
- * Library of helpers for dictionary
+ * Form validation
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
@@ -354,135 +383,169 @@ Evol.UI.Charts = {
 
 var Evol = Evol || {};
 
-Evol.Dico = {
+// this is some very old code from Evolutility ASP.net version
+// TODO rewrite or use another open source
+Evol.Validation = {
 
-    fieldTypes: {
-        text: 'text',
-        txtm: 'textmultiline',
-        bool: 'boolean',
-        dec: 'decimal',
-        integer: 'integer',
-        date: 'date',
-        time: 'time',
-        datetime: 'datetime',
-        pix: 'image',
-        //doc:'document',
-        lov: 'lov',
-        //formula:'formula',
-        //html:'html',
-        email: 'email',
-        url: 'url',
-        pwd: 'password',
-        color: 'color',
-        hidden: 'hidden',
-        rating: 'rating',
-        tag: 'tag'
-        //widget: 'widget',
+    checkMaxLen: function (F, maxL) {
+        if (F.value.length > maxL){
+            F.value = F.value.substring(0, maxL - 1);
+        }
     },
 
-    fields: function (uiModel, fnFilter) {
-        // TODO fields details or not?
-        var fs = [];
-
-        function collectFields(te) {
-            if (te && te.elements && te.elements.length > 0) {
-                _.each(te.elements, function (te) {
-                    if(te.type!='panel-list'){
-                        collectFields(te);
-                    }
-                });
-            } else {
-                fs.push(te);
-            }
+    checkNum: function (F, t) {
+        var nv, fv = F.value;
+        if (t.substring(0, 1) == 'i')
+            nv = parseInt(fv, 10);
+        else {
+            var ln = Evol.i18n.LOCALE;
+            if (ln == 'FR' || ln == 'DA')
+                fv = fv.replace(",", ".");
+            nv = parseFloat(fv);
         }
-
-        collectFields(uiModel);
-        if (_.isFunction(fnFilter)) {
-            fs= _.filter(fs, fnFilter);
-        }
-        return fs;
+        if (isNaN(nv))
+            F.value = '';
+        else if (fv != nv)
+            F.value = nv;
     },
 
-    lovText:function(hash, f, v){
-        if(('list' in f) && f.list.length>0){
-            if(!(f.id in hash)){
-                hash[f.id]={};
+    setValidationFlags: function (p, msgf) {
+        var errlabel = p.find('.text-danger');
+        if (errlabel.length) {
+            errlabel.html(msgf);
+        } else {
+            p.append('<p class="text-danger">' + msgf + '</p>');
+        }
+        p.addClass('has-error');
+    },
+
+    checkFields: function (holder, fds, prefix) {
+        var evoRegEx = {
+            email: /^[\w\.\-]+@[\w\.\-]+\.[\w\.\-]+$/,
+            integer: /^-?\d+$/,
+            decimalEN: /^\d+(\.\d+)?$/,
+            decimalFR: /^\d+(\,\d+)?$/,
+            decimalDA: /^\d+(\,\d+)?$/
+        };
+        var msgs = [], ff = null;
+        for (var i in fds) {
+            var fd = fds[i],
+                $f = holder.find('#' + prefix + '-' + fd.id).eq(0),
+                isHTML = fd.type == 'html';
+            if (isHTML) {
+                $f.val(nicEditors.findEditor(f.id).getContent());
             }
-            var hashLov = hash[f.id];
-            if(v in hashLov){
-                return hashLov[v];
-            }else{
-                var listItem=_.find(f.list,function(item){
-                    return item.id===v;
-                });
-                if(listItem){
-                    var txt=listItem.text;
-                    if(listItem.icon){
-                        txt='<img src="'+listItem.icon+'"> '+txt;
+            if ($f.length > 0) {
+                var noErr = true,
+                    p, msgf;
+                // Check empty & type
+                if (fd.required > 0) {
+                    if (isEmpty($f, isHTML)) {
+                        p = $f.parent();
+                        msgf = labMsg(Evol.i18n.validation.empty);
+                        this.setValidationFlags(p, msgf);
+                        noErr = false;
+                    } else {
+                        $f.parent().removeClass('control-group error')
+                            .find('.evol-warn-error').remove();
+                        typeCheck();
                     }
-                    hashLov[v]=txt;
-                    return txt;
+                } else {
+                    typeCheck();
+                }
+                // Check regexp
+                if (fd.regex !== null && fd.regex !== undefined) {
+                    var rg = new RegExp(fd.regex);
+                    if (!$f.val().match(rg)) {
+                        p = $f.parent();
+                        msgf = labMsg(Evol.i18n.validation.regex, fd.label);
+                        this.setValidationFlags($f.parent(), msgf);
+                    }
+                }/*
+                // Check custom
+                if (fd.jsv !== null) {
+                    p = eval([fd.jsv, '("', Evol.prefix, fd.id, '","', fd.label, '")'].join(''));
+                    if (p !== null && p.length > 0) {
+                        this.setValidationFlags($f.parent(), labMsg(p));
+                    }
+                }*/
+                // Check min & max
+                if (noErr) {
+                    var fv = Evol.UI.trim($f.val());
+                    if (fv !== '') {
+                        if (fd.max !== null && parseFloat(fv) > fd.max) {
+                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n.validation.max, fd.max));
+                        }
+                        if (fd.min !== null && parseFloat(fv) < fd.min) {
+                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n.validation.min, fd.min));
+                        }
+                    }
                 }
             }
         }
-        return '';
-    },
-
-    isTypeDateOrTime: function(fType){
-        return fType == EvoDico.fieldTypes.datetime || EvoDico.fieldTypes.date || fType==EvoDico.fieldTypes.time;
-    },
-
-    showDesigner: function(id, type, $el){
-        var $elDes=$('<div class="evol-des-'+type+'"></div>'),
-            uiModel;
-
-        switch(type){
-            case 'field':
-                uiModel = dico_field_ui;
-                break;
-        }    
-        $el.closest('.evol-fld').after($elDes);
-
-        vw = new Evol.ViewOne.Edit({
-            model: null,
-            uiModel: uiModel,
-            defaultView: 'edit',
-            el: $elDes,
-            style:'panel-primary',
-            size:'S',
-            button_addAnother: false
-        }).render();
-
-        $elDes.on('click', 'button#save,button#cancel', function(evt){
-            //TODO save field => dependency: uiModel persistence...
-            $elDes.remove();
-        });
-
-        return this;
-    },
-
-    showInfoBox:function(msg, type){        
-        var $m=this.$el.find('.evol-head-info');
-        if($m.length){
-            $m.html(msg);
-        }else{
-            var m=['<div class="evol-head-info alert alert-',type,'">',
-                Evol.UI.iconClose(),msg,'</div>'].join('');
-            this.$el.prepend(m);
+        if (msgs.length > 0) {
+            return [Evol.i18n.validation.intro, '<ul><li>', msgs.join('<li>'), '</li></ul>'].join('');
+        } else {
+            return '';
         }
-        return this;
-    },
 
-    bbComparator:  function(fid){
-        return function(modelA,modelB) {
-            return modelA.get(fid)>modelB.get(fid);
-        };
-    },
+        function typeCheck() {
+            var ft = Evol.Dico.fieldTypes,
+                fv = Evol.UI.trim($f.val());
+            if (fv !== ''){
+                switch (fd.type) {
+                    case ft.integer:
+                    case ft.email:
+                        if (!evoRegEx[fd.type].test(fv)) {
+                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n[fd.type]));
+                        }
+                        break;
+                    case ft.dec:
+                        var myRegExp = evoRegEx[fd.type + Evol.i18n.LOCALE];
+                        if (myRegExp === null) {
+                            myRegExp = evoRegEx[fd.type + "EN"]; // default to English with "."
+                        }
+                        if (!myRegExp.test(fv))
+                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n[fd.type]));
+                        break;
+                    case ft.date:
+                    case ft.datetime:
+                    case ft.time:
+                        if ((fv !== '') && (!_.isDate(new Date(fv)))) {
+                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n[fd.type]));
+                        }
+                        break;
+                }
+            }
+        }
 
-    bbComparatorText: function(fid){
-        return function(modelA,modelB) {
-            return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
-        };
+        function isEmpty($f, isHTML) {
+            var v, tn = $f.tagName;
+            if (tn == 'SELECT' && $f.get(0).selectedIndex > -1) {
+                v = f.options[$f.get(0).selectedIndex].value == "0";
+                /*} else if (tn == 'TEXTAREA' && isHTML) {
+                 var editor = nicEditors.findEditor(f.id);
+                 if (editor) {
+                 v = editor.getContent().trim()
+                 v = v == '' || v == '<br>';
+                 } else {
+                 v = $f.val().trim() == '';
+                 }   */
+            } else {
+                v = Evol.UI.trim($f.val()) === '';
+            }
+            return v;
+        }
+
+        function labMsg(msg, r2) {
+            var m = msg.replace('{0}', fd.label);
+            if (r2 !== null) {
+                m = m.replace('{1}', r2);
+            }
+            msgs.push(m);
+            return m;
+        }
+
     }
 
 };
@@ -599,6 +662,152 @@ Evol.i18n = {
         bUpdateFilter:'Update filter',
         bSubmit:'Submit',
         bCancel:'Cancel'
+    }
+
+};
+;
+/*! ***************************************************************************
+ *
+ * evolutility :: dico.js
+ *
+ * Library of helpers for dictionary
+ *
+ * https://github.com/evoluteur/evolutility
+ * Copyright (c) 2014, Olivier Giulieri
+ *
+ *************************************************************************** */
+
+var Evol = Evol || {};
+
+Evol.Dico = {
+
+    fieldTypes: {
+        text: 'text',
+        txtm: 'textmultiline',
+        bool: 'boolean',
+        dec: 'decimal',
+        integer: 'integer',
+        date: 'date',
+        time: 'time',
+        datetime: 'datetime',
+        pix: 'image',
+        //doc:'document',
+        lov: 'lov',
+        //formula:'formula',
+        //html:'html',
+        email: 'email',
+        url: 'url',
+        //pwd: 'password',
+        color: 'color',
+        hidden: 'hidden',
+        //rating: 'rating',
+        tag: 'tag'
+        //widget: 'widget',
+    },
+
+    getFields: function (uiModel, fnFilter) {
+        // TODO fields details or not?
+        var fs = [];
+
+        function collectFields(te) {
+            if (te && te.elements && te.elements.length > 0) {
+                _.each(te.elements, function (te) {
+                    if(te.type!='panel-list'){
+                        collectFields(te);
+                    }
+                });
+            } else {
+                fs.push(te);
+            }
+        }
+
+        collectFields(uiModel);
+        if (_.isFunction(fnFilter)) {
+            fs= _.filter(fs, fnFilter);
+        }
+        return fs;
+    },
+
+    lovText:function(hash, f, v){
+        if(('list' in f) && f.list.length>0){
+            if(!(f.id in hash)){
+                hash[f.id]={};
+            }
+            var hashLov = hash[f.id];
+            if(v in hashLov){
+                return hashLov[v];
+            }else{
+                var listItem=_.find(f.list,function(item){
+                    return item.id===v;
+                });
+                if(listItem){
+                    var txt=listItem.text;
+                    if(listItem.icon){
+                        txt='<img src="'+listItem.icon+'"> '+txt;
+                    }
+                    hashLov[v]=txt;
+                    return txt;
+                }
+            }
+        }
+        return '';
+    },
+
+    isTypeDateOrTime: function(fType){
+        return fType == EvoDico.fieldTypes.datetime || EvoDico.fieldTypes.date || fType==EvoDico.fieldTypes.time;
+    },
+
+    showDesigner: function(id, type, $el){
+        var $elDes=$('<div class="evol-des-'+type+'"></div>'),
+            uiModel;
+
+        switch(type){
+            case 'field':
+                uiModel = dico_field_ui;
+                break;
+        }    
+        $el.closest('.evol-fld').after($elDes);
+
+        vw = new Evol.ViewOne.Edit({
+            model: null,
+            uiModel: uiModel,
+            defaultView: 'edit',
+            el: $elDes,
+            style:'panel-primary',
+            size:'S',
+            button_addAnother: false
+        }).render();
+
+        $elDes.on('click', 'button#save,button#cancel', function(evt){
+            //TODO save field => dependency: uiModel persistence...
+            $elDes.remove();
+        });
+
+        return this;
+    },
+
+    showInfoBox:function(msg, type){        
+        var $m=this.$el.find('.evol-head-info');
+        if($m.length){
+            $m.html(msg);
+        }else{
+            var m=['<div class="evol-head-info alert alert-',type,'">',
+                Evol.UI.iconClose(),msg,'</div>'].join('');
+            this.$el.prepend(m);
+        }
+        return this;
+    },
+
+    bbComparator:  function(fid){
+        return function(modelA,modelB) {
+            return modelA.get(fid)>modelB.get(fid);
+        };
+    },
+
+    bbComparatorText: function(fid){
+        return function(modelA,modelB) {
+            return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
+        };
     }
 
 };
@@ -753,7 +962,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     getFields: function (){
         if(!this._fields){
-            this._fields=Evol.Dico.fields(this.options.uiModel, function(f){
+            this._fields=Evol.Dico.getFields(this.options.uiModel, function(f){
                 return f.viewmany;
             });
             this._fieldHash={};
@@ -789,24 +998,7 @@ Evol.ViewMany = Backbone.View.extend({
             case fTypes.date:
             case fTypes.time:
             case fTypes.datetime:
-                if (v !== '') {
-                    var myDate = new Date(v);
-                    if(_.isDate(myDate)){
-                        var dv='';
-                        //return myDate.toLocaleDateString("en-US");
-                        if(f.type!=fTypes.time){
-                            dv+=Evol.UI.formatDate(myDate);
-                        }
-                        if(f.type==fTypes.datetime){
-                            dv+=' ';
-                        }
-                        if(f.type!=fTypes.date){
-                            dv+=Evol.UI.formatTime(myDate);
-                        }
-                        return dv;
-                    }
-                }
-                break;
+                return Evol.UI.formatDateTime(v);
             case fTypes.pix:
                 if (v.length) {
                     return Evol.UI.input.img(f.id, v);
@@ -1045,7 +1237,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             fTypes = EvoDico.fieldTypes,
             uiModel = this.options.uiModel,
             models = this.collection.models,
-            chartFields = EvoDico.fields(uiModel, function(f){
+            chartFields = EvoDico.getFields(uiModel, function(f){
                 return (f.type==fTypes.lov || f.type==fTypes.bool || f.type==fTypes.integer);
             });
 
@@ -1245,7 +1437,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     getFields: function (){
         if(!this._fields){
-            this._fields=Evol.Dico.fields(this.options.uiModel, this.getFieldsCondition);
+            this._fields=Evol.Dico.getFields(this.options.uiModel, this.getFieldsCondition);
             this._fieldHash={};
             var that=this;
             _.each(this._fields,function(f){
@@ -1316,6 +1508,9 @@ Evol.ViewOne = Backbone.View.extend({
                 }
             }
         });
+        if(this._hasSubCollec){
+            // TODO
+        }
         return this._updateTitle();
     },
 
@@ -1396,7 +1591,7 @@ Evol.ViewOne = Backbone.View.extend({
             elems = opts.uiModel.elements;
 
         if(mode==='mini'){
-            var flds = Evol.Dico.fields(opts.uiModel,function(f){
+            var flds = Evol.Dico.getFields(opts.uiModel,function(f){
                     return  f.searchlist || f.required || f.mini;
                 },opts.mode),
                 miniUIModel= {
@@ -1435,6 +1630,7 @@ Evol.ViewOne = Backbone.View.extend({
                         this.renderPanel(h, p, 'pe-' + i, mode);
                         break;
                     case 'panel-list':
+                        this._hasSubCollec=true;
                         if (iPanel < 0) {
                             h.push('');
                             iPanel = 1;
@@ -1508,7 +1704,8 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     renderPanelList: function (h, p, pid, mode) { // TODO implement
-        h.push('<div style="width:', p.width, '%" class="pull-left evol-pnl">not implemented yet',
+        var vs = this.model.get(p.attr);
+        h.push('<div style="width:', p.width, '%" class="pull-left evol-pnl" data-pid="',pid,'">',
             '<div class="panel ', this.options.style, '">',
             Evol.UI.HTMLPanelLabel(p.label, pid, 'PanelLabel'),
             '<table class="table table-striped"><tr>');
@@ -1516,14 +1713,17 @@ Evol.ViewOne = Backbone.View.extend({
             h.push('<th>', elem.label, '</th>');
         });
         h.push('</tr>');
-        var testRow='<tr>';
-        _.each(p.elements, function (elem) {
-            testRow+='<td>test</td>';
+        _.each(vs, function(row){
+            h.push('<tr>');
+            _.each(p.elements, function (elem) {
+                if(row[elem.id]){
+                    h.push('<td>',row[elem.id],'</td>'); // TODO row.elem.attr as spec
+                }else{
+                    h.push('<td></td>');
+                }
+            });
+            h.push('</tr>');
         });
-        testRow+='</tr>';
-        for(var i=0;i<5;i++){
-            h.push(testRow);
-        }
         h.push('</tr></table></div></div>');
     },
 
@@ -1646,7 +1846,7 @@ Evol.ViewOne = Backbone.View.extend({
         this.clearMessages();
         if (_.isArray(fs)) {
             this.$el.trigger('view.validate');
-            return EvoVal.checkFields(this.$el, fs, this.prefix);
+            return Evol.Validation.checkFields(this.$el, fs, this.prefix);
         }
         return false;
     },
@@ -1713,7 +1913,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     showHelp:function(id, type, $el){
-        var fs=Evol.Dico.fields(this.options.uiModel),
+        var fs=Evol.Dico.getFields(this.options.uiModel),
             fld=_.findWhere(fs,{id:id});
 
         if(fld||fld.help){
@@ -1875,175 +2075,6 @@ Evol.ViewOne = Backbone.View.extend({
 
 });
 
-
-// ############ Validation #################################################################
-
-// this is some very old code from Evolutility ASP.net version
-// TODO rewrite or use another open source
-var EvoVal = {
-
-    checkMaxLen: function (F, maxL) {
-        if (F.value.length > maxL){
-            F.value = F.value.substring(0, maxL - 1);
-        }
-    },
-
-    checkNum: function (F, t) {
-        var nv, fv = F.value;
-        if (t.substring(0, 1) == 'i')
-            nv = parseInt(fv, 10);
-        else {
-            var ln = Evol.i18n.LOCALE;
-            if (ln == 'FR' || ln == 'DA')
-                fv = fv.replace(",", ".");
-            nv = parseFloat(fv);
-        }
-        if (isNaN(nv))
-            F.value = '';
-        else if (fv != nv)
-            F.value = nv;
-    },
-
-    setValidationFlags: function (p, msgf) {
-        var errlabel = p.find('.text-danger');
-        if (errlabel.length) {
-            errlabel.html(msgf);
-        } else {
-            p.append('<p class="text-danger">' + msgf + '</p>');
-        }
-        p.addClass('has-error');
-    },
-
-    checkFields: function (holder, fds, prefix) {
-        var evoRegEx = {
-            email: /^[\w\.\-]+@[\w\.\-]+\.[\w\.\-]+$/,
-            integer: /^-?\d+$/,
-            decimalEN: /^\d+(\.\d+)?$/,
-            decimalFR: /^\d+(\,\d+)?$/,
-            decimalDA: /^\d+(\,\d+)?$/
-        };
-        var msgs = [], ff = null;
-        for (var i in fds) {
-            var fd = fds[i],
-                $f = holder.find('#' + prefix + '-' + fd.id).eq(0),
-                isHTML = fd.type == 'html';
-            if (isHTML) {
-                $f.val(nicEditors.findEditor(f.id).getContent());
-            }
-            if ($f.length > 0) {
-                var noErr = true,
-                    p, msgf;
-                // Check empty & type
-                if (fd.required > 0) {
-                    if (isEmpty($f, isHTML)) {
-                        p = $f.parent();
-                        msgf = labMsg(Evol.i18n.validation.empty);
-                        EvoVal.setValidationFlags(p, msgf);
-                        noErr = false;
-                    } else {
-                        $f.parent().removeClass('control-group error')
-                            .find('.evol-warn-error').remove();
-                        typeCheck();
-                    }
-                } else {
-                    typeCheck();
-                }
-                // Check regexp
-                if (fd.regex !== null && fd.regex !== undefined) {
-                    var rg = new RegExp(fd.regex);
-                    if (!$f.val().match(rg)) {
-                        p = $f.parent();
-                        msgf = labMsg(Evol.i18n.validation.regex, fd.label);
-                        EvoVal.setValidationFlags($f.parent(), msgf);
-                    }
-                }/*
-                // Check custom
-                if (fd.jsv !== null) {
-                    p = eval([fd.jsv, '("', Evol.prefix, fd.id, '","', fd.label, '")'].join(''));
-                    if (p !== null && p.length > 0) {
-                        EvoVal.setValidationFlags($f.parent(), labMsg(p));
-                    }
-                }*/
-                // Check min & max
-                if (noErr) {
-                    var fv = Evol.UI.trim($f.val());
-                    if (fv !== '') {
-                        if (fd.max !== null && parseFloat(fv) > fd.max) {
-                            EvoVal.setValidationFlags($f.parent(), labMsg(Evol.i18n.validation.max, fd.max));
-                        }
-                        if (fd.min !== null && parseFloat(fv) < fd.min) {
-                            EvoVal.setValidationFlags($f.parent(), labMsg(Evol.i18n.validation.min, fd.min));
-                        }
-                    }
-                }
-            }
-        }
-        if (msgs.length > 0) {
-            return [Evol.i18n.validation.intro, '<ul><li>', msgs.join('<li>'), '</li></ul>'].join('');
-        } else {
-            return '';
-        }
-
-        function typeCheck() {
-            var ft = Evol.Dico.fieldTypes,
-                fv = Evol.UI.trim($f.val());
-            if (fv !== ''){
-                switch (fd.type) {
-                    case ft.integer:
-                    case ft.email:
-                        if (!evoRegEx[fd.type].test(fv)) {
-                            EvoVal.setValidationFlags($f.parent(), labMsg(Evol.i18n[fd.type]));
-                        }
-                        break;
-                    case ft.dec:
-                        var myRegExp = evoRegEx[fd.type + Evol.i18n.LOCALE];
-                        if (myRegExp === null) {
-                            myRegExp = evoRegEx[fd.type + "EN"]; // default to English with "."
-                        }
-                        if (!myRegExp.test(fv))
-                            EvoVal.setValidationFlags($f.parent(), labMsg(Evol.i18n[fd.type]));
-                        break;
-                    case ft.date:
-                    case ft.datetime:
-                    case ft.time:
-                        if ((fv !== '') && (!_.isDate(new Date(fv)))) {
-                            EvoVal.setValidationFlags($f.parent(), labMsg(Evol.i18n[fd.type]));
-                        }
-                        break;
-                }
-            }
-        }
-
-        function isEmpty($f, isHTML) {
-            var v, tn = $f.tagName;
-            if (tn == 'SELECT' && $f.get(0).selectedIndex > -1) {
-                v = f.options[$f.get(0).selectedIndex].value == "0";
-                /*} else if (tn == 'TEXTAREA' && isHTML) {
-                 var editor = nicEditors.findEditor(f.id);
-                 if (editor) {
-                 v = editor.getContent().trim()
-                 v = v == '' || v == '<br>';
-                 } else {
-                 v = $f.val().trim() == '';
-                 }   */
-            } else {
-                v = Evol.UI.trim($f.val()) === '';
-            }
-            return v;
-        }
-
-        function labMsg(msg, r2) {
-            var m = msg.replace('{0}', fd.label);
-            if (r2 !== null) {
-                m = m.replace('{1}', r2);
-            }
-            msgs.push(m);
-            return m;
-        }
-
-    }
-
-};
 ;
 /*! ***************************************************************************
  *
@@ -2070,57 +2101,6 @@ Evol.ViewOne.Edit = Evol.ViewOne.extend({
         this.setData(this.model);
         this.custOn=false;
         return this;
-    },
-
-    renderEdit: function (h) {
-        // EDIT and VIEW forms
-        var iTab = -1,
-            iPanel = -1,
-            opts = this.options,
-            elems = opts.uiModel.elements,
-            mode = 'edit';
-
-        h.push('<div class="evo-one-',mode,'">');
-        for (var i = 0, iMax = elems.length; i < iMax; i++) {
-            var p = elems[i];
-            switch (p.type) {
-                case 'tab':
-                    if (iPanel > 0) {
-                        h.push('</div>');
-                        iPanel = -1;
-                    }
-                    if (iTab < 0) {
-                        h.push(Evol.UI.html.clearer);
-                        this.renderTabs(h, elems);
-                        h.push('<div class="tab-content">');
-                    }
-                    iTab++;
-                    h.push('<div id="evol-tab-', i, '" class="tab-pane', (i === 1 ? ' active">' : '">'));
-                    this.renderTab(h, p, mode);
-                    if (iTab == iMax - 1) {
-                        h.push('</div>');
-                    }
-                    break;
-                case 'panel':
-                    if (iPanel < 0) {
-                        h.push('<div class="evol-pnls">');
-                        iPanel = 1;
-                    }
-                    this.renderPanel(h, p, 'pe-' + i, mode);
-                    break;
-                case 'panel-list':
-                    if (iPanel < 0) {
-                        iPanel = 1;
-                    }
-                    this.renderPanelList(h, p, 'pl-' + i, mode);
-                    break;
-            }
-        }
-        if (iPanel > 0) {
-            h.push('</div>');
-        }
-        h.push('</div>');
-        this._renderButtons(h, mode);
     }
 
 });
@@ -2532,7 +2512,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             this.$('.evo-toolbar').after($ff);
             this._filters = new Evol.ViewFilter({
                 el:$ff,
-                fields:Evol.Dico.fields(this.options.uiModel)
+                fields:Evol.Dico.getFields(this.options.uiModel)
             }).render();
             $ff.on('change.filter', function(){
                 that.curView.setFilter(that._filters.val())
@@ -2833,7 +2813,7 @@ Evol.ViewExport = Backbone.View.extend({
     getFields: function (){
         var opts=this.options;
         if(!this.fields){
-            this.fields=Evol.Dico.fields(opts.uiModel,opts.fnFilter,opts.mode);
+            this.fields=Evol.Dico.getFields(opts.uiModel,opts.fnFilter,opts.mode);
         }
         return this.fields;
     },

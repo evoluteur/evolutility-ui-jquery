@@ -228,11 +228,40 @@ Evol.UI = {
     },
 
     // --- date formats ---
-    formatDate: function(d){
-        return (d.getMonth()+1) + "/" + (d.getDate()+1) + "/" + d.getFullYear();
+    formatDate: function(d){ // TODO use date not string as param
+        return d;
+        //return d.toLocaleDateString();
+        //return (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
     },
-    formatTime: function(d){
-        return (d.getHours()) + ":" + (d.getMinutes());
+    formatTime: function(d){ // TODO use date not string as param
+        return d;
+        //return d.toLocaleTimeString();
+        //return (d.getHours()) + ":" + (d.getMinutes());
+    },
+    formatDateTime: function(d){ // TODO use date not string as param
+        if(d!==undefined && d!==''){
+            var dateParts= d.split('-');
+            if(dateParts.length>1){
+                return dateParts[1]+'/'+dateParts[2]+'/'+dateParts[0];
+            }
+        }
+        return '';
+        /*
+        //var myDate = new Date(v);
+        //if(_.isDate(myDate)){
+            var dv='';
+            //return myDate.toLocaleDateString("en-US");
+            if(f.type!=fTypes.time){
+                dv+=this.formatDate(myDate);
+                if(f.type==fTypes.datetime){
+                    dv+=' ';
+                }
+            }
+            if(f.type!=fTypes.date){
+                dv+=this.formatTime(myDate);
+            }
+            return dv;
+        //}*/
     },
 
     // ---  Misc. ---

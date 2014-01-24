@@ -167,7 +167,7 @@ Evol.ViewExport = Backbone.View.extend({
     getFields: function (){
         var opts=this.options;
         if(!this.fields){
-            this.fields=Evol.Dico.fields(opts.uiModel,opts.fnFilter,opts.mode);
+            this.fields=Evol.Dico.getFields(opts.uiModel,opts.fnFilter,opts.mode);
         }
         return this.fields;
     },

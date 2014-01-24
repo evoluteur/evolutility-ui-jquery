@@ -148,7 +148,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     getFields: function (){
         if(!this._fields){
-            this._fields=Evol.Dico.fields(this.options.uiModel, function(f){
+            this._fields=Evol.Dico.getFields(this.options.uiModel, function(f){
                 return f.viewmany;
             });
             this._fieldHash={};
@@ -184,24 +184,7 @@ Evol.ViewMany = Backbone.View.extend({
             case fTypes.date:
             case fTypes.time:
             case fTypes.datetime:
-                if (v !== '') {
-                    var myDate = new Date(v);
-                    if(_.isDate(myDate)){
-                        var dv='';
-                        //return myDate.toLocaleDateString("en-US");
-                        if(f.type!=fTypes.time){
-                            dv+=Evol.UI.formatDate(myDate);
-                        }
-                        if(f.type==fTypes.datetime){
-                            dv+=' ';
-                        }
-                        if(f.type!=fTypes.date){
-                            dv+=Evol.UI.formatTime(myDate);
-                        }
-                        return dv;
-                    }
-                }
-                break;
+                return Evol.UI.formatDateTime(v);
             case fTypes.pix:
                 if (v.length) {
                     return Evol.UI.input.img(f.id, v);

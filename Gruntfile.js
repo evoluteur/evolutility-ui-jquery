@@ -45,6 +45,8 @@ module.exports = function (grunt) {
                     'js/ui-*.js',
                     'js/i18n/EN.js',
 
+                    'js/dico.js',
+
                     'js/many.js',
                     'js/many-*.js',
                     'js/one.js',
