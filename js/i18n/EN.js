@@ -13,7 +13,7 @@ Evol.i18n = {
     Edit:"Edit",
     // Login:"Login"
     New:"New",
-    NewItem:"New Item",
+    NewItem:"New {0}", //"New Item",
     NewUpload:"New Upload",
     //Search:"Search",
     //AdvSearch:"Advanced Search",

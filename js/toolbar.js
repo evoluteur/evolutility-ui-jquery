@@ -172,8 +172,8 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(viewName==='new'){
             viewName=this._prevOne?this._prevOne:'edit';
             this.setView(viewName);
-            this._isNew = true;
-            this.curView.clear();
+            this._isNew = true; // TODO model.isNew
+            this.curView.setNew();
             this.curView.options.mode='new';
         }else{
             this._isNew = false;

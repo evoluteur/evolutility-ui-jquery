@@ -13,6 +13,7 @@ var Evol = Evol || {};
 
 Evol.Dico = {
 
+    // enum of supported field types
     fieldTypes: {
         text: 'text',
         txtm: 'textmultiline',
@@ -37,8 +38,8 @@ Evol.Dico = {
         //widget: 'widget',
     },
 
+    // get all "shallow" fields (no sub collections) from a UI model
     getFields: function (uiModel, fnFilter) {
-        // TODO fields details or not?
         var fs = [];
 
         function collectFields(te) {
@@ -58,6 +59,31 @@ Evol.Dico = {
             fs= _.filter(fs, fnFilter);
         }
         return fs;
+    },
+
+    // get sub collections
+    getSubCollecs: function(uiModel){
+        var ls = [];
+
+        function collectCollecs(te) {
+            if(te.type==='panel-list'){
+                ls.push(te);
+            }else if (te.type!=='panel' && te.elements && te.elements.length > 0) {
+                _.each(te.elements, function (te) {
+                    if(te.type==='panel-list'){
+                        ls.push(te);
+                    }else if(te.type!=='panel'){
+                        collectCollecs(te);
+                    }
+                });
+            } else {
+                ls.push(te);
+            }
+        }
+
+        collectCollecs(uiModel);
+
+        return ls;
     },
 
     lovText:function(hash, f, v){
@@ -115,18 +141,6 @@ Evol.Dico = {
             $elDes.remove();
         });
 
-        return this;
-    },
-
-    showInfoBox:function(msg, type){        
-        var $m=this.$el.find('.evol-head-info');
-        if($m.length){
-            $m.html(msg);
-        }else{
-            var m=['<div class="evol-head-info alert alert-',type,'">',
-                Evol.UI.iconClose(),msg,'</div>'].join('');
-            this.$el.prepend(m);
-        }
         return this;
     },
 
