@@ -9,11 +9,9 @@
  *
  *************************************************************************** */
 
-var Evol = Evol || {};
-
 // this is some very old code from Evolutility ASP.net version
 // TODO rewrite or use another open source
-Evol.Validation = {
+Evol.UI.Validation = {
 
     checkMaxLen: function (F, maxL) {
         if (F.value.length > maxL){

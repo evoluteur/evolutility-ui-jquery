@@ -8,6 +8,14 @@
  *************************************************************************** */
 
 var Evol = Evol || {};
+/*
+Evol.CSS = {
+    field: 'evo-field form-control ',
+    fieldLabel: 'evol-field-label',
+    panel: '',
+    tab: '',
+    tabHeader: ''
+};*/
 
 Evol.UI = {
 
