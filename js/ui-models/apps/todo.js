@@ -5,6 +5,7 @@ var todo_ui = {
     entity: 'task',
     entities: 'tasks',
     icon: 'todo.gif',
+    leadfield:'title',
     elements: [
         {
             type: 'panel', label: 'Task', width: 62,

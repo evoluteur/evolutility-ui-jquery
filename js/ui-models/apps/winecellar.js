@@ -137,6 +137,9 @@ var winecellar_ui = {
     entities: 'wines',
     label: 'Wine Cellar',
     icon: 'wine.gif',
+    leadfield: function(model){
+        return model.get('name')+' '+model.get('vintage');
+    },
     elements: [
         {
             type: 'panel',

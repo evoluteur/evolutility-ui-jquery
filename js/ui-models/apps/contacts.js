@@ -316,7 +316,9 @@ var contacts_ui = {
     label: 'Address book',
     icon: 'contact.gif',
     entity: 'contact', entities: 'contacts',
-
+    leadfield: function(model){
+        return model.get('firstname')+' '+model.get('lastname');
+    },
     elements: [
         {type: 'panel', label: 'Identity', width: 62,
             elements: [
