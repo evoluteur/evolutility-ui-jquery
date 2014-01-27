@@ -23,7 +23,7 @@ var winecellar_data = [
         remaining: 1,
         degustation: [
             {
-                ddate: '2009-4-23',
+                ddate: '2009-04-23',
                 robe: 'golden',
                 nose: 'fruty',
                 taste: 'incredible'
@@ -64,19 +64,19 @@ var winecellar_data = [
         price: 18,
         degustation: [
             {
-                ddate: '2012-5-5',
+                ddate: '2012-05-05',
                 robe: 'light',
                 nose: 'strong',
                 taste: 'good'
             },
             {
-                ddate: '2012-8-10',
+                ddate: '2012-08-10',
                 robe: 'light',
                 nose: 'strong',
                 taste: 'good'
             },
             {
-                ddate: '2013-8-18',
+                ddate: '2013-08-18',
                 robe: 'light',
                 nose: 'strong',
                 taste: 'ok'
