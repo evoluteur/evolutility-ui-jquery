@@ -73,16 +73,18 @@ Evol.ViewOne = Backbone.View.extend({
 
     setModel: function(model) {
         this.model = model;
-        this.clearMessages();
-        this.setData(model);
-        return this;
+        return this
+            .clearMessages()
+            .setData(model)
+            ._updateTitle();
     },
 
     setUIModel: function(uimodel) {
         this.options.uiModel = uimodel;
         var d=this.getData();
-        this.render().setData(d);
-        return this;
+        return this
+            .render()
+            .setData(d);
     },
 
     modelUpdate: function (model) {
@@ -473,7 +475,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     // prepare to enter a new record
     setNew: function (){
-        this.clear()
+        return this.clear()
             ._updateTitle(Evol.i18n.NewItem.replace('{0}', this.options.uiModel.entity));
     },
 
@@ -491,12 +493,13 @@ Evol.ViewOne = Backbone.View.extend({
                         t=this.model.get(lf);
                     }
                 }
-                $(selector).html(t);
+                $(selector).text(t);
                 this._uTitle=true;
-                return;
+                return this;
             }
             this._uTitle=false;
         }
+        return this;
     },
 
     validate: function () {
@@ -645,10 +648,12 @@ Evol.ViewOne = Backbone.View.extend({
 
         }else{
             this.commit(function(){
-                that.setMessage('Record Saved', 'Record was saved.', 'success');
                 if (buttonId==='save-add') {
-                    //that.new();
+                    that.setNew();
+                }else{
+                    that.setModel(that.model);
                 }
+                that.setMessage('Record Saved', 'Record was saved.', 'success');
             },function(){
                 alert('error'); //TODO make it nice looking
             });
