@@ -311,6 +311,7 @@ Evol.ViewFilter = Backbone.View.extend({
                     switch (fType){
                         case evoTypes.date:
                         case evoTypes.time:
+                        case evoTypes.datetime:
                             if (fType==evoTypes.time){
                                 h.push(EvoUI.input.option(evoAPI.sEqual, evoLang.sAt),
                                     EvoUI.input.option(evoAPI.sNotEqual, evoLang.sNotAt));
@@ -324,7 +325,8 @@ Evol.ViewFilter = Backbone.View.extend({
                                 {id: evoAPI.sBetween, text: evoLang.sBetween}
                             ]));
                             break;
-                        case evoTypes.number:
+                        case evoTypes.integer:
+                        case evoTypes.decimal:
                             h.push(EvoUI.input.options([
                                 {id: evoAPI.sEqual, text: evoLang.sNumEqual},
                                 {id: evoAPI.sNotEqual, text: evoLang.sNumNotEqual},

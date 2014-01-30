@@ -154,7 +154,7 @@ Evol.UI = {
         selectBegin: function (fID, css, emptyOption) {
             var h=['<select id="', fID, '" class="form-control ',css,'">'];
             if(emptyOption){
-                h.push(this.emptyOption);
+                h.push(Evol.UI.html.emptyOption);
             }
             return h.join('');
         },
