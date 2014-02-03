@@ -53,8 +53,8 @@ module.exports = function (grunt) {
                     'js/one-*.js',
 
                     'js/toolbar.js',
-                    'js/export.js',
-                    'js/filter.js'
+                    //'js/filter.js',
+                    'js/export.js'
                     //'js/ui-models/dico/field.js'
                 ],
                 dest: '<%= pkg.target %>/evolutility.js'

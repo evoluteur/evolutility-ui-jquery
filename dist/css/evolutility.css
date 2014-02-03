@@ -57,6 +57,10 @@
 .evo-editFilter:last-child {
   clear: left;
 }
+.evo-editFilter:after,
+.evo-editFilter > button {
+  clear: left;
+}
 .evo-editFilter > #value > label {
   margin-left: 6px;
 }
@@ -81,10 +85,6 @@
 }
 .evo-editFilter input.hasDatepicker {
   width: 7em;
-}
-.evo-editFilter :after,
-.evo-editFilter > button {
-  clear: left;
 }
 /*!
  *  evolutility : one.css
@@ -404,6 +404,10 @@ label > .glyphicon-wrench {
 .evo-editFilter:last-child {
   clear: left;
 }
+.evo-editFilter:after,
+.evo-editFilter > button {
+  clear: left;
+}
 .evo-editFilter > #value > label {
   margin-left: 6px;
 }
@@ -428,8 +432,4 @@ label > .glyphicon-wrench {
 }
 .evo-editFilter input.hasDatepicker {
   width: 7em;
-}
-.evo-editFilter :after,
-.evo-editFilter > button {
-  clear: left;
 }

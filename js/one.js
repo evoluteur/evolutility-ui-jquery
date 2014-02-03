@@ -528,7 +528,8 @@ Evol.ViewOne = Backbone.View.extend({
     commit: function(fnSuccess, fnError){
         var msg=this.validate();
         if(msg===''){
-            var that=this;
+            var that=this,
+                entityName=this.options.uiModel.entity;
             if(this.options.mode==='new'){// || this._isNew
                 var collec;
                 if(this.model && this.model.collection){
@@ -540,7 +541,7 @@ Evol.ViewOne = Backbone.View.extend({
                     collec.create(this.getData(), {
                         success: function(m){
                             fnSuccess(m);
-                            that.setMessage('Record added', Evol.i18n.status.added, 'success');
+                            that.setMessage('Record saved.', Evol.i18n.status.added.replace('{0}',entityName), 'success');
                             that.trigger('save,add');
                             that._updateTitle();
                         },
@@ -555,7 +556,7 @@ Evol.ViewOne = Backbone.View.extend({
                 this.model.save({
                     success: function(m){
                         fnSuccess(m);
-                        that.setMessage('Record saved', Evol.i18n.status.updated, 'success');
+                        that.setMessage('Record saved.', Evol.i18n.status.updated.replace('{0}',entityName), 'success');
                         that.trigger('save,update');
                         that._updateTitle();
                     },

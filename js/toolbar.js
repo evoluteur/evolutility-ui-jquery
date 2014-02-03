@@ -35,7 +35,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             // --- actions ---
             'new': true,
             del: true,
-            filter: true,
+            filter: false,
             export: true,
             group: false,
             customize:true
@@ -175,7 +175,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             this.setView(viewName);
             this._isNew = true; // TODO model.isNew
             var collec=this.model?this.model.collection:new this.options.collectionClass();
-            this.model=new(this.options.modelClass);
+            this.model=new this.options.modelClass();
             this.model.collection=collec;
             this.curView.newItem(this.model);
             this.curView.options.mode='new';
