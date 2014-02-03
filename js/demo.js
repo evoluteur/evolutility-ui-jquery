@@ -38,7 +38,7 @@ function setDemo(uiModel, localStorage, data, style){
     ms.fetch({
         success: function(collection){
             if(collection.length===0){
-                //Evol.UI.insertCollection(collection, data);
+                Evol.UI.insertCollection(collection, data);
             }
             var m = ms.models[0];
             var el =$('#evol'),
