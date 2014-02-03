@@ -26,18 +26,20 @@ function showUIdef(uiModel){
 }
 
 function setDemo(uiModel, localStorage, data, style){
-    M = Backbone.Model.extend({
-        localStorage: new Backbone.LocalStorage(localStorage)
-    });
-    Ms = Backbone.Collection.extend({
-        model: M,
-        localStorage: new Backbone.LocalStorage(localStorage)
-    });
+    var M = Backbone.Model.extend({
+            localStorage: new Backbone.LocalStorage(localStorage)
+        }),
+        Ms = Backbone.Collection.extend({
+            model: M,
+            localStorage: new Backbone.LocalStorage(localStorage)
+        });
 
     var ms = new Ms();
     ms.fetch({
         success: function(collection){
-            Evol.UI.insertCollection(collection, data);
+            if(collection.length===0){
+                //Evol.UI.insertCollection(collection, data);
+            }
             var m = ms.models[0];
             var el =$('#evol'),
                 vw = new Evol.ViewToolbar({
@@ -46,7 +48,9 @@ function setDemo(uiModel, localStorage, data, style){
                     style: style,// || 'panel-primary',
                     customize:false,
                     model: m,
+                    modelClass: M,
                     collection: ms,
+                    collectionClass: Ms,
                     uiModel: uiModel
                 });
 

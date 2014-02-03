@@ -14,7 +14,8 @@ Evol.ViewToolbar = Backbone.View.extend({
     events: {
         'click .nav a': 'click_toolbar',
         'list.navigate div': 'click_navigate',
-        'click #XP': 'click_download'
+        'click #XP': 'click_download',
+        'save': 'saveItem'
     },
 
     options: {
@@ -34,7 +35,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             // --- actions ---
             'new': true,
             del: true,
-            filter: false,
+            filter: true,
             export: true,
             group: false,
             customize:true
@@ -173,7 +174,10 @@ Evol.ViewToolbar = Backbone.View.extend({
             viewName=this._prevOne?this._prevOne:'edit';
             this.setView(viewName);
             this._isNew = true; // TODO model.isNew
-            this.curView.setNew();
+            var collec=this.model?this.model.collection:new this.options.collectionClass();
+            this.model=new(this.options.modelClass);
+            this.model.collection=collec;
+            this.curView.newItem(this.model);
             this.curView.options.mode='new';
         }else{
             this._isNew = false;
@@ -260,13 +264,13 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
 
 		if(this.$el){
-			var tbBs=this.getToolbarButtons(),
-                cssOpen='glyphicon-eye-open',
-                cssClose='glyphicon-eye-close';
+			var tbBs=this.getToolbarButtons();
             Evol.UI.setVisible(tbBs.customize,mode!='json');
             tbBs.prevNext.hide();
             Evol.UI.setVisible(tbBs.views, mode!=='export');
             if(this._viewsIcon){
+                var cssOpen='glyphicon-eye-open',
+                    cssClose='glyphicon-eye-close';
                 if(mode==='mini' || mode==='json'){
                     this._viewsIcon
                         .removeClass(cssOpen).addClass(cssClose);
@@ -277,6 +281,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             }
 			if(this._isNew || mode==='export'){
                 oneMany(false, false);
+                if(this._isNew){
+
+                }
 			}else{
 				if(mode==='cards' || mode==='list' || mode==='charts'){
                     this._prevMany=mode;
@@ -348,21 +355,43 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
     },
 
+    saveItem: function(){
+        this.setButtons('edit');
+    },
+
+    newItem: function(){
+
+    },
+
     deleteItem: function(){
         // TODO good looking msgbox
-        if (confirm('Are you sure you want to delete this record?')) {
+        if (confirm(Evol.i18n.DeleteEntity.replace('{0}', this.options.uiModel.entity).replace('{1}', this.curView.getSummary()))) {
             var that=this,
-                collec=this.curView.model.collection,
+                collec=this.collection,
                 delModel=this.curView.model,
-                modelIdx=_.indexOf(collec.models, delModel);
+                delIdx=_.indexOf(collec.models, delModel),
+                newIdx=delIdx,
+                newModel=null;
+
+            if(collec.length>1){
+                if(delIdx===0){
+                    newIdx=1;
+                }else if(delIdx<collec.length-1){
+                    newIdx=delIdx+1;
+                }else{
+                    newIdx=delIdx-1;
+                }
+                newModel = collec.at(newIdx);
+            }
+            if(newModel){
+                newModel.collection=collec;
+            }
             delModel.destroy({
                 success:function(){
                     that.curView.setMessage('Record Deleted', 'Record was removed.', 'success');
                     if(collec.length===0){
                         that.curView.clear();
                     }else{
-                        var newIdx=(modelIdx>=collec.length)?collec.length-1:modelIdx,
-                            newModel = delModel.collection.at(newIdx);
                         this.model = newModel;
                         that.curView.setModel(newModel);
                     }

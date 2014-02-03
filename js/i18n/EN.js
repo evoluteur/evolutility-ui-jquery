@@ -27,8 +27,15 @@ Evol.i18n = {
     All:"All",
     //ListAll:"List All",
     //Print:"Print",
-    DeleteEntity:"Delete this {0}?", // {0}=entity
+    DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value
     Back2SearchResults:"Back to search results",
+
+    // --- status ---
+    status:{
+        added:'New {0} added.',
+        updated:'{0} updated.',
+        deleted:'{0} removed.'
+    },
 
     // --- validation ---
     validation:{

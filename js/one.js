@@ -75,8 +75,7 @@ Evol.ViewOne = Backbone.View.extend({
         this.model = model;
         return this
             .clearMessages()
-            .setData(model)
-            ._updateTitle();
+            .setData(model);
     },
 
     setUIModel: function(uimodel) {
@@ -94,6 +93,11 @@ Evol.ViewOne = Backbone.View.extend({
         });
     },
 
+    getSummary: function(){
+        var lf=this.options.uiModel.leadfield;
+        return _.isFunction(lf)?lf(this.model):this.model.get(lf);
+    },
+
     getData: function () {
         var that = this,
             vs = {};
@@ -104,43 +108,45 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     setData: function (model) {
-        var fs = this.getFields(),
-            that=this,
-            fTypes = Evol.Dico.fieldTypes,
-            $f, fv,
-            prefix='#'+ that.prefix + '-',
-            subCollecs=this.getSubCollecs();
-        _.each(fs, function (f) {
-            $f=that.$(prefix + f.id);
-            fv=model.get(f.id);
-            if(model){
-                switch(f.type) {
-                    case fTypes.lov:
-                        $f.children().removeAttr('selected')
-                            .filter('[value='+fv+']')
-                            .attr('selected', true);
-                        break;
-                    case fTypes.bool:
-                        $f.prop('checked', fv);
-                        break;
-                    case fTypes.pix:
-                        var $img=$f.prev();
-                        if($img.get(0).tagName=='IMG'){
-                            $img.attr('src',fv);
-                        }
-                        break;
-                    default:
-                        $f.val(model.get(f.id));
+        if(model!==undefined && model!==null){
+            var fs = this.getFields(),
+                that=this,
+                fTypes = Evol.Dico.fieldTypes,
+                $f, fv,
+                prefix='#'+ that.prefix + '-',
+                subCollecs=this.getSubCollecs();
+            _.each(fs, function (f) {
+                $f=that.$(prefix + f.id);
+                fv=model.get(f.id);
+                if(model){
+                    switch(f.type) {
+                        case fTypes.lov:
+                            $f.children().removeAttr('selected')
+                                .filter('[value='+fv+']')
+                                .attr('selected', true);
+                            break;
+                        case fTypes.bool:
+                            $f.prop('checked', fv);
+                            break;
+                        case fTypes.pix:
+                            var $img=$f.prev();
+                            if($img.get(0).tagName=='IMG'){
+                                $img.attr('src',fv);
+                            }
+                            break;
+                        default:
+                            $f.val(model.get(f.id));
+                    }
                 }
-            }
-        });
-        if(subCollecs && subCollecs.length>0){
-            _.each(subCollecs, function (sc) {
-                var h=[];
-                that._renderPanelListBody(h, sc);
-                that.$('[data-pid="'+sc.id+'"] tbody')
-                    .html(h.join(''));
             });
+            if(subCollecs && subCollecs.length>0){
+                _.each(subCollecs, function (sc) {
+                    var h=[];
+                    that._renderPanelListBody(h, sc);
+                    that.$('[data-pid="'+sc.id+'"] tbody')
+                        .html(h.join(''));
+                });
+            }
         }
         return this._updateTitle();
     },
@@ -474,24 +480,23 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     // prepare to enter a new record
-    setNew: function (){
+    newItem: function (){
         return this.clear()
-            ._updateTitle(Evol.i18n.NewItem.replace('{0}', this.options.uiModel.entity));
+            ._updateTitle(Evol.i18n.NewItem.replace('{0}', this.options.uiModel.entity).replace('{1}', this.getSummary()));
     },
 
     _updateTitle: function (title){
         if(this._uTitle){
-            var selector=this.options.titleSelector;
+            var opts=this.options,
+                selector=opts.titleSelector;
             if(selector && selector!==''){
-                var t, lf=this.options.uiModel.leadfield;
+                var t,lf=opts.uiModel.leadfield;
                 if(title){
                     t=title;
                 }else if(lf!==undefined && lf!==''){
-                    if(_.isFunction(lf)){
-                        t=lf(this.model);
-                    }else{
-                        t=this.model.get(lf);
-                    }
+                    t=this.getSummary();
+                }else{
+                    t=Evol.UI.capFirstLetter(opts.uiModel.entities);
                 }
                 $(selector).text(t);
                 this._uTitle=true;
@@ -523,6 +528,7 @@ Evol.ViewOne = Backbone.View.extend({
     commit: function(fnSuccess, fnError){
         var msg=this.validate();
         if(msg===''){
+            var that=this;
             if(this.options.mode==='new'){// || this._isNew
                 var collec;
                 if(this.model && this.model.collection){
@@ -532,16 +538,27 @@ Evol.ViewOne = Backbone.View.extend({
                 }
                 if(collec){
                     collec.create(this.getData(), {
-                        success: fnSuccess,
+                        success: function(m){
+                            fnSuccess(m);
+                            that.setMessage('Record added', Evol.i18n.status.added, 'success');
+                            that.trigger('save,add');
+                            that._updateTitle();
+                        },
                         error: fnError
                     });
+                    this.options.mode='edit';
                 }else{
-                    alert('No collection specified'); //TODO pretty
+                    alert('Can\'t save record b/c no collection is specified.'); //TODO pretty
                 }
             }else{
                 this.model.set(this.getData());
                 this.model.save({
-                    success: fnSuccess,
+                    success: function(m){
+                        fnSuccess(m);
+                        that.setMessage('Record saved', Evol.i18n.status.updated, 'success');
+                        that.trigger('save,update');
+                        that._updateTitle();
+                    },
                     error: fnError
                 });
             }
@@ -647,13 +664,13 @@ Evol.ViewOne = Backbone.View.extend({
         if(buttonId==='cancel'){
 
         }else{
-            this.commit(function(){
+            this.commit(function(m){
                 if (buttonId==='save-add') {
-                    that.setNew();
+                    that.newItem();
                 }else{
-                    that.setModel(that.model);
+                    that.model=m;
+                    that.setModel(m);
                 }
-                that.setMessage('Record Saved', 'Record was saved.', 'success');
             },function(){
                 alert('error'); //TODO make it nice looking
             });
