@@ -94,8 +94,12 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     getSummary: function(){
-        var lf=this.options.uiModel.leadfield;
-        return _.isFunction(lf)?lf(this.model):this.model.get(lf);
+        if(this.model){
+            var lf=this.options.uiModel.leadfield;
+            return _.isFunction(lf)?lf(this.model):this.model.get(lf);
+        }else{
+            return Evol.UI.capFirstLetter(this.options.uiModel.entity);
+        }
     },
 
     getData: function () {
@@ -531,12 +535,7 @@ Evol.ViewOne = Backbone.View.extend({
             var that=this,
                 entityName=this.options.uiModel.entity;
             if(this.options.mode==='new'){// || this._isNew
-                var collec;
-                if(this.model && this.model.collection){
-                    collec = this.model.collection;
-                }else if(this.collection){
-                    collec = this.collection;
-                }
+                var collec=(this.model && this.model.collection)?this.model.collection:this.collection;
                 if(collec){
                     collec.create(this.getData(), {
                         success: function(m){

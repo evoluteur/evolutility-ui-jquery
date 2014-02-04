@@ -118,12 +118,10 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     setModel: function(model) {
-        if(model.collection){
+        if(model && model.collection){
             this.collection = model.collection;
-            this.render();
-        }else{
-            alert('No collection.');
         }
+        this.render();
         return this;
     },
 

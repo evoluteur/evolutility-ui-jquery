@@ -164,38 +164,47 @@ Evol.ViewToolbar = Backbone.View.extend({
 	},
 
 	setView:function(viewName){
-		var $e=this.$el,
+		var opts=this.options,
+            $e=this.$el,
             eid ='evolw-'+viewName,
 			$v=this.$('[data-vid="'+eid+'"]'),
 			vw=this.curView,
             config;
 
+        var collec=this.model?this.model.collection:new opts.collectionClass();
         if(viewName==='new'){
             viewName=this._prevOne?this._prevOne:'edit';
             this.setView(viewName);
             this._isNew = true; // TODO model.isNew
-            var collec=this.model?this.model.collection:new this.options.collectionClass();
-            this.model=new this.options.modelClass();
+            this.model=new opts.modelClass();
             this.model.collection=collec;
             this.curView.newItem(this.model);
             this.curView.options.mode='new';
         }else{
             this._isNew = false;
             if($v.length){
+            // -- view already exists and was rendered
+                this.model=this.curView.model;
                 this.curView=this.viewsHash[viewName];
                 if(!this.isNew){
                     if(this.curView.setModel){
+                        if(!this.curView.collection && m.collection){
+                            this.curView.collection=this.model.collection;
+                        }
                         this.curView.setModel(this.model);
                     }else{
                         this.curView.model = this.model;
                     }
-
+                    if(!this.model){
+                        this.curView.collection=collec;
+                    }
                 }
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
                 $v.show()
                     .siblings().not('.evo-toolbar,.evo-filters,.clearfix').hide();
             }else{
+            // -- create new instance of the view
                 $v=$('<div data-vid="evolw-'+viewName+'"></div>');
                 $e.children().not('.evo-toolbar,.evo-filters,.clearfix').hide();
                 $e.append($v);
@@ -205,13 +214,12 @@ Evol.ViewToolbar = Backbone.View.extend({
                     mode: viewName,
                     model: this.model,
                     collection: this.collection,
-                    uiModel: this.options.uiModel,
-                    style: this.options.style
+                    uiModel: opts.uiModel,
+                    style: opts.style
                 };
                 this.$('[data-id="new"]').show();
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
-
                 switch(viewName){
                     // --- one ---
                     case 'edit':
@@ -387,14 +395,14 @@ Evol.ViewToolbar = Backbone.View.extend({
                 newModel.collection=collec;
             }
             delModel.destroy({
-                success:function(){
-                    that.curView.setMessage('Record Deleted', 'Record was removed.', 'success');
+                success:function(m){
                     if(collec.length===0){
                         that.curView.clear();
                     }else{
                         this.model = newModel;
                         that.curView.setModel(newModel);
                     }
+                    that.curView.setMessage('Record Deleted', 'Record was removed.', 'success');
                 },
                 error:function(err){
                     alert('error');

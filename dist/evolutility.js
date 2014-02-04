@@ -643,7 +643,7 @@ Evol.i18n = {
     NoX:"No {0}",
 
     // --- many  ---
-    nodata: 'No data.',
+    nodata: 'No data available.',
 
     // --- filters ---
     filters:{
@@ -959,12 +959,10 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     setModel: function(model) {
-        if(model.collection){
+        if(model && model.collection){
             this.collection = model.collection;
-            this.render();
-        }else{
-            alert('No collection.');
         }
+        this.render();
         return this;
     },
 
@@ -1507,8 +1505,12 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     getSummary: function(){
-        var lf=this.options.uiModel.leadfield;
-        return _.isFunction(lf)?lf(this.model):this.model.get(lf);
+        if(this.model){
+            var lf=this.options.uiModel.leadfield;
+            return _.isFunction(lf)?lf(this.model):this.model.get(lf);
+        }else{
+            return Evol.UI.capFirstLetter(this.options.uiModel.entity);
+        }
     },
 
     getData: function () {
@@ -1944,12 +1946,7 @@ Evol.ViewOne = Backbone.View.extend({
             var that=this,
                 entityName=this.options.uiModel.entity;
             if(this.options.mode==='new'){// || this._isNew
-                var collec;
-                if(this.model && this.model.collection){
-                    collec = this.model.collection;
-                }else if(this.collection){
-                    collec = this.collection;
-                }
+                var collec=(this.model && this.model.collection)?this.model.collection:this.collection;
                 if(collec){
                     collec.create(this.getData(), {
                         success: function(m){
@@ -2473,38 +2470,47 @@ Evol.ViewToolbar = Backbone.View.extend({
 	},
 
 	setView:function(viewName){
-		var $e=this.$el,
+		var opts=this.options,
+            $e=this.$el,
             eid ='evolw-'+viewName,
 			$v=this.$('[data-vid="'+eid+'"]'),
 			vw=this.curView,
             config;
 
+        var collec=this.model?this.model.collection:new opts.collectionClass();
         if(viewName==='new'){
             viewName=this._prevOne?this._prevOne:'edit';
             this.setView(viewName);
             this._isNew = true; // TODO model.isNew
-            var collec=this.model?this.model.collection:new this.options.collectionClass();
-            this.model=new this.options.modelClass();
+            this.model=new opts.modelClass();
             this.model.collection=collec;
             this.curView.newItem(this.model);
             this.curView.options.mode='new';
         }else{
             this._isNew = false;
             if($v.length){
+            // -- view already exists and was rendered
+                this.model=this.curView.model;
                 this.curView=this.viewsHash[viewName];
                 if(!this.isNew){
                     if(this.curView.setModel){
+                        if(!this.curView.collection && m.collection){
+                            this.curView.collection=this.model.collection;
+                        }
                         this.curView.setModel(this.model);
                     }else{
                         this.curView.model = this.model;
                     }
-
+                    if(!this.model){
+                        this.curView.collection=collec;
+                    }
                 }
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
                 $v.show()
                     .siblings().not('.evo-toolbar,.evo-filters,.clearfix').hide();
             }else{
+            // -- create new instance of the view
                 $v=$('<div data-vid="evolw-'+viewName+'"></div>');
                 $e.children().not('.evo-toolbar,.evo-filters,.clearfix').hide();
                 $e.append($v);
@@ -2514,13 +2520,12 @@ Evol.ViewToolbar = Backbone.View.extend({
                     mode: viewName,
                     model: this.model,
                     collection: this.collection,
-                    uiModel: this.options.uiModel,
-                    style: this.options.style
+                    uiModel: opts.uiModel,
+                    style: opts.style
                 };
                 this.$('[data-id="new"]').show();
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
-
                 switch(viewName){
                     // --- one ---
                     case 'edit':
@@ -2696,14 +2701,14 @@ Evol.ViewToolbar = Backbone.View.extend({
                 newModel.collection=collec;
             }
             delModel.destroy({
-                success:function(){
-                    that.curView.setMessage('Record Deleted', 'Record was removed.', 'success');
+                success:function(m){
                     if(collec.length===0){
                         that.curView.clear();
                     }else{
                         this.model = newModel;
                         that.curView.setModel(newModel);
                     }
+                    that.curView.setMessage('Record Deleted', 'Record was removed.', 'success');
                 },
                 error:function(err){
                     alert('error');
@@ -2943,145 +2948,149 @@ Evol.ViewExport = Backbone.View.extend({
     },
 
     _preview: function (format) {
-        var data = this.model.collection.models,
-            flds = this.getFields(),
-            h = ['<textarea class="Field evol-xpt-val form-control">'],
-            fldsDom = this.$('.evol-xpt-flds > fieldset input:checked'),
-            fldsDomHash = {},
-            prefix='#'+ this.options.prefix,
-            useHeader = this.$(prefix+'FLH').prop('checked');
+        var h=[];
+        if(this.model && this.model.collection){
+            var data = this.model.collection.models,
+                flds = this.getFields(),
+                fldsDom = this.$('.evol-xpt-flds > fieldset input:checked'),
+                fldsDomHash = {},
+                prefix='#'+ this.options.prefix,
+                useHeader = this.$(prefix+'FLH').prop('checked');
 
-        _.each(fldsDom, function(fd){
-            fldsDomHash[fd.id.substring(3)]='';
-        });
-        flds=_.filter(flds, function(f){
-            if(f.id && _.has(fldsDomHash, f.id)){
-                return true;
+            h.push('<textarea class="Field evol-xpt-val form-control">');
+            _.each(fldsDom, function(fd){
+                fldsDomHash[fd.id.substring(3)]='';
+            });
+            flds=_.filter(flds, function(f){
+                if(f.id && _.has(fldsDomHash, f.id)){
+                    return true;
+                }
+            });
+            switch (format) {
+                case 'CSV':
+                case 'TAB':
+                case 'TXT':
+                    var iMax=flds.length-1,
+                        sep = Evol.UI.trim(this.$(prefix+'FLS_evol').val());
+                    if(format=='TAB'){
+                        sep='&#09;';
+                    }
+                    //header
+                    if (useHeader) {
+                        _.each(flds, function(f,idx){
+                            h.push(f.label);
+                            if(idx<iMax){
+                                h.push(sep);
+                            }
+                        });
+                        h.push('\n');
+                    }
+                    //data
+                    _.each(data, function(m){
+                        _.each(flds, function(f,idx){
+                            var mj = m.get(f.id);
+                            if (mj) {
+                                h.push(mj);
+                            }
+                            if(idx<iMax){
+                                h.push(sep);
+                            }
+                        });
+                        h.push('\n');
+                    });
+                    h.push('\n');
+                    break;
+                case 'HTML':
+                    //header
+                    h.push('<table>\n');
+                    if (useHeader) {
+                        h.push('<tr>\n');
+                        _.each(flds, function(f){
+                            h.push('<th>', f.id, '</th>');
+                        });
+                        h.push('</tr>\n');
+                    }
+                    //data
+                    _.each(data, function(d,idx){
+                        h.push('<tr>');
+                        _.each(flds, function(f){
+                            var mj = d.get(f.id);
+                            if (mj) {
+                                h.push('<td>', mj, '</td>');
+                            } else {
+                                h.push('<td></td>');
+                            }
+                        });
+                        h.push('</tr>\n');
+                    });
+                    h.push('</table>');
+                    break;
+                case 'JSON':
+                    h.push(JSON.stringify(this.model.toJSON(), null, 2));
+                    break;
+                case 'SQL':
+                    var fMax = flds.length -1,
+                        optTransaction = this.$('#evoxpTRS1').prop('checked'),
+                        optIdInsert = this.$('#evoxpTRS2').prop('checked'),
+                        sqlTable = this.$('#evoTable').val().replace(/ /g,'_'),
+                        sql = ['INSERT INTO ',sqlTable,' ('];
+
+                    if(sqlTable===''){
+                        sqlTable = this.options.uiModel.entity.replace(/ /g,'_');
+                    }
+                    _.each(flds, function(f,idx){
+                        sql.push(f.id);
+                        if(idx<fMax){
+                            sql.push(', ');
+                        }
+                    });
+                    sql.push(')\n VALUES (');
+                    sql = sql.join('');
+                    //options
+                    if(optTransaction){
+                        h.push('BEGIN TRANSACTION\n');
+                    }
+                    if(optIdInsert){
+                        h.push('SET IDENTITY_INSERT ',sqlTable,' ON;\n');
+                    }
+                    //data
+                    for (var i = 0, iMax1 = data.length; i < iMax1; i++) {
+                        h.push(sql);
+                        var m = data[i];
+                        for (var j = 0, jMax = flds.length; j < jMax; j++) {
+                            var mj = m.get(flds[j].id);
+                            h.push('"', mj, '"');
+                            if(j<fMax){
+                                h.push(', ');
+                            }
+                        }
+                        h.push(');\n');
+                    }
+                    //options
+                    if(optIdInsert){
+                        h.push('SET IDENTITY_INSERT ',sqlTable,' OFF;\n');
+                    }
+                    if(optTransaction){
+                        h.push('COMMIT TRANSACTION\n');
+                    }
+                    break;
+                case 'XML':
+                    var elemName = this.$('#evoRoot').val() || this.options.uiModel.entity.replace(/ /g,'_');
+                    h.push('<xml>\n');
+                    _.each(data, function(m){
+                        h.push('<', elemName, ' ');
+                        _.each(flds, function(f){
+                            h.push(f.id, '="', m.get(f.id), '" ');
+                        });
+                        h.push('></', elemName, '>\n');
+                    });
+                    h.push('</xml>');
+                    break;
             }
-        });
-
-        switch (format) {
-            case 'CSV':
-            case 'TAB':
-            case 'TXT':
-                var iMax=flds.length-1,
-                    sep = Evol.UI.trim(this.$(prefix+'FLS_evol').val());
-                if(format=='TAB'){
-                    sep='&#09;';
-                }
-                //header
-                if (useHeader) {
-                    _.each(flds, function(f,idx){
-                        h.push(f.label);
-                        if(idx<iMax){
-                            h.push(sep);
-                        }
-                    });
-                    h.push('\n');
-                }
-                //data
-                _.each(data, function(m){
-                    _.each(flds, function(f,idx){
-                        var mj = m.get(f.id);
-                        if (mj) {
-                            h.push(mj);
-                        }
-                        if(idx<iMax){
-                            h.push(sep);
-                        }
-                    });
-                    h.push('\n');
-                });
-                h.push('\n');
-                break;
-            case 'HTML':
-                //header
-                h.push('<table>\n');
-                if (useHeader) {
-                    h.push('<tr>\n');
-                    _.each(flds, function(f){
-                        h.push('<th>', f.id, '</th>');
-                    });
-                    h.push('</tr>\n');
-                }
-                //data
-                _.each(data, function(d,idx){
-                    h.push('<tr>');
-                    _.each(flds, function(f){
-                        var mj = d.get(f.id);
-                        if (mj) {
-                            h.push('<td>', mj, '</td>');
-                        } else {
-                            h.push('<td></td>');
-                        }
-                    });
-                    h.push('</tr>\n');
-                });
-                h.push('</table>');
-                break;
-            case 'JSON':
-                h.push(JSON.stringify(this.model.toJSON(), null, 2));
-                break;
-            case 'SQL':
-                var fMax = flds.length -1,
-                    optTransaction = this.$('#evoxpTRS1').prop('checked'),
-                    optIdInsert = this.$('#evoxpTRS2').prop('checked'),
-                    sqlTable = this.$('#evoTable').val().replace(/ /g,'_'),
-                    sql = ['INSERT INTO ',sqlTable,' ('];
-
-                if(sqlTable===''){
-                    sqlTable = this.options.uiModel.entity.replace(/ /g,'_');
-                }
-                _.each(flds, function(f,idx){
-                    sql.push(f.id);
-                    if(idx<fMax){
-                        sql.push(', ');
-                    }
-                });
-                sql.push(')\n VALUES (');
-                sql = sql.join('');
-                //options
-                if(optTransaction){
-                    h.push('BEGIN TRANSACTION\n');
-                }
-                if(optIdInsert){
-                    h.push('SET IDENTITY_INSERT ',sqlTable,' ON;\n');
-                }
-                //data
-                for (var i = 0, iMax1 = data.length; i < iMax1; i++) {
-                    h.push(sql);
-                    var m = data[i];
-                    for (var j = 0, jMax = flds.length; j < jMax; j++) {
-                        var mj = m.get(flds[j].id);
-                        h.push('"', mj, '"');
-                        if(j<fMax){
-                            h.push(', ');
-                        }
-                    }
-                    h.push(');\n');
-                }
-                //options
-                if(optIdInsert){
-                    h.push('SET IDENTITY_INSERT ',sqlTable,' OFF;\n');
-                }
-                if(optTransaction){
-                    h.push('COMMIT TRANSACTION\n');
-                }
-                break;
-            case 'XML':
-                var elemName = this.$('#evoRoot').val() || this.options.uiModel.entity.replace(/ /g,'_');
-                h.push('<xml>\n');
-                _.each(data, function(m){
-                    h.push('<', elemName, ' ');
-                    _.each(flds, function(f){
-                        h.push(f.id, '="', m.get(f.id), '" ');
-                    });
-                    h.push('></', elemName, '>\n');
-                });
-                h.push('</xml>');
-                break;
+            h.push('</textarea>');
+        }else{
+            h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
-        h.push('</textarea>');
         this.$('.evol-xpt-preview')
             .html(h.join(''));
     },

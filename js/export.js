@@ -173,145 +173,149 @@ Evol.ViewExport = Backbone.View.extend({
     },
 
     _preview: function (format) {
-        var data = this.model.collection.models,
-            flds = this.getFields(),
-            h = ['<textarea class="Field evol-xpt-val form-control">'],
-            fldsDom = this.$('.evol-xpt-flds > fieldset input:checked'),
-            fldsDomHash = {},
-            prefix='#'+ this.options.prefix,
-            useHeader = this.$(prefix+'FLH').prop('checked');
+        var h=[];
+        if(this.model && this.model.collection){
+            var data = this.model.collection.models,
+                flds = this.getFields(),
+                fldsDom = this.$('.evol-xpt-flds > fieldset input:checked'),
+                fldsDomHash = {},
+                prefix='#'+ this.options.prefix,
+                useHeader = this.$(prefix+'FLH').prop('checked');
 
-        _.each(fldsDom, function(fd){
-            fldsDomHash[fd.id.substring(3)]='';
-        });
-        flds=_.filter(flds, function(f){
-            if(f.id && _.has(fldsDomHash, f.id)){
-                return true;
+            h.push('<textarea class="Field evol-xpt-val form-control">');
+            _.each(fldsDom, function(fd){
+                fldsDomHash[fd.id.substring(3)]='';
+            });
+            flds=_.filter(flds, function(f){
+                if(f.id && _.has(fldsDomHash, f.id)){
+                    return true;
+                }
+            });
+            switch (format) {
+                case 'CSV':
+                case 'TAB':
+                case 'TXT':
+                    var iMax=flds.length-1,
+                        sep = Evol.UI.trim(this.$(prefix+'FLS_evol').val());
+                    if(format=='TAB'){
+                        sep='&#09;';
+                    }
+                    //header
+                    if (useHeader) {
+                        _.each(flds, function(f,idx){
+                            h.push(f.label);
+                            if(idx<iMax){
+                                h.push(sep);
+                            }
+                        });
+                        h.push('\n');
+                    }
+                    //data
+                    _.each(data, function(m){
+                        _.each(flds, function(f,idx){
+                            var mj = m.get(f.id);
+                            if (mj) {
+                                h.push(mj);
+                            }
+                            if(idx<iMax){
+                                h.push(sep);
+                            }
+                        });
+                        h.push('\n');
+                    });
+                    h.push('\n');
+                    break;
+                case 'HTML':
+                    //header
+                    h.push('<table>\n');
+                    if (useHeader) {
+                        h.push('<tr>\n');
+                        _.each(flds, function(f){
+                            h.push('<th>', f.id, '</th>');
+                        });
+                        h.push('</tr>\n');
+                    }
+                    //data
+                    _.each(data, function(d,idx){
+                        h.push('<tr>');
+                        _.each(flds, function(f){
+                            var mj = d.get(f.id);
+                            if (mj) {
+                                h.push('<td>', mj, '</td>');
+                            } else {
+                                h.push('<td></td>');
+                            }
+                        });
+                        h.push('</tr>\n');
+                    });
+                    h.push('</table>');
+                    break;
+                case 'JSON':
+                    h.push(JSON.stringify(this.model.toJSON(), null, 2));
+                    break;
+                case 'SQL':
+                    var fMax = flds.length -1,
+                        optTransaction = this.$('#evoxpTRS1').prop('checked'),
+                        optIdInsert = this.$('#evoxpTRS2').prop('checked'),
+                        sqlTable = this.$('#evoTable').val().replace(/ /g,'_'),
+                        sql = ['INSERT INTO ',sqlTable,' ('];
+
+                    if(sqlTable===''){
+                        sqlTable = this.options.uiModel.entity.replace(/ /g,'_');
+                    }
+                    _.each(flds, function(f,idx){
+                        sql.push(f.id);
+                        if(idx<fMax){
+                            sql.push(', ');
+                        }
+                    });
+                    sql.push(')\n VALUES (');
+                    sql = sql.join('');
+                    //options
+                    if(optTransaction){
+                        h.push('BEGIN TRANSACTION\n');
+                    }
+                    if(optIdInsert){
+                        h.push('SET IDENTITY_INSERT ',sqlTable,' ON;\n');
+                    }
+                    //data
+                    for (var i = 0, iMax1 = data.length; i < iMax1; i++) {
+                        h.push(sql);
+                        var m = data[i];
+                        for (var j = 0, jMax = flds.length; j < jMax; j++) {
+                            var mj = m.get(flds[j].id);
+                            h.push('"', mj, '"');
+                            if(j<fMax){
+                                h.push(', ');
+                            }
+                        }
+                        h.push(');\n');
+                    }
+                    //options
+                    if(optIdInsert){
+                        h.push('SET IDENTITY_INSERT ',sqlTable,' OFF;\n');
+                    }
+                    if(optTransaction){
+                        h.push('COMMIT TRANSACTION\n');
+                    }
+                    break;
+                case 'XML':
+                    var elemName = this.$('#evoRoot').val() || this.options.uiModel.entity.replace(/ /g,'_');
+                    h.push('<xml>\n');
+                    _.each(data, function(m){
+                        h.push('<', elemName, ' ');
+                        _.each(flds, function(f){
+                            h.push(f.id, '="', m.get(f.id), '" ');
+                        });
+                        h.push('></', elemName, '>\n');
+                    });
+                    h.push('</xml>');
+                    break;
             }
-        });
-
-        switch (format) {
-            case 'CSV':
-            case 'TAB':
-            case 'TXT':
-                var iMax=flds.length-1,
-                    sep = Evol.UI.trim(this.$(prefix+'FLS_evol').val());
-                if(format=='TAB'){
-                    sep='&#09;';
-                }
-                //header
-                if (useHeader) {
-                    _.each(flds, function(f,idx){
-                        h.push(f.label);
-                        if(idx<iMax){
-                            h.push(sep);
-                        }
-                    });
-                    h.push('\n');
-                }
-                //data
-                _.each(data, function(m){
-                    _.each(flds, function(f,idx){
-                        var mj = m.get(f.id);
-                        if (mj) {
-                            h.push(mj);
-                        }
-                        if(idx<iMax){
-                            h.push(sep);
-                        }
-                    });
-                    h.push('\n');
-                });
-                h.push('\n');
-                break;
-            case 'HTML':
-                //header
-                h.push('<table>\n');
-                if (useHeader) {
-                    h.push('<tr>\n');
-                    _.each(flds, function(f){
-                        h.push('<th>', f.id, '</th>');
-                    });
-                    h.push('</tr>\n');
-                }
-                //data
-                _.each(data, function(d,idx){
-                    h.push('<tr>');
-                    _.each(flds, function(f){
-                        var mj = d.get(f.id);
-                        if (mj) {
-                            h.push('<td>', mj, '</td>');
-                        } else {
-                            h.push('<td></td>');
-                        }
-                    });
-                    h.push('</tr>\n');
-                });
-                h.push('</table>');
-                break;
-            case 'JSON':
-                h.push(JSON.stringify(this.model.toJSON(), null, 2));
-                break;
-            case 'SQL':
-                var fMax = flds.length -1,
-                    optTransaction = this.$('#evoxpTRS1').prop('checked'),
-                    optIdInsert = this.$('#evoxpTRS2').prop('checked'),
-                    sqlTable = this.$('#evoTable').val().replace(/ /g,'_'),
-                    sql = ['INSERT INTO ',sqlTable,' ('];
-
-                if(sqlTable===''){
-                    sqlTable = this.options.uiModel.entity.replace(/ /g,'_');
-                }
-                _.each(flds, function(f,idx){
-                    sql.push(f.id);
-                    if(idx<fMax){
-                        sql.push(', ');
-                    }
-                });
-                sql.push(')\n VALUES (');
-                sql = sql.join('');
-                //options
-                if(optTransaction){
-                    h.push('BEGIN TRANSACTION\n');
-                }
-                if(optIdInsert){
-                    h.push('SET IDENTITY_INSERT ',sqlTable,' ON;\n');
-                }
-                //data
-                for (var i = 0, iMax1 = data.length; i < iMax1; i++) {
-                    h.push(sql);
-                    var m = data[i];
-                    for (var j = 0, jMax = flds.length; j < jMax; j++) {
-                        var mj = m.get(flds[j].id);
-                        h.push('"', mj, '"');
-                        if(j<fMax){
-                            h.push(', ');
-                        }
-                    }
-                    h.push(');\n');
-                }
-                //options
-                if(optIdInsert){
-                    h.push('SET IDENTITY_INSERT ',sqlTable,' OFF;\n');
-                }
-                if(optTransaction){
-                    h.push('COMMIT TRANSACTION\n');
-                }
-                break;
-            case 'XML':
-                var elemName = this.$('#evoRoot').val() || this.options.uiModel.entity.replace(/ /g,'_');
-                h.push('<xml>\n');
-                _.each(data, function(m){
-                    h.push('<', elemName, ' ');
-                    _.each(flds, function(f){
-                        h.push(f.id, '="', m.get(f.id), '" ');
-                    });
-                    h.push('></', elemName, '>\n');
-                });
-                h.push('</xml>');
-                break;
+            h.push('</textarea>');
+        }else{
+            h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
-        h.push('</textarea>');
         this.$('.evol-xpt-preview')
             .html(h.join(''));
     },

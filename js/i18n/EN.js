@@ -85,7 +85,7 @@ Evol.i18n = {
     NoX:"No {0}",
 
     // --- many  ---
-    nodata: 'No data.',
+    nodata: 'No data available.',
 
     // --- filters ---
     filters:{
