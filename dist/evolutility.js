@@ -85,7 +85,7 @@ Evol.UI = {
         textM: function (fID, fV, ml, h) {
             return [
                 '<textarea name="', fID, '" id="', fID, '" class="evo-field form-control"" rows="', h,
-                (ml > 0) ? '" onKeyUp="EvoVal.checkMaxLen(this,' + ml + ')' : '',
+                (ml > 0) ? '" onKeyUp="Evol.UI.Validation.checkMaxLen(this,' + ml + ')' : '',
                 '">', fV, '</textarea>'
             ].join('');
         },
@@ -590,9 +590,9 @@ Evol.i18n = {
 
     // --- status ---
     status:{
-        added:'New {0} added.',
-        updated:'{0} updated.',
-        deleted:'{0} removed.'
+        added:'New {0} "{1}" added.',
+        updated:'{0} "{1}" updated.',
+        deleted:'{0} "{1}" removed.'
     },
 
     // --- validation ---
@@ -1590,6 +1590,7 @@ Evol.ViewOne = Backbone.View.extend({
             .val(value);
         return this;
     },
+
     getFieldValue: function (f){
         var $f=this.$('#'+this.fieldViewId(f.id));
         switch(f.type) {
@@ -1837,7 +1838,7 @@ Evol.ViewOne = Backbone.View.extend({
                     break;
                 case types.txtm:
                 case types.html:
-//////    fv = HttpUtility.HtmlEncode(fv);
+                    // fv = HttpUtility.HtmlEncode(fv);
                     if (fld.height === null) {
                         fld.height = 5;
                     } else {
@@ -1944,15 +1945,16 @@ Evol.ViewOne = Backbone.View.extend({
         var msg=this.validate();
         if(msg===''){
             var that=this,
-                entityName=this.options.uiModel.entity;
+                entityName=Evol.UI.capFirstLetter(this.options.uiModel.entity),
+                entityValue=this.getSummary();
             if(this.options.mode==='new'){// || this._isNew
                 var collec=(this.model && this.model.collection)?this.model.collection:this.collection;
                 if(collec){
                     collec.create(this.getData(), {
                         success: function(m){
                             fnSuccess(m);
-                            that.setMessage('Record saved.', Evol.i18n.status.added.replace('{0}',entityName), 'success');
-                            that.trigger('save,add');
+                            that.setMessage('Record saved.', Evol.i18n.status.added.replace('{0}',entityName).replace('{1}',entityValue), 'success');
+                            that.$el.trigger('save','add');
                             that._updateTitle();
                         },
                         error: fnError
@@ -1963,11 +1965,11 @@ Evol.ViewOne = Backbone.View.extend({
                 }
             }else{
                 this.model.set(this.getData());
-                this.model.save({
+                this.model.save('','',{
                     success: function(m){
                         fnSuccess(m);
-                        that.setMessage('Record saved.', Evol.i18n.status.updated.replace('{0}',entityName), 'success');
-                        that.trigger('save,update');
+                        that.setMessage('Record saved.', Evol.i18n.status.updated.replace('{0}',entityName).replace('{1}',entityValue), 'success');
+                        that.$el.trigger('save','update');
                         that._updateTitle();
                     },
                     error: fnError
@@ -2321,7 +2323,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         'click .nav a': 'click_toolbar',
         'list.navigate div': 'click_navigate',
         'click #XP': 'click_download',
-        'save': 'saveItem'
+        'save > div': 'saveItem'
     },
 
     options: {
@@ -2669,8 +2671,11 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
     },
 
-    saveItem: function(){
-        this.setButtons('edit');
+    saveItem: function(evt,ui){
+        if(ui==='add'){
+            this._isNew=false; // TODO not if saveandaddnew
+            this.setButtons('edit');
+        }
     },
 
     newItem: function(){
@@ -2678,8 +2683,10 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     deleteItem: function(){
+        var entityName=this.options.uiModel.entity,
+            entityValue=this.curView.getSummary();
         // TODO good looking msgbox
-        if (confirm(Evol.i18n.DeleteEntity.replace('{0}', this.options.uiModel.entity).replace('{1}', this.curView.getSummary()))) {
+        if (confirm(Evol.i18n.DeleteEntity.replace('{0}', entityName).replace('{1}', entityValue))) {
             var that=this,
                 collec=this.collection,
                 delModel=this.curView.model,
@@ -2701,14 +2708,14 @@ Evol.ViewToolbar = Backbone.View.extend({
                 newModel.collection=collec;
             }
             delModel.destroy({
-                success:function(m){
+                success:function(){
                     if(collec.length===0){
                         that.curView.clear();
                     }else{
                         this.model = newModel;
                         that.curView.setModel(newModel);
                     }
-                    that.curView.setMessage('Record Deleted', 'Record was removed.', 'success');
+                    that.curView.setMessage('Record Deleted.', Evol.i18n.status.deleted.replace('{0}', Evol.UI.capFirstLetter(entityName)).replace('{1}', entityValue), 'success');
                 },
                 error:function(err){
                     alert('error');

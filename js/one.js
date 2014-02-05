@@ -179,6 +179,7 @@ Evol.ViewOne = Backbone.View.extend({
             .val(value);
         return this;
     },
+
     getFieldValue: function (f){
         var $f=this.$('#'+this.fieldViewId(f.id));
         switch(f.type) {
@@ -426,7 +427,7 @@ Evol.ViewOne = Backbone.View.extend({
                     break;
                 case types.txtm:
                 case types.html:
-//////    fv = HttpUtility.HtmlEncode(fv);
+                    // fv = HttpUtility.HtmlEncode(fv);
                     if (fld.height === null) {
                         fld.height = 5;
                     } else {
@@ -533,15 +534,16 @@ Evol.ViewOne = Backbone.View.extend({
         var msg=this.validate();
         if(msg===''){
             var that=this,
-                entityName=this.options.uiModel.entity;
+                entityName=Evol.UI.capFirstLetter(this.options.uiModel.entity),
+                entityValue=this.getSummary();
             if(this.options.mode==='new'){// || this._isNew
                 var collec=(this.model && this.model.collection)?this.model.collection:this.collection;
                 if(collec){
                     collec.create(this.getData(), {
                         success: function(m){
                             fnSuccess(m);
-                            that.setMessage('Record saved.', Evol.i18n.status.added.replace('{0}',entityName), 'success');
-                            that.trigger('save,add');
+                            that.setMessage('Record saved.', Evol.i18n.status.added.replace('{0}',entityName).replace('{1}',entityValue), 'success');
+                            that.$el.trigger('save','add');
                             that._updateTitle();
                         },
                         error: fnError
@@ -552,11 +554,11 @@ Evol.ViewOne = Backbone.View.extend({
                 }
             }else{
                 this.model.set(this.getData());
-                this.model.save({
+                this.model.save('','',{
                     success: function(m){
                         fnSuccess(m);
-                        that.setMessage('Record saved.', Evol.i18n.status.updated.replace('{0}',entityName), 'success');
-                        that.trigger('save,update');
+                        that.setMessage('Record saved.', Evol.i18n.status.updated.replace('{0}',entityName).replace('{1}',entityValue), 'success');
+                        that.$el.trigger('save','update');
                         that._updateTitle();
                     },
                     error: fnError

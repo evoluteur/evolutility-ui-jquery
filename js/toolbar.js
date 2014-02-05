@@ -15,7 +15,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         'click .nav a': 'click_toolbar',
         'list.navigate div': 'click_navigate',
         'click #XP': 'click_download',
-        'save': 'saveItem'
+        'save > div': 'saveItem'
     },
 
     options: {
@@ -363,8 +363,11 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
     },
 
-    saveItem: function(){
-        this.setButtons('edit');
+    saveItem: function(evt,ui){
+        if(ui==='add'){
+            this._isNew=false; // TODO not if saveandaddnew
+            this.setButtons('edit');
+        }
     },
 
     newItem: function(){
@@ -372,8 +375,10 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     deleteItem: function(){
+        var entityName=this.options.uiModel.entity,
+            entityValue=this.curView.getSummary();
         // TODO good looking msgbox
-        if (confirm(Evol.i18n.DeleteEntity.replace('{0}', this.options.uiModel.entity).replace('{1}', this.curView.getSummary()))) {
+        if (confirm(Evol.i18n.DeleteEntity.replace('{0}', entityName).replace('{1}', entityValue))) {
             var that=this,
                 collec=this.collection,
                 delModel=this.curView.model,
@@ -395,14 +400,14 @@ Evol.ViewToolbar = Backbone.View.extend({
                 newModel.collection=collec;
             }
             delModel.destroy({
-                success:function(m){
+                success:function(){
                     if(collec.length===0){
                         that.curView.clear();
                     }else{
                         this.model = newModel;
                         that.curView.setModel(newModel);
                     }
-                    that.curView.setMessage('Record Deleted', 'Record was removed.', 'success');
+                    that.curView.setMessage('Record Deleted.', Evol.i18n.status.deleted.replace('{0}', Evol.UI.capFirstLetter(entityName)).replace('{1}', entityValue), 'success');
                 },
                 error:function(err){
                     alert('error');

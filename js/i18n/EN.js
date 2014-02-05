@@ -32,9 +32,9 @@ Evol.i18n = {
 
     // --- status ---
     status:{
-        added:'New {0} added.',
-        updated:'{0} updated.',
-        deleted:'{0} removed.'
+        added:'New {0} "{1}" added.',
+        updated:'{0} "{1}" updated.',
+        deleted:'{0} "{1}" removed.'
     },
 
     // --- validation ---

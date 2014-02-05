@@ -81,7 +81,7 @@ Evol.UI = {
         textM: function (fID, fV, ml, h) {
             return [
                 '<textarea name="', fID, '" id="', fID, '" class="evo-field form-control"" rows="', h,
-                (ml > 0) ? '" onKeyUp="EvoVal.checkMaxLen(this,' + ml + ')' : '',
+                (ml > 0) ? '" onKeyUp="Evol.UI.Validation.checkMaxLen(this,' + ml + ')' : '',
                 '">', fV, '</textarea>'
             ].join('');
         },
