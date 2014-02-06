@@ -156,17 +156,11 @@ module.exports = function (grunt) {
     // Default task(s).
     grunt.registerTask('default', ['dev']);
 
-    // Dev only task(s).
+    // Dev task(s).
     grunt.registerTask('dev', ['concat:js', 'less:dev', 'less:demo']);
 
-    // Prod only task(s).
-    grunt.registerTask('prod', [
-        'jshint',
-        'dev',
-        'concat:vendors',
-        'less:prod',
-        'uglify'
-    ]);
+    // Prod task(s).
+    grunt.registerTask('prod', ['jshint', 'dev', 'concat:vendors', 'less:prod', 'uglify']);
 
 };
 

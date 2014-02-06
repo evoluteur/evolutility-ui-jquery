@@ -133,13 +133,13 @@ Evol.ViewOne = Backbone.View.extend({
                             $f.prop('checked', fv);
                             break;
                         case fTypes.pix:
-                            var $img=$f.prev();
-                            if($img.get(0).tagName=='IMG'){
-                                $img.attr('src',fv);
-                            }
+                            var newPix=(fv!=='')?('<img src="'+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
+                            $f.val(fv)
+                                .prev().remove();
+                            $f.before(newPix);
                             break;
                         default:
-                            $f.val(model.get(f.id));
+                            $f.val(fv);
                     }
                 }
             });
@@ -458,10 +458,10 @@ Evol.ViewOne = Backbone.View.extend({
                     break;
                 //case types.doc:
                 case types.pix:
-                    if(fv===''){
-                        h.push('<p class="">No picture</p>');
-                    }else{
+                    if(fv!==''){
                         h.push('<img src="',fv,'" class="img-thumbnail">');
+                    }else{
+                        h.push('<p class="">',Evol.i18n.nopix,'</p>');
                     }
                     h.push(EvoUI.input.text(fid, fv, fld, null, size));
                     break;
@@ -534,15 +534,14 @@ Evol.ViewOne = Backbone.View.extend({
         var msg=this.validate();
         if(msg===''){
             var that=this,
-                entityName=Evol.UI.capFirstLetter(this.options.uiModel.entity),
-                entityValue=this.getSummary();
+                entityName=Evol.UI.capFirstLetter(this.options.uiModel.entity);
             if(this.options.mode==='new'){// || this._isNew
                 var collec=(this.model && this.model.collection)?this.model.collection:this.collection;
                 if(collec){
                     collec.create(this.getData(), {
                         success: function(m){
                             fnSuccess(m);
-                            that.setMessage('Record saved.', Evol.i18n.status.added.replace('{0}',entityName).replace('{1}',entityValue), 'success');
+                            that.setMessage('Record saved.', Evol.i18n.status.added.replace('{0}',entityName).replace('{1}',that.getSummary()), 'success');
                             that.$el.trigger('save','add');
                             that._updateTitle();
                         },
@@ -557,7 +556,7 @@ Evol.ViewOne = Backbone.View.extend({
                 this.model.save('','',{
                     success: function(m){
                         fnSuccess(m);
-                        that.setMessage('Record saved.', Evol.i18n.status.updated.replace('{0}',entityName).replace('{1}',entityValue), 'success');
+                        that.setMessage('Record saved.', Evol.i18n.status.updated.replace('{0}',entityName).replace('{1}',that.getSummary()), 'success');
                         that.$el.trigger('save','update');
                         that._updateTitle();
                     },
@@ -565,7 +564,7 @@ Evol.ViewOne = Backbone.View.extend({
                 });
             }
         }else{
-            this.setMessage('Invalid data', msg, 'warning');
+            this.setMessage('Invalid data.', msg, 'warning');
         }
         return this;
     },

@@ -147,6 +147,7 @@ Evol.UI = {
         img: function (fID, fV) {
             return ['<img id=""', fID, '" src="', fV, '"/>'].join('');
         },
+
         hidden: function (fID, fV) {
             return ['<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>'].join('');
         },
@@ -426,14 +427,16 @@ Evol.UI.Validation = {
     },
 
     checkFields: function (holder, fds, prefix) {
-        var evoRegEx = {
-            email: /^[\w\.\-]+@[\w\.\-]+\.[\w\.\-]+$/,
-            integer: /^-?\d+$/,
-            decimalEN: /^\d+(\.\d+)?$/,
-            decimalFR: /^\d+(\,\d+)?$/,
-            decimalDA: /^\d+(\,\d+)?$/
-        };
-        var msgs = [], ff = null;
+        var that=this,
+            msgs = [],
+            i18nVal=Evol.i18n.validation,
+            evoRegEx = {
+                email: /^[\w\.\-]+@[\w\.\-]+\.[\w\.\-]+$/,
+                integer: /^-?\d+$/,
+                decimalEN: /^\d+(\.\d+)?$/,
+                decimalFR: /^\d+(\,\d+)?$/,
+                decimalDA: /^\d+(\,\d+)?$/
+            };
         for (var i in fds) {
             var fd = fds[i],
                 $f = holder.find('#' + prefix + '-' + fd.id).eq(0),
@@ -448,8 +451,8 @@ Evol.UI.Validation = {
                 if (fd.required > 0) {
                     if (isEmpty($f, isHTML)) {
                         p = $f.parent();
-                        msgf = labMsg(Evol.i18n.validation.empty);
-                        this.setValidationFlags(p, msgf);
+                        msgf = labMsg(i18nVal.empty);
+                        that.setValidationFlags(p, msgf);
                         noErr = false;
                     } else {
                         $f.parent().removeClass('control-group error')
@@ -464,15 +467,15 @@ Evol.UI.Validation = {
                     var rg = new RegExp(fd.regex);
                     if (!$f.val().match(rg)) {
                         p = $f.parent();
-                        msgf = labMsg(Evol.i18n.validation.regex, fd.label);
-                        this.setValidationFlags($f.parent(), msgf);
+                        msgf = labMsg(i18nVal.regex, fd.label);
+                        that.setValidationFlags($f.parent(), msgf);
                     }
                 }/*
                 // Check custom
                 if (fd.jsv !== null) {
                     p = eval([fd.jsv, '("', Evol.prefix, fd.id, '","', fd.label, '")'].join(''));
                     if (p !== null && p.length > 0) {
-                        this.setValidationFlags($f.parent(), labMsg(p));
+                        that.setValidationFlags($f.parent(), labMsg(p));
                     }
                 }*/
                 // Check min & max
@@ -480,17 +483,17 @@ Evol.UI.Validation = {
                     var fv = Evol.UI.trim($f.val());
                     if (fv !== '') {
                         if (fd.max !== null && parseFloat(fv) > fd.max) {
-                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n.validation.max, fd.max));
+                            that.setValidationFlags($f.parent(), labMsg(i18nVal.max, fd.max));
                         }
                         if (fd.min !== null && parseFloat(fv) < fd.min) {
-                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n.validation.min, fd.min));
+                            that.setValidationFlags($f.parent(), labMsg(i18nVal.min, fd.min));
                         }
                     }
                 }
             }
         }
         if (msgs.length > 0) {
-            return [Evol.i18n.validation.intro, '<ul><li>', msgs.join('<li>'), '</li></ul>'].join('');
+            return [i18nVal.intro, '<ul><li>', msgs.join('<li>'), '</li></ul>'].join('');
         } else {
             return '';
         }
@@ -503,7 +506,7 @@ Evol.UI.Validation = {
                     case ft.integer:
                     case ft.email:
                         if (!evoRegEx[fd.type].test(fv)) {
-                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n[fd.type]));
+                            that.setValidationFlags($f.parent(), labMsg(i18nVal[fd.type]));
                         }
                         break;
                     case ft.dec:
@@ -512,13 +515,13 @@ Evol.UI.Validation = {
                             myRegExp = evoRegEx[fd.type + "EN"]; // default to English with "."
                         }
                         if (!myRegExp.test(fv))
-                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n[fd.type]));
+                            that.setValidationFlags($f.parent(), labMsg(i18nVal[fd.type]));
                         break;
                     case ft.date:
                     case ft.datetime:
                     case ft.time:
                         if ((fv !== '') && (!_.isDate(new Date(fv)))) {
-                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n[fd.type]));
+                            that.setValidationFlags($f.parent(), labMsg(i18nVal[fd.type]));
                         }
                         break;
                 }
@@ -564,29 +567,31 @@ var Evol = Evol || {};
 
 Evol.i18n = {
 
-	LOCALE:"EN",    // ENGLISH
+	LOCALE:'EN',    // ENGLISH
 
     // --- toolbar ---
-    View:"View",
-    Edit:"Edit",
-    // Login:"Login"
-    New:"New",
-    NewItem:"New {0}", //"New Item",
-    NewUpload:"New Upload",
-    //Search:"Search",
-    //AdvSearch:"Advanced Search",
-    NewSearch:"New Search",
-    Selections:"Selections",
-    Selection:"Selection",
-    Export:"Export",
-    SearchRes:"Search Result",
-    //MassUpdate:"Mass Update",
-    Delete:"Delete",
-    All:"All",
-    //ListAll:"List All",
-    //Print:"Print",
+    View:'View',
+    Edit:'Edit',
+    // Login:'Login',
+    New:'New',
+    NewItem:'New {0}', //'New Item',
+    NewUpload:'New Upload',
+    //Search:'Search',
+    //AdvSearch:'Advanced Search',
+    NewSearch:'New Search',
+    Selections:'Selections',
+    Selection:'Selection',
+    Export:'Export',
+    SearchRes:'Search Result',
+    //MassUpdate:'Mass Update',
+    Delete:'Delete',
+    All:'All',
+    //ListAll:'List All',
+    //Print:'Print',
     DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value
-    Back2SearchResults:"Back to search results",
+    Back2SearchResults:'Back to search results',
+    nodata: 'No data available.',
+    nopix:'No picture.',
 
     // --- status ---
     status:{
@@ -614,15 +619,15 @@ Evol.i18n = {
 
     // --- export ---
     export:{
-        ExportEntity: "Export this {0}", // {0}=entity
-        ExportHeader: "Header",
-        ExportSeparator: "Separator",
-        ExportFirstLine:"First line for field names",
-        ExportFormat: "Export format",
-        ExportFields: "Fields to include in the export",
-        IDkey: "ID (Primary Key)",
-        AllFields: "Show all fields",
-        ExportFormats: "Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)",
+        ExportEntity: 'Export this {0}', // {0}=entity
+        ExportHeader: 'Header',
+        ExportSeparator: 'Separator',
+        ExportFirstLine:'First line for field names',
+        ExportFormat: 'Export format',
+        ExportFields: 'Fields to include in the export',
+        IDkey: 'ID (Primary Key)',
+        AllFields: 'Show all fields',
+        ExportFormats: 'Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)',
         //xpColors:'Header color-Color odd rows-Color even rows',
         //xpColMap:'Columns map to',
         xpXMLroot:'Element name', // 'Root element name'
@@ -632,18 +637,15 @@ Evol.i18n = {
         xpSQLTable:'Table name',
         xpSQLTrans:'Inside transaction',
         xpSQLId:'Enable identity insert',
-        DownloadEntity:"Download {0}"
+        DownloadEntity:'Download {0}'
     },
 
     // --- buttons ---
-    Save:"Save",
-    SaveAdd:"Save and Add Another",
-    Cancel:"Cancel",
-    NoChange:"No Change",
-    NoX:"No {0}",
-
-    // --- many  ---
-    nodata: 'No data available.',
+    Save:'Save',
+    SaveAdd:'Save and Add Another',
+    Cancel:'Cancel',
+    NoChange:'No Change',
+    NoX:'No {0}',
 
     // --- filters ---
     filters:{
@@ -1544,13 +1546,13 @@ Evol.ViewOne = Backbone.View.extend({
                             $f.prop('checked', fv);
                             break;
                         case fTypes.pix:
-                            var $img=$f.prev();
-                            if($img.get(0).tagName=='IMG'){
-                                $img.attr('src',fv);
-                            }
+                            var newPix=(fv!=='')?('<img src="'+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
+                            $f.val(fv)
+                                .prev().remove();
+                            $f.before(newPix);
                             break;
                         default:
-                            $f.val(model.get(f.id));
+                            $f.val(fv);
                     }
                 }
             });
@@ -1869,10 +1871,10 @@ Evol.ViewOne = Backbone.View.extend({
                     break;
                 //case types.doc:
                 case types.pix:
-                    if(fv===''){
-                        h.push('<p class="">No picture</p>');
-                    }else{
+                    if(fv!==''){
                         h.push('<img src="',fv,'" class="img-thumbnail">');
+                    }else{
+                        h.push('<p class="">',Evol.i18n.nopix,'</p>');
                     }
                     h.push(EvoUI.input.text(fid, fv, fld, null, size));
                     break;
@@ -1945,15 +1947,14 @@ Evol.ViewOne = Backbone.View.extend({
         var msg=this.validate();
         if(msg===''){
             var that=this,
-                entityName=Evol.UI.capFirstLetter(this.options.uiModel.entity),
-                entityValue=this.getSummary();
+                entityName=Evol.UI.capFirstLetter(this.options.uiModel.entity);
             if(this.options.mode==='new'){// || this._isNew
                 var collec=(this.model && this.model.collection)?this.model.collection:this.collection;
                 if(collec){
                     collec.create(this.getData(), {
                         success: function(m){
                             fnSuccess(m);
-                            that.setMessage('Record saved.', Evol.i18n.status.added.replace('{0}',entityName).replace('{1}',entityValue), 'success');
+                            that.setMessage('Record saved.', Evol.i18n.status.added.replace('{0}',entityName).replace('{1}',that.getSummary()), 'success');
                             that.$el.trigger('save','add');
                             that._updateTitle();
                         },
@@ -1968,7 +1969,7 @@ Evol.ViewOne = Backbone.View.extend({
                 this.model.save('','',{
                     success: function(m){
                         fnSuccess(m);
-                        that.setMessage('Record saved.', Evol.i18n.status.updated.replace('{0}',entityName).replace('{1}',entityValue), 'success');
+                        that.setMessage('Record saved.', Evol.i18n.status.updated.replace('{0}',entityName).replace('{1}',that.getSummary()), 'success');
                         that.$el.trigger('save','update');
                         that._updateTitle();
                     },
@@ -1976,7 +1977,7 @@ Evol.ViewOne = Backbone.View.extend({
                 });
             }
         }else{
-            this.setMessage('Invalid data', msg, 'warning');
+            this.setMessage('Invalid data.', msg, 'warning');
         }
         return this;
     },
@@ -2684,12 +2685,12 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     deleteItem: function(){
         var entityName=this.options.uiModel.entity,
-            entityValue=this.curView.getSummary();
+            entityValue=this.curView.getSummary(),
+            delModel=this.curView.model;
         // TODO good looking msgbox
-        if (confirm(Evol.i18n.DeleteEntity.replace('{0}', entityName).replace('{1}', entityValue))) {
+        if (delModel && confirm(Evol.i18n.DeleteEntity.replace('{0}', entityName).replace('{1}', entityValue))) {
             var that=this,
                 collec=this.collection,
-                delModel=this.curView.model,
                 delIdx=_.indexOf(collec.models, delModel),
                 newIdx=delIdx,
                 newModel=null;

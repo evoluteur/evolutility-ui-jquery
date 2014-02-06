@@ -46,14 +46,16 @@ Evol.UI.Validation = {
     },
 
     checkFields: function (holder, fds, prefix) {
-        var evoRegEx = {
-            email: /^[\w\.\-]+@[\w\.\-]+\.[\w\.\-]+$/,
-            integer: /^-?\d+$/,
-            decimalEN: /^\d+(\.\d+)?$/,
-            decimalFR: /^\d+(\,\d+)?$/,
-            decimalDA: /^\d+(\,\d+)?$/
-        };
-        var msgs = [], ff = null;
+        var that=this,
+            msgs = [],
+            i18nVal=Evol.i18n.validation,
+            evoRegEx = {
+                email: /^[\w\.\-]+@[\w\.\-]+\.[\w\.\-]+$/,
+                integer: /^-?\d+$/,
+                decimalEN: /^\d+(\.\d+)?$/,
+                decimalFR: /^\d+(\,\d+)?$/,
+                decimalDA: /^\d+(\,\d+)?$/
+            };
         for (var i in fds) {
             var fd = fds[i],
                 $f = holder.find('#' + prefix + '-' + fd.id).eq(0),
@@ -68,8 +70,8 @@ Evol.UI.Validation = {
                 if (fd.required > 0) {
                     if (isEmpty($f, isHTML)) {
                         p = $f.parent();
-                        msgf = labMsg(Evol.i18n.validation.empty);
-                        this.setValidationFlags(p, msgf);
+                        msgf = labMsg(i18nVal.empty);
+                        that.setValidationFlags(p, msgf);
                         noErr = false;
                     } else {
                         $f.parent().removeClass('control-group error')
@@ -84,15 +86,15 @@ Evol.UI.Validation = {
                     var rg = new RegExp(fd.regex);
                     if (!$f.val().match(rg)) {
                         p = $f.parent();
-                        msgf = labMsg(Evol.i18n.validation.regex, fd.label);
-                        this.setValidationFlags($f.parent(), msgf);
+                        msgf = labMsg(i18nVal.regex, fd.label);
+                        that.setValidationFlags($f.parent(), msgf);
                     }
                 }/*
                 // Check custom
                 if (fd.jsv !== null) {
                     p = eval([fd.jsv, '("', Evol.prefix, fd.id, '","', fd.label, '")'].join(''));
                     if (p !== null && p.length > 0) {
-                        this.setValidationFlags($f.parent(), labMsg(p));
+                        that.setValidationFlags($f.parent(), labMsg(p));
                     }
                 }*/
                 // Check min & max
@@ -100,17 +102,17 @@ Evol.UI.Validation = {
                     var fv = Evol.UI.trim($f.val());
                     if (fv !== '') {
                         if (fd.max !== null && parseFloat(fv) > fd.max) {
-                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n.validation.max, fd.max));
+                            that.setValidationFlags($f.parent(), labMsg(i18nVal.max, fd.max));
                         }
                         if (fd.min !== null && parseFloat(fv) < fd.min) {
-                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n.validation.min, fd.min));
+                            that.setValidationFlags($f.parent(), labMsg(i18nVal.min, fd.min));
                         }
                     }
                 }
             }
         }
         if (msgs.length > 0) {
-            return [Evol.i18n.validation.intro, '<ul><li>', msgs.join('<li>'), '</li></ul>'].join('');
+            return [i18nVal.intro, '<ul><li>', msgs.join('<li>'), '</li></ul>'].join('');
         } else {
             return '';
         }
@@ -123,7 +125,7 @@ Evol.UI.Validation = {
                     case ft.integer:
                     case ft.email:
                         if (!evoRegEx[fd.type].test(fv)) {
-                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n[fd.type]));
+                            that.setValidationFlags($f.parent(), labMsg(i18nVal[fd.type]));
                         }
                         break;
                     case ft.dec:
@@ -132,13 +134,13 @@ Evol.UI.Validation = {
                             myRegExp = evoRegEx[fd.type + "EN"]; // default to English with "."
                         }
                         if (!myRegExp.test(fv))
-                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n[fd.type]));
+                            that.setValidationFlags($f.parent(), labMsg(i18nVal[fd.type]));
                         break;
                     case ft.date:
                     case ft.datetime:
                     case ft.time:
                         if ((fv !== '') && (!_.isDate(new Date(fv)))) {
-                            this.setValidationFlags($f.parent(), labMsg(Evol.i18n[fd.type]));
+                            that.setValidationFlags($f.parent(), labMsg(i18nVal[fd.type]));
                         }
                         break;
                 }

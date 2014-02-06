@@ -6,29 +6,31 @@ var Evol = Evol || {};
 
 Evol.i18n = {
 
-	LOCALE:"EN",    // ENGLISH
+	LOCALE:'EN',    // ENGLISH
 
     // --- toolbar ---
-    View:"View",
-    Edit:"Edit",
-    // Login:"Login"
-    New:"New",
-    NewItem:"New {0}", //"New Item",
-    NewUpload:"New Upload",
-    //Search:"Search",
-    //AdvSearch:"Advanced Search",
-    NewSearch:"New Search",
-    Selections:"Selections",
-    Selection:"Selection",
-    Export:"Export",
-    SearchRes:"Search Result",
-    //MassUpdate:"Mass Update",
-    Delete:"Delete",
-    All:"All",
-    //ListAll:"List All",
-    //Print:"Print",
+    View:'View',
+    Edit:'Edit',
+    // Login:'Login',
+    New:'New',
+    NewItem:'New {0}', //'New Item',
+    NewUpload:'New Upload',
+    //Search:'Search',
+    //AdvSearch:'Advanced Search',
+    NewSearch:'New Search',
+    Selections:'Selections',
+    Selection:'Selection',
+    Export:'Export',
+    SearchRes:'Search Result',
+    //MassUpdate:'Mass Update',
+    Delete:'Delete',
+    All:'All',
+    //ListAll:'List All',
+    //Print:'Print',
     DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value
-    Back2SearchResults:"Back to search results",
+    Back2SearchResults:'Back to search results',
+    nodata: 'No data available.',
+    nopix:'No picture.',
 
     // --- status ---
     status:{
@@ -56,15 +58,15 @@ Evol.i18n = {
 
     // --- export ---
     export:{
-        ExportEntity: "Export this {0}", // {0}=entity
-        ExportHeader: "Header",
-        ExportSeparator: "Separator",
-        ExportFirstLine:"First line for field names",
-        ExportFormat: "Export format",
-        ExportFields: "Fields to include in the export",
-        IDkey: "ID (Primary Key)",
-        AllFields: "Show all fields",
-        ExportFormats: "Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)",
+        ExportEntity: 'Export this {0}', // {0}=entity
+        ExportHeader: 'Header',
+        ExportSeparator: 'Separator',
+        ExportFirstLine:'First line for field names',
+        ExportFormat: 'Export format',
+        ExportFields: 'Fields to include in the export',
+        IDkey: 'ID (Primary Key)',
+        AllFields: 'Show all fields',
+        ExportFormats: 'Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)',
         //xpColors:'Header color-Color odd rows-Color even rows',
         //xpColMap:'Columns map to',
         xpXMLroot:'Element name', // 'Root element name'
@@ -74,18 +76,15 @@ Evol.i18n = {
         xpSQLTable:'Table name',
         xpSQLTrans:'Inside transaction',
         xpSQLId:'Enable identity insert',
-        DownloadEntity:"Download {0}"
+        DownloadEntity:'Download {0}'
     },
 
     // --- buttons ---
-    Save:"Save",
-    SaveAdd:"Save and Add Another",
-    Cancel:"Cancel",
-    NoChange:"No Change",
-    NoX:"No {0}",
-
-    // --- many  ---
-    nodata: 'No data available.',
+    Save:'Save',
+    SaveAdd:'Save and Add Another',
+    Cancel:'Cancel',
+    NoChange:'No Change',
+    NoX:'No {0}',
 
     // --- filters ---
     filters:{

@@ -376,12 +376,12 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     deleteItem: function(){
         var entityName=this.options.uiModel.entity,
-            entityValue=this.curView.getSummary();
+            entityValue=this.curView.getSummary(),
+            delModel=this.curView.model;
         // TODO good looking msgbox
-        if (confirm(Evol.i18n.DeleteEntity.replace('{0}', entityName).replace('{1}', entityValue))) {
+        if (delModel && confirm(Evol.i18n.DeleteEntity.replace('{0}', entityName).replace('{1}', entityValue))) {
             var that=this,
                 collec=this.collection,
-                delModel=this.curView.model,
                 delIdx=_.indexOf(collec.models, delModel),
                 newIdx=delIdx,
                 newModel=null;
