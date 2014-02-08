@@ -39,6 +39,7 @@ Evol.ViewMany = Backbone.View.extend({
                 that.render();
             });
         }
+        this._custOn=false;
     },
 
     render:function(){
@@ -109,11 +110,10 @@ Evol.ViewMany = Backbone.View.extend({
         var labels = this.$('th > span');
         if(this._custOn){
             labels.find('i').remove();
-            this._custOn=false;
         }else{
             labels.append(Evol.UI.iconCustomize('id','field'));
-            this._custOn=true;
         }
+        this._custOn=!this._custOn;
         return this;
     },
 
@@ -186,6 +186,12 @@ Evol.ViewMany = Backbone.View.extend({
             case fTypes.pix:
                 if (v.length) {
                     return Evol.UI.input.img(f.id, v);
+                }
+                break;
+            case fTypes.money:
+                var nv=parseFloat(v);
+                if (!isNaN(nv)) {
+                    return '$'+nv.toFixed(2);
                 }
                 break;
             default:

@@ -29,7 +29,9 @@ Evol.ViewFilter = Backbone.View.extend({
     events: {
         'click .evo-filters > button': 'click_editFilter',
         'click .evo-filters-btns > button > .glyphicon-remove': 'click_remove',
-        'click .evo-bDel': '_removeEditor'
+        'click .evo-bDel': '_removeEditor',
+        'click .evo-bNew': 'click_new',
+        'click .evo-bAdd': 'click_add'
         // TODO move other events here
     },
 
@@ -75,23 +77,9 @@ Evol.ViewFilter = Backbone.View.extend({
             });
         }
         // - editor button new
-        this._bNew=e.find('.evo-bNew').button().on('click', function(e){
-            if(that._step<1){
-                that._setEditorField();
-                that._step=1;
-            }
-            //that._bAdd.find('.ui-button-text').html(evoLang.bAddFilter);
-            });
+        this._bNew=e.find('.evo-bNew').button();
         // - editor button add
-        this._bAdd=e.find('.evo-bAdd').button().on('click', function(evt){
-            var data=that._getEditorData();
-            if(that._cFilter){
-                that._enableFilter(data, that.options.highlight);
-            }else{
-                that.addFilter(data);
-            }
-            that._removeEditor();
-        });
+        this._bAdd=e.find('.evo-bAdd').button();
         // - editor button cancel
         this._bDel=e.find('.evo-bDel').button();
         this._editor=e.find('.evo-editFilter')
@@ -327,6 +315,7 @@ Evol.ViewFilter = Backbone.View.extend({
                             break;
                         case evoTypes.integer:
                         case evoTypes.decimal:
+                        case evoTypes.money:
                             h.push(EvoUI.input.options([
                                 {id: evoAPI.sEqual, text: evoLang.sNumEqual},
                                 {id: evoAPI.sNotEqual, text: evoLang.sNumNotEqual},
@@ -602,6 +591,24 @@ Evol.ViewFilter = Backbone.View.extend({
         evt.stopImmediatePropagation();
         var idx=$(evt.target).parent().index();
         this.removeFilter(idx);
+    },
+
+    click_new:function(evt){
+        if(this._step<1){
+            this._setEditorField();
+            this._step=1;
+        }
+        //this._bAdd.find('.ui-button-text').html(evoLang.bAddFilter);
+    },
+
+    click_add:function(evt){
+        var data=this._getEditorData();
+        if(this._cFilter){
+            this._enableFilter(data, this.options.highlight);
+        }else{
+            this.addFilter(data);
+        }
+        this._removeEditor();
     }
 
 });

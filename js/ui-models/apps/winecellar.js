@@ -278,20 +278,16 @@ var winecellar_ui = {
                         },
                         {
                             id:'price',
-                            type: 'decimal',
+                            type: 'money',
                             label: 'Price',
-                            maxlength: 10,
                             viewmany: true,
-                            width: '30',
-                            format: '$ 0.00'
+                            width: '30'
                         },
                         {
                             id:'value',
-                            type: 'decimal',
+                            type: 'money',
                             label: 'Value',
-                            maxlength: 10,
-                            width: 30,
-                            format: '$ 0.00'
+                            width: 30
                         },
                         {
                             id:'purchased',

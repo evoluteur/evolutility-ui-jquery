@@ -406,9 +406,8 @@ Evol.ViewOne = Backbone.View.extend({
                     if (mode === 'view') {
                         h.push(EvoUI.link(fid, fv, 'mailto:' + HttpUtility.HtmlEncode(fv)));
                     } else {
-                        //h.push('<div class="input-group"><span class="input-group-addon">@</span>');
-                        h.push(EvoUI.input.text(fid, fv, fld.maxlength));
-                        //h.push('</div>');
+                        h.push('<div class="input-group">', EvoUI.input.typeFlag('@'),
+                            EvoUI.input.text(fid, fv, fld.maxlength), '</div>');
                     }
                     break;
                 case types.url:
@@ -421,6 +420,10 @@ Evol.ViewOne = Backbone.View.extend({
                 case types.integer:
                 case types.dec:
                     h.push(EvoUI.input.textInt(fid, fv));
+                    break;
+                case types.money:
+                    h.push('<div class="input-group">', EvoUI.input.typeFlag('$'),
+                        EvoUI.input.textInt(fid, fv), '</div>');
                     break;
                 case types.bool:
                     h.push(EvoUI.input.checkbox(fid, fv));
@@ -639,9 +642,9 @@ Evol.ViewOne = Backbone.View.extend({
     setMessage: function(title, content,style){
         var $msg=this.$('[data-id="msg"]');
         if($msg.length){
-            $msg.html('<strong>'+title+'</strong>'+ content);
+            $msg.html('<strong>'+title+'</strong>'+content);
         }else{
-            this.$el.prepend(Evol.UI.HTMLMsg(title, content,style));
+            this.$el.prepend(Evol.UI.HTMLMsg(title, content, style));
         }
         return this;
     },

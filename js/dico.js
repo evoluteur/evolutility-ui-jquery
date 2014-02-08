@@ -26,6 +26,7 @@ Evol.Dico = {
         pix: 'image',
         //doc:'document',
         lov: 'lov',
+        money: 'money',
         //formula:'formula',
         //html:'html',
         email: 'email',

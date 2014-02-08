@@ -104,6 +104,9 @@ Evol.UI = {
         time: function (fID, fV) {
             return this.myType('time', fID, fV);
         },
+        typeFlag: function(id){
+            return '<span class="input-group-addon">'+id+'</span>';
+        },
         color: function (fId, fVal) {
             return [
                 '<input type="color" id="', fId, '" value="', fVal, '" size="15">'
@@ -208,6 +211,7 @@ Evol.UI = {
     iconCustomize: function (id, type) {
         return Evol.UI.iconId(id, type, 'wrench');
     },
+
     iconId: function (id, type, icon) {
         return ['<i class="',Evol.UI.html.glyphicon, icon, '" data-id="', id, '" data-type="', type, '"></i>'].join('');
     },
@@ -224,7 +228,7 @@ Evol.UI = {
         return '<div class="'+css+' panel panel-'+style+'" data-id="'+id+'"></div>';
     },
 
-
+    // --- status ---
     HTMLMsg: function (title, content, style, dismissable) {
         return [
             '<div data-id="msg" class="alert alert-',style || 'info',
