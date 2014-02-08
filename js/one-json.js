@@ -14,9 +14,7 @@ var Evol = Evol || {};
 Evol.ViewOne.JSON = Evol.ViewOne.extend({
 
     events: {
-        'click > .evol-buttons > button': 'click_button',
-        'click .evol-title-toggle': 'click_toggle',
-        'click .evol-field-label .glyphicon-wrench': 'click_customize'
+        'click > .evol-buttons > button': 'click_button'
     },
 
     viewName: 'json',

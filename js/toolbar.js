@@ -255,7 +255,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(!this._toolbarButtons){
             var lis=this.$('li');
             this._toolbarButtons = {
-                ones: lis.filter('[data-cardi="1"]'),
+                ones: lis.filter('li[data-cardi="1"]'),
                 manys: lis.filter('li[data-cardi="n"]'),
                 prevNext: this.$('[data-id="prev"],[data-id="next"]'),
                 customize: this.$('a[data-id="customize"]').parent(),

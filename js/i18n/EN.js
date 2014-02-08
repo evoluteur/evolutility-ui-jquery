@@ -29,8 +29,10 @@ Evol.i18n = {
     //Print:'Print',
     DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value
     Back2SearchResults:'Back to search results',
-    nodata: 'No data available.',
+    nodata:'No data available.',
     nopix:'No picture.',
+    nochart:'No charts available.',
+    badchart:'The data structure doesn\'t allow for auto-generated charts.',
 
     // --- status ---
     status:{

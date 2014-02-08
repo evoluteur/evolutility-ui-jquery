@@ -15,13 +15,6 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
 
     viewName: 'cards',
 
-    options: {
-        style: 'panel-info',
-        pageSize: 20,
-        title: '#title', // TODO FIX
-        selectable: true
-    },
-
     customize: function () {
         var labels = this.$('h4 > a.evol-nav-id');
         if(this._custOn){
