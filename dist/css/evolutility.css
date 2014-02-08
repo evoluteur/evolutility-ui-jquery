@@ -16,6 +16,9 @@
 .evo-toolbar > ul > .evo-sel .glyphicon:before {
   color: black;
 }
+.evo-toolbar > ul > li > a {
+  max-height: 35px;
+}
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
 }
@@ -302,6 +305,9 @@ label > .glyphicon-wrench {
 }
 .evo-toolbar > ul > .evo-sel .glyphicon:before {
   color: black;
+}
+.evo-toolbar > ul > li > a {
+  max-height: 35px;
 }
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
