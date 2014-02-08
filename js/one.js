@@ -185,6 +185,11 @@ Evol.ViewOne = Backbone.View.extend({
         switch(f.type) {
             case Evol.Dico.fieldTypes.bool:
                 return $f.prop('checked');
+            case Evol.Dico.fieldTypes.integer:
+                return parseInt($f.val(),10);
+            case Evol.Dico.fieldTypes.decimal:
+            case Evol.Dico.fieldTypes.money:
+                return parseFloat($f.val());
             default:
                 return $f.val();
         }
