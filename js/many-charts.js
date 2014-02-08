@@ -68,13 +68,13 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                 }
                 var entityName=EvoUI.capFirstLetter(uiModel.entities);
                 if(f.type==fTypes.lov){
-                    h.push(EvoUI.Charts.Pie(entityName + ' by ' + f.label, data, labels, style));
+                    h.push(EvoUI.Charts.Pie(Evol.i18n.getLabel('charts.aByB',entityName,f.label), data, labels, style));
                 }else{
-                    h.push(EvoUI.Charts.Bars(entityName + ': ' + f.label, data, labels, style));
+                    h.push(EvoUI.Charts.Bars(Evol.i18n.getLabel('charts.aB',entityName,f.label), data, labels, style));
                 }
             });
         }else{
-            h.push(EvoUI.HTMLMsg(Evol.i18n.nochart,Evol.i18n.badchart));
+            h.push(EvoUI.HTMLMsg(Evol.i18n.nochart, Evol.i18n.nochart));
         }
         h.push(EvoUI.html.clearer);
     }

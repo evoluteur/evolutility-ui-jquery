@@ -8,6 +8,23 @@ Evol.i18n = {
 
 	LOCALE:'EN',    // ENGLISH
 
+    getLabel: function(label, string1, string2){
+        var l;
+        if(label.indexOf('.')>-1){
+            var ns=label.split('.');
+            l=this[ns[0]][ns[1]];
+        }else{
+            l=label;
+        }
+        if(string1){
+            l= l.replace('{0}',string1);
+            if(string2){
+                l= l.replace('{1}',string2);
+            }
+        }
+        return l;
+    },
+
     // --- toolbar ---
     View:'View',
     Edit:'Edit',
@@ -57,6 +74,11 @@ Evol.i18n = {
         //regex:'"{0}" must match the regular expression pattern for "{1}".'
     },
 
+    // --- charts ---
+    charts:{
+        aByB:'{0} by {1}',
+        aB:'{0}: {1}'
+    },
 
     // --- export ---
     export:{
