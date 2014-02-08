@@ -492,12 +492,6 @@ Evol.ViewOne = Backbone.View.extend({
         h.push('</label></div>');
     },
 
-    // prepare to enter a new record
-    newItem: function (){
-        return this.clear()
-            ._updateTitle(Evol.i18n.NewItem.replace('{0}', this.options.uiModel.entity).replace('{1}', this.getSummary()));
-    },
-
     _updateTitle: function (title){
         if(this._uTitle){
             var opts=this.options,
@@ -535,45 +529,6 @@ Evol.ViewOne = Backbone.View.extend({
         //this.$('.evol-warn-error').remove();
         this.$('.has-error').removeClass('has-error');
         this.$('.text-danger').remove();
-        return this;
-    },
-
-    commit: function(fnSuccess, fnError){
-        var msg=this.validate();
-        if(msg===''){
-            var that=this,
-                entityName=Evol.UI.capFirstLetter(this.options.uiModel.entity);
-            if(this.options.mode==='new'){// || this._isNew
-                var collec=(this.model && this.model.collection)?this.model.collection:this.collection;
-                if(collec){
-                    collec.create(this.getData(), {
-                        success: function(m){
-                            fnSuccess(m);
-                            that.setMessage('Record saved.', Evol.i18n.status.added.replace('{0}',entityName).replace('{1}',that.getSummary()), 'success');
-                            that.$el.trigger('save','add');
-                            that._updateTitle();
-                        },
-                        error: fnError
-                    });
-                    this.options.mode='edit';
-                }else{
-                    alert('Can\'t save record b/c no collection is specified.'); //TODO pretty
-                }
-            }else{
-                this.model.set(this.getData());
-                this.model.save('','',{
-                    success: function(m){
-                        fnSuccess(m);
-                        that.setMessage('Record saved.', Evol.i18n.status.updated.replace('{0}',entityName).replace('{1}',that.getSummary()), 'success');
-                        that.$el.trigger('save','update');
-                        that._updateTitle();
-                    },
-                    error: fnError
-                });
-            }
-        }else{
-            this.setMessage('Invalid data.', msg, 'warning');
-        }
         return this;
     },
 
@@ -644,46 +599,14 @@ Evol.ViewOne = Backbone.View.extend({
          }
      }*/
 
-    setMessage: function(title, content,style){
-        var $msg=this.$('[data-id="msg"]');
-        if($msg.length){
-            $msg.html('<strong>'+title+'</strong>'+content);
-        }else{
-            this.$el.prepend(Evol.UI.HTMLMsg(title, content, style));
-        }
-        return this;
-    },
-
-    clearMessage: function(){
-        var $msg=this.$('[data-id="msg"]')
-            .fadeOut(300,function(){
-                $msg.remove();
-            });
-        return this;
-    },
-
     clearMessages: function(){
-        return this.clearErrors().clearMessage();
+        return this.clearErrors();
     },
 
     click_button: function (evt) {
-        var that=this,
-            buttonId = $(evt.currentTarget).data('id');
+        var buttonId = $(evt.currentTarget).data('id');
         evt.stopImmediatePropagation();
-        if(buttonId==='cancel'){
-
-        }else{
-            this.commit(function(m){
-                if (buttonId==='save-add') {
-                    that.newItem();
-                }else{
-                    that.model=m;
-                    that.setModel(m);
-                }
-            },function(){
-                alert('error'); //TODO make it nice looking
-            });
-        }
+        this.$el.trigger('action', buttonId);
     },
 
     click_toggle: function (evt) {

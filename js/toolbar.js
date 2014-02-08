@@ -9,13 +9,14 @@
 
 var Evol = Evol || {};
 
+// toolbar widget which also acts as a controller for all views "one" and "many" as well as actions
 Evol.ViewToolbar = Backbone.View.extend({
 
     events: {
         'click .nav a': 'click_toolbar',
         'list.navigate div': 'click_navigate',
         'click #XP': 'click_download',
-        'save > div': 'saveItem'
+        'action > div': 'action_view'
     },
 
     options: {
@@ -178,7 +179,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             this._isNew = true; // TODO model.isNew
             this.model=new opts.modelClass();
             this.model.collection=collec;
-            this.curView.newItem(this.model);
+            this.newItem();
             this.curView.options.mode='new';
         }else{
             this._isNew = false;
@@ -363,15 +364,67 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
     },
 
-    saveItem: function(evt,ui){
-        if(ui==='add'){
-            this._isNew=false; // TODO not if saveandaddnew
-            this.setButtons('edit');
+    saveItem: function(saveAndAdd){
+        var that=this,
+            vw=this.curView,
+            msg=vw.validate();
+
+        function fnSuccess(m){
+            if (saveAndAdd) {
+                that.newItem();
+            }else{
+                that.model=m;
+                that._isNew=false;
+                that.setButtons('edit');
+                vw.setModel(m);
+            }
+            vw._updateTitle();
         }
+
+        if(msg===''){
+            var entityName=Evol.UI.capFirstLetter(this.options.uiModel.entity);
+            if(this._isNew){
+                var collec=(this.model && this.model.collection)?this.model.collection:this.collection;
+                if(collec){
+                    collec.create(this.getData(), {
+                        success: function(m){
+                            fnSuccess(m);
+                            that.setMessage('Record saved.', Evol.i18n.getLabel('status.added',entityName,vw.getSummary()), 'success');
+                        },
+                        error:function(err){
+                            alert('error');
+                        }
+                    });
+                    this.options.mode='edit';
+                }else{
+                    alert('Can\'t save record b/c no collection is specified.'); //TODO pretty
+                }
+            }else{
+                this.model.set(this.getData());
+                this.model.save('','',{
+                    success: function(m){
+                        fnSuccess(m);
+                        that.setMessage('Record saved.', Evol.i18n.getLabel('status.updated',entityName,vw.getSummary()), 'success');
+                    },
+                    error:function(err){
+                        alert('error');
+                    }
+                });
+            }
+        }else{
+            this.setMessage('Invalid data.', msg, 'warning');
+        }
+        return this;
+    },
+
+    cancelItem: function(){
+
     },
 
     newItem: function(){
-
+        var vw=this.curView;
+        return vw.clear()
+            ._updateTitle(Evol.i18n.getLabel('NewItem', this.options.uiModel.entity, vw.getSummary()));
     },
 
     deleteItem: function(){
@@ -379,7 +432,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             entityValue=this.curView.getSummary(),
             delModel=this.curView.model;
         // TODO good looking msgbox
-        if (delModel && confirm(Evol.i18n.DeleteEntity.replace('{0}', entityName).replace('{1}', entityValue))) {
+        if (delModel && confirm(Evol.i18n.getLabel('DeleteEntity', entityName, entityValue))) {
             var that=this,
                 collec=this.collection,
                 delIdx=_.indexOf(collec.models, delModel),
@@ -407,12 +460,35 @@ Evol.ViewToolbar = Backbone.View.extend({
                         this.model = newModel;
                         that.curView.setModel(newModel);
                     }
-                    that.curView.setMessage('Record Deleted.', Evol.i18n.status.deleted.replace('{0}', Evol.UI.capFirstLetter(entityName)).replace('{1}', entityValue), 'success');
+                    that.setMessage('Record Deleted.', Evol.i18n.getLabel('status.deleted', Evol.UI.capFirstLetter(entityName), entityValue), 'success');
                 },
                 error:function(err){
                     alert('error');
                 }
             });
+        }
+    },
+
+    setMessage: function(title, content,style){
+        var $msg=this.$('[data-id="msg"]');
+        if($msg.length){
+            $msg.html('<strong>'+title+'</strong>'+content).show();
+        }else{
+            this.$el.prepend(Evol.UI.HTMLMsg(title, ' '+content, style));
+        }
+        return this;
+    },
+
+    clearMessage: function(){
+        this.$('[data-id="msg"]').remove();
+        return this;
+    },
+
+    action_view: function(evt, actionId){
+        if(actionId==='cancel'){
+
+        }else{
+            this.saveItem(actionId==='save-add');
         }
     },
 
@@ -441,7 +517,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             case 'next':
                 this.browse(toolId);
                 break;
-            case 'new-field':// ui-dico
+            case 'new-field':
                 Evol.Dico.showDesigner('', 'field', $e);
                 break;
             //case 'new-panel':// ui-dico
@@ -451,18 +527,16 @@ Evol.ViewToolbar = Backbone.View.extend({
                 }
                 break;
         }
-        evt.stopImmediatePropagation();
         this.$el.trigger('toolbar.'+toolId);
     },
 
     click_navigate: function(evt,ui){
-        var m = this.model.collection.get(ui.id);
+        var m=this.collection.get(ui.id);
+        evt.stopImmediatePropagation();
         this.model=m;
         this.setView(this._prevOne || 'edit');
-        this.curView.model=m;
+        this.curView.setModel(m);
         // todo: change model for all views / or model event
-        this.curView.render();
-        evt.stopImmediatePropagation();
     },
 
     click_download: function(evt){
