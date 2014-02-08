@@ -417,8 +417,8 @@ var winecellar_ui = {
             type: 'tab',
             label: 'Wine Tasting',
             elements: [
-
-                { type: 'panel-list',
+                {
+                    type: 'panel-list',
                     id:'pnl-Degustations',
                     attr:'degustation',
                     label: 'Degustations',
@@ -443,6 +443,7 @@ var winecellar_ui = {
                     width: 100,
                     elements: [
                         {
+                            id: 'comments',
                             type: 'textmultiline',
                             label: 'Comments',
                             maxlength: '300',
