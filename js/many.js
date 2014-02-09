@@ -19,7 +19,7 @@ Evol.ViewMany = Backbone.View.extend({
     options: {
         style: 'panel-info',
         pageSize: 20,
-        title: '#title', // TODO FIX
+        titleSelector: '#title',
         selectable: true
     },
 
@@ -32,7 +32,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     initialize: function (opts) {
         var that=this;
-        _.extend(this.options, opts);
+        this.options=_.extend(this.options, opts);
         this._filter=[];
         if(this.collection){
             this.collection.on('change', function(model){
@@ -141,7 +141,11 @@ Evol.ViewMany = Backbone.View.extend({
     //},
 
     _updateTitle: function (){
-        //$(this.options.title).html(this.model.get('title'));
+        $(this.options.titleSelector).html(this.getTitle());
+    },
+
+    getTitle: function (){
+        return Evol.UI.capFirstLetter(this.options.uiModel.entities);
     },
 
     getFields: function (){

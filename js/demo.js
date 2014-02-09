@@ -51,7 +51,8 @@ function setDemo(uiModel, localStorage, data, style){
                     modelClass: M,
                     collection: ms,
                     collectionClass: Ms,
-                    uiModel: uiModel
+                    uiModel: uiModel,
+                    titleSelector: '#title'
                 });
 
             $('#recs > a').on('click', function(evt){

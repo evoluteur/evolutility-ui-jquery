@@ -24,6 +24,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         defaultView: 'list',
         style: 'panel-info',
         display: 'tooltip', // tooltip, text, icon, none
+        titleSelector: '#title',
         buttons: {
             // --- views for one ---
             edit: true,
@@ -216,7 +217,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                     model: this.model,
                     collection: this.collection,
                     uiModel: opts.uiModel,
-                    style: opts.style
+                    style: opts.style,
+                    titleSelector: opts.titleSelector
                 };
                 this.$('[data-id="new"]').show();
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
@@ -246,9 +248,15 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.curView=vw;
                 this.curViewName=viewName;
                 this.viewsHash[viewName]=vw;
+                if(this.curView._updateTitle){
+                    this.curView._updateTitle(); // TODO fix: make public?
+                }else{
+                    //TODO better way
+                    $(this.options.titleSelector).html(this.curView.getTitle());
+                }
             }
         }
-        this.setButtons(viewName);
+        this.setMode(viewName);
         return this;
 	},
 
@@ -266,7 +274,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this._toolbarButtons;
     },
 
-    setButtons: function(mode){
+    setMode: function(mode){
         function oneMany(showOne, showMany){
             Evol.UI.setVisible(tbBs.ones, showOne);
             Evol.UI.setVisible(tbBs.manys, showMany);
@@ -375,7 +383,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             }else{
                 that.model=m;
                 that._isNew=false;
-                that.setButtons('edit');
+                that.setMode('edit');
                 vw.setModel(m);
             }
             vw._updateTitle();
@@ -389,7 +397,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     collec.create(this.getData(), {
                         success: function(m){
                             fnSuccess(m);
-                            that.setMessage('Record saved.', Evol.i18n.getLabel('status.added',entityName,vw.getSummary()), 'success');
+                            that.setMessage('Record saved.', Evol.i18n.getLabel('status.added',entityName,vw.getTitle()), 'success');
                         },
                         error:function(err){
                             alert('error');
@@ -404,7 +412,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.model.save('','',{
                     success: function(m){
                         fnSuccess(m);
-                        that.setMessage('Record saved.', Evol.i18n.getLabel('status.updated',entityName,vw.getSummary()), 'success');
+                        that.setMessage('Record saved.', Evol.i18n.getLabel('status.updated',entityName,vw.getTitle()), 'success');
                     },
                     error:function(err){
                         alert('error');
@@ -424,12 +432,12 @@ Evol.ViewToolbar = Backbone.View.extend({
     newItem: function(){
         var vw=this.curView;
         return vw.clear()
-            ._updateTitle(Evol.i18n.getLabel('NewItem', this.options.uiModel.entity, vw.getSummary()));
+            ._updateTitle(Evol.i18n.getLabel('NewEntity', this.options.uiModel.entity, vw.getTitle()));
     },
 
     deleteItem: function(){
         var entityName=this.options.uiModel.entity,
-            entityValue=this.curView.getSummary(),
+            entityValue=this.curView.getTitle(),
             delModel=this.curView.model;
         // TODO good looking msgbox
         if (delModel && confirm(Evol.i18n.getLabel('DeleteEntity', entityName, entityValue))) {

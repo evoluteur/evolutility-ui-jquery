@@ -578,7 +578,7 @@ Evol.i18n = {
             var ns=label.split('.');
             l=this[ns[0]][ns[1]];
         }else{
-            l=label;
+            l=this[label];
         }
         if(string1){
             l= l.replace('{0}',string1);
@@ -594,11 +594,11 @@ Evol.i18n = {
     Edit:'Edit',
     // Login:'Login',
     New:'New',
-    NewItem:'New {0}', //'New Item',
+    NewEntity:'New {0}', //'New Item',
     NewUpload:'New Upload',
     //Search:'Search',
     //AdvSearch:'Advanced Search',
-    NewSearch:'New Search',
+    //NewSearch:'New Search',
     Selections:'Selections',
     Selection:'Selection',
     Export:'Export',
@@ -614,6 +614,13 @@ Evol.i18n = {
     nopix:'No picture.',
     nochart:'No charts available.',
     badchart:'The data structure doesn\'t allow for auto-generated charts.',
+
+    // --- buttons ---
+    Save:'Save',
+    SaveAdd:'Save and Add Another',
+    Cancel:'Cancel',
+    NoChange:'No Change',
+    NoX:'No {0}',
 
     // --- status ---
     status:{
@@ -646,7 +653,8 @@ Evol.i18n = {
 
     // --- export ---
     export:{
-        ExportEntity: 'Export this {0}', // {0}=entity
+        ExportEntity: 'Export {0}', // {0}=entity
+        ExportEntities: 'Export {0}', // {0}=entities
         ExportHeader: 'Header',
         ExportSeparator: 'Separator',
         ExportFirstLine:'First line for field names',
@@ -666,13 +674,6 @@ Evol.i18n = {
         xpSQLId:'Enable identity insert',
         DownloadEntity:'Download {0}'
     },
-
-    // --- buttons ---
-    Save:'Save',
-    SaveAdd:'Save and Add Another',
-    Cancel:'Cancel',
-    NoChange:'No Change',
-    NoX:'No {0}',
 
     // --- filters ---
     filters:{
@@ -890,7 +891,7 @@ Evol.ViewMany = Backbone.View.extend({
     options: {
         style: 'panel-info',
         pageSize: 20,
-        title: '#title', // TODO FIX
+        titleSelector: '#title',
         selectable: true
     },
 
@@ -903,7 +904,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     initialize: function (opts) {
         var that=this;
-        _.extend(this.options, opts);
+        this.options=_.extend(this.options, opts);
         this._filter=[];
         if(this.collection){
             this.collection.on('change', function(model){
@@ -959,6 +960,7 @@ Evol.ViewMany = Backbone.View.extend({
                             case 0:
                                 want=!fv;
                                 break;
+
                         }
                     }
                     return want;
@@ -1011,7 +1013,11 @@ Evol.ViewMany = Backbone.View.extend({
     //},
 
     _updateTitle: function (){
-        //$(this.options.title).html(this.model.get('title'));
+        $(this.options.titleSelector).html(this.getTitle());
+    },
+
+    getTitle: function (){
+        return Evol.UI.capFirstLetter(this.options.uiModel.entities);
     },
 
     getFields: function (){
@@ -1149,6 +1155,7 @@ Evol.ViewMany = Backbone.View.extend({
         var $e=$(evt.currentTarget),
             id=$e.data('id'),
             eType=$e.data('type');
+
         Evol.Dico.showDesigner(id, eType, $e);
         this.$el.trigger(eType+'.customize', {id: id, type:eType});
     }
@@ -1521,7 +1528,7 @@ Evol.ViewOne = Backbone.View.extend({
         });
     },
 
-    getSummary: function(){
+    getTitle: function(){
         if(this.model){
             var lf=this.options.uiModel.leadfield;
             return _.isFunction(lf)?lf(this.model):this.model.get(lf);
@@ -1929,7 +1936,7 @@ Evol.ViewOne = Backbone.View.extend({
                 if(title){
                     t=title;
                 }else if(lf!==undefined && lf!==''){
-                    t=this.getSummary();
+                    t=this.getTitle();
                 }else{
                     t=Evol.UI.capFirstLetter(opts.uiModel.entities);
                 }
@@ -2277,6 +2284,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         defaultView: 'list',
         style: 'panel-info',
         display: 'tooltip', // tooltip, text, icon, none
+        titleSelector: '#title',
         buttons: {
             // --- views for one ---
             edit: true,
@@ -2469,7 +2477,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                     model: this.model,
                     collection: this.collection,
                     uiModel: opts.uiModel,
-                    style: opts.style
+                    style: opts.style,
+                    titleSelector: opts.titleSelector
                 };
                 this.$('[data-id="new"]').show();
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
@@ -2499,9 +2508,15 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.curView=vw;
                 this.curViewName=viewName;
                 this.viewsHash[viewName]=vw;
+                if(this.curView._updateTitle){
+                    this.curView._updateTitle(); // TODO fix: make public?
+                }else{
+                    //TODO better way
+                    $(this.options.titleSelector).html(this.curView.getTitle());
+                }
             }
         }
-        this.setButtons(viewName);
+        this.setMode(viewName);
         return this;
 	},
 
@@ -2519,7 +2534,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this._toolbarButtons;
     },
 
-    setButtons: function(mode){
+    setMode: function(mode){
         function oneMany(showOne, showMany){
             Evol.UI.setVisible(tbBs.ones, showOne);
             Evol.UI.setVisible(tbBs.manys, showMany);
@@ -2628,7 +2643,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             }else{
                 that.model=m;
                 that._isNew=false;
-                that.setButtons('edit');
+                that.setMode('edit');
                 vw.setModel(m);
             }
             vw._updateTitle();
@@ -2642,7 +2657,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     collec.create(this.getData(), {
                         success: function(m){
                             fnSuccess(m);
-                            that.setMessage('Record saved.', Evol.i18n.getLabel('status.added',entityName,vw.getSummary()), 'success');
+                            that.setMessage('Record saved.', Evol.i18n.getLabel('status.added',entityName,vw.getTitle()), 'success');
                         },
                         error:function(err){
                             alert('error');
@@ -2657,7 +2672,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.model.save('','',{
                     success: function(m){
                         fnSuccess(m);
-                        that.setMessage('Record saved.', Evol.i18n.getLabel('status.updated',entityName,vw.getSummary()), 'success');
+                        that.setMessage('Record saved.', Evol.i18n.getLabel('status.updated',entityName,vw.getTitle()), 'success');
                     },
                     error:function(err){
                         alert('error');
@@ -2677,12 +2692,12 @@ Evol.ViewToolbar = Backbone.View.extend({
     newItem: function(){
         var vw=this.curView;
         return vw.clear()
-            ._updateTitle(Evol.i18n.getLabel('NewItem', this.options.uiModel.entity, vw.getSummary()));
+            ._updateTitle(Evol.i18n.getLabel('NewEntity', this.options.uiModel.entity, vw.getTitle()));
     },
 
     deleteItem: function(){
         var entityName=this.options.uiModel.entity,
-            entityValue=this.curView.getSummary(),
+            entityValue=this.curView.getTitle(),
             delModel=this.curView.model;
         // TODO good looking msgbox
         if (delModel && confirm(Evol.i18n.getLabel('DeleteEntity', entityName, entityValue))) {
@@ -2827,11 +2842,11 @@ Evol.ViewExport = Backbone.View.extend({
         toolbar: true,
         model: null,
         uiModel: null,
+        many: true,
         style: 'normal',
         prefix: 'tbr'
     },
 
-    many: true,
     viewName: "export",
 
     initialize: function (opts) {
@@ -2971,6 +2986,14 @@ Evol.ViewExport = Backbone.View.extend({
             this.fields=Evol.Dico.getFields(opts.uiModel,opts.fnFilter,opts.mode);
         }
         return this.fields;
+    },
+
+    getTitle: function(){
+        if(this.options.many){
+            return Evol.i18n.getLabel('export.ExportEntities', this.options.uiModel.entities);
+        }else{
+            return Evol.i18n.getLabel('export.ExportEntity', this.options.uiModel.entity);
+        }
     },
 
     _preview: function (format) {

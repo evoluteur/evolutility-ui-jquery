@@ -26,11 +26,11 @@ Evol.ViewExport = Backbone.View.extend({
         toolbar: true,
         model: null,
         uiModel: null,
+        many: true,
         style: 'normal',
         prefix: 'tbr'
     },
 
-    many: true,
     viewName: "export",
 
     initialize: function (opts) {
@@ -170,6 +170,14 @@ Evol.ViewExport = Backbone.View.extend({
             this.fields=Evol.Dico.getFields(opts.uiModel,opts.fnFilter,opts.mode);
         }
         return this.fields;
+    },
+
+    getTitle: function(){
+        if(this.options.many){
+            return Evol.i18n.getLabel('export.ExportEntities', this.options.uiModel.entities);
+        }else{
+            return Evol.i18n.getLabel('export.ExportEntity', this.options.uiModel.entity);
+        }
     },
 
     _preview: function (format) {

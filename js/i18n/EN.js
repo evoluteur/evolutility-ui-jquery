@@ -14,7 +14,7 @@ Evol.i18n = {
             var ns=label.split('.');
             l=this[ns[0]][ns[1]];
         }else{
-            l=label;
+            l=this[label];
         }
         if(string1){
             l= l.replace('{0}',string1);
@@ -30,11 +30,11 @@ Evol.i18n = {
     Edit:'Edit',
     // Login:'Login',
     New:'New',
-    NewItem:'New {0}', //'New Item',
+    NewEntity:'New {0}', //'New Item',
     NewUpload:'New Upload',
     //Search:'Search',
     //AdvSearch:'Advanced Search',
-    NewSearch:'New Search',
+    //NewSearch:'New Search',
     Selections:'Selections',
     Selection:'Selection',
     Export:'Export',
@@ -50,6 +50,13 @@ Evol.i18n = {
     nopix:'No picture.',
     nochart:'No charts available.',
     badchart:'The data structure doesn\'t allow for auto-generated charts.',
+
+    // --- buttons ---
+    Save:'Save',
+    SaveAdd:'Save and Add Another',
+    Cancel:'Cancel',
+    NoChange:'No Change',
+    NoX:'No {0}',
 
     // --- status ---
     status:{
@@ -82,7 +89,8 @@ Evol.i18n = {
 
     // --- export ---
     export:{
-        ExportEntity: 'Export this {0}', // {0}=entity
+        ExportEntity: 'Export {0}', // {0}=entity
+        ExportEntities: 'Export {0}', // {0}=entities
         ExportHeader: 'Header',
         ExportSeparator: 'Separator',
         ExportFirstLine:'First line for field names',
@@ -102,13 +110,6 @@ Evol.i18n = {
         xpSQLId:'Enable identity insert',
         DownloadEntity:'Download {0}'
     },
-
-    // --- buttons ---
-    Save:'Save',
-    SaveAdd:'Save and Add Another',
-    Cancel:'Cancel',
-    NoChange:'No Change',
-    NoX:'No {0}',
 
     // --- filters ---
     filters:{

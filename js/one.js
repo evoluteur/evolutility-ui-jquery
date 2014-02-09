@@ -93,7 +93,7 @@ Evol.ViewOne = Backbone.View.extend({
         });
     },
 
-    getSummary: function(){
+    getTitle: function(){
         if(this.model){
             var lf=this.options.uiModel.leadfield;
             return _.isFunction(lf)?lf(this.model):this.model.get(lf);
@@ -501,7 +501,7 @@ Evol.ViewOne = Backbone.View.extend({
                 if(title){
                     t=title;
                 }else if(lf!==undefined && lf!==''){
-                    t=this.getSummary();
+                    t=this.getTitle();
                 }else{
                     t=Evol.UI.capFirstLetter(opts.uiModel.entities);
                 }
