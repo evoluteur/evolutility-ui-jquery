@@ -18,25 +18,44 @@
     <div class="doc-links">
         <a href="ui-model.html">ui-model</a> -
         <a href="views.html" class="sel">views</a> -
-        <a href="actions.html">actions</a>
+        <a href="controller.html">controller</a>
     </div>
     <div class="clearfix"></div>
 </div>
 
-<h1><strong>Views</strong></h1>
+<h1>Views</h1>
 
+<p>All views for a particular model are defined by a single <a href="ui-model.html">ui-model</a>.</p>
 <p>
     2 sets of views:
 <ul>
-    <li>for <strong>one</strong> model</li>
-    <li>for a collection of <strong>many</strong> models</li>
+    <li>Evol.ViewOne - Views for <strong>one</strong> model</li>
+    <li>Evol.ViewMany - Views for for a collection of <strong>many</strong> models</li>
 </ul>
 </p>
 
-<h2><strong>Views for Many</strong></h2>
+<h2>Evol.ViewOne</h2>
 
-<p>Backbone views to see a collection w/ many records.</p>
-<p>All views are defined by the same <a href="ui-model.html">ui-model</a> defines</p>
+<p>Backbone views to edit one model (a record at a time)</p>
+<h3>Edit</h3>
+<p>All fields</p>
+<code>
+    new Evol.ViewOne.Edit(myConfig);</code>
+
+<h3>Mini</h3>
+<p>Only important fields</p>
+<code>
+    new Evol.ViewOne.Mini(myConfig);</code>
+
+<h3>JSON</h3>
+<p>JSON representation of the data.</p>
+<code>
+    new Evol.ViewOne.JSON(myConfig);</code>
+
+
+<h2>Evol.ViewMany</h2>
+
+<p>Backbone views for a collection w/ many records.</p>
 
 
 <h3>list</h3>
@@ -56,43 +75,55 @@
     new Evol.ViewMany.Charts(myConfig);</code>
 
 
-
-<h2><strong>Views for One</strong></h2>
-
-<p>Backbone views to edit one model (a record at a time)</p>
-<h3>edit</h3>
-<p>All fields</p>
-<code>
-    new Evol.ViewOne.Edit(myConfig);</code>
-
-<h3>mini</h3>
-<p>Only important fields</p>
-<code>
-    new Evol.ViewOne.Mini(myConfig);</code>
-
-<h3>json</h3>
-<p>JSON representation of the data.</p>
-<code>
-    new Evol.ViewOne.JSON(myConfig);</code>
-
 <h2>Methods</h2>
 
-<h3>All views</h3>
+<h3>Evol.ViewOne and Evol.ViewMany</h3>
 
-getFields(): returns the list of fields used by the view.
+<p>cardinality: '1' for Evol.ViewOne.*, 'n' for Evol.ViewMany.*.</p>
+<p>render()</p>
+<p>getFields(): returns the list of fields present in the view.</p>
+<p>setModel(model)</p>
+<p>getModel()</p>
+<p>setUIModel(uiModel)</p>
+<p>getUIModel()</p>
+<p>getTitle()</p>
 
-
-<h3>One</h3>
-
+<h3>Evol.ViewOne</h3>
+<p>clear()</p>
 <p>getData()</p>
 <p>setData(data)</p>
 <p>getFields()</p>
-<p>clear()</p>
-setFieldValue: function (fid, value)
+<p>setFieldValue(fid, value)</p>
+<p>getFieldValue(fid)</p>
+validate
+clearErrors
 
-<h3>Many</h3>
+<h3>Evol.ViewMany</h3>
+<p>setCollection(collec)</p>
+<p>getCollection()</p>
+<p>setFilter(filter)</p>
+<p>getFilter()</p>
 
 
+
+<h2>Properties</h2>
+
+<h3>Evol.ViewOne and Evol.ViewMany</h3>
+
+<p>cardinality: '1' for Evol.ViewOne.*, 'n' for Evol.ViewMany.*.</p>
+<p>viewName: name of the view (the '*' in the Evol.ViewOne.* instanciated).</p>
+
+
+
+<h2>Events</h2>
+
+<h3>Evol.ViewOne</h3>
+
+<p>action: w/ data = 'add', 'add-new', 'cancel'</p>
+
+<h3>ViewMany</h3>
+
+<p>validate</p>
 
 <p><br/>evolutility.js at <a href="https://github.com/evoluteur/evolutility" target="download">GitHub</a></p>
 

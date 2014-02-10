@@ -18,7 +18,7 @@
     <div class="doc-links">
         <a href="ui-model.html" class="sel">ui-model</a> -
         <a href="views.html">views</a> -
-        <a href="actions.html">actions</a>
+        <a href="controller.html">controller</a>
     </div>
     <div class="clearfix"></div>
 </div>
@@ -35,47 +35,36 @@
 
 <p>Let's make a model for the UI the same way Backbone provides a model for the data.</p>
 
-<p>An object containing tabs containing panels containing fields. This ui-model defines all <a href="views.html">views</a>.</p>
-
 <p>This is not fully defined nor implemented yet but a work in progress based on <a href="http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications" target="evomm">Evolutility minimalist meta-model</a>.</p>
 
 
 <section id="object">
 <h2>object</h2>
 
-<p><code>form</code> is the root element. It doesn't represent one
-    single web form, but all necessary web forms (Edit, View, List, Search,
-    Advanced Search, Export) at once.
-    It has the optional attributes <code>label</code>, <code>description</code> and <code>version</code>, and the required namespace <code>xmlns</code>.
-</p>
+<p>An "object" is the UI information added to the Backbone model.
+This ui-model defines all <a href="views.html">views</a>.</p>
 
-<p>The <code>form</code> element contains one element <code>
-    data</code> and one or more elements <code>panel</code>. Fields are displayed or not on each web form based on
-    the attributes <code>search</code>, <code>
-        searchlist</code>, and <code>searchadv</code>.</p>
-
-<p>
 
 
 <table class="table table-bordered">
     <tbody><tr>
-        <td style="width: 120px; ">entity
+        <td style="width: 120px; ">entity<span class="evol-required">*</span>
         </td>
         <td>User's object name for the database object (for example: &quot;task&quot; for a
             to do list application).
         </td>
     </tr>
     <tr>
-        <td>entities
+        <td>entities<span class="evol-required">*</span>
         </td>
         <td>Plural for <code>entity</code> (example &quot;tasks&quot; for the to do list).
         </td>
     </tr>
     <tr>
-        <td>elements[]
+        <td>elements[]<span class="evol-required">*</span>
         </td>
         <td>
-            Array of tabs or panels.
+            Array of tabs or panels which contains fields.
         </td>
     </tr>
     <tr>
@@ -98,14 +87,13 @@
             Example: <code>$title</code>=&quot;#title&quot; </td>
     </tr>
     </tbody></table>
+
+    <span class="evol-required">*</span>: required attribute.
 </section>
 
 <section id="field">
     <h2>field</h2>
-    <p>The elements <code>field</code> represents fields on the screen, and database columns at once. It is
-        the most used element and the element with the most attributes. Database
-        columns hidden to the user (like the primary key of the driving table) are not
-        declared.</p>
+    <p>Attributes in your Backbone model are mapped to fields in the UI.</p>
 
     <table class="table table-bordered">
         <tbody>
@@ -115,20 +103,21 @@
         </tr>
         <tr>
             <td>attribute </td>
-            <td>Model attribute mapping to the field.</td>
+            <td>Model attribute mapping to the field.
+                If no value is provided for "attribute", the value of the attribute "id" is used.</td>
         </tr>
         <tr>
-            <td>id </td>
+            <td>id<span class="evol-required">*</span></td>
             <td>Field Id in the UI.</td>
         </tr>
         <tr>
-            <td>label, labelone,<br /> labelmany
+            <td>label<span class="evol-required">*</span>, labelone,<br /> labelmany
             </td>
             <td>Field title (in different views). Only <code>label</code> is mandatory and will be the default for all other modes if not specified.
             </td>
         </tr>
         <tr>
-            <td>type
+            <td>type<span class="evol-required">*</span>
             </td>
             <td>
                 The type of the field in the UI.
@@ -143,6 +132,7 @@
                     <li><span data-id="#html"><img alt="" class="Icon" src="pix/dico/ft-htm.gif">html (RTF)</span></li>
                     <li><span data-id="#image"><img src="pix/dico/ft-img.gif" alt="" class="Icon">image</span></li>
                     <li><span data-id="#lov"><img src="pix/dico/ft-lov.gif" alt="" class="Icon">lov (list of values)</span></li>
+                    <li><span data-id="#textmoney"><img src="pix/dico/ft-money.gif" alt="" class="Icon">money</span></li>
                     <li><span data-id="#text"><img src="pix/dico/ft-txt.gif" alt="" class="Icon">text</span></li>
                     <li><span data-id="#textmultiline"><img src="pix/dico/ft-txtml.gif" alt="" class="Icon">textmultiline</span></li>
                 </ul>
@@ -195,6 +185,7 @@
             <td>width
             </td>
             <td><p>Width of the field in percentage of the Panel it belongs to.
+                <br/>Default: 100%
             </p></td>
         </tr>
 
@@ -313,6 +304,8 @@
 
 <section id="sections">
     <h2>sections</h2>
+<p>Fields are grouped in panels and panels can be grouped in tabs. </p>
+
 
     <h3>panel</h3>
     <p>The <code>panel</code> element is used to visually group fields together on the screen.</p>

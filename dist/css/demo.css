@@ -99,6 +99,11 @@ body {
 .evo-icon-16 {
   margin-right: 6px !important;
 }
+/* index.html */
+.title2 {
+  font-size: smaller;
+  font-weight: normal;
+}
 /* winecellar demo */
 .winecellar .evol-many-cards > div.panel {
   height: 240px !important;
