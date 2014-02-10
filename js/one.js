@@ -78,12 +78,19 @@ Evol.ViewOne = Backbone.View.extend({
             .setData(model);
     },
 
+    getModel:function(model) {
+        return this.model;
+    },
+
     setUIModel: function(uimodel) {
         this.options.uiModel = uimodel;
         var d=this.getData();
         return this
             .render()
             .setData(d);
+    },
+    getUIModel: function(uimodel) {
+        return this.options.uiModel;
     },
 
     modelUpdate: function (model) {
@@ -518,7 +525,7 @@ Evol.ViewOne = Backbone.View.extend({
         var fs =  this.getFields();
         this.clearMessages();
         if (_.isArray(fs)) {
-            this.$el.trigger('view.validate');
+            this.$el.trigger('validate'); // TODO decide if use 'view.validate'
             return Evol.UI.Validation.checkFields(this.$el, fs, this.prefix);
         }
         return false;

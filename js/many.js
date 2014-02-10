@@ -131,9 +131,17 @@ Evol.ViewMany = Backbone.View.extend({
         return this;
     },
 
+    getCollection: function(){
+        return this.collection;
+    },
+
     setFilter: function(filter){
         this._filter=filter;
         return this;
+    },
+
+    getFilter: function(filter){
+        return this._filter;
     },
 
     //updateModel: function () {
