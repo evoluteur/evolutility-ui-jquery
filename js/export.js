@@ -12,7 +12,7 @@ var Evol = Evol || {},
 
 Evol.ViewExport = Backbone.View.extend({
 
-    version: '0.0.1',
+    version: '0.0.2',
 
     events: {
         "change .evol-xpt-format": "click_format",

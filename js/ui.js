@@ -19,7 +19,7 @@ Evol.CSS = {
 
 Evol.UI = {
 
-    version: '0.0.1',
+    version: '0.0.2',
 
     // --- static html fragments ---
     html: {

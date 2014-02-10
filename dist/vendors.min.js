@@ -1,4 +1,4 @@
-/*   evolutility 0.0.1 */
+/*   evolutility 0.0.2 */
 
 /*   (c) 2014 Olivier Giulieri */
 
