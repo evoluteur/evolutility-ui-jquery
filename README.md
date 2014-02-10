@@ -42,7 +42,10 @@ We will also need a toolbar and a controller (for now the same js class).
 
 ## 4 - Demo apps
 
-Soon. For now, please download the code and try it on your computer.
+[To Do list](http://evoluteur.github.io/evolutility/demo/todo.html),
+[AddressBook](http://evoluteur.github.io/evolutility/demo/contact.html),
+[Wine Cellar](http://evoluteur.github.io/evolutility/demo/winecellar.html).
+
 
 ## 5 - The app to make other apps
 
