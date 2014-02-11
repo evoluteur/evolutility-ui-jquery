@@ -6,6 +6,13 @@ body {
   color: #777;
   font-weight: 300;
 }
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: #428bca !important;
+}
 #evol {
   margin-bottom: 16px;
   padding: 6px;
