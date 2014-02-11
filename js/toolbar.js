@@ -16,7 +16,8 @@ Evol.ViewToolbar = Backbone.View.extend({
         'click .nav a': 'click_toolbar',
         'list.navigate div': 'click_navigate',
         'click #XP': 'click_download',
-        'action > div': 'action_view'
+        'action > div': 'action_view',
+        'click .alert-dismissable>button': 'clearMessage'
     },
 
     options: {
@@ -292,7 +293,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 			if(this._isNew || mode==='export'){
                 oneMany(false, false);
                 if(this._isNew){
-
+                    $('.evo-dropdown-icons>li[data-cardi="1"]').show();
                 }
 			}else{
 				if(mode==='cards' || mode==='list' || mode==='charts'){
@@ -466,12 +467,16 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
     },
 
-    setMessage: function(title, content,style){
+    setMessage: function(title, content, style){
         var $msg=this.$('[data-id="msg"]');
         if($msg.length){
-            $msg.html('<strong>'+title+'</strong> '+content).show();
+            var ch=$msg.children();
+            $msg.attr('class', 'evo-msg alert alert-'+style+' alert-dismissable');
+            $msg.find('>strong').text(title);
+            $msg.find('>span').text(content);
+            ch.show();
         }else{
-            this.$el.prepend(Evol.UI.HTMLMsg(title, ' '+content, style));
+            $(Evol.UI.HTMLMsg(title, ' '+content, style)).insertAfter(this.$el.children()[0]);
         }
         return this;
     },

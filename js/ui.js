@@ -229,13 +229,12 @@ Evol.UI = {
     },
 
     // --- status ---
-    HTMLMsg: function (title, content, style, dismissable) {
+    HTMLMsg: function (title, content, style) {
         return [
-            '<div data-id="msg" class="alert alert-',style || 'info',
-            dismissable?
-                ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'
-                :'">',
-            '<strong>',title,'</strong> ', content,'</div>'
+            '<div data-id="msg" class="evo-msg alert alert-',style || 'info',
+            ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
+            '<strong>',title,'</strong> <span>',
+            content,'</span></div>'
         ].join('');
     },
 
