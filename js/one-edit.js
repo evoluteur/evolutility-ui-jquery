@@ -18,7 +18,7 @@ Evol.ViewOne.Edit = Evol.ViewOne.extend({
 
     render: function () {
         var h = [];
-        this.renderEdit(h);
+        this._render(h);
         this.$el.html(h.join(''));
         this.setData(this.model);
         this.custOn=false;

@@ -88,7 +88,6 @@ Evol.ViewMany = Backbone.View.extend({
                             case 0:
                                 want=!fv;
                                 break;
-
                         }
                     }
                     return want;
@@ -117,14 +116,6 @@ Evol.ViewMany = Backbone.View.extend({
         return this;
     },
 
-    setModel: function(model) {
-        if(model && model.collection){
-            this.collection = model.collection;
-        }
-        this.render();
-        return this;
-    },
-
     setCollection: function(collection){
         this.collection = collection;
         this.render();
@@ -140,7 +131,7 @@ Evol.ViewMany = Backbone.View.extend({
         return this;
     },
 
-    getFilter: function(filter){
+    getFilter: function(){
         return this._filter;
     },
 

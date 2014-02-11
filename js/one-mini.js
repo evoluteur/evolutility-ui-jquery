@@ -30,14 +30,14 @@ Evol.ViewOne.Mini = Evol.ViewOne.extend({
     render: function () {
         var mode = this.options.mode,
             h = [];
-        this._renderEdit(h, mode);
+        this._render(h, mode);
         this.$el.html(h.join(''));
         this.setData(this.model);
         this.custOn=false;
         return this;
     },
 
-    _renderEdit: function (h, mode) {
+    _render: function (h, mode) {
         // EDIT and VIEW forms
         var opts = this.options,
             flds = this.getFields(),

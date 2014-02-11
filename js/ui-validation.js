@@ -13,26 +13,28 @@
 // TODO rewrite or use another open source
 Evol.UI.Validation = {
 
-    checkMaxLen: function (F, maxL) {
-        if (F.value.length > maxL){
-            F.value = F.value.substring(0, maxL - 1);
+    checkMaxLen: function (f, maxLen) {
+        if (f.value.length > maxLen){
+            f.value = f.value.substring(0, maxLen - 1);
         }
     },
 
     checkNum: function (F, t) {
         var nv, fv = F.value;
-        if (t.substring(0, 1) == 'i')
+        if (t.substring(0, 1) == 'i'){
             nv = parseInt(fv, 10);
-        else {
+        }else{
             var ln = Evol.i18n.LOCALE;
-            if (ln == 'FR' || ln == 'DA')
+            if (ln == 'FR' || ln == 'DA'){
                 fv = fv.replace(",", ".");
+            }
             nv = parseFloat(fv);
         }
-        if (isNaN(nv))
+        if (isNaN(nv)){
             F.value = '';
-        else if (fv != nv)
+        }else if (fv != nv){
             F.value = nv;
+        }
     },
 
     setValidationFlags: function (p, msgf) {

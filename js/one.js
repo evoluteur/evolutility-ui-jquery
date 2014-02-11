@@ -45,9 +45,8 @@ Evol.ViewOne = Backbone.View.extend({
     render: function () {
         var mode = this.options.mode,
             h = [];
-        this.renderEdit(h, mode);
+        this._render(h, mode);
         this.$el.html(h.join(''));
-        this.setData(this.model);
         this.custOn=false;
         return this;
     },
@@ -78,7 +77,7 @@ Evol.ViewOne = Backbone.View.extend({
             .setData(model);
     },
 
-    getModel:function(model) {
+    getModel:function() {
         return this.model;
     },
 
@@ -89,7 +88,7 @@ Evol.ViewOne = Backbone.View.extend({
             .render()
             .setData(d);
     },
-    getUIModel: function(uimodel) {
+    getUIModel: function() {
         return this.options.uiModel;
     },
 
@@ -229,67 +228,56 @@ Evol.ViewOne = Backbone.View.extend({
         h.push('</div>');
     },
 
-    renderEdit: function (h, mode) {
+    _render: function (h, mode) {
         // EDIT and VIEW forms
         var iTab = -1,
             iPanel = -1,
             opts = this.options,
             elems = opts.uiModel.elements;
 
-        if(mode==='mini'){
-            var flds = Evol.Dico.getFields(opts.uiModel,function(f){
-                    return  f.searchlist || f.required || f.mini;
-                },opts.mode),
-                miniUIModel= {
-                    type: 'panel', class:'evol-mini-holder', label: Evol.UI.capFirstLetter(opts.uiModel.entity), width: 100,
-                    elements: flds
-                };
-            this.renderPanel(h,miniUIModel,'evo-one-mini',mode);
-        }else{
-            h.push('<div class="evo-one-',mode,'">');
-            //this._fieldsHash={};
-            for (var i = 0, iMax = elems.length; i < iMax; i++) {
-                var p = elems[i];
-                switch (p.type) {
-                    case 'tab':
-                        if (iPanel > 0) {
-                            h.push('</div>');
-                            iPanel = -1;
-                        }
-                        if (iTab < 0) {
-                            h.push(Evol.UI.html.clearer);
-                            this.renderTabs(h, elems);
-                            h.push('<div class="tab-content">');
-                        }
-                        iTab++;
-                        h.push('<div id="evol-tab-', i, '" class="tab-pane', (i === 1 ? ' active">' : '">'));
-                        this.renderTab(h, p, mode);
-                        if (iTab == iMax - 1) {
-                            h.push('</div>');
-                        }
-                        break;
-                    case 'panel':
-                        if (iPanel < 0) {
-                            h.push('<div class="evol-pnls">');
-                            iPanel = 1;
-                        }
-                        this.renderPanel(h, p, 'p-' + p.id, mode);
-                        break;
-                    case 'panel-list':
-                        this._hasSubCollec=true;
-                        if (iPanel < 0) {
-                            h.push('');
-                            iPanel = 1;
-                        }
-                        this.renderPanelList(h, p, mode);
-                        break;
-                }
+        h.push('<div class="evo-one-',mode,'">');
+        //this._fieldsHash={};
+        for (var i = 0, iMax = elems.length; i < iMax; i++) {
+            var p = elems[i];
+            switch (p.type) {
+                case 'tab':
+                    if (iPanel > 0) {
+                        h.push('</div>');
+                        iPanel = -1;
+                    }
+                    if (iTab < 0) {
+                        h.push(Evol.UI.html.clearer);
+                        this.renderTabs(h, elems);
+                        h.push('<div class="tab-content">');
+                    }
+                    iTab++;
+                    h.push('<div id="evol-tab-', i, '" class="tab-pane', (i === 1 ? ' active">' : '">'));
+                    this.renderTab(h, p, mode);
+                    if (iTab == iMax - 1) {
+                        h.push('</div>');
+                    }
+                    break;
+                case 'panel':
+                    if (iPanel < 0) {
+                        h.push('<div class="evol-pnls">');
+                        iPanel = 1;
+                    }
+                    this.renderPanel(h, p, 'p-' + p.id, mode);
+                    break;
+                case 'panel-list':
+                    this._hasSubCollec=true;
+                    if (iPanel < 0) {
+                        h.push('');
+                        iPanel = 1;
+                    }
+                    this.renderPanelList(h, p, mode);
+                    break;
             }
-            if (iPanel > 0) {
-                h.push('</div>');
-            }
+        }
+        if (iPanel > 0) {
             h.push('</div>');
         }
+        h.push('</div>');
         this._renderButtons(h, mode);
     },
 

@@ -33,19 +33,22 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
     },
 
     getData: function () {
-        var jsonStr=this.$el.children('textarea').val();
+        var jsonStr=this._getDOMField().val();
         return $.parseJSON(jsonStr);
     },
 
     setData: function (m) {
-        this.$el.children('textarea')
-            .val(JSON.stringify(m, null, 2));
+        this._getDOMField().val(JSON.stringify(m, null, 2));
         return this._updateTitle();
     },
 
     clear: function () {
-        this.$el.children('textarea').val('');
+        this._getDOMField().val('');
         return this;
+    },
+
+    _getDOMField: function(){
+        return this.$el.children('textarea');
     }
 
 });

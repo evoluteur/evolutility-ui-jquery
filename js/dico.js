@@ -127,7 +127,7 @@ Evol.Dico = {
         }    
         $el.closest('.evol-fld').after($elDes);
 
-        vw = new Evol.ViewOne.Edit({
+        var vw = new Evol.ViewOne.Edit({
             model: null,
             uiModel: uiModel,
             defaultView: 'edit',
