@@ -28,7 +28,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
         }else{
             h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
-        this._updateTitle();
+        this.setTitle();
         this.$el.html(h.join(''));
         return this;
     },

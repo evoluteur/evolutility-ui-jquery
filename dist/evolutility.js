@@ -970,7 +970,7 @@ Evol.ViewMany = Backbone.View.extend({
         }else{
             this.$el.html(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
-        this._updateTitle();
+        this.setTitle();
         return this;
     },
 
@@ -1012,8 +1012,9 @@ Evol.ViewMany = Backbone.View.extend({
     //    alert('updateModel');
     //},
 
-    _updateTitle: function (){
+    setTitle: function (){
         $(this.options.titleSelector).html(this.getTitle());
+        return this;
     },
 
     getTitle: function (){
@@ -1274,7 +1275,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
         }else{
             h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
-        this._updateTitle();
+        this.setTitle();
         this.$el.html(h.join(''));
         return this;
     },
@@ -1593,7 +1594,7 @@ Evol.ViewOne = Backbone.View.extend({
                 });
             }
         }
-        return this._updateTitle();
+        return this.setTitle();
     },
 
     clear: function () {
@@ -1922,7 +1923,7 @@ Evol.ViewOne = Backbone.View.extend({
         h.push('</label></div>');
     },
 
-    _updateTitle: function (title){
+    setTitle: function (title){
         if(this._uTitle){
             var opts=this.options,
                 selector=opts.titleSelector;
@@ -2189,7 +2190,7 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
 
     setData: function (m) {
         this._getDOMField().val(JSON.stringify(m, null, 2));
-        return this._updateTitle();
+        return this.setTitle();
     },
 
     clear: function () {
@@ -2457,6 +2458,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     if(!this.model){
                         this.curView.collection=collec;
                     }
+                    this.curView.setTitle();
                 }
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
@@ -2494,6 +2496,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     case 'list':
                         vw = new Evol.ViewMany[this.modesHash[viewName]](config).render();
                         this._prevMany=viewName;
+                        vw.setTitle();
                         break;
                     // --- actions ---
                     case 'export':
@@ -2638,7 +2641,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 that.setMode('edit');
                 vw.setModel(m);
             }
-            vw._updateTitle();
+            vw.setTitle();
         }
 
         if(msg===''){
@@ -2680,7 +2683,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     newItem: function(){
         var vw=this.curView;
         return vw.clear()
-            ._updateTitle(Evol.i18n.getLabel('NewEntity', this.options.uiModel.entity, vw.getTitle()));
+            .setTitle(Evol.i18n.getLabel('NewEntity', this.options.uiModel.entity, vw.getTitle()));
     },
 
     deleteItem: function(){

@@ -158,7 +158,7 @@ Evol.ViewOne = Backbone.View.extend({
                 });
             }
         }
-        return this._updateTitle();
+        return this.setTitle();
     },
 
     clear: function () {
@@ -487,7 +487,7 @@ Evol.ViewOne = Backbone.View.extend({
         h.push('</label></div>');
     },
 
-    _updateTitle: function (title){
+    setTitle: function (title){
         if(this._uTitle){
             var opts=this.options,
                 selector=opts.titleSelector;

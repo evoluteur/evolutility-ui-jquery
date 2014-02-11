@@ -39,7 +39,7 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
 
     setData: function (m) {
         this._getDOMField().val(JSON.stringify(m, null, 2));
-        return this._updateTitle();
+        return this.setTitle();
     },
 
     clear: function () {

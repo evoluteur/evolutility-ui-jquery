@@ -97,7 +97,7 @@ Evol.ViewMany = Backbone.View.extend({
         }else{
             this.$el.html(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
-        this._updateTitle();
+        this.setTitle();
         return this;
     },
 
@@ -139,8 +139,9 @@ Evol.ViewMany = Backbone.View.extend({
     //    alert('updateModel');
     //},
 
-    _updateTitle: function (){
+    setTitle: function (){
         $(this.options.titleSelector).html(this.getTitle());
+        return this;
     },
 
     getTitle: function (){
