@@ -9,6 +9,7 @@
   border-radius: 4px;
   margin-bottom: 10px;
   padding: 3px;
+  background-color: #fbfbfb;
 }
 .evo-toolbar > [data-cid="views"] {
   color: black;
@@ -147,6 +148,9 @@
 }
 .evol-fld > .text-danger {
   margin-bottom: 0 !important;
+}
+.evol-field-label > label {
+  color: #0d0d0d;
 }
 .evol-field-label > label > .glyphicon-question-sign {
   cursor: pointer;
@@ -299,6 +303,7 @@ label > .glyphicon-wrench {
   border-radius: 4px;
   margin-bottom: 10px;
   padding: 3px;
+  background-color: #fbfbfb;
 }
 .evo-toolbar > [data-cid="views"] {
   color: black;

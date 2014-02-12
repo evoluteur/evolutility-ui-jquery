@@ -115,8 +115,6 @@ module.exports = function (grunt) {
         //      LESS
         // *************************************************************************************
         less: {
-            options: {
-            },
             dev: {
                 files: {
                     "dist/css/evolutility.css": "less/evol.less"

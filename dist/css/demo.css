@@ -3,14 +3,11 @@ body {
   padding: 60px 20px 10px;
   font-size: 11pt;
   font-family: "Century Gothic", arial;
-  color: #777;
+  color: #0d0d0d;
   font-weight: 300;
 }
 h1,
-h2,
-h3,
-h4,
-h5 {
+h2 {
   color: #428bca !important;
 }
 #evol {
@@ -25,6 +22,9 @@ h5 {
   width: 100%;
   padding: 2px 5px 2px 10px;
   z-index: 3000;
+  -webkit-box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
 }
 .evol-logo {
   float: left;
@@ -40,7 +40,7 @@ h5 {
   padding: 10px;
 }
 .evo-nav-tabs > li > a {
-  color: black;
+  color: #0d0d0d;
 }
 .doc-links,
 .demo-links {
@@ -61,7 +61,7 @@ h5 {
 }
 .doc-links > a,
 .demo-links > a {
-  color: black;
+  color: #0d0d0d;
 }
 .evo-nav-tabs {
   font-size: 1.5em;
@@ -77,7 +77,7 @@ h5 {
   font-weight: 400;
 }
 .demo-links2 > a.sel {
-  color: black;
+  color: #0d0d0d;
   text-decoration: none;
   /*border: solid 2px blue;*/
 

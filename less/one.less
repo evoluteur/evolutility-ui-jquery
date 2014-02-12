@@ -69,23 +69,28 @@
 .evol-fld > .text-danger{
     margin-bottom: 0 !important;
 }
-.evol-field-label > label > .glyphicon-question-sign{
+.evol-field-label > label {
+  color:@color-text;
+
+  > .glyphicon-question-sign{
     cursor: pointer;
     padding-left: 4px;
     color: silver;
+  }
 }
+
 
 .evol-mini-holder{
     margin: 10px -10px;
 }
 .evol-mini-label{
     float:left;
-    width:38%;
+    width:@widthR1;
     padding-right:10px;
 }
 .evol-mini-content{
     float:left;
-    width:62%;
+    width:@widthR2;
 
   > .help-block{
     min-width:50px;
@@ -94,7 +99,7 @@
 
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: @screen1) {
   .evol-mini-label,
   .evol-mini-content{
     float:none;
