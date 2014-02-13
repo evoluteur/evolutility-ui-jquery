@@ -124,6 +124,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
 
                 <ul class="indent list-unstyled">
                     <li><span data-id="#boolean"><img src="pix/dico/ft-bool.gif" alt="" class="Icon">boolean</span></li>
+                    <li><span data-id="#color"><img src="pix/dico/ft-color.gif" alt="" class="Icon">color</span></li>
                     <li><span data-id="#date"><img src="pix/dico/ft-date.gif" alt="" class="Icon">date, datetime, time</span></li>
                     <li><span data-id="#decimal"><img src="pix/dico/ft-dec.gif" alt="" class="Icon">decimal, integer</span></li>
                     <li><span data-id="#document"><img src="pix/dico/ft-doc.gif" alt="" class="Icon">document</span></li>
@@ -132,7 +133,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
                     <li><span data-id="#html"><img alt="" class="Icon" src="pix/dico/ft-htm.gif">html (RTF)</span></li>
                     <li><span data-id="#image"><img src="pix/dico/ft-img.gif" alt="" class="Icon">image</span></li>
                     <li><span data-id="#lov"><img src="pix/dico/ft-lov.gif" alt="" class="Icon">lov (list of values)</span></li>
-                    <li><span data-id="#textmoney"><img src="pix/dico/ft-money.gif" alt="" class="Icon">money</span></li>
+                    <li><span data-id="#money"><img src="pix/dico/ft-money.gif" alt="" class="Icon">money</span></li>
                     <li><span data-id="#text"><img src="pix/dico/ft-txt.gif" alt="" class="Icon">text</span></li>
                     <li><span data-id="#textmultiline"><img src="pix/dico/ft-txtml.gif" alt="" class="Icon">textmultiline</span></li>
                 </ul>
@@ -201,7 +202,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         </tr>
         <tr>
             <td>max</td>
-            <td>Maximum value allowed for the field.</td>
+            <td>Maximum value allowed for the field (depending on field type).</td>
         </tr>
         <tr>
             <td>maxlength</td>
@@ -210,7 +211,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         </tr>
         <tr>
             <td>min</td>
-            <td><p>Minimum value allowed for the field.</p></td>
+            <td>Minimum value allowed for the field (depending on field type).</td>
         </tr>
         <tr>
             <td>minlength</td>
@@ -226,13 +227,12 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         <tr>
             <td>required
             </td>
-            <td>Determines if the field is required for saving the record. The Javascript for client-side
-                validation is automatically generated.
+            <td>Determines if the field is required for saving the record.
             </td>
         </tr>
         <tr>
             <td>jsvalidation</td>
-            <td>Name of the Javascript method for the field validation.</td>
+            <td>Name of the Javascript custom method for the field validation (validation for required, min, max, type is automatically done).</td>
         </tr>
 
 
@@ -255,7 +255,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         <tr>
             <td>linktarget
             </td>
-            <td>Direct link click to a new browser.
+            <td>Directs to a new tab in the browser (HTML attribute "target").
             </td>
         </tr>
         <tr>
@@ -270,7 +270,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
             <td>
                 <code>readonly</code>=1 presents edition of the field. <code>
                 readonly</code>=2 presents edition of the field, but allows typing in
-                insertion.&nbsp;
+                insertion.
             </td>
         </tr>
         <tr>
