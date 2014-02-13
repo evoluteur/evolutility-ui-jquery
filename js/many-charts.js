@@ -55,19 +55,27 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                 for(var dataSetName in groupData) {
                     var g=groupData[dataSetName];
                     data.push(g);
-                    if(f.type==fTypes.lov){
+                    if(dataSetName==='' || dataSetName==='null'){
+                        labels.push(Evol.i18n.none+' ('+g+')');
+                    }else if(f.type===fTypes.lov){
                         //var lov=[];
                         //_.each(f.list, function(item){
 
                         //});
-                        labels.push(EvoDico.lovText(that._hashLov, f,dataSetName)+' ('+g+')');
-                        //labels.push(EvoDico.lovText(that._hashLov, f,dataSetName)+' ('+g+')');
+                        labels.push(EvoDico.lovText(that._hashLov, f, dataSetName)+' ('+g+')');
+                    }else if(f.type===fTypes.bool){
+                        if(dataSetName==='true'){
+                            // TODO always tread null as no?
+                            labels.push(Evol.i18n.yes+' ('+g+')');
+                        }else{
+                            labels.push(Evol.i18n.no+' ('+g+')');
+                        }
                     }else{
                         labels.push(dataSetName+' ('+g+')');
                     }
                 }
                 var entityName=EvoUI.capFirstLetter(uiModel.entities);
-                if(f.type==fTypes.lov){
+                if(f.type===fTypes.lov){
                     h.push(EvoUI.Charts.Pie(Evol.i18n.getLabel('charts.aByB',entityName,f.label), data, labels, style));
                 }else{
                     h.push(EvoUI.Charts.Bars(Evol.i18n.getLabel('charts.aB',entityName,f.label), data, labels, style));
