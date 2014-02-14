@@ -2,11 +2,10 @@
   "name": "evolutility",
   "version": "0.0.1",
   "dependencies": {
-        "jquery": "2.0.3",
-        "backbone": "1.1.0",
-        "backbone.localStorage": "v1.1.7",
-        "underscore": "1.5.2",
-        "underscore.string": "2.3.3",
-        "bootstrap": "3.0.3"
+    "jquery": "2.1.0",
+    "backbone": "1.1.0",
+    "backbone.localStorage": "v1.1.7",
+    "underscore": "1.6.0",
+    "bootstrap": "v3.1.1"
   }
 }
