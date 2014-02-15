@@ -116,13 +116,18 @@ Evol.Dico = {
         return fType == EvoDico.fieldTypes.datetime || EvoDico.fieldTypes.date || fType==EvoDico.fieldTypes.time;
     },
 
-    showDesigner: function(id, type, $el){
+    showDesigner: function(id, type, $el, context){
         var $elDes=$('<div class="evol-des-'+type+'"></div>'),
+            model,
             uiModel;
-
+//TODO set record
+        this.getFields (dico_field_ui, function(m){
+            return m.get('id')=='';
+        })
         switch(type){
             case 'field':
                 uiModel = dico_field_ui;
+                model = context.model;
                 break;
         }    
         $el.closest('.evol-fld').after($elDes);
@@ -130,6 +135,7 @@ Evol.Dico = {
         var vw = new Evol.ViewOne.Edit({
             model: null,
             uiModel: uiModel,
+            model: model,
             defaultView: 'edit',
             el: $elDes,
             style:'panel-primary',
@@ -155,6 +161,46 @@ Evol.Dico = {
         return function(modelA,modelB) {
             return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
         };
-    }
+    },
+
+    HTMLField4Many: function(f,v, hashLov){
+        var fTypes = Evol.Dico.fieldTypes;
+        switch(f.type){
+            case fTypes.bool:
+                if (v==='true' || v=='1') {
+                    return Evol.UI.icon('ok');
+                }
+                break;
+            case fTypes.lov:
+                if (v !== '') {
+                    //if(f.icon && f.list & f.list[0].icon){
+                    //    return 'f.icon' + this._lovText(f,v);
+                    //}else{
+                    return Evol.Dico.lovText(hashLov, f, v);
+                    //}
+                }
+                break;
+            case fTypes.date:
+            case fTypes.time:
+            case fTypes.datetime:
+                return Evol.UI.formatDateTime(v);
+            case fTypes.pix:
+                if (v.length) {
+                    return Evol.UI.input.img(f.id, v);
+                }
+                break;
+            case fTypes.money:
+                var nv=parseFloat(v);
+                if (!isNaN(nv)) {
+                    return '$'+nv.toFixed(2);
+                }
+                break;
+            default:
+                return v;
+        }
+        return '';
+    },
+
+
 
 };

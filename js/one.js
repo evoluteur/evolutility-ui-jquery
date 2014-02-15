@@ -104,7 +104,7 @@ Evol.ViewOne = Backbone.View.extend({
             var lf=this.options.uiModel.leadfield;
             return _.isFunction(lf)?lf(this.model):this.model.get(lf);
         }else{
-            return Evol.UI.capFirstLetter(this.options.uiModel.entity);
+            return Evol.UI.capitalize(this.options.uiModel.entity);
         }
     },
 
@@ -180,6 +180,21 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 
+    isDirty: function(){
+        // TODO
+         /*
+        var data=this.getData(),
+            model=this.model;
+
+        for(var prop in data){
+            if(data[prop] !== model.get(prop)){
+                alert('data[prop]='+data[prop]+' - model.get(prop)='+model.get(prop)); //TODO remove this alert
+                return true;
+            }
+        }*/
+        return false;
+    },
+
     setFieldValue: function (fid, value){
         this.$('#'+this.fieldViewId(fid))
             .val(value);
@@ -222,7 +237,7 @@ Evol.ViewOne = Backbone.View.extend({
             '<div class="evol-buttons">',
             Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'+css),
             Evol.UI.input.button('save', Evol.i18n.Save, 'btn-primary'+css));
-        if (this.options.button_addAnother && mode!=='json') {
+        if (this.model && this.model.isNew() && this.options.button_addAnother && mode!=='json') {
             h.push(Evol.UI.input.button('save-add', Evol.i18n.SaveAdd, 'btn-default'+css));
         }
         h.push('</div>');
@@ -352,13 +367,15 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     _renderPanelListBody: function (h,p,mode){
-        var vs = this.model.get(p.attr);
+        var vs = this.model.get(p.attr),
+            fTypes = Evol.Dico.fieldTypes;
         if(vs && vs.length>0){
             _.each(vs, function(row){
                 h.push('<tr>');
                 _.each(p.elements, function (elem) {
                     if(row[elem.id]){
-                        h.push('<td>',row[elem.id],'</td>'); // TODO row.elem.attr as spec
+                        h.push('<td>', _.escape(Evol.Dico.HTMLField4Many(elem,row[elem.id], this.hashLov)),'</td>');
+                        //h.push('<td>', _.escape(row[elem.id]),'</td>'); // TODO row.elem.attr as spec
                     }else{
                         h.push('<td></td>');
                     }
@@ -406,7 +423,7 @@ Evol.ViewOne = Backbone.View.extend({
                     if (mode === 'view') {
                         h.push(EvoUI.link(fid, fv, 'mailto:' + HttpUtility.HtmlEncode(fv)));
                     } else {
-                        h.push('<div class="input-group">', EvoUI.input.typeFlag('@'),
+                        h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
                             EvoUI.input.text(fid, fv, fld.maxlength), '</div>');
                     }
                     break;
@@ -498,7 +515,7 @@ Evol.ViewOne = Backbone.View.extend({
                 }else if(lf!==undefined && lf!==''){
                     t=this.getTitle();
                 }else{
-                    t=Evol.UI.capFirstLetter(opts.uiModel.entities);
+                    t=Evol.UI.capitalize(opts.uiModel.entities);
                 }
                 $(selector).text(t);
                 this._uTitle=true;
@@ -677,7 +694,7 @@ Evol.ViewOne = Backbone.View.extend({
             eType=$e.data('type');
 
         evt.stopImmediatePropagation();
-        Evol.Dico.showDesigner(id, eType, $e);
+        Evol.Dico.showDesigner(id, eType, $e, this);
         this.$el.trigger(eType+'.customize', {id: id, type:eType});
     }
 

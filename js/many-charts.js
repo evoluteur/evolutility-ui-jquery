@@ -74,7 +74,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                         labels.push(dataSetName+' ('+g+')');
                     }
                 }
-                var entityName=EvoUI.capFirstLetter(uiModel.entities);
+                var entityName=EvoUI.capitalize(uiModel.entities);
                 if(f.type===fTypes.lov){
                     h.push(EvoUI.Charts.Pie(Evol.i18n.getLabel('charts.aByB',entityName,f.label), data, labels, style));
                 }else{

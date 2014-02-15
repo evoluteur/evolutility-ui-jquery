@@ -26,7 +26,7 @@ Evol.ViewMany = Backbone.View.extend({
     events: {
         'click .evol-nav-id': 'click_navigate',
         'click .evol-sort-icons > i': 'click_sort',
-        'click .button.edit': 'click_pagination',
+        'click .pagination>li': 'click_pagination',
         'click .evol-field-label .glyphicon-wrench': 'click_customize'
     },
 
@@ -145,7 +145,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     getTitle: function (){
-        return Evol.UI.capFirstLetter(this.options.uiModel.entities);
+        return Evol.UI.capitalize(this.options.uiModel.entities);
     },
 
     getFields: function (){
@@ -167,75 +167,57 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     _HTMLField: function(f,v){
-        var fTypes = Evol.Dico.fieldTypes;
-        switch(f.type){
-            case fTypes.bool:
-                if (v==='true' || v=='1') {
-                    return Evol.UI.icon('ok');
-                }
-                break;
-            case fTypes.lov:
-                if (v !== '') {
-                    //if(f.icon && f.list & f.list[0].icon){
-                    //    return 'f.icon' + this._lovText(f,v);
-                    //}else{
-                        return Evol.Dico.lovText(this._hashLov, f, v);
-                    //}
-                }
-                break;
-            case fTypes.date:
-            case fTypes.time:
-            case fTypes.datetime:
-                return Evol.UI.formatDateTime(v);
-            case fTypes.pix:
-                if (v.length) {
-                    return Evol.UI.input.img(f.id, v);
-                }
-                break;
-            case fTypes.money:
-                var nv=parseFloat(v);
-                if (!isNaN(nv)) {
-                    return '$'+nv.toFixed(2);
-                }
-                break;
-            default:
-                return v;
-        }
-        return '';
+        return Evol.Dico.HTMLField4Many(f,v, this._fieldHash);
     },
 
-    _paginationSummaryHTML: function (pIdx, pSize, allCount, entity, entities) {
-        var rangeBegin = pIdx * pSize + 1, rangeEnd;
+    setPage: function(pIdx){
+
+    },
+
+    _paginationSummaryHTML: function (pIdx, pSize, mSize, entity, entities) {
+        var rangeBegin = (pIdx || 0) * pSize + 1, rangeEnd;
         if (pIdx < 1) {
-            if (allCount === 0) {
-                return allCount + ' ' + entities;
-            } else if (allCount === 1) {
-                return allCount + ' ' + entity;
+            if (mSize === 0) {
+                return mSize + ' ' + entities;
+            } else if (mSize === 1) {
+                return mSize + ' ' + entity;
             }
-            rangeEnd = _.min([pSize, allCount]);
+            rangeEnd = _.min([pSize, mSize]);
         } else {
-            rangeEnd = _.min([rangeBegin + pSize, allCount]);
+            rangeEnd = _.min([rangeBegin + pSize, mSize]);
         }
-        return ['<p>', rangeBegin, '-', rangeEnd, ' of ', allCount, ' ', entities, '</p>'].join('');
+        return ['<p>', rangeBegin, '-', rangeEnd, ' of ', mSize, ' ', entities, '</p>'].join('');
     },
 
-    _paginationHTML: function (pIdx, pSize, allCount) {
-        var iMin = pIdx * pSize + 1,
-            allPages = parseInt(allCount / pSize, 10),
-            iMax = (allPages > 5) ? 5 : allPages,
-            h = ['<ul class="pagination pagination-sm">'];
-        if (pIdx > 0) {
-            h.push('<li data-id="prev"><a href="#">&laquo;</a></li>');
-        }
-        for (var i=iMin; i<iMax; i++) {
-            h.push('<li data-id="', i, '"><a href="#">', i, '</a></li>');
-        }
-        if (allCount > (pIdx + 1) * pSize) {
-            h.push('<li data-id="next"><a href="#">&raquo;</a></li>');
-        }
-        h.push('</ul>');
-        return h.join('');
+    getRangeIds: function(){
+        return {
+            min:0,
+            max: 30
+        };
     },
+        /*
+    _HTMLpagination: function (h, pIdx, pSize, mSize) {
+        if(mSize>pSize){
+            var nbPages = Math.ceil(mSize / pSize),
+                pageId = pIdx + 1,
+                iMin = pIdx * pSize + 1,
+                iMax = ((nbPages > 5) ? 5 : nbPages);
+
+            h.push('<ul class="evo-pagination pagination pagination-sm">');
+            h.push('<li data-id="prev"',
+                (pageId===1)?' class="disabled"':'',
+                '><a href="#">&laquo;</a></li>');
+            for (var i=iMin; i<iMax+1; i++) {
+                h.push('<li',
+                    (pageId===i)?' class="active"':'',
+                    ' data-id="', i, '"><a href="#">', i, '</a></li>');
+            }
+            h.push('<li data-id="next"',
+                (mSize > pageId * pSize)?'':' class="disabled"',
+                '><a href="#">&raquo;</a></li>');
+            h.push('</ul>');
+        }
+    },*/
 
     sortList: function(f, down){
         var collec=this.collection,
@@ -250,8 +232,8 @@ Evol.ViewMany = Backbone.View.extend({
             if(down){
                 collec.models.reverse();
             }
-            if(this.renderBody){
-                this.renderBody(collec.models);
+            if(this.setPage){
+                this.setPage(0);
             }else{
                 this.render();
             }

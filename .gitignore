@@ -1,6 +1,7 @@
 node_modules
 bower_components
 js/vendors
+js/models
 css/bootstrap*.css
 *-nogit
 *-nogit.*

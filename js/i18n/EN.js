@@ -54,6 +54,9 @@ Evol.i18n = {
     nochart:'No charts available.',
     badchart:'The data structure doesn\'t allow for auto-generated charts.',
 
+    'sgn_money': '$', // indicator for money
+    'sgn_email': '@', // indicator for email
+
     // --- buttons ---
     Save:'Save',
     SaveAdd:'Save and Add Another',

@@ -306,7 +306,7 @@ Evol.UI = {
         }
     },
 
-    capFirstLetter: function(word){ // TODO use _.capitalize(word);
+    capitalize: function(word){ // TODO use _.capitalize(word);
         if(word && word.length>0){
             //return _.capitalize(word);
             return word.substring(0,1).toUpperCase() + word.substring(1);

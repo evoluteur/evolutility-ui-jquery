@@ -28,7 +28,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             opts = this.options,
             uim = opts.uiModel,
             pSize = opts.pageSize || 50,
-            pSummary = this._paginationSummaryHTML(0, pSize, models.length, uim.entity, uim.entities);
+            pSummary = this._paginationSummaryHTML(opts.pageIndex, pSize, models.length, uim.entity, uim.entities);
         this._models=models;
         h.push('<div class="evol-many-list">',
             //'<div class="panel ',this.options.style,'">',
@@ -38,34 +38,43 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         }
         h.push('</thead><tbody>');
         this._HTMLlistBody(h, fields, pSize, uim.icon);
-        h.push('</tbody></table>', //</div>
-            pSummary, this._paginationHTML(0, pSize, models.length),
-            '</div>');
+        h.push('</tbody></table>',
+            pSummary);
+        // TODO uncomment & finish it
+        // //this._HTMLpagination(h, 0, pSize, models.length);
+        h.push('</div>');
         this.$el.html(h.join(''));
     },
 
-    renderBody: function(models){
+    setPage: function(pageIdx){
         var h=[],
             fields = this.getFields(),
             opts = this.options,
             uim = opts.uiModel,
-            pSize = opts.pageSize || 50;
+            pSize = opts.pageSize || 20;
 
-        this._HTMLlistBody(h, fields, pSize, uim.icon);
+        this._HTMLlistBody(h, fields, pSize, uim.icon, pageIdx);
         this.$('.table > tbody').html(h.join(''));
     },
 
-    _HTMLlistBody: function(h, fields, pSize, icon){
-        var data = this._models,
-            rMax = _.min([data.length, pSize]);
+    _HTMLlistBody: function(h, fields, pSize, icon, pageIdx){
+        var data = this.collection.models,
+            r,
+            rMin=0,
+            rMax = _.min([data.length, rMin+pSize]);
+
+        if(pageIdx>0){
+            rMin=pageIdx*pSize;
+            rMax = _.min([data.length, rMin+pSize]);
+        }
         if (rMax > 0) {
-            for (var r = 0; r < rMax; r++) {
-                this._HTMLlistRow(h, fields, data[r], icon);
+            for (r = rMin; r < rMax; r++) {
+                this.HTMLItem(h, fields, data[r], icon);
             }
         }
     },
 
-    _HTMLlistRow: function(h, fields, model, icon){
+    HTMLItem: function(h, fields, model, icon){
         h.push('<tr data-id="', model.cid, '">');
         for (var i=0; i<fields.length; i++) {
             var f = fields[i],

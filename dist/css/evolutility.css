@@ -23,6 +23,9 @@
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
 }
+.evo-toolbar a.evol-tb-status {
+  color: #0f0f0f !important;
+}
 /*!
  *  evolutility : filter.css
  *
@@ -316,6 +319,9 @@ label > .glyphicon-wrench {
 }
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
+}
+.evo-toolbar a.evol-tb-status {
+  color: #0f0f0f !important;
 }
 /*!
  *  evolutility : export.css

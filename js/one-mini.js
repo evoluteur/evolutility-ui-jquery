@@ -42,7 +42,7 @@ Evol.ViewOne.Mini = Evol.ViewOne.extend({
         var opts = this.options,
             flds = this.getFields(),
             miniUIModel= {
-                type: 'panel', class:'evol-mini-holder', label: Evol.UI.capFirstLetter(opts.uiModel.entity), width: 100,
+                type: 'panel', class:'evol-mini-holder', label: Evol.UI.capitalize(opts.uiModel.entity), width: 100,
                 elements: flds
             };
         this.renderPanel(h, miniUIModel, 'evol-one-mini', mode);

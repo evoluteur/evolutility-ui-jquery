@@ -18,7 +18,7 @@ Evol.ViewExport = Backbone.View.extend({
         "change .evol-xpt-format": "click_format",
         'change input': 'click_preview', //[type="checkbox"],
         'click .evol-xpt-more': 'click_toggle_sel',
-        'click #XP': 'click_submit'
+        'click .evol-export': 'click_submit'
         // TODO #tbrevol-xpt-format is a bug if change prefix...
     },
 
@@ -121,7 +121,7 @@ Evol.ViewExport = Backbone.View.extend({
         //h.push(this._samples());
         // ## Download button
         h.push('<div class="evol-buttons form-actions">');
-        h.push('<input class="btn btn-primary" id="XP" type="submit" value="',
+        h.push('<input class="evol-export btn btn-primary" type="submit" value="',
             evoLangXpt.DownloadEntity.replace('{0}', this.options.uiModel.entities),
             '"/>');
         h.push('</div></div>');
