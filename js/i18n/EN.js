@@ -44,7 +44,8 @@ Evol.i18n = {
     All:'All',
     //ListAll:'List All',
     //Print:'Print',
-    DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value
+    DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value,
+    DeleteEntities: 'Delete {0} {1}?', // delete 5 tasks
     Back2SearchResults:'Back to search results',
     yes: 'Yes',
     no: 'No',
@@ -53,7 +54,8 @@ Evol.i18n = {
     nopix:'No picture.',
     nochart:'No charts available.',
     badchart:'The data structure doesn\'t allow for auto-generated charts.',
-
+    range: '{0} - {1} of {2} {3}', //rangeBegin, '-', rangeEnd, ' of ', mSize, ' ', entities'
+    selected: '{0} selected',
     'sgn_money': '$', // indicator for money
     'sgn_email': '@', // indicator for email
 

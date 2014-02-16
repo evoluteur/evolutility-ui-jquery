@@ -372,14 +372,25 @@ Evol.ViewOne = Backbone.View.extend({
         if(vs && vs.length>0){
             _.each(vs, function(row){
                 h.push('<tr>');
-                _.each(p.elements, function (elem) {
-                    if(row[elem.id]){
-                        h.push('<td>', _.escape(Evol.Dico.HTMLField4Many(elem,row[elem.id], this.hashLov)),'</td>');
-                        //h.push('<td>', _.escape(row[elem.id]),'</td>'); // TODO row.elem.attr as spec
-                    }else{
-                        h.push('<td></td>');
-                    }
-                });
+                if(mode==='edit'){
+                    _.each(p.elements, function (elem) {
+                        if(row[elem.id]){
+                            h.push('<td>', _.escape(Evol.Dico.HTMLField4One(elem,row[elem.id], this.hashLov)),'</td>');
+                            //h.push('<td>', _.escape(row[elem.id]),'</td>'); // TODO row.elem.attr as spec
+                        }else{
+                            h.push('<td></td>');
+                        }
+                    });
+                }else{
+                    _.each(p.elements, function (elem) {
+                        if(row[elem.id]){
+                            h.push('<td>', _.escape(Evol.Dico.HTMLField4Many(elem,row[elem.id], this.hashLov)),'</td>');
+                            //h.push('<td>', _.escape(row[elem.id]),'</td>'); // TODO row.elem.attr as spec
+                        }else{
+                            h.push('<td></td>');
+                        }
+                    });
+                }
                 h.push('</tr>');
             });
         }else{
@@ -388,12 +399,9 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     renderField: function (h, fld, mode) {
-        var EvoUI = Evol.UI,
-            types=Evol.Dico.fieldTypes,
+        var EvoDico=Evol.Dico,
             fid = this.fieldViewId(fld.id),
-            fv,
-            fwidth,
-            size = this.options.size;
+            fv='';
         if(this.model && this.model.has(fld.id)){
             if (mode !== 'new') {
                 fv = this.model.get(fld.id);
@@ -401,107 +409,12 @@ Evol.ViewOne = Backbone.View.extend({
                 fv = fld.defaultvalue || '';
             }
         }
-        // --- field label ---
-        if(mode==='mini'){
-            fwidth=fld.width;
-            fld.width=100;
-            h.push('<div class="evol-mini-label">');
-            this.renderFieldLabel(h, fld, mode);
-            h.push('</div><div class="evol-mini-content">');
-        }else{
-            this.renderFieldLabel(h, fld, mode);
-        }
-        if(fld.readonly>0){
-            // TODO: css for readonly fields
-            h.push('<div id="',fid, '" class="FieldReadOnly">',fv, '&nbsp;</div>');
-        }else{
-            switch (fld.type) {
-                case types.text:
-                    h.push(EvoUI.input.text(fid, fv, fld, null, size));
-                    break;
-                case types.email:
-                    if (mode === 'view') {
-                        h.push(EvoUI.link(fid, fv, 'mailto:' + HttpUtility.HtmlEncode(fv)));
-                    } else {
-                        h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
-                            EvoUI.input.text(fid, fv, fld.maxlength), '</div>');
-                    }
-                    break;
-                case types.url:
-                    if (mode === 'view') {
-                        h.push(EvoUI.link(fid, fv, HttpUtility.HtmlEncode(fv)));
-                    } else {
-                        h.push(EvoUI.input.text(fid, fv, fld.maxlength));
-                    }
-                    break;
-                case types.integer:
-                case types.dec:
-                    h.push(EvoUI.input.textInt(fid, fv));
-                    break;
-                case types.money:
-                    h.push('<div class="input-group">', EvoUI.input.typeFlag('$'),
-                        EvoUI.input.textInt(fid, fv), '</div>');
-                    break;
-                case types.bool:
-                    h.push(EvoUI.input.checkbox(fid, fv));
-                    break;
-                case types.txtm:
-                case types.html:
-                    // fv = HttpUtility.HtmlEncode(fv);
-                    if (fld.height === null) {
-                        fld.height = 5;
-                    } else {
-                        fHeight = parseInt(fld.height,10);
-                        if (fHeight < 1) {
-                            fld.height = 5;
-                        }
-                    }
-                    h.push(EvoUI.input.textM(fid, fv, fld.maxlength, fld.height));
-                    break;
-                case types.date:
-                    h.push(EvoUI.input.date(fid, fv));
-                    break;
-                case types.datetime:
-                    h.push(EvoUI.input.dateTime(fid, fv));
-                    break;
-                case types.time:
-                    h.push(EvoUI.input.time(fid, fv));
-                    break;
-                case types.color:
-                    h.push(EvoUI.input.color(fid, fv));
-                    break;
-                case types.lov:
-                    h.push(EvoUI.input.select(fid,'',true, fld.list));
-                    break;
-                case types.integer:
-                    h.push(EvoUI.input.textInt(fid, fv, fld.max, fld.min));
-                    break;
-                //case types.doc:
-                case types.pix:
-                    if(fv!==''){
-                        h.push('<img src="',fv,'" class="img-thumbnail">');
-                    }else{
-                        h.push('<p class="">',Evol.i18n.nopix,'</p>');
-                    }
-                    h.push(EvoUI.input.text(fid, fv, fld, null, size));
-                    break;
-            }
-        }
-        if(mode==='mini'){
-            h.push('</div>');
-            fld.width=fwidth;
-        }
+        h.push(EvoDico.HTMLField4One(fld, fid, fv, mode));
+        return this;
     },
 
     renderFieldLabel: function (h, fld, mode) {
-        h.push('<div class="evol-field-label" id="', fld.id, '-lbl"><label class="control-label" for="', fld.id, '">', fld.label);
-        if (mode != 'view' && fld.required){
-            h.push(Evol.UI.html.required);
-        }
-        if (fld.help && fld.help!==''){
-            h.push(Evol.UI.icon('question-sign', ''));
-        }
-        h.push('</label></div>');
+        h.push(Evol.Dico.HTMLFieldLabel(fld, mode));
     },
 
     setTitle: function (title){

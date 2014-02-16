@@ -114,7 +114,15 @@ Evol.UI = {
         },
         checkbox: function (fID, fV) {
             var fh = ['<input type="checkbox" id="', fID, '"'];
-            if (fV !== null && fV !== '' && fV !== '0') {
+            if (fV === true || fV==='1') {
+                fh.push(' checked="checked"');
+            }
+            fh.push(' value="1">');
+            return fh.join('');
+        },
+        checkbox2: function (fID, fV, cls) {
+            var fh = ['<input type="checkbox" data-id="', fID, '" class="',cls,'"'];
+            if (fV === true || fV==='1') {
                 fh.push(' checked="checked"');
             }
             fh.push(' value="1">');

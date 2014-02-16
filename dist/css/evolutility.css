@@ -23,8 +23,11 @@
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
 }
-.evo-toolbar a.evol-tb-status {
+.evo-toolbar li.evol-tb-status {
   color: #0f0f0f !important;
+  min-height: 35px;
+  line-height: 35px;
+  margin-top: 2px;
 }
 /*!
  *  evolutility : filter.css
@@ -243,6 +246,9 @@ img.evol-table-icon {
 .panel-heading:hover > .evol-title-toggle {
   display: inline;
 }
+.list-td-sel {
+  width: 30px;
+}
 /* --- cards --- */
 .evol-many-cards > div.panel {
   float: left;
@@ -320,8 +326,11 @@ label > .glyphicon-wrench {
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
 }
-.evo-toolbar a.evol-tb-status {
+.evo-toolbar li.evol-tb-status {
   color: #0f0f0f !important;
+  min-height: 35px;
+  line-height: 35px;
+  margin-top: 2px;
 }
 /*!
  *  evolutility : export.css

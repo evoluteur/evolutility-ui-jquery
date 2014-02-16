@@ -3,7 +3,7 @@
  *
  *  https://github.com/evoluteur/evolutility
  *  Copyright (c) 2014, Olivier Giulieri
-*/.evo-toolbar{border:1px solid #bce8f1;border-radius:4px;margin-bottom:10px;padding:3px;background-color:#fbfbfb}.evo-toolbar>[data-cid="views"]{color:black}.evo-toolbar>ul>.evo-sel .glyphicon:before{color:black}.evo-toolbar>ul>li>a{max-height:35px}.evo-toolbar .evo-dropdown-icons{min-width:50px}.evo-toolbar a.evol-tb-status{color:#0f0f0f!important}/*!
+*/.evo-toolbar{border:1px solid #bce8f1;border-radius:4px;margin-bottom:10px;padding:3px;background-color:#fbfbfb}.evo-toolbar>[data-cid="views"]{color:black}.evo-toolbar>ul>.evo-sel .glyphicon:before{color:black}.evo-toolbar>ul>li>a{max-height:35px}.evo-toolbar .evo-dropdown-icons{min-width:50px}.evo-toolbar li.evol-tb-status{color:#0f0f0f!important;min-height:35px;line-height:35px;margin-top:2px}/*!
  *  evolutility : filter.css
  *
  *  https://github.com/evoluteur/evolutility
@@ -18,7 +18,7 @@
  *
  *  https://github.com/evoluteur/evolutility
  *  Copyright (c) 2014, Olivier Giulieri
-*/img.evol-table-icon{margin-right:6px!important}.evol-many-list>.table th .glyphicon{display:none;position:absolute;opacity:.8;margin-left:6px;background-color:white;cursor:pointer;width:22px;height:22px}.evol-many-list>.table th:hover .glyphicon{display:inline!important;cursor:pointer}.evol-many-list .glyphicon.evol-last-sort{display:none;position:absolute}.evol-sort-icons{position:relative;top:3px;padding:3px;width:300px}.evol-sort-icons>.glyphicon{position:absolute;top:2px}.evol-sort-icons>.glyphicon-chevron-up{left:7px}.evol-sort-icons>.glyphicon-chevron-down{left:24px}.panel-heading>.evol-title-toggle{display:none}.panel-heading:hover>.evol-title-toggle{display:inline}.evol-many-cards>div.panel{float:left;width:240px;min-width:140px;height:150px;margin:5px;padding:10px;border-radius:10px;overflow:auto}.evol-chart-holder{float:left;text-align:center;background-color:#fff;padding:10px 5px 5px 5px;margin:10px;width:400px!important;min-height:300px}.evol-chart-title{text-align:center;padding:10px 20px 30px}/*!
+*/img.evol-table-icon{margin-right:6px!important}.evol-many-list>.table th .glyphicon{display:none;position:absolute;opacity:.8;margin-left:6px;background-color:white;cursor:pointer;width:22px;height:22px}.evol-many-list>.table th:hover .glyphicon{display:inline!important;cursor:pointer}.evol-many-list .glyphicon.evol-last-sort{display:none;position:absolute}.evol-sort-icons{position:relative;top:3px;padding:3px;width:300px}.evol-sort-icons>.glyphicon{position:absolute;top:2px}.evol-sort-icons>.glyphicon-chevron-up{left:7px}.evol-sort-icons>.glyphicon-chevron-down{left:24px}.panel-heading>.evol-title-toggle{display:none}.panel-heading:hover>.evol-title-toggle{display:inline}.list-td-sel{width:30px}.evol-many-cards>div.panel{float:left;width:240px;min-width:140px;height:150px;margin:5px;padding:10px;border-radius:10px;overflow:auto}.evol-chart-holder{float:left;text-align:center;background-color:#fff;padding:10px 5px 5px 5px;margin:10px;width:400px!important;min-height:300px}.evol-chart-title{text-align:center;padding:10px 20px 30px}/*!
  *  evolutility : dico.css
  *
  *  https://github.com/evoluteur/evolutility
@@ -28,7 +28,7 @@
  *
  *  https://github.com/evoluteur/evolutility
  *  Copyright (c) 2014, Olivier Giulieri
-*/.evo-toolbar{border:1px solid #bce8f1;border-radius:4px;margin-bottom:10px;padding:3px;background-color:#fbfbfb}.evo-toolbar>[data-cid="views"]{color:black}.evo-toolbar>ul>.evo-sel .glyphicon:before{color:black}.evo-toolbar>ul>li>a{max-height:35px}.evo-toolbar .evo-dropdown-icons{min-width:50px}.evo-toolbar a.evol-tb-status{color:#0f0f0f!important}/*!
+*/.evo-toolbar{border:1px solid #bce8f1;border-radius:4px;margin-bottom:10px;padding:3px;background-color:#fbfbfb}.evo-toolbar>[data-cid="views"]{color:black}.evo-toolbar>ul>.evo-sel .glyphicon:before{color:black}.evo-toolbar>ul>li>a{max-height:35px}.evo-toolbar .evo-dropdown-icons{min-width:50px}.evo-toolbar li.evol-tb-status{color:#0f0f0f!important;min-height:35px;line-height:35px;margin-top:2px}/*!
  *  evolutility : export.css
  *
  *  https://github.com/evoluteur/evolutility

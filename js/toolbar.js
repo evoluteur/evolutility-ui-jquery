@@ -18,6 +18,8 @@ Evol.ViewToolbar = Backbone.View.extend({
         //'list.paginate >div': 'paginate',
         'submit.export >div': 'click_download',
         'action > div': 'action_view',
+        'status > div': 'status_update',
+        'selection > div': 'click_selection',
         'click .alert-dismissable>button': 'clearMessage'
     },
 
@@ -121,7 +123,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(opts.toolbar){
             link2h('prev','','chevron-left','x');
             link2h('next','','chevron-right','x');
-            h.push('<li><a class="evol-tb-status"></a></li>');
+            h.push('<li class="evol-tb-status" data-cardi="n"></li>');
             h.push('</ul><ul class="nav nav-pills pull-right" data-id="views">');
 
             h.push(beginMenu('views','eye-open'));
@@ -188,7 +190,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             // -- view already exists and was rendered
                 this.model=this.curView.model;
                 this.curView=this.viewsHash[viewName];
-                if(!this.model.isNew()){
+                if(this.model && !this.model.isNew()){
                     if(this.curView.setModel){
                         if(!this.curView.collection && m.collection){
                             this.curView.collection=this.model.collection;
@@ -242,6 +244,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                         vw = new Evol.ViewMany[this.modesHash[viewName]](config).render();
                         this._prevMany=viewName;
                         vw.setTitle();
+
+                        //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
                         break;
                     // --- actions ---
                     case 'export':
@@ -265,6 +269,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             this._toolbarButtons = {
                 ones: lis.filter('li[data-cardi="1"]'),
                 manys: lis.filter('li[data-cardi="n"]'),
+                del: lis.filter('[data-id="del"]'),
                 prevNext: this.$('.evo-toolbar [data-id="prev"],.evo-toolbar [data-id="next"]'),
                 customize: this.$('.evo-toolbar a[data-id="customize"]').parent(),
                 views: this.$('.evo-toolbar [data-id="views"]')
@@ -285,6 +290,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             setVisible(tbBs.customize, mode!='json');
             tbBs.prevNext.hide();
             setVisible(tbBs.views, mode!=='export');
+            tbBs.del.hide();
             if(this._viewsIcon){
                 var cssOpen='glyphicon-eye-open',
                     cssClose='glyphicon-eye-close';
@@ -308,7 +314,6 @@ Evol.ViewToolbar = Backbone.View.extend({
                     if( mode!=='charts' && this.collection.length > this.options.pageSize){
                         tbBs.prevNext.show();
                     }
-
                 }else{
                     this._prevOne=mode;
                     oneMany(true, false);
@@ -341,6 +346,11 @@ Evol.ViewToolbar = Backbone.View.extend({
         this.curView.showGroup();
         return this;
     },*/
+
+    setStatus: function(ui){
+        var $e=this.$('.evo-toolbar .evol-tb-status');
+        $e.html(ui);
+    },
 
 	setData: function(data){
 		if(this.curView){
@@ -436,43 +446,56 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     deleteItem: function(){
         var entityName=this.options.uiModel.entity,
-            entityValue=this.curView.getTitle(),
-            delModel=this.curView.model;
-        // TODO good looking msgbox
-        if (delModel && confirm(Evol.i18n.getLabel('DeleteEntity', entityName, entityValue))) {
-            var that=this,
-                collec=this.collection,
-                delIdx=_.indexOf(collec.models, delModel),
-                newIdx=delIdx,
-                newModel=null;
+            entityValue=this.curView.getTitle();
 
-            if(collec.length>1){
-                if(delIdx===0){
-                    newIdx=1;
-                }else if(delIdx<collec.length-1){
-                    newIdx=delIdx+1;
-                }else{
-                    newIdx=delIdx-1;
-                }
-                newModel = collec.at(newIdx);
-            }
-            if(newModel){
-                newModel.collection=collec;
-            }
-            delModel.destroy({
-                success:function(){
-                    if(collec.length===0){
-                        that.curView.clear();
+        if(this.curView.cardinality==='1'){
+            var delModel=this.curView.model;
+            // TODO good looking msgbox
+            if (delModel && confirm(Evol.i18n.getLabel('DeleteEntity', entityName, entityValue))) {
+                var that=this,
+                    collec=this.collection,
+                    delIdx=_.indexOf(collec.models, delModel),
+                    newIdx=delIdx,
+                    newModel=null;
+
+                if(collec.length>1){
+                    if(delIdx===0){
+                        newIdx=1;
+                    }else if(delIdx<collec.length-1){
+                        newIdx=delIdx+1;
                     }else{
-                        this.model = newModel;
-                        that.curView.setModel(newModel);
+                        newIdx=delIdx-1;
                     }
-                    that.setMessage('Record Deleted.', Evol.i18n.getLabel('status.deleted', Evol.UI.capitalize(entityName), entityValue), 'success');
-                },
-                error:function(err){
-                    alert('error');
+                    newModel = collec.at(newIdx);
                 }
-            });
+                if(newModel){
+                    newModel.collection=collec;
+                }
+                delModel.destroy({
+                    success:function(){
+                        if(collec.length===0){
+                            that.curView.clear();
+                        }else{
+                            this.model = newModel;
+                            that.curView.setModel(newModel);
+                        }
+                        that.setMessage('Record Deleted.', Evol.i18n.getLabel('status.deleted', Evol.UI.capitalize(entityName), entityValue), 'success');
+                    },
+                    error:function(err){
+                        alert('error');
+                    }
+                });
+            }
+        }else{
+            if(this.curView.getSelection){
+                var selection=this.curView.getSelection();
+                if(selection.length>0){
+                    if (confirm(Evol.i18n.getLabel('DeleteEntities', selection.length, this.options.uiModel.entities))) {
+                        //TODO
+
+                    }
+                }
+            }
         }
     },
 
@@ -528,6 +551,10 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(this.curView.setPage){
             this.curView.setPage(pIdx);
         }
+    },
+
+    status_update: function(evt, ui){
+        this.setStatus(ui);
     },
 
     click_toolbar: function(evt, ui){
@@ -586,6 +613,20 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     click_download: function(evt){
         alert('Sorry, no demo server yet...');
+    },
+
+    click_selection: function(evt, ui){
+        var status=this.$('.evo-toolbar .evol-tb-status'),
+            cbxs=this.$('.list-sel:checked').not('[data-id="cbxAll"]'),
+            l=cbxs.length,
+            tbBs=this.getToolbarButtons();
+        if(l>0){
+            this.setStatus(Evol.i18n.getLabel('selected', l));
+            tbBs.del.show();
+        }else{
+            this.setStatus('');
+            tbBs.del.hide();
+        }
     }
 
 });

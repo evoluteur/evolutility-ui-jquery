@@ -19,15 +19,18 @@ Evol.ViewMany = Backbone.View.extend({
     options: {
         style: 'panel-info',
         pageSize: 20,
-        titleSelector: '#title',
-        selectable: true
+        pageIndex:0,
+        //titleSelector: '#title',
+        selectable: false
     },
 
     events: {
         'click .evol-nav-id': 'click_navigate',
         'click .evol-sort-icons > i': 'click_sort',
         'click .pagination>li': 'click_pagination',
-        'click .evol-field-label .glyphicon-wrench': 'click_customize'
+        'click .evol-field-label .glyphicon-wrench': 'click_customize',
+        'change .list-sel': 'click_selection',
+        'change [data-id="cbxAll"]': 'check_all'
     },
 
     initialize: function (opts) {
@@ -105,6 +108,10 @@ Evol.ViewMany = Backbone.View.extend({
         alert('_render must be overwritten');
     },
 
+    _HTMLCheckbox: function(cid){
+        return Evol.UI.input.checkbox2(cid, false, 'list-sel');
+    },
+
     customize: function () {
         var labels = this.$('th > span');
         if(this._custOn){
@@ -174,7 +181,20 @@ Evol.ViewMany = Backbone.View.extend({
 
     },
 
-    _paginationSummaryHTML: function (pIdx, pSize, mSize, entity, entities) {
+    _$Selection:function(){
+        return this.$('.list-sel:checked').not('[data-id="cbxAll"]');
+    },
+
+    getSelection:function(){
+        if(this.options.selectable){
+            return _.map(this._$Selection().toArray(), function(cbx){
+                return $(cbx).data('id');
+            });
+        }
+        return [];
+    },
+
+    pageSummary: function (pIdx, pSize, mSize, entity, entities) {
         var rangeBegin = (pIdx || 0) * pSize + 1, rangeEnd;
         if (pIdx < 1) {
             if (mSize === 0) {
@@ -184,16 +204,12 @@ Evol.ViewMany = Backbone.View.extend({
             }
             rangeEnd = _.min([pSize, mSize]);
         } else {
-            rangeEnd = _.min([rangeBegin + pSize, mSize]);
+            rangeEnd = _.min([rangeBegin + pSize -1, mSize]);
         }
-        return ['<p>', rangeBegin, '-', rangeEnd, ' of ', mSize, ' ', entities, '</p>'].join('');
-    },
-
-    getRangeIds: function(){
-        return {
-            min:0,
-            max: 30
-        };
+        return Evol.i18n.range.replace('{0}',rangeBegin)
+            .replace('{1}',rangeEnd)
+            .replace('{2}',mSize)
+            .replace('{3}',entities);
     },
         /*
     _HTMLpagination: function (h, pIdx, pSize, mSize) {
@@ -268,6 +284,21 @@ Evol.ViewMany = Backbone.View.extend({
 
         Evol.Dico.showDesigner(id, eType, $e);
         this.$el.trigger(eType+'.customize', {id: id, type:eType});
+    },
+
+    click_selection: function (evt) {
+        if($(evt.target).data('id')==='cbxAll'){
+
+        }else{
+            this.$el.trigger('selection');
+        }
+    },
+
+    check_all: function (evt) {
+        var isChecked=this.$('[data-id="cbxAll"]').prop('checked');
+        //this.$('.list-sel:checked').not('[data-id="cbxAll"]');
+        this.$('.list-sel').prop('checked', isChecked);
+        this.$el.trigger('selection');
     }
 
 });

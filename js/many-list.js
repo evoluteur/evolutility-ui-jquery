@@ -15,29 +15,26 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
 
     viewName: 'list',
 
-    options: {
-        style: 'panel-info',
-        pageSize: 20,
-        //title: '#title', // TODO FIX
-        selectable: true
-    },
-
     _render: function (models) {
         var h = [],
-            fields = this.getFields(),
             opts = this.options,
+            selectable = opts.selectable,
+            fields = this.getFields(),
             uim = opts.uiModel,
-            pSize = opts.pageSize || 50,
-            pSummary = this._paginationSummaryHTML(opts.pageIndex, pSize, models.length, uim.entity, uim.entities);
+            pSize = opts.pageSize || 50,//
+            pSummary = this.pageSummary(opts.pageIndex, pSize, models.length, uim.entity, uim.entities);
         this._models=models;
         h.push('<div class="evol-many-list">',
             //'<div class="panel ',this.options.style,'">',
-            '<table class="table table-bordered table-hover"><thead>');
+            '<table class="table table-bordered table-hover"><thead><tr>');
+        if(selectable){
+            h.push('<th>',this._HTMLCheckbox('cbxAll'),'</th>');
+        }
         for (var i=0; i<fields.length; i++) {
             this._HTMLlistHeader(h, fields[i]);
         }
-        h.push('</thead><tbody>');
-        this._HTMLlistBody(h, fields, pSize, uim.icon);
+        h.push('</tr></thead><tbody>');
+        this._HTMLlistBody(h, fields, pSize, uim.icon, 0, selectable);
         h.push('</tbody></table>',
             pSummary);
         // TODO uncomment & finish it
@@ -53,11 +50,12 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             uim = opts.uiModel,
             pSize = opts.pageSize || 20;
 
-        this._HTMLlistBody(h, fields, pSize, uim.icon, pageIdx);
+        this._HTMLlistBody(h, fields, pSize, uim.icon, pageIdx, opts.selectable);
         this.$('.table > tbody').html(h.join(''));
+        this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
     },
 
-    _HTMLlistBody: function(h, fields, pSize, icon, pageIdx){
+    _HTMLlistBody: function(h, fields, pSize, icon, pageIdx, selectable){
         var data = this.collection.models,
             r,
             rMin=0,
@@ -69,24 +67,23 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         }
         if (rMax > 0) {
             for (r = rMin; r < rMax; r++) {
-                this.HTMLItem(h, fields, data[r], icon);
+                this.HTMLItem(h, fields, data[r], icon, selectable);
             }
         }
     },
 
-    HTMLItem: function(h, fields, model, icon){
-        h.push('<tr data-id="', model.cid, '">');
+    HTMLItem: function(h, fields, model, icon, selectable){
+        h.push('<tr data-id="', model.id, '">');
+        if(selectable){
+            h.push('<td class="list-td-sel">',this._HTMLCheckbox(model.id),'</td>');
+        }
         for (var i=0; i<fields.length; i++) {
             var f = fields[i],
                 v = model.escape(f.id);
             h.push('<td>');
             if(i===0){
                 h.push('<a href="javascript:void(0)" id="fv-', f.id, '" class="evol-nav-id">');
-                if(_.isFunction(icon) ){
-                    h.push('<img class="evol-table-icon" src="pix/', icon(model), '">');
-                }else if(icon!==''){
-                    h.push('<img class="evol-table-icon" src="pix/', icon, '">');
-                }
+                h.push('<img class="evol-table-icon" src="pix/', _.isFunction(icon)?icon(model):icon, '">');
                 if(v===''){
                     v='('+model.id+')';
                 }

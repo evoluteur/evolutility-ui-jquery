@@ -33,9 +33,9 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
             var opts = this.options,
                 uim = opts.uiModel,
                 pSize = opts.pageSize || 50,
-                pSummary = this._paginationSummaryHTML(0, pSize, models.length, uim.entity, uim.entities);
+                pSummary = this.pageSummary(0, pSize, models.length, uim.entity, uim.entities);
             h.push('<div class="evol-many-cards">');
-            this.renderBody(h, this.getFields(), pSize, uim.icon);
+            this.renderBody(h, this.getFields(), pSize, uim.icon, 0,opts.selectable);
             h.push(pSummary);
             //this._HTMLpagination(h,0, pSize, models.length);
             h.push('</div>');
@@ -53,11 +53,12 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
             uim = opts.uiModel,
             pSize = opts.pageSize || 20;
 
-        this.renderBody(h, fields, pSize, uim.icon, pageIdx);
+        this.renderBody(h, fields, pSize, uim.icon, pageIdx, opts.selectable);
         this.$('.evol-many-cards').html(h.join(''));
+        this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
     },
 
-    renderBody: function (h, fields, pSize, icon, pageIdx) {
+    renderBody: function (h, fields, pSize, icon, pageIdx, selectable) {
         var data = this.collection.models,
             r,
             rMin=0,
@@ -69,7 +70,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
         }
         if (rMax > 0) {
             for (r = rMin; r < rMax; r++) {
-                this.HTMLItem(h, fields, data[r], icon);
+                this.HTMLItem(h, fields, data[r], icon, selectable);
             }
             h.push(Evol.UI.html.clearer);
         }else{
@@ -77,14 +78,15 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
         }
     },
 
-    HTMLItem: function(h, fields, model, icon){
+    HTMLItem: function(h, fields, model, icon, selectable){
         h.push('<div class="panel ',this.options.style,'">');
         for (var i = 0; i < fields.length; i++) {
             var f = fields[i],
                 v = model.get(f.id);
             if (i === 0) {
-                h.push('<div data-id="', model.id, '">',
-                    '<h4><a href="#" id="fg-', f.id, '" class="evol-nav-id">');
+                h.push('<div data-id="', model.id, '"><h4>',
+                    selectable?this._HTMLCheckbox(model.id):'',
+                    '<a href="#" id="fg-', f.id, '" class="evol-nav-id">');
                 if (icon) {
                     h.push('<img class="evol-table-icon" src="pix/', icon, '">');
                 }
