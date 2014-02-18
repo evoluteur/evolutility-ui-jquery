@@ -62,23 +62,37 @@ Evol.Dico = {
         return fs;
     },
 
+    getFieldTypedValue:function(f, $f){
+        switch(f.type) {
+            case Evol.Dico.fieldTypes.bool:
+                return $f.prop('checked');
+            case Evol.Dico.fieldTypes.integer:
+                return parseInt($f.val(),10);
+            case Evol.Dico.fieldTypes.decimal:
+            case Evol.Dico.fieldTypes.money:
+                return parseFloat($f.val());
+            default:
+                return $f.val();
+        }
+    },
+
     // get sub collections
     getSubCollecs: function(uiModel){
-        var ls = [];
+        var ls = {};
 
         function collectCollecs(te) {
             if(te.type==='panel-list'){
-                ls.push(te);
+                ls[te.attr]=te;
             }else if (te.type!=='panel' && te.elements && te.elements.length > 0) {
                 _.each(te.elements, function (te) {
                     if(te.type==='panel-list'){
-                        ls.push(te);
+                        ls[te.attr]=te;
                     }else if(te.type!=='panel'){
                         collectCollecs(te);
                     }
                 });
             } else {
-                ls.push(te);
+                ls[te.attr]=te;
             }
         }
 
@@ -163,6 +177,57 @@ Evol.Dico = {
         };
     },
 
+    filterModels: function(models, filters){
+        if(filters.length){
+            return models.filter(function(model){
+                var want=true,
+                    i;
+                for(i= 0, iMax=filters.length;i<iMax && want;i++){
+                    var filter=filters[i],
+                        vf=filter.value.value,
+                        fv=model.get(filter.field.value);
+                    if(fv===undefined){
+                        fv='';
+                    }
+                    switch(filter.operator.value){
+                        case 'eq':
+                            want=vf===fv;
+                            break;
+                        case 'ne':
+                            want=vf!==fv;
+                            break;
+                        case 'sw':
+                            want=fv.indexOf(vf)===0;
+                            break;
+                        case 'ct':
+                            want=fv.indexOf(vf)>-1;
+                            break;
+                        case 'fw':
+                            want=fv.indexOf(vf)===fv.length-vf.length;
+                            break;
+                        case 'null':
+                            want=fv==='' || fv===undefined;
+                            break;
+                        case 'nn':
+                            want=fv!=='' || fv!==undefined;
+                            break;
+                        case 'in':
+                            want= _.contains(vf.split(','),fv);
+                            break;
+                        case 1:
+                            want=fv;
+                            break;
+                        case 0:
+                            want=!fv;
+                            break;
+                    }
+                }
+                return want;
+            });
+        }
+        return [];
+    },
+
     HTMLField4Many: function(f,v, hashLov){
         var fTypes = Evol.Dico.fieldTypes;
         switch(f.type){
@@ -201,7 +266,7 @@ Evol.Dico = {
         return '';
     },
 
-    HTMLField4One: function(fld, fid, fv, mode){
+    HTMLField4One: function(fld, fid, fv, mode, skipLabel){
         var h=[],
             size=50, // TODO fix it
             EvoUI=Evol.UI,
@@ -212,7 +277,7 @@ Evol.Dico = {
             fld.width=100;
             h.push('<div class="evol-mini-label">',this.HTMLFieldLabel(fld, mode),
                 '</div><div class="evol-mini-content">');
-        }else{
+        }else if(!skipLabel){
             h.push(this.HTMLFieldLabel(fld, mode || 'edit'));
         }
         if(fld.readonly>0){

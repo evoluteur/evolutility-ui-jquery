@@ -205,6 +205,11 @@ Evol.ViewToolbar = Backbone.View.extend({
                     if(this.curView.setTitle){
                         this.curView.setTitle();
                     }
+                    if(this.curView.cardinality==='n' && this.curView.setPage){
+                        this.curView.setPage(this.options.pageIndex);
+                    }
+                }else if(this.curView){
+                    this.curView.clear();
                 }
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
@@ -215,7 +220,6 @@ Evol.ViewToolbar = Backbone.View.extend({
                 $v=$('<div data-vid="evolw-'+viewName+'"></div>');
                 $e.children().not('.evo-toolbar,.evo-filters,.clearfix').hide();
                 $e.append($v);
-                // TODO fix that one
                 config = {
                     el: $v,
                     mode: viewName,
@@ -224,6 +228,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     uiModel: opts.uiModel,
                     style: opts.style,
                     pageSize: opts.pageSize || 20,
+                    pageIndex: opts.pageIndex || 0,
                     titleSelector: opts.titleSelector
                 };
                 this.$('[data-id="new"]').show();
@@ -234,17 +239,21 @@ Evol.ViewToolbar = Backbone.View.extend({
                     case 'edit':
                     case 'mini':
                     case 'json':
-                        vw = new Evol.ViewOne[this.modesHash[viewName]](config).render();
+                        vw = new Evol.ViewOne[this.modesHash[viewName]](config)
+                            .render();
                         this._prevOne=viewName;
                         break;
                     // --- many ---
                     case 'charts':
                     case 'cards':
                     case 'list':
-                        vw = new Evol.ViewMany[this.modesHash[viewName]](config).render();
+                        vw = new Evol.ViewMany[this.modesHash[viewName]](config)
+                            .render();
                         this._prevMany=viewName;
                         vw.setTitle();
-
+                        if(viewName!='charts' && this.options.pageIndex > 0){
+                            vw.setPage(this.options.pageIndex || 0);
+                        }
                         //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
                         break;
                     // --- actions ---
@@ -311,7 +320,9 @@ Evol.ViewToolbar = Backbone.View.extend({
 				if(mode==='cards' || mode==='list' || mode==='charts'){
                     this._prevMany=mode;
                     oneMany(false, true);
-                    if( mode!=='charts' && this.collection.length > this.options.pageSize){
+                    if(mode==='charts'){
+                        this.setStatus('');
+                    }else if(this.collection.length > this.options.pageSize){
                         tbBs.prevNext.show();
                     }
                 }else{
@@ -383,6 +394,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
         this.model = cModel;
         this.curView.setModel(cModel);
+        this.clearMessage();
         return this;
     },
 
@@ -519,10 +531,14 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     action_view: function(evt, actionId){
-        if(actionId==='cancel'){
-            this.setView('list');
-        }else{
-            this.saveItem(actionId==='save-add');
+        switch(actionId){
+            case 'cancel':
+                this.setView('list');
+                break;
+            case 'save':
+            case 'save-add':
+                this.saveItem(actionId==='save-add');
+                break;
         }
     },
 
@@ -532,11 +548,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
         var pIdx=this.options.pageIndex || 0;
         if(bId==='prev'){
-            if(pIdx>0){
-                pIdx--;
-            }else{
-                pIdx=0;
-            }
+            pIdx=(pIdx>0)?pIdx-1:0;
         }else if(bId==='next'){
             if(pIdx<Math.round(this.collection.length/(this.options.pageSize||20))){
                 pIdx++;
@@ -586,7 +598,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     }
                     this.browse(toolId);
                 }else if(this.curView.cardinality==='n'){
-                        this.paginate(toolId);
+                    this.paginate(toolId);
                 }
                 break;
             case 'new-field':

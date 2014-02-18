@@ -48,54 +48,7 @@ Evol.ViewMany = Backbone.View.extend({
     render:function(){
         var models=this.collection.models;
         if(this.collection.length){
-            if(this._filter.length){
-                var that=this;
-                models=models.filter(function(model){
-                    var filters=that._filter,
-                        want=true;
-                    for(var i= 0, iMax=filters.length;i<iMax && want;i++){
-                        var filter=filters[i],
-                            vf=filter.value.value,
-                            fv=model.get(filter.field.value);
-                        if(fv===undefined){
-                            fv='';
-                        }
-                        switch(filter.operator.value){
-                            case 'eq':
-                                want=vf===fv;
-                                break;
-                            case 'ne':
-                                want=vf!==fv;
-                                break;
-                            case 'sw':
-                                want=fv.indexOf(vf)===0;
-                                break;
-                            case 'ct':
-                                want=fv.indexOf(vf)>-1;
-                                break;
-                            case 'fw':
-                                want=fv.indexOf(vf)===fv.length-vf.length;
-                                break;
-                            case 'null':
-                                want=fv==='' || fv===undefined;
-                                break;
-                            case 'nn':
-                                want=fv!=='' || fv!==undefined;
-                                break;
-                            case 'in':
-                                want= _.contains(vf.split(','),fv);
-                                break;
-                            case 1:
-                                want=fv;
-                                break;
-                            case 0:
-                                want=!fv;
-                                break;
-                        }
-                    }
-                    return want;
-                });
-            }
+            models=Evol.Dico.filterModels(models, this._filter);
             this._render(models);
         }else{
             this.$el.html(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
@@ -175,10 +128,6 @@ Evol.ViewMany = Backbone.View.extend({
 
     _HTMLField: function(f,v){
         return Evol.Dico.HTMLField4Many(f,v, this._fieldHash);
-    },
-
-    setPage: function(pIdx){
-
     },
 
     _$Selection:function(){

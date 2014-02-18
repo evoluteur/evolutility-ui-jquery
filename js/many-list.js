@@ -21,8 +21,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             selectable = opts.selectable,
             fields = this.getFields(),
             uim = opts.uiModel,
-            pSize = opts.pageSize || 50,//
-            pSummary = this.pageSummary(opts.pageIndex, pSize, models.length, uim.entity, uim.entities);
+            pSize = opts.pageSize || 50;
         this._models=models;
         h.push('<div class="evol-many-list">',
             //'<div class="panel ',this.options.style,'">',
@@ -35,9 +34,9 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         }
         h.push('</tr></thead><tbody>');
         this._HTMLlistBody(h, fields, pSize, uim.icon, 0, selectable);
-        h.push('</tbody></table>',
-            pSummary);
+        h.push('</tbody></table>');
         // TODO uncomment & finish it
+        // h.push(this.pageSummary(opts.pageIndex, pSize, models.length, uim.entity, uim.entities));
         // //this._HTMLpagination(h, 0, pSize, models.length);
         h.push('</div>');
         this.$el.html(h.join(''));
@@ -52,6 +51,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
 
         this._HTMLlistBody(h, fields, pSize, uim.icon, pageIdx, opts.selectable);
         this.$('.table > tbody').html(h.join(''));
+        //this.options.pageIndex=pageIdx;
         this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
     },
 

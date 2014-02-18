@@ -29,7 +29,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
 
     _render: function (models) {
         var h = [];
-        if(models && models.length>0){
+        //if(models && models.length>0){
             var opts = this.options,
                 uim = opts.uiModel,
                 pSize = opts.pageSize || 50,
@@ -39,9 +39,9 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
             h.push(pSummary);
             //this._HTMLpagination(h,0, pSize, models.length);
             h.push('</div>');
-        }else{
-            h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
-        }
+        //}else{
+        //    h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
+        //}
         this.$el.html(h.join(''));
         return this;
     },
