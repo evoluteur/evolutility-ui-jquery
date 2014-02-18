@@ -195,6 +195,21 @@
 .evol-pl-nodata {
   text-align: center;
 }
+.evol-pl-nodata [data-id="bPlus"] {
+  margin-left: 10px;
+}
+.evo-td-plusminus {
+  width: 70px;
+}
+.evo-td-plusminus > div {
+  float: left;
+  margin-top: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.evo-td-plusminus > div:last-child:after {
+  clear: left;
+}
 /*!
  *  evolutility : many.css
  *

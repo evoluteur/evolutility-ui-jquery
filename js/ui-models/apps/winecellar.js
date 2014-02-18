@@ -153,7 +153,8 @@ var winecellar_ui = {
                     required: true,
                     maxlength: 150,
                     viewmany: true,
-                    width: 62
+                    width: 62,
+                    help: 'Name of the wine as indicated on the label.'
                 },
                 {
                     id:'vintage',
@@ -424,11 +425,12 @@ var winecellar_ui = {
                     label: 'Degustations',
                     width: 100,
                     elements: [
-                        {id: 'ddate', type: 'date', label: 'Date', maxlength: 20, viewmany: '1'},
+                        {id: 'ddate', type: 'date', label: 'Date', maxlength: 20, viewmany: '1',
+                            required:true},
                         {id: 'robe',  type: 'text', label: 'Robe', maxlength: 100, viewmany: '1'},
                         {id: 'nose', type: 'text', label: 'Nose', maxlength: 100, viewmany: '1'},
                         {id: 'taste', type: 'text', label: 'Taste', maxlength: 100, viewmany: '1'},
-                        {id: 'notes', type: 'textmultiline', label: 'Note', maxlength: 300, viewmany: '1', width: 100, height: '4'}
+                        {id: 'notes', type: 'textmultiline', label: 'Note', maxlength: 300, viewmany: '1', width: 100, height: '2'}
                     ]
                 }
             ]

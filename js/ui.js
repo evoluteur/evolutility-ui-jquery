@@ -188,6 +188,10 @@ Evol.UI = {
         },
         button: function (id, label, css) {
             return '<button type="button" data-id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
+        },
+        buttonsPlusMinus: function(){
+            return '<div data-id="bPlus" class="glyphicon glyphicon-plus-sign"></div>'+
+                '<div data-id="bMinus" class="glyphicon glyphicon-minus-sign"></div>';
         }
         /*
          toggle: function  (items) {

@@ -18,7 +18,9 @@ Evol.ViewOne = Backbone.View.extend({
         'click .evol-title-toggle': 'click_toggle',
         'click ul.evol-tabs > li > a': 'click_tab',
         'click label > .glyphicon-question-sign': 'click_help',
-        'click .evol-field-label .glyphicon-wrench': 'click_customize'
+        'click .evol-field-label .glyphicon-wrench': 'click_customize',
+        'click [data-id="bPlus"]':'click_add_details',
+        'click [data-id="bMinus"]':'click_del_details'
         // extra evt for $(window) resize
     },
 
@@ -110,10 +112,34 @@ Evol.ViewOne = Backbone.View.extend({
 
     getData: function () {
         var that = this,
-            vs = {};
-        _.each(this.getFields(), function(f){
+            fs=this.getFields(),
+            vs = {},
+            subCollecs=this.getSubCollecs();
+
+        _.each(fs, function(f){
             vs[f.id]=that.getFieldValue(f);
         });
+        if(subCollecs){
+            var vs2;
+            // -- for each sub collection (panel-list)
+            _.each(subCollecs, function (sc) {
+                var rows=that.$('[data-pid="'+sc.id+'"] tbody tr').not('[data-id="nodata"]').toArray(),
+                    v,
+                    cells;
+                vs2=[];
+                // -- for each row
+                _.each(rows,function(row){
+                    v={};
+                    cells=$(row).children();
+                    // -- for each field
+                    _.each(sc.elements,function(f, idx){
+                        v[f.id]=Evol.Dico.getFieldTypedValue(f, cells.eq(idx).find('input,textarea').eq(0));
+                    });
+                    vs2.push(v);
+                });
+                vs[sc.attr]=vs2;
+            });
+        }
         return vs;
     },
 
@@ -149,10 +175,10 @@ Evol.ViewOne = Backbone.View.extend({
                     }
                 }
             });
-            if(subCollecs && subCollecs.length>0){
+            if(subCollecs){
                 _.each(subCollecs, function (sc) {
                     var h=[];
-                    that._renderPanelListBody(h, sc);
+                    that._renderPanelListBody(h, sc, fv, 'edit');
                     that.$('[data-pid="'+sc.id+'"] tbody')
                         .html(h.join(''));
                 });
@@ -165,7 +191,9 @@ Evol.ViewOne = Backbone.View.extend({
         var fs = this.getFields(),
             that=this,
             $f,
-            prefix='#'+ that.prefix + '-';
+            prefix='#'+ that.prefix + '-',
+            subCollecs=this.getSubCollecs();
+
         this.clearMessages();
         _.each(fs, function (f) {
             $f=that.$(prefix + f.id);
@@ -177,6 +205,12 @@ Evol.ViewOne = Backbone.View.extend({
                     $f.val(f.defaultvalue || '');
             }
         });
+        if(subCollecs){
+            _.each(subCollecs, function (sc) {
+                that.$('[data-pid="'+sc.id+'"] tbody')
+                    .html(that._TRnodata(sc.elements.length, 'edit'));
+            });
+        }
         return this;
     },
 
@@ -203,17 +237,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     getFieldValue: function (f){
         var $f=this.$('#'+this.fieldViewId(f.id));
-        switch(f.type) {
-            case Evol.Dico.fieldTypes.bool:
-                return $f.prop('checked');
-            case Evol.Dico.fieldTypes.integer:
-                return parseInt($f.val(),10);
-            case Evol.Dico.fieldTypes.decimal:
-            case Evol.Dico.fieldTypes.money:
-                return parseFloat($f.val());
-            default:
-                return $f.val();
-        }
+        return Evol.Dico.getFieldTypedValue(f, $f);
     },
 
     showTab: function (tabid) {
@@ -245,15 +269,15 @@ Evol.ViewOne = Backbone.View.extend({
 
     _render: function (h, mode) {
         // EDIT and VIEW forms
-        var iTab = -1,
+        var that=this,
+            iTab = -1,
             iPanel = -1,
             opts = this.options,
-            elems = opts.uiModel.elements;
+            elems = opts.uiModel.elements,
+            iMax = elems.length;
 
         h.push('<div class="evo-one-',mode,'">');
-        //this._fieldsHash={};
-        for (var i = 0, iMax = elems.length; i < iMax; i++) {
-            var p = elems[i];
+        _.each(elems, function(p,idx){
             switch (p.type) {
                 case 'tab':
                     if (iPanel > 0) {
@@ -262,12 +286,12 @@ Evol.ViewOne = Backbone.View.extend({
                     }
                     if (iTab < 0) {
                         h.push(Evol.UI.html.clearer);
-                        this.renderTabs(h, elems);
+                        that.renderTabs(h, elems);
                         h.push('<div class="tab-content">');
                     }
                     iTab++;
-                    h.push('<div id="evol-tab-', i, '" class="tab-pane', (i === 1 ? ' active">' : '">'));
-                    this.renderTab(h, p, mode);
+                    h.push('<div id="evol-tab-', idx, '" class="tab-pane', (idx === 1 ? ' active">' : '">'));
+                    that.renderTab(h, p, mode);
                     if (iTab == iMax - 1) {
                         h.push('</div>');
                     }
@@ -277,18 +301,17 @@ Evol.ViewOne = Backbone.View.extend({
                         h.push('<div class="evol-pnls">');
                         iPanel = 1;
                     }
-                    this.renderPanel(h, p, 'p-' + p.id, mode);
+                    that.renderPanel(h, p, 'p-' + p.id, mode);
                     break;
                 case 'panel-list':
-                    this._hasSubCollec=true;
                     if (iPanel < 0) {
                         h.push('');
                         iPanel = 1;
                     }
-                    this.renderPanelList(h, p, mode);
+                    that.renderPanelList(h, p, mode);
                     break;
             }
-        }
+        });
         if (iPanel > 0) {
             h.push('</div>');
         }
@@ -357,45 +380,60 @@ Evol.ViewOne = Backbone.View.extend({
         h.push('<div style="width:', p.width, '%" class="evol-pnl pull-left" data-pid="', p.id,'">',
             '<div class="panel ', this.options.style, '">',
             Evol.UI.HTMLPanelLabel(p.label, p.id, 'PanelLabel'),
-            '<table class="table"><thead><tr>'); // table-striped
+            '<table class="table" data-mid="', p.attr,'"><thead><tr>'); // table-striped
         _.each(p.elements, function (elem) {
             h.push('<th>', elem.label, '</th>');
         });
+        if(mode==='edit'){
+            h.push('<th></th>');
+        }
         h.push('</tr></thead><tbody>');
-        this._renderPanelListBody(h,p,mode);
+        this._renderPanelListBody(h, p, null, mode);
         h.push('</tbody></table></div></div>');
     },
 
-    _renderPanelListBody: function (h,p,mode){
-        var vs = this.model.get(p.attr),
-            fTypes = Evol.Dico.fieldTypes;
+    _renderPanelListBody: function (h, uiPnl, fv, mode){
+        var that=this,
+            attr=uiPnl.attr,
+            vs = this.model.get(attr);
         if(vs && vs.length>0){
-            _.each(vs, function(row){
-                h.push('<tr>');
+            var TDbPM='<td class="evo-td-plusminus">'+Evol.UI.input.buttonsPlusMinus()+'</td>';
+            _.each(vs, function(row, idx){
+                h.push('<tr data-idx="',idx,'">');
                 if(mode==='edit'){
-                    _.each(p.elements, function (elem) {
-                        if(row[elem.id]){
-                            h.push('<td>', _.escape(Evol.Dico.HTMLField4One(elem,row[elem.id], this.hashLov)),'</td>');
-                            //h.push('<td>', _.escape(row[elem.id]),'</td>'); // TODO row.elem.attr as spec
-                        }else{
-                            h.push('<td></td>');
-                        }
-                    });
+                    that._TDsFieldsEdit(h, uiPnl.elements, row);
+                    h.push(TDbPM);
                 }else{
-                    _.each(p.elements, function (elem) {
-                        if(row[elem.id]){
-                            h.push('<td>', _.escape(Evol.Dico.HTMLField4Many(elem,row[elem.id], this.hashLov)),'</td>');
-                            //h.push('<td>', _.escape(row[elem.id]),'</td>'); // TODO row.elem.attr as spec
+                    _.each(uiPnl.elements, function (f) {
+                        if(row[f.id]){
+                            h.push('<td>', _.escape(Evol.Dico.HTMLField4Many(f, row[f.id], this.hashLov)),'</td>');
                         }else{
-                            h.push('<td></td>');
+                            h.push('<td>', Evol.Dico.HTMLField4Many(f, '', this.hashLov),'</td>');
                         }
                     });
                 }
                 h.push('</tr>');
             });
         }else{
-            h.push('<tr><td colspan="',p.elements.length,'" class="evol-pl-nodata">',Evol.i18n.nodata,'</td></tr>');
+            h.push(this._TRnodata(uiPnl.elements.length, mode));
         }
+    },
+
+    _TRnodata: function(colspan, mode){
+        return ['<tr data-id="nodata"><td colspan="',colspan,'" class="evol-pl-nodata">',
+            Evol.i18n.nodata,
+            mode==='edit'?'<div data-id="bPlus" class="glyphicon glyphicon-plus-sign"></div>':'',
+            '</td></tr>'].join('');
+    },
+
+    _TDsFieldsEdit: function(h, fs, m){
+        _.each(fs, function (f) {
+            var fv=m[f.id];
+            if(fv===undefined){
+                fv='';
+            }
+            h.push('<td>', Evol.Dico.HTMLField4One(f, f.id, fv, 'edit-details', true), '</td>');
+        });
     },
 
     renderField: function (h, fld, mode) {
@@ -443,8 +481,11 @@ Evol.ViewOne = Backbone.View.extend({
         var fs =  this.getFields();
         this.clearMessages();
         if (_.isArray(fs)) {
-            this.$el.trigger('validate'); // TODO decide if use 'view.validate'
+            this.$el.trigger('action', 'validate');
             return Evol.UI.Validation.checkFields(this.$el, fs, this.prefix);
+        }
+        if(this._subCollecs){
+
         }
         return false;
     },
@@ -609,6 +650,32 @@ Evol.ViewOne = Backbone.View.extend({
         evt.stopImmediatePropagation();
         Evol.Dico.showDesigner(id, eType, $e, this);
         this.$el.trigger(eType+'.customize', {id: id, type:eType});
+    },
+
+    click_add_details: function(evt){
+        var h=[],
+            $targ=$(evt.target),
+            tr=$targ.closest('tr'),
+            mid=tr.closest('table').data('mid'),
+            uiPnl=this._subCollecs[mid];
+
+        h.push('<tr>');
+        this._TDsFieldsEdit(h, uiPnl.elements, {});
+        h.push('<td class="evo-td-plusminus">',
+            Evol.UI.input.buttonsPlusMinus(),
+            '</td></tr>');
+        $(h.join('')).insertAfter(tr);
+        if($targ.parent().hasClass('evol-pl-nodata')){
+            tr.remove();
+        }
+    },
+    click_del_details: function(evt){
+        var tr=$(evt.target).closest('tr');
+        if(tr.siblings().length===0){
+            $(this._TRnodata(tr.children().length, 'edit'))
+                .insertAfter(tr);
+        }
+        tr.remove();
     }
 
 });
