@@ -288,24 +288,9 @@ Evol.Dico = {
                 case types.text:
                     h.push(EvoUI.input.text(fid, fv, fld, null, size));
                     break;
-                case types.email:
-                    if (mode === 'view') {
-                        h.push(EvoUI.link(fid, fv, 'mailto:' + HttpUtility.HtmlEncode(fv)));
-                    } else {
-                        h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
-                            EvoUI.input.text(fid, fv, fld.maxlength), '</div>');
-                    }
-                    break;
-                case types.url:
-                    if (mode === 'view') {
-                        h.push(EvoUI.link(fid, fv, HttpUtility.HtmlEncode(fv)));
-                    } else {
-                        h.push(EvoUI.input.text(fid, fv, fld.maxlength));
-                    }
-                    break;
                 case types.integer:
                 case types.dec:
-                    h.push(EvoUI.input.textInt(fid, fv));
+                    h.push(EvoUI.input.textInt(fid, fv, fld.max, fld.min));
                     break;
                 case types.money:
                     h.push('<div class="input-group">', EvoUI.input.typeFlag('$'),
@@ -336,14 +321,23 @@ Evol.Dico = {
                 case types.time:
                     h.push(EvoUI.input.time(fid, fv));
                     break;
-                case types.color:
-                    h.push(EvoUI.input.color(fid, fv));
-                    break;
                 case types.lov:
-                    h.push(EvoUI.input.select(fid,'',true, fld.list));
+                    h.push(EvoUI.input.select(fid, fv, '', true, fld.list));
                     break;
-                case types.integer:
-                    h.push(EvoUI.input.textInt(fid, fv, fld.max, fld.min));
+                case types.email:
+                    if (mode === 'view') {
+                        h.push(EvoUI.link(fid, fv, 'mailto:' + HttpUtility.HtmlEncode(fv)));
+                    } else {
+                        h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
+                            EvoUI.input.text(fid, fv, fld.maxlength), '</div>');
+                    }
+                    break;
+                case types.url:
+                    if (mode === 'view') {
+                        h.push(EvoUI.link(fid, fv, HttpUtility.HtmlEncode(fv)));
+                    } else {
+                        h.push(EvoUI.input.text(fid, fv, fld.maxlength));
+                    }
                     break;
                 //case types.doc:
                 case types.pix:
@@ -353,6 +347,9 @@ Evol.Dico = {
                         h.push('<p class="">',Evol.i18n.nopix,'</p>');
                     }
                     h.push(EvoUI.input.text(fid, fv, fld, null, size));
+                    break;
+                case types.color:
+                    h.push(EvoUI.input.color(fid, fv));
                     break;
             }
         }

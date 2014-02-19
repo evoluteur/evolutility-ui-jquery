@@ -550,7 +550,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(bId==='prev'){
             pIdx=(pIdx>0)?pIdx-1:0;
         }else if(bId==='next'){
-            if(pIdx<Math.round(this.collection.length/(this.options.pageSize||20))){
+            if((pIdx+1)*(this.options.pageSize||20)<this.collection.length){
                 pIdx++;
             }
         }else{

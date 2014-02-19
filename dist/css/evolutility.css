@@ -10,6 +10,7 @@
   margin-bottom: 10px;
   padding: 3px;
   background-color: #fbfbfb;
+  height: 43px;
 }
 .evo-toolbar > [data-cid="views"] {
   color: black;
@@ -328,6 +329,7 @@ label > .glyphicon-wrench {
   margin-bottom: 10px;
   padding: 3px;
   background-color: #fbfbfb;
+  height: 43px;
 }
 .evo-toolbar > [data-cid="views"] {
   color: black;

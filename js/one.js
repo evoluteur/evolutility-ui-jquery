@@ -45,9 +45,8 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     render: function () {
-        var mode = this.options.mode,
-            h = [];
-        this._render(h, mode);
+        var h = [];
+        this._render(h, this.options.mode);
         this.$el.html(h.join(''));
         this.custOn=false;
         return this;
@@ -120,20 +119,19 @@ Evol.ViewOne = Backbone.View.extend({
             vs[f.id]=that.getFieldValue(f);
         });
         if(subCollecs){
-            var vs2;
             // -- for each sub collection (panel-list)
             _.each(subCollecs, function (sc) {
                 var rows=that.$('[data-pid="'+sc.id+'"] tbody tr').not('[data-id="nodata"]').toArray(),
                     v,
-                    cells;
-                vs2=[];
+                    cells,
+                    vs2=[];
                 // -- for each row
                 _.each(rows,function(row){
                     v={};
                     cells=$(row).children();
                     // -- for each field
                     _.each(sc.elements,function(f, idx){
-                        v[f.id]=Evol.Dico.getFieldTypedValue(f, cells.eq(idx).find('input,textarea').eq(0));
+                        v[f.id]=Evol.Dico.getFieldTypedValue(f, cells.eq(idx).find('input,select,textarea').eq(0));
                     });
                     vs2.push(v);
                 });
@@ -305,7 +303,7 @@ Evol.ViewOne = Backbone.View.extend({
                     break;
                 case 'panel-list':
                     if (iPanel < 0) {
-                        h.push('');
+                        h.push('<div class="evol-pnls">');
                         iPanel = 1;
                     }
                     that.renderPanelList(h, p, mode);
@@ -346,7 +344,7 @@ Evol.ViewOne = Backbone.View.extend({
                 that.renderPanel(h, uip, uip.id || 'pl-'+idx, mode);
             }
         });
-        h.push(Evol.UI.html.clearer, '</div></div>');
+        h.push(Evol.UI.html.clearer, '</div></div>'); // TODO 2 div?
     },
 
     renderPanel: function (h, p, pid, mode) {
@@ -395,6 +393,7 @@ Evol.ViewOne = Backbone.View.extend({
     _renderPanelListBody: function (h, uiPnl, fv, mode){
         var that=this,
             attr=uiPnl.attr,
+            fs = uiPnl.elements,
             vs = this.model.get(attr);
         if(vs && vs.length>0){
             var TDbPM='<td class="evo-td-plusminus">'+Evol.UI.input.buttonsPlusMinus()+'</td>';
@@ -404,7 +403,7 @@ Evol.ViewOne = Backbone.View.extend({
                     that._TDsFieldsEdit(h, uiPnl.elements, row);
                     h.push(TDbPM);
                 }else{
-                    _.each(uiPnl.elements, function (f) {
+                    _.each(fs, function (f) {
                         if(row[f.id]){
                             h.push('<td>', _.escape(Evol.Dico.HTMLField4Many(f, row[f.id], this.hashLov)),'</td>');
                         }else{
@@ -415,12 +414,12 @@ Evol.ViewOne = Backbone.View.extend({
                 h.push('</tr>');
             });
         }else{
-            h.push(this._TRnodata(uiPnl.elements.length, mode));
+            h.push(this._TRnodata(fs.length, mode));
         }
     },
 
     _TRnodata: function(colspan, mode){
-        return ['<tr data-id="nodata"><td colspan="',colspan,'" class="evol-pl-nodata">',
+        return ['<tr data-id="nodata"><td colspan="',mode==='edit'?(colspan+1):colspan,'" class="evol-pl-nodata">',
             Evol.i18n.nodata,
             mode==='edit'?'<div data-id="bPlus" class="glyphicon glyphicon-plus-sign"></div>':'',
             '</td></tr>'].join('');
@@ -481,12 +480,12 @@ Evol.ViewOne = Backbone.View.extend({
         var fs =  this.getFields();
         this.clearMessages();
         if (_.isArray(fs)) {
-            this.$el.trigger('action', 'validate');
             return Evol.UI.Validation.checkFields(this.$el, fs, this.prefix);
         }
         if(this._subCollecs){
 
         }
+        this.$el.trigger('action', 'validate');
         return false;
     },
 

@@ -27,16 +27,6 @@ Evol.ViewOne.Mini = Evol.ViewOne.extend({
         return m.required || m.viewmany || m.viewmini;
     },
 
-    render: function () {
-        var mode = this.options.mode,
-            h = [];
-        this._render(h, mode);
-        this.$el.html(h.join(''));
-        this.setData(this.model);
-        this.custOn=false;
-        return this;
-    },
-
     _render: function (h, mode) {
         // EDIT and VIEW forms
         var opts = this.options,

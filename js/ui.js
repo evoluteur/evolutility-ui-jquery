@@ -169,20 +169,24 @@ Evol.UI = {
             }
             return h.join('');
         },
-        select:function (fID, css, emptyOption, list) {
+        select:function (fID, fV, css, emptyOption, list) {
             return [
                 this.selectBegin(fID, css, emptyOption),
-                this.options(list),'</select>'
+                this.options(list, fV),'</select>'
             ].join('');
         },
         option: function (fID, fV) {
             return ['<option value="', fID, '">', fV, '</option>'].join('');
         },
-        options: function (fields) {
+        options: function (fields, fV) {
             var fnOpt = Evol.UI.input.option,
                 opts=[];
             _.each(fields,function(f){
-                opts.push(fnOpt(f.id, f.text));
+                if(f.id===fV){
+                    opts.push('<option value="', f.id, '" selected>', f.text, '</option>');
+                }else{
+                    opts.push(fnOpt(f.id, f.text));
+                }
             });
             return opts.join('');
         },
