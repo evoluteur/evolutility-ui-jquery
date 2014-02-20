@@ -19,8 +19,7 @@ Evol.ViewOne = Backbone.View.extend({
         'click ul.evol-tabs > li > a': 'click_tab',
         'click label > .glyphicon-question-sign': 'click_help',
         'click .evol-field-label .glyphicon-wrench': 'click_customize',
-        'click [data-id="bPlus"]':'click_add_details',
-        'click [data-id="bMinus"]':'click_del_details'
+        'click [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel'
         // extra evt for $(window) resize
     },
 
@@ -163,7 +162,7 @@ Evol.ViewOne = Backbone.View.extend({
                             $f.prop('checked', fv);
                             break;
                         case fTypes.pix:
-                            var newPix=(fv!=='')?('<img src="'+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
+                            var newPix=(fv)?('<img src="'+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
                             $f.val(fv)
                                 .prev().remove();
                             $f.before(newPix);
@@ -435,18 +434,17 @@ Evol.ViewOne = Backbone.View.extend({
         });
     },
 
-    renderField: function (h, fld, mode) {
-        var EvoDico=Evol.Dico,
-            fid = this.fieldViewId(fld.id),
+    renderField: function (h, f, mode) {
+        var fid = this.fieldViewId(f.id),
             fv='';
-        if(this.model && this.model.has(fld.id)){
+        if(this.model && this.model.has(f.id)){
             if (mode !== 'new') {
-                fv = this.model.get(fld.id);
+                fv = this.model.get(f.id);
             }else{
-                fv = fld.defaultvalue || '';
+                fv = f.defaultvalue || '';
             }
         }
-        h.push(EvoDico.HTMLField4One(fld, fid, fv, mode));
+        h.push(Evol.Dico.HTMLField4One(f, fid, fv, mode));
         return this;
     },
 
@@ -527,13 +525,13 @@ Evol.ViewOne = Backbone.View.extend({
             var $f=$el.closest('.evol-fld'),
                 $fh=$f.find('.help-block');
             if($fh.length>0){
-                $fh.slideUp(300, function(){
+                $fh.slideUp(200, function(){
                     $fh.remove();
                 });
             }else{
                 var $elDes=$('<span class="help-block">' + _.escape(fld.help) + '</span>').hide();
                 $f.append($elDes);
-                $elDes.slideDown(300);
+                $elDes.slideDown(200);
             }
         }
         return this;
@@ -579,28 +577,22 @@ Evol.ViewOne = Backbone.View.extend({
             content = $this.closest('.panel-heading').next(),
             state = content.data('expState'),
             cssUp = 'glyphicon-chevron-up',
-            cssDown = 'glyphicon-chevron-down',
-            css;
+            cssDown = 'glyphicon-chevron-down';
         evt.preventDefault();
         evt.stopImmediatePropagation();
         if(evt.shiftKey){
-            $this = this.$('.evol-title-toggle');
-            if (state === 'down') {
-                css = cssDown;
-            } else {
-                css = cssUp;
-            }
-            $this = this.$('.evol-title-toggle.'+css)
+            var css = (state==='down')?cssDown:cssUp;
+            this.$('.evol-title-toggle.'+css)
                 .trigger('click');
         }else{
             if (state === 'down') {
                 $this.closest('.panel').css('height','');
-                content.slideDown(400)
+                content.slideDown(300)
                     .data('expState', 'up');
                 $this.addClass(cssUp)
                     .removeClass(cssDown);
             } else {
-                content.slideUp(400, function() {
+                content.slideUp(300, function() {
                     $this.closest('.panel').css('height','40px');
                 }).data('expState', 'down');
                 $this.removeClass(cssUp)
@@ -645,36 +637,36 @@ Evol.ViewOne = Backbone.View.extend({
         var $e=$(evt.currentTarget),
             id=$e.data('id'),
             eType=$e.data('type');
-
         evt.stopImmediatePropagation();
         Evol.Dico.showDesigner(id, eType, $e, this);
         this.$el.trigger(eType+'.customize', {id: id, type:eType});
     },
 
-    click_add_details: function(evt){
-        var h=[],
-            $targ=$(evt.target),
-            tr=$targ.closest('tr'),
-            mid=tr.closest('table').data('mid'),
-            uiPnl=this._subCollecs[mid];
+    click_detailsAddDel: function(evt){
+        var $targ=$(evt.target),
+            bId=$targ.data('id'),
+            tr=$targ.closest('tr');
 
-        h.push('<tr>');
-        this._TDsFieldsEdit(h, uiPnl.elements, {});
-        h.push('<td class="evo-td-plusminus">',
-            Evol.UI.input.buttonsPlusMinus(),
-            '</td></tr>');
-        $(h.join('')).insertAfter(tr);
-        if($targ.parent().hasClass('evol-pl-nodata')){
+        if(bId==='bPlus'){
+            var h=[],
+                mid=tr.closest('table').data('mid'),
+                uiPnl=this._subCollecs[mid];
+            h.push('<tr>');
+            this._TDsFieldsEdit(h, uiPnl.elements, {});
+            h.push('<td class="evo-td-plusminus">',
+                Evol.UI.input.buttonsPlusMinus(),
+                '</td></tr>');
+            $(h.join('')).insertAfter(tr);
+            if(tr.data('id')==='nodata'){
+                tr.remove();
+            }
+        }else if(bId==='bMinus'){
+            if(tr.siblings().length===0){
+                $(this._TRnodata(tr.children().length, 'edit'))
+                    .insertAfter(tr);
+            }
             tr.remove();
         }
-    },
-    click_del_details: function(evt){
-        var tr=$(evt.target).closest('tr');
-        if(tr.siblings().length===0){
-            $(this._TRnodata(tr.children().length, 'edit'))
-                .insertAfter(tr);
-        }
-        tr.remove();
     }
 
 });

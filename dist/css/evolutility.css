@@ -198,6 +198,7 @@
 }
 .evol-pl-nodata [data-id="bPlus"] {
   margin-left: 10px;
+  cursor: pointer;
 }
 .evo-td-plusminus {
   width: 70px;

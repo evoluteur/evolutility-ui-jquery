@@ -54,10 +54,7 @@ Evol.UI = {
                 });
                 //other fields attributes
                 if(fd.readonly){
-                    var fi = fd.readonly;
-                    if (fi || fi == '1') {
-                        h.push('" ', item, '="', item);
-                    }
+                    h.push('" ', item, '="', item);
                 }
                 if(fCss && fCss!==''){
                     h.push('" class="', fCss);
@@ -67,8 +64,7 @@ Evol.UI = {
             return h.join('');
         },
         textInt: function (fID, fV, min, max) {
-            var h=['<input class="evo-field form-control" type="number" id="', fID,
-                '" value="', fV];
+            var h=['<input class="evo-field form-control" type="number" id="', fID,'" value="', fV];
             if(min!==undefined){
                 h.push('" min="', min);
             }
@@ -79,9 +75,8 @@ Evol.UI = {
             return h.join('');
         },
         textM: function (fID, fV, ml, h) {
-            return [
-                '<textarea name="', fID, '" id="', fID, '" class="evo-field form-control"" rows="', h,
-                (ml > 0) ? '" onKeyUp="Evol.UI.Validation.checkMaxLen(this,' + ml + ')' : '',
+            return ['<textarea name="', fID, '" id="', fID, '" class="evo-field form-control"" rows="', h,
+                (ml > 0) ? ('" onKeyUp="Evol.UI.Validation.checkMaxLen(this,' + ml + ')') : '',
                 '">', fV, '</textarea>'
             ].join('');
         },
@@ -183,7 +178,7 @@ Evol.UI = {
                 opts=[];
             _.each(fields,function(f){
                 if(f.id===fV){
-                    opts.push('<option value="', f.id, '" selected>', f.text, '</option>');
+                    opts.push('<option value="', f.id, '" selected="selected">', f.text, '</option>');
                 }else{
                     opts.push(fnOpt(f.id, f.text));
                 }

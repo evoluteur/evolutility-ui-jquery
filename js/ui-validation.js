@@ -62,24 +62,18 @@ Evol.UI.Validation = {
             var fd = fds[i],
                 $f = holder.find('#' + prefix + '-' + fd.id).eq(0),
                 isHTML = fd.type == 'html';
-            if (isHTML) {
-                $f.val(nicEditors.findEditor(f.id).getContent());
-            }
+            //if (isHTML) {
+            //    $f.val(nicEditors.findEditor(f.id).getContent());
+            //}
             if ($f.length > 0) {
                 var noErr = true,
                     p, msgf;
                 // Check empty & type
-                if (fd.required > 0) {
-                    if (isEmpty($f, isHTML)) {
-                        p = $f.parent();
-                        msgf = labMsg(i18nVal.empty);
-                        that.setValidationFlags(p, msgf);
-                        noErr = false;
-                    } else {
-                        $f.parent().removeClass('control-group error')
-                            .find('.evol-warn-error').remove();
-                        typeCheck();
-                    }
+                if (fd.required && isEmpty($f, isHTML)) {
+                    p = $f.parent();
+                    msgf = labMsg(i18nVal.empty);
+                    that.setValidationFlags(p, msgf);
+                    noErr = false;
                 } else {
                     typeCheck();
                 }
