@@ -101,8 +101,9 @@ Evol.Dico = {
         return ls;
     },
 
-    lovText:function(hash, f, v){
-        if(('list' in f) && f.list.length>0){
+    // get field value (not id but text) for a field of type lov
+    lovText:function(f, v, hash){
+        if(f.list && f.list.length>0){
             if(!(f.id in hash)){
                 hash[f.id]={};
             }
@@ -111,7 +112,7 @@ Evol.Dico = {
                 return hashLov[v];
             }else{
                 var listItem=_.find(f.list,function(item){
-                    return item.id===v;
+                    return item.id==v;
                 });
                 if(listItem){
                     var txt=listItem.text;
@@ -122,6 +123,16 @@ Evol.Dico = {
                     return txt;
                 }
             }
+        }
+        return '';
+    },
+
+    lovTextNoPix:function(f, v){
+        var listItem=_.find(f.list,function(item){
+            return item.id==v;
+        });
+        if(listItem){
+            return listItem.text;
         }
         return '';
     },
@@ -241,7 +252,7 @@ Evol.Dico = {
                     //if(f.icon && f.list & f.list[0].icon){
                     //    return 'f.icon' + this._lovText(f,v);
                     //}else{
-                    return Evol.Dico.lovText(hashLov, f, v);
+                    return Evol.Dico.lovText(f, v, hashLov);
                     //}
                 }
                 break;

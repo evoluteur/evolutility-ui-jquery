@@ -50,6 +50,7 @@ Evol.i18n = {
     yes: 'Yes',
     no: 'No',
     none:'None',
+    na:'N/A', // 'not available'
     nodata:'No data available.',
     nopix:'No picture.',
     nochart:'No charts available.',

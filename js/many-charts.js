@@ -28,15 +28,15 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
         }else{
             h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
-        this.setTitle();
         this.$el.html(h.join(''));
-        return this;
+        return this.setTitle();
     },
 
     _HTMLcharts: function (h, style) {
         var that=this,
             EvoUI = Evol.UI,
             EvoDico = Evol.Dico,
+            i18n = Evol.i18n,
             fTypes = EvoDico.fieldTypes,
             uiModel = this.options.uiModel,
             models = this.collection.models,
@@ -51,41 +51,39 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                 });
                 var groupData = groups,
                     data=[],
+                    lb,
                     labels=[];
                 for(var dataSetName in groupData) {
-                    var g=groupData[dataSetName];
-                    data.push(g);
+                    var nb=groupData[dataSetName];
                     if(dataSetName==='' || dataSetName==='null'){
-                        labels.push(Evol.i18n.none+' ('+g+')');
+                        lb = i18n.none;
+                    }else if(dataSetName==='undefined'){
+                        lb = i18n.na;
                     }else if(f.type===fTypes.lov){
-                        //var lov=[];
-                        //_.each(f.list, function(item){
-
-                        //});
-                        labels.push(EvoDico.lovText(that._hashLov, f, dataSetName)+' ('+g+')');
-                    }else if(f.type===fTypes.bool){
-                        if(dataSetName==='true'){
-                            // TODO always tread null as no?
-                            labels.push(Evol.i18n.yes+' ('+g+')');
+                        if(f.list && f.list.length && f.list[0].icon){
+                            lb = EvoDico.lovTextNoPix(f, dataSetName);
                         }else{
-                            labels.push(Evol.i18n.no+' ('+g+')');
+                            lb = EvoDico.lovText(f, dataSetName, that._hashLov);
                         }
+                    }else if(f.type===fTypes.bool){
+                        lb = (dataSetName==='true')?i18n.yes:i18n.no;
                     }else{
-                        labels.push(dataSetName+' ('+g+')');
+                        lb = dataSetName;
                     }
+                    data.push(nb);
+                    labels.push(lb+' ('+nb+')');
                 }
                 var entityName=EvoUI.capitalize(uiModel.entities);
                 if(f.type===fTypes.lov){
-                    h.push(EvoUI.Charts.Pie(Evol.i18n.getLabel('charts.aByB',entityName,f.label), data, labels, style));
+                    h.push(EvoUI.Charts.Pie(i18n.getLabel('charts.aByB',entityName,f.label), data, labels, style));
                 }else{
-                    h.push(EvoUI.Charts.Bars(Evol.i18n.getLabel('charts.aB',entityName,f.label), data, labels, style));
+                    h.push(EvoUI.Charts.Bars(i18n.getLabel('charts.aB',entityName,f.label), data, labels, style));
                 }
             });
         }else{
-            h.push(EvoUI.HTMLMsg(Evol.i18n.nochart, Evol.i18n.nochart));
+            h.push(EvoUI.HTMLMsg(i18n.nochart, i18n.badchart));
         }
         h.push(EvoUI.html.clearer);
     }
 
 });
-
