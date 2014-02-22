@@ -142,7 +142,7 @@ Evol.Dico = {
     },
 
     showDesigner: function(id, type, $el, context){
-        var $elDes=$('<div class="evol-des-'+type+'"></div>'),
+        var $elDes=$('<div class="evodico-'+type+'"></div>'),
             model,
             uiModel;
 //TODO set record

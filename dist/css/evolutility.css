@@ -24,7 +24,7 @@
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
 }
-.evo-toolbar li.evol-tb-status {
+.evo-toolbar .evo-tb-status {
   color: #0f0f0f !important;
   min-height: 35px;
   line-height: 35px;
@@ -273,8 +273,8 @@ img.evol-table-icon {
   text-align: center;
   padding: 10px 20px 30px;
 }
-.evol-des-field,
-.evol-des-panel {
+.evodico-field,
+.evodico-panel {
   z-index: 2000;
   position: absolute;
   overflow: auto;
@@ -283,11 +283,11 @@ img.evol-table-icon {
   border: #696969 1px solid;
   padding: 4px;
 }
-.evol-des-field {
+.evodico-field {
   width: 400px;
   height: 500px;
 }
-.evol-des-panel {
+.evodico-panel {
   width: 500px;
   height: 400px;
 }
@@ -314,7 +314,7 @@ label > .glyphicon-wrench {
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
 }
-.evo-toolbar li.evol-tb-status {
+.evo-toolbar .evo-tb-status {
   color: #0f0f0f !important;
   min-height: 35px;
   line-height: 35px;

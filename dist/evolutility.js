@@ -868,7 +868,7 @@ Evol.Dico = {
     },
 
     showDesigner: function(id, type, $el, context){
-        var $elDes=$('<div class="evol-des-'+type+'"></div>'),
+        var $elDes=$('<div class="evodico-'+type+'"></div>'),
             model,
             uiModel;
 //TODO set record
@@ -2584,7 +2584,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(opts.toolbar){
             link2h('prev','','chevron-left','x');
             link2h('next','','chevron-right','x');
-            h.push('<li class="evol-tb-status" data-cardi="n"></li>');
+            h.push('<li class="evo-tb-status" data-cardi="n"></li>');
             h.push('</ul><ul class="nav nav-pills pull-right" data-id="views">');
 
             h.push(beginMenu('views','eye-open'));
@@ -2820,7 +2820,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     },*/
 
     setStatus: function(ui){
-        var $e=this.$('.evo-toolbar .evol-tb-status');
+        var $e=this.$('.evo-toolbar .evo-tb-status');
         $e.html(ui);
     },
 
@@ -2918,13 +2918,14 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     deleteItem: function(){
-        var entityName=this.options.uiModel.entity,
+        var i18n=Evol.i18n,
+            entityName=this.options.uiModel.entity,
             entityValue=this.curView.getTitle();
 
         if(this.curView.cardinality==='1'){
             var delModel=this.curView.model;
             // TODO good looking msgbox
-            if (delModel && confirm(Evol.i18n.getLabel('DeleteEntity', entityName, entityValue))) {
+            if (delModel && confirm(i18n.getLabel('DeleteEntity', entityName, entityValue))) {
                 var that=this,
                     collec=this.collection,
                     delIdx=_.indexOf(collec.models, delModel),
@@ -2952,7 +2953,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                             this.model = newModel;
                             that.curView.setModel(newModel);
                         }
-                        that.setMessage('Record Deleted.', Evol.i18n.getLabel('status.deleted', Evol.UI.capitalize(entityName), entityValue), 'success');
+                        that.setMessage('Record Deleted.', i18n.getLabel('status.deleted', Evol.UI.capitalize(entityName), entityValue), 'success');
                     },
                     error:function(err){
                         alert('error');
@@ -2963,7 +2964,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             if(this.curView.getSelection){
                 var selection=this.curView.getSelection();
                 if(selection.length>0){
-                    if (confirm(Evol.i18n.getLabel('DeleteEntities', selection.length, this.options.uiModel.entities))) {
+                    if (confirm(i18n.getLabel('DeleteEntities', selection.length, this.options.uiModel.entities))) {
                         //TODO
 
                     }
@@ -3089,7 +3090,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     click_selection: function(evt, ui){
-        var status=this.$('.evo-toolbar .evol-tb-status'),
+        var status=this.$('.evo-toolbar .evo-tb-status'),
             cbxs=this.$('.list-sel:checked').not('[data-id="cbxAll"]'),
             l=cbxs.length,
             tbBs=this.getToolbarButtons();
