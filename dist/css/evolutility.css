@@ -1,5 +1,5 @@
 /*!
- *  evolutility : toolbar.css
+ *  evolutility
  *
  *  https://github.com/evoluteur/evolutility
  *  Copyright (c) 2014, Olivier Giulieri
@@ -30,12 +30,6 @@
   line-height: 35px;
   margin-top: 2px;
 }
-/*!
- *  evolutility : filter.css
- *
- *  https://github.com/evoluteur/evolutility
- *  Copyright (c) 2014, Olivier Giulieri
-*/
 .evo-bNew,
 .evo-bAdd,
 .evo-bDel,
@@ -97,12 +91,6 @@
 .evo-editFilter input.hasDatepicker {
   width: 7em;
 }
-/*!
- *  evolutility : one.css
- *
- *  https://github.com/evoluteur/evolutility
- *  Copyright (c) 2014, Olivier Giulieri
-*/
 /* --- panels & tabs --- */
 .evol-pnls,
 .evol-pnl > div > fieldset {
@@ -212,12 +200,6 @@
 .evo-td-plusminus > div:last-child:after {
   clear: left;
 }
-/*!
- *  evolutility : many.css
- *
- *  https://github.com/evoluteur/evolutility
- *  Copyright (c) 2014, Olivier Giulieri
-*/
 /* --- list --- */
 img.evol-table-icon {
   margin-right: 6px !important;
@@ -291,12 +273,6 @@ img.evol-table-icon {
   text-align: center;
   padding: 10px 20px 30px;
 }
-/*!
- *  evolutility : dico.css
- *
- *  https://github.com/evoluteur/evolutility
- *  Copyright (c) 2014, Olivier Giulieri
-*/
 .evol-des-field,
 .evol-des-panel {
   z-index: 2000;
@@ -318,12 +294,6 @@ img.evol-table-icon {
 label > .glyphicon-wrench {
   cursor: pointer;
 }
-/*!
- *  evolutility : toolbar.css
- *
- *  https://github.com/evoluteur/evolutility
- *  Copyright (c) 2014, Olivier Giulieri
-*/
 .evo-toolbar {
   border: 1px solid #bce8f1;
   border-radius: 4px;
@@ -350,12 +320,6 @@ label > .glyphicon-wrench {
   line-height: 35px;
   margin-top: 2px;
 }
-/*!
- *  evolutility : export.css
- *
- *  https://github.com/evoluteur/evolutility
- *  Copyright (c) 2014, Olivier Giulieri
-*/
 .evol-xpt-form {
   border-collapse: collapse;
   border: 0;
@@ -410,12 +374,6 @@ label > .glyphicon-wrench {
   clear: both;
   display: none;
 }
-/*!
- *  evolutility : filter.css
- *
- *  https://github.com/evoluteur/evolutility
- *  Copyright (c) 2014, Olivier Giulieri
-*/
 .evo-bNew,
 .evo-bAdd,
 .evo-bDel,
