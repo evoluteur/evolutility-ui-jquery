@@ -166,8 +166,8 @@ Evol.Dico = {
     },
 
     bbComparator:  function(fid){
-        return function(modelA,modelB) {
-            return modelA.get(fid)>modelB.get(fid);
+        return function(modelA) {
+            return modelA.get(fid);
         };
     },
 

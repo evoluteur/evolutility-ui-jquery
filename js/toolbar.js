@@ -208,7 +208,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     if(this.curView.cardinality==='n' && this.curView.setPage){
                         this.curView.setPage(this.options.pageIndex);
                     }
-                }else if(this.curView){
+                }else if(this.curView.clear){
                     this.curView.clear();
                 }
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
