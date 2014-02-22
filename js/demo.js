@@ -56,7 +56,7 @@ function setDemo(uiModel, localStorage, data, style){
                 });
 
             $('#recs > a').on('click', function(evt){
-                var id=$(evt.target).index();
+                var id=$(evt.currentTarget).index();
                 vw.setModel(ms.get(id));
             })
         }

@@ -73,7 +73,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
     },
 
     HTMLItem: function(h, fields, model, icon, selectable){
-        h.push('<tr data-id="', model.id, '">');
+        h.push('<tr data-mid="', model.id, '">');
         if(selectable){
             h.push('<td class="list-td-sel">',this._HTMLCheckbox(model.id),'</td>');
         }

@@ -207,10 +207,8 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     click_navigate: function (evt) {
-        var e=$(evt.currentTarget),
-            pTag=this.options.mode==='list'?'tr':'div';
         evt.type='list.navigate';
-        this.$el.trigger(evt, {id: e.closest(pTag).data('id')});
+        this.$el.trigger(evt, {id: $(evt.currentTarget).closest('[data-mid]').data('mid')});
     },
 
     click_sort: function (evt) {
@@ -236,7 +234,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     click_selection: function (evt) {
-        if($(evt.target).data('id')==='cbxAll'){
+        if($(evt.currentTarget).data('id')==='cbxAll'){
 
         }else{
             this.$el.trigger('selection');

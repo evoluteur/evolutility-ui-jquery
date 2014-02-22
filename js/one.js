@@ -438,11 +438,7 @@ Evol.ViewOne = Backbone.View.extend({
         var fid = this.fieldViewId(f.id),
             fv='';
         if(this.model && this.model.has(f.id)){
-            if (mode !== 'new') {
-                fv = this.model.get(f.id);
-            }else{
-                fv = f.defaultvalue || '';
-            }
+            fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultvalue || '';
         }
         h.push(Evol.Dico.HTMLField4One(f, fid, fv, mode));
         return this;
@@ -573,7 +569,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     click_toggle: function (evt) {
-        var $this = $(evt.target),
+        var $this = $(evt.currentTarget),
             content = $this.closest('.panel-heading').next(),
             state = content.data('expState'),
             cssUp = 'glyphicon-chevron-up',
@@ -603,7 +599,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     click_tab: function (evt) {
-        var href = evt.target.href,
+        var href = evt.currentTarget.href,
             id = href.substring(href.indexOf('#'));
         evt.stopImmediatePropagation();
         evt.preventDefault();
@@ -643,7 +639,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     click_detailsAddDel: function(evt){
-        var $targ=$(evt.target),
+        var $targ=$(evt.currentTarget),
             bId=$targ.data('id'),
             tr=$targ.closest('tr');
 

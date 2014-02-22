@@ -14,7 +14,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     events: {
         'click .nav a': 'click_toolbar',
-        'list.navigate div': 'click_navigate',
+        'list.navigate > div': 'click_navigate',
         //'list.paginate >div': 'paginate',
         'submit.export >div': 'click_download',
         'action > div': 'action_view',
@@ -42,7 +42,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             'new': true,
             del: true,
             filter: false,
-            export: true,
+            'export': true,
             group: false,
             customize:true
         },
@@ -570,7 +570,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     click_toolbar: function(evt, ui){
-        var $e=$(evt.target);
+        var $e=$(evt.currentTarget);
         if($e.tagName!=='A'){
             $e=$e.closest('a');
         }
@@ -620,7 +620,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         this.model=m;
         this.setView(this._prevOne || 'edit');
         this.curView.setModel(m);
-        // todo: change model for all views / or model event
+        // todo: decide change model for all views or model event
     },
 
     click_download: function(evt){

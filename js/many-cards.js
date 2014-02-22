@@ -84,7 +84,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
             var f = fields[i],
                 v = model.get(f.id);
             if (i === 0) {
-                h.push('<div data-id="', model.id, '"><h4>',
+                h.push('<div data-mid="', model.id, '"><h4>',
                     selectable?this._HTMLCheckbox(model.id):'',
                     '<a href="#" id="fg-', f.id, '" class="evol-nav-id">');
                 if (icon) {

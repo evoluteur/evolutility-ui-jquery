@@ -360,7 +360,7 @@ Evol.ViewExport = Backbone.View.extend({
     },
 
     click_format: function (evt) {
-        var format = $(evt.target).val();//this.$('.evol-xpt-format').val();
+        var format = $(evt.currentTarget).val();//this.$('.evol-xpt-format').val();
         if (format === 'XML') {
             this.$('#XML').html(EvoExport.formXML(this.options.uiModel.entity))
                 .show()

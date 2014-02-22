@@ -589,7 +589,7 @@ Evol.ViewFilter = Backbone.View.extend({
 
     click_remove: function(evt){
         evt.stopImmediatePropagation();
-        var idx=$(evt.target).parent().index();
+        var idx=$(evt.currentTarget).parent().index();
         this.removeFilter(idx);
     },
 
