@@ -311,7 +311,12 @@ This ui-model defines all <a href="views.html">views</a>.</p>
     <p>The <code>panel</code> element is used to visually group fields together on the screen.</p>
 
     <table class="table table-bordered">
-        <tbody><tr>
+        <tbody>
+        <tr>
+            <td>id<span class="evol-required">*</span></td>
+            <td>Panel Id in the UI.</td>
+        </tr>
+        <tr>
             <td style="width: 120px; ">css
             </td>
             <td>CSS class for the panel. The default value is &quot;Panel&quot;.
@@ -354,9 +359,57 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         </tr>
         </tbody></table>
 
-        <h3>tab</h3>
-    <p>
-        The <code>tab</code> element can be used to group panels together and view them a group at a time. This element is optional.</p>
+
+    <h3>panel-list</h3>
+    <p>Similar to a panel but used to display a sub-collection.</p>
+
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <td>attribute<span class="evol-required">*</span></td>
+            <td>Model attribute for the sub-collection.</td>
+        </tr>
+        <tr>
+            <td>id<span class="evol-required">*</span></td>
+            <td>Panel Id in the UI.</td>
+        </tr>
+        <tr>
+            <td style="width: 120px; ">css
+            </td>
+            <td>CSS class for the panel. The default value is &quot;Panel&quot;.
+            </td>
+        </tr>
+        <tr>
+            <td>csslabel
+            </td>
+            <td>
+                CSS class for the panel title. The default value is &quot;PanelLabel&quot;.
+            </td>
+        </tr>
+        <tr>
+            <td>elements[]
+            </td>
+            <td>
+                Array of fields in the sub-collection.
+            </td>
+        </tr>
+        <tr>
+            <td>label
+            </td>
+            <td>Panel title.
+            </td>
+        </tr>
+        <tr>
+            <td>width
+            </td>
+            <td>Width of the panel in percentage of the total width of the form.<br />
+                Example: <code>width</code>=&quot;100&quot; for the full width.
+            </td>
+        </tr>
+        </tbody></table>
+
+    <h3>tab</h3>
+    <p>The <code>tab</code> element can be used to group panels together and view them a group at a time. This element is optional.</p>
     <table class="table table-bordered">
         <tbody><tr>
             <td style="width: 120px; ">
