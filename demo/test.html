@@ -11,17 +11,34 @@
     <script src="../dist/evolutility.js" type="text/javascript"></script>
 
     <script src="../js/demo.js" type="text/javascript"></script>
-  <script src="../js/ui-models/test/test.js" type="text/javascript"></script>
+  <script src="../js/ui-models/apps/test.js" type="text/javascript"></script>
 </head>
 
 <body>
+
+<div class="evo-navbar">
+    <div class="evol-logo"><a href="../index.html">evolutility.js</a></div>
+    <ul class="evo-nav-tabs">
+        <li><a href="index.html" class="sel">demo</a></li>
+        <li><a href="../doc/index.html">documentation</a></li>
+        <li><a href="https://github.com/evoluteur/evolutility" target="_new">GitHub</a></li>
+    </ul>
+    <div class="demo-links">
+        <a href="todo.html">todo</a> -
+        <a href="contact.html">addressbook</a> -
+        <a href="winecellar.html">wine cellar</a> -
+        <a href="test.html" class="sel">{ test }</a>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<p></p>
+<p>Test page with all field types. Used to QA Evolutility ...and easily see what is not implemented yet. </p>
 
 <div class="demo-links">
     <a href="test.html" class="sel">Test</a>
 </div>
 
-<a id="uideflink" href="javascript:showUIdef(test_ui)">See form definition</a>
-<div style="display:none;" id="uimodel"></div>
 
 <h1 id="title">Test</h1>
   
@@ -31,23 +48,14 @@
 
 $(document).ready(function(){
 
-    var el =$('#evol'),
-       vw = new Evol.ViewOne({
-        el: el,
-        mode: 'edit',
-        style:'panel-danger',
-        //model: this.bbModel,
-        //modelCollection:this.bbCollection,
-        uiModel: test_ui
-    });
-    vw.render();
-    el.on('view.save',function(evt){
-        vw.validate(evt);
-    })
+    setDemo(test_ui,'evol-test',[],'panel-info');
 
 });
 
 </script>
+
+<a id="uideflink" href="javascript:showUIdef(test_ui)">See form definition</a>
+<div style="display:none;" id="uimodel"></div>
 
 <p><br/>evolutility.js at <a href="https://github.com/evoluteur/evolutility" target="download">GitHub</a></p>
 

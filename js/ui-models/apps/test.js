@@ -1,7 +1,19 @@
+
+var bottleSizes=[
+    {id:750, text: '750 ml'},
+    {id:500, text: '500 ml'},
+    {id:375, text: '375 cl'},
+    {id:1500, text: '1.5 L'},
+    {id:3000, text: '3.0 L'},
+    {id:6000, text: '6.0 L'},
+    {id:8000, text: '8.0 L'}
+];
+
 var test_ui = {
     entity: 'test',
     entities: 'tests',
     title: 'Test Object',
+    leadfield:'name',
     elements: [
         {
             type: 'panel',
@@ -11,19 +23,26 @@ var test_ui = {
                 {
                     id:'name',
                     type: 'text',
-                    label: 'Text field',
+                    label: 'Name',
                     required: true,
                     maxlength: '150',
                     viewmany: true,
-                    width: 62
+                    width: 42
                 },
                 {
                     id:'name2',
                     type: 'text',
+                    label: 'Text',
+                    viewmany: true,
+                    width: '38'
+                },
+                {
+                    id:'name3',
+                    type: 'text',
                     label: 'Text (readonly)',
                     readonly: '1',
                     viewmany: true,
-                    width: '38'
+                    width: '20'
                 }
             ]
         },
@@ -81,15 +100,7 @@ var test_ui = {
                             labellist: 'Bottle',
                             required: true,
                             width: 100,
-                            list:[
-                                {id:750, text: '750 ml'},
-                                {id:500, text: '500 ml'},
-                                {id:375, text: '375 cl'},
-                                {id:1500, text: '1.5 L'},
-                                {id:3000, text: '3.0 L'},
-                                {id:6000, text: '6.0 L'},
-                                {id:8000, text: '8.0 L'}
-                            ]
+                            list:bottleSizes
                         },
                         {
                             type: 'lov',
@@ -272,6 +283,16 @@ var test_ui = {
                             viewmany: true,
                             width: 100,
                             format: '$ 0.00'
+                        },
+                        {
+                            type: 'money',
+                            id:'money',
+                            label: 'Money',
+                            maxlength: 10,
+                            search: '1',
+                            viewmany: true,
+                            width: 100,
+                            format: '$ 0.00'
                         }
                     ]
                 },
@@ -337,19 +358,55 @@ var test_ui = {
             type: 'tab',
             label: 'Collection',
             elements: [
-                { type: 'panel-list',
+                {
+                    type: 'panel-list',
+                    id:'degustations',
+                    attr:'degustation',
                     label: 'Collection',
                     width: 100,
-                    dbtabledetails: 'WineDegustation',
-                    dbcolumndetails: 'wineid',
-                    panelid: '1',
-                    dborder: 'ddate desc',
                     elements: [
-                        {type: 'text', panelid: '1', label: 'Robe', maxlength: 100, dbcolumn: 'Robe', dbcolumnread: 'Robe', viewmany: true},
-                        {type: 'date', panelid: '1', dbcolumn: 'ddate', dbcolumnread: 'ddate', label: 'Date', maxlength: '20', viewmany: true},
-                        {type: 'text', panelid: '1', label: 'Nose', maxlength: 100, dbcolumn: 'Nose', dbcolumnread: 'Nose', viewmany: true},
-                        {type: 'text', panelid: '1', label: 'Taste', maxlength: 100, dbcolumn: 'Taste', dbcolumnread: 'Taste', viewmany: true},
-                        {type: 'textmultiline', panelid: '1', dbcolumn: 'notes', dbcolumnread: 'notes', label: 'Note', maxlength: '300', viewmany: true, width: 100, height: '4'}
+                        {id: 'ddate', type: 'date', label: 'Date', maxlength: 20, viewmany: '1',
+                            required:true},
+                        {id: 'str',  type: 'text', label: 'Text', maxlength: 100, viewmany: '1'},
+                        {
+                            type: 'lov',
+                            id:'bsize',
+                            label: 'List',
+                            required: true,
+                            width: 100,
+                            list:bottleSizes
+                        },
+                        {id: 'notes', type: 'textmultiline', label: 'Note', maxlength: 300, viewmany: '1', width: 100, height: '2'}
+                    ]
+                }
+            ]
+        },
+        {
+            type: 'tab',
+            label: '2 Collections',
+            elements: [
+                {
+                    type: 'panel-list',
+                    id:'degustations2',
+                    attr:'degustation2',
+                    label: 'Collection 1',
+                    width: 100,
+                    elements: [
+                        {id: 'str1',  type: 'text', label: 'Text 1', maxlength: 100, viewmany: '1'},
+                        {id: 'str2',  type: 'text', label: 'Text 2', maxlength: 100, viewmany: '1'},
+                        {id: 'str3',  type: 'text', label: 'Text 3', maxlength: 100, viewmany: '1'}
+                    ]
+                },
+                {
+                    type: 'panel-list',
+                    id:'degustations3',
+                    attr:'degustation3',
+                    label: 'Collection 2',
+                    width: 100,
+                    elements: [
+                        {id: 'str1',  type: 'text', label: 'Text 1', maxlength: 100, viewmany: '1'},
+                        {id: 'str2',  type: 'text', label: 'Text 2', maxlength: 100, viewmany: '1'},
+                        {id: 'str3',  type: 'text', label: 'Text 3', maxlength: 100, viewmany: '1'}
                     ]
                 }
             ]
