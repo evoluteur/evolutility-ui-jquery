@@ -53,8 +53,7 @@ Evol.ViewMany = Backbone.View.extend({
         }else{
             this.$el.html(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
-        this.setTitle();
-        return this;
+        return this.setTitle();
     },
 
     _render:function(models){
@@ -66,7 +65,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     customize: function () {
-        var labels = this.$('th > span');
+        var labels = this.$('th>span');
         if(this._custOn){
             labels.find('i').remove();
         }else{

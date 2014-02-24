@@ -392,7 +392,6 @@ var winecellar_ui = {
                             labellist: 'Score',
                             list: winecellar_lovs.score,
                             maxlength: 100,
-                            viewmany: true,
                             width: 100
                         },
                         {
@@ -420,7 +419,7 @@ var winecellar_ui = {
             elements: [
                 {
                     type: 'panel-list',
-                    id:'pnl-Degustations',
+                    id:'degustations',
                     attr:'degustation',
                     label: 'Degustations',
                     width: 100,

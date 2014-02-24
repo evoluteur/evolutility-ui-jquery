@@ -170,8 +170,8 @@ Evol.UI = {
                 this.options(list, fV),'</select>'
             ].join('');
         },
-        option: function (fID, fV) {
-            return ['<option value="', fID, '">', fV, '</option>'].join('');
+        option: function (id, text) {
+            return ['<option value="', id, '">', text, '</option>'].join('');
         },
         options: function (fields, fV) {
             var fnOpt = Evol.UI.input.option,

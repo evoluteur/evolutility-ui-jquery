@@ -150,9 +150,20 @@ Evol.Dico = {
             return m.get('id')=='';
         })
         switch(type){
+            case 'object':
+                //TODO
+
+                break;
             case 'field':
                 uiModel = dico_field_ui;
                 model = context.model;
+                break;
+            case 'list':
+            case 'tab':
+            case 'panel':
+            case 'panel-list':
+                //TODO
+
                 break;
         }    
         $el.closest('.evol-fld').after($elDes);
@@ -293,7 +304,7 @@ Evol.Dico = {
         }
         if(fld.readonly>0){
             // TODO: css for readonly fields
-            h.push('<div id="',fid, '" class="FieldReadOnly">',fv, '&nbsp;</div>');
+            h.push('<div id="',fid, '" class="disabled evo-rdonly">',fv, '&nbsp;</div>');
         }else{
             switch (fld.type) {
                 case types.text:

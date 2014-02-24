@@ -365,9 +365,14 @@ Evol.ViewOne = Backbone.View.extend({
             });
         }else{
             _.each(p.elements, function (elem) {
-                h.push('<div style="width:', parseInt(elem.width, 10), '%" class="pull-left evol-fld">');
-                that.renderField(h, elem, mode);
-                h.push("</div>");
+                if(elem.type=='panel-list'){
+                    that.renderPanelList(h, elem, mode);
+
+                }else{
+                    h.push('<div style="width:', parseInt(elem.width, 10), '%" class="pull-left evol-fld">');
+                    that.renderField(h, elem, mode);
+                    h.push("</div>");
+                }
             });
         }
         h.push('</fieldset></div></div>');
@@ -392,29 +397,31 @@ Evol.ViewOne = Backbone.View.extend({
     _renderPanelListBody: function (h, uiPnl, fv, mode){
         var that=this,
             attr=uiPnl.attr,
-            fs = uiPnl.elements,
-            vs = this.model.get(attr);
-        if(vs && vs.length>0){
-            var TDbPM='<td class="evo-td-plusminus">'+Evol.UI.input.buttonsPlusMinus()+'</td>';
-            _.each(vs, function(row, idx){
-                h.push('<tr data-idx="',idx,'">');
-                if(mode==='edit'){
-                    that._TDsFieldsEdit(h, uiPnl.elements, row);
-                    h.push(TDbPM);
-                }else{
-                    _.each(fs, function (f) {
-                        if(row[f.id]){
-                            h.push('<td>', _.escape(Evol.Dico.HTMLField4Many(f, row[f.id], this.hashLov)),'</td>');
-                        }else{
-                            h.push('<td>', Evol.Dico.HTMLField4Many(f, '', this.hashLov),'</td>');
-                        }
-                    });
-                }
-                h.push('</tr>');
-            });
-        }else{
-            h.push(this._TRnodata(fs.length, mode));
+            fs = uiPnl.elements;
+        if(this.model){
+            var vs = this.model.get(attr);
+            if(vs && vs.length>0){
+                var TDbPM='<td class="evo-td-plusminus">'+Evol.UI.input.buttonsPlusMinus()+'</td>';
+                _.each(vs, function(row, idx){
+                    h.push('<tr data-idx="',idx,'">');
+                    if(mode==='edit'){
+                        that._TDsFieldsEdit(h, uiPnl.elements, row);
+                        h.push(TDbPM);
+                    }else{
+                        _.each(fs, function (f) {
+                            if(row[f.id]){
+                                h.push('<td>', _.escape(Evol.Dico.HTMLField4Many(f, row[f.id], this.hashLov)),'</td>');
+                            }else{
+                                h.push('<td>', Evol.Dico.HTMLField4Many(f, '', this.hashLov),'</td>');
+                            }
+                        });
+                    }
+                    h.push('</tr>');
+                    return;
+                });
+            }
         }
+        h.push(this._TRnodata(fs.length, mode));
     },
 
     _TRnodata: function(colspan, mode){
@@ -646,9 +653,9 @@ Evol.ViewOne = Backbone.View.extend({
         if(bId==='bPlus'){
             var h=[],
                 mid=tr.closest('table').data('mid'),
-                uiPnl=this._subCollecs[mid];
+                elems=(this._subCollecs[mid])?this._subCollecs[mid].elements:null;
             h.push('<tr>');
-            this._TDsFieldsEdit(h, uiPnl.elements, {});
+            this._TDsFieldsEdit(h, elems, {});
             h.push('<td class="evo-td-plusminus">',
                 Evol.UI.input.buttonsPlusMinus(),
                 '</td></tr>');
