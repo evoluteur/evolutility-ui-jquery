@@ -44,7 +44,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             filter: false,
             'export': true,
             group: false,
-            customize:true
+            customize:false
         },
         pageSize:20
     },
@@ -133,6 +133,8 @@ Evol.ViewToolbar = Backbone.View.extend({
             linkOpt2h('edit','All Fields','th','1');
             linkOpt2h('mini','Important Fields only','th-large','1');
             linkOpt2h('json','JSON','barcode','1');
+            // TODO
+            //linkOpt2h('json','JSON','barcode','n');
 /*
             h.push(menuDeviderCard1);
             linkOpt2h('lg','Big','font','1');
@@ -141,7 +143,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 */
             h.push(endMenu);
 
-            //linkOpt2h('customize','','wrench', '1', 'Customize');
+            linkOpt2h('customize','','wrench', '1', 'Customize');
             /*
             if(opts.buttons.customize){
                 h.push(beginMenu('cust','wrench'));
@@ -248,6 +250,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     case 'cards':
                     case 'list':
                         vw = new Evol.ViewMany[this.modesHash[viewName]](config)
+                        //vw = new Evol.ViewMany.JSON(config)
                             .render();
                         this._prevMany=viewName;
                         vw.setTitle();
@@ -311,7 +314,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                         .removeClass(cssClose).addClass(cssOpen);
                 }
             }
-			if(this.model.isNew() || mode==='export'){
+			if((this.model && this.model.isNew()) || mode==='export'){
                 oneMany(false, false);
                 if(this.model.isNew()){
                     $('.evo-dropdown-icons>li[data-cardi="1"]').show();

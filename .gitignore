@@ -1,6 +1,7 @@
 node_modules
 bower_components
-js/vendors
+js/vendors.js
+dist/vendors.js
 js/models
 css/bootstrap*.css
 *-nogit
@@ -21,3 +22,4 @@ Desktop.ini
 
 # WebStorm stuff
 .idea
+

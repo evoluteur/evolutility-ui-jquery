@@ -32,7 +32,7 @@ module.exports = function (grunt) {
 
                     // Twitter Bootstrap
                     'bower_components/bootstrap/js/modal.js',
-                    'bower_components/bootstrap/js/tooltip.js',
+                    //'bower_components/bootstrap/js/tooltip.js',
                     'bower_components/bootstrap/js/button.js',
                     'bower_components/bootstrap/js/dropdown.js'
 

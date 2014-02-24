@@ -42,19 +42,37 @@
 .evo-lLight {
   font-weight: normal;
 }
-.evo-filters.panel {
-  min-height: 50px;
-  padding: 6px 1px 1px 6px;
+.evo-zfilters {
+  padding-bottom: 6px;
 }
-.evo-filters button {
+.evo-zfilters > a {
+  display: block;
   margin: 1px 6px 6px 1px;
-  padding-right: 6px;
+  padding: 3px 6px;
+  clear: left;
+  /*
+    &:hover,
+    &:active{
+      //background-color: @color-condition;
+      //color: #fff;
+      text-decoration: none;
+    }
+*/
+
 }
-.evo-filters button span.ui-button-text {
+.evo-zfilters > a span.ui-button-text {
   padding: 4px 33px 4px 12px;
 }
-.evo-filters .glyphicon-remove {
+.evo-zfilters .glyphicon-remove {
   margin: 0 6px;
+}
+.evo-filters.panel {
+  min-height: 50px;
+  padding: 0 1px 1px 6px;
+}
+.evo-filters.panel > a {
+  margin: 1px 6px 6px 1px;
+  padding-right: 6px;
 }
 .evo-editFilter {
   vertical-align: middle;
@@ -63,7 +81,8 @@
   clear: left;
 }
 .evo-editFilter:after,
-.evo-editFilter > button {
+.evo-editFilter > button,
+.evo-editFilter > a {
   clear: left;
 }
 .evo-editFilter > #value > label {
@@ -386,19 +405,37 @@ label > .glyphicon-wrench {
 .evo-lLight {
   font-weight: normal;
 }
-.evo-filters.panel {
-  min-height: 50px;
-  padding: 6px 1px 1px 6px;
+.evo-zfilters {
+  padding-bottom: 6px;
 }
-.evo-filters button {
+.evo-zfilters > a {
+  display: block;
   margin: 1px 6px 6px 1px;
-  padding-right: 6px;
+  padding: 3px 6px;
+  clear: left;
+  /*
+    &:hover,
+    &:active{
+      //background-color: @color-condition;
+      //color: #fff;
+      text-decoration: none;
+    }
+*/
+
 }
-.evo-filters button span.ui-button-text {
+.evo-zfilters > a span.ui-button-text {
   padding: 4px 33px 4px 12px;
 }
-.evo-filters .glyphicon-remove {
+.evo-zfilters .glyphicon-remove {
   margin: 0 6px;
+}
+.evo-filters.panel {
+  min-height: 50px;
+  padding: 0 1px 1px 6px;
+}
+.evo-filters.panel > a {
+  margin: 1px 6px 6px 1px;
+  padding-right: 6px;
 }
 .evo-editFilter {
   vertical-align: middle;
@@ -407,7 +444,8 @@ label > .glyphicon-wrench {
   clear: left;
 }
 .evo-editFilter:after,
-.evo-editFilter > button {
+.evo-editFilter > button,
+.evo-editFilter > a {
   clear: left;
 }
 .evo-editFilter > #value > label {
