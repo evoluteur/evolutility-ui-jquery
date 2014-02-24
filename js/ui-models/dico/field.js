@@ -1,7 +1,7 @@
 var dico_field_ui = {
     icon: "edi_fld.png",
-    entity: "property",
-    entities: "properties",
+    entity: "field",
+    entities: "fields",
     elements: [
         {
             type: "panel",
@@ -41,16 +41,17 @@ var dico_field_ui = {
                                 {id:'textmultiline',text:"textmultiline", icon:'pix/ft-txtml.gif'},
                                 {id:'boolean',text:"boolean", icon:'pix/ft-bool.gif'},
                                 {id:'decimal',text:"decimal", icon:'pix/ft-dec.gif'},
+                                {id:'money',text:"money", icon:'pix/ft-money.gif'},
                                 {id:'integer',text:"integer", icon:'pix/ft-int.gif'},
                                 {id:'date',text:"date", icon:'pix/ft-date.gif'},
                                 {id:'time',text:"time", icon:'pix/ft-time.gif'},
                                 {id:'datetime',text:"datetime", icon:'pix/ft-datehm.gif'},
                                 {id:'image',text:"image", icon:'pix/ft-img.gif'},
-                                // {id:'document',text:"document", icon:'pix/ft-doc.gif'},
-                                // {id:'color',text:"color"}
+                                {id:'document',text:"document", icon:'pix/ft-doc.gif'},
+                                {id:'color',text:"color", icon:'pix/ft-color.gif'},
                                 {id:'lov',text:"lov", icon:'pix/ft-lov.gif'},
-                                // {id:'formula',text:"formula", icon:'pix/ft-.gif'},
-                                // {id:'html',text:"html", icon:'pix/ft-htm.gif'},
+                                {id:'formula',text:"formula", icon:'pix/ft-.gif'},
+                                {id:'html',text:"html", icon:'pix/ft-htm.gif'},
                                 {id:'email',text:"email", icon:'pix/ft-email.gif'},
                                 {id:'url',text:"url", icon:'pix/ft-url.gif'}
                             ],
