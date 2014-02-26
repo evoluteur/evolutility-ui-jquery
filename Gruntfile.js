@@ -21,7 +21,7 @@ module.exports = function (grunt) {
             vendors:{
                 src: [
                     // jQuery & jQuery UI
-                    'bower_components/jquery/jquery.js',
+                    'bower_components/jquery/dist/jquery.js',
                     //'bower_components/jquery-ui/ui/jquery.ui.widget.js',
 
                     // Backbone & Underscore
@@ -35,7 +35,6 @@ module.exports = function (grunt) {
                     //'bower_components/bootstrap/js/tooltip.js',
                     'bower_components/bootstrap/js/button.js',
                     'bower_components/bootstrap/js/dropdown.js'
-
                 ],
                 dest: '<%= pkg.target %>/vendors.js'
             },
@@ -127,9 +126,10 @@ module.exports = function (grunt) {
             },
             prod: {
                 options: {
-                    yuicompress: true
+                    compress: true
                 },
                 files: {
+                    "dist/css/vendors.min.css": "less/vendors.less",
                     "dist/css/evolutility.min.css": "less/evol.less"
                 }
             }
