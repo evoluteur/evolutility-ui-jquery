@@ -1,28 +1,5 @@
 /* evolutility : demo.css */
-body {
-  font-size: 11pt;
-  font-family: "Century Gothic", arial;
-  color: #0d0d0d;
-  font-weight: 300;
-}
-body .evo-content h1,
-body .evo-content2 h1,
-body .evo-content3 h1,
-body .evo-content h2,
-body .evo-content2 h2,
-body .evo-content3 h2 {
-  margin-left: 30px;
-  color: #428bca !important;
-}
-body .evo-content {
-  padding: 80px 30px 30px;
-}
-body .evo-content2 {
-  padding: 32px 30px 30px;
-}
-body .evo-content3 {
-  padding: 50px 30px 30px;
-}
+/* evolutility : header.css */
 .evol-logo {
   float: left;
   font-size: 2em;
@@ -40,19 +17,6 @@ body .evo-content3 {
 .logop2 {
   font-weight: bold;
   color: #ed991a;
-}
-.blueBox {
-  float: left;
-  padding: 5px 10px;
-  min-width: 200px;
-}
-.blueBox > ul {
-  list-style: none;
-  margin-left: 5px;
-}
-#evol {
-  margin-bottom: 16px;
-  padding: 6px;
 }
 .evo-navbar {
   overflow: hidden;
@@ -148,6 +112,48 @@ body .evo-content3 {
   text-decoration: none;
   /*border: solid 2px blue;*/
 }
+.footer {
+  text-align: center;
+  font-size: smaller;
+  color: #c0c0c0;
+}
+body {
+  font-size: 11pt;
+  font-family: "Century Gothic", arial;
+  color: #0d0d0d;
+  font-weight: 300;
+}
+body .evo-content h1,
+body .evo-content2 h1,
+body .evo-content3 h1,
+body .evo-content h2,
+body .evo-content2 h2,
+body .evo-content3 h2 {
+  margin-left: 30px;
+  color: #428bca !important;
+}
+body .evo-content {
+  padding: 80px 30px 30px;
+}
+body .evo-content2 {
+  padding: 32px 30px 30px;
+}
+body .evo-content3 {
+  padding: 50px 30px 30px;
+}
+.blueBox {
+  float: left;
+  padding: 5px 10px;
+  min-width: 200px;
+}
+.blueBox > ul {
+  list-style: none;
+  margin-left: 5px;
+}
+#evol {
+  margin-bottom: 16px;
+  padding: 6px;
+}
 .demoPanel {
   border: 2px solid #A7C8E2;
   margin: 4px 3px;
@@ -155,11 +161,6 @@ body .evo-content3 {
   border-radius: 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
-}
-.footer {
-  text-align: center;
-  font-size: smaller;
-  color: #c0c0c0;
 }
 .demovalue {
   width: 100%;
