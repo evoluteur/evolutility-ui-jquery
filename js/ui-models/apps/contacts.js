@@ -342,6 +342,9 @@ var contacts_ui = {
                 {
                     type: 'email', id: 'email', label: 'email', maxlength: 255,
                     width: 100, viewmany: true
+                },
+                {
+                    type: 'url', id: 'web', label: 'web', maxlength: 255, width: 100
                 }
             ]
         },
@@ -349,19 +352,16 @@ var contacts_ui = {
             type: 'panel', label: 'Contact Info', width: 38,
             elements: [
                 {
-                    type: 'text', id: 'phone', label: 'Work Phone', maxlength: 20, width: 50
+                    type: 'text', id: 'phone', label: 'Work Phone', maxlength: 20, width: 100
                 },
                 {
-                    type: 'text', id: 'phonehome', label: 'Home Phone', maxlength: 20, width: 50
+                    type: 'text', id: 'phonehome', label: 'Home Phone', maxlength: 20, width: 100
                 },
                 {
-                    type: 'text', id: 'phonecell', label: 'Cell.', maxlength: 20, width: 50, mini:'1'
+                    type: 'text', id: 'phonecell', label: 'Cell.', maxlength: 20, width: 100, mini:'1'
                 },
                 {
-                    type: 'text', id: 'fax', label: 'Fax', maxlength: 20, width: 50
-                },
-                {
-                    type: 'url', id: 'web', label: 'web', maxlength: 255, width: 100
+                    type: 'text', id: 'fax', label: 'Fax', maxlength: 20, width: 100
                 }
             ]
         },
