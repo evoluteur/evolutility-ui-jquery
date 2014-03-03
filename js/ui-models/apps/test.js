@@ -356,6 +356,58 @@ var test_ui = {
         },
         {
             type: 'tab',
+            label: 'Read Only',
+            elements: [
+                {
+                    type: 'panel',
+                    label: 'Read Only Fields',
+                    width: 100,
+                    elements: [
+                        {
+                            id:'txtro',
+                            type: 'text',
+                            label: 'Text',
+                            readonly: true,
+                            width: '100'
+                        },
+                        {
+                            type: 'date',
+                            id:'fd1ro',
+                            label: 'Date 1',
+                            readonly: true,
+                            width: 33
+                        },
+                        {
+                            type: 'datetime',
+                            id:'fdtro',
+                            label: 'DateTime field',
+                            maxlength: 100,
+                            readonly: true,
+                            width: 33
+                        },
+                        {
+                            type: 'time',
+                            id:'ftro',
+                            label: 'Time field',
+                            maxlength: 100,
+                            readonly: true,
+                            width: 34
+                        },
+                        {
+                            type: 'lov',
+                            id:'bsizero',
+                            label: 'Bottle Size (LOV)',
+                            labellist: 'Bottle',
+                            readonly: true,
+                            width: 33,
+                            list:bottleSizes
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            type: 'tab',
             label: 'Collection',
             elements: [
                 {

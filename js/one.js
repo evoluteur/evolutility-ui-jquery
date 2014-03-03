@@ -152,23 +152,27 @@ Evol.ViewOne = Backbone.View.extend({
                 $f=that.$(prefix + f.id);
                 fv=model.get(f.id);
                 if(model){
-                    switch(f.type) {
-                        case fTypes.lov:
-                            $f.children().removeAttr('selected')
-                                .filter('[value='+fv+']')
-                                .attr('selected', true);
-                            break;
-                        case fTypes.bool:
-                            $f.prop('checked', fv);
-                            break;
-                        case fTypes.pix:
-                            var newPix=(fv)?('<img src="'+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
-                            $f.val(fv)
-                                .prev().remove();
-                            $f.before(newPix);
-                            break;
-                        default:
-                            $f.val(fv);
+                    if(f.readonly){
+                        $f.text(fv || '');
+                    }else{
+                        switch(f.type) {
+                            case fTypes.lov:
+                                $f.children().removeAttr('selected')
+                                    .filter('[value='+fv+']')
+                                    .attr('selected', true);
+                                break;
+                            case fTypes.bool:
+                                $f.prop('checked', fv);
+                                break;
+                            case fTypes.pix:
+                                var newPix=(fv)?('<img src="'+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
+                                $f.val(fv)
+                                    .prev().remove();
+                                $f.before(newPix);
+                                break;
+                            default:
+                                $f.val(fv);
+                        }
                     }
                 }
             });
@@ -486,6 +490,7 @@ Evol.ViewOne = Backbone.View.extend({
             return Evol.UI.Validation.checkFields(this.$el, fs, this.prefix);
         }
         if(this._subCollecs){
+            //TODO
 
         }
         this.$el.trigger('action', 'validate');

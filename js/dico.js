@@ -302,7 +302,7 @@ Evol.Dico = {
         }else if(!skipLabel){
             h.push(this.HTMLFieldLabel(fld, mode || 'edit'));
         }
-        if(fld.readonly>0){
+        if(fld.readonly){
             // TODO: css for readonly fields
             h.push('<div id="',fid, '" class="disabled evo-rdonly">',fv, '&nbsp;</div>');
         }else{
