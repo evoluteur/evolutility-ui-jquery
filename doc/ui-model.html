@@ -27,24 +27,21 @@
     <h1>ui-model</h1>
 </div>
 
+
 <div class="evo-content3">
 
-<ul style="float:right;padding:10px 5px;background-color:white;">
-    <li><a href="#object">object</a></li>
-    <li><a href="#field">field</a></li>
-    <li><a href="#section">section</a></li>
-    <li><a href="#sample">Sample todo ui-model</a></li>
-</ul>
+
+<p>This page describes the structure of UI-models.
+    It is not fully defined nor implemented yet but a work in progress based on
+    <a href="http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications" target="evomm">Evolutility minimalist meta-model</a>.</p>
 
 
-
-<p>This page describes the structure of UI-models.</p>
-
-<p>This is not fully defined nor implemented yet but a work in progress based on <a href="http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications" target="evomm">Evolutility minimalist meta-model</a>.</p>
+<p>The UI model for a Backbone model consists of an object with fields grouped in panels and tabs.</p>
 
 
 <section id="object">
-<h2>object</h2>
+    <p></p>
+<h1>object</h1>
 
 <p>An "object" is the UI information added to the Backbone model.
 This ui-model defines all <a href="views.html">views</a>.</p>
@@ -93,12 +90,14 @@ This ui-model defines all <a href="views.html">views</a>.</p>
     </tr>
     </tbody></table>
 
+    <a name="field"></a>
     <span class="evol-required">*</span>: required attribute.
 </section>
 
 <section id="field">
-    <h2>field</h2>
+    <h1>field</h1>
     <p>Attributes in your Backbone model are mapped to fields in the UI.</p>
+    <p>These fields have the following properties:</p>
 
     <table class="table table-bordered">
         <tbody>
@@ -308,7 +307,8 @@ This ui-model defines all <a href="views.html">views</a>.</p>
 </section>
 
 <section id="sections">
-    <h2>sections</h2>
+    <p></p>
+    <h1>sections</h1>
 <p>Fields are grouped in panels and panels can be grouped in tabs. </p>
 
 
@@ -451,10 +451,11 @@ This ui-model defines all <a href="views.html">views</a>.</p>
 </section>
 
 <section id="sample">
-
-    <h2>Sample UI-model for a to do app.</h2>
-
     <p></p>
+
+    <h1>Sample UI-model</h1>
+
+    <p>The classic "todo app".</p>
 
     <iframe style="width:100%;height:300px" src="../js/ui-models/apps/todo.js"></iframe>
 
