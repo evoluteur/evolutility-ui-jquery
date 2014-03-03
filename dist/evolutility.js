@@ -1,4 +1,4 @@
-/*   evolutility 0.0.2 */
+/*   evolutility 0.0.3 */
 
 /*   (c) 2014 Olivier Giulieri */
 
@@ -23,7 +23,7 @@ Evol.CSS = {
 
 Evol.UI = {
 
-    version: '0.0.2',
+    version: '0.0.3',
 
     // --- static html fragments ---
     html: {
@@ -3236,7 +3236,7 @@ var Evol = Evol || {},
 
 Evol.ViewExport = Backbone.View.extend({
 
-    version: '0.0.2',
+    version: '0.0.3',
 
     events: {
         "change .evol-xpt-format": "click_format",
