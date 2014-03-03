@@ -9,6 +9,12 @@
   text-decoration: none;
   color: #ffc000 !important;
 }
+.evo-logo > a > span {
+  color: white;
+}
+.evo-logo > a > span:hover {
+  color: #92cddc;
+}
 .evo-logo > a:hover {
   text-decoration: none;
   color: #ed991a !important;

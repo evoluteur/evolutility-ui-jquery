@@ -9,7 +9,7 @@
 <body>
 
 <div class="evo-header">
-    <div class="evo-logo"><a href="../index.html">evolutility.js</a></div>
+    <div class="evo-logo"><a href="../index.html"><span>evol</span>utility<span>.js</span></a></div>
     <ul class="evo-head-links">
         <li><a href="../demo/index.html">demo</a></li>
         <li><a href="../doc/index.html" class="sel">documentation</a></li>
@@ -41,13 +41,14 @@
 <h2>Evol.ViewOne</h2>
 
 <p>Backbone views to edit one model (a record at a time)</p>
+
 <h3>Edit</h3>
-<p>All fields</p>
+<p>Shows all fields for edition. Fields are grouped in panels and tabs.</p>
 <code>
     new Evol.ViewOne.Edit(myConfig);</code>
 
-<h3>Mini</h3>
-<p>Only important fields</p>
+<h3>Mini (quick-edit)</h3>
+<p>Only shows important fields (required or showing as a column in grids) in one panel.</p>
 <code>
     new Evol.ViewOne.Mini(myConfig);</code>
 
@@ -99,8 +100,8 @@
 <p>getFields()</p>
 <p>setFieldValue(fid, value)</p>
 <p>getFieldValue(fid)</p>
-validate
-clearErrors
+<p>validate</p>
+<p>clearErrors</p>
 
 <h3>Evol.ViewMany</h3>
 <p>setCollection(collec)</p>
@@ -115,7 +116,7 @@ clearErrors
 <h3>Evol.ViewOne and Evol.ViewMany</h3>
 
 <p>cardinality: '1' for Evol.ViewOne.*, 'n' for Evol.ViewMany.*.</p>
-<p>viewName: name of the view (the '*' in the Evol.ViewOne.* instanciated).</p>
+<p>viewName: name of the view (the '*' in the Evol.ViewOne.* instanciated). i.e.: "edit" or "list".</p>
 
 
 
@@ -123,11 +124,17 @@ clearErrors
 
 <h3>Evol.ViewOne</h3>
 
-<p>action: w/ data = 'add', 'add-new', 'cancel'</p>
+<p>action: w/ data = 'add', 'add-new', 'cancel', 'validate'</p>
 
-<h3>ViewMany</h3>
+<h3>Evol.ViewMany</h3>
 
-<p>validate</p>
+    <p>selection</p>
+    <p>list.navigate</p>
+    <p>list.sort</p>
+    <p>list.paginate</p>
+    <p>list.customize</p>
+
+    <p></p>
 
 <p><br/>evolutility.js at <a href="https://github.com/evoluteur/evolutility" target="download">GitHub</a></p>
 
