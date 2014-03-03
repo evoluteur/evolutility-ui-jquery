@@ -398,6 +398,7 @@ Evol.ViewOne = Backbone.View.extend({
         var that=this,
             attr=uiPnl.attr,
             fs = uiPnl.elements;
+
         if(this.model){
             var vs = this.model.get(attr);
             if(vs && vs.length>0){
@@ -419,6 +420,7 @@ Evol.ViewOne = Backbone.View.extend({
                     h.push('</tr>');
                     return;
                 });
+                return;
             }
         }
         h.push(this._TRnodata(fs.length, mode));
