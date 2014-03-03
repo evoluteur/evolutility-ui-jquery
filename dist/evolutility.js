@@ -2583,7 +2583,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             'new': true,
             'save':true,
             del: true,
-            filter: true,
+            filter: false,
             'export': true,
             group: false,
             customize:false

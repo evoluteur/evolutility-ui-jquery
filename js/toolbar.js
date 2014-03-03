@@ -40,6 +40,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             charts: true,
             // --- actions ---
             'new': true,
+            'save':true,
             del: true,
             filter: false,
             'export': true,
@@ -114,6 +115,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         h.push('<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-id="main">');
         linkOpt2h('list',Evol.i18n.All,'th-list');
         linkOpt2h('new',Evol.i18n.New,'plus');
+        linkOpt2h('save',Evol.i18n.New,'floppy-disk','1');
         linkOpt2h('del',Evol.i18n.Delete,'trash','1');
         linkOpt2h('filter','Filter','filter','n');
         //linkOpt2h('group','Group','resize-horizontal','n');
@@ -271,6 +273,11 @@ Evol.ViewToolbar = Backbone.View.extend({
                 $(this.options.titleSelector).html(this.curView.getTitle());
             }
         }
+        if(this.curView.cardinality==='n'){ // TODO do not always change flag
+            this.showFilter(false);
+        }else{
+            this.hideFilter();
+        }
         this.setMode(viewName);
         return this;
 	},
@@ -338,22 +345,41 @@ Evol.ViewToolbar = Backbone.View.extend({
 		}
 	},
 
-    showFilter: function(){
+    showFilter: function( orCreate){
         if(!this._filters){
-            var that=this,
-                $ff=$(Evol.UI.HTMLEmptyPanel('filters', 'evo-filters', 'info'));
-            this.$('.evo-toolbar').after($ff);
-            this._filters = new Evol.ViewFilter({
-                el:$ff,
-                fields:Evol.Dico.getFields(this.options.uiModel)
-            }).render();
-            $ff.on('change.filter', function(){
-                that.curView.setFilter(that._filters.val())
-                    .render();
-            });
+            if(orCreate){
+                var that=this,
+                    $ff=$(Evol.UI.HTMLEmptyPanel('filters', 'evo-filters', 'info'));
+                this.$('.evo-toolbar').after($ff);
+                this._filters = new Evol.ViewFilter({
+                    el:$ff,
+                    fields:Evol.Dico.getFields(this.options.uiModel)
+                }).render();
+                $ff.on('change.filter', function(){
+                    that.curView.setFilter(that._filters.val())
+                        .render();
+                });
+            }else{
+                return this;
+            }
+        }else{
+            this._filters.$el.show();
         }
         return this;
     },
+
+    hideFilter: function(){
+        if(this._filters){
+            this._filters.$el.hide();
+        }
+        return this;
+    },
+
+    toggleFilter: function(){
+        this._filtersOn=!this._filtersOn;
+        return this._filtersOn?this.showFilter(true):this.hideFilter();
+    },
+
     /*
     showGroup: function(){
         this._group = true;
@@ -521,7 +547,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             var ch=$msg.children();
             $msg.attr('class', 'evo-msg alert alert-'+style+' alert-dismissable');
             $msg.find('>strong').text(title);
-            $msg.find('>span').text(content);
+            $msg.find('>span').html(content); //TODO text?
             $msg.show();
         }else{
             $(Evol.UI.HTMLMsg(title, ' '+content, style)).insertAfter(this.$el.children()[0]);
@@ -582,6 +608,13 @@ Evol.ViewToolbar = Backbone.View.extend({
         evt.preventDefault();
         evt.stopImmediatePropagation();
         switch(toolId){
+            case 'save':
+                //if(this.model.isNew()){
+
+                //}else{
+                    this.saveItem(false);
+                //}
+                break;
             case 'del':
                 this.deleteItem();
                 break;
@@ -592,7 +625,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.showGroup();
                 break;
             case 'filter':
-                this.showFilter();
+                this.toggleFilter();
                 break;
             case 'prev':
             case 'next':
