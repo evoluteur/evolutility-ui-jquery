@@ -1,13 +1,17 @@
 /* evolutility : demo.css */
 /* evolutility : header.css */
-.evol-logo {
+.evo-logo {
   float: left;
   font-size: 2em;
   margin: 5px 80px 5px 10px;
 }
-.evol-logo a,
-.evol-logo a:hover {
+.evo-logo > a {
+  text-decoration: none;
   color: #ffc000 !important;
+}
+.evo-logo > a:hover {
+  text-decoration: none;
+  color: #ed991a !important;
 }
 .logop1,
 .logop3 {
@@ -18,7 +22,7 @@
   font-weight: bold;
   color: #ed991a;
 }
-.evo-navbar {
+.evo-header {
   overflow: hidden;
   background-color: #1f497d;
   position: fixed;
@@ -29,88 +33,77 @@
   padding: 2px 5px 2px 10px;
   z-index: 3000;
 }
-.evo-navbar a {
+.evo-header a {
   color: #c6d9f0;
   text-decoration: none;
 }
-.evo-navbar a :hover {
+.evo-header a :hover {
   color: #c6d9f0;
 }
-.evo-header,
-.evo-header2 {
+.evo-head-links,
+.evo-head-links2 {
+  display: block;
+}
+.evo-head-links > li,
+.evo-head-links2 > li {
+  display: inline;
+  padding: 0 10px;
+}
+.evo-head-links > li > a,
+.evo-head-links2 > li > a {
+  text-decoration: none;
+}
+.evo-head-links > li > a:hover,
+.evo-head-links2 > li > a:hover {
+  text-decoration: none;
+  color: #ed991a;
+}
+.evo-head-links > li > a.sel,
+.evo-head-links2 > li > a.sel {
+  color: white;
+}
+.evo-head-links {
+  font-size: 1.5em;
+  margin-left: 30px;
+}
+.evo-title,
+.evo-title2 {
   position: relative;
 }
-.evo-header > h1,
-.evo-header2 > h1 {
+.evo-title > h1,
+.evo-title2 > h1 {
   margin-left: 20px;
   color: white !important;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
 }
-.evo-header {
+.evo-title {
   background-color: #1f497d;
   top: 50px;
   padding: 20px 10px;
   min-height: 120px;
 }
-.evo-header2 {
+.evo-title2 {
   background-color: #1f497d;
-  top: 32px;
-  padding: 0 10px;
-  min-height: 50px;
+  top: 62px;
+  padding: 5px 10px;
 }
-.evo-nav-tabs {
-  margin-left: 30px;
-  display: block;
+.evo-content h1,
+.evo-content2 h1,
+.evo-content3 h1,
+.evo-content h2,
+.evo-content2 h2,
+.evo-content3 h2 {
+  color: #428bca !important;
 }
-.evo-nav-tabs > li {
-  display: inline;
-  padding: 10px;
+.evo-content {
+  padding: 80px 30px 30px;
 }
-.evo-nav-tabs > li > a {
-  text-decoration: none;
+.evo-content2 {
+  padding: 64px 30px 30px;
 }
-.evo-nav-tabs > li > a:hover {
-  text-decoration: none;
-  color: #ed991a;
-}
-.doc-links,
-.demo-links {
-  position: absolute;
-  top: 29px;
-}
-.doc-links > a,
-.demo-links > a {
-  color: #c6d9f0;
-}
-.doc-links > a:hover,
-.demo-links > a:hover {
-  color: #ed991a;
-  text-decoration: none;
-}
-.demo-links {
-  left: 246px;
-}
-.doc-links {
-  left: 323px;
-}
-.evo-nav-tabs {
-  font-size: 1.5em;
-}
-.evo-nav-tabs > li > a.sel,
-.doc-links > a.sel,
-.demo-links > a.sel {
-  color: white;
-}
-.demo-links2 > a {
-  padding: 1px 8px;
-  color: #39C;
-  font-weight: 400;
-}
-.demo-links2 > a.sel {
-  color: #0d0d0d;
-  text-decoration: none;
-  /*border: solid 2px blue;*/
+.evo-content3 {
+  padding: 96px 30px 30px;
 }
 .footer {
   text-align: center;
@@ -122,24 +115,6 @@ body {
   font-family: "Century Gothic", arial;
   color: #0d0d0d;
   font-weight: 300;
-}
-body .evo-content h1,
-body .evo-content2 h1,
-body .evo-content3 h1,
-body .evo-content h2,
-body .evo-content2 h2,
-body .evo-content3 h2 {
-  margin-left: 30px;
-  color: #428bca !important;
-}
-body .evo-content {
-  padding: 80px 30px 30px;
-}
-body .evo-content2 {
-  padding: 32px 30px 30px;
-}
-body .evo-content3 {
-  padding: 50px 30px 30px;
 }
 .blueBox {
   float: left;

@@ -4,13 +4,19 @@
 
 @import "less/variables";
 
-.evol-logo{
+// --- top navbar ---
+.evo-logo{
   float:left;
   font-size: 2em;
   margin:5px 80px 5px 10px;
 
-  a,a:hover{
+  >a{
+    text-decoration: none;
     color: #ffc000 !important;
+    &:hover{
+      text-decoration: none;
+      color:@color-header-link-hover !important;
+    }
   }
 }
 .logop1,.logop3{
@@ -22,7 +28,7 @@
   color: #ed991a;
 }
 
-.evo-navbar{
+.evo-header{
     overflow: hidden; // TODO responsive
     background-color: @color-header;
     position: fixed;
@@ -45,7 +51,31 @@
       }
     }
 }
-.evo-header,.evo-header2{
+.evo-head-links,
+.evo-head-links2{
+  display: block;
+  >li{
+    display: inline;
+    padding:0 10px;
+    >a{
+      text-decoration: none;
+      &:hover{
+        text-decoration: none;
+        color:@color-header-link-hover;
+      }
+      &.sel{
+        color: white;
+      }
+    }
+  }
+}
+.evo-head-links{
+  font-size: 1.5em;
+  margin-left:30px;
+}
+
+// --- page title ---
+.evo-title,.evo-title2{
   position: relative;
 
   >h1{
@@ -55,75 +85,35 @@
     font-weight: 500;
   }
 }
-.evo-header{
+.evo-title{
   background-color: @color-header;
   top: 50px;
   padding:20px 10px;
   min-height: 120px;
 }
-.evo-header2{
+.evo-title2{
   background-color: @color-header;
-  top: 32px;
-  padding:0 10px;
-  min-height: 50px;
+  top: 62px;
+  padding:5px 10px;
 }
-.evo-nav-tabs{
-    margin-left:30px;
-    display: block;
-}
-.evo-nav-tabs>li {
-    display: inline;
-    padding:10px;
-}
-.evo-nav-tabs>li>a{
-  text-decoration: none;
-  &:hover{
-    text-decoration: none;
-    color:@color-header-link-hover;
+
+// --- content ---
+.evo-content,.evo-content2,.evo-content3{
+  h1,h2{
+    color: @color-title !important;
   }
 }
-
-.doc-links,
-.demo-links{
-    position: absolute;
-    top:29px;
-
-  >a{
-    color:@color-header-link;
-
-    &:hover{
-      color:@color-header-link-hover;
-      text-decoration: none;
-    }
-  }
+.evo-content{
+  padding: 80px 30px 30px;
 }
-.demo-links{
-    left:246px;
+.evo-content2{
+  padding: 64px 30px 30px;
 }
-.doc-links{
-    left:323px;
-}
-.evo-nav-tabs{
-    font-size: 1.5em;
+.evo-content3{
+  padding: 96px 30px 30px;
 }
 
-.evo-nav-tabs>li>a.sel,
-.doc-links>a.sel,
-.demo-links>a.sel{
-    color:white;
-}
-
-
-.demo-links2 > a {
-	padding:1px 8px;
-	color: #39C;
-	font-weight: 400;
-}
-.demo-links2 > a.sel{
-    color: @color-text;
-	text-decoration: none;
-	/*border: solid 2px blue;*/
-}
+// --- footer ---
 .footer{
 	text-align: center;
 	font-size:smaller;

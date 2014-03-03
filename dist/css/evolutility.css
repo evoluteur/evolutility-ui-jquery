@@ -4,6 +4,117 @@
  *  https://github.com/evoluteur/evolutility
  *  Copyright (c) 2014, Olivier Giulieri
 */
+/* evolutility : header.css */
+.evo-logo {
+  float: left;
+  font-size: 2em;
+  margin: 5px 80px 5px 10px;
+}
+.evo-logo > a {
+  text-decoration: none;
+  color: #ffc000 !important;
+}
+.evo-logo > a:hover {
+  text-decoration: none;
+  color: #ed991a !important;
+}
+.logop1,
+.logop3 {
+  font-weight: bold;
+  color: white;
+}
+.logop2 {
+  font-weight: bold;
+  color: #ed991a;
+}
+.evo-header {
+  overflow: hidden;
+  background-color: #1f497d;
+  position: fixed;
+  border-bottom: #366092 solid 1px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 2px 5px 2px 10px;
+  z-index: 3000;
+}
+.evo-header a {
+  color: #c6d9f0;
+  text-decoration: none;
+}
+.evo-header a :hover {
+  color: #c6d9f0;
+}
+.evo-head-links,
+.evo-head-links2 {
+  display: block;
+}
+.evo-head-links > li,
+.evo-head-links2 > li {
+  display: inline;
+  padding: 0 10px;
+}
+.evo-head-links > li > a,
+.evo-head-links2 > li > a {
+  text-decoration: none;
+}
+.evo-head-links > li > a:hover,
+.evo-head-links2 > li > a:hover {
+  text-decoration: none;
+  color: #ed991a;
+}
+.evo-head-links > li > a.sel,
+.evo-head-links2 > li > a.sel {
+  color: white;
+}
+.evo-head-links {
+  font-size: 1.5em;
+  margin-left: 30px;
+}
+.evo-title,
+.evo-title2 {
+  position: relative;
+}
+.evo-title > h1,
+.evo-title2 > h1 {
+  margin-left: 20px;
+  color: white !important;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+}
+.evo-title {
+  background-color: #1f497d;
+  top: 50px;
+  padding: 20px 10px;
+  min-height: 120px;
+}
+.evo-title2 {
+  background-color: #1f497d;
+  top: 62px;
+  padding: 5px 10px;
+}
+.evo-content h1,
+.evo-content2 h1,
+.evo-content3 h1,
+.evo-content h2,
+.evo-content2 h2,
+.evo-content3 h2 {
+  color: #428bca !important;
+}
+.evo-content {
+  padding: 80px 30px 30px;
+}
+.evo-content2 {
+  padding: 64px 30px 30px;
+}
+.evo-content3 {
+  padding: 96px 30px 30px;
+}
+.footer {
+  text-align: center;
+  font-size: smaller;
+  color: #c0c0c0;
+}
 .evo-toolbar {
   border: 1px solid #bce8f1;
   border-radius: 4px;
@@ -58,7 +169,6 @@
       text-decoration: none;
     }
 */
-
 }
 .evo-zfilters > a span.ui-button-text {
   padding: 4px 33px 4px 12px;
@@ -313,32 +423,6 @@ img.evol-table-icon {
 label > .glyphicon-wrench {
   cursor: pointer;
 }
-.evo-toolbar {
-  border: 1px solid #bce8f1;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  padding: 3px;
-  background-color: #fbfbfb;
-  height: 43px;
-}
-.evo-toolbar > [data-cid="views"] {
-  color: black;
-}
-.evo-toolbar > ul > .evo-sel .glyphicon:before {
-  color: black;
-}
-.evo-toolbar > ul > li > a {
-  max-height: 35px;
-}
-.evo-toolbar .evo-dropdown-icons {
-  min-width: 50px;
-}
-.evo-toolbar .evo-tb-status {
-  color: #0f0f0f !important;
-  min-height: 35px;
-  line-height: 35px;
-  margin-top: 2px;
-}
 .evol-xpt-form {
   border-collapse: collapse;
   border: 0;
@@ -392,84 +476,4 @@ label > .glyphicon-wrench {
 .evol-xpt-more-fields {
   clear: both;
   display: none;
-}
-.evo-bNew,
-.evo-bAdd,
-.evo-bDel,
-.evo-bSubmit {
-  margin: 1px 6px 6px 1px;
-}
-.evo-lBold {
-  font-weight: bold;
-}
-.evo-lLight {
-  font-weight: normal;
-}
-.evo-zfilters {
-  padding-bottom: 6px;
-}
-.evo-zfilters > a {
-  display: block;
-  margin: 1px 6px 6px 1px;
-  padding: 3px 6px;
-  clear: left;
-  /*
-    &:hover,
-    &:active{
-      //background-color: @color-condition;
-      //color: #fff;
-      text-decoration: none;
-    }
-*/
-
-}
-.evo-zfilters > a span.ui-button-text {
-  padding: 4px 33px 4px 12px;
-}
-.evo-zfilters .glyphicon-remove {
-  margin: 0 6px;
-}
-.evo-filters.panel {
-  min-height: 50px;
-  padding: 0 1px 1px 6px;
-}
-.evo-filters.panel > a {
-  margin: 1px 6px 6px 1px;
-  padding-right: 6px;
-}
-.evo-editFilter {
-  vertical-align: middle;
-}
-.evo-editFilter:last-child {
-  clear: left;
-}
-.evo-editFilter:after,
-.evo-editFilter > button,
-.evo-editFilter > a {
-  clear: left;
-}
-.evo-editFilter > #value > label {
-  margin-left: 6px;
-}
-.evo-editFilter > select,
-.evo-editFilter > input,
-.evo-editFilter > span {
-  float: left;
-  margin: 1px 6px 6px 1px;
-  font-size: 1.1em;
-  width: auto;
-}
-.evo-editFilter span#value {
-  margin-right: 5px;
-}
-.evo-editFilter #value input[type="checkbox"] {
-  margin-left: 5px;
-}
-.evo-editFilter input[type="number"]#value,
-.evo-editFilter input[type="time"]#value,
-.evo-editFilter input[type="time"]#value2 {
-  width: 6em;
-}
-.evo-editFilter input.hasDatepicker {
-  width: 7em;
 }
