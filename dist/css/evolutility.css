@@ -34,12 +34,11 @@
   color: #ed991a;
 }
 .evo-header {
-  overflow: hidden;
-  background-color: #1f497d;
   position: fixed;
-  border-bottom: #366092 solid 1px;
   top: 0;
   left: 0;
+  background-color: #1f497d;
+  border-bottom: #366092 solid 1px;
   width: 100%;
   padding: 2px 5px 2px 10px;
   z-index: 3000;
@@ -50,6 +49,12 @@
 }
 .evo-header a :hover {
   color: #c6d9f0;
+}
+@media only screen and (min-width: 900px) {
+  .evo-header {
+    width: 182px;
+    height: 100%;
+  }
 }
 .evo-head-links,
 .evo-head-links2 {
@@ -76,26 +81,63 @@
 .evo-head-links {
   font-size: 1.5em;
   margin-left: 30px;
+  margin-top: 5px;
+}
+.evo-head-links > li:nth-child(3) {
+  margin-left: 70px;
+}
+@media only screen and (min-width: 900px) {
+  .evo-head-links {
+    position: absolute;
+    top: 64px;
+    left: -58px;
+  }
+  .evo-head-links > li {
+    display: block;
+  }
+  .evo-head-links > li:nth-child(3) {
+    margin-left: 0;
+    margin-top: 83px;
+  }
+}
+@media only screen and (min-width: 900px) {
+  .evo-head-links2 {
+    position: absolute;
+    padding: 0;
+    top: 71px;
+    left: 82px;
+  }
 }
 .evo-title,
 .evo-title2 {
+  background-color: #1f497d;
   position: relative;
 }
 .evo-title > h1,
 .evo-title2 > h1 {
   margin-left: 20px;
-  color: white !important;
+  color: white;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
 }
+@media only screen and (min-width: 900px) {
+  .evo-title,
+  .evo-title2 {
+    top: 0 !important;
+    margin-left: 182px;
+    background-color: white;
+  }
+  .evo-title > h1,
+  .evo-title2 > h1 {
+    color: #0d0d0d;
+  }
+}
 .evo-title {
-  background-color: #1f497d;
   top: 50px;
   padding: 20px 10px;
   min-height: 120px;
 }
 .evo-title2 {
-  background-color: #1f497d;
   top: 62px;
   padding: 5px 10px;
 }
@@ -107,6 +149,14 @@
 }
 .evo-content3 {
   padding: 96px 30px 30px;
+}
+@media only screen and (min-width: 900px) {
+  .evo-content,
+  .evo-content2,
+  .evo-content3 {
+    margin-left: 182px;
+    padding-top: 0;
+  }
 }
 .footer {
   text-align: center;
@@ -151,19 +201,36 @@
 .evo-lLight {
   font-weight: normal;
 }
-.evo-filters.panel {
-  min-height: 50px;
-  padding: 6px 1px 1px 6px;
+.evo-zfilters {
+  padding-bottom: 6px;
 }
-.evo-filters button {
+.evo-zfilters > a {
+  display: block;
   margin: 1px 6px 6px 1px;
-  padding-right: 6px;
+  padding: 3px 6px;
+  clear: left;
+  /*
+    &:hover,
+    &:active{
+      //background-color: @color-condition;
+      //color: #fff;
+      text-decoration: none;
+    }
+*/
 }
-.evo-filters button span.ui-button-text {
+.evo-zfilters > a span.ui-button-text {
   padding: 4px 33px 4px 12px;
 }
-.evo-filters .glyphicon-remove {
+.evo-zfilters .glyphicon-remove {
   margin: 0 6px;
+}
+.evo-filters.panel {
+  min-height: 50px;
+  padding: 0 1px 1px 6px;
+}
+.evo-filters.panel > a {
+  margin: 1px 6px 6px 1px;
+  padding-right: 6px;
 }
 .evo-editFilter {
   vertical-align: middle;
@@ -172,7 +239,8 @@
   clear: left;
 }
 .evo-editFilter:after,
-.evo-editFilter > button {
+.evo-editFilter > button,
+.evo-editFilter > a {
   clear: left;
 }
 .evo-editFilter > #value > label {

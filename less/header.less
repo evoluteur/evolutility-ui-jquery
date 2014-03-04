@@ -4,6 +4,8 @@
 
 @import "less/variables";
 
+@width-toolbar-left:182px;
+
 // --- top navbar ---
 .evo-logo{
   float:left;
@@ -36,18 +38,17 @@
 }
 
 .evo-header{
-    overflow: hidden; // TODO responsive
-    background-color: @color-header;
-    position: fixed;
-    border-bottom: #366092 solid 1px;
-    top:0;
-    left:0;
-    width:100%;
-    padding:2px 5px 2px 10px;
-    z-index: 3000;
-    //-webkit-box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
-    //-moz-box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
-    //box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top:0;
+  left:0;
+  background-color: @color-header;
+  border-bottom: #366092 solid 1px;
+  width:100%;
+  padding:2px 5px 2px 10px;
+  z-index: 3000;
+  //-webkit-box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  //-moz-box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  //box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
 
     a{
       color:@color-header-link;
@@ -57,6 +58,12 @@
         color:@color-header-link;
       }
     }
+
+  @media only screen and (min-width: @screen2) {
+    width:@width-toolbar-left;
+    height:100%;
+  }
+
 }
 .evo-head-links,
 .evo-head-links2{
@@ -79,27 +86,59 @@
 .evo-head-links{
   font-size: 1.5em;
   margin-left:30px;
+  margin-top:5px;
+  >li:nth-child(3){
+    margin-left:70px;
+  }
+  @media only screen and (min-width: @screen2) {
+    position:absolute;
+    top:64px;
+    left:-58px;
+    >li{
+      display:block;
+      &:nth-child(3){
+        margin-left:0;
+        margin-top: 83px;
+      }
+    }
+  }
+}
+
+.evo-head-links2{
+  @media only screen and (min-width: @screen2) {
+    position: absolute;
+    padding:0;
+    top: 71px;
+    left: 82px;
+  }
 }
 
 // --- page title ---
 .evo-title,.evo-title2{
+  background-color: @color-header;
   position: relative;
 
   >h1{
     margin-left: 20px;
-    color:white !important;
+    color:white;
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 500;
   }
+  @media only screen and (min-width: @screen2) {
+      top:0 !important;
+      margin-left: @width-toolbar-left;
+    background-color: white;
+    >h1{
+      color: @color-text;
+    }
+  }
 }
 .evo-title{
-  background-color: @color-header;
   top: 50px;
   padding:20px 10px;
   min-height: 120px;
 }
 .evo-title2{
-  background-color: @color-header;
   top: 62px;
   padding:5px 10px;
 }
@@ -115,6 +154,15 @@
   padding: 96px 30px 30px;
 }
 
+@media only screen and (min-width: @screen2) {
+
+  .evo-content,
+  .evo-content2,
+  .evo-content3{
+    margin-left: @width-toolbar-left;
+    padding-top:0;
+  }
+}
 // --- footer ---
 .footer{
 	text-align: center;
