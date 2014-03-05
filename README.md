@@ -3,14 +3,14 @@
 evolutility.js is a work in progress. Eventually it will be a generic UI to build applications who can change form, volume, and structure like living organisms.
 
 The idea is to build a set of generic Backbone views to perform all CRUD (Create, Read, Update and Delete) operations on records of any data structure.
-For each object the whole set of views is defined in a single UI-model containing the description of UI (layout, fields and behaviors).
+For each object the whole set of views is defined in a single UI-model containing the description of the UI (fields mapping, layout, and behavior).
 
 ## The Plan 
 
 1. Update [Evolutility metamodel] (http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications) (model of the UI models)
 2. Code the generic UI views based on the metamodel
 3. Add a toolbar and a controller for all these views
-4. Make demo apps
+4. Make [demo apps](http://evoluteur.github.io/evolutility/demo/index.html)
 5. Make [an app to make apps] (http://www.codeproject.com/Articles/28810/Wizard-and-CRUD-Applications-to-Build-other-CRUD-A)
 
 

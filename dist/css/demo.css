@@ -32,6 +32,7 @@
   position: fixed;
   top: 0;
   left: 0;
+  overflow: auto;
   background-color: #1f497d;
   border-bottom: #366092 solid 1px;
   width: 100%;
@@ -171,7 +172,12 @@ body {
 }
 .blueBox > ul {
   list-style: none;
-  margin-left: 5px;
+}
+.blueBox > ul > li {
+  margin-left: -20px;
+}
+.biglinks a {
+  font-size: 2em;
 }
 .forkMe {
   position: fixed;

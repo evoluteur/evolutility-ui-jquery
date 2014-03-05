@@ -37,6 +37,7 @@
   position: fixed;
   top: 0;
   left: 0;
+  overflow: auto;
   background-color: #1f497d;
   border-bottom: #366092 solid 1px;
   width: 100%;
