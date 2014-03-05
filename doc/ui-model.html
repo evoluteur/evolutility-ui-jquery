@@ -34,12 +34,11 @@
 <div class="evo-content3">
 
 
+<p>The UI model for a Backbone model consists of an object with fields grouped in panels and tabs.</p>
+
 <p>This page describes the structure of UI-models.
     It is not fully defined nor implemented yet but a work in progress based on
     <a href="http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications" target="evomm">Evolutility minimalist meta-model</a>.</p>
-
-
-<p>The UI model for a Backbone model consists of an object with fields grouped in panels and tabs.</p>
 
 
 <section id="object">
@@ -55,7 +54,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
     <tbody><tr>
         <td style="width: 120px; ">entity<span class="evol-required">*</span>
         </td>
-        <td>User's object name for the database object (for example: &quot;task&quot; for a
+        <td>User's object name for the database object (for example: "task" for a
             to do list application).
         </td>
     </tr>
@@ -127,23 +126,31 @@ This ui-model defines all <a href="views.html">views</a>.</p>
             <td>type<span class="evol-required">*</span>
             </td>
             <td>
-                The type of the field in the UI.
+                <p>The type of the field in the UI.</p>
 
-                <ul class="indent list-unstyled">
+                <ul class="indent list-unstyled" style="float:left;width:170px">
                     <li><span data-id="#boolean"><img src="pix/dico/ft-bool.gif" alt="" class="Icon">boolean</span></li>
                     <li><span data-id="#color"><img src="pix/dico/ft-color.gif" alt="" class="Icon">color</span></li>
-                    <li><span data-id="#date"><img src="pix/dico/ft-date.gif" alt="" class="Icon">date, datetime, time</span></li>
-                    <li><span data-id="#decimal"><img src="pix/dico/ft-dec.gif" alt="" class="Icon">decimal, integer</span></li>
+                    <li><span data-id="#date"><img src="pix/dico/ft-date.gif" alt="" class="Icon">date</span></li>
+                    <li><span data-id="#datetime"><img src="pix/dico/ft-datehm.gif" alt="" class="Icon">datetime</span></li>
+                    <li><span data-id="#decimal"><img src="pix/dico/ft-dec.gif" alt="" class="Icon">decimal</span></li>
                     <li><span data-id="#document"><img src="pix/dico/ft-doc.gif" alt="" class="Icon">document</span></li>
-                    <li><span data-id="#email"><img src="pix/dico/ft-email.gif" alt="" class="Icon">email, url</span></li>
+                    <li><span data-id="#email"><img src="pix/dico/ft-email.gif" alt="" class="Icon">email</span></li>
                     <li><span data-id="#formula"><img src="pix/dico/ft-fn.gif" alt="" class="Icon">formula</span></li>
                     <li><span data-id="#html"><img alt="" class="Icon" src="pix/dico/ft-htm.gif">html (RTF)</span></li>
+                </ul>
+                <ul class="indent list-unstyled" style="float:left;width:170px">
                     <li><span data-id="#image"><img src="pix/dico/ft-img.gif" alt="" class="Icon">image</span></li>
+                    <li><span data-id="#url"><img src="pix/dico/ft-url.gif" alt="" class="Icon">URL</span></li>
                     <li><span data-id="#lov"><img src="pix/dico/ft-lov.gif" alt="" class="Icon">lov (list of values)</span></li>
                     <li><span data-id="#money"><img src="pix/dico/ft-money.gif" alt="" class="Icon">money</span></li>
                     <li><span data-id="#text"><img src="pix/dico/ft-txt.gif" alt="" class="Icon">text</span></li>
                     <li><span data-id="#textmultiline"><img src="pix/dico/ft-txtml.gif" alt="" class="Icon">textmultiline</span></li>
+                    <li><span data-id="#integer"><img src="pix/dico/ft-int.gif" alt="" class="Icon">integer</span></li>
+                    <li><span data-id="#time"><img src="pix/dico/ft-time.gif" alt="" class="Icon">time</span></li>
                 </ul>
+
+                <div class="clearfix"></div>
             </td>
         </tr>
 
@@ -309,14 +316,12 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         </tbody></table>
 </section>
 
-<section id="sections">
+<section id="panel">
     <p></p>
-    <h1>sections</h1>
-<p>Fields are grouped in panels and panels can be grouped in tabs. </p>
+    <h1>panel</h1>
 
-
-    <h3>panel</h3>
-    <p>The <code>panel</code> element is used to visually group fields together on the screen.</p>
+    <p>The <code>panel</code> element is used to group fields together in the forms.
+        Fields are grouped in panels and panels can be grouped in tabs. </p>
 
     <table class="table table-bordered">
         <tbody>
@@ -338,7 +343,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
             </td>
         </tr>
         <tr>
-            <td>elements[]
+            <td>elements[]<span class="evol-required">*</span>
             </td>
             <td>
                 Array of fields.
@@ -367,9 +372,12 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         </tr>
         </tbody></table>
 
+    </section>
+    <section id="panel-list">
+        <p></p>
+        <h1>panel-list</h1>
 
-    <h3>panel-list</h3>
-    <p>Similar to a panel but used to display a sub-collection.</p>
+    <p>Similar to a panel but used to display a sub-collection (an array of objects).</p>
 
     <table class="table table-bordered">
         <tbody>
@@ -416,8 +424,11 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         </tr>
         </tbody></table>
 
-    <h3>tab</h3>
-    <p>The <code>tab</code> element can be used to group panels together and view them a group at a time. This element is optional.</p>
+    </section>
+<section id="tab">
+    <p></p>
+    <h1>tab</h1>
+    <p>The <code>tab</code> element can be used to group panels and panel-lists.</p>
     <table class="table table-bordered">
         <tbody><tr>
             <td style="width: 120px; ">
