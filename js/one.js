@@ -352,11 +352,16 @@ Evol.ViewOne = Backbone.View.extend({
 
     renderPanel: function (h, p, pid, mode) {
         var that = this;
-        h.push('<div data-p-width="', p.width, '" class="evol-pnl');
-        if(mode==='mini'){
-            h.push(' w-100 ', (p.class || ''), '">');
+
+        if(mode==='wiz'){
+            h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%">');
         }else{
-            h.push(' pull-left" style="width:', p.width, '%">');
+            h.push('<div data-p-width="', p.width, '" class="evol-pnl');
+            if(mode==='mini'){
+                h.push(' w-100 ', (p.class || ''), '">');
+            }else{
+                h.push(' pull-left" style="width:', p.width, '%">');
+            }
         }
         h.push('<div class="panel ', this.options.style, '">',
             Evol.UI.HTMLPanelLabel(p.label, pid, 'PanelLabel'),
@@ -483,8 +488,8 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 
-    validate: function () {
-        var fs =  this.getFields();
+    validate: function (sfs) {
+        var fs = sfs?sfs:this.getFields();
         this.clearMessages();
         if (_.isArray(fs)) {
             return Evol.UI.Validation.checkFields(this.$el, fs, this.prefix);
@@ -573,7 +578,16 @@ Evol.ViewOne = Backbone.View.extend({
      }*/
 
     clearMessages: function(){
+        this.$el.trigger('message', null);
         return this.clearErrors();
+    },
+
+    sendMessage: function(title,content,style){
+        return this.$el.trigger('message',{
+            title:title,
+            content:content,
+            style:style
+        });
     },
 
     click_button: function (evt) {

@@ -32,7 +32,8 @@ Evol.UI = {
         clearer: '<div class="clearfix"></div>',
         emptyOption: '<option value=""></option>',
         glyphicon: 'glyphicon glyphicon-',
-        required: '<span class="evol-required">*</span>'
+        required: '<span class="evol-required">*</span>',
+        buttonClose: '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'
     },
 
     // --- field labels ---
@@ -247,7 +248,7 @@ Evol.UI = {
     HTMLMsg: function (title, content, style) {
         return [
             '<div data-id="msg" class="evo-msg alert alert-',style || 'info',
-            ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
+            ' alert-dismissable">', this.html.buttonClose,
             '<strong>',title,'</strong> <span>',
             content,'</span></div>'
         ].join('');
@@ -614,6 +615,10 @@ Evol.i18n = {
     All:'All',
     //ListAll:'List All',
     //Print:'Print',
+    //pdf:'PDF',
+    prev:'Previous',
+    next:'Next',
+    finish:'Finish !',
     DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value,
     DeleteEntities: 'Delete {0} {1}?', // delete 5 tasks
     Back2SearchResults:'Back to search results',
@@ -789,13 +794,14 @@ Evol.Dico = {
     },
 
     getFieldTypedValue:function(f, $f){
+        var ft=Evol.Dico.fieldTypes;
         switch(f.type) {
-            case Evol.Dico.fieldTypes.bool:
+            case ft.bool:
                 return $f.prop('checked');
-            case Evol.Dico.fieldTypes.integer:
+            case ft.integer:
                 return parseInt($f.val(),10);
-            case Evol.Dico.fieldTypes.decimal:
-            case Evol.Dico.fieldTypes.money:
+            case ft.decimal:
+            case ft.money:
                 return parseFloat($f.val());
             default:
                 return $f.val();
@@ -933,50 +939,66 @@ Evol.Dico = {
                 for(i= 0, iMax=filters.length;i<iMax && want;i++){
                     var filter=filters[i],
                         vf=filter.value.value,
-                        fv=model.get(filter.field.value);
-                    if(fv===undefined){
-                        fv='';
+                        vm=model.get(filter.field.value);
+                    if(vm===undefined){
+                        vm='';
                     }
                     switch(filter.operator.value){
-                        case 'eq':
-                            want=vf===fv;
+                        case 'eq': // equals
+                            want=vf==vm;
                             break;
-                        case 'ne':
-                            want=vf!==fv;
+                        case 'ne': // not equal
+                            want=vf!=vm;
                             break;
-                        case 'sw':
-                            want=fv.indexOf(vf)===0;
+                        case 'gt': // > or after
+                            want=vm>vf;
                             break;
-                        case 'ct':
-                            want=fv.indexOf(vf)>-1;
+                        case 'lt': // < or before
+                            want=vm<vf;
                             break;
-                        case 'fw':
-                            want=fv.indexOf(vf)===fv.length-vf.length;
+                        case 'bw': // between
+                            var vf2=filter.value.value2;
+                            want = !(vf>vm || vm>vf2);
+                            break;
+                        case 'sw': // start w/
+                            want=vm.toLocaleLowerCase().indexOf(vf)===0;
+                            break;
+                        case 'ct': // contain
+                            want=vm.toLocaleLowerCase().indexOf(vf)>-1;
+                            break;
+                        case 'fw': // finish w/
+                            var l1=vm.length,
+                                l2=vf.length;
+                            if (l1>l2){
+                                want=false;
+                            }else{
+                                want=vm.toLocaleLowerCase().substring(l2-l1)===vf;
+                            }
                             break;
                         case 'null':
-                            want=fv==='' || fv===undefined;
+                            want=vm=='' || vm==undefined;
                             break;
-                        case 'nn':
-                            want=fv!=='' || fv!==undefined;
+                        case 'nn': // not null
+                            want=vm!='' || vm!=undefined;
                             break;
-                        case 'in':
-                            want= _.contains(vf.split(','),fv);
+                        case 'in': // in []
+                            want= _.contains(vf.split(','),vm);
                             break;
                         case 1:
-                            want=fv;
+                            want=vm;
                             break;
                         case 0:
-                            want=!fv;
+                            want=!vm;
                             break;
                     }
                 }
                 return want;
             });
         }
-        return [];
+        return models;
     },
 
-    HTMLField4Many: function(f,v, hashLov){
+    HTMLField4Many: function(f, v, hashLov){
         var fTypes = Evol.Dico.fieldTypes;
         switch(f.type){
             case fTypes.bool:
@@ -1023,14 +1045,14 @@ Evol.Dico = {
         if(mode==='mini'){
             var fwidth=fld.width;
             fld.width=100;
-            h.push('<div class="evol-mini-label">',this.HTMLFieldLabel(fld, mode),
+            h.push('<div class="evol-mini-label">', this.HTMLFieldLabel(fld, mode),
                 '</div><div class="evol-mini-content">');
         }else if(!skipLabel){
             h.push(this.HTMLFieldLabel(fld, mode || 'edit'));
         }
         if(fld.readonly){
             // TODO: css for readonly fields
-            h.push('<div id="',fid, '" class="disabled evo-rdonly">',fv, '&nbsp;</div>');
+            h.push('<div id="',fid, '" class="disabled evo-rdonly">', this.HTMLField4Many(fld, fv, {}), '&nbsp;</div>');
         }else{
             switch (fld.type) {
                 case types.text:
@@ -1650,7 +1672,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             fields = this.getFields(),
             uim = opts.uiModel,
             pSize = opts.pageSize || 50;
-        this._models=models;
+
         h.push('<div class="evol-many-list">',
             //'<div class="panel ',this.options.style,'">',
             '<table class="table table-bordered table-hover"><thead><tr>');
@@ -1711,7 +1733,9 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             h.push('<td>');
             if(i===0){
                 h.push('<a href="javascript:void(0)" id="fv-', f.id, '" class="evol-nav-id">');
-                h.push('<img class="evol-table-icon" src="pix/', _.isFunction(icon)?icon(model):icon, '">');
+                if(icon!==undefined && icon!==''){
+                    h.push('<img class="evol-table-icon" src="pix/', _.isFunction(icon)?icon(model):icon, '">');
+                }
                 if(v===''){
                     v='('+model.id+')';
                 }
@@ -2091,11 +2115,16 @@ Evol.ViewOne = Backbone.View.extend({
 
     renderPanel: function (h, p, pid, mode) {
         var that = this;
-        h.push('<div data-p-width="', p.width, '" class="evol-pnl');
-        if(mode==='mini'){
-            h.push(' w-100 ', (p.class || ''), '">');
+
+        if(mode==='wiz'){
+            h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%">');
         }else{
-            h.push(' pull-left" style="width:', p.width, '%">');
+            h.push('<div data-p-width="', p.width, '" class="evol-pnl');
+            if(mode==='mini'){
+                h.push(' w-100 ', (p.class || ''), '">');
+            }else{
+                h.push(' pull-left" style="width:', p.width, '%">');
+            }
         }
         h.push('<div class="panel ', this.options.style, '">',
             Evol.UI.HTMLPanelLabel(p.label, pid, 'PanelLabel'),
@@ -2222,8 +2251,8 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 
-    validate: function () {
-        var fs =  this.getFields();
+    validate: function (sfs) {
+        var fs = sfs?sfs:this.getFields();
         this.clearMessages();
         if (_.isArray(fs)) {
             return Evol.UI.Validation.checkFields(this.$el, fs, this.prefix);
@@ -2312,7 +2341,16 @@ Evol.ViewOne = Backbone.View.extend({
      }*/
 
     clearMessages: function(){
+        this.$el.trigger('message', null);
         return this.clearErrors();
+    },
+
+    sendMessage: function(title,content,style){
+        return this.$el.trigger('message',{
+            title:title,
+            content:content,
+            style:style
+        });
     },
 
     click_button: function (evt) {
@@ -2555,13 +2593,14 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     events: {
         'click .nav a': 'click_toolbar',
-        'list.navigate > div': 'click_navigate',
+        'list.navigate >div': 'click_navigate',
         //'list.paginate >div': 'paginate',
         'submit.export >div': 'click_download',
-        'action > div': 'action_view',
-        'status > div': 'status_update',
-        'selection > div': 'click_selection',
-        'click .alert-dismissable>button': 'clearMessage'
+        'action >div': 'action_view',
+        'status >div': 'status_update',
+        'filter.change >div': 'change_filter',
+        'click .alert-dismissable>button': 'clearMessage',
+        'message >div':'showMessage'
     },
 
     options: {
@@ -2574,6 +2613,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             // --- views for one ---
             edit: true,
             mini: true,
+            wiz: true,
             json: true,
             // --- views for many ---
             list: true,
@@ -2583,7 +2623,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             'new': true,
             'save':true,
             del: true,
-            filter: false,
+            filter: true,
             'export': true,
             group: false,
             customize:false
@@ -2594,6 +2634,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     modesHash: {
         'edit':'Edit',
         'mini':'Mini',
+        'wiz':'Wizard',
         'json':'JSON',
         'cards':'Cards',
         'list':'List',
@@ -2675,6 +2716,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             linkOpt2h('charts','Charts','stats','n');
             linkOpt2h('edit','All Fields','th','1');
             linkOpt2h('mini','Important Fields only','th-large','1');
+            //linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
             // TODO
             //linkOpt2h('json','JSON','barcode','n');
@@ -2722,7 +2764,8 @@ Evol.ViewToolbar = Backbone.View.extend({
 			$v=this.$('[data-vid="'+eid+'"]'),
 			vw=this.curView,
             config,
-            collec=this.model?this.model.collection:new opts.collectionClass();
+            collec=this._curCollec();
+
         if(viewName==='new'){
             viewName=this._prevOne?this._prevOne:'edit';
             this.setView(viewName);
@@ -2733,8 +2776,15 @@ Evol.ViewToolbar = Backbone.View.extend({
         }else{
             if($v.length){
             // -- view already exists and was rendered
-                this.model=this.curView.model;
+                //if(this.curView.model){
+                //TODO debug
+                    this.model=this.curView.model;
+                //}
+                this.model.collection=collec;
                 this.curView=this.viewsHash[viewName];
+                if(this.curView.setCollection){
+                    this.curView.setCollection(collec);
+                }
                 if(this.model && !this.model.isNew()){
                     if(this.curView.setModel){
                         if(!this.curView.collection && m.collection){
@@ -2743,9 +2793,6 @@ Evol.ViewToolbar = Backbone.View.extend({
                         this.curView.setModel(this.model);
                     }else{
                         this.curView.model = this.model;
-                    }
-                    if(!this.model){
-                        this.curView.collection=collec;
                     }
                     if(this.curView.setTitle){
                         this.curView.setTitle();
@@ -2769,7 +2816,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     el: $v,
                     mode: viewName,
                     model: this.model,
-                    collection: this.collection,
+                    collection: collec,
                     uiModel: opts.uiModel,
                     style: opts.style,
                     pageSize: opts.pageSize || 20,
@@ -2784,6 +2831,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     case 'edit':
                     case 'mini':
                     case 'json':
+                    case 'wiz':
                         vw = new Evol.ViewOne[this.modesHash[viewName]](config)
                             .render();
                         this._prevOne=viewName;
@@ -2947,13 +2995,13 @@ Evol.ViewToolbar = Backbone.View.extend({
 		return null;
 	},
 
-    browse: function(toolId){ // toolId = "prev" or "next"
-        var cModel = this.curView.model;
-        if(this.model && this.model.collection && this.model.collection.length){
-            var collec=this.model.collection,
-                l=collec.length-1,
+    browse: function(direction){ // direction = "prev" or "next"
+        var collec=this._curCollec(),
+            cModel=this.curView.model;
+        if(cModel && collec && collec.length){
+            var l=collec.length-1,
                 idx =_.indexOf(collec.models, cModel);
-            if(toolId==='prev'){
+            if(direction==='prev'){
                 idx=(idx>0)?idx-1:l;
             }else{
                 idx=(idx<l)?idx+1:0;
@@ -2978,6 +3026,9 @@ Evol.ViewToolbar = Backbone.View.extend({
                 that.newItem();
             }else{
                 that.model=m;
+                if(that._filteredCollection){
+                    that._filteredCollection.add(m);
+                }
                 that.setMode('edit');
                 vw.setModel(m);
             }
@@ -2987,7 +3038,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(msg===''){
             var entityName=this.options.uiModel.entity;
             if(this.model.isNew()){
-                var collec=(this.model && this.model.collection)?this.model.collection:this.collection;
+                var collec=this.collection;
                 if(collec){
                     collec.create(this.getData(), {
                         success: function(m){
@@ -3003,6 +3054,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     alert('Can\'t save record b/c no collection is specified.'); //TODO pretty
                 }
             }else{
+                // TODO fix bug w/ insert when filter applied => dup record
                 this.model.set(this.getData());
                 this.model.save('','',{
                     success: function(m){
@@ -3015,7 +3067,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 });
             }
         }else{
-            this.setMessage('Invalid data.', msg, 'warning');
+            this.setMessage('Incomplete information.', msg, 'warning');
         }
         return this;
     },
@@ -3101,6 +3153,14 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
     },
 
+    showMessage: function(evt, ui){
+        if(ui){
+            return this.setMessage(ui.title, ui.content, ui.style);
+        }else{
+            return this.clearMessage();
+        }
+    },
+
     action_view: function(evt, actionId){
         switch(actionId){
             case 'cancel':
@@ -3140,6 +3200,18 @@ Evol.ViewToolbar = Backbone.View.extend({
         this.setStatus(ui);
     },
 
+    _curCollec: function(){
+        if (this._filteredCollection){
+            return this._filteredCollection;
+        }else{
+            if(this.collection){
+                return this.collection;
+            }else{
+                return this.model?this.model.collection:new this.options.collectionClass();
+            }
+        }
+    },
+
     click_toolbar: function(evt, ui){
         var $e=$(evt.currentTarget);
         if($e.tagName!=='A'){
@@ -3150,21 +3222,17 @@ Evol.ViewToolbar = Backbone.View.extend({
         evt.stopImmediatePropagation();
         switch(toolId){
             case 'save':
-                //if(this.model.isNew()){
-
-                //}else{
-                    this.saveItem(false);
-                //}
+                this.saveItem(false);
                 break;
             case 'del':
                 this.deleteItem();
                 break;
             case 'customize':
                 this.curView.customize();
-                break;
+                break;/*
             case 'group':
                 this.showGroup();
-                break;
+                break;*/
             case 'filter':
                 this.toggleFilter();
                 break;
@@ -3205,6 +3273,31 @@ Evol.ViewToolbar = Backbone.View.extend({
         alert('Sorry, no demo server yet...');
     },
 
+    change_filter: function(evt){
+        var fvs=this._filters.val(),
+            collec;
+        if(fvs.length){
+            var models=Evol.Dico.filterModels(this.model.collection.models, fvs);
+            if(this.collectionClass){
+                collec=new collectionClass(models);
+            }else{
+                collec=new Backbone.Collection(models);
+            }
+            this._filteredCollection=collec;
+            var ccSel=collec.length,
+                ccAll=this.collection.length;
+            if(ccSel){
+
+            }
+            this.setStatus(ccSel+' / '+ccAll+' '+this.options.uiModel.entities);
+        }else{
+            collec=this.collection;
+            this._filteredCollection=null;
+            this.setStatus(collec.length+' '+this.options.uiModel.entities);
+        }
+        this.curView.setCollection(collec);
+    }
+    /*
     click_selection: function(evt, ui){
         var status=this.$('.evo-toolbar .evo-tb-status'),
             cbxs=this.$('.list-sel:checked').not('[data-id="cbxAll"]'),
@@ -3218,9 +3311,658 @@ Evol.ViewToolbar = Backbone.View.extend({
             tbBs.del.hide();
         }
     }
-
+*/
 });
 
+;
+/*! ***************************************************************************
+ *
+ * evolutility :: filter.js
+ *
+ * https://github.com/evoluteur/evolutility
+ * Copyright (c) 2014, Olivier Giulieri
+ *
+ *************************************************************************** */
+
+var Evol = Evol || {},
+    evoLang=Evol.i18n.filters;
+
+var fOps={
+    sEqual:'eq',
+    sNotEqual:'ne',
+    sStart:'sw',
+    sContain:'ct',
+    sFinish:'fw',
+    sInList:'in',
+    sIsNull:'null',
+    sIsNotNull:'nn',
+    sGreater:'gt',
+    sSmaller:'lt',
+    sBetween:'bw'
+};
+
+Evol.ViewFilter = Backbone.View.extend({
+
+    events: {
+        'click .evo-bNew': 'click_new',
+        'click .evo-bAdd':'click_add',
+        'click .evo-bSubmit':'click_submit',
+        'click .evo-zfilters>a>button':'click_remove'
+    },
+
+    options: {
+        fields: [],
+        dateFormat: 'mm/dd/yyyy',
+        //highlight: true,
+        buttonLabels: false,
+        submitButton: false,
+        submitReady: false
+    },
+
+    initialize: function (opts) {
+        this.options=_.extend(this.options, opts);
+        return this;
+    },
+
+    render: function(){
+        var bLabels=this.options.buttonLabels,
+            that=this,
+            e=this.$el,
+            h=['<div class="evo-zfilters"></div>',
+                '<a class="evo-bNew btn btn-primary" href="javascript:void(0)">',evoLang.bNewFilter,'</a>'];
+        if(this.options.submitButton){
+            h.push('<a class="evo-bSubmit btn btn-primary" href="javascript:void(0)">',evoLang.bSubmit,'</a>');
+        }
+        h.push('<div class="evo-editFilter"></div>',
+            '<a class="evo-bAdd btn btn-primary" style="display:none;" href="javascript:void(0)">',evoLang.bAddFilter,'</a>',
+            '<a class="evo-bDel btn btn-default" style="display:none;" href="javascript:void(0)">',evoLang.bCancel,'</a>');
+        this._step=0;
+        e.html(h.join(''));
+        if(this.options.submitReady){
+            this._hValues=$('<span></span>').appendTo(e);
+        }
+        // - button submit
+        if(this.options.submitButton){
+            this._bSubmit=e.find('.evo-bSubmit').button({
+                text: bLabels
+            });
+        }
+        // - editor button new
+        this._bNew=e.find('.evo-bNew').button({
+            text: bLabels,
+            icons: {secondary:'ui-icon-plusthick'}
+        });
+        // - editor button add
+        this._bAdd=e.find('.evo-bAdd').button({
+            text: bLabels,
+            icons: {secondary:'ui-icon-check'}
+        });
+        // - editor button cancel
+        this._bDel=e.find('.evo-bDel').button({
+            text: bLabels,
+            icons: {secondary:'ui-icon-close'}
+        }).on('click', function(evt){
+            that._removeEditor();
+        });
+        this._editor=e.find('.evo-editFilter')
+            .on('change', '#field', function(evt){
+                evt.stopPropagation();
+                if(that._step>2){
+                    that._editor.find('#value,#value2,.as-Txt').remove();
+                }
+                if(that._step>1){
+                    that._editor.find('#operator').remove();
+                    that._bAdd.hide();
+                }
+                that._step=1;
+                var fieldID=$(evt.currentTarget).val();
+                if(fieldID!==''){
+                    that._field=that._getFieldById(fieldID);
+                    var fType=that._type=that._field.type;
+                    that._setEditorOperator();
+                    if(fType==Evol.Dico.fieldTypes.lov || fType==Evol.Dico.fieldTypes.bool){
+                        that._setEditorValue();
+                    }
+                }else{
+                    that._field=that._type=null;
+                }
+            }).on('change', '#operator', function(evt){
+                evt.stopPropagation();
+                that._operator=$(this).val();
+                if(that._step>2){
+                    that._editor.find('#value,#value2,.as-Txt').remove();
+                    that._bAdd.hide();
+                    that._step=2;
+                }
+                that._setEditorValue();
+            }).on('change keyup', '#value,#value2', function(evt){
+                evt.stopPropagation();
+                var type=that._type,
+                    value=$(this).val(),
+                    valid=(value!=='') || type==Evol.Dico.fieldTypes.lov || type==Evol.Dico.fieldTypes.bool;
+                if(type==Evol.Dico.fieldTypes.number){
+                    valid=valid && !isNaN(value);
+                }else if(that._operator==fOps.sBetween){
+                    valid=that._editor.find('#value').val()!=='' && that._editor.find('#value2').val()!=='';
+                }
+                if(valid){
+                    that._bAdd.button('enable');
+                    if(evt.which==13){
+                        that._bAdd.trigger('click');
+                    }
+                }else{
+                    that._bAdd.button('disable');
+                }
+            }).on('click', '#checkAll', function(){
+                var $this=$(this),
+                    vc=$this.attr('checked'),
+                    allChecks=$this.siblings();
+                if(vc=='checked'){
+                    allChecks.attr('checked',vc);
+                }else{
+                    allChecks.removeAttr('checked');
+                }
+            });
+        this._filters=e.find('.evo-zfilters').on('click', 'a', function(){
+            that._editFilter($(this));
+        //}).on('click', 'a .ui-button-icon-secondary', function(evt){
+        }).on('click', 'a>button', function(evt){
+                evt.stopPropagation();
+                var filter=$(this).parent();
+                if(!filter.hasClass('ui-state-disabled')){
+                    filter.fadeOut('slow',function(){
+                        filter.remove();
+                        that._triggerChange();
+                    });
+                }
+            });
+        return this;
+    },
+
+    _getFieldById: function(fId){
+        if(!this._hash){
+            this._hash={};
+            var fields=this.options.fields;
+            for (var i=0,iMax=fields.length;i<iMax;i++){
+                this._hash[fields[i].id]=fields[i];
+            }
+        }
+        return this._hash[fId];
+    },
+
+    _removeEditor: function(){
+        this._editor.empty();
+        this._bAdd.hide();
+        this._bDel.hide();
+        this._enableFilter(null, false);
+        this._bNew.removeClass('ui-state-active').show().focus();
+        if(this._bSubmit){
+            this._bSubmit.removeClass('ui-state-active').show();
+        }
+        this._step=0;
+        this._field=this._type=this._operator=null;
+    },
+
+    addFilter: function(filter){
+        var f=$(['<a href="javascript:void(0)">',this._htmlFilter(filter),'</a>'].join(''))
+            .prependTo(this._filters)/*
+            .button({
+                icons: {secondary:'ui-icon-close'}
+            })*/
+            .data('filter', filter)
+            .fadeIn();
+        //if(this.options.highlight){
+        //    f.effect('highlight');
+        //}
+        this._triggerChange();
+        return this;
+    },
+
+    removeFilter: function(index){
+        this._filters.children().eq(index).remove();
+        this._triggerChange();
+        return this;
+    },
+
+    _htmlFilter: function(filter){
+        var h=[
+            '<span class="evo-lBold">', filter.field.label,'</span> ',
+            '<span class="evo-lLight">', filter.operator.label,'</span> ',
+            '<span class="evo-lBold">', filter.value.label, '</span>'
+        ];
+        if(filter.operator.value==fOps.sBetween){
+            h.push('<span class="evo-lLight"> ', evoLang.opAnd, ' </span>',
+                '<span class="evo-lBold">', filter.value.label2, '</span>');
+        }
+        h.push(Evol.UI.html.buttonClose);
+        return h.join('');
+    },
+
+    _enableFilter: function(filter, anim){
+        if(this._cFilter){
+            this._cFilter.removeClass('disabled');
+            /*if(anim){
+                this._cFilter.effect('highlight');
+            }*/
+            if(filter){
+                this._cFilter.data('filter', filter)//.find(':first-child')
+                    .html(this._htmlFilter(filter));
+                this._cFilter=null;
+                this._triggerChange();
+            }else{
+                this._cFilter=null;
+            }
+        }
+    },
+
+    _editFilter: function($filter){
+        var filter=$filter.data('filter'),
+            fid=filter.field.value,
+            op=filter.operator.value,
+            fv=filter.value;
+        this._enableFilter(null, false);
+        this._removeEditor();
+        this._cFilter=$filter.addClass('disabled');
+        this._setEditorField(fid);
+        this._setEditorOperator(op);
+        if(op==fOps.sBetween){
+            this._setEditorValue(fv.value, fv.value2);
+        }else{
+            this._setEditorValue(fv.value);
+        }
+        this._bAdd.find('.ui-button-text').html(evoLang.bUpdateFilter);
+        this._step=3;
+    },
+
+    _setEditorField: function(fid){
+        if(this._step<1){
+            this._bNew.stop().hide();
+            if(this._bSubmit){
+                this._bSubmit.stop().hide();
+            }
+            this._bDel.show();
+            if(!this._fList){
+                var fields=this.options.fields,
+                    h=['<select id="field" class="form-control"><option value=""></option>'];
+                for (var i=0,iMax=fields.length;i<iMax;i++){
+                    var f=fields[i];
+                    h.push(Evol.UI.input.option(f.id,f.label));
+                }
+                h.push('</select>');
+                this._fList=h.join('');
+            }
+            $(this._fList).appendTo(this._editor).focus();
+        }
+        if(fid){
+            this._field=this._getFieldById(fid);
+            this._type=this._field.type;
+            this._editor.find('#field').val(fid);
+        }
+        this._step=1;
+    },
+
+    _setEditorOperator: function(cond){
+        var EvoUI=Evol.UI,
+            fOption=EvoUI.input.option,
+            fTypes=Evol.Dico.fieldTypes,
+            fType=this._type;
+        if(this._step<2){
+            var h=[];
+            switch (fType){
+                case fTypes.lov:
+                    //h.push(evoLang.sInList);
+                    h.push(EvoUI.input.hidden('operator',fOps.sInList));
+                    this._operator=fOps.sInList;
+                    break;
+                case fTypes.bool:
+                    //h.push(evoLang.sEqual);
+                    h.push(EvoUI.input.hidden('operator', fOps.sEqual));
+                    this._operator=fOps.sEqual;
+                    break;
+                default:
+                    h.push(EvoUI.input.selectBegin('operator', '', true));
+                    switch (fType){
+                        case fTypes.date:
+                        case fTypes.datetime:
+                        case fTypes.time:
+                            if (fType==fTypes.time){
+                                h.push(fOption(fOps.sEqual, evoLang.sAt),
+                                    fOption(fOps.sNotEqual, evoLang.sNotAt));
+                            }else{
+                                h.push(fOption(fOps.sEqual, evoLang.sOn),
+                                    fOption(fOps.sNotEqual, evoLang.sNotOn));
+                            }
+                            h.push(fOption(fOps.sGreater, evoLang.sAfter),
+                                fOption(fOps.sSmaller, evoLang.sBefore),
+                                fOption(fOps.sBetween, evoLang.sBetween));
+                            break;
+                        case fTypes.integer:
+                        case fTypes.decimal:
+                        case fTypes.money:
+                            h.push(fOption(fOps.sEqual, evoLang.sNumEqual),
+                                fOption(fOps.sNotEqual, evoLang.sNumNotEqual),
+                                fOption(fOps.sGreater, evoLang.sGreater),
+                                fOption(fOps.sSmaller, evoLang.sSmaller));
+                            break;
+                        default:
+                            h.push(fOption(fOps.sEqual, evoLang.sEqual),
+                                fOption(fOps.sNotEqual, evoLang.sNotEqual),
+                                fOption(fOps.sStart, evoLang.sStart),
+                                fOption(fOps.sContain, evoLang.sContain),
+                                fOption(fOps.sFinish, evoLang.sFinish));
+                    }
+                    h.push(fOption(fOps.sIsNull, evoLang.sIsNull),
+                        fOption(fOps.sIsNotNull, evoLang.sIsNotNull));
+                    h.push('</select>');
+            }
+            this._editor.append(h.join(''));
+        }
+        if(cond && fType!=fTypes.lov){
+            this._editor.find('#operator').val(cond);
+            this._operator=cond;
+        }
+        this._step=2;
+    },
+
+    _setEditorValue: function( v, v2){
+        var editor=this._editor,
+            fTypes=Evol.Dico.fieldTypes,
+            fType=this._type,
+            opVal=editor.find('#operator').val(),
+            opBetween=false,
+            addOK=true;
+        if(opVal!==''){
+            if(fType!=fTypes.lov && (opVal==fOps.sIsNull || opVal==fOps.sIsNotNull)){
+                editor.append(Evol.UI.input.hidden('value',''));
+            }else{
+                if(this._step<3){
+                    var h=[];
+                    opBetween=opVal==fOps.sBetween;
+                    switch (fType){
+                        case fTypes.lov:
+                            h.push('<span id="value">');
+                            if(this._field.list.length>7){
+                                h.push('(<input type="checkbox" id="checkAll" value="1"/><label for="checkAll">All</label>) ');
+                            }
+                            h.push(Evol.UI.input.checkboxLOV(this._field.list));
+                            h.push('</span>');
+                            break;
+                        case fTypes.bool:
+                            h.push('<span id="value">',
+                                Evol.UI.input.radio('value', '1', evoLang.yes, v!='0', 'value1'),
+                                Evol.UI.input.radio('value', '0', evoLang.no, v=='0', 'value0'),
+                                '</span>');
+                            break;
+                        case fTypes.date:
+                        case fTypes.datetime:
+                        case fTypes.time:
+                        case fTypes.integer:
+                        case fTypes.decimal:
+                        case fTypes.money:
+                            var iType=(fType==fTypes.date)?'text':fType;
+                            h.push('<input id="value" type="',iType,'" class="form-control"/>');
+                            if(opBetween){
+                                h.push('<span class="as-Txt">',evoLang.opAnd,' </span>',
+                                    '<input id="value2" type="',iType,'" class="form-control"/>');
+                            }
+                            addOK=false;
+                            break;
+                        default:
+                            h.push('<input id="value" type="text" class="form-control"/>');
+                            addOK=false;
+                    }
+                    editor.append(h.join(''));
+                    if(fType==fTypes.date){// TODO add datepicker widget to build and uncomment this
+                        editor.find('#value,#value2').datepicker({dateFormat:this.options.dateFormat});
+                    }
+                }
+                if(v){
+                    var $value=editor.find('#value');
+                    switch (fType){
+                        case fTypes.lov:
+                            $value.find('#'+v.split(',').join(',#')).attr('checked', 'checked');
+                            break;
+                        case fTypes.bool:
+                            $value.find('#value'+v).attr('checked', 'checked');
+                            break;
+                        default:
+                            $value.val(v);
+                            addOK=v!=='';
+                            if(opBetween){
+                                $value.next().next().val(v2);
+                                addOK=v!=='' && v2!=='';
+                            }
+                    }
+                }else{
+                    addOK=(fType==fTypes.lov || fType==fTypes.bool);
+                }
+            }
+            this._bAdd.button(addOK?'enable':'disable').show();
+            this._step=3;
+        }
+    },
+
+    _getEditorData: function(){
+        function formattedDate(d){
+            var dateFrags=vval.split('/');
+            if(dateFrags.length>2){
+                return dateFrags[2]+'-'+dateFrags[0]+'-'+dateFrags[1];
+            }
+            return d;
+        }
+        var e=this._editor,
+            f=e.find('#field'),
+            v=e.find('#value'),
+            filter={
+                field:{
+                    label: f.find('option:selected').text(),
+                    value: f.val()
+                },
+                operator:{},
+                value:{}
+            },
+            op=filter.operator,
+            fv=filter.value;
+        if(this._type==Evol.Dico.fieldTypes.lov){
+            var vs=[], ls=[];
+            v.find('input:checked').not('#checkAll').each(function(){
+                vs.push(this.value);
+                ls.push(this.nextSibling.innerHTML);
+            });
+            if(vs.length===0){
+                op.label=evoLang.sIsNull;
+                op.value=fOps.sIsNull;
+                fv.label=fv.value='';
+            }else if(vs.length==1){
+                op.label=evoLang.sEqual;
+                op.value=fOps.sEqual;
+                fv.label='"'+ls[0]+'"';
+                fv.value=vs[0];
+            }else{
+                op.label=evoLang.sInList;
+                op.value=fOps.sInList;
+                fv.label='('+ls.join(', ')+')';
+                fv.value=vs.join(',');
+            }
+        }else if(this._type==Evol.Dico.fieldTypes.bool){
+            op.label=evoLang.sEqual;
+            op.value=fOps.sEqual;
+            var val=(v.find('#value1').attr('checked')=='checked')?1:0;
+            fv.label=(val==1)?evoLang.yes:evoLang.no;
+            fv.value=val;
+        }else{
+            var o=e.find('#operator'),
+                opVal=o.val();
+            op.label=o.find('option:selected').text();
+            op.value=opVal;
+            if(opVal==fOps.sIsNull || opVal==fOps.sIsNotNull){
+                fv.label=fv.value='';
+            }else{
+                var ft = Evol.Dico.fieldTypes,
+                    vval = v.val();
+                switch(this._type){
+                    case ft.text:
+                        fv.label=vval;
+                        fv.value=vval.toLocaleLowerCase();
+                        break;
+                    case ft.integer:
+                    case ft.decimal:
+                    case ft.time:
+                        fv.label=vval;
+                        fv.value=vval;
+                        break;
+                    case ft.date:
+                    case ft.datetime:
+                        fv.value=formattedDate(vval);
+                        fv.label=vval;
+                        break;
+                    default:
+                        fv.label=vval;
+                        fv.value=vval;
+                        break;
+                }
+                if(opVal==fOps.sBetween){
+                    vval = v.next().next().val();
+                    fv.label2=vval;
+                    if(this._type===ft.date || this._type===ft.datetime){
+                        fv.value2=formattedDate(vval);
+                        fv.label2=vval;
+                    }else{
+                        fv.value2=vval;
+                    }
+                }
+            }
+        }
+        return filter;
+    },
+
+    _hiddenValue: function(h, filter, idx){
+        var fHidden=Evol.UI.hidden;
+        h.push(fHidden('fld-'+idx, filter.field.value),
+            fHidden('op-'+idx, filter.operator.value),
+            fHidden('val-'+idx, filter.value.value));
+        var v2=filter.value.value2;
+        if(v2){
+            h.push(fHidden('val2-'+idx, v2));
+        }
+    },
+
+    _setHiddenValues: function(){
+        var vs=this.val(),
+            iMax=vs.length,
+            h=[Evol.UI.hidden('elem', iMax)];
+        for(var i=0;i<iMax;i++){
+            this._hiddenValue(h, vs[i], i+1);
+        }
+        //h.push('&label=',encodeURIComponent(this.valText()));
+        this._hValues.html(h.join(''));
+    },
+
+    _triggerChange: function(){
+        if(this.options.submitReady){
+            this._setHiddenValues();
+        }
+        this.$el.trigger('filter.change');
+    },
+
+    val: function(value){
+        if (typeof value=='undefined'){
+            // --- get value
+            var v=[];
+            this._filters.find('a').each(function(){
+                v.push($(this).data('filter'));
+            });
+            return v;
+        }else{
+            // --- set value
+            this._filters.empty();
+            for(var i=0,iMax=value.length;i<iMax;i++){
+                this.addFilter(value[i]);
+            }
+            this._triggerChange();
+            return this;
+        }
+    },
+
+    valText: function(){
+        var v=[];
+        this._filters.find('a').each(function(){
+            v.push(this.text);
+        });
+        return v.join(' '+evoLang.opAnd+' ');
+    },
+    /*
+    valUrl: function(){
+        var vs=this.val(),
+            iMax=vs.length,
+            url=['filters=',iMax];
+        if(iMax<1)
+            return '';
+        for(var i=0;i<iMax;i++){
+            var v=vs[i];
+            url.push(
+                '&field-',i,'=',v.field.value,
+                '&operator-',i,'=',v.operator.value,
+                '&value-',i,'=',encodeURIComponent(v.value.value)
+            );
+            if(v.operator==fOps.sBetween){
+                url.push('&value2-',i,'=',encodeURIComponent(v.value.value2));
+            }
+        }
+        url.push('&label=',encodeURIComponent(this.valText()));
+        return url.join('');
+    },*/
+
+    clear: function(){
+        this._cFilter=null;
+        this._removeEditor();
+        this._filters.empty();
+        this._triggerChange();
+        return this;
+    },
+
+    length: function(){
+        return this._filters.children().length;
+    },
+    /*
+    destroy: function(){
+        var e=this.$el.off();
+        e.find('.evo-bNew,.evo-bAdd,.evo-bDel,.evo-zfilters').off();
+        this._editor.off();
+        e.clear();
+        $.Widget.prototype.destroy.call(this);
+    },*/
+
+    click_new: function(evt){
+        if(this._step<1){
+            this._setEditorField();
+            this._step=1;
+        }
+        this._bAdd.find('.ui-button-text').html(evoLang.bAddFilter);
+    },
+
+    click_add: function(evt){
+        var data=this._getEditorData();
+        if(this._cFilter){
+            this._enableFilter(data, this.options.highlight);
+        }else{
+            this.addFilter(data);
+        }
+        this._removeEditor();
+    },
+
+    click_remove: function(evt){
+        evt.stopImmediatePropagation();
+        evt.stopPropagation();
+        $(evt.currentTarget).closest('a').remove();
+        this._triggerChange();
+    },
+
+    click_submit: function(e){
+        this.$el.trigger('submit.filter');
+    }
+
+});
 ;
 /*! ***************************************************************************
  *

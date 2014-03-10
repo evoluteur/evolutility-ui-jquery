@@ -475,6 +475,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     alert('Can\'t save record b/c no collection is specified.'); //TODO pretty
                 }
             }else{
+                // TODO fix bug w/ insert when filter applied => dup record
                 this.model.set(this.getData());
                 this.model.save('','',{
                     success: function(m){
@@ -625,7 +626,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             return this._filteredCollection;
         }else{
             if(this.collection){
-                return this.collection
+                return this.collection;
             }else{
                 return this.model?this.model.collection:new this.options.collectionClass();
             }
@@ -642,21 +643,17 @@ Evol.ViewToolbar = Backbone.View.extend({
         evt.stopImmediatePropagation();
         switch(toolId){
             case 'save':
-                //if(this.model.isNew()){
-
-                //}else{
-                    this.saveItem(false);
-                //}
+                this.saveItem(false);
                 break;
             case 'del':
                 this.deleteItem();
                 break;
             case 'customize':
                 this.curView.customize();
-                break;
+                break;/*
             case 'group':
                 this.showGroup();
-                break;
+                break;*/
             case 'filter':
                 this.toggleFilter();
                 break;

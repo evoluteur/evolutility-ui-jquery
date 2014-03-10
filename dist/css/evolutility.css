@@ -206,9 +206,8 @@
   padding-bottom: 6px;
 }
 .evo-zfilters > a {
-  display: block;
-  margin: 1px 6px 6px 1px;
-  padding: 3px 6px;
+  margin: 1px 2px 2px 1px;
+  padding: 3px 2px;
   clear: left;
   /*
     &:hover,
@@ -219,8 +218,12 @@
     }
 */
 }
-.evo-zfilters > a span.ui-button-text {
+.evo-zfilters > a > span.ui-button-text {
   padding: 4px 33px 4px 12px;
+}
+.evo-zfilters > a > button {
+  float: none !important;
+  margin: 2px 2px 0 4px;
 }
 .evo-zfilters .glyphicon-remove {
   margin: 0 6px;
@@ -380,6 +383,13 @@
 }
 .evo-td-plusminus > div:last-child:after {
   clear: left;
+}
+.evo-msg.alert-warning {
+  padding: 10px 10px 3px;
+}
+.evo-msg > .close {
+  top: 0 !important;
+  right: 0 !important;
 }
 /* --- list --- */
 img.evol-table-icon {

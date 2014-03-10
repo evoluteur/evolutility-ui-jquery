@@ -3,10 +3,9 @@ bower_components
 js/vendors.js
 dist/vendors.js
 js/models
-css/bootstrap*.css
+*.xml
 *-nogit
 *-nogit.*
-*.xml
 
 dico/
 dico/pix/

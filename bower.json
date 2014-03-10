@@ -1,6 +1,6 @@
 {
   "name": "evolutility",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "dependencies": {
     "jquery": "2.1.0",
     "backbone": "1.1.0",
