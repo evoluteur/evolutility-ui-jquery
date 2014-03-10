@@ -34,7 +34,10 @@ module.exports = function (grunt) {
                     'bower_components/bootstrap/js/modal.js',
                     //'bower_components/bootstrap/js/tooltip.js',
                     'bower_components/bootstrap/js/button.js',
-                    'bower_components/bootstrap/js/dropdown.js'
+                    'bower_components/bootstrap/js/dropdown.js',
+
+
+                    'bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js'
                 ],
                 dest: '<%= pkg.target %>/vendors.js'
             },
@@ -52,7 +55,7 @@ module.exports = function (grunt) {
                     'js/one-*.js',
 
                     'js/toolbar.js',
-                    //'js/filter.js',
+                    'js/filter.js',
                     'js/export.js'
                     //'js/ui-models/dico/field.js'
                 ],

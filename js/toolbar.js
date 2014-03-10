@@ -14,13 +14,14 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     events: {
         'click .nav a': 'click_toolbar',
-        'list.navigate > div': 'click_navigate',
+        'list.navigate >div': 'click_navigate',
         //'list.paginate >div': 'paginate',
         'submit.export >div': 'click_download',
-        'action > div': 'action_view',
-        'status > div': 'status_update',
-        'selection > div': 'click_selection',
-        'click .alert-dismissable>button': 'clearMessage'
+        'action >div': 'action_view',
+        'status >div': 'status_update',
+        'filter.change >div': 'change_filter',
+        'click .alert-dismissable>button': 'clearMessage',
+        'message >div':'showMessage'
     },
 
     options: {
@@ -33,6 +34,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             // --- views for one ---
             edit: true,
             mini: true,
+            wiz: true,
             json: true,
             // --- views for many ---
             list: true,
@@ -42,7 +44,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             'new': true,
             'save':true,
             del: true,
-            filter: false,
+            filter: true,
             'export': true,
             group: false,
             customize:false
@@ -53,6 +55,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     modesHash: {
         'edit':'Edit',
         'mini':'Mini',
+        'wiz':'Wizard',
         'json':'JSON',
         'cards':'Cards',
         'list':'List',
@@ -134,6 +137,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             linkOpt2h('charts','Charts','stats','n');
             linkOpt2h('edit','All Fields','th','1');
             linkOpt2h('mini','Important Fields only','th-large','1');
+            //linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
             // TODO
             //linkOpt2h('json','JSON','barcode','n');
@@ -181,7 +185,8 @@ Evol.ViewToolbar = Backbone.View.extend({
 			$v=this.$('[data-vid="'+eid+'"]'),
 			vw=this.curView,
             config,
-            collec=this.model?this.model.collection:new opts.collectionClass();
+            collec=this._curCollec();
+
         if(viewName==='new'){
             viewName=this._prevOne?this._prevOne:'edit';
             this.setView(viewName);
@@ -192,8 +197,15 @@ Evol.ViewToolbar = Backbone.View.extend({
         }else{
             if($v.length){
             // -- view already exists and was rendered
-                this.model=this.curView.model;
+                //if(this.curView.model){
+                //TODO debug
+                    this.model=this.curView.model;
+                //}
+                this.model.collection=collec;
                 this.curView=this.viewsHash[viewName];
+                if(this.curView.setCollection){
+                    this.curView.setCollection(collec);
+                }
                 if(this.model && !this.model.isNew()){
                     if(this.curView.setModel){
                         if(!this.curView.collection && m.collection){
@@ -202,9 +214,6 @@ Evol.ViewToolbar = Backbone.View.extend({
                         this.curView.setModel(this.model);
                     }else{
                         this.curView.model = this.model;
-                    }
-                    if(!this.model){
-                        this.curView.collection=collec;
                     }
                     if(this.curView.setTitle){
                         this.curView.setTitle();
@@ -228,7 +237,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     el: $v,
                     mode: viewName,
                     model: this.model,
-                    collection: this.collection,
+                    collection: collec,
                     uiModel: opts.uiModel,
                     style: opts.style,
                     pageSize: opts.pageSize || 20,
@@ -243,6 +252,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     case 'edit':
                     case 'mini':
                     case 'json':
+                    case 'wiz':
                         vw = new Evol.ViewOne[this.modesHash[viewName]](config)
                             .render();
                         this._prevOne=viewName;
@@ -406,13 +416,13 @@ Evol.ViewToolbar = Backbone.View.extend({
 		return null;
 	},
 
-    browse: function(toolId){ // toolId = "prev" or "next"
-        var cModel = this.curView.model;
-        if(this.model && this.model.collection && this.model.collection.length){
-            var collec=this.model.collection,
-                l=collec.length-1,
+    browse: function(direction){ // direction = "prev" or "next"
+        var collec=this._curCollec(),
+            cModel=this.curView.model;
+        if(cModel && collec && collec.length){
+            var l=collec.length-1,
                 idx =_.indexOf(collec.models, cModel);
-            if(toolId==='prev'){
+            if(direction==='prev'){
                 idx=(idx>0)?idx-1:l;
             }else{
                 idx=(idx<l)?idx+1:0;
@@ -437,6 +447,9 @@ Evol.ViewToolbar = Backbone.View.extend({
                 that.newItem();
             }else{
                 that.model=m;
+                if(that._filteredCollection){
+                    that._filteredCollection.add(m);
+                }
                 that.setMode('edit');
                 vw.setModel(m);
             }
@@ -446,7 +459,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(msg===''){
             var entityName=this.options.uiModel.entity;
             if(this.model.isNew()){
-                var collec=(this.model && this.model.collection)?this.model.collection:this.collection;
+                var collec=this.collection;
                 if(collec){
                     collec.create(this.getData(), {
                         success: function(m){
@@ -474,7 +487,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 });
             }
         }else{
-            this.setMessage('Invalid data.', msg, 'warning');
+            this.setMessage('Incomplete information.', msg, 'warning');
         }
         return this;
     },
@@ -560,6 +573,14 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
     },
 
+    showMessage: function(evt, ui){
+        if(ui){
+            return this.setMessage(ui.title, ui.content, ui.style);
+        }else{
+            return this.clearMessage();
+        }
+    },
+
     action_view: function(evt, actionId){
         switch(actionId){
             case 'cancel':
@@ -597,6 +618,18 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     status_update: function(evt, ui){
         this.setStatus(ui);
+    },
+
+    _curCollec: function(){
+        if (this._filteredCollection){
+            return this._filteredCollection;
+        }else{
+            if(this.collection){
+                return this.collection
+            }else{
+                return this.model?this.model.collection:new this.options.collectionClass();
+            }
+        }
     },
 
     click_toolbar: function(evt, ui){
@@ -664,6 +697,31 @@ Evol.ViewToolbar = Backbone.View.extend({
         alert('Sorry, no demo server yet...');
     },
 
+    change_filter: function(evt){
+        var fvs=this._filters.val(),
+            collec;
+        if(fvs.length){
+            var models=Evol.Dico.filterModels(this.model.collection.models, fvs);
+            if(this.collectionClass){
+                collec=new collectionClass(models);
+            }else{
+                collec=new Backbone.Collection(models);
+            }
+            this._filteredCollection=collec;
+            var ccSel=collec.length,
+                ccAll=this.collection.length;
+            if(ccSel){
+
+            }
+            this.setStatus(ccSel+' / '+ccAll+' '+this.options.uiModel.entities);
+        }else{
+            collec=this.collection;
+            this._filteredCollection=null;
+            this.setStatus(collec.length+' '+this.options.uiModel.entities);
+        }
+        this.curView.setCollection(collec);
+    }
+    /*
     click_selection: function(evt, ui){
         var status=this.$('.evo-toolbar .evo-tb-status'),
             cbxs=this.$('.list-sel:checked').not('[data-id="cbxAll"]'),
@@ -677,6 +735,6 @@ Evol.ViewToolbar = Backbone.View.extend({
             tbBs.del.hide();
         }
     }
-
+*/
 });
 

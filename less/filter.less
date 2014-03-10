@@ -3,32 +3,59 @@
 //  https://github.com/evoluteur/evolutility
 //  Copyright (c) 2014, Olivier Giulieri
 
+@color-condition: #f0ad4e;
+
 .evo-bNew, .evo-bAdd, .evo-bDel, .evo-bSubmit {
 	margin:1px 6px 6px 1px;	
 }
+
 .evo-lBold{
 	font-weight: bold;
 }
+
 .evo-lLight{
 	font-weight: normal;
 }
-.evo-filters{
-  &.panel{
-    min-height:50px;
-    padding:6px 1px 1px 6px;
-  }
 
-  button {
-    margin:1px 6px 6px 1px;
-    padding-right:6px;
+.evo-zfilters{
 
-    span.ui-button-text{
+  padding-bottom: 6px;
+
+  > a {
+    //background-color: @color-condition;
+    //color: #fff;
+    margin: 1px 2px 2px 1px;
+    padding: 3px 2px;
+    clear: left;
+/*
+    &:hover,
+    &:active{
+      //background-color: @color-condition;
+      //color: #fff;
+      text-decoration: none;
+    }
+*/
+    >span.ui-button-text{
       padding: 4px 33px 4px 12px;
+    }
+    >button{
+      float: none !important;
+      margin: 2px 2px 0 4px;
     }
   }
 
   .glyphicon-remove{
     margin:0 6px;
+  }
+}
+
+.evo-filters.panel{
+    min-height:50px;
+    padding:0 1px 1px 6px;
+
+  > a {
+    margin:1px 6px 6px 1px;
+    padding-right:6px;
   }
 }
 
@@ -40,7 +67,7 @@
   }
 
   &:after,
-  > button{
+  > button,>a{
     clear: left;
   }
 

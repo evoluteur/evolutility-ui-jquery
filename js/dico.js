@@ -63,13 +63,14 @@ Evol.Dico = {
     },
 
     getFieldTypedValue:function(f, $f){
+        var ft=Evol.Dico.fieldTypes;
         switch(f.type) {
-            case Evol.Dico.fieldTypes.bool:
+            case ft.bool:
                 return $f.prop('checked');
-            case Evol.Dico.fieldTypes.integer:
+            case ft.integer:
                 return parseInt($f.val(),10);
-            case Evol.Dico.fieldTypes.decimal:
-            case Evol.Dico.fieldTypes.money:
+            case ft.decimal:
+            case ft.money:
                 return parseFloat($f.val());
             default:
                 return $f.val();
@@ -207,50 +208,66 @@ Evol.Dico = {
                 for(i= 0, iMax=filters.length;i<iMax && want;i++){
                     var filter=filters[i],
                         vf=filter.value.value,
-                        fv=model.get(filter.field.value);
-                    if(fv===undefined){
-                        fv='';
+                        vm=model.get(filter.field.value);
+                    if(vm===undefined){
+                        vm='';
                     }
                     switch(filter.operator.value){
-                        case 'eq':
-                            want=vf===fv;
+                        case 'eq': // equals
+                            want=vf==vm;
                             break;
-                        case 'ne':
-                            want=vf!==fv;
+                        case 'ne': // not equal
+                            want=vf!=vm;
                             break;
-                        case 'sw':
-                            want=fv.indexOf(vf)===0;
+                        case 'gt': // > or after
+                            want=vm>vf;
                             break;
-                        case 'ct':
-                            want=fv.indexOf(vf)>-1;
+                        case 'lt': // < or before
+                            want=vm<vf;
                             break;
-                        case 'fw':
-                            want=fv.indexOf(vf)===fv.length-vf.length;
+                        case 'bw': // between
+                            var vf2=filter.value.value2;
+                            want = !(vf>vm || vm>vf2);
+                            break;
+                        case 'sw': // start w/
+                            want=vm.toLocaleLowerCase().indexOf(vf)===0;
+                            break;
+                        case 'ct': // contain
+                            want=vm.toLocaleLowerCase().indexOf(vf)>-1;
+                            break;
+                        case 'fw': // finish w/
+                            var l1=vm.length,
+                                l2=vf.length;
+                            if (l1>l2){
+                                want=false;
+                            }else{
+                                want=vm.toLocaleLowerCase().substring(l2-l1)===vf;
+                            }
                             break;
                         case 'null':
-                            want=fv==='' || fv===undefined;
+                            want=vm=='' || vm==undefined;
                             break;
-                        case 'nn':
-                            want=fv!=='' || fv!==undefined;
+                        case 'nn': // not null
+                            want=vm!='' || vm!=undefined;
                             break;
-                        case 'in':
-                            want= _.contains(vf.split(','),fv);
+                        case 'in': // in []
+                            want= _.contains(vf.split(','),vm);
                             break;
                         case 1:
-                            want=fv;
+                            want=vm;
                             break;
                         case 0:
-                            want=!fv;
+                            want=!vm;
                             break;
                     }
                 }
                 return want;
             });
         }
-        return [];
+        return models;
     },
 
-    HTMLField4Many: function(f,v, hashLov){
+    HTMLField4Many: function(f, v, hashLov){
         var fTypes = Evol.Dico.fieldTypes;
         switch(f.type){
             case fTypes.bool:
@@ -297,14 +314,14 @@ Evol.Dico = {
         if(mode==='mini'){
             var fwidth=fld.width;
             fld.width=100;
-            h.push('<div class="evol-mini-label">',this.HTMLFieldLabel(fld, mode),
+            h.push('<div class="evol-mini-label">', this.HTMLFieldLabel(fld, mode),
                 '</div><div class="evol-mini-content">');
         }else if(!skipLabel){
             h.push(this.HTMLFieldLabel(fld, mode || 'edit'));
         }
         if(fld.readonly){
             // TODO: css for readonly fields
-            h.push('<div id="',fid, '" class="disabled evo-rdonly">',fv, '&nbsp;</div>');
+            h.push('<div id="',fid, '" class="disabled evo-rdonly">', this.HTMLField4Many(fld, fv, {}), '&nbsp;</div>');
         }else{
             switch (fld.type) {
                 case types.text:

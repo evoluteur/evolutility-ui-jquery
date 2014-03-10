@@ -28,7 +28,8 @@ Evol.UI = {
         clearer: '<div class="clearfix"></div>',
         emptyOption: '<option value=""></option>',
         glyphicon: 'glyphicon glyphicon-',
-        required: '<span class="evol-required">*</span>'
+        required: '<span class="evol-required">*</span>',
+        buttonClose: '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'
     },
 
     // --- field labels ---
@@ -243,7 +244,7 @@ Evol.UI = {
     HTMLMsg: function (title, content, style) {
         return [
             '<div data-id="msg" class="evo-msg alert alert-',style || 'info',
-            ' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
+            ' alert-dismissable">', this.html.buttonClose,
             '<strong>',title,'</strong> <span>',
             content,'</span></div>'
         ].join('');
