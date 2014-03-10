@@ -148,7 +148,7 @@ Evol.UI = {
             return h.join('');
         },
         img: function (fID, fV) {
-            return ['<img id=""', fID, '" src="', fV, '"/>'].join('');
+            return ['<img id="', fID, '" src="', fV, '"/>'].join('');
         },
         hidden: function (fID, fV) {
             return ['<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>'].join('');
@@ -208,8 +208,13 @@ Evol.UI = {
     link: function (fID, label, url) {
         return ['<a class="evo-field" href="', url, '" id="', fID, '">', label, '</a>'].join('');
     },
-    linkEmail: function (fID, label, email) {
-        return Evol.UI.link(fID, label, email ? 'mailto:' + email : '');
+    linkEmail: function (fID, email) {
+        if(email){
+            email = _.escape(email);
+            return this.link(fID, email, 'mailto:'+email);
+        }else{
+            return '';
+        }
     },
     //html_more: function (label) {
     //    return ['<a href="javascript:void(0)" class="evol-more">', label, '</a>'].join('');

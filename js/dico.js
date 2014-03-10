@@ -319,7 +319,7 @@ Evol.Dico = {
         }else if(!skipLabel){
             h.push(this.HTMLFieldLabel(fld, mode || 'edit'));
         }
-        if(fld.readonly){
+        if(fld.readonly || mode==='view'){
             // TODO: css for readonly fields
             h.push('<div id="',fid, '" class="disabled evo-rdonly">', this.HTMLField4Many(fld, fv, {}), '&nbsp;</div>');
         }else{
@@ -340,7 +340,7 @@ Evol.Dico = {
                     break;
                 case types.txtm:
                 case types.html:
-                    // fv = HttpUtility.HtmlEncode(fv);
+                    // fv = _.escape(fv);
                     if (fld.height === null) {
                         fld.height = 5;
                     } else {
@@ -365,7 +365,7 @@ Evol.Dico = {
                     break;
                 case types.email:
                     if (mode === 'view') {
-                        h.push(EvoUI.link(fid, fv, 'mailto:' + HttpUtility.HtmlEncode(fv)));
+                        h.push(EvoUI.linkEmail(fid, fv));
                     } else {
                         h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
                             EvoUI.input.text(fid, fv, fld.maxlength), '</div>');
@@ -373,7 +373,7 @@ Evol.Dico = {
                     break;
                 case types.url:
                     if (mode === 'view') {
-                        h.push(EvoUI.link(fid, fv, HttpUtility.HtmlEncode(fv)));
+                        h.push(EvoUI.link(fid, fv, encodeURI(fv)));
                     } else {
                         h.push(EvoUI.input.text(fid, fv, fld.maxlength));
                     }

@@ -101,12 +101,12 @@ var winecellar_lovs = {
 
     score: [
         //{id:'', text:'NR', icon:'s00.gif'},
-        {id:0, text:'', icon:'s0.gif'},
-        {id:1, text:'*', icon:'s1.gif'},
-        {id:2, text:'**', icon:'s2.gif'},
-        {id:3, text:'***', icon:'s3.gif'},
-        {id:4, text:'****', icon:'s4.gif'},
-        {id:5, text:'*****', icon:'s5.gif'}
+        {id:0, text:''},
+        {id:1, text:'*'},
+        {id:2, text:'**'},
+        {id:3, text:'***'},
+        {id:4, text:'****'},
+        {id:5, text:'*****'}
     ],
 
     country: [
