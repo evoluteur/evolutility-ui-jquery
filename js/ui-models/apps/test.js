@@ -368,7 +368,14 @@ var test_ui = {
                             type: 'text',
                             label: 'Text',
                             readonly: true,
-                            width: '100'
+                            width: '33'
+                        },
+                        {
+                            id:'txtml',
+                            type: 'textmultiline',
+                            label: 'Big Text',
+                            readonly: true,
+                            width: '67'
                         },
                         {
                             type: 'date',
@@ -401,6 +408,44 @@ var test_ui = {
                             readonly: true,
                             width: 33,
                             list:bottleSizes
+                        },
+                        {
+                            type: 'boolean',
+                            id:'bro',
+                            label: 'Boolean',
+                            maxlength: 100,
+                            readonly: true,
+                            width: 33
+                        },
+                        {
+                            type: 'email',
+                            id:'emailro',
+                            label: 'email',
+                            readonly: true,
+                            width: 34
+                        },
+                        {
+                            type: 'integer',
+                            id:'intro',
+                            label: 'Integer',
+                            readonly: true,
+                            width: 33,
+                            list:bottleSizes
+                        },
+                        {
+                            type: 'decimal',
+                            id:'decro',
+                            label: 'Decimal',
+                            readonly: true,
+                            width: 33
+                        },
+                        {
+                            type: 'money',
+                            id:'moneyro',
+                            label: 'Money',
+                            maxlength: 100,
+                            readonly: true,
+                            width: 34
                         }
                     ]
                 }
