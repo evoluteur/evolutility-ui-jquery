@@ -373,7 +373,7 @@ Evol.Dico = {
                     break;
                 case types.url:
                     if (mode === 'view') {
-                        h.push(EvoUI.link(fid, fv, encodeURI(fv)));
+                        h.push(EvoUI.link(fid, fv, encodeURI(fv), fid));
                     } else {
                         h.push(EvoUI.input.text(fid, fv, fld.maxlength));
                     }

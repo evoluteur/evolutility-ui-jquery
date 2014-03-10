@@ -205,8 +205,16 @@ Evol.UI = {
     },
 
     // --- links ---
-    link: function (fID, label, url) {
-        return ['<a class="evo-field" href="', url, '" id="', fID, '">', label, '</a>'].join('');
+    link: function (fID, label, url, target) {
+        var h=['<a class="evo-field" href="', url];
+        if(fID){
+            h.push('" id="', fID);
+        }
+        if(target){
+            h.push('" target="',target);
+        }
+        h.push('">', label, '</a>');
+        return h.join('');
     },
     linkEmail: function (fID, email) {
         if(email){
