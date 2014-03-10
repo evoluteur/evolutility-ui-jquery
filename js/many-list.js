@@ -22,7 +22,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             fields = this.getFields(),
             uim = opts.uiModel,
             pSize = opts.pageSize || 50;
-        this._models=models;
+
         h.push('<div class="evol-many-list">',
             //'<div class="panel ',this.options.style,'">',
             '<table class="table table-bordered table-hover"><thead><tr>');
@@ -83,7 +83,9 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             h.push('<td>');
             if(i===0){
                 h.push('<a href="javascript:void(0)" id="fv-', f.id, '" class="evol-nav-id">');
-                h.push('<img class="evol-table-icon" src="pix/', _.isFunction(icon)?icon(model):icon, '">');
+                if(icon!==undefined && icon!==''){
+                    h.push('<img class="evol-table-icon" src="pix/', _.isFunction(icon)?icon(model):icon, '">');
+                }
                 if(v===''){
                     v='('+model.id+')';
                 }
