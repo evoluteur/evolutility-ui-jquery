@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evolutility :: export.js
+ * evolutility :: action-export.js
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
@@ -11,8 +11,6 @@ var Evol = Evol || {},
     evoLangXpt = Evol.i18n.export;
 
 Evol.ViewExport = Backbone.View.extend({
-
-    version: '0.0.3',
 
     events: {
         "change .evol-xpt-format": "click_format",

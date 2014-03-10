@@ -8,17 +8,18 @@ module.exports = function (grunt) {
 
         pkg: grunt.file.readJSON('package.json'),
 
-        banner :  '/*   <%= pkg.name  %> <%= pkg.version %> */\n\n/*   <%= pkg.copyright %> */\n\n',
+        banner :  '/*   <%= pkg.name  %> <%= pkg.version %>   */\n' +
+            '/*   <%= pkg.copyright %>   */\n' +
+            '/*   https://github.com/evoluteur/evolutility   */\n',
 
         // *************************************************************************************
         //      CONCAT options
         // *************************************************************************************
         concat: {
-            options: {
-                banner: '<%= banner %>',
-                separator: ';\n'
-            },
             vendors:{
+                options: {
+                    separator: ';\n'
+                },
                 src: [
                     // jQuery & jQuery UI
                     'bower_components/jquery/dist/jquery.js',
@@ -42,6 +43,10 @@ module.exports = function (grunt) {
                 dest: '<%= pkg.target %>/vendors.js'
             },
             js:{
+                options: {
+                    banner: '<%= banner %>',
+                    separator: ';\n'
+                },
                 src: [
                     'js/ui.js',
                     'js/ui-*.js',
@@ -53,10 +58,9 @@ module.exports = function (grunt) {
                     'js/many-*.js',
                     'js/one.js',
                     'js/one-*.js',
+                    'js/action-*.js',
 
-                    'js/toolbar.js',
-                    'js/filter.js',
-                    'js/export.js'
+                    'js/toolbar.js'
                     //'js/ui-models/dico/field.js'
                 ],
                 dest: '<%= pkg.target %>/evolutility.js'
@@ -78,11 +82,10 @@ module.exports = function (grunt) {
 
                 'js/many*.js',
                 'js/one*.js',
+                'js/action-*.js',
 
                 'js/toolbar.js',
-                'js/export.js',
-                'js/filter.js',
-                'js/ui-models/dico/field.js',
+                'js/ui-models/dico/*.js',
 
                 // --- ui models ---
                 'js/ui-models/apps/*.js',
@@ -95,16 +98,24 @@ module.exports = function (grunt) {
         //      UGLIFY options
         // *************************************************************************************
         uglify: {
-            options: {
-                banner: '<%= banner %>',
-                mangle: true
-            },
-            all: {
+            prod: {
+                options: {
+                    banner: '<%= banner %>',
+                    mangle: true
+                },
                 files: [
                     {
                         src: '<%= pkg.target %>/evolutility.js',
                         dest: '<%= pkg.target %>/evolutility.min.js'
-                    },
+                    }
+                ]
+            },
+            vendors: {
+                options: {
+                    banner: '/* <%= pkg.name %> <%= pkg.version %> dependencies: \n jquery + backbone + underscore + backbone.localStorage + bootstrap-datepicker */',
+                    mangle: true
+                },
+                files: [
                     {
                         src: '<%= pkg.target %>/vendors.js',
                         dest: '<%= pkg.target %>/vendors.min.js'

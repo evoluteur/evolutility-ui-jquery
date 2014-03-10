@@ -2,7 +2,7 @@
  *  evolutility
  *
  *  https://github.com/evoluteur/evolutility
- *  Copyright (c) 2014, Olivier Giulieri
+ *  (c) 2014, Olivier Giulieri
 */
 /* evolutility : header.css */
 .evo-logo {
@@ -189,88 +189,6 @@
   min-height: 35px;
   line-height: 35px;
   margin-top: 2px;
-}
-.evo-bNew,
-.evo-bAdd,
-.evo-bDel,
-.evo-bSubmit {
-  margin: 1px 6px 6px 1px;
-}
-.evo-lBold {
-  font-weight: bold;
-}
-.evo-lLight {
-  font-weight: normal;
-}
-.evo-zfilters {
-  padding-bottom: 6px;
-}
-.evo-zfilters > a {
-  margin: 1px 2px 2px 1px;
-  padding: 3px 2px;
-  clear: left;
-  /*
-    &:hover,
-    &:active{
-      //background-color: @color-condition;
-      //color: #fff;
-      text-decoration: none;
-    }
-*/
-}
-.evo-zfilters > a > span.ui-button-text {
-  padding: 4px 33px 4px 12px;
-}
-.evo-zfilters > a > button {
-  float: none !important;
-  margin: 2px 2px 0 4px;
-}
-.evo-zfilters .glyphicon-remove {
-  margin: 0 6px;
-}
-.evo-filters.panel {
-  min-height: 50px;
-  padding: 0 1px 1px 6px;
-}
-.evo-filters.panel > a {
-  margin: 1px 6px 6px 1px;
-  padding-right: 6px;
-}
-.evo-editFilter {
-  vertical-align: middle;
-}
-.evo-editFilter:last-child {
-  clear: left;
-}
-.evo-editFilter:after,
-.evo-editFilter > button,
-.evo-editFilter > a {
-  clear: left;
-}
-.evo-editFilter > #value > label {
-  margin-left: 6px;
-}
-.evo-editFilter > select,
-.evo-editFilter > input,
-.evo-editFilter > span {
-  float: left;
-  margin: 1px 6px 6px 1px;
-  font-size: 1.1em;
-  width: auto;
-}
-.evo-editFilter span#value {
-  margin-right: 5px;
-}
-.evo-editFilter #value input[type="checkbox"] {
-  margin-left: 5px;
-}
-.evo-editFilter input[type="number"]#value,
-.evo-editFilter input[type="time"]#value,
-.evo-editFilter input[type="time"]#value2 {
-  width: 6em;
-}
-.evo-editFilter input.hasDatepicker {
-  width: 7em;
 }
 /* --- panels & tabs --- */
 .evol-pnls,
@@ -538,4 +456,86 @@ label > .glyphicon-wrench {
 .evol-xpt-more-fields {
   clear: both;
   display: none;
+}
+.evo-bNew,
+.evo-bAdd,
+.evo-bDel,
+.evo-bSubmit {
+  margin: 1px 6px 6px 1px;
+}
+.evo-lBold {
+  font-weight: bold;
+}
+.evo-lLight {
+  font-weight: normal;
+}
+.evo-zfilters {
+  padding-bottom: 6px;
+}
+.evo-zfilters > a {
+  margin: 1px 2px 2px 1px;
+  padding: 3px 2px;
+  clear: left;
+  /*
+    &:hover,
+    &:active{
+      //background-color: @color-condition;
+      //color: #fff;
+      text-decoration: none;
+    }
+*/
+}
+.evo-zfilters > a > span.ui-button-text {
+  padding: 4px 33px 4px 12px;
+}
+.evo-zfilters > a > button {
+  float: none !important;
+  margin: 2px 2px 0 4px;
+}
+.evo-zfilters .glyphicon-remove {
+  margin: 0 6px;
+}
+.evo-filters.panel {
+  min-height: 50px;
+  padding: 0 1px 1px 6px;
+}
+.evo-filters.panel > a {
+  margin: 1px 6px 6px 1px;
+  padding-right: 6px;
+}
+.evo-editFilter {
+  vertical-align: middle;
+}
+.evo-editFilter:last-child {
+  clear: left;
+}
+.evo-editFilter:after,
+.evo-editFilter > button,
+.evo-editFilter > a {
+  clear: left;
+}
+.evo-editFilter > #value > label {
+  margin-left: 6px;
+}
+.evo-editFilter > select,
+.evo-editFilter > input,
+.evo-editFilter > span {
+  float: left;
+  margin: 1px 6px 6px 1px;
+  font-size: 1.1em;
+  width: auto;
+}
+.evo-editFilter span#value {
+  margin-right: 5px;
+}
+.evo-editFilter #value input[type="checkbox"] {
+  margin-left: 5px;
+}
+.evo-editFilter input[type="number"]#value,
+.evo-editFilter input[type="time"]#value,
+.evo-editFilter input[type="time"]#value2 {
+  width: 6em;
+}
+.evo-editFilter input.hasDatepicker {
+  width: 7em;
 }
