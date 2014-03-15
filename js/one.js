@@ -14,10 +14,10 @@ var Evol = Evol || {};
 Evol.ViewOne = Backbone.View.extend({
 
     events: {
-        'click .evol-buttons > button': 'click_button',
+        'click .evol-buttons>button': 'click_button',
         'click .evol-title-toggle': 'click_toggle',
-        'click ul.evol-tabs > li > a': 'click_tab',
-        'click label > .glyphicon-question-sign': 'click_help',
+        'click ul.evol-tabs>li>a': 'click_tab',
+        'click label>.glyphicon-question-sign': 'click_help',
         'click .evol-field-label .glyphicon-wrench': 'click_customize',
         'click [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel'
         // extra evt for $(window) resize
@@ -406,11 +406,10 @@ Evol.ViewOne = Backbone.View.extend({
 
     _renderPanelListBody: function (h, uiPnl, fv, mode){
         var that=this,
-            attr=uiPnl.attr,
             fs = uiPnl.elements;
 
         if(this.model){
-            var vs = this.model.get(attr);
+            var vs = this.model.get(uiPnl.attr);
             if(vs && vs.length>0){
                 var TDbPM='<td class="evo-td-plusminus">'+Evol.UI.input.buttonsPlusMinus()+'</td>';
                 _.each(vs, function(row, idx){
@@ -673,8 +672,9 @@ Evol.ViewOne = Backbone.View.extend({
 
         if(bId==='bPlus'){
             var h=[],
+                subCollecs=this.getSubCollecs(),
                 mid=tr.closest('table').data('mid'),
-                elems=(this._subCollecs[mid])?this._subCollecs[mid].elements:null;
+                elems=(subCollecs[mid])?subCollecs[mid].elements:null;
             h.push('<tr>');
             this._TDsFieldsEdit(h, elems, {});
             h.push('<td class="evo-td-plusminus">',
