@@ -16,7 +16,7 @@ Evol.ViewExport = Backbone.View.extend({
         "change .evol-xpt-format": "click_format",
         'change input': 'click_preview', //[type="checkbox"],
         'click .evol-xpt-more': 'click_toggle_sel',
-        'click .evol-export': 'click_submit'
+        'click button': 'click_button'
         // TODO #tbrevol-xpt-format is a bug if change prefix...
     },
 
@@ -114,15 +114,14 @@ Evol.ViewExport = Backbone.View.extend({
         //# Preview #######
         h.push('<label>Export Preview</label><div class="evol-xpt-preview"></div>');
 
-        h.push('</div>');
+        h.push('</div></div>');
         // ## Samples
         //h.push(this._samples());
         // ## Download button
-        h.push('<div class="evol-buttons form-actions">');
-        h.push('<button class="evol-export btn btn-primary" type="submit">',
-            evoLangXpt.DownloadEntity.replace('{0}', this.options.uiModel.entities),
-            '</button>');
-        h.push('</div></div>');
+        h.push('<div class="evol-buttons form-actions">',
+            Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
+            Evol.UI.input.button('export', evoLangXpt.DownloadEntity.replace('{0}', this.options.uiModel.entities), 'btn btn-primary'));
+        h.push('</div>');
         return h.join('');
     },
 
@@ -320,7 +319,13 @@ Evol.ViewExport = Backbone.View.extend({
                     _.each(data, function(m){
                         h.push('<', elemName, ' ');
                         _.each(flds, function(f){
-                            h.push(f.id, '="', m.get(f.id), '" ');
+                            h.push(f.id, '="');
+                            if(f.type===fTypes.text || f.type===fTypes.txtm){
+                                h.push(m.get(f.id).replace(/"/g, '\\"'));
+                            }else{
+                                h.push(m.get(f.id));
+                            }
+                            h.push('" ');
                         });
                         h.push('></', elemName, '>\n');
                     });
@@ -390,8 +395,9 @@ Evol.ViewExport = Backbone.View.extend({
             .next().slideDown();
     },
 
-    click_submit: function (evt) {
-        this.$el.trigger('submit.export');
+    click_button: function (evt) {
+        var bId=$(evt.currentTarget).data('id');
+        this.$el.trigger('action', bId);
     }
 });
 
