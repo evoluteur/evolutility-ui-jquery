@@ -467,7 +467,7 @@ var test_ui = {
                         {id: 'str',  type: 'text', label: 'Text', maxlength: 100, viewmany: '1'},
                         {
                             type: 'lov',
-                            id:'bsize',
+                            id:'bsize4',
                             label: 'List',
                             required: true,
                             width: 100,

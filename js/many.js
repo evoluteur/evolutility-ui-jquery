@@ -142,27 +142,28 @@ Evol.ViewMany = Backbone.View.extend({
         return [];
     },
 
-    pageSummary: function (pIdx, pSize, mSize, entity, entities) {
-        var rangeBegin = (pIdx || 0) * pSize + 1, rangeEnd;
-        if (pIdx < 1) {
-            if (mSize === 0) {
-                return mSize + ' ' + entities;
-            } else if (mSize === 1) {
-                return mSize + ' ' + entity;
+    pageSummary: function (pIdx, pSize, cSize, entity, entities) {
+        if (cSize === 0) {
+            return cSize + ' ' + entities;
+        } else if (cSize === 1) {
+            return cSize + ' ' + entity;
+        }else{
+            var rangeBegin = (pIdx || 0) * pSize + 1, rangeEnd;
+            if (pIdx < 1) {
+                rangeEnd = _.min([pSize, cSize]);
+            } else {
+                rangeEnd = _.min([rangeBegin + pSize -1, cSize]);
             }
-            rangeEnd = _.min([pSize, mSize]);
-        } else {
-            rangeEnd = _.min([rangeBegin + pSize -1, mSize]);
+            return Evol.i18n.range.replace('{0}',rangeBegin)
+                .replace('{1}',rangeEnd)
+                .replace('{2}',cSize)
+                .replace('{3}',entities);
         }
-        return Evol.i18n.range.replace('{0}',rangeBegin)
-            .replace('{1}',rangeEnd)
-            .replace('{2}',mSize)
-            .replace('{3}',entities);
     },
         /*
-    _HTMLpagination: function (h, pIdx, pSize, mSize) {
-        if(mSize>pSize){
-            var nbPages = Math.ceil(mSize / pSize),
+    _HTMLpagination: function (h, pIdx, pSize, cSize) {
+        if(cSize>pSize){
+            var nbPages = Math.ceil(cSize / pSize),
                 pageId = pIdx + 1,
                 iMin = pIdx * pSize + 1,
                 iMax = ((nbPages > 5) ? 5 : nbPages);
@@ -177,7 +178,7 @@ Evol.ViewMany = Backbone.View.extend({
                     ' data-id="', i, '"><a href="#">', i, '</a></li>');
             }
             h.push('<li data-id="next"',
-                (mSize > pageId * pSize)?'':' class="disabled"',
+                (cSize > pageId * pSize)?'':' class="disabled"',
                 '><a href="#">&raquo;</a></li>');
             h.push('</ul>');
         }
