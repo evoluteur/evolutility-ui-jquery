@@ -119,9 +119,9 @@ Evol.ViewExport = Backbone.View.extend({
         //h.push(this._samples());
         // ## Download button
         h.push('<div class="evol-buttons form-actions">');
-        h.push('<input class="evol-export btn btn-primary" type="submit" value="',
+        h.push('<button class="evol-export btn btn-primary" type="submit">',
             evoLangXpt.DownloadEntity.replace('{0}', this.options.uiModel.entities),
-            '"/>');
+            '</button>');
         h.push('</div></div>');
         return h.join('');
     },
@@ -179,7 +179,8 @@ Evol.ViewExport = Backbone.View.extend({
     },
 
     _preview: function (format) {
-        var h=[];
+        var h=[],
+            fTypes=Evol.Dico.fieldTypes;
         if(this.model && this.model.collection){
             var data = this.model.collection.models,
                 flds = this.getFields(),
@@ -246,7 +247,7 @@ Evol.ViewExport = Backbone.View.extend({
                         h.push('<tr>');
                         _.each(flds, function(f){
                             var mj = d.get(f.id);
-                            if (mj) {
+                            if (typeof mj !== 'undefined' && mj!=='') {
                                 h.push('<td>', mj, '</td>');
                             } else {
                                 h.push('<td></td>');
@@ -285,18 +286,26 @@ Evol.ViewExport = Backbone.View.extend({
                         h.push('SET IDENTITY_INSERT ',sqlTable,' ON;\n');
                     }
                     //data
-                    for (var i = 0, iMax1 = data.length; i < iMax1; i++) {
+                    var fValue;
+                    _.each(data, function(m){
                         h.push(sql);
-                        var m = data[i];
-                        for (var j = 0, jMax = flds.length; j < jMax; j++) {
-                            var mj = m.get(flds[j].id);
-                            h.push('"', mj, '"');
-                            if(j<fMax){
+                        _.each(flds, function(f, idx){
+                            fValue=m.get(f.id);
+                            switch(f.type){
+                                case fTypes.integer:
+                                case fTypes.decimal:
+                                case fTypes.money:
+                                    h.push(fValue?fValue:'NULL');
+                                    break;
+                                default:
+                                    h.push('"', fValue.replace(/"/g, '""'), '"');
+                            }
+                            if(idx<fMax){
                                 h.push(', ');
                             }
-                        }
+                        });
                         h.push(');\n');
-                    }
+                    });
                     //options
                     if(optIdInsert){
                         h.push('SET IDENTITY_INSERT ',sqlTable,' OFF;\n');
