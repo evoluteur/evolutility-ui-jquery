@@ -92,13 +92,13 @@ Evol.ViewOne = Backbone.View.extend({
     getUIModel: function() {
         return this.options.uiModel;
     },
-
+/*
     modelUpdate: function (model) {
         var that=this;
         _.each(model.changed, function(value, name){
             that.setFieldValue(name, value);
         });
-    },
+    },*/
 
     getTitle: function(){
         if(this.model){
@@ -419,11 +419,13 @@ Evol.ViewOne = Backbone.View.extend({
                         h.push(TDbPM);
                     }else{
                         _.each(fs, function (f) {
+                            h.push('<td>');
                             if(row[f.id]){
-                                h.push('<td>', _.escape(Evol.Dico.HTMLField4Many(f, row[f.id], this.hashLov)),'</td>');
+                                h.push(_.escape(Evol.Dico.HTMLField4Many(f, row[f.id], this.hashLov)));
                             }else{
-                                h.push('<td>', Evol.Dico.HTMLField4Many(f, '', this.hashLov),'</td>');
+                                h.push(Evol.Dico.HTMLField4Many(f, '', this.hashLov));
                             }
+                            h.push('</td>');
                         });
                     }
                     h.push('</tr>');
@@ -442,8 +444,9 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     _TDsFieldsEdit: function(h, fs, m){
+        var fv;
         _.each(fs, function (f) {
-            var fv=m[f.id];
+            fv=m[f.id];
             if(fv===undefined){
                 fv='';
             }
@@ -514,7 +517,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     customize: function(){
-        var labelSelector = '.evol-field-label > label',
+        var labelSelector = '.evol-field-label>label',
             panelSelector ='.evol-pnl .panel-title';
         if(this.custOn){
             this.$(labelSelector + '>i, '+ panelSelector + '>i').remove();
@@ -590,9 +593,9 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     click_button: function (evt) {
-        var buttonId = $(evt.currentTarget).data('id');
+        var bId = $(evt.currentTarget).data('id');
         evt.stopImmediatePropagation();
-        this.$el.trigger('action', buttonId);
+        this.$el.trigger('action', bId);
     },
 
     click_toggle: function (evt) {

@@ -37,7 +37,7 @@ module.exports = function (grunt) {
                     'bower_components/bootstrap/js/button.js',
                     'bower_components/bootstrap/js/dropdown.js',
 
-
+                    // Widgets
                     'bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js'
                 ],
                 dest: '<%= pkg.target %>/vendors.js'

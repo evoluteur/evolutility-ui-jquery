@@ -2,7 +2,7 @@
  *
  * evolutility :: one-view.js
  *
- * View one edit
+ * View one view (readonly)
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
