@@ -44,6 +44,10 @@ Evol.i18n = {
     All:'All',
     //ListAll:'List All',
     //Print:'Print',
+    //pdf:'PDF',
+    prev:'Previous',
+    next:'Next',
+    finish:'Finish !',
     DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value,
     DeleteEntities: 'Delete {0} {1}?', // delete 5 tasks
     Back2SearchResults:'Back to search results',

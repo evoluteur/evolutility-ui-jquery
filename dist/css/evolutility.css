@@ -309,6 +309,37 @@
   top: 0 !important;
   right: 0 !important;
 }
+.evo-p-wiz {
+  display: none;
+  float: left;
+}
+.evo-p-wiz:first-child,
+.evo-p-wiz:nth-child(2) {
+  display: block;
+}
+.evo-wiz-bsteps > div {
+  display: inline-block;
+  margin-right: 4px;
+  cursor: pointer;
+}
+.evo-wiz-bsteps > div > .past {
+  background-color: black;
+}
+.evo-wiz-bsteps > div > .present {
+  background-color: grey;
+}
+.evo-wiz-bsteps > div > .future {
+  background-color: silver;
+}
+.evo-wiz-buttons {
+  margin-top: 0 !important;
+}
+.evo-wiz-buttons > button {
+  margin: 1em;
+}
+.evo-wiz-buttons > [data-id="finish"] {
+  display: none;
+}
 /* --- list --- */
 img.evol-table-icon {
   margin-right: 6px !important;
@@ -381,27 +412,6 @@ img.evol-table-icon {
 .evol-chart-title {
   text-align: center;
   padding: 10px 20px 30px;
-}
-.evodico-field,
-.evodico-panel {
-  z-index: 2000;
-  position: absolute;
-  overflow: auto;
-  background-color: white;
-  box-shadow: 6px 6px 3px #a0a0a0;
-  border: #696969 1px solid;
-  padding: 4px;
-}
-.evodico-field {
-  width: 400px;
-  height: 500px;
-}
-.evodico-panel {
-  width: 500px;
-  height: 400px;
-}
-label > .glyphicon-wrench {
-  cursor: pointer;
 }
 .evol-xpt-form {
   border-collapse: collapse;
