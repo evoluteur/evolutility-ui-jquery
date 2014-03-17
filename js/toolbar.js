@@ -16,7 +16,6 @@ Evol.ViewToolbar = Backbone.View.extend({
         'click .nav a': 'click_toolbar',
         'list.navigate >div': 'click_navigate',
         //'list.paginate >div': 'paginate',
-        'submit.export >div': 'click_download',
         'action >div': 'action_view',
         'status >div': 'status_update',
         'filter.change >div': 'change_filter',
@@ -28,10 +27,11 @@ Evol.ViewToolbar = Backbone.View.extend({
         toolbar: true,
         defaultView: 'list',
         style: 'panel-info',
-        display: 'tooltip', // tooltip, text, icon, none
+        display: 'label', // tooltip, text, icon, none
         titleSelector: '#title',
         buttons: {
             // --- views for one ---
+            view: true,
             edit: true,
             mini: true,
             wiz: true,
@@ -53,6 +53,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     modesHash: {
+        'view':'View',
         'edit':'Edit',
         'mini':'Mini',
         'wiz':'Wizard',
@@ -71,8 +72,8 @@ Evol.ViewToolbar = Backbone.View.extend({
     initialize: function (opts) {
         _.extend(this.options, opts);
         this.render();
-        //this.$('[data-toggle]').tooltip();
-        this.$('.dropdown-toggle').dropdown();//[data-toggle=
+        //this.$('[data-toggle="tooltip"]').tooltip();
+        this.$('.dropdown-toggle').dropdown();
     },
 
 	render: function() {
@@ -111,14 +112,15 @@ Evol.ViewToolbar = Backbone.View.extend({
 
         function linkOpt2h (id, label, icon, cardi){
             if(opts.buttons && opts.buttons[id]){
-                link2h(id, label, icon, cardi, 'tooltip');
+                link2h(id, label, icon, cardi, 'label');
             }
         }
 
         h.push('<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-id="main">');
         linkOpt2h('list',Evol.i18n.All,'th-list');
         linkOpt2h('new',Evol.i18n.New,'plus');
-        linkOpt2h('save',Evol.i18n.New,'floppy-disk','1');
+        linkOpt2h('edit',Evol.i18n.Edit,'pencil','1');
+        linkOpt2h('save',Evol.i18n.Save,'floppy-disk','1');
         linkOpt2h('del',Evol.i18n.Delete,'trash','1');
         linkOpt2h('filter','Filter','filter','n');
         //linkOpt2h('group','Group','resize-horizontal','n');
@@ -135,8 +137,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             linkOpt2h('list','List','th-list','n');
             linkOpt2h('cards','Cards','th-large','n');
             linkOpt2h('charts','Charts','stats','n');
+            linkOpt2h('view','View','file','1');
             linkOpt2h('edit','All Fields','th','1');
-            linkOpt2h('mini','Important Fields only','th-large','1');
+            linkOpt2h('mini','Mini','th-large','1'); //Important Fields only
             //linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
             // TODO
@@ -249,6 +252,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
                 switch(viewName){
                     // --- one ---
+                    case 'view':
                     case 'edit':
                     case 'mini':
                     case 'json':
@@ -288,7 +292,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         }else{
             this.hideFilter();
         }
-        this.setMode(viewName);
+        this.setIcons(viewName);
         return this;
 	},
 
@@ -298,7 +302,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             this._toolbarButtons = {
                 ones: lis.filter('li[data-cardi="1"]'),
                 manys: lis.filter('li[data-cardi="n"]'),
+                edit: lis.filter('[data-id="main"]>[data-id="edit"]'),
                 del: lis.filter('[data-id="del"]'),
+                save: lis.filter('[data-id="save"]'),
                 prevNext: this.$('.evo-toolbar [data-id="prev"],.evo-toolbar [data-id="next"]'),
                 customize: this.$('.evo-toolbar a[data-id="customize"]').parent(),
                 views: this.$('.evo-toolbar [data-id="views"]')
@@ -307,7 +313,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this._toolbarButtons;
     },
 
-    setMode: function(mode){
+    setIcons: function(mode){
         var setVisible=Evol.UI.setVisible;
         function oneMany(showOne, showMany){
             setVisible(tbBs.ones, showOne);
@@ -349,6 +355,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                     this._prevOne=mode;
                     oneMany(true, false);
                     tbBs.prevNext.show();
+                    setVisible(tbBs.save, mode!=='view');
+                    setVisible(tbBs.edit, mode==='view');
 				}
 			}
             setVisible(tbBs.manys.filter('[data-id="group"]'), mode==='cards');
@@ -450,7 +458,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 if(that._filteredCollection){
                     that._filteredCollection.add(m);
                 }
-                that.setMode('edit');
+                that.setIcons('edit');
                 vw.setModel(m);
             }
             vw.setTitle();
@@ -495,7 +503,14 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     newItem: function(){
         var vw=this.curView;
-        return vw.clear()
+        if(vw.viewName=='view'){
+            if(this._prevOne!=='view'){
+                this.setView(this._prevOne);
+            }else{
+                this.setView('edit');
+            }
+        }
+        return this.curView.clear()
             .setTitle(Evol.i18n.getLabel('NewEntity', this.options.uiModel.entity, vw.getTitle()));
     },
 
@@ -585,7 +600,17 @@ Evol.ViewToolbar = Backbone.View.extend({
     action_view: function(evt, actionId){
         switch(actionId){
             case 'cancel':
-                this.setView('list');
+                if(this.curView.viewName==='edit'){
+                    this.setView('view');
+                }else{
+                    this.setView(this._prevMany || 'list');
+                }
+                break;
+            case 'edit':
+                this.setView(actionId);
+                break;
+            case 'export':
+                alert('Sorry, no demo server yet...');
                 break;
             case 'save':
             case 'save-add':
@@ -685,13 +710,9 @@ Evol.ViewToolbar = Backbone.View.extend({
         var m=this.collection.get(ui.id);
         evt.stopImmediatePropagation();
         this.model=m;
-        this.setView(this._prevOne || 'edit');
+        this.setView('view');//(this._prevOne || 'edit');
         this.curView.setModel(m);
         // todo: decide change model for all views or model event
-    },
-
-    click_download: function(evt){
-        alert('Sorry, no demo server yet...');
     },
 
     change_filter: function(evt){
