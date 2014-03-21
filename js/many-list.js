@@ -83,7 +83,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             h.push('<td>');
             if(i===0){
                 h.push('<a href="javascript:void(0)" id="fv-', f.id, '" class="evol-nav-id">');
-                if(icon!==undefined && icon!==''){
+                if(!_.isUndefined(icon) && icon!==''){
                     h.push('<img class="evol-table-icon" src="pix/', _.isFunction(icon)?icon(model):icon, '">');
                 }
                 if(v===''){

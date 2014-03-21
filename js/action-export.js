@@ -246,7 +246,7 @@ Evol.ViewExport = Backbone.View.extend({
                         h.push('<tr>');
                         _.each(flds, function(f){
                             var mj = d.get(f.id);
-                            if (typeof mj !== 'undefined' && mj!=='') {
+                            if (!_.isUndefined(mj) && mj!=='') {
                                 h.push('<td>', mj, '</td>');
                             } else {
                                 h.push('<td></td>');
@@ -341,7 +341,7 @@ Evol.ViewExport = Backbone.View.extend({
     },
 
     val: function (value) {
-        if (typeof value == 'undefined') {
+        if (_.isUndefined(value)) {
             return this._getValue();
         } else {
             this._setValue(value);
@@ -366,7 +366,7 @@ Evol.ViewExport = Backbone.View.extend({
             },
             ps = this.$('.evol-xpt-para input'),
             f = ps.eq(0),
-            fv = f.attr('checked') !== 'undefined';
+            fv = !_.isUndefined(f.attr('checked'));
         v.options[f.attr('id')] = fv;
         return v;
     },

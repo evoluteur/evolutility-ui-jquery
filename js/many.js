@@ -187,7 +187,7 @@ Evol.ViewMany = Backbone.View.extend({
     sortList: function(f, down){
         var collec=this.collection,
             ft=Evol.Dico.fieldTypes;
-        if(collec!==undefined){
+        if(!_.isUndefined(collec)){
             if(f.type==ft.text || f.type==ft.txtm || f.type==ft.email){
                 collec.comparator = Evol.Dico.bbComparatorText(f.id);
             }else{

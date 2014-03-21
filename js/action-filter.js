@@ -549,7 +549,7 @@ Evol.ViewFilter = Backbone.View.extend({
     },
 
     val: function(value){
-        if (typeof value=='undefined'){
+        if (_.isUndefined(value)){
             // --- get value
             var v=[];
             this._filters.find('a').each(function(){

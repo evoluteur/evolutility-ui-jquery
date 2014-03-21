@@ -34,7 +34,7 @@ Evol.ViewOne = Backbone.View.extend({
     initialize: function (opts) {
         var that=this;
         this.options=_.extend(this.options, opts);
-        this._uTitle=this.options.titleSelector!==undefined && this.options.titleSelector!=='';
+        this._uTitle=(!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
         this.hashLov={};
         if(this.model){
             this.model.on('change', function(model){
@@ -142,7 +142,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     setData: function (model) {
-        if(model!==undefined && model!==null){
+        if((!_.isUndefined(model)) && model!==null){
             var fs = this.getFields(),
                 that=this,
                 fTypes = Evol.Dico.fieldTypes,
@@ -447,7 +447,7 @@ Evol.ViewOne = Backbone.View.extend({
         var fv;
         _.each(fs, function (f) {
             fv=m[f.id];
-            if(fv===undefined){
+            if(_.isUndefined(fv)){
                 fv='';
             }
             h.push('<td>', Evol.Dico.HTMLField4One(f, f.id, fv, 'edit-details', true), '</td>');
@@ -476,7 +476,7 @@ Evol.ViewOne = Backbone.View.extend({
                 var t,lf=opts.uiModel.leadfield;
                 if(title){
                     t=title;
-                }else if(lf!==undefined && lf!==''){
+                }else if((!_.isUndefined(lf)) && lf!==''){
                     t=this.getTitle();
                 }else{
                     t=Evol.UI.capitalize(opts.uiModel.entities);

@@ -78,7 +78,7 @@ Evol.UI.Validation = {
                     typeCheck();
                 }
                 // Check regexp
-                if (fd.regex !== null && fd.regex !== undefined) {
+                if (fd.regex !== null && !_.isUndefined(fd.regex)) {
                     var rg = new RegExp(fd.regex);
                     if (!$f.val().match(rg)) {
                         p = $f.parent();

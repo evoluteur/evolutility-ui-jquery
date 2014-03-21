@@ -49,7 +49,7 @@ Evol.UI = {
             if(fd) {
                 // properties mapping to html attributes
                 _.each(['id', 'min', 'max', 'maxlength', 'placeholder'], function (item) { // 'max-width', 'min-width',
-                    if (fd[item] !== undefined) {
+                    if (!_.isUndefined(fd[item])) {
                         h.push('" ', item, '="', fd[item]);
                     }
                 });
@@ -66,10 +66,10 @@ Evol.UI = {
         },
         textInt: function (fID, fV, min, max) {
             var h=['<input class="evo-field form-control" type="number" id="', fID,'" value="', fV];
-            if(min!==undefined){
+            if(!_.isUndefined(min)){
                 h.push('" min="', min);
             }
-            if(max!==undefined){
+            if(!_.isUndefined(max)){
                 h.push('" max="', max);
             }
             h.push('" maxlength="12">');
@@ -275,7 +275,7 @@ Evol.UI = {
         //return (d.getHours()) + ":" + (d.getMinutes());
     },
     formatDateTime: function(d){ // TODO use date not string as param
-        if(d!==undefined && d!==''){
+        if(!_.isUndefined(d) && d!==''){
             var dateParts= d.split('-');
             if(dateParts.length>1){
                 return dateParts[1]+'/'+dateParts[2]+'/'+dateParts[0];

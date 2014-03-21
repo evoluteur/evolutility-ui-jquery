@@ -55,10 +55,10 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                     labels=[];
                 for(var dataSetName in groupData) {
                     var nb=groupData[dataSetName];
-                    if(dataSetName==='' || dataSetName==='null'){
-                        lb = i18n.none;
-                    }else if(dataSetName==='undefined'){
+                    if(_.isUndefined(dataSetName)){
                         lb = i18n.na;
+                    }else if(dataSetName==='' || dataSetName==='null'){
+                        lb = i18n.none;
                     }else if(f.type===fTypes.lov){
                         if(f.list && f.list.length && f.list[0].icon){
                             lb = EvoDico.lovTextNoPix(f, dataSetName);

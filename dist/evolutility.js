@@ -52,7 +52,7 @@ Evol.UI = {
             if(fd) {
                 // properties mapping to html attributes
                 _.each(['id', 'min', 'max', 'maxlength', 'placeholder'], function (item) { // 'max-width', 'min-width',
-                    if (fd[item] !== undefined) {
+                    if (!_.isUndefined(fd[item])) {
                         h.push('" ', item, '="', fd[item]);
                     }
                 });
@@ -69,10 +69,10 @@ Evol.UI = {
         },
         textInt: function (fID, fV, min, max) {
             var h=['<input class="evo-field form-control" type="number" id="', fID,'" value="', fV];
-            if(min!==undefined){
+            if(!_.isUndefined(min)){
                 h.push('" min="', min);
             }
-            if(max!==undefined){
+            if(!_.isUndefined(max)){
                 h.push('" max="', max);
             }
             h.push('" maxlength="12">');
@@ -278,7 +278,7 @@ Evol.UI = {
         //return (d.getHours()) + ":" + (d.getMinutes());
     },
     formatDateTime: function(d){ // TODO use date not string as param
-        if(d!==undefined && d!==''){
+        if(!_.isUndefined(d) && d!==''){
             var dateParts= d.split('-');
             if(dateParts.length>1){
                 return dateParts[1]+'/'+dateParts[2]+'/'+dateParts[0];
@@ -485,7 +485,7 @@ Evol.UI.Validation = {
                     typeCheck();
                 }
                 // Check regexp
-                if (fd.regex !== null && fd.regex !== undefined) {
+                if (fd.regex !== null && !_.isUndefined(fd.regex)) {
                     var rg = new RegExp(fd.regex);
                     if (!$f.val().match(rg)) {
                         p = $f.parent();
@@ -952,7 +952,7 @@ Evol.Dico = {
                     var filter=filters[i],
                         vf=filter.value.value,
                         vm=model.get(filter.field.value);
-                    if(vm===undefined){
+                    if(_.isUndefined(vm)){
                         vm='';
                     }
                     switch(filter.operator.value){
@@ -988,10 +988,10 @@ Evol.Dico = {
                             }
                             break;
                         case 'null':
-                            want=vm=='' || vm==undefined;
+                            want= vm=='' || _.isUndefined(vm);
                             break;
                         case 'nn': // not null
-                            want=vm!='' || vm!=undefined;
+                            want=!(_.isUndefined(vm) || vm=='');
                             break;
                         case 'in': // in []
                             want= _.contains(vf.split(','),vm);
@@ -1346,7 +1346,7 @@ Evol.ViewMany = Backbone.View.extend({
     sortList: function(f, down){
         var collec=this.collection,
             ft=Evol.Dico.fieldTypes;
-        if(collec!==undefined){
+        if(!_.isUndefined(collec)){
             if(f.type==ft.text || f.type==ft.txtm || f.type==ft.email){
                 collec.comparator = Evol.Dico.bbComparatorText(f.id);
             }else{
@@ -1572,10 +1572,10 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                     labels=[];
                 for(var dataSetName in groupData) {
                     var nb=groupData[dataSetName];
-                    if(dataSetName==='' || dataSetName==='null'){
-                        lb = i18n.none;
-                    }else if(dataSetName==='undefined'){
+                    if(_.isUndefined(dataSetName)){
                         lb = i18n.na;
+                    }else if(dataSetName==='' || dataSetName==='null'){
+                        lb = i18n.none;
                     }else if(f.type===fTypes.lov){
                         if(f.list && f.list.length && f.list[0].icon){
                             lb = EvoDico.lovTextNoPix(f, dataSetName);
@@ -1746,7 +1746,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             h.push('<td>');
             if(i===0){
                 h.push('<a href="javascript:void(0)" id="fv-', f.id, '" class="evol-nav-id">');
-                if(icon!==undefined && icon!==''){
+                if(!_.isUndefined(icon) && icon!==''){
                     h.push('<img class="evol-table-icon" src="pix/', _.isFunction(icon)?icon(model):icon, '">');
                 }
                 if(v===''){
@@ -1810,7 +1810,7 @@ Evol.ViewOne = Backbone.View.extend({
     initialize: function (opts) {
         var that=this;
         this.options=_.extend(this.options, opts);
-        this._uTitle=this.options.titleSelector!==undefined && this.options.titleSelector!=='';
+        this._uTitle=(!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
         this.hashLov={};
         if(this.model){
             this.model.on('change', function(model){
@@ -1918,7 +1918,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     setData: function (model) {
-        if(model!==undefined && model!==null){
+        if((!_.isUndefined(model)) && model!==null){
             var fs = this.getFields(),
                 that=this,
                 fTypes = Evol.Dico.fieldTypes,
@@ -2223,7 +2223,7 @@ Evol.ViewOne = Backbone.View.extend({
         var fv;
         _.each(fs, function (f) {
             fv=m[f.id];
-            if(fv===undefined){
+            if(_.isUndefined(fv)){
                 fv='';
             }
             h.push('<td>', Evol.Dico.HTMLField4One(f, f.id, fv, 'edit-details', true), '</td>');
@@ -2252,7 +2252,7 @@ Evol.ViewOne = Backbone.View.extend({
                 var t,lf=opts.uiModel.leadfield;
                 if(title){
                     t=title;
-                }else if(lf!==undefined && lf!==''){
+                }else if((!_.isUndefined(lf)) && lf!==''){
                     t=this.getTitle();
                 }else{
                     t=Evol.UI.capitalize(opts.uiModel.entities);
@@ -2621,7 +2621,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
     },
 
     setData: function (model) {
-        if(model!==undefined && model!==null){
+        if(!_.isUndefined(model) && model!==null){
             var fs = this.getFields(),
                 that=this,
                 fTypes = Evol.Dico.fieldTypes,
@@ -3092,7 +3092,7 @@ Evol.ViewExport = Backbone.View.extend({
                         h.push('<tr>');
                         _.each(flds, function(f){
                             var mj = d.get(f.id);
-                            if (typeof mj !== 'undefined' && mj!=='') {
+                            if (!_.isUndefined(mj) && mj!=='') {
                                 h.push('<td>', mj, '</td>');
                             } else {
                                 h.push('<td></td>');
@@ -3187,7 +3187,7 @@ Evol.ViewExport = Backbone.View.extend({
     },
 
     val: function (value) {
-        if (typeof value == 'undefined') {
+        if (_.isUndefined(value)) {
             return this._getValue();
         } else {
             this._setValue(value);
@@ -3212,7 +3212,7 @@ Evol.ViewExport = Backbone.View.extend({
             },
             ps = this.$('.evol-xpt-para input'),
             f = ps.eq(0),
-            fv = f.attr('checked') !== 'undefined';
+            fv = !_.isUndefined(f.attr('checked'));
         v.options[f.attr('id')] = fv;
         return v;
     },
@@ -3845,7 +3845,7 @@ Evol.ViewFilter = Backbone.View.extend({
     },
 
     val: function(value){
-        if (typeof value=='undefined'){
+        if (_.isUndefined(value)){
             // --- get value
             var v=[];
             this._filters.find('a').each(function(){

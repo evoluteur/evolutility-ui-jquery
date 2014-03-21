@@ -209,7 +209,7 @@ Evol.Dico = {
                     var filter=filters[i],
                         vf=filter.value.value,
                         vm=model.get(filter.field.value);
-                    if(vm===undefined){
+                    if(_.isUndefined(vm)){
                         vm='';
                     }
                     switch(filter.operator.value){
@@ -245,10 +245,10 @@ Evol.Dico = {
                             }
                             break;
                         case 'null':
-                            want=vm=='' || vm==undefined;
+                            want= vm=='' || _.isUndefined(vm);
                             break;
                         case 'nn': // not null
-                            want=vm!='' || vm!=undefined;
+                            want=!(_.isUndefined(vm) || vm=='');
                             break;
                         case 'in': // in []
                             want= _.contains(vf.split(','),vm);

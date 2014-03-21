@@ -26,7 +26,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
     },
 
     setData: function (model) {
-        if(model!==undefined && model!==null){
+        if(!_.isUndefined(model) && model!==null){
             var fs = this.getFields(),
                 that=this,
                 fTypes = Evol.Dico.fieldTypes,
