@@ -109,7 +109,7 @@ Evol.i18n = {
         ExportFirstLine:'First line for field names',
         ExportFormat: 'Export format',
         ExportFields: 'Fields to include in the export',
-        IDkey: 'ID (Primary Key)',
+        IDkey: 'ID - Primary Key',
         AllFields: 'Show all fields',
         ExportFormats: 'Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)',
         //xpColors:'Header color-Color odd rows-Color even rows',

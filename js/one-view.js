@@ -9,8 +9,6 @@
  *
  *************************************************************************** */
 
-var Evol = Evol || {};
-
 Evol.ViewOne.View = Evol.ViewOne.extend({
 
     viewName: 'view',

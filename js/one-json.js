@@ -9,8 +9,6 @@
  *
  *************************************************************************** */
 
-var Evol = Evol || {};
-
 Evol.ViewOne.JSON = Evol.ViewOne.extend({
 
     events: {

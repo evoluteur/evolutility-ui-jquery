@@ -9,8 +9,6 @@
  *
  *************************************************************************** */
 
-var Evol = Evol || {};
-
 Evol.ViewOne.Mini = Evol.ViewOne.extend({
 
     events: {

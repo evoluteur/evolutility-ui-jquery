@@ -9,8 +9,6 @@
  *
  *************************************************************************** */
 
-var Evol = Evol || {};
-
 Evol.ViewMany.Charts = Evol.ViewMany.extend({
 
     viewName: 'chart',

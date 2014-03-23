@@ -13,17 +13,23 @@
 
   >div{
     display:inline-block;
-    margin-right: 4px;
     cursor: pointer;
 
-    >.past{
-      background-color: black;
-    }
-    >.present{
-      background-color: grey;
-    }
-    >.future{
-      background-color: silver;
+    >div{
+      float:left;
+      margin-right: 4px;
+
+      &:first-child{
+        &.past{
+          background-color: black;
+        }
+        &.present{
+          background-color: grey;
+        }
+        &.future{
+          background-color: silver;
+        }
+      }
     }
   }
 }

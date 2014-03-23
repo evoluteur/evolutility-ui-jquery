@@ -19,8 +19,6 @@ Evol.CSS = {
 
 Evol.UI = {
 
-    version: '0.0.3',
-
     // --- static html fragments ---
     html: {
         trTableEnd: '</tr></table>',
@@ -33,11 +31,14 @@ Evol.UI = {
     },
 
     // --- field labels ---
+    label: function (fID, fLbl) {
+        return ['<label for="', fID, '">', fLbl, '</label>'].join('');
+    },
     fieldLabel: function (fID, fLbl) {
-        return ['<div class="evol-field-label"><label for="', fID, '">', fLbl, '</label></div>'].join('');
+        return ['<div class="evol-field-label">', this.label(fID, fLbl) , '</div>'].join('');
     },
     fieldLabelSpan: function (fID, fLbl) {
-        return ['<span class="evol-field-label"><label for="', fID, '">', fLbl, '</label></span>'].join('');
+        return ['<span class="evol-field-label">', this.label(fID, fLbl) , '</span>'].join('');
     },
 
     // --- input fields ---
@@ -46,6 +47,9 @@ Evol.UI = {
         text: function (fID, fV, fd, css, size) {
             var fCss= 'evo-field form-control ' + (css || '') + Evol.UI.getSizeCSS(size),
                 h = ['<input type="text" id="',fID,'" value="', fV];
+            if(fV.indexOf('"')>-1){
+                fV=fV.replace(/"/g,'\"');
+            }
             if(fd) {
                 // properties mapping to html attributes
                 _.each(['id', 'min', 'max', 'maxlength', 'placeholder'], function (item) { // 'max-width', 'min-width',

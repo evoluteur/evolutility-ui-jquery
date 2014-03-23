@@ -289,7 +289,7 @@ Evol.Dico = {
             case fTypes.datetime:
                 return Evol.UI.formatDateTime(v);
             case fTypes.pix:
-                if (v.length) {
+                if (v && v.length) {
                     return Evol.UI.input.img(f.id, v);
                 }
                 break;

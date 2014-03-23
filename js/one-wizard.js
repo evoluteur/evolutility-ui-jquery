@@ -2,14 +2,12 @@
  *
  * evolutility :: one-wizard.js
  *
- * View one edit
+ * View one wizard
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
-
-var Evol = Evol || {};
 
 Evol.ViewOne.Wizard = Evol.ViewOne.extend({
 
@@ -24,7 +22,7 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
     },
 
     _render: function (h, mode) {
-        // EDIT and VIEW forms
+        // WIZARD forms
         var elems = this.options.uiModel.elements;
         this._nbStep=elems.length;
         this._renderBreadcrumb(h, elems, 0)
@@ -37,15 +35,15 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
         // WIZARD top step indicator
         h.push('<div class="evo-wiz-bsteps breadcrumb">');
         _.each(elems, function(p, idx){
-            h.push('<div><div class="badge');
+            h.push('<div><div class="badge ');
             if(idx>stepIdx){
-                h.push(' future');
+                h.push('future');
             }else if(idx<stepIdx){
-                h.push(' past');
+                h.push('past');
             }else{
-                h.push(' present');
+                h.push('present');
             }
-            h.push('">', idx+1,'</div> ', p.label, '</div>');
+            h.push('">', idx+1,'</div><div>', p.label, '</div></div>');
         });
         h.push('</div>');
         return this;
@@ -54,7 +52,7 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
     _renderPanels: function (h, elems, mode) {
         // WIZARD forms
         var that=this;
-
+        h.push('<div class="evo-one-wiz">');
         _.each(elems, function(p){
             switch (p.type) {
                 case 'panel':
@@ -65,10 +63,11 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
                     break;
             }
         });
+        h.push('</div>');
         return this;
     },
 
-    _renderButtons: function (h, mode) {
+    _renderButtons: function (h) {
         //var css=Evol.UI.getSizeCSS(this.options.size);
         h.push(Evol.UI.html.clearer,
             '<div class="evo-wiz-buttons">',
@@ -108,20 +107,33 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
                     steps.eq(++this._stepIdx).show();
                 }
             }
+            var bs=this._getButtons();
             if(this._stepIdx===0){
-                this.$('.evo-wiz-buttons>[data-id="prev"]').addClass('disabled');
+                bs.prev.addClass('disabled');
             }else{
-                this.$('.evo-wiz-buttons>[data-id="prev"]').removeClass('disabled');
+                bs.prev.removeClass('disabled');
             }
             if(this._stepIdx===this._nbStep-1){
-                this.$('.evo-wiz-buttons>[data-id="next"]').hide();
-                this.$('.evo-wiz-buttons>[data-id="finish"]').show();
+                bs.next.hide();
+                bs.finish.show();
             }else{
-                this.$('.evo-wiz-buttons>[data-id="next"]').show();
-                this.$('.evo-wiz-buttons>[data-id="finish"]').hide();
+                bs.next.show();
+                bs.finish.hide();
             }
         }
         this._refreshBreadcrumb();
+    },
+
+    _getButtons: function(){
+        if(_.isUndefined(this._buttons)){
+            var bh=this.$('.evo-wiz-buttons>button');
+            this._buttons = {};
+            for(var i=0;i<bh.length;i++){
+                var b=bh.eq(i);
+                this._buttons[b.data('id')]=b;
+            }
+        }
+        return this._buttons;
     },
 
     _refreshBreadcrumb:function(){
@@ -137,6 +149,5 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
             }
         });
     }
-
 
 });

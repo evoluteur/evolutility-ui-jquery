@@ -9,8 +9,6 @@
  *
  *************************************************************************** */
 
-var Evol = Evol || {};
-
 Evol.ViewMany.List = Evol.ViewMany.extend({
 
     viewName: 'list',

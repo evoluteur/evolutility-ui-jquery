@@ -13,6 +13,7 @@ var Evol = Evol || {};
 
 Evol.ViewMany = Backbone.View.extend({
 
+    viewType:'many',
     cardinality: 'n',
     _hashLov: {},
 

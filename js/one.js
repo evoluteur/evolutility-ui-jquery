@@ -13,6 +13,9 @@ var Evol = Evol || {};
 
 Evol.ViewOne = Backbone.View.extend({
 
+    viewType:'one',
+    cardinality: '1',
+
     events: {
         'click .evol-buttons>button': 'click_button',
         'click .evol-title-toggle': 'click_toggle',
@@ -22,8 +25,6 @@ Evol.ViewOne = Backbone.View.extend({
         'click [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel'
         // extra evt for $(window) resize
     },
-
-    cardinality: '1',
 
     options: {
         button_addAnother: false,
