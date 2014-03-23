@@ -296,8 +296,24 @@ Evol.ViewExport = Backbone.View.extend({
                                 case fTypes.money:
                                     h.push(fValue?fValue:'NULL');
                                     break;
+                                case fTypes.bool:
+                                    h.push((typeof fValue === 'boolean')?fValue:'NULL');
+                                    break;
+                                case fTypes.date:
+                                case fTypes.datetime:
+                                case fTypes.time:
+                                    if(_.isUndefined(fValue)||fValue===''){
+                                        h.push('NULL');
+                                    }else{
+                                        h.push('"', fValue.replace(/"/g, '""'), '"');
+                                    }
+                                    break;
                                 default:
-                                    h.push('"', fValue.replace(/"/g, '""'), '"');
+                                    if(_.isUndefined(fValue)){
+                                        h.push('""');
+                                    }else{
+                                        h.push('"', fValue.replace(/"/g, '""'), '"');
+                                    }
                             }
                             if(idx<fMax){
                                 h.push(', ');
@@ -358,6 +374,7 @@ Evol.ViewExport = Backbone.View.extend({
         }
         return v;
     },
+
     _getValue: function () {
         var v = {
                 format: this._bFormat.val(),
