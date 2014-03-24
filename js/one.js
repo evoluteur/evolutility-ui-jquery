@@ -50,7 +50,12 @@ Evol.ViewOne = Backbone.View.extend({
         this._render(h, this.options.mode);
         this.$el.html(h.join(''));
         this.custOn=false;
+        this._postRender();
         return this;
+    },
+
+    _postRender: function (){
+        // to overwrite...
     },
 
     getFields: function (){
@@ -352,11 +357,12 @@ Evol.ViewOne = Backbone.View.extend({
         h.push(Evol.UI.html.clearer, '</div></div>'); // TODO 2 div?
     },
 
-    renderPanel: function (h, p, pid, mode) {
+    renderPanel: function (h, p, pid, mode, visible) {
         var that = this;
 
         if(mode==='wiz'){
-            h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%">');
+            var hidden= _.isUndefined(visible)?false:!visible;
+            h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%;',hidden?'display:none;':'','">');
         }else{
             h.push('<div data-p-width="', p.width, '" class="evol-pnl');
             if(mode==='mini'){
@@ -378,7 +384,6 @@ Evol.ViewOne = Backbone.View.extend({
             _.each(p.elements, function (elem) {
                 if(elem.type=='panel-list'){
                     that.renderPanelList(h, elem, mode);
-
                 }else{
                     h.push('<div style="width:', parseInt(elem.width, 10), '%" class="pull-left evol-fld">');
                     that.renderField(h, elem, mode);

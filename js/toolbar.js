@@ -32,7 +32,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             view: true,
             edit: true,
             mini: true,
-            wiz: true,
+            wiz: false,
             json: true,
             // --- views for many ---
             list: true,
@@ -138,7 +138,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             linkOpt2h('view','View','file','1');
             linkOpt2h('edit','All Fields','th','1');
             linkOpt2h('mini','Mini','th-large','1'); //Important Fields only
-            //linkOpt2h('wiz','Wizard','arrow-right','1');
+            linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
             // TODO
             //linkOpt2h('json','JSON','barcode','n');
@@ -288,6 +288,9 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(this.curView.cardinality==='n'){ // TODO do not always change flag
             this.showFilter(false);
         }else{
+            if(this.curView.viewName==='wizard'){
+                this.curView.stepIndex(0);
+            }
             this.hideFilter();
         }
         this.setIcons(viewName);

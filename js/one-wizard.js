@@ -16,9 +16,47 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
 
     events:{
         'click .evo-wiz-bsteps>div,.evo-wiz-buttons>button':'click_nav',
-        //'click .evol-buttons>[data-id="finish"]':'click_finish',
         'click label > .glyphicon-question-sign': 'click_help',
         'click [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel'
+    },
+
+    stepIndex: function(stepIdx){
+        if(_.isUndefined(stepIdx)){
+            return this._stepIdx;
+        }else if(stepIdx<this._nbStep){
+            this._showStep(stepIdx);
+            return this;
+        }
+    },
+
+    _showStep: function(stepIdx, bId){
+        var steps=this.$('.evo-p-wiz');
+        if(_.isUndefined(bId)){
+            this._stepIdx=stepIdx;
+            steps.hide()
+                .eq(this._stepIdx).show();
+        }else if(this.validate(this.options.uiModel.elements[this._stepIdx].elements)===''){
+            if(bId==='prev' && this._stepIdx>0){
+                steps.hide()
+                    .eq(--this._stepIdx).show();
+            }else if(bId==='next' && this._stepIdx<this._nbStep){
+                steps.hide()
+                    .eq(++this._stepIdx).show();
+            }
+        }
+        var bs=this._getButtons();
+        if(this._stepIdx===0){
+            bs.prev.addClass('disabled');
+        }else{
+            bs.prev.removeClass('disabled');
+        }
+        if(this._stepIdx===this._nbStep-1){
+            bs.next.hide();
+            bs.finish.show();
+        }else{
+            bs.next.show();
+            bs.finish.hide();
+        }
     },
 
     _render: function (h, mode) {
@@ -35,7 +73,7 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
         // WIZARD top step indicator
         h.push('<div class="evo-wiz-bsteps breadcrumb">');
         _.each(elems, function(p, idx){
-            h.push('<div><div class="badge ');
+            h.push('<div data-id="',stepIdx,'"><div class="badge ');
             if(idx>stepIdx){
                 h.push('future');
             }else if(idx<stepIdx){
@@ -53,13 +91,13 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
         // WIZARD forms
         var that=this;
         h.push('<div class="evo-one-wiz">');
-        _.each(elems, function(p){
-            switch (p.type) {
+        _.each(elems, function(pnl, idx){
+            switch (pnl.type) {
                 case 'panel':
-                    that.renderPanel(h, p, 'p-' + p.id, mode);
+                    that.renderPanel(h, pnl, 'p-'+idx, mode, idx===0);
                     break;
                 case 'panel-list':
-                    that.renderPanelList(h, p, mode);
+                    that.renderPanelList(h, pnl, mode, idx===0);
                     break;
             }
         });
@@ -91,35 +129,7 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
             }
         }else{
             var stepIdx=parseInt(bId,10);
-            if(stepIdx>0){//!isNaN
-                this._stepIdx=stepIdx;
-                this.$('.evo-p-wiz')
-                    .hide()
-                    .eq(this._stepIdx).show();
-            }else if(this.validate(this.options.uiModel.elements[this._stepIdx].elements)===''){
-                if(bId==='prev' && this._stepIdx>0){
-                    this.$('.evo-p-wiz')
-                        .hide()
-                        .eq(--this._stepIdx).show();
-                }else if(bId==='next' && this._stepIdx<this._nbStep){
-                    var steps=this.$('.evo-p-wiz');
-                    steps.hide();
-                    steps.eq(++this._stepIdx).show();
-                }
-            }
-            var bs=this._getButtons();
-            if(this._stepIdx===0){
-                bs.prev.addClass('disabled');
-            }else{
-                bs.prev.removeClass('disabled');
-            }
-            if(this._stepIdx===this._nbStep-1){
-                bs.next.hide();
-                bs.finish.show();
-            }else{
-                bs.next.show();
-                bs.finish.hide();
-            }
+            this._showStep(stepIdx, bId);
         }
         this._refreshBreadcrumb();
     },

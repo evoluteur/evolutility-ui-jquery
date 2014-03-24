@@ -1823,7 +1823,12 @@ Evol.ViewOne = Backbone.View.extend({
         this._render(h, this.options.mode);
         this.$el.html(h.join(''));
         this.custOn=false;
+        this._postRender();
         return this;
+    },
+
+    _postRender: function (){
+        // to overwrite...
     },
 
     getFields: function (){
@@ -2125,11 +2130,12 @@ Evol.ViewOne = Backbone.View.extend({
         h.push(Evol.UI.html.clearer, '</div></div>'); // TODO 2 div?
     },
 
-    renderPanel: function (h, p, pid, mode) {
+    renderPanel: function (h, p, pid, mode, visible) {
         var that = this;
 
         if(mode==='wiz'){
-            h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%">');
+            var hidden= _.isUndefined(visible)?false:!visible;
+            h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%;',hidden?'display:none;':'','">');
         }else{
             h.push('<div data-p-width="', p.width, '" class="evol-pnl');
             if(mode==='mini'){
@@ -2151,7 +2157,6 @@ Evol.ViewOne = Backbone.View.extend({
             _.each(p.elements, function (elem) {
                 if(elem.type=='panel-list'){
                     that.renderPanelList(h, elem, mode);
-
                 }else{
                     h.push('<div style="width:', parseInt(elem.width, 10), '%" class="pull-left evol-fld">');
                     that.renderField(h, elem, mode);
@@ -2709,9 +2714,47 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
 
     events:{
         'click .evo-wiz-bsteps>div,.evo-wiz-buttons>button':'click_nav',
-        //'click .evol-buttons>[data-id="finish"]':'click_finish',
         'click label > .glyphicon-question-sign': 'click_help',
         'click [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel'
+    },
+
+    stepIndex: function(stepIdx){
+        if(_.isUndefined(stepIdx)){
+            return this._stepIdx;
+        }else if(stepIdx<this._nbStep){
+            this._showStep(stepIdx);
+            return this;
+        }
+    },
+
+    _showStep: function(stepIdx, bId){
+        var steps=this.$('.evo-p-wiz');
+        if(_.isUndefined(bId)){
+            this._stepIdx=stepIdx;
+            steps.hide()
+                .eq(this._stepIdx).show();
+        }else if(this.validate(this.options.uiModel.elements[this._stepIdx].elements)===''){
+            if(bId==='prev' && this._stepIdx>0){
+                steps.hide()
+                    .eq(--this._stepIdx).show();
+            }else if(bId==='next' && this._stepIdx<this._nbStep){
+                steps.hide()
+                    .eq(++this._stepIdx).show();
+            }
+        }
+        var bs=this._getButtons();
+        if(this._stepIdx===0){
+            bs.prev.addClass('disabled');
+        }else{
+            bs.prev.removeClass('disabled');
+        }
+        if(this._stepIdx===this._nbStep-1){
+            bs.next.hide();
+            bs.finish.show();
+        }else{
+            bs.next.show();
+            bs.finish.hide();
+        }
     },
 
     _render: function (h, mode) {
@@ -2728,7 +2771,7 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
         // WIZARD top step indicator
         h.push('<div class="evo-wiz-bsteps breadcrumb">');
         _.each(elems, function(p, idx){
-            h.push('<div><div class="badge ');
+            h.push('<div data-id="',stepIdx,'"><div class="badge ');
             if(idx>stepIdx){
                 h.push('future');
             }else if(idx<stepIdx){
@@ -2746,13 +2789,13 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
         // WIZARD forms
         var that=this;
         h.push('<div class="evo-one-wiz">');
-        _.each(elems, function(p){
-            switch (p.type) {
+        _.each(elems, function(pnl, idx){
+            switch (pnl.type) {
                 case 'panel':
-                    that.renderPanel(h, p, 'p-' + p.id, mode);
+                    that.renderPanel(h, pnl, 'p-'+idx, mode, idx===0);
                     break;
                 case 'panel-list':
-                    that.renderPanelList(h, p, mode);
+                    that.renderPanelList(h, pnl, mode, idx===0);
                     break;
             }
         });
@@ -2784,35 +2827,7 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
             }
         }else{
             var stepIdx=parseInt(bId,10);
-            if(stepIdx>0){//!isNaN
-                this._stepIdx=stepIdx;
-                this.$('.evo-p-wiz')
-                    .hide()
-                    .eq(this._stepIdx).show();
-            }else if(this.validate(this.options.uiModel.elements[this._stepIdx].elements)===''){
-                if(bId==='prev' && this._stepIdx>0){
-                    this.$('.evo-p-wiz')
-                        .hide()
-                        .eq(--this._stepIdx).show();
-                }else if(bId==='next' && this._stepIdx<this._nbStep){
-                    var steps=this.$('.evo-p-wiz');
-                    steps.hide();
-                    steps.eq(++this._stepIdx).show();
-                }
-            }
-            var bs=this._getButtons();
-            if(this._stepIdx===0){
-                bs.prev.addClass('disabled');
-            }else{
-                bs.prev.removeClass('disabled');
-            }
-            if(this._stepIdx===this._nbStep-1){
-                bs.next.hide();
-                bs.finish.show();
-            }else{
-                bs.next.show();
-                bs.finish.hide();
-            }
+            this._showStep(stepIdx, bId);
         }
         this._refreshBreadcrumb();
     },
@@ -4029,7 +4044,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             view: true,
             edit: true,
             mini: true,
-            wiz: true,
+            wiz: false,
             json: true,
             // --- views for many ---
             list: true,
@@ -4135,7 +4150,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             linkOpt2h('view','View','file','1');
             linkOpt2h('edit','All Fields','th','1');
             linkOpt2h('mini','Mini','th-large','1'); //Important Fields only
-            //linkOpt2h('wiz','Wizard','arrow-right','1');
+            linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
             // TODO
             //linkOpt2h('json','JSON','barcode','n');
@@ -4285,6 +4300,9 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(this.curView.cardinality==='n'){ // TODO do not always change flag
             this.showFilter(false);
         }else{
+            if(this.curView.viewName==='wizard'){
+                this.curView.stepIndex(0);
+            }
             this.hideFilter();
         }
         this.setIcons(viewName);
