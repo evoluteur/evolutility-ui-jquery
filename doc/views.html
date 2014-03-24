@@ -44,11 +44,6 @@
 </p>
 
 
-    <p>All views are defined at by a single UI model.
-    </p>
-
-
-
 <div class="evol-doc-views">
 
 <section id="views-one">
@@ -56,7 +51,7 @@
 
     <p>Backbone views for <strong>one</strong> model.</p>
 
-    <h3>View</h3>
+    <h3><i class="glyphicon glyphicon-file"></i>&nbsp;View</h3>
     <p>Shows all fields for viewing (read only). Fields are grouped in panels and tabs like the edit view.</p>
     <code>new Evol.ViewOne.Edit(myConfig);</code>
 
@@ -65,7 +60,7 @@
     </div>
 
 
-<h3>Edit</h3>
+<h3><i class="glyphicon glyphicon-th"></i>&nbsp;Edit</h3>
 <p>Shows all fields for edition. Fields are grouped in panels and tabs.</p>
 <code>
     new Evol.ViewOne.Edit(myConfig);</code>
@@ -75,7 +70,7 @@
     </div>
 
 
-<h3>Mini (quick-edit)</h3>
+<h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Mini (quick-edit)</h3>
 <p>Only shows important fields (required or showing as a column in grids) in one panel.</p>
 <code>
     new Evol.ViewOne.Mini(myConfig);</code>
@@ -83,7 +78,7 @@
         <img class="pixEvoMode shadow" src="screenshots/one-mini.png"/> <br />&nbsp;
     </div>
 
-<h3>JSON</h3>
+<h3><i class="glyphicon glyphicon-barcode"></i>&nbsp;JSON</h3>
 <p>JSON representation of the data.</p>
 <code>
     new Evol.ViewOne.JSON(myConfig);</code>
@@ -94,12 +89,13 @@
 
     <section id="views-many">
 
+
 <h2>Evol.ViewMany</h2>
 
 <p>Backbone views for a collection containing <strong>many</strong> models.</p>
 
 
-<h3>list</h3>
+<h3><i class="glyphicon glyphicon-th-list"></i>&nbsp;List</h3>
 <p>Tabular view of a collection.</p>
 <code>
     new Evol.ViewMany.List(myConfig);</code>
@@ -107,7 +103,7 @@
         <img class="pixEvoMode shadow" src="screenshots/many-list.png"/> <br />&nbsp;
     </div>
 
-<h3>cards</h3>
+<h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Cards</h3>
 <p>Cards view</p>
 <code>
     new Evol.ViewMany.Cards(myConfig);</code>
@@ -116,7 +112,7 @@
     </div>
 
 
-<h3>charts</h3>
+<h3><i class="glyphicon glyphicon-stats"></i>&nbsp;Charts</h3>
 <p>Charts</p>
 <code>
     new Evol.ViewMany.Charts(myConfig);</code>
@@ -124,13 +120,16 @@
         <img class="pixEvoMode shadow" src="screenshots/many-chart.png"/> <br />&nbsp;
     </div>
 
+
+
+
     </section>
 
     <section id="views-action">
 
 <h2>Evol.ViewAction</h2>
 
-        <h3>Filter</h3>
+        <h3><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter</h3>
         <p>Filter collection.</p>
         <code>
             new Evol.ViewAction.Filter(myConfig);</code>
@@ -140,7 +139,7 @@
         <p>Filter example: "phone number start by 415" or "for
             categories Finances and Business"...&nbsp;</p>
 
-        <h3>Export</h3>
+        <h3><i class="glyphicon glyphicon-cloud-download"></i>&nbsp;Export</h3>
         <p>Export supporting different formats.</p>
         <code>
             new Evol.ViewAction.Export(myConfig);</code>
@@ -149,8 +148,8 @@
         </div>
 
 
-
-
+        <p>TODO: Missing views like "Mass Update"...</p>
+        
     </section>
 
 
