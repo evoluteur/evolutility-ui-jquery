@@ -1,6 +1,6 @@
 {
   "name": "evolutility",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "copyright": "(c) 2014 Olivier Giulieri",
   "target": "dist",
   "devDependencies": {
