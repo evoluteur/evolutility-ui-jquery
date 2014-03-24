@@ -34,9 +34,10 @@
 <div class="evo-content3">
 
 
-<p>The UI model for a Backbone model consists of an object with fields grouped in panels and tabs.</p>
+<p>The UI model for a Backbone model consists of an object with fields grouped in panels and tabs.
+    This page describes the language (or structure) of the UI-models.</p>
 
-<p>This page describes the structure of UI-models.
+<p>
     It is not fully defined nor implemented yet but a work in progress based on
     <a href="http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications" target="evomm">Evolutility minimalist meta-model</a>.</p>
 
@@ -117,7 +118,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
             <td>Field Id in the UI.</td>
         </tr>
         <tr>
-            <td>label<span class="evol-required">*</span>, labelone,<br /> labelmany
+            <td>label<span class="evol-required">*</span>, label-one,<br /> label-many
             </td>
             <td>Field title (in different views). Only <code>label</code> is mandatory and will be the default for all other modes if not specified.
             </td>
@@ -350,7 +351,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
             </td>
         </tr>
         <tr>
-            <td>label
+            <td>label<span class="evol-required">*</span>
             </td>
             <td>Panel title.
             </td>

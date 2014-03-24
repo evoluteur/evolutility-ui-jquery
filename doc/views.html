@@ -32,9 +32,10 @@
 
 <div class="evo-content3">
 
-<p>All views for a particular model are defined by a single <a href="ui-model.html">ui-model</a>.</p>
+<p>All views for a particular Backbone model are defined by a single <a href="ui-model.html">ui-model</a>.</p>
+
 <p>
-    3 types of views:
+    Evolutility provides 3 types of views:
 <ul>
     <li>Evol.ViewOne - Views for <strong>one</strong> model</li>
     <li>Evol.ViewMany - Views for a collection of <strong>many</strong> models</li>
@@ -42,48 +43,119 @@
 </ul>
 </p>
 
-<h2>Evol.ViewOne</h2>
 
-<p>Backbone views to edit one model (a record at a time)</p>
+    <p>All views are defined at by a single UI model.
+    </p>
+
+
+
+<div class="evol-doc-views">
+
+<section id="views-one">
+    <h2>Evol.ViewOne</h2>
+
+    <p>Backbone views for <strong>one</strong> model.</p>
+
+    <h3>View</h3>
+    <p>Shows all fields for viewing (read only). Fields are grouped in panels and tabs like the edit view.</p>
+    <code>new Evol.ViewOne.Edit(myConfig);</code>
+
+    <div class="evol-doc-views">
+        <img class="pixEvoMode shadow" src="screenshots/one-view.png"/> <br />&nbsp;
+    </div>
+
 
 <h3>Edit</h3>
 <p>Shows all fields for edition. Fields are grouped in panels and tabs.</p>
 <code>
     new Evol.ViewOne.Edit(myConfig);</code>
 
+    <div class="evol-doc-views">
+        <img class="pixEvoMode shadow" src="screenshots/one-edit.png"/> <br />&nbsp;
+    </div>
+
+
 <h3>Mini (quick-edit)</h3>
 <p>Only shows important fields (required or showing as a column in grids) in one panel.</p>
 <code>
     new Evol.ViewOne.Mini(myConfig);</code>
+    <div class="evol-doc-views">
+        <img class="pixEvoMode shadow" src="screenshots/one-mini.png"/> <br />&nbsp;
+    </div>
 
 <h3>JSON</h3>
 <p>JSON representation of the data.</p>
 <code>
     new Evol.ViewOne.JSON(myConfig);</code>
+    <div class="evol-doc-views">
+        <img class="pixEvoMode shadow" src="screenshots/one-json.png"/> <br />&nbsp;
+    </div>
+    </section>
 
+    <section id="views-many">
 
 <h2>Evol.ViewMany</h2>
 
-<p>Backbone views for a collection w/ many records.</p>
+<p>Backbone views for a collection containing <strong>many</strong> models.</p>
 
 
 <h3>list</h3>
-<p>Tabular view</p>
+<p>Tabular view of a collection.</p>
 <code>
     new Evol.ViewMany.List(myConfig);</code>
+    <div class="evol-doc-views">
+        <img class="pixEvoMode shadow" src="screenshots/many-list.png"/> <br />&nbsp;
+    </div>
 
 <h3>cards</h3>
 <p>Cards view</p>
 <code>
     new Evol.ViewMany.Cards(myConfig);</code>
+    <div class="evol-doc-views">
+        <img class="pixEvoMode shadow" src="screenshots/many-card.png"/> <br />&nbsp;
+    </div>
 
 
 <h3>charts</h3>
 <p>Charts</p>
 <code>
     new Evol.ViewMany.Charts(myConfig);</code>
+    <div class="evol-doc-views">
+        <img class="pixEvoMode shadow" src="screenshots/many-chart.png"/> <br />&nbsp;
+    </div>
+
+    </section>
+
+    <section id="views-action">
+
+<h2>Evol.ViewAction</h2>
+
+        <h3>Filter</h3>
+        <p>Filter collection.</p>
+        <code>
+            new Evol.ViewAction.Filter(myConfig);</code>
+        <div class="evol-doc-views">
+            <img class="pixEvoMode shadow" src="screenshots/action-filter.png"/> <br />&nbsp;
+        </div>
+        <p>Filter example: "phone number start by 415" or "for
+            categories Finances and Business"...&nbsp;</p>
+
+        <h3>Export</h3>
+        <p>Export supporting different formats.</p>
+        <code>
+            new Evol.ViewAction.Export(myConfig);</code>
+        <div class="evol-doc-views">
+            <img class="pixEvoMode shadow" src="screenshots/action-export.png"/> <br />&nbsp;
+        </div>
 
 
+
+
+    </section>
+
+
+
+    <section>
 <h2>Methods</h2>
 
 <h3>Evol.ViewOne and Evol.ViewMany</h3>
@@ -114,6 +186,8 @@
 <p>getFilter()</p>
 
 
+    </section>
+    <section>
 
 <h2>Properties</h2>
 
@@ -122,6 +196,10 @@
 <p>cardinality: '1' for Evol.ViewOne.*, 'n' for Evol.ViewMany.*.</p>
 <p>viewName: name of the view (the '*' in the Evol.ViewOne.* instanciated). i.e.: "Edit" or "List".</p>
 
+
+
+    </section>
+    <section>
 
 
 <h2>Events</h2>
@@ -138,6 +216,10 @@
     <p>list.paginate</p>
     <p>list.customize</p>
 
+
+    </section>
+
+</div>
     <p></p>
 
 <p><br/>evolutility.js at <a href="https://github.com/evoluteur/evolutility" target="download">GitHub</a></p>
