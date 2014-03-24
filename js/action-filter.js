@@ -24,7 +24,9 @@ var fOps={
     sBetween:'bw'
 };
 
-Evol.ViewFilter = Backbone.View.extend({
+Evol.ViewAction.Filter = Backbone.View.extend({
+
+    viewName: 'filter',
 
     events: {
         'click .evo-bNew': 'click_new',
@@ -470,7 +472,7 @@ Evol.ViewFilter = Backbone.View.extend({
         }else if(this._type==Evol.Dico.fieldTypes.bool){
             op.label=evoLang.sEqual;
             op.value=fOps.sEqual;
-            var val=(v.find('#value1').attr('checked')=='checked')?1:0;
+            var val=(v.find('#value1').prop('checked'))?1:0;
             fv.label=(val==1)?evoLang.yes:evoLang.no;
             fv.value=val;
         }else{

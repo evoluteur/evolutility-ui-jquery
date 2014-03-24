@@ -219,6 +219,7 @@
   min-height: 20px;
 }
 .evol-buttons {
+  clear: both;
   margin-top: 0 !important;
 }
 .evol-buttons > button {
@@ -280,7 +281,9 @@
 .w-100 {
   width: 100%;
 }
-.evo-one-edit {
+.evo-one-edit,
+.evo-one-view,
+.evo-one-wiz {
   margin-left: -10px;
 }
 .evol-pl-nodata {
@@ -319,19 +322,23 @@
 }
 .evo-wiz-bsteps > div {
   display: inline-block;
-  margin-right: 4px;
   cursor: pointer;
 }
-.evo-wiz-bsteps > div > .past {
+.evo-wiz-bsteps > div > div {
+  float: left;
+  margin-right: 4px;
+}
+.evo-wiz-bsteps > div > div:first-child.past {
   background-color: black;
 }
-.evo-wiz-bsteps > div > .present {
+.evo-wiz-bsteps > div > div:first-child.present {
   background-color: grey;
 }
-.evo-wiz-bsteps > div > .future {
+.evo-wiz-bsteps > div > div:first-child.future {
   background-color: silver;
 }
 .evo-wiz-buttons {
+  clear: both;
   margin-top: 0 !important;
 }
 .evo-wiz-buttons > button {
@@ -441,14 +448,15 @@ img.evol-table-icon {
   border-left: 0 !important;
 }
 .evol-xpt-format {
-  width: auto;
+  width: auto !important;
   display: block;
   margin-bottom: 6px;
 }
 .evol-xpt-val {
   display: block;
   padding: 5px;
-  height: 300px;
+  min-height: 150px;
+  height: 200px;
   margin-top: 6px;
 }
 .evol-w120 {
@@ -524,8 +532,17 @@ img.evol-table-icon {
 .evo-editFilter > a {
   clear: left;
 }
+.evo-editFilter > #value {
+  margin-right: 5px;
+  line-height: 30px;
+}
 .evo-editFilter > #value > label {
   margin-left: 6px;
+  margin-right: 6px;
+}
+.evo-editFilter > #value > label > input[type="checkbox"],
+.evo-editFilter > #value > label > input[type="radio"] {
+  margin-right: 10px;
 }
 .evo-editFilter > select,
 .evo-editFilter > input,
@@ -535,12 +552,6 @@ img.evol-table-icon {
   font-size: 1.1em;
   width: auto;
 }
-.evo-editFilter span#value {
-  margin-right: 5px;
-}
-.evo-editFilter #value input[type="checkbox"] {
-  margin-left: 5px;
-}
 .evo-editFilter input[type="number"]#value,
 .evo-editFilter input[type="time"]#value,
 .evo-editFilter input[type="time"]#value2 {
@@ -548,4 +559,20 @@ img.evol-table-icon {
 }
 .evo-editFilter input.hasDatepicker {
   width: 7em;
+}
+.evol-doc-views > section > div {
+  width: 500px;
+  margin: 10px;
+}
+.evol-doc-views > section > div > img {
+  width: 500px;
+}
+.evol-doc-views img.shadow {
+  border: 1px solid #e0e0e0;
+  box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);
+}
+.evo-content3 > p > img {
+  width: 500px;
 }

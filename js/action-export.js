@@ -10,7 +10,9 @@
 var Evol = Evol || {},
     evoLangXpt = Evol.i18n.export;
 
-Evol.ViewExport = Backbone.View.extend({
+Evol.ViewAction.Export = Evol.ViewAction.extend({
+
+    viewName: 'export',
 
     events: {
         "change .evol-xpt-format": "click_format",
@@ -21,15 +23,13 @@ Evol.ViewExport = Backbone.View.extend({
     },
 
     options: {
-        toolbar: true,
         model: null,
         uiModel: null,
         many: true,
-        style: 'normal',
+        //style: 'normal',
         prefix: 'tbr'
     },
 
-    viewName: "export",
 
     initialize: function (opts) {
         _.extend(this.options, opts);
@@ -58,9 +58,9 @@ Evol.ViewExport = Backbone.View.extend({
         //string fieldName, fieldlabel, expOut, buffer;
         h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds"><fieldset>');
         //### list of columns to export #########################################
-        h.push('<div class="evol-id">', EvoUI.fieldLabel('', evoLangXpt.ExportFields),
-            //EvoUI.input.checkbox('showID','1'), '<label for="showID">', evoLangXpt.IDkey, '</label>',
-            '</div>');
+        h.push('<div class="evol-id">', EvoUI.label('', evoLangXpt.ExportFields),'</div>'/*,
+            '<div>',EvoUI.input.checkbox('showID','1'), '<label for="showID">', evoLangXpt.IDkey, '</label>','</div>'*/
+        );
         for (var i = 0, iMax = fields.length; i < iMax; i++) {
             var f = fields[i],
                 fLabel = f.label,
@@ -90,9 +90,9 @@ Evol.ViewExport = Backbone.View.extend({
                 {id: 'XML', text: myLabels[4]}
             ])
         );
+        fId = prefix + "FLH";
         h.push('<div class="evol-xpt-opts">');
         //# field (shared b/w formats - header #######
-        fId = prefix + "FLH";
         h.push('<div class="evol-FLH clearfix">');
         //h.push('<label>', evoLangXpt.ExportHeader, '</label>');
         h.push(EvoUI.input.checkbox(fId, true), EvoUI.fieldLabelSpan(fId, evoLangXpt.ExportFirstLine));
@@ -113,15 +113,13 @@ Evol.ViewExport = Backbone.View.extend({
         h.push('</div>');
         //# Preview #######
         h.push('<label>Export Preview</label><div class="evol-xpt-preview"></div>');
-
-        h.push('</div></div>');
         // ## Samples
-        //h.push(this._samples());
+        h.push('<textarea class="Field evol-xpt-val form-control"></textarea>');
+        h.push('</div></div></div>');
         // ## Download button
         h.push('<div class="evol-buttons form-actions">',
             Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
             Evol.UI.input.button('export', evoLangXpt.DownloadEntity.replace('{0}', this.options.uiModel.entities), 'btn btn-primary'));
-        h.push('</div>');
         return h.join('');
     },
 
@@ -177,7 +175,7 @@ Evol.ViewExport = Backbone.View.extend({
         }
     },
 
-    _preview: function (format) {
+    _preview: function (format) { // TODO add field ID
         var h=[],
             fTypes=Evol.Dico.fieldTypes;
         if(this.model && this.model.collection){
@@ -187,8 +185,11 @@ Evol.ViewExport = Backbone.View.extend({
                 fldsDomHash = {},
                 prefix='#'+ this.options.prefix,
                 useHeader = this.$(prefix+'FLH').prop('checked');
+                //showID=this.$('#showID').prop('checked');
 
-            h.push('<textarea class="Field evol-xpt-val form-control">');
+            //if(showID){
+            //    flds.unshift({id: 'id', type: 'text', label: 'Id'});
+            //}
             _.each(fldsDom, function(fd){
                 fldsDomHash[fd.id.substring(3)]='';
             });
@@ -330,14 +331,18 @@ Evol.ViewExport = Backbone.View.extend({
                     }
                     break;
                 case 'XML':
-                    var elemName = this.$('#evoRoot').val() || this.options.uiModel.entity.replace(/ /g,'_');
+                    var elemName = this.$('#evoRoot').val() || this.options.uiModel.entity.replace(/ /g,'_'),
+                        fv;
                     h.push('<xml>\n');
                     _.each(data, function(m){
                         h.push('<', elemName, ' ');
                         _.each(flds, function(f){
                             h.push(f.id, '="');
                             if(f.type===fTypes.text || f.type===fTypes.txtm){
-                                h.push(m.get(f.id).replace(/"/g, '\\"'));
+                                fv=m.get(f.id);
+                                if(!_.isUndefined(fv)){
+                                    h.push(fv.replace(/"/g, '\\"'));
+                                }
                             }else{
                                 h.push(m.get(f.id));
                             }
@@ -348,11 +353,10 @@ Evol.ViewExport = Backbone.View.extend({
                     h.push('</xml>');
                     break;
             }
-            h.push('</textarea>');
         }else{
             h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
-        this.$('.evol-xpt-preview')
+        this.$('.evol-xpt-val')
             .html(h.join(''));
     },
 
@@ -367,11 +371,10 @@ Evol.ViewExport = Backbone.View.extend({
 
     _ValFields: function () {
         var v = [],
-            flds = this.$('.evol-xpt-flds input:checked').not('#showID');
-        for (var i = 0, iMax = flds.length; i < iMax; i++) {
-            var fe = $(flds[i]);
+            flds = this.$('.evol-xpt-flds input:checked');//.not('#showID')
+        _.each(flds, function(fe){
             v.push(fe.attr('id'));
-        }
+        });
         return v;
     },
 

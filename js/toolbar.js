@@ -7,8 +7,6 @@
  *
  *************************************************************************** */
 
-var Evol = Evol || {};
-
 // toolbar widget which also acts as a controller for all views "one" and "many" as well as actions
 Evol.ViewToolbar = Backbone.View.extend({
 
@@ -277,7 +275,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                         break;
                     // --- actions ---
                     case 'export':
-                        vw = new Evol.ViewExport(config);
+                        vw = new Evol.ViewAction.Export(config);
                         $v.addClass('panel panel-info')
                             .slideDown();
                         break;
@@ -369,7 +367,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 var that=this,
                     $ff=$(Evol.UI.HTMLEmptyPanel('filters', 'evo-filters', 'info'));
                 this.$('.evo-toolbar').after($ff);
-                this._filters = new Evol.ViewFilter({
+                this._filters = new Evol.ViewAction.Filter({
                     el:$ff,
                     fields:Evol.Dico.getFields(this.options.uiModel)
                 }).render();
@@ -600,7 +598,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     action_view: function(evt, actionId){
         switch(actionId){
             case 'cancel':
-                if(this.curView.viewName==='edit'){
+                if(this.curView.viewName==='edit' && !this.model.isNew){
                     this.setView('view');
                 }else{
                     this.setView(this._prevMany || 'list');

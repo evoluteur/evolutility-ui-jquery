@@ -58,6 +58,7 @@ module.exports = function (grunt) {
                     'js/many-*.js',
                     'js/one.js',
                     'js/one-*.js',
+                    'js/action.js',
                     'js/action-*.js',
 
                     'js/toolbar.js'

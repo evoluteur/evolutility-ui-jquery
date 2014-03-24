@@ -71,11 +71,17 @@
     clear: left;
   }
 
-  >label>input{
-    margin-right: 10px;
-  }
-  > #value > label{
-    margin-left:6px;
+  > #value{
+    margin-right:5px;
+    line-height: 30px;
+    >label{
+      margin-left:6px;
+      margin-right:6px;
+      >input[type="checkbox"],
+      >input[type="radio"]{
+        margin-right: 10px;
+      }
+    }
   }
   > select,
   > input,
@@ -84,12 +90,6 @@
     margin:1px 6px 6px 1px;
     font-size: 1.1em;
     width:auto;
-  }
-  span#value {
-    margin-right:5px;
-  }
-  #value input[type="checkbox"] {
-    margin-left:5px;
   }
   input[type="number"]#value,
   input[type="time"]#value,
@@ -102,5 +102,3 @@
   }
 
 }
-
-
