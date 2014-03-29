@@ -80,34 +80,6 @@
   }
 }
 
-
-.evol-mini-holder{
-    margin: 10px -10px;
-}
-.evol-mini-label{
-    float:left;
-    width:@widthR1;
-    padding-right:10px;
-}
-.evol-mini-content{
-    float:left;
-    width:@widthR2;
-
-  > .help-block{
-    min-width:50px;
-    clear:left;
-  }
-
-}
-
-@media only screen and (max-width: @screen1) {
-  .evol-mini-label,
-  .evol-mini-content{
-    float:none;
-    width:100%;
-  }
-}
-
 .w-100{
     width: 100%;
 }
@@ -146,9 +118,12 @@
 .evo-msg{
   &.alert-warning{
     padding: 10px 10px 3px;
+    >.close{
+      top:0 !important;
+      right:0 !important;
+    }
   }
-  >.close{
-    top:0 !important;
-    right:0 !important;
+  >div{
+    margin-top:5px;
   }
 }

@@ -4,7 +4,7 @@
  *  https://github.com/evoluteur/evolutility
  *  (c) 2014, Olivier Giulieri
 */
-/* evolutility : header.css */
+/* --- header, navbar, content and footer --- */
 .evo-logo {
   float: left;
   font-size: 2em;
@@ -181,6 +181,11 @@
 .evo-toolbar > ul > li > a {
   max-height: 35px;
 }
+.evo-toolbar > ul .evo-tb-sel {
+  border: 1px solid #bce8f1;
+  border-radius: 4px;
+  padding: 3px;
+}
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
 }
@@ -255,29 +260,6 @@
   padding-left: 4px;
   color: silver;
 }
-.evol-mini-holder {
-  margin: 10px -10px;
-}
-.evol-mini-label {
-  float: left;
-  width: 38%;
-  padding-right: 10px;
-}
-.evol-mini-content {
-  float: left;
-  width: 62%;
-}
-.evol-mini-content > .help-block {
-  min-width: 50px;
-  clear: left;
-}
-@media only screen and (max-width: 500px) {
-  .evol-mini-label,
-  .evol-mini-content {
-    float: none;
-    width: 100%;
-  }
-}
 .w-100 {
   width: 100%;
 }
@@ -308,9 +290,39 @@
 .evo-msg.alert-warning {
   padding: 10px 10px 3px;
 }
-.evo-msg > .close {
+.evo-msg.alert-warning > .close {
   top: 0 !important;
   right: 0 !important;
+}
+.evo-msg > div {
+  margin-top: 5px;
+}
+/* --- mini --- */
+.evol-mini-holder {
+  margin: 10px -10px;
+}
+.evol-mini-label {
+  float: left;
+  width: 38%;
+  padding-right: 10px;
+}
+.evol-mini-content {
+  float: left;
+  width: 62%;
+}
+.evol-mini-content > .help-block {
+  min-width: 50px;
+  clear: left;
+}
+@media only screen and (max-width: 500px) {
+  .evol-mini-label,
+  .evol-mini-content {
+    float: none;
+    width: 100%;
+  }
+  .evol-mini-content > fieldset {
+    width: 100%;
+  }
 }
 .evo-p-wiz {
   display: none;
