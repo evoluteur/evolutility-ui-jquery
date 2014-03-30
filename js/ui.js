@@ -262,8 +262,8 @@ Evol.UI = {
         return [
             '<div data-id="msg" class="evo-msg alert alert-',style || 'info',
             ' alert-dismissable">', this.html.buttonClose,
-            '<strong>',title,'</strong> <span>',
-            content,'</span></div>'
+            '<strong>',title,'</strong><br/><div>',
+            content,'</div></div>'
         ].join('');
     },
 
