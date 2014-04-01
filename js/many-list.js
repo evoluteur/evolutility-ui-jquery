@@ -71,28 +71,17 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
     },
 
     HTMLItem: function(h, fields, model, icon, selectable){
+        var f, v, link = (this.options.links!==false);
         h.push('<tr data-mid="', model.id, '">');
         if(selectable){
             h.push('<td class="list-td-sel">',this._HTMLCheckbox(model.id),'</td>');
         }
         for (var i=0; i<fields.length; i++) {
-            var f = fields[i],
-                v = model.escape(f.id);
-            h.push('<td>');
-            if(i===0){
-                h.push('<a href="javascript:void(0)" id="fv-', f.id, '" class="evol-nav-id">');
-                if(!_.isUndefined(icon) && icon!==''){
-                    h.push('<img class="evol-table-icon" src="pix/', _.isFunction(icon)?icon(model):icon, '">');
-                }
-                if(v===''){
-                    v='('+model.id+')';
-                }
-            }
-            h.push(this._HTMLField(f,v));
-            if(i===0){
-                h.push('</a>');
-            }
-            h.push('</td>');
+            f = fields[i];
+            v = this._HTMLField(f, model.escape(f.id));
+            h.push('<td>',
+                (i===0)?Evol.Dico.HTMLFieldLink('fv-'+f.id, f, v, icon, !link):v,
+                '</td>');
         }
         h.push('</tr>');
     },

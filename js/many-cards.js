@@ -77,22 +77,19 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
     },
 
     HTMLItem: function(h, fields, model, icon, selectable){
+        var link = (this.options.links!==false);
         h.push('<div class="panel ',this.options.style,'">');
         for (var i = 0; i < fields.length; i++) {
             var f = fields[i],
-                v = model.get(f.id);
+                v = this._HTMLField(f, model.get(f.id));
             if (i === 0) {
                 h.push('<div data-mid="', model.id, '"><h4>',
                     selectable?this._HTMLCheckbox(model.id):'',
-                    '<a href="#" id="fg-', f.id, '" class="evol-nav-id">');
-                if (icon) {
-                    h.push('<img class="evol-table-icon" src="pix/', icon, '">');
-                }
-                h.push(this._HTMLField(f,v),
-                    '</a></h4></div>');
+                    Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link),
+                    '</h4></div>');
             }else{
                 //h.push(Evol.UI.fieldLabel(f.id,f.label));
-                h.push('<div>', this._HTMLField(f,v),'</div>');
+                h.push('<div>', v, '</div>');
             }
         }
         h.push('</div>');

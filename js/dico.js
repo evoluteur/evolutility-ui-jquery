@@ -24,19 +24,19 @@ Evol.Dico = {
         time: 'time',
         datetime: 'datetime',
         pix: 'image',
-        //doc:'document',
+        doc:'document',
         lov: 'lov',
         money: 'money',
         //formula:'formula',
         //html:'html',
         email: 'email',
-        url: 'url',
         //pwd: 'password',
         color: 'color',
-        hidden: 'hidden',
+        //hidden: 'hidden',
         //rating: 'rating',
-        tag: 'tag'
+        //tag: 'tag',
         //widget: 'widget',
+        url: 'url'
     },
 
     // get all "shallow" fields (no sub collections) from a UI model
@@ -409,6 +409,24 @@ Evol.Dico = {
             h.push(Evol.UI.icon('question-sign', ''));
         }
         h.push('</label></div>');
+        return h.join('');
+    },
+
+    HTMLFieldLink: function (fid, fld, value, icon, noLink) {
+        var h=[];
+        if(!noLink){
+            h.push('<a href="#" id="', fid, '" class="evol-nav-id">');
+        }
+        if (icon) {
+            h.push('<img class="evol-table-icon" src="pix/', icon, '">');
+        }/*
+        if(_.isUndefined(value) || value===''){
+            value='('+model.id+')';
+        }*/
+        h.push(value);
+        if(!noLink){
+            h.push('</a>');
+        }
         return h.join('');
     }
 

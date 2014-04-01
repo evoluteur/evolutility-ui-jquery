@@ -21,8 +21,10 @@ Evol.ViewMany = Backbone.View.extend({
         style: 'panel-info',
         pageSize: 20,
         pageIndex:0,
+        autoUpdate: false,
         //titleSelector: '#title',
-        selectable: false
+        selectable: false,
+        links: true
     },
 
     events: {
@@ -37,11 +39,14 @@ Evol.ViewMany = Backbone.View.extend({
     initialize: function (opts) {
         var that=this;
         this.options=_.extend(this.options, opts);
+        this.mode=this.options.mode || '';
         this._filter=[];
-        if(this.collection){
-            this.collection.on('change', function(model){
-                that.render();
-            });
+        if(this.options.autoUpdate){
+            if(this.collection){
+                this.collection.on('change', function(model){
+                    that.render();
+                });
+            }
         }
         this._custOn=false;
     },
