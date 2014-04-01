@@ -497,7 +497,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 });
             }
         }else{
-            this.setMessage('Incomplete information.', msg, 'warning');
+            this.setMessage(Evol.i18n.validation.incomplete, msg, 'warning');
         }
         return this;
     },

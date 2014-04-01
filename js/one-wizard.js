@@ -125,7 +125,7 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
                 //TODO what? got ot OneView.View
                 this.$el.trigger('action', 'save');
             }else{
-                this.sendMessage('Incomplete information', v, 'warning');
+                this.sendMessage(Evol.i18n.validation.incomplete, v, 'warning');
             }
         }else{
             var stepIdx=parseInt(bId,10);
