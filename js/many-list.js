@@ -19,11 +19,13 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             selectable = opts.selectable,
             fields = this.getFields(),
             uim = opts.uiModel,
-            pSize = opts.pageSize || 50;
+            pSize = opts.pageSize || 50,
+            link = (this.options.links!==false),
+            hover;
 
         h.push('<div class="evol-many-list">',
             //'<div class="panel ',this.options.style,'">',
-            '<table class="table table-bordered table-hover"><thead><tr>');
+            '<table class="table table-bordered',link?' table-hover':'','"><thead><tr>');
         if(selectable){
             h.push('<th>',this._HTMLCheckbox('cbxAll'),'</th>');
         }
