@@ -88,8 +88,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
                     Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link),
                     '</h4></div>');
             }else{
-                //h.push(Evol.UI.fieldLabel(f.id,f.label));
-                h.push('<div>', v, '</div>');
+                h.push('<div><label>',f.label,':</label> ', v, '</div>');
             }
         }
         h.push('</div>');
