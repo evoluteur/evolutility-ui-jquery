@@ -133,6 +133,7 @@ var winecellar_lovs = {
 };
 
 var winecellar_ui = {
+    id: 'evol-winecellar',
     entity: 'wine',
     entities: 'wines',
     label: 'Wine Cellar',

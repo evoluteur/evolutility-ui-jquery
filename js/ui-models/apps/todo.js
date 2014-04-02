@@ -1,6 +1,6 @@
 
 var todo_ui = {
-    id: 5,
+    id: 'evol-todo',
     label: 'To Do',
     entity: 'task',
     entities: 'tasks',
