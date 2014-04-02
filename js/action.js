@@ -18,10 +18,8 @@ Evol.ViewAction = Backbone.View.extend({
     _hashLov: {},
 
     options: {
-        style: 'panel-info',
-        pageSize: 20,
-        //titleSelector: '#title',
-        selectable: false
+        style: 'panel-info'//,
+        //titleSelector: '#title'
     }
 
 });

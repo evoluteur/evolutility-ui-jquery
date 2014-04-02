@@ -14,11 +14,6 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
     viewName: 'view',
     prefix: 'ovw',
 
-    initialize: function(opts){
-        Evol.ViewOne.prototype.initialize.apply(this, arguments);
-        this.options.mode='view';
-    },
-
     getData: function () {
         return {};
     },

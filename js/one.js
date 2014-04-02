@@ -35,6 +35,7 @@ Evol.ViewOne = Backbone.View.extend({
     initialize: function (opts) {
         var that=this;
         this.options=_.extend(this.options, opts);
+        this.mode= opts.mode || this.options.mode || this.viewName;
         this._uTitle=(!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
         this.hashLov={};
         if(this.model){
@@ -47,7 +48,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     render: function () {
         var h = [];
-        this._render(h, this.options.mode);
+        this._render(h, this.mode);
         this.$el.html(h.join(''));
         this.custOn=false;
         this._postRender();
@@ -679,6 +680,7 @@ Evol.ViewOne = Backbone.View.extend({
             bId=$targ.data('id'),
             tr=$targ.closest('tr');
 
+        evt.stopImmediatePropagation();
         if(bId==='bPlus'){
             var h=[],
                 subCollecs=this.getSubCollecs(),
