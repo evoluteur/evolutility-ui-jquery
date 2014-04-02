@@ -121,11 +121,6 @@
   .evo-title2 {
     top: 0 !important;
     margin-left: 182px;
-    background-color: white;
-  }
-  .evo-title > h1,
-  .evo-title2 > h1 {
-    color: #0d0d0d;
   }
 }
 .evo-title {
@@ -151,7 +146,8 @@
   .evo-content2,
   .evo-content3 {
     margin-left: 182px;
-    padding-top: 0;
+    margin-top: 20px;
+    padding-top: 10px;
   }
 }
 .footer {
