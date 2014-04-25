@@ -89,12 +89,11 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
     },
 
     _renderButtons: function (h) {
-        var css=Evol.UI.getSizeCSS(this.options.size);
         h.push(Evol.UI.html.clearer,
             '<div class="evol-buttons">',
-            Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'+css),
-            Evol.UI.input.button('edit', Evol.i18n.Edit, 'btn-primary'+css));
-        h.push('</div>');
+            Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
+            Evol.UI.input.button('edit', Evol.i18n.Edit, 'btn-primary'),
+            '</div>');
     }
 
 });

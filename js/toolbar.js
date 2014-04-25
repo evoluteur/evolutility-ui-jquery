@@ -297,6 +297,10 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
 	},
 
+    getView:function(){
+        return this.curView;
+    },
+
     getToolbarButtons: function(){
         if(!this._toolbarButtons){
             var lis=this.$('.evo-toolbar li');
@@ -406,9 +410,9 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
     },*/
 
-    setStatus: function(ui){
+    setStatus: function(msg){
         var $e=this.$('.evo-toolbar .evo-tb-status');
-        $e.html(ui);
+        $e.html(msg);
     },
 
 	setData: function(data){

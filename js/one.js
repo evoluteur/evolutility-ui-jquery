@@ -38,11 +38,12 @@ Evol.ViewOne = Backbone.View.extend({
         this.mode= opts.mode || this.options.mode || this.viewName;
         this._uTitle=(!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
         this.hashLov={};
+        /*
         if(this.model){
             this.model.on('change', function(model){
                 that.setModel(model);
             });
-        }
+        }*/
         //TODO set responsive layout
     },
 
@@ -360,7 +361,6 @@ Evol.ViewOne = Backbone.View.extend({
 
     renderPanel: function (h, p, pid, mode, visible) {
         var that = this;
-
         if(mode==='wiz'){
             var hidden= _.isUndefined(visible)?false:!visible;
             h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%;',hidden?'display:none;':'','">');
