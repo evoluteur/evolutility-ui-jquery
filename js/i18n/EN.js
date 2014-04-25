@@ -45,9 +45,8 @@ Evol.i18n = {
     //ListAll:'List All',
     //Print:'Print',
     //pdf:'PDF',
-    prev:'Previous',
-    next:'Next',
-    finish:'Finish !',
+
+    // --- msg & status ---
     DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value,
     DeleteEntities: 'Delete {0} {1}?', // delete 5 tasks
     Back2SearchResults:'Back to search results',
@@ -155,6 +154,18 @@ Evol.i18n = {
         bUpdateFilter:'Update filter',
         bSubmit:'Submit',
         bCancel:'Cancel'
-    }
+    },
+
+    // --- wizard ---
+    prev:'Previous',
+    next:'Next',
+    finish:'Finish !'/*,
+
+    // --- documentation ---
+    doc:{
+        entity:'Entity',
+        fields:'Fields',
+        uiModel: 'UI Model'
+    }*/
 
 };
