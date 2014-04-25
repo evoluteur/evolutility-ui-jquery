@@ -104,6 +104,7 @@ Evol.i18n = {
     export:{
         ExportEntity: 'Export {0}', // {0}=entity
         ExportEntities: 'Export {0}', // {0}=entities
+        preview:'Export Preview',
         ExportHeader: 'Header',
         ExportSeparator: 'Separator',
         ExportFirstLine:'First line for field names',

@@ -112,14 +112,14 @@ Evol.ViewAction.Export = Evol.ViewAction.extend({
         });
         h.push('</div>');
         //# Preview #######
-        h.push('<label>Export Preview</label><div class="evol-xpt-preview"></div>');
+        h.push('<label>',evoLangXpt.preview,'</label><div class="evol-xpt-preview">');
         // ## Samples
         h.push('<textarea class="Field evol-xpt-val form-control"></textarea>');
-        h.push('</div></div></div>');
+        h.push('</div></div></div></div>');
         // ## Download button
         h.push('<div class="evol-buttons form-actions">',
-            Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
-            Evol.UI.input.button('export', evoLangXpt.DownloadEntity.replace('{0}', this.options.uiModel.entities), 'btn btn-primary'));
+            EvoUI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
+            EvoUI.input.button('export', evoLangXpt.DownloadEntity.replace('{0}', this.options.uiModel.entities), 'btn btn-primary'));
         return h.join('');
     },
 
