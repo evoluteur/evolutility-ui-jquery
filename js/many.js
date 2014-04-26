@@ -33,7 +33,7 @@ Evol.ViewMany = Backbone.View.extend({
         'click .pagination>li': 'click_pagination',
         'click .evol-field-label .glyphicon-wrench': 'click_customize',
         'change .list-sel': 'click_selection',
-        'change [data-id="cbxAll"]': 'check_all'
+        'change [data-id="cbxAll"]': 'click_checkall'
     },
 
     initialize: function (opts) {
@@ -247,7 +247,7 @@ Evol.ViewMany = Backbone.View.extend({
         }
     },
 
-    check_all: function (evt) {
+    click_checkall: function (evt) {
         var isChecked=this.$('[data-id="cbxAll"]').prop('checked');
         //this.$('.list-sel:checked').not('[data-id="cbxAll"]');
         this.$('.list-sel').prop('checked', isChecked);

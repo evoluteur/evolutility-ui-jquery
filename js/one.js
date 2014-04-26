@@ -266,13 +266,12 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     _renderButtons: function (h, mode) {
-        var css=Evol.UI.getSizeCSS(this.options.size);
         h.push(Evol.UI.html.clearer,
             '<div class="evol-buttons">',
-            Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'+css),
-            Evol.UI.input.button('save', Evol.i18n.Save, 'btn-primary'+css));
+            Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
+            Evol.UI.input.button('save', Evol.i18n.Save, 'btn-primary'));
         if (this.model && this.model.isNew() && this.options.button_addAnother && mode!=='json') {
-            h.push(Evol.UI.input.button('save-add', Evol.i18n.SaveAdd, 'btn-default'+css));
+            h.push(Evol.UI.input.button('save-add', Evol.i18n.SaveAdd, 'btn-default'));
         }
         h.push('</div>');
     },

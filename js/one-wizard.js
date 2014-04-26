@@ -106,12 +106,11 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
     },
 
     _renderButtons: function (h) {
-        //var css=Evol.UI.getSizeCSS(this.options.size);
         h.push(Evol.UI.html.clearer,
             '<div class="evo-wiz-buttons">',
             Evol.UI.input.button('prev', Evol.i18n.prev, 'btn-default disabled'),
             Evol.UI.input.button('next', Evol.i18n.next, 'btn-primary'),
-            Evol.UI.input.button('finish', Evol.i18n.finish, 'btn-primary'),
+            Evol.UI.input.button('finish', Evol.i18n.finish, 'btn-default'),
             '</div>');
         return this;
     },

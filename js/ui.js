@@ -299,15 +299,6 @@ Evol.UI = {
     },
 
     // ---  Misc. ---
-    getSizeCSS: function(size){
-        switch(size){
-            case 'S':
-                return ' input-sm';
-            case 'L':
-                return ' input-lg';
-        }
-        return '';
-    },
 /*
     // get w/ automatic create if not in DOM
     getOrCreate: function (fID,$holder) {
