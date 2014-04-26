@@ -285,7 +285,9 @@ Evol.Dico = {
                 }
                 break;
             case fTypes.date:
+                return Evol.UI.formatDate(v);
             case fTypes.time:
+                return Evol.UI.formatTime(v);
             case fTypes.datetime:
                 return Evol.UI.formatDateTime(v);
             case fTypes.pix:

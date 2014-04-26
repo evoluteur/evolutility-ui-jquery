@@ -44,8 +44,8 @@ Evol.UI = {
     // --- input fields ---
     input: {
 
-        text: function (fID, fV, fd, css, size) {
-            var fCss= 'evo-field form-control ' + (css || '') + Evol.UI.getSizeCSS(size),
+        text: function (fID, fV, fd, css) {
+            var fCss= 'evo-field form-control ' + (css || ''),
                 h = ['<input type="text" id="',fID,'" value="', fV];
             if(fV.indexOf('"')>-1){
                 fV=fV.replace(/"/g,'\"');
@@ -268,40 +268,34 @@ Evol.UI = {
     },
 
     // --- date formats ---
-    formatDate: function(d){ // TODO use date not string as param
-        return d;
-        //return d.toLocaleDateString();
-        //return (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear();
+    formatDate: function(d){
+        var dateParts=d.split('-');
+        if(dateParts.length>1){
+            return dateParts[1]+'/'+dateParts[2]+'/'+dateParts[0];
+        }
     },
-    formatTime: function(d){ // TODO use date not string as param
-        return d;
-        //return d.toLocaleTimeString();
-        //return (d.getHours()) + ":" + (d.getMinutes());
-    },
-    formatDateTime: function(d){ // TODO use date not string as param
+    formatTime: function(d){
         if(!_.isUndefined(d) && d!==''){
-            var dateParts= d.split('-');
-            if(dateParts.length>1){
-                return dateParts[1]+'/'+dateParts[2]+'/'+dateParts[0];
+            var timeParts=d.split(':');
+            var hour=parseInt(timeParts[0],10);
+            if(hour>12){
+                return (hour-12)+':'+timeParts[1]+' PM';
+            }else{
+                return hour+':'+timeParts[1]+' AM';
             }
         }
         return '';
-        /*
-        //var myDate = new Date(v);
-        //if(_.isDate(myDate)){
-            var dv='';
-            //return myDate.toLocaleDateString("en-US");
-            if(f.type!=fTypes.time){
-                dv+=this.formatDate(myDate);
-                if(f.type==fTypes.datetime){
-                    dv+=' ';
-                }
+    },
+    formatDateTime: function(d){
+        if(!_.isUndefined(d) && d!==''){
+            var dateParts=d.split('T');
+            if(dateParts.length>1){
+                return this.formatDate(dateParts[0])+', '+this.formatTime(dateParts[1]);
+            }else{
+                return this.formatDate(dateParts[0]);
             }
-            if(f.type!=fTypes.date){
-                dv+=this.formatTime(myDate);
-            }
-            return dv;
-        //}*/
+        }
+        return '';
     },
 
     // ---  Misc. ---
