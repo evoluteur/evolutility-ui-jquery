@@ -7,10 +7,9 @@
  *
  *************************************************************************** */
 
-var Evol = Evol || {},
-    evoLangXpt = Evol.i18n.export;
+var evoLangXpt = Evol.i18n.export;
 
-Evol.ViewAction.Export = Evol.ViewAction.extend({
+Evol.ViewAction.Export = Backbone.View.extend({
 
     viewName: 'export',
 

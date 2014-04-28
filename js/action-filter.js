@@ -7,8 +7,7 @@
  *
  *************************************************************************** */
 
-var Evol = Evol || {},
-    evoLang=Evol.i18n.filters;
+var evoLang=Evol.i18n.filters;
 
 var fOps={
     sEqual:'eq',

@@ -8,6 +8,7 @@
  *************************************************************************** */
 
 var Evol = Evol || {};
+Evol.ViewAction = {};
 /*
 Evol.CSS = {
     field: 'evo-field form-control ',
@@ -35,10 +36,10 @@ Evol.UI = {
         return ['<label for="', fID, '">', fLbl, '</label>'].join('');
     },
     fieldLabel: function (fID, fLbl) {
-        return ['<div class="evol-field-label">', this.label(fID, fLbl) , '</div>'].join('');
+        return ['<div class="evol-field-label">', this.label(fID, fLbl), '</div>'].join('');
     },
     fieldLabelSpan: function (fID, fLbl) {
-        return ['<span class="evol-field-label">', this.label(fID, fLbl) , '</span>'].join('');
+        return ['<span class="evol-field-label">', this.label(fID, fLbl), '</span>'].join('');
     },
 
     // --- input fields ---
@@ -233,8 +234,8 @@ Evol.UI = {
     //},
 
     // --- icons ---
-    icon: function (icon, cls) {
-        return ['<i class="', cls? cls+' ':'', Evol.UI.html.glyphicon, icon, '"></i>'].join('');
+    icon: function (icon, css) {
+        return ['<i class="', css? css+' ':'', Evol.UI.html.glyphicon, icon, '"></i>'].join('');
     },
 
     iconCustomize: function (id, type) {
@@ -258,12 +259,12 @@ Evol.UI = {
     },
 
     // --- status ---
-    HTMLMsg: function (title, content, style) {
+    HTMLMsg: function (title, msg, style) {
         return [
             '<div data-id="msg" class="evo-msg alert alert-',style || 'info',
             ' alert-dismissable">', this.html.buttonClose,
             '<strong>',title,'</strong><br/><div>',
-            content,'</div></div>'
+            msg,'</div></div>'
         ].join('');
     },
 
