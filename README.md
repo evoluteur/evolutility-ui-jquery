@@ -5,7 +5,7 @@ evolutility.js is a work in progress. Eventually it will be a generic UI to buil
 The idea is to build a set of generic Backbone views to perform all CRUD (Create, Read, Update and Delete) operations on records of any data structure.
 For each object the whole set of views is defined in a single UI-model containing the description of the UI (fields mapping, layout, and behavior).
 
-## The Plan 
+## Roadmap
 
 1. Update [Evolutility metamodel] (http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications) (model of the UI models)
 2. Code the generic UI views based on the metamodel

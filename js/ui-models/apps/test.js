@@ -32,7 +32,9 @@ var test_ui = {
                 {
                     id:'name2',
                     type: 'text',
-                    label: 'Text',
+                    label: 'Text 5 chars',
+                    maxlength:5,
+                    minlength:5,
                     viewmany: true,
                     width: '38'
                 },
@@ -108,15 +110,7 @@ var test_ui = {
                             label: 'Bottle Size again',
                             labellist: 'Bottle',
                             width: 100,
-                            list:[
-                                {id:750, text: '750 ml'},
-                                {id:500, text: '500 ml'},
-                                {id:375, text: '375 cl'},
-                                {id:1500, text: '1.5 L'},
-                                {id:3000, text: '3.0 L'},
-                                {id:6000, text: '6.0 L'},
-                                {id:8000, text: '8.0 L'}
-                            ]
+                            list:bottleSizes
                         },
                         {
                             type: 'lov',
@@ -246,15 +240,12 @@ var test_ui = {
                             required: true,
                             maxlength: 10,
                             min: 0,
-                            max: 10,
-                            width: 100
+                            max: 10
                         },
                         {
                             type: 'integer',
                             id:'int2',
-                            label: 'Integer 2',
-                            maxlength: 10,
-                            width: 100
+                            label: 'Integer 2'
                         }
                     ]
                 },
@@ -268,11 +259,7 @@ var test_ui = {
                             type: 'decimal',
                             id:'dec1',
                             label: 'Decimal 1',
-                            required: true,
-                            maxlength: 10,
-                            search: '1',
-                            width: 100,
-                            format: '$ 0.00'
+                            required: true
                         },
                         {
                             type: 'decimal',
@@ -280,9 +267,7 @@ var test_ui = {
                             label: 'Decimal 2',
                             maxlength: 10,
                             search: '1',
-                            viewmany: true,
-                            width: 100,
-                            format: '$ 0.00'
+                            viewmany: true
                         },
                         {
                             type: 'money',
@@ -291,8 +276,7 @@ var test_ui = {
                             maxlength: 10,
                             search: '1',
                             viewmany: true,
-                            width: 100,
-                            format: '$ 0.00'
+                            required: true
                         }
                     ]
                 },

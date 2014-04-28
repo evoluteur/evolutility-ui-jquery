@@ -197,6 +197,17 @@ Evol.ViewOne = Backbone.View.extend({
         return this.setTitle();
     },
 
+    setFieldValue: function (fid, value){
+        this.$('#'+this.fieldViewId(fid))
+            .val(value);
+        return this;
+    },
+
+    getFieldValue: function (f){
+        var $f=this.$('#'+this.fieldViewId(f.id));
+        return Evol.Dico.getFieldTypedValue(f, $f);
+    },
+
     clear: function () {
         var fs = this.getFields(),
             that=this,
@@ -226,28 +237,17 @@ Evol.ViewOne = Backbone.View.extend({
 
     isDirty: function(){
         // TODO
-         /*
-        var data=this.getData(),
-            model=this.model;
+        /*
+         var data=this.getData(),
+         model=this.model;
 
-        for(var prop in data){
-            if(data[prop] !== model.get(prop)){
-                alert('data[prop]='+data[prop]+' - model.get(prop)='+model.get(prop)); //TODO remove this alert
-                return true;
-            }
-        }*/
+         for(var prop in data){
+         if(data[prop] !== model.get(prop)){
+         alert('data[prop]='+data[prop]+' - model.get(prop)='+model.get(prop)); //TODO remove this alert
+         return true;
+         }
+         }*/
         return false;
-    },
-
-    setFieldValue: function (fid, value){
-        this.$('#'+this.fieldViewId(fid))
-            .val(value);
-        return this;
-    },
-
-    getFieldValue: function (f){
-        var $f=this.$('#'+this.fieldViewId(f.id));
-        return Evol.Dico.getFieldTypedValue(f, $f);
     },
 
     showTab: function (tabid) {
@@ -541,7 +541,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     showHelp:function(id, type, $el){
-        var fs=Evol.Dico.getFields(this.options.uiModel),
+        var fs=this.getFields(),
             fld=_.findWhere(fs,{id:id});
 
         if(fld||fld.help){
@@ -552,9 +552,9 @@ Evol.ViewOne = Backbone.View.extend({
                     $fh.remove();
                 });
             }else{
-                var $elDes=$('<span class="help-block">' + _.escape(fld.help) + '</span>').hide();
-                $f.append($elDes);
-                $elDes.slideDown(200);
+                $fh=$('<span class="help-block">' + _.escape(fld.help) + '</span>').hide();
+                $f.append($fh);
+                $fh.slideDown(200);
             }
         }
         return this;

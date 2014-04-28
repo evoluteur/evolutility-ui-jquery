@@ -126,11 +126,6 @@
   .evo-title2 {
     top: 0 !important;
     margin-left: 182px;
-    background-color: white;
-  }
-  .evo-title > h1,
-  .evo-title2 > h1 {
-    color: #0d0d0d;
   }
 }
 .evo-title {
@@ -156,7 +151,8 @@
   .evo-content2,
   .evo-content3 {
     margin-left: 182px;
-    padding-top: 0;
+    margin-top: 20px;
+    padding-top: 10px;
   }
 }
 .footer {
@@ -167,6 +163,8 @@
 .evo-toolbar {
   border: 1px solid #bce8f1;
   border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
   margin-bottom: 10px;
   padding: 3px;
   background-color: #fbfbfb;
@@ -180,11 +178,6 @@
 }
 .evo-toolbar > ul > li > a {
   max-height: 35px;
-}
-.evo-toolbar > ul .evo-tb-sel {
-  border: 1px solid #bce8f1;
-  border-radius: 4px;
-  padding: 3px;
 }
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
@@ -412,10 +405,12 @@ img.evol-table-icon {
   float: left;
   width: 240px;
   min-width: 140px;
-  height: 150px;
+  height: 164px;
   margin: 5px;
   padding: 10px;
   border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
   overflow: auto;
 }
 /* --- charts --- */
@@ -543,6 +538,9 @@ img.evol-table-icon {
 .evo-editFilter > button,
 .evo-editFilter > a {
   clear: left;
+}
+.evo-editFilter .as-Txt {
+  line-height: 30px;
 }
 .evo-editFilter > #value {
   margin-right: 5px;
