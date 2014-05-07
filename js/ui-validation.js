@@ -126,9 +126,9 @@ Evol.UI.Validation = {
                         break;
                     case ft.dec:
                     case ft.money:
-                        var myRegExp = evoRegEx[fd.type + Evol.i18n.LOCALE];
+                        var myRegExp = evoRegEx[ft.dec + Evol.i18n.LOCALE];
                         if (myRegExp === null) {
-                            myRegExp = evoRegEx[fd.type + "EN"]; // default to English with "."
+                            myRegExp = evoRegEx[ft.dec + 'EN']; // default to English with "."
                         }
                         if (!myRegExp.test(fv))
                             that.setValidationFlags($f.parent(), labMsg(i18nVal[fd.type]));

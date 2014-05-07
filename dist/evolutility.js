@@ -273,15 +273,18 @@ Evol.UI = {
 
     // --- date formats ---
     formatDate: function(d){
-        var dateParts=d.split('-');
-        if(dateParts.length>1){
-            return dateParts[1]+'/'+dateParts[2]+'/'+dateParts[0];
+        if(!_.isUndefined(d) && d!==null){
+            var dateParts=d.split('-');
+            if(dateParts.length>1){
+                return dateParts[1]+'/'+dateParts[2]+'/'+dateParts[0];
+            }
         }
+        return '';
     },
     formatTime: function(d){
-        if(!_.isUndefined(d) && d!==''){
-            var timeParts=d.split(':');
-            var hour=parseInt(timeParts[0],10);
+        if(!_.isUndefined(d) && d!==null && d!==''){
+            var timeParts=d.split(':'),
+                hour=parseInt(timeParts[0],10);
             if(hour>12){
                 return (hour-12)+':'+timeParts[1]+' PM';
             }else{
@@ -291,7 +294,7 @@ Evol.UI = {
         return '';
     },
     formatDateTime: function(d){
-        if(!_.isUndefined(d) && d!==''){
+        if(!_.isUndefined(d) && d!==null && d!==''){
             var dateParts=d.split('T');
             if(dateParts.length>1){
                 return this.formatDate(dateParts[0])+', '+this.formatTime(dateParts[1]);
@@ -523,9 +526,9 @@ Evol.UI.Validation = {
                         break;
                     case ft.dec:
                     case ft.money:
-                        var myRegExp = evoRegEx[fd.type + Evol.i18n.LOCALE];
+                        var myRegExp = evoRegEx[ft.dec + Evol.i18n.LOCALE];
                         if (myRegExp === null) {
-                            myRegExp = evoRegEx[fd.type + "EN"]; // default to English with "."
+                            myRegExp = evoRegEx[ft.dec + 'EN']; // default to English with "."
                         }
                         if (!myRegExp.test(fv))
                             that.setValidationFlags($f.parent(), labMsg(i18nVal[fd.type]));

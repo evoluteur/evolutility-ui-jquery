@@ -270,15 +270,18 @@ Evol.UI = {
 
     // --- date formats ---
     formatDate: function(d){
-        var dateParts=d.split('-');
-        if(dateParts.length>1){
-            return dateParts[1]+'/'+dateParts[2]+'/'+dateParts[0];
+        if(!_.isUndefined(d) && d!==null){
+            var dateParts=d.split('-');
+            if(dateParts.length>1){
+                return dateParts[1]+'/'+dateParts[2]+'/'+dateParts[0];
+            }
         }
+        return '';
     },
     formatTime: function(d){
-        if(!_.isUndefined(d) && d!==''){
-            var timeParts=d.split(':');
-            var hour=parseInt(timeParts[0],10);
+        if(!_.isUndefined(d) && d!==null && d!==''){
+            var timeParts=d.split(':'),
+                hour=parseInt(timeParts[0],10);
             if(hour>12){
                 return (hour-12)+':'+timeParts[1]+' PM';
             }else{
@@ -288,7 +291,7 @@ Evol.UI = {
         return '';
     },
     formatDateTime: function(d){
-        if(!_.isUndefined(d) && d!==''){
+        if(!_.isUndefined(d) && d!==null && d!==''){
             var dateParts=d.split('T');
             if(dateParts.length>1){
                 return this.formatDate(dateParts[0])+', '+this.formatTime(dateParts[1]);
