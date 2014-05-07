@@ -84,7 +84,7 @@ Evol.UI = {
             return h.join('');
         },
         textM: function (fID, fV, ml, h) {
-            return ['<textarea name="', fID, '" id="', fID, '" class="evo-field form-control"" rows="', h,
+            return ['<textarea id="', fID, '" class="evo-field form-control" rows="', h,
                 (ml > 0) ? ('" onKeyUp="Evol.UI.Validation.checkMaxLen(this,' + ml + ')') : '',
                 '">', fV, '</textarea>'
             ].join('');
@@ -1900,9 +1900,11 @@ Evol.ViewOne = Backbone.View.extend({
                     }else{
                         switch(f.type) {
                             case fTypes.lov:
-                                $f.children().removeAttr('selected')
-                                    .filter('[value='+fv+']')
-                                    .attr('selected', true);
+                                var $fc=$f.children().removeAttr('selected');
+                                if(fv!==''){
+                                    $fc.filter('[value='+fv+']')
+                                        .attr('selected', true);
+                                }
                                 break;
                             case fTypes.bool:
                                 $f.prop('checked', fv);

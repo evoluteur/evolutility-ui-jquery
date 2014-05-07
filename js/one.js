@@ -166,9 +166,11 @@ Evol.ViewOne = Backbone.View.extend({
                     }else{
                         switch(f.type) {
                             case fTypes.lov:
-                                $f.children().removeAttr('selected')
-                                    .filter('[value='+fv+']')
-                                    .attr('selected', true);
+                                var $fc=$f.children().removeAttr('selected');
+                                if(fv!==''){
+                                    $fc.filter('[value='+fv+']')
+                                        .attr('selected', true);
+                                }
                                 break;
                             case fTypes.bool:
                                 $f.prop('checked', fv);
