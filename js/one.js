@@ -429,9 +429,9 @@ Evol.ViewOne = Backbone.View.extend({
                         _.each(fs, function (f) {
                             h.push('<td>');
                             if(row[f.id]){
-                                h.push(_.escape(Evol.Dico.HTMLField4Many(f, row[f.id], this.hashLov)));
+                                h.push(_.escape(Evol.Dico.HTMLField4Many(f, row[f.id], that.hashLov)));
                             }else{
-                                h.push(Evol.Dico.HTMLField4Many(f, '', this.hashLov));
+                                h.push(Evol.Dico.HTMLField4Many(f, '', that.hashLov));
                             }
                             h.push('</td>');
                         });
