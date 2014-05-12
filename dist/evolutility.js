@@ -854,7 +854,7 @@ Evol.Dico = {
 
     // get field value (not id but text) for a field of type lov
     lovText:function(f, v, hash){
-        if(f.list && f.list.length>0){
+        if(f.list && f.list.length>0 && hash){
             if(!(f.id in hash)){
                 hash[f.id]={};
             }
