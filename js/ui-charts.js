@@ -18,18 +18,20 @@ Evol.UI.Charts = {
         ].join('');
     },
 
-    Pie: function (label, data, labels, style){
+    Pie: function (label, data, labels, style, sizes){
+        var size=sizes?sizes:'360x200';
         var urlGoogleChart = [this.URL,'?chd=t:',
             data.join(','),
             '&amp;chl=',
             labels.join('|'),
-            '&amp;cht=p&amp;chds=0,20&amp;chs=360x200'].join('');
+            '&amp;cht=p&amp;chds=0,20&amp;chs=',size].join('');
         return this._HTML(label, urlGoogleChart, style || 'panel-default');
     },
 
-    Bars: function (label, data, labels, style){
+    Bars: function (label, data, labels, style, sizes){
+        var size=sizes?sizes:'350x200';
         var maxCount = _.max(data),
-            urlGoogleChart = [this.URL,'?chbh=a&amp;chs=350x200&cht=bvg&chco=3a87ad,d9edf7&chds=0,',
+            urlGoogleChart = [this.URL,'?chbh=a&amp;chs=',size,'&cht=bvg&chco=3a87ad,d9edf7&chds=0,',
                 maxCount,
                 '&amp;chd=t:',
                 data.join('|'),

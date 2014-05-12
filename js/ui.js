@@ -157,12 +157,12 @@ Evol.UI = {
         },
         hidden: function (fID, fV) {
             return ['<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>'].join('');
-        },
+        },/*
         hiddens: function (h, list) {
             _.each(function (){
                 h.push('<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>');
             });
-        },
+        },*/
         selectBegin: function (fID, css, emptyOption) {
             var h=['<select id="', fID, '" class="form-control ',css,'">'];
             if(emptyOption){

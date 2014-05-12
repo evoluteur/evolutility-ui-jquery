@@ -160,12 +160,12 @@ Evol.UI = {
         },
         hidden: function (fID, fV) {
             return ['<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>'].join('');
-        },
+        },/*
         hiddens: function (h, list) {
             _.each(function (){
                 h.push('<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>');
             });
-        },
+        },*/
         selectBegin: function (fID, css, emptyOption) {
             var h=['<select id="', fID, '" class="form-control ',css,'">'];
             if(emptyOption){
@@ -374,18 +374,20 @@ Evol.UI.Charts = {
         ].join('');
     },
 
-    Pie: function (label, data, labels, style){
+    Pie: function (label, data, labels, style, sizes){
+        var size=sizes?sizes:'360x200';
         var urlGoogleChart = [this.URL,'?chd=t:',
             data.join(','),
             '&amp;chl=',
             labels.join('|'),
-            '&amp;cht=p&amp;chds=0,20&amp;chs=360x200'].join('');
+            '&amp;cht=p&amp;chds=0,20&amp;chs=',size].join('');
         return this._HTML(label, urlGoogleChart, style || 'panel-default');
     },
 
-    Bars: function (label, data, labels, style){
+    Bars: function (label, data, labels, style, sizes){
+        var size=sizes?sizes:'350x200';
         var maxCount = _.max(data),
-            urlGoogleChart = [this.URL,'?chbh=a&amp;chs=350x200&cht=bvg&chco=3a87ad,d9edf7&chds=0,',
+            urlGoogleChart = [this.URL,'?chbh=a&amp;chs=',size,'&cht=bvg&chco=3a87ad,d9edf7&chds=0,',
                 maxCount,
                 '&amp;chd=t:',
                 data.join('|'),
@@ -1557,6 +1559,17 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
 
     viewName: 'chart',
 
+    options: {
+        //sizes: '600x300',
+        style: 'panel-info',
+        pageSize: 20,
+        pageIndex:0,
+        autoUpdate: false,
+        //titleSelector: '#title',
+        selectable: false,
+        links: true
+    },
+
     events: {
         'click .evol-field-label .glyphicon-wrench': 'click_customize'
     },
@@ -1565,7 +1578,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
         var h = [];
         if(this.collection && this.collection.length>0){
             h.push('<div class="evol-many-', this.viewName, '">');
-            this._HTMLcharts(h, this.options.style);
+            this._HTMLcharts(h, this.options.style, this.options.sizes);
             h.push('</div>');
         }else{
             h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
@@ -1574,7 +1587,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
         return this.setTitle();
     },
 
-    _HTMLcharts: function (h, style) {
+    _HTMLcharts: function (h, style, sizes) {
         var that=this,
             EvoUI = Evol.UI,
             EvoDico = Evol.Dico,
@@ -1617,9 +1630,9 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                 }
                 var entityName=EvoUI.capitalize(uiModel.entities);
                 if(f.type===fTypes.lov){
-                    h.push(EvoUI.Charts.Pie(i18n.getLabel('charts.aByB',entityName,f.label), data, labels, style));
+                    h.push(EvoUI.Charts.Pie(i18n.getLabel('charts.aByB',entityName,f.label), data, labels, style, sizes));
                 }else{
-                    h.push(EvoUI.Charts.Bars(i18n.getLabel('charts.aB',entityName,f.label), data, labels, style));
+                    h.push(EvoUI.Charts.Bars(i18n.getLabel('charts.aB',entityName,f.label), data, labels, style, sizes));
                 }
             });
         }else{
