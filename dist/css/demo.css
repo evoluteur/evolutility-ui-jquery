@@ -155,6 +155,22 @@
   font-size: smaller;
   color: #c0c0c0;
 }
+.evol-doc-views > section > div {
+  width: 500px;
+  margin: 10px;
+}
+.evol-doc-views > section > div > img {
+  width: 500px;
+}
+.evol-doc-views img.shadow {
+  border: 1px solid #e0e0e0;
+  box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);
+}
+.evo-content3 > p > img {
+  width: 500px;
+}
 body {
   font-size: 11pt;
   font-family: "Century Gothic", arial;
