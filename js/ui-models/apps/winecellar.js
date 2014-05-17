@@ -203,7 +203,7 @@ var winecellar_ui = {
                             id:'grape',
                             type: 'lov',
                             label: 'Grape',
-                            viewmany: true,
+                            viewmany: false,
                             width: '62',
                             list: winecellar_lovs.grape
                         },
