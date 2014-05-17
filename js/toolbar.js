@@ -69,15 +69,14 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     initialize: function (opts) {
         _.extend(this.options, opts);
-        this.render();
-        //this.$('[data-toggle="tooltip"]').tooltip();
-        this.$('.dropdown-toggle').dropdown();
     },
 
 	render: function() {
 		this.$el.html(this._toolbarHTML());
 		this.setView(this.options.defaultView || 'list');
         this._viewsIcon=this.$('.glyphicon-eye-open');
+        //this.$('[data-toggle="tooltip"]').tooltip();
+        this.$('.dropdown-toggle').dropdown();
 	},
 
     _toolbarHTML: function(){

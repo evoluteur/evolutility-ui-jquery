@@ -53,7 +53,7 @@ function setDemo(uiModel, localStorage, data, style){
                     collectionClass: Ms,
                     uiModel: uiModel,
                     titleSelector: '#title'
-                });
+                }).render();
 
             $('#recs > a').on('click', function(evt){
                 var id=$(evt.currentTarget).index();
