@@ -33,7 +33,6 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        var that=this;
         this.options=_.extend(this.options, opts);
         this.mode= opts.mode || this.options.mode || this.viewName;
         this._uTitle=(!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
@@ -215,17 +214,23 @@ Evol.ViewOne = Backbone.View.extend({
             that=this,
             $f,
             prefix='#'+ that.prefix + '-',
-            subCollecs=this.getSubCollecs();
+            subCollecs=this.getSubCollecs(),
+            defaultVal;
 
         this.clearMessages();
         _.each(fs, function (f) {
-            $f=that.$(prefix + f.id);
+            $f = that.$(prefix + f.id);
+            defaultVal = f.defaultvalue || '';
             switch(f.type) {
-                case 'boolean':
-                    $f.prop('checked', f.defaultvalue || '');
+                case Evol.Dico.fieldTypes.bool:
+                    $f.prop('checked', defaultVal);
                     break;
                 default:
-                    $f.val(f.defaultvalue || '');
+                    if(f.readonly){
+                        $f.html(defaultVal);
+                    }else{
+                        $f.val(defaultVal);
+                    }
             }
         });
         if(subCollecs){
@@ -235,6 +240,13 @@ Evol.ViewOne = Backbone.View.extend({
             });
         }
         return this;
+    },
+
+    getModelFieldValue: function(fid, fvDefault, mode){
+        if(this.model && this.model.has(fid)){
+            return (mode !== 'new') ? this.model.get(fid) : fvDefault || '';
+        }
+        return '';
     },
 
     isDirty: function(){
@@ -378,22 +390,31 @@ Evol.ViewOne = Backbone.View.extend({
             '<fieldset data-pid="', pid, '">');
         if(mode==='mini'){
             _.each(p.elements, function (elem) {
-                h.push('<div class="pull-left evol-fld w-100">');
-                that.renderField(h, elem, mode);
-                h.push("</div>");
+                if(elem.type==Evol.Dico.fieldTypes.hidden){
+                    h.push(Evol.UI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
+                }else{
+                    h.push('<div class="pull-left evol-fld w-100">');
+                    that.renderField(h, elem, mode);
+                    h.push("</div>");
+                }
             });
         }else{
             _.each(p.elements, function (elem) {
                 if(elem.type=='panel-list'){
                     that.renderPanelList(h, elem, mode);
                 }else{
-                    h.push('<div style="width:', parseInt(elem.width, 10), '%" class="pull-left evol-fld">');
-                    that.renderField(h, elem, mode);
-                    h.push("</div>");
+                    if(elem.type==Evol.Dico.fieldTypes.hidden){
+                        h.push(Evol.UI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
+                    }else{
+                        h.push('<div style="width:', parseInt(elem.width, 10), '%" class="pull-left evol-fld">');
+                        that.renderField(h, elem, mode);
+                        h.push("</div>");
+                    }
                 }
             });
         }
         h.push('</fieldset></div></div>');
+
     },
 
     renderPanelList: function (h, p, mode) {

@@ -32,7 +32,7 @@ Evol.Dico = {
         email: 'email',
         //pwd: 'password',
         color: 'color',
-        //hidden: 'hidden',
+        hidden: 'hidden',
         //rating: 'rating',
         //tag: 'tag',
         //widget: 'widget',
