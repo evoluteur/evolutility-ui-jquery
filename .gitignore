@@ -3,6 +3,7 @@ bower_components
 js/vendors.js
 dist/vendors.js
 js/models
+js/widgets
 *.xml
 *-nogit
 *-nogit.*
