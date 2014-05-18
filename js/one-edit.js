@@ -12,6 +12,20 @@
 Evol.ViewOne.Edit = Evol.ViewOne.extend({
 
     viewName: 'edit',
-    prefix: 'oe'
+    prefix: 'oe',
 
+    postRender:function(){
+        var pref = '#' + this.prefix + '-',
+            fs=Evol.Dico.getFields(this.options.uiModel, function(m){
+            return m.type === 'list';
+        });
+        _.each(fs, function(f){
+            this.$(pref + f.id).select2(
+                {
+                    data: f.list,
+                    multiple:true
+                }
+            );
+        });
+    }
 });

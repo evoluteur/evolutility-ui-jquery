@@ -134,6 +134,11 @@
 .evo-msg > div {
   margin-top: 5px;
 }
+.evo-color-box {
+  height: 20px;
+  width: 20px;
+  border: solid 1px silver;
+}
 /* --- mini --- */
 .evol-mini-holder {
   margin: 10px -10px;

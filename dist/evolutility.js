@@ -11,6 +11,7 @@
  *************************************************************************** */
 
 var Evol = Evol || {};
+Evol.hashLov = {};
 Evol.ViewAction = {};
 /*
 Evol.CSS = {
@@ -114,6 +115,13 @@ Evol.UI = {
         color: function (fId, fVal) {
             return [
                 '<input type="color" id="', fId, '" value="', fVal, '" size="15">'
+            ].join('');
+        },
+        colorBox: function (fid, fVal) {
+            return [
+                '<div class="evo-color-box" id="', fid,
+                '" style="background-color:', fVal,
+                '" title="', fVal, '"></div>'
             ].join('');
         },
         checkbox: function (fID, fV) {
@@ -778,15 +786,15 @@ Evol.Dico = {
         pix: 'image',
         doc:'document',
         lov: 'lov',
+        list: 'list', // many values for one field (behave like tags - return an array of strings
         money: 'money',
         //formula:'formula',
         //html:'html',
         email: 'email',
         //pwd: 'password',
         color: 'color',
-        //hidden: 'hidden',
+        hidden: 'hidden',
         //rating: 'rating',
-        //tag: 'tag',
         //widget: 'widget',
         url: 'url'
     },
@@ -824,6 +832,8 @@ Evol.Dico = {
             case ft.decimal:
             case ft.money:
                 return parseFloat($f.val());
+            case ft.list:
+                return $f.select2('val');
             default:
                 return $f.val();
         }
@@ -1036,6 +1046,18 @@ Evol.Dico = {
                     //}
                 }
                 break;
+            case fTypes.list:
+                if(_.isString(v)){
+                    v= v.split(',');
+                }
+                if(v && v.length){
+                    var vs=[];
+                    _.each(v, function(vi){
+                        vs.push(Evol.Dico.lovText(f, vi, hashLov));
+                    });
+                    return vs.join(', ');
+                }
+                return v;
             case fTypes.date:
                 return Evol.UI.formatDate(v);
             case fTypes.time:
@@ -1063,7 +1085,7 @@ Evol.Dico = {
         var h=[],
             size=50, // TODO fix it
             EvoUI=Evol.UI,
-            types=Evol.Dico.fieldTypes;
+            fTypes=Evol.Dico.fieldTypes;
         // --- field label ---
         if(mode==='mini'){
             var fwidth=fld.width;
@@ -1075,25 +1097,32 @@ Evol.Dico = {
         }
         if(fld.readonly || mode==='view'){
             // TODO: css for readonly fields
-            h.push('<div id="',fid, '" class="disabled evo-rdonly">', this.HTMLField4Many(fld, fv, {}), '&nbsp;</div>');
+            h.push('<div id="',fid, '" class="disabled evo-rdonly">');
+            if(fld.type==fTypes.color){
+                //h.push(Evol.UI.input.colorBox(fid, fv), fv);
+                h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
+            }else{
+                h.push(this.HTMLField4Many(fld, fv, {}));
+            }
+            h.push('&nbsp;</div>');
         }else{
             switch (fld.type) {
-                case types.text:
+                case fTypes.text:
                     h.push(EvoUI.input.text(fid, fv, fld, null, size));
                     break;
-                case types.integer:
-                case types.dec:
+                case fTypes.integer:
+                case fTypes.dec:
                     h.push(EvoUI.input.textInt(fid, fv, fld.max, fld.min));
                     break;
-                case types.money:
+                case fTypes.money:
                     h.push('<div class="input-group">', EvoUI.input.typeFlag('$'),
                         EvoUI.input.textInt(fid, fv), '</div>');
                     break;
-                case types.bool:
+                case fTypes.bool:
                     h.push(EvoUI.input.checkbox(fid, fv));
                     break;
-                case types.txtm:
-                case types.html:
+                case fTypes.txtm:
+                case fTypes.html:
                     // fv = _.escape(fv);
                     if (fld.height === null) {
                         fld.height = 5;
@@ -1105,19 +1134,22 @@ Evol.Dico = {
                     }
                     h.push(EvoUI.input.textM(fid, fv, fld.maxlength, fld.height));
                     break;
-                case types.date:
+                case fTypes.date:
                     h.push(EvoUI.input.date(fid, fv));
                     break;
-                case types.datetime:
+                case fTypes.datetime:
                     h.push(EvoUI.input.dateTime(fid, fv));
                     break;
-                case types.time:
+                case fTypes.time:
                     h.push(EvoUI.input.time(fid, fv));
                     break;
-                case types.lov:
+                case fTypes.lov:
                     h.push(EvoUI.input.select(fid, fv, '', true, fld.list));
                     break;
-                case types.email:
+                case fTypes.list: // fv is an array. will use select2
+                    h.push('<div id="',fid, '" class="w-100 form-control"></div>');
+                    break;
+                case fTypes.email:
                     if (mode === 'view') {
                         h.push(EvoUI.linkEmail(fid, fv));
                     } else {
@@ -1125,15 +1157,15 @@ Evol.Dico = {
                             EvoUI.input.text(fid, fv, fld.maxlength), '</div>');
                     }
                     break;
-                case types.url:
+                case fTypes.url:
                     if (mode === 'view') {
                         h.push(EvoUI.link(fid, fv, encodeURI(fv), fid));
                     } else {
                         h.push(EvoUI.input.text(fid, fv, fld.maxlength));
                     }
                     break;
-                //case types.doc:
-                case types.pix:
+                //case fTypes.doc:
+                case fTypes.pix:
                     if(fv!==''){
                         h.push('<img src="',fv,'" class="img-thumbnail">');
                     }else{
@@ -1141,8 +1173,12 @@ Evol.Dico = {
                     }
                     h.push(EvoUI.input.text(fid, fv, fld, null, size));
                     break;
-                case types.color:
+                case fTypes.color:
+                    //h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
                     h.push(EvoUI.input.color(fid, fv));
+                    break;
+                case fTypes.hidden:
+                    h.push(EvoUI.input.hidden(fid, fv));
                     break;
             }
         }
@@ -1203,7 +1239,6 @@ Evol.ViewMany = Backbone.View.extend({
 
     viewType:'many',
     cardinality: 'n',
-    _hashLov: {},
 
     options: {
         style: 'panel-info',
@@ -1319,8 +1354,8 @@ Evol.ViewMany = Backbone.View.extend({
         return this._fieldHash[fid];
     },
 
-    _HTMLField: function(f,v){
-        return Evol.Dico.HTMLField4Many(f,v, this._fieldHash);
+    _HTMLField: function(f, v){
+        return Evol.Dico.HTMLField4Many( f, v, Evol.hashLov);
     },
 
     _$Selection:function(){
@@ -1596,7 +1631,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             uiModel = this.options.uiModel,
             models = this.collection.models,
             chartFields = EvoDico.getFields(uiModel, function(f){
-                return (f.type==fTypes.lov || f.type==fTypes.bool || f.type==fTypes.integer);
+                return f.viewcharts || f.type==fTypes.lov || f.type==fTypes.bool || f.type==fTypes.integer;
             });
 
         if(chartFields && chartFields.length){
@@ -1614,11 +1649,11 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                         lb = i18n.na;
                     }else if(dataSetName==='' || dataSetName==='null'){
                         lb = i18n.none;
-                    }else if(f.type===fTypes.lov){
+                    }else if(f.type===fTypes.lov || f.type===fTypes.list){
                         if(f.list && f.list.length && f.list[0].icon){
                             lb = EvoDico.lovTextNoPix(f, dataSetName);
                         }else{
-                            lb = EvoDico.lovText(f, dataSetName, that._hashLov);
+                            lb = EvoDico.lovText(f, dataSetName, Evol.hashLov);
                         }
                     }else if(f.type===fTypes.bool){
                         lb = (dataSetName==='true')?i18n.yes:i18n.no;
@@ -1718,18 +1753,24 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
     },
 
     HTMLItem: function(h, fields, model, icon, selectable){
-        var f, v, link = (this.options.links!==false);
+        var that=this,
+            f,
+            v,
+            link = (this.options.links!==false);
         h.push('<tr data-mid="', model.id, '">');
         if(selectable){
             h.push('<td class="list-td-sel">',this._HTMLCheckbox(model.id),'</td>');
         }
-        for (var i=0; i<fields.length; i++) {
-            f = fields[i];
-            v = this._HTMLField(f, model.escape(f.id));
+        _.each(fields,function(f, idx){
+            if(f.type===Evol.Dico.fieldTypes.color){
+                v = Evol.UI.input.colorBox(f.id, model.get(f.id));
+            }else{
+                v = that._HTMLField(f, model.escape(f.id));
+            }
             h.push('<td>',
-                (i===0)?Evol.Dico.HTMLFieldLink('fv-'+f.id, f, v, icon, !link):v,
+                (idx===0)?Evol.Dico.HTMLFieldLink('fv-'+f.id, f, v, icon, !link):v,
                 '</td>');
-        }
+        });
         h.push('</tr>');
     },
 
@@ -1780,11 +1821,9 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        var that=this;
         this.options=_.extend(this.options, opts);
         this.mode= opts.mode || this.options.mode || this.viewName;
         this._uTitle=(!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
-        this.hashLov={};
         /*
         if(this.model){
             this.model.on('change', function(model){
@@ -1799,11 +1838,12 @@ Evol.ViewOne = Backbone.View.extend({
         this._render(h, this.mode);
         this.$el.html(h.join(''));
         this.custOn=false;
-        this._postRender();
+        this.postRender();
+        this.setData(this.model); // TODO remove it
         return this;
     },
 
-    _postRender: function (){
+    postRender: function (){
         // to overwrite...
     },
 
@@ -1928,6 +1968,9 @@ Evol.ViewOne = Backbone.View.extend({
                                     .prev().remove();
                                 $f.before(newPix);
                                 break;
+                            case fTypes.list:
+                                $f.select2('val',fv);
+                                break;
                             default:
                                 $f.val(fv);
                         }
@@ -1962,17 +2005,26 @@ Evol.ViewOne = Backbone.View.extend({
             that=this,
             $f,
             prefix='#'+ that.prefix + '-',
-            subCollecs=this.getSubCollecs();
+            subCollecs=this.getSubCollecs(),
+            defaultVal;
 
         this.clearMessages();
         _.each(fs, function (f) {
-            $f=that.$(prefix + f.id);
+            $f = that.$(prefix + f.id);
+            defaultVal = f.defaultvalue || '';
             switch(f.type) {
-                case 'boolean':
-                    $f.prop('checked', f.defaultvalue || '');
+                case Evol.Dico.fieldTypes.bool:
+                    $f.prop('checked', defaultVal);
+                    break;
+                case Evol.Dico.fieldTypes.bool:
+                    $f.prop('checked', defaultVal);
                     break;
                 default:
-                    $f.val(f.defaultvalue || '');
+                    if(f.readonly){
+                        $f.html(defaultVal);
+                    }else{
+                        $f.val(defaultVal);
+                    }
             }
         });
         if(subCollecs){
@@ -1982,6 +2034,13 @@ Evol.ViewOne = Backbone.View.extend({
             });
         }
         return this;
+    },
+
+    getModelFieldValue: function(fid, fvDefault, mode){
+        if(this.model && this.model.has(fid)){
+            return (mode !== 'new') ? this.model.get(fid) : fvDefault || '';
+        }
+        return '';
     },
 
     isDirty: function(){
@@ -2108,7 +2167,8 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     renderPanel: function (h, p, pid, mode, visible) {
-        var that = this;
+        var that = this,
+            fTypes=Evol.Dico.fieldTypes;
         if(mode==='wiz'){
             var hidden= _.isUndefined(visible)?false:!visible;
             h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%;',hidden?'display:none;':'','">');
@@ -2125,22 +2185,31 @@ Evol.ViewOne = Backbone.View.extend({
             '<fieldset data-pid="', pid, '">');
         if(mode==='mini'){
             _.each(p.elements, function (elem) {
-                h.push('<div class="pull-left evol-fld w-100">');
-                that.renderField(h, elem, mode);
-                h.push("</div>");
+                if(elem.type==fTypes.hidden){
+                    h.push(Evol.UI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
+                }else{
+                    h.push('<div class="pull-left evol-fld w-100">');
+                    that.renderField(h, elem, mode);
+                    h.push("</div>");
+                }
             });
         }else{
             _.each(p.elements, function (elem) {
                 if(elem.type=='panel-list'){
                     that.renderPanelList(h, elem, mode);
                 }else{
-                    h.push('<div style="width:', parseInt(elem.width, 10), '%" class="pull-left evol-fld">');
-                    that.renderField(h, elem, mode);
-                    h.push("</div>");
+                    if(elem.type==fTypes.hidden){
+                        h.push(Evol.UI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
+                    }else{
+                        h.push('<div style="width:', parseInt(elem.width, 10), '%" class="pull-left evol-fld">');
+                        that.renderField(h, elem, mode);
+                        h.push("</div>");
+                    }
                 }
             });
         }
         h.push('</fieldset></div></div>');
+
     },
 
     renderPanelList: function (h, p, mode) {
@@ -2176,13 +2245,14 @@ Evol.ViewOne = Backbone.View.extend({
                         _.each(fs, function (f) {
                             h.push('<td>');
                             if(row[f.id]){
+                                //form-control
                                 if(f.type!==Evol.Dico.fieldTypes.bool){
-                                    h.push(_.escape(Evol.Dico.HTMLField4Many(f, row[f.id], that.hashLov)));
+                                    h.push(_.escape(Evol.Dico.HTMLField4Many(f, row[f.id], Evol.hashLov)));
                                 }else{
-                                    h.push(Evol.Dico.HTMLField4Many(f, row[f.id], that.hashLov));
+                                    h.push(Evol.Dico.HTMLField4Many(f, row[f.id], Evol.hashLov));
                                 }
                             }else{
-                                h.push(Evol.Dico.HTMLField4Many(f, '', that.hashLov));
+                                h.push(Evol.Dico.HTMLField4Many(f, '', Evol.hashLov));
                             }
                             h.push('</td>');
                         });
@@ -2473,8 +2543,22 @@ Evol.ViewOne = Backbone.View.extend({
 Evol.ViewOne.Edit = Evol.ViewOne.extend({
 
     viewName: 'edit',
-    prefix: 'oe'
+    prefix: 'oe',
 
+    postRender:function(){
+        var pref = '#' + this.prefix + '-',
+            fs=Evol.Dico.getFields(this.options.uiModel, function(m){
+            return m.type === 'list';
+        });
+        _.each(fs, function(f){
+            this.$(pref + f.id).select2(
+                {
+                    data: f.list,
+                    multiple:true
+                }
+            );
+        });
+    }
 });
 ;
 /*! ***************************************************************************
@@ -2541,7 +2625,7 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
  *
  *************************************************************************** */
 
-Evol.ViewOne.Mini = Evol.ViewOne.extend({
+Evol.ViewOne.Mini = Evol.ViewOne.Edit.extend({
 
     events: {
         'click > .evol-buttons > button': 'click_button',
@@ -2605,7 +2689,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                     switch(f.type){
                         case fTypes.lov:
                         case fTypes.bool:
-                            $f.html(Evol.Dico.HTMLField4Many(f, fv, that.hashLov));
+                            $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov));
                             break;
                         case fTypes.url:
                             $f.html(Evol.UI.link(f.id, fv, fv, f.id));
@@ -2617,7 +2701,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                             $f.html((fv)?('<img src="'+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
                             break;
                         default:
-                            $f.text(Evol.Dico.HTMLField4Many(f, fv) || ' ');
+                            $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov) || ' ');
                     }
                 }
             });
@@ -4023,15 +4107,14 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     initialize: function (opts) {
         _.extend(this.options, opts);
-        this.render();
-        //this.$('[data-toggle="tooltip"]').tooltip();
-        this.$('.dropdown-toggle').dropdown();
     },
 
 	render: function() {
 		this.$el.html(this._toolbarHTML());
 		this.setView(this.options.defaultView || 'list');
         this._viewsIcon=this.$('.glyphicon-eye-open');
+        //this.$('[data-toggle="tooltip"]').tooltip();
+        this.$('.dropdown-toggle').dropdown();
 	},
 
     _toolbarHTML: function(){

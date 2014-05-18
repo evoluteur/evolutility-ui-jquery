@@ -9,6 +9,12 @@ var bottleSizes=[
     {id:8000, text: '8.0 L'}
 ];
 
+var degustationFields = [
+    {id: 'str1',  type: 'text', label: 'Text 1', maxlength: 100, viewmany: '1'},
+    {id: 'str2',  type: 'text', label: 'Text 2', maxlength: 100, viewmany: '1'},
+    {id: 'str3',  type: 'text', label: 'Text 3', maxlength: 100, viewmany: '1'}
+];
+
 var test_ui = {
     entity: 'test',
     entities: 'tests',
@@ -43,7 +49,7 @@ var test_ui = {
                     type: 'text',
                     label: 'Text (readonly)',
                     readonly: '1',
-                    viewmany: true,
+                    viewmany: false,
                     width: '20'
                 }
             ]
@@ -98,11 +104,11 @@ var test_ui = {
                         {
                             type: 'lov',
                             id:'bsize',
-                            label: 'Bottle Size (LOV)',
-                            labellist: 'Bottle',
+                            label: 'Bottle (LOV)',
                             required: true,
                             width: 100,
-                            list:bottleSizes
+                            list:bottleSizes,
+                            viewmany:true
                         },
                         {
                             type: 'lov',
@@ -116,8 +122,7 @@ var test_ui = {
                             type: 'lov',
                             id:'grape',
                             label: 'Grape (big LOV)',
-                            search: '1',
-                            viewmany: true,
+                            viewmany: false,
                             width: 100,
                             list:[
                                 {text: 'Chardonnay'},
@@ -205,19 +210,18 @@ var test_ui = {
                 },
                 {
                     type: 'panel',
-                    label: 'An Image',
-                    width: '34',
+                    eindex: '1',
+                    label: 'List',
+                    width: '33',
                     elements: [
                         {
-                            type: 'image',
-                            label: '',
-                            labeledit: '',
-                            labellist: 'Label',
-                            maxlength: '200',
+                            type: 'list',
+                            id:'bsizelist',
+                            label: 'Bottles (List)',
                             width: 100,
+                            list:bottleSizes,
                             viewmany: true
                         }
-
                     ]
                 }
 
@@ -240,12 +244,14 @@ var test_ui = {
                             required: true,
                             maxlength: 10,
                             min: 0,
-                            max: 10
+                            max: 10,
+                            width:100
                         },
                         {
                             type: 'integer',
                             id:'int2',
-                            label: 'Integer 2'
+                            label: 'Integer 2',
+                            width:100
                         }
                     ]
                 },
@@ -259,7 +265,8 @@ var test_ui = {
                             type: 'decimal',
                             id:'dec1',
                             label: 'Decimal 1',
-                            required: true
+                            required: true,
+                            width:100
                         },
                         {
                             type: 'decimal',
@@ -267,7 +274,8 @@ var test_ui = {
                             label: 'Decimal 2',
                             maxlength: 10,
                             search: '1',
-                            viewmany: true
+                            viewmany: false,
+                            width:100
                         },
                         {
                             type: 'money',
@@ -276,7 +284,8 @@ var test_ui = {
                             maxlength: 10,
                             search: '1',
                             viewmany: true,
-                            required: true
+                            required: true,
+                            width:100
                         }
                     ]
                 },
@@ -291,7 +300,8 @@ var test_ui = {
                             id:'color1',
                             label: 'Color',
                             required: true,
-                            width: 50
+                            width: 50,
+                            viewmany:true
                         },
                         {
                             type: 'color',
@@ -324,7 +334,7 @@ var test_ui = {
                     type: 'panel',
                     id: 'bigtxt1',
                     label: 'Comments',
-                    width: 100,
+                    width: 66,
                     elements: [
                         {
                             type: 'textmultiline',
@@ -332,6 +342,21 @@ var test_ui = {
                             maxlength: '300',
                             width: 100,
                             height: '8'
+                        }
+
+                    ]
+                },
+                {
+                    type: 'panel',
+                    label: 'An Image',
+                    width: '34',
+                    elements: [
+                        {
+                            type: 'image',
+                            label: 'Image',
+                            maxlength: '200',
+                            width: 100,
+                            viewmany: false
                         }
 
                     ]
@@ -425,39 +450,12 @@ var test_ui = {
                         },
                         {
                             type: 'money',
-                            id:'moneyro',
+                            id:'moneyfield1',
                             label: 'Money',
                             maxlength: 100,
                             readonly: true,
                             width: 34
                         }
-                    ]
-                }
-            ]
-        },
-        {
-            type: 'tab',
-            label: 'Collection',
-            elements: [
-                {
-                    type: 'panel-list',
-                    id:'degustations',
-                    attr:'degustation',
-                    label: 'Collection',
-                    width: 100,
-                    elements: [
-                        {id: 'ddate', type: 'date', label: 'Date', maxlength: 20, viewmany: '1',
-                            required:true},
-                        {id: 'str',  type: 'text', label: 'Text', maxlength: 100, viewmany: '1'},
-                        {
-                            type: 'lov',
-                            id:'bsize4',
-                            label: 'List',
-                            required: true,
-                            width: 100,
-                            list:bottleSizes
-                        },
-                        {id: 'notes', type: 'textmultiline', label: 'Note', maxlength: 300, viewmany: '1', width: 100, height: '2'}
                     ]
                 }
             ]
@@ -472,11 +470,7 @@ var test_ui = {
                     attr:'degustation2',
                     label: 'Collection 1',
                     width: 100,
-                    elements: [
-                        {id: 'str1',  type: 'text', label: 'Text 1', maxlength: 100, viewmany: '1'},
-                        {id: 'str2',  type: 'text', label: 'Text 2', maxlength: 100, viewmany: '1'},
-                        {id: 'str3',  type: 'text', label: 'Text 3', maxlength: 100, viewmany: '1'}
-                    ]
+                    elements: degustationFields
                 },
                 {
                     type: 'panel-list',
@@ -484,11 +478,7 @@ var test_ui = {
                     attr:'degustation3',
                     label: 'Collection 2',
                     width: 100,
-                    elements: [
-                        {id: 'str1',  type: 'text', label: 'Text 1', maxlength: 100, viewmany: '1'},
-                        {id: 'str2',  type: 'text', label: 'Text 2', maxlength: 100, viewmany: '1'},
-                        {id: 'str3',  type: 'text', label: 'Text 3', maxlength: 100, viewmany: '1'}
-                    ]
+                    elements: degustationFields
                 }
             ]
         }

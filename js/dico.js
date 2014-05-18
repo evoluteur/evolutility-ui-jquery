@@ -26,6 +26,7 @@ Evol.Dico = {
         pix: 'image',
         doc:'document',
         lov: 'lov',
+        list: 'list', // many values for one field (behave like tags - return an array of strings
         money: 'money',
         //formula:'formula',
         //html:'html',
@@ -34,7 +35,6 @@ Evol.Dico = {
         color: 'color',
         hidden: 'hidden',
         //rating: 'rating',
-        //tag: 'tag',
         //widget: 'widget',
         url: 'url'
     },
@@ -72,6 +72,8 @@ Evol.Dico = {
             case ft.decimal:
             case ft.money:
                 return parseFloat($f.val());
+            case ft.list:
+                return $f.select2('val');
             default:
                 return $f.val();
         }
@@ -284,6 +286,18 @@ Evol.Dico = {
                     //}
                 }
                 break;
+            case fTypes.list:
+                if(_.isString(v)){
+                    v= v.split(',');
+                }
+                if(v && v.length){
+                    var vs=[];
+                    _.each(v, function(vi){
+                        vs.push(Evol.Dico.lovText(f, vi, hashLov));
+                    });
+                    return vs.join(', ');
+                }
+                return v;
             case fTypes.date:
                 return Evol.UI.formatDate(v);
             case fTypes.time:
@@ -311,7 +325,7 @@ Evol.Dico = {
         var h=[],
             size=50, // TODO fix it
             EvoUI=Evol.UI,
-            types=Evol.Dico.fieldTypes;
+            fTypes=Evol.Dico.fieldTypes;
         // --- field label ---
         if(mode==='mini'){
             var fwidth=fld.width;
@@ -323,25 +337,32 @@ Evol.Dico = {
         }
         if(fld.readonly || mode==='view'){
             // TODO: css for readonly fields
-            h.push('<div id="',fid, '" class="disabled evo-rdonly">', this.HTMLField4Many(fld, fv, {}), '&nbsp;</div>');
+            h.push('<div id="',fid, '" class="disabled evo-rdonly">');
+            if(fld.type==fTypes.color){
+                //h.push(Evol.UI.input.colorBox(fid, fv), fv);
+                h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
+            }else{
+                h.push(this.HTMLField4Many(fld, fv, {}));
+            }
+            h.push('&nbsp;</div>');
         }else{
             switch (fld.type) {
-                case types.text:
+                case fTypes.text:
                     h.push(EvoUI.input.text(fid, fv, fld, null, size));
                     break;
-                case types.integer:
-                case types.dec:
+                case fTypes.integer:
+                case fTypes.dec:
                     h.push(EvoUI.input.textInt(fid, fv, fld.max, fld.min));
                     break;
-                case types.money:
+                case fTypes.money:
                     h.push('<div class="input-group">', EvoUI.input.typeFlag('$'),
                         EvoUI.input.textInt(fid, fv), '</div>');
                     break;
-                case types.bool:
+                case fTypes.bool:
                     h.push(EvoUI.input.checkbox(fid, fv));
                     break;
-                case types.txtm:
-                case types.html:
+                case fTypes.txtm:
+                case fTypes.html:
                     // fv = _.escape(fv);
                     if (fld.height === null) {
                         fld.height = 5;
@@ -353,19 +374,22 @@ Evol.Dico = {
                     }
                     h.push(EvoUI.input.textM(fid, fv, fld.maxlength, fld.height));
                     break;
-                case types.date:
+                case fTypes.date:
                     h.push(EvoUI.input.date(fid, fv));
                     break;
-                case types.datetime:
+                case fTypes.datetime:
                     h.push(EvoUI.input.dateTime(fid, fv));
                     break;
-                case types.time:
+                case fTypes.time:
                     h.push(EvoUI.input.time(fid, fv));
                     break;
-                case types.lov:
+                case fTypes.lov:
                     h.push(EvoUI.input.select(fid, fv, '', true, fld.list));
                     break;
-                case types.email:
+                case fTypes.list: // fv is an array. will use select2
+                    h.push('<div id="',fid, '" class="w-100 form-control"></div>');
+                    break;
+                case fTypes.email:
                     if (mode === 'view') {
                         h.push(EvoUI.linkEmail(fid, fv));
                     } else {
@@ -373,15 +397,15 @@ Evol.Dico = {
                             EvoUI.input.text(fid, fv, fld.maxlength), '</div>');
                     }
                     break;
-                case types.url:
+                case fTypes.url:
                     if (mode === 'view') {
                         h.push(EvoUI.link(fid, fv, encodeURI(fv), fid));
                     } else {
                         h.push(EvoUI.input.text(fid, fv, fld.maxlength));
                     }
                     break;
-                //case types.doc:
-                case types.pix:
+                //case fTypes.doc:
+                case fTypes.pix:
                     if(fv!==''){
                         h.push('<img src="',fv,'" class="img-thumbnail">');
                     }else{
@@ -389,8 +413,12 @@ Evol.Dico = {
                     }
                     h.push(EvoUI.input.text(fid, fv, fld, null, size));
                     break;
-                case types.color:
+                case fTypes.color:
+                    //h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
                     h.push(EvoUI.input.color(fid, fv));
+                    break;
+                case fTypes.hidden:
+                    h.push(EvoUI.input.hidden(fid, fv));
                     break;
             }
         }

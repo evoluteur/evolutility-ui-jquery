@@ -68,11 +68,11 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                         lb = i18n.na;
                     }else if(dataSetName==='' || dataSetName==='null'){
                         lb = i18n.none;
-                    }else if(f.type===fTypes.lov){
+                    }else if(f.type===fTypes.lov || f.type===fTypes.list){
                         if(f.list && f.list.length && f.list[0].icon){
                             lb = EvoDico.lovTextNoPix(f, dataSetName);
                         }else{
-                            lb = EvoDico.lovText(f, dataSetName, that._hashLov);
+                            lb = EvoDico.lovText(f, dataSetName, Evol.hashLov);
                         }
                     }else if(f.type===fTypes.bool){
                         lb = (dataSetName==='true')?i18n.yes:i18n.no;

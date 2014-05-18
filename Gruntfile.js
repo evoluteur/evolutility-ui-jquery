@@ -24,6 +24,7 @@ module.exports = function (grunt) {
                     // jQuery & jQuery UI
                     'bower_components/jquery/dist/jquery.js',
                     //'bower_components/jquery-ui/ui/jquery.ui.widget.js',
+                    //'bower_components/jquery.csv.js',
 
                     // Backbone & Underscore
                     'bower_components/underscore/underscore.js',
@@ -38,7 +39,8 @@ module.exports = function (grunt) {
                     'bower_components/bootstrap/js/dropdown.js',
 
                     // Widgets
-                    'bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js'
+                    'bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js',
+                    'bower_components/select2/select2.js'
                 ],
                 dest: '<%= pkg.target %>/vendors.js'
             },
@@ -61,6 +63,7 @@ module.exports = function (grunt) {
                     'js/action.js',
                     'js/action-*.js',
 
+                    //'js/navbar.js',
                     'js/toolbar.js'
                     //'js/ui-models/dico/field.js'
                 ],
@@ -85,7 +88,9 @@ module.exports = function (grunt) {
                 'js/one*.js',
                 'js/action-*.js',
 
+                //'js/navbar.js',
                 'js/toolbar.js',
+
                 'js/ui-models/dico/*.js',
 
                 // --- ui models ---

@@ -9,7 +9,7 @@
  *
  *************************************************************************** */
 
-Evol.ViewOne.Mini = Evol.ViewOne.extend({
+Evol.ViewOne.Mini = Evol.ViewOne.Edit.extend({
 
     events: {
         'click > .evol-buttons > button': 'click_button',

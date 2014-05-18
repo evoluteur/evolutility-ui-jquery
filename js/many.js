@@ -15,7 +15,6 @@ Evol.ViewMany = Backbone.View.extend({
 
     viewType:'many',
     cardinality: 'n',
-    _hashLov: {},
 
     options: {
         style: 'panel-info',
@@ -131,8 +130,8 @@ Evol.ViewMany = Backbone.View.extend({
         return this._fieldHash[fid];
     },
 
-    _HTMLField: function(f,v){
-        return Evol.Dico.HTMLField4Many(f,v, this._fieldHash);
+    _HTMLField: function(f, v){
+        return Evol.Dico.HTMLField4Many( f, v, Evol.hashLov);
     },
 
     _$Selection:function(){

@@ -33,7 +33,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                     switch(f.type){
                         case fTypes.lov:
                         case fTypes.bool:
-                            $f.html(Evol.Dico.HTMLField4Many(f, fv, that.hashLov));
+                            $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov));
                             break;
                         case fTypes.url:
                             $f.html(Evol.UI.link(f.id, fv, fv, f.id));
@@ -45,7 +45,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                             $f.html((fv)?('<img src="'+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
                             break;
                         default:
-                            $f.text(Evol.Dico.HTMLField4Many(f, fv) || ' ');
+                            $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov) || ' ');
                     }
                 }
             });

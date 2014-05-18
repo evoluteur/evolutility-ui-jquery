@@ -36,7 +36,6 @@ Evol.ViewOne = Backbone.View.extend({
         this.options=_.extend(this.options, opts);
         this.mode= opts.mode || this.options.mode || this.viewName;
         this._uTitle=(!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
-        this.hashLov={};
         /*
         if(this.model){
             this.model.on('change', function(model){
@@ -51,11 +50,12 @@ Evol.ViewOne = Backbone.View.extend({
         this._render(h, this.mode);
         this.$el.html(h.join(''));
         this.custOn=false;
-        this._postRender();
+        this.postRender();
+        this.setData(this.model); // TODO remove it
         return this;
     },
 
-    _postRender: function (){
+    postRender: function (){
         // to overwrite...
     },
 
@@ -180,6 +180,9 @@ Evol.ViewOne = Backbone.View.extend({
                                     .prev().remove();
                                 $f.before(newPix);
                                 break;
+                            case fTypes.list:
+                                $f.select2('val',fv);
+                                break;
                             default:
                                 $f.val(fv);
                         }
@@ -222,6 +225,9 @@ Evol.ViewOne = Backbone.View.extend({
             $f = that.$(prefix + f.id);
             defaultVal = f.defaultvalue || '';
             switch(f.type) {
+                case Evol.Dico.fieldTypes.bool:
+                    $f.prop('checked', defaultVal);
+                    break;
                 case Evol.Dico.fieldTypes.bool:
                     $f.prop('checked', defaultVal);
                     break;
@@ -373,7 +379,8 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     renderPanel: function (h, p, pid, mode, visible) {
-        var that = this;
+        var that = this,
+            fTypes=Evol.Dico.fieldTypes;
         if(mode==='wiz'){
             var hidden= _.isUndefined(visible)?false:!visible;
             h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%;',hidden?'display:none;':'','">');
@@ -390,7 +397,7 @@ Evol.ViewOne = Backbone.View.extend({
             '<fieldset data-pid="', pid, '">');
         if(mode==='mini'){
             _.each(p.elements, function (elem) {
-                if(elem.type==Evol.Dico.fieldTypes.hidden){
+                if(elem.type==fTypes.hidden){
                     h.push(Evol.UI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
                 }else{
                     h.push('<div class="pull-left evol-fld w-100">');
@@ -403,7 +410,7 @@ Evol.ViewOne = Backbone.View.extend({
                 if(elem.type=='panel-list'){
                     that.renderPanelList(h, elem, mode);
                 }else{
-                    if(elem.type==Evol.Dico.fieldTypes.hidden){
+                    if(elem.type==fTypes.hidden){
                         h.push(Evol.UI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
                     }else{
                         h.push('<div style="width:', parseInt(elem.width, 10), '%" class="pull-left evol-fld">');
@@ -450,13 +457,14 @@ Evol.ViewOne = Backbone.View.extend({
                         _.each(fs, function (f) {
                             h.push('<td>');
                             if(row[f.id]){
+                                //form-control
                                 if(f.type!==Evol.Dico.fieldTypes.bool){
-                                    h.push(_.escape(Evol.Dico.HTMLField4Many(f, row[f.id], that.hashLov)));
+                                    h.push(_.escape(Evol.Dico.HTMLField4Many(f, row[f.id], Evol.hashLov)));
                                 }else{
-                                    h.push(Evol.Dico.HTMLField4Many(f, row[f.id], that.hashLov));
+                                    h.push(Evol.Dico.HTMLField4Many(f, row[f.id], Evol.hashLov));
                                 }
                             }else{
-                                h.push(Evol.Dico.HTMLField4Many(f, '', that.hashLov));
+                                h.push(Evol.Dico.HTMLField4Many(f, '', Evol.hashLov));
                             }
                             h.push('</td>');
                         });

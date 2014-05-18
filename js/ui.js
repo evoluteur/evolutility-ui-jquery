@@ -8,6 +8,7 @@
  *************************************************************************** */
 
 var Evol = Evol || {};
+Evol.hashLov = {};
 Evol.ViewAction = {};
 /*
 Evol.CSS = {
@@ -111,6 +112,13 @@ Evol.UI = {
         color: function (fId, fVal) {
             return [
                 '<input type="color" id="', fId, '" value="', fVal, '" size="15">'
+            ].join('');
+        },
+        colorBox: function (fid, fVal) {
+            return [
+                '<div class="evo-color-box" id="', fid,
+                '" style="background-color:', fVal,
+                '" title="', fVal, '"></div>'
             ].join('');
         },
         checkbox: function (fID, fV) {
