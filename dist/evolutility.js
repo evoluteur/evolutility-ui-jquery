@@ -1096,8 +1096,11 @@ Evol.Dico = {
             h.push(this.HTMLFieldLabel(fld, mode || 'edit'));
         }
         if(fld.readonly || mode==='view'){
-            // TODO: css for readonly fields
-            h.push('<div id="',fid, '" class="disabled evo-rdonly">');
+            h.push('<div class="disabled evo-rdonly" id="',fid);
+            if(fld.type===fTypes.txtm && fld.height>1){
+                h.push('" style="height:', fld.height, 'em;');
+            }
+            h.push('">');
             if(fld.type==fTypes.color){
                 //h.push(Evol.UI.input.colorBox(fid, fv), fv);
                 h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
@@ -2237,7 +2240,7 @@ Evol.ViewOne = Backbone.View.extend({
             if(vs && vs.length>0){
                 var TDbPM='<td class="evo-td-plusminus">'+Evol.UI.input.buttonsPlusMinus()+'</td>';
                 _.each(vs, function(row, idx){
-                    h.push('<tr data-idx="',idx,'">');
+                    h.push('<tr data-idx="', idx, '">');
                     if(mode==='edit'){
                         that._TDsFieldsEdit(h, uiPnl.elements, row);
                         h.push(TDbPM);

@@ -449,7 +449,7 @@ Evol.ViewOne = Backbone.View.extend({
             if(vs && vs.length>0){
                 var TDbPM='<td class="evo-td-plusminus">'+Evol.UI.input.buttonsPlusMinus()+'</td>';
                 _.each(vs, function(row, idx){
-                    h.push('<tr data-idx="',idx,'">');
+                    h.push('<tr data-idx="', idx, '">');
                     if(mode==='edit'){
                         that._TDsFieldsEdit(h, uiPnl.elements, row);
                         h.push(TDbPM);

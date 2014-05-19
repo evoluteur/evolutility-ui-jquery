@@ -336,8 +336,11 @@ Evol.Dico = {
             h.push(this.HTMLFieldLabel(fld, mode || 'edit'));
         }
         if(fld.readonly || mode==='view'){
-            // TODO: css for readonly fields
-            h.push('<div id="',fid, '" class="disabled evo-rdonly">');
+            h.push('<div class="disabled evo-rdonly" id="',fid);
+            if(fld.type===fTypes.txtm && fld.height>1){
+                h.push('" style="height:', fld.height, 'em;');
+            }
+            h.push('">');
             if(fld.type==fTypes.color){
                 //h.push(Evol.UI.input.colorBox(fid, fv), fv);
                 h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
