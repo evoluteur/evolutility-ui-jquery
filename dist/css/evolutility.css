@@ -174,21 +174,22 @@
 .evo-p-wiz:nth-child(2) {
   display: block;
 }
-.evo-wiz-bsteps > div {
+.evo-wiz-bsteps > li > div {
   display: inline-block;
+  margin-right: 5px;
   cursor: pointer;
 }
-.evo-wiz-bsteps > div > div {
+.evo-wiz-bsteps > li > div > div {
   float: left;
   margin-right: 4px;
 }
-.evo-wiz-bsteps > div > div:first-child.past {
+.evo-wiz-bsteps > li > div > div:first-child.past {
   background-color: black;
 }
-.evo-wiz-bsteps > div > div:first-child.present {
+.evo-wiz-bsteps > li > div > div:first-child.present {
   background-color: grey;
 }
-.evo-wiz-bsteps > div > div:first-child.future {
+.evo-wiz-bsteps > li > div > div:first-child.future {
   background-color: silver;
 }
 .evo-wiz-buttons {

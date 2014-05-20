@@ -71,9 +71,9 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
 
     _renderBreadcrumb: function (h, elems, stepIdx) {
         // WIZARD top step indicator
-        h.push('<div class="evo-wiz-bsteps breadcrumb">');
+        h.push('<ol class="evo-wiz-bsteps breadcrumb">');
         _.each(elems, function(p, idx){
-            h.push('<div data-id="',stepIdx,'"><div class="badge ');
+            h.push('<li data-id="',stepIdx,'"><div class="badge ');
             if(idx>stepIdx){
                 h.push('future');
             }else if(idx<stepIdx){
@@ -81,9 +81,9 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
             }else{
                 h.push('present');
             }
-            h.push('">', idx+1,'</div><div>', p.label, '</div></div>');
+            h.push('">', idx+1,'</div><div>', p.label, '</div></li>');
         });
-        h.push('</div>');
+        h.push('</ol>');
         return this;
     },
 
