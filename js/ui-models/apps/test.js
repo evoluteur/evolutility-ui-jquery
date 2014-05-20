@@ -38,10 +38,7 @@ var test_ui = {
                 {
                     id:'name2',
                     type: 'text',
-                    label: 'Text 5 chars',
-                    maxlength:5,
-                    minlength:5,
-                    viewmany: true,
+                    label: 'Text 2',
                     width: '38'
                 },
                 {
@@ -49,7 +46,6 @@ var test_ui = {
                     type: 'text',
                     label: 'Text (readonly)',
                     readonly: '1',
-                    viewmany: false,
                     width: '20'
                 }
             ]
@@ -58,6 +54,37 @@ var test_ui = {
             type: 'tab',
             label: 'General',
             elements: [
+                {
+                    type: 'panel',
+                    label: 'Strings',
+                    width: 100,
+                    elements: [
+                        {
+                            id:'str5',
+                            type: 'text',
+                            label: 'Name',
+                            required: true,
+                            maxlength: '150',
+                            width: 42
+                        },
+                        {
+                            id:'str6',
+                            type: 'text',
+                            required: true,
+                            label: 'Text 5-10 chars',
+                            maxlength:10,
+                            minlength:5,
+                            width: '38'
+                        },
+                        {
+                            id:'str7',
+                            type: 'text',
+                            label: 'Text (readonly)',
+                            readonly: '1',
+                            width: '20'
+                        }
+                    ]
+                },
                 {
                     type: 'panel',
                     label: 'Date',
@@ -212,7 +239,7 @@ var test_ui = {
                     type: 'panel',
                     eindex: '1',
                     label: 'List',
-                    width: '33',
+                    width: '34',
                     elements: [
                         {
                             type: 'list',
@@ -233,9 +260,9 @@ var test_ui = {
             elements: [
                 {
                     type: 'panel',
-                    eindex: '1',
+                    id: 'pnl1',
                     label: 'Integers',
-                    width: '33',
+                    width: 34,
                     elements: [
                         {
                             type: 'integer',
@@ -337,6 +364,7 @@ var test_ui = {
                     width: 66,
                     elements: [
                         {
+                            id: 'notes',
                             type: 'textmultiline',
                             label: 'Comments',
                             maxlength: '300',
@@ -349,17 +377,40 @@ var test_ui = {
                 {
                     type: 'panel',
                     label: 'An Image',
-                    width: '34',
+                    width: 34,
                     elements: [
                         {
+                            id:'pix',
                             type: 'image',
                             label: 'Image',
-                            maxlength: '200',
+                            maxlength: 200,
                             width: 100,
                             viewmany: false
                         }
 
                     ]
+                }
+            ]
+        },
+        {
+            type: 'tab',
+            label: '2 Collections',
+            elements: [
+                {
+                    type: 'panel-list',
+                    id:'degustations2',
+                    attr:'degustation2',
+                    label: 'Collection 1',
+                    width: 100,
+                    elements: degustationFields
+                },
+                {
+                    type: 'panel-list',
+                    id:'degustations3',
+                    attr:'degustation3',
+                    label: 'Collection 2',
+                    width: 100,
+                    elements: degustationFields
                 }
             ]
         },
@@ -377,14 +428,14 @@ var test_ui = {
                             type: 'text',
                             label: 'Text',
                             readonly: true,
-                            width: '33'
+                            width: 33
                         },
                         {
                             id:'txtml',
                             type: 'textmultiline',
                             label: 'Big Text',
                             readonly: true,
-                            width: '67'
+                            width: 67
                         },
                         {
                             type: 'date',
@@ -435,7 +486,7 @@ var test_ui = {
                         },
                         {
                             type: 'integer',
-                            id:'intro',
+                            id:'int5',
                             label: 'Integer',
                             readonly: true,
                             width: 33,
@@ -457,28 +508,6 @@ var test_ui = {
                             width: 34
                         }
                     ]
-                }
-            ]
-        },
-        {
-            type: 'tab',
-            label: '2 Collections',
-            elements: [
-                {
-                    type: 'panel-list',
-                    id:'degustations2',
-                    attr:'degustation2',
-                    label: 'Collection 1',
-                    width: 100,
-                    elements: degustationFields
-                },
-                {
-                    type: 'panel-list',
-                    id:'degustations3',
-                    attr:'degustation3',
-                    label: 'Collection 2',
-                    width: 100,
-                    elements: degustationFields
                 }
             ]
         }

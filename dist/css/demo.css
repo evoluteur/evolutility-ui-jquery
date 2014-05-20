@@ -239,3 +239,6 @@ body {
 .winecellar .evol-many-cards p {
   clear: left;
 }
+.test .evol-many-cards > div.panel {
+  height: 182px !important;
+}
