@@ -208,8 +208,11 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     getFieldValue: function (f){
-        var $f=this.$('#'+this.fieldViewId(f.id));
-        return Evol.Dico.getFieldTypedValue(f, $f);
+        return Evol.Dico.getFieldTypedValue(f, this.$field(f));
+    },
+
+    $field: function (f){
+        return this.$('#'+this.fieldViewId(f.id));
     },
 
     clear: function () {
@@ -421,7 +424,7 @@ Evol.ViewOne = Backbone.View.extend({
             });
         }
         h.push('</fieldset></div></div>');
-
+        return this;
     },
 
     renderPanelList: function (h, p, mode) {
@@ -438,6 +441,7 @@ Evol.ViewOne = Backbone.View.extend({
         h.push('</tr></thead><tbody>');
         this._renderPanelListBody(h, p, null, mode);
         h.push('</tbody></table></div></div>');
+        return this;
     },
 
     _renderPanelListBody: function (h, uiPnl, fv, mode){
@@ -507,6 +511,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     renderFieldLabel: function (h, fld, mode) {
         h.push(Evol.Dico.HTMLFieldLabel(fld, mode));
+        return this;
     },
 
     setTitle: function (title){
@@ -531,18 +536,178 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 
-    validate: function (sfs) {
-        var fs = sfs?sfs:this.getFields();
+    validate: function (fields) {
+        // validate top level fields
+        var isValid=true,
+            fs = fields?fields:this.getFields();
         this.clearMessages();
         if (_.isArray(fs)) {
-            return Evol.UI.Validation.checkFields(this.$el, fs, this.prefix);
+            isValid = this.checkFields(this.$el, fs);
         }
+        // validate sub-collections
         if(this._subCollecs){
+            var that=this;
             //TODO
+            //_.each(subCollecs, function (sc) {
+            //    var trs=that.$('[data-pid="'+sc.id+'"] tbody > tr');
 
+
+            //});
         }
-        this.$el.trigger('action', 'validate');
-        return false;
+        this.$el.trigger('action', 'validate', {valid:isValid});
+        return isValid;
+    },
+
+    valRegEx: {
+        email: /^[\w\.\-]+@[\w\.\-]+\.[\w\.\-]+$/,
+        integer: /^-?\d+$/,
+        decimalEN: /^\d+(\.\d+)?$/,
+        decimalFR: /^\d+(\,\d+)?$/,
+        decimalDA: /^\d+(\,\d+)?$/
+    },
+
+    checkFields: function (holder, fds) {
+
+        var that = this,
+            ft = Evol.Dico.fieldTypes,
+            i18nVal = Evol.i18n.validation,
+            msgs = [],
+            v,
+            values = this.getData();
+
+        function checkType(fd, v) {
+            var ft = Evol.Dico.fieldTypes,
+                fv = _.isArray(v)?'':Evol.UI.trim(v),
+                i18nVal=Evol.i18n.validation;
+            if (fv !== '' && !_.isArray(fv) && !isNaN(fv)){
+                switch (fd.type) {
+                    case ft.integer:
+                    case ft.email:
+                        if (!that.valRegEx[fd.type].test(fv)) {
+                            flagField(fd, i18nVal[fd.type]);
+                        }
+                        break;
+                    case ft.dec:
+                    case ft.money:
+                        var regex = that.valRegEx[ft.dec + Evol.i18n.LOCALE];
+                        if (regex === null) {
+                            regex = that.valRegEx[ft.dec + 'EN']; // default to English with "."
+                        }
+                        if (!regex.test(fv))
+                            flagField(fd, i18nVal[fd.type]);
+                        break;
+                    case ft.date:
+                    case ft.datetime:
+                    case ft.time:
+                        if ((fv !== '') && (!_.isDate(new Date(fv)))) {
+                            flagField(fd, i18nVal[fd.type]);
+                        }
+                        break;
+                }
+            }
+        }
+
+        function flagField(fd, msg, r2, r3) {
+            var msgf = msg.replace('{0}', fd.label);
+            // TODO loop through args
+            if (r2 !== null) {
+                msgf = msgf.replace('{1}', r2);
+            }
+            if (r3 !== null) {
+                msgf = msgf.replace('{2}', r3);
+            }
+            if(_.isArray(msgs)){
+                msgs.push(msgf);
+            }
+            var p=that.$field(fd).parent();
+            var errlabel = p.find('.text-danger');
+            if (errlabel.length) {
+                errlabel.html(msgf);
+            } else {
+                p.append('<p class="text-danger">' + msgf + '</p>');
+            }
+            p.addClass('has-error');
+        }
+
+        _.each(fds,function(f){
+            v = values[f.id];
+
+            // Check required/empty or check type
+            if (f.required && (v==='' ||
+                    (f.type===ft.integer && isNaN(v)) ||
+                    (f.type===ft.money && isNaN(v)) ||
+                    (f.type===ft.lov && v==='0') ||
+                    (f.type===ft.list && v.length===0) ||
+                    (f.type===ft.color && v==='#000000'))){
+                flagField(f, i18nVal.empty);
+            } else {
+                checkType(f, v);
+            }
+
+            // Check regexp
+            if (f.regex !== null && !_.isUndefined(f.regex)) {
+                var rg = new RegExp(f.regex);
+                if (!v.match(rg)) {
+                    flagField(f, i18nVal.regex, f.label);
+                }
+            }
+/*
+             // Check custom
+             if (f.jsv !== null) {
+                 var p = eval([f.jsv, '("', that.prefix, f.id, '","', f.label, '")'].join(''));
+                 if (p !== null && p.length > 0) {
+                    flagField(f, p);
+                 }
+             }*/
+
+            // Check min & max
+            if (f.type===ft.integer || f.type===ft.decimal || f.type===ft.money) {
+                if (v !== '') {
+                    if (f.max !== null && parseFloat(v) > f.max) {
+                        flagField(f, i18nVal.max, f.max);
+                    }
+                    if (f.min !== null && parseFloat(v) < f.min) {
+                        flagField(f, i18nVal.min, f.min);
+                    }
+                }
+            }
+
+            // Check minlength and maxlength
+            if (_.isString(v) && v.length > 0) {
+                var ok = true,
+                    len = v.length;
+                if(len>0){
+                    if(f.maxlength){
+                        ok = len <= f.maxlength;
+                        if(!ok){
+                            if(f.minlength){
+                                flagField(f, i18nVal.minmaxlength, f.minlength, f.maxlength);
+                            }else{
+                                flagField(f, i18nVal.maxlength, f.maxlength);
+                            }
+                        }
+                    }
+                    if(ok && f.minlength){
+                        ok = len >= f.minlength;
+                        if(!ok){
+                            if(f.maxlength){
+                                flagField(f, i18nVal.minmaxlength, f.minlength, f.maxlength);
+                            }else{
+                                flagField(f, i18nVal.minlength, f.minlength);
+                            }
+                        }
+                    }
+                }
+            }
+
+        });
+
+        if (msgs.length > 0) {
+            return [i18nVal.intro, '<ul><li>', msgs.join('</li><li>'), '</li></ul>'].join('');
+        } else {
+            return '';
+        }
+
     },
 
     clearErrors: function () {

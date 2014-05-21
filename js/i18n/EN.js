@@ -90,6 +90,9 @@ Evol.i18n = {
         time:'"{0}" must be a valid date/time, format must be "hh:mm AM/PM" like "10:30 AM".',
         max:'"{0}" must be smaller or equal to {1}.',
         min:'"{0}" must be greater or equal to {1}.',
+        maxlength:'"{0}" must be {1} characters long maximum.',
+        minlength:'"{0}" must be less than {1} characters long.',
+        minmaxlength:'"{0}" must be between {1} and {2} characters long.',
         regex:'The value "{0}" is not of the expected format.'
         //regex:'"{0}" must match the regular expression pattern for "{1}".'
     },

@@ -81,9 +81,9 @@ Evol.UI = {
             h.push('" maxlength="12">');
             return h.join('');
         },
-        textM: function (fID, fV, ml, h) {
+        textM: function (fID, fV, maxLen, h) {
             return ['<textarea id="', fID, '" class="evo-field form-control" rows="', h,
-                (ml > 0) ? ('" onKeyUp="Evol.UI.Validation.checkMaxLen(this,' + ml + ')') : '',
+                //(maxLen > 0) ? ('" onKeyUp="Evol.UI.Validation.fixLength(this,' + maxLen + ')') : '',
                 '">', fV, '</textarea>'
             ].join('');
         },
@@ -341,8 +341,8 @@ Evol.UI = {
         }
     },
 
-    trim: function(stringValue){ // TODO use _.trim(word);
-        if(stringValue){
+    trim: function(stringValue){ // TODO use _.str.trim(word);
+        if(_.isString(stringValue) && stringValue!==''){
             return stringValue.replace(/^\s+|\s+$/g,'');
         }else{
             return '';

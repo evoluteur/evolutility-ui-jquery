@@ -62,24 +62,22 @@ var test_ui = {
                         {
                             id:'str5',
                             type: 'text',
-                            label: 'Name',
+                            label: 'Name 5',
                             required: true,
                             maxlength: '150',
                             width: 42
                         },
                         {
                             id:'str6',
-                            type: 'text',
+                            type: 'email',
                             required: true,
-                            label: 'Text 5-10 chars',
-                            maxlength:10,
-                            minlength:5,
+                            label: 'email',
                             width: '38'
                         },
                         {
                             id:'str7',
                             type: 'text',
-                            label: 'Text (readonly)',
+                            label: 'More text',
                             readonly: '1',
                             width: '20'
                         }

@@ -84,9 +84,9 @@ Evol.UI = {
             h.push('" maxlength="12">');
             return h.join('');
         },
-        textM: function (fID, fV, ml, h) {
+        textM: function (fID, fV, maxLen, h) {
             return ['<textarea id="', fID, '" class="evo-field form-control" rows="', h,
-                (ml > 0) ? ('" onKeyUp="Evol.UI.Validation.checkMaxLen(this,' + ml + ')') : '',
+                //(maxLen > 0) ? ('" onKeyUp="Evol.UI.Validation.fixLength(this,' + maxLen + ')') : '',
                 '">', fV, '</textarea>'
             ].join('');
         },
@@ -344,8 +344,8 @@ Evol.UI = {
         }
     },
 
-    trim: function(stringValue){ // TODO use _.trim(word);
-        if(stringValue){
+    trim: function(stringValue){ // TODO use _.str.trim(word);
+        if(_.isString(stringValue) && stringValue!==''){
             return stringValue.replace(/^\s+|\s+$/g,'');
         }else{
             return '';
@@ -407,183 +407,6 @@ Evol.UI.Charts = {
 
 };
 
-;
-/*! ***************************************************************************
- *
- * evolutility :: ui-validation.js
- *
- * Form validation
- *
- * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
- *
- *************************************************************************** */
-
-// this is some very old code from Evolutility ASP.net version
-// TODO rewrite or use another open source
-Evol.UI.Validation = {
-
-    checkMaxLen: function (f, maxLen) {
-        if (f.value.length > maxLen){
-            f.value = f.value.substring(0, maxLen - 1);
-        }
-    },
-
-    checkNum: function (F, t) {
-        var nv, fv = F.value;
-        if (t.substring(0, 1) == 'i'){
-            nv = parseInt(fv, 10);
-        }else{
-            var ln = Evol.i18n.LOCALE;
-            if (ln == 'FR' || ln == 'DA'){
-                fv = fv.replace(",", ".");
-            }
-            nv = parseFloat(fv);
-        }
-        if (isNaN(nv)){
-            F.value = '';
-        }else if (fv != nv){
-            F.value = nv;
-        }
-    },
-
-    setValidationFlags: function (p, msgf) {
-        var errlabel = p.find('.text-danger');
-        if (errlabel.length) {
-            errlabel.html(msgf);
-        } else {
-            p.append('<p class="text-danger">' + msgf + '</p>');
-        }
-        p.addClass('has-error');
-    },
-
-    checkFields: function (holder, fds, prefix) {
-        var that=this,
-            msgs = [],
-            i18nVal=Evol.i18n.validation,
-            evoRegEx = {
-                email: /^[\w\.\-]+@[\w\.\-]+\.[\w\.\-]+$/,
-                integer: /^-?\d+$/,
-                decimalEN: /^\d+(\.\d+)?$/,
-                decimalFR: /^\d+(\,\d+)?$/,
-                decimalDA: /^\d+(\,\d+)?$/
-            };
-        for (var i in fds) {
-            var fd = fds[i],
-                $f = holder.find('#' + prefix + '-' + fd.id).eq(0),
-                isHTML = fd.type == 'html';
-            //if (isHTML) {
-            //    $f.val(nicEditors.findEditor(f.id).getContent());
-            //}
-            if ($f.length > 0) {
-                var noErr = true,
-                    p, msgf;
-                // Check empty & type
-                if (fd.required && isEmpty($f, isHTML)) {
-                    p = $f.parent();
-                    msgf = labMsg(i18nVal.empty);
-                    that.setValidationFlags(p, msgf);
-                    noErr = false;
-                } else {
-                    typeCheck();
-                }
-                // Check regexp
-                if (fd.regex !== null && !_.isUndefined(fd.regex)) {
-                    var rg = new RegExp(fd.regex);
-                    if (!$f.val().match(rg)) {
-                        p = $f.parent();
-                        msgf = labMsg(i18nVal.regex, fd.label);
-                        that.setValidationFlags($f.parent(), msgf);
-                    }
-                }/*
-                // Check custom
-                if (fd.jsv !== null) {
-                    p = eval([fd.jsv, '("', Evol.prefix, fd.id, '","', fd.label, '")'].join(''));
-                    if (p !== null && p.length > 0) {
-                        that.setValidationFlags($f.parent(), labMsg(p));
-                    }
-                }*/
-                // Check min & max
-                if (noErr) {
-                    var fv = Evol.UI.trim($f.val());
-                    if (fv !== '') {
-                        if (fd.max !== null && parseFloat(fv) > fd.max) {
-                            that.setValidationFlags($f.parent(), labMsg(i18nVal.max, fd.max));
-                        }
-                        if (fd.min !== null && parseFloat(fv) < fd.min) {
-                            that.setValidationFlags($f.parent(), labMsg(i18nVal.min, fd.min));
-                        }
-                    }
-                }
-            }
-        }
-        if (msgs.length > 0) {
-            return [i18nVal.intro, '<ul><li>', msgs.join('<li>'), '</li></ul>'].join('');
-        } else {
-            return '';
-        }
-
-        function typeCheck() {
-            var ft = Evol.Dico.fieldTypes,
-                fv = Evol.UI.trim($f.val());
-            if (fv !== ''){
-                switch (fd.type) {
-                    case ft.integer:
-                    case ft.email:
-                        if (!evoRegEx[fd.type].test(fv)) {
-                            that.setValidationFlags($f.parent(), labMsg(i18nVal[fd.type]));
-                        }
-                        break;
-                    case ft.dec:
-                    case ft.money:
-                        var myRegExp = evoRegEx[ft.dec + Evol.i18n.LOCALE];
-                        if (myRegExp === null) {
-                            myRegExp = evoRegEx[ft.dec + 'EN']; // default to English with "."
-                        }
-                        if (!myRegExp.test(fv))
-                            that.setValidationFlags($f.parent(), labMsg(i18nVal[fd.type]));
-                        break;
-                    case ft.date:
-                    case ft.datetime:
-                    case ft.time:
-                        if ((fv !== '') && (!_.isDate(new Date(fv)))) {
-                            that.setValidationFlags($f.parent(), labMsg(i18nVal[fd.type]));
-                        }
-                        break;
-                }
-            }
-        }
-
-        function isEmpty($f, isHTML) {
-            var v, tn = $f.tagName;
-            if (tn == 'SELECT' && $f.get(0).selectedIndex > -1) {
-                v = f.options[$f.get(0).selectedIndex].value == "0";
-                /*} else if (tn == 'TEXTAREA' && isHTML) {
-                 var editor = nicEditors.findEditor(f.id);
-                 if (editor) {
-                 v = editor.getContent().trim()
-                 v = v == '' || v == '<br>';
-                 } else {
-                 v = $f.val().trim() == '';
-                 }   */
-            } else {
-                v = Evol.UI.trim($f.val()) === '';
-            }
-            return v;
-        }
-
-        function labMsg(msg, r2) {
-            var m = msg.replace('{0}', fd.label);
-            if (r2 !== null) {
-                m = m.replace('{1}', r2);
-            }
-            msgs.push(m);
-            return m;
-        }
-
-    }
-
-};
 ;
 //   Evolutility Localization Library ENGLISH
 //   https://github.com/evoluteur/evolutility
@@ -677,6 +500,9 @@ Evol.i18n = {
         time:'"{0}" must be a valid date/time, format must be "hh:mm AM/PM" like "10:30 AM".',
         max:'"{0}" must be smaller or equal to {1}.',
         min:'"{0}" must be greater or equal to {1}.',
+        maxlength:'"{0}" must be {1} characters long maximum.',
+        minlength:'"{0}" must be less than {1} characters long.',
+        minmaxlength:'"{0}" must be between {1} and {2} characters long.',
         regex:'The value "{0}" is not of the expected format.'
         //regex:'"{0}" must match the regular expression pattern for "{1}".'
     },
@@ -1999,8 +1825,11 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     getFieldValue: function (f){
-        var $f=this.$('#'+this.fieldViewId(f.id));
-        return Evol.Dico.getFieldTypedValue(f, $f);
+        return Evol.Dico.getFieldTypedValue(f, this.$field(f));
+    },
+
+    $field: function (f){
+        return this.$('#'+this.fieldViewId(f.id));
     },
 
     clear: function () {
@@ -2212,7 +2041,7 @@ Evol.ViewOne = Backbone.View.extend({
             });
         }
         h.push('</fieldset></div></div>');
-
+        return this;
     },
 
     renderPanelList: function (h, p, mode) {
@@ -2229,6 +2058,7 @@ Evol.ViewOne = Backbone.View.extend({
         h.push('</tr></thead><tbody>');
         this._renderPanelListBody(h, p, null, mode);
         h.push('</tbody></table></div></div>');
+        return this;
     },
 
     _renderPanelListBody: function (h, uiPnl, fv, mode){
@@ -2298,6 +2128,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     renderFieldLabel: function (h, fld, mode) {
         h.push(Evol.Dico.HTMLFieldLabel(fld, mode));
+        return this;
     },
 
     setTitle: function (title){
@@ -2322,18 +2153,176 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 
-    validate: function (sfs) {
-        var fs = sfs?sfs:this.getFields();
+    validate: function (fields) {
+        // validate top level fields
+        var isValid=true,
+            fs = fields?fields:this.getFields();
         this.clearMessages();
         if (_.isArray(fs)) {
-            return Evol.UI.Validation.checkFields(this.$el, fs, this.prefix);
+            isValid = this.checkFields(this.$el, fs);
         }
+        // validate sub-collections
         if(this._subCollecs){
+            var that=this;
             //TODO
+            //_.each(subCollecs, function (sc) {
+            //    var trs=that.$('[data-pid="'+sc.id+'"] tbody > tr');
 
+
+            //});
         }
-        this.$el.trigger('action', 'validate');
-        return false;
+        this.$el.trigger('action', 'validate', {valid:isValid});
+        return isValid;
+    },
+
+    valRegEx: {
+        email: /^[\w\.\-]+@[\w\.\-]+\.[\w\.\-]+$/,
+        integer: /^-?\d+$/,
+        decimalEN: /^\d+(\.\d+)?$/,
+        decimalFR: /^\d+(\,\d+)?$/,
+        decimalDA: /^\d+(\,\d+)?$/
+    },
+
+    checkFields: function (holder, fds) {
+
+        var that = this,
+            ft = Evol.Dico.fieldTypes,
+            i18nVal = Evol.i18n.validation,
+            msgs = [],
+            v,
+            values = this.getData();
+
+        function checkType(fd, v) {
+            var ft = Evol.Dico.fieldTypes,
+                fv = _.isArray(v)?'':Evol.UI.trim(v),
+                i18nVal=Evol.i18n.validation;
+            if (fv !== '' && !_.isArray(fv) && !isNaN(fv)){
+                switch (fd.type) {
+                    case ft.integer:
+                    case ft.email:
+                        if (!that.valRegEx[fd.type].test(fv)) {
+                            flagField(fd, i18nVal[fd.type]);
+                        }
+                        break;
+                    case ft.dec:
+                    case ft.money:
+                        var regex = that.valRegEx[ft.dec + Evol.i18n.LOCALE];
+                        if (regex === null) {
+                            regex = that.valRegEx[ft.dec + 'EN']; // default to English with "."
+                        }
+                        if (!regex.test(fv))
+                            flagField(fd, i18nVal[fd.type]);
+                        break;
+                    case ft.date:
+                    case ft.datetime:
+                    case ft.time:
+                        if ((fv !== '') && (!_.isDate(new Date(fv)))) {
+                            flagField(fd, i18nVal[fd.type]);
+                        }
+                        break;
+                }
+            }
+        }
+
+        function flagField(fd, msg, r2, r3) {
+            var msgf = msg.replace('{0}', fd.label);
+            // TODO loop through args
+            if (r2 !== null) {
+                msgf = msgf.replace('{1}', r2);
+            }
+            if (r3 !== null) {
+                msgf = msgf.replace('{2}', r3);
+            }
+            if(_.isArray(msgs)){
+                msgs.push(msgf);
+            }
+            var p=that.$field(fd).parent();
+            var errlabel = p.find('.text-danger');
+            if (errlabel.length) {
+                errlabel.html(msgf);
+            } else {
+                p.append('<p class="text-danger">' + msgf + '</p>');
+            }
+            p.addClass('has-error');
+        }
+
+        _.each(fds,function(f){
+            v = values[f.id];
+
+            // Check required/empty or check type
+            if (f.required && (v==='' ||
+                (f.type==='integer' && isNaN(v)) ||
+                (f.type==='lov' && v==='0') ||
+                (f.type==='color' && v==='#000000'))){
+                flagField(f, i18nVal.empty);
+            } else {
+                checkType(f, v);
+            }
+
+            // Check regexp
+            if (f.regex !== null && !_.isUndefined(f.regex)) {
+                var rg = new RegExp(f.regex);
+                if (!v.match(rg)) {
+                    flagField(f, i18nVal.regex, f.label);
+                }
+            }
+/*
+             // Check custom
+             if (f.jsv !== null) {
+                 var p = eval([f.jsv, '("', that.prefix, f.id, '","', f.label, '")'].join(''));
+                 if (p !== null && p.length > 0) {
+                    flagField(f, p);
+                 }
+             }*/
+
+            // Check min & max
+            if (f.type===ft.integer || f.type===ft.decimal || f.type===ft.money) {
+                if (v !== '') {
+                    if (f.max !== null && parseFloat(v) > f.max) {
+                        flagField(f, i18nVal.max, f.max);
+                    }
+                    if (f.min !== null && parseFloat(v) < f.min) {
+                        flagField(f, i18nVal.min, f.min);
+                    }
+                }
+            }
+
+            // Check minlength and maxlength
+            if (_.isString(v) && v.length > 0) {
+                var ok = true,
+                    len = v.length;
+                if(len>0){
+                    if(f.maxlength){
+                        ok = len <= f.maxlength;
+                        if(!ok){
+                            if(f.minlength){
+                                flagField(f, i18nVal.minmaxlength, f.minlength, f.maxlength);
+                            }else{
+                                flagField(f, i18nVal.maxlength, f.maxlength);
+                            }
+                        }
+                    }
+                    if(ok && f.minlength){
+                        ok = len >= f.minlength;
+                        if(!ok){
+                            if(f.maxlength){
+                                flagField(f, i18nVal.minmaxlength, f.minlength, f.maxlength);
+                            }else{
+                                flagField(f, i18nVal.minlength, f.minlength);
+                            }
+                        }
+                    }
+                }
+            }
+
+        });
+
+        if (msgs.length > 0) {
+            return [i18nVal.intro, '<ul><li>', msgs.join('</li><li>'), '</li></ul>'].join('');
+        } else {
+            return '';
+        }
+
     },
 
     clearErrors: function () {
@@ -2830,9 +2819,9 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
 
     _renderBreadcrumb: function (h, elems, stepIdx) {
         // WIZARD top step indicator
-        h.push('<div class="evo-wiz-bsteps breadcrumb">');
+        h.push('<ol class="evo-wiz-bsteps breadcrumb">');
         _.each(elems, function(p, idx){
-            h.push('<div data-id="',stepIdx,'"><div class="badge ');
+            h.push('<li data-id="',stepIdx,'"><div class="badge ');
             if(idx>stepIdx){
                 h.push('future');
             }else if(idx<stepIdx){
@@ -2840,9 +2829,9 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
             }else{
                 h.push('present');
             }
-            h.push('">', idx+1,'</div><div>', p.label, '</div></div>');
+            h.push('">', idx+1,'</div><div>', p.label, '</div></li>');
         });
-        h.push('</div>');
+        h.push('</ol>');
         return this;
     },
 
@@ -4073,7 +4062,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             view: true,
             edit: true,
             mini: true,
-            wiz: false,
+            wiz: true,
             json: true,
             // --- views for many ---
             list: true,
