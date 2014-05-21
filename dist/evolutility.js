@@ -2251,9 +2251,11 @@ Evol.ViewOne = Backbone.View.extend({
 
             // Check required/empty or check type
             if (f.required && (v==='' ||
-                (f.type==='integer' && isNaN(v)) ||
-                (f.type==='lov' && v==='0') ||
-                (f.type==='color' && v==='#000000'))){
+                    (f.type===ft.integer && isNaN(v)) ||
+                    (f.type===ft.money && isNaN(v)) ||
+                    (f.type===ft.lov && v==='0') ||
+                    (f.type===ft.list && v.length===0) ||
+                    (f.type===ft.color && v==='#000000'))){
                 flagField(f, i18nVal.empty);
             } else {
                 checkType(f, v);
@@ -4062,7 +4064,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             view: true,
             edit: true,
             mini: true,
-            wiz: true,
+            wiz: false,
             json: true,
             // --- views for many ---
             list: true,
