@@ -17,7 +17,7 @@
 }
 .evo-logo > a:hover {
   text-decoration: none;
-  color: #ed991a !important;
+  color: #000000 !important;
 }
 .logop1,
 .logop3 {
@@ -33,7 +33,7 @@
   top: 0;
   left: 0;
   overflow: auto;
-  background-color: #1d365d;
+  background-color: #0099cc;
   border-bottom: #366092 solid 1px;
   width: 100%;
   padding: 2px 5px 2px 10px;
@@ -68,7 +68,7 @@
 .evo-head-links > li > a:hover,
 .evo-head-links2 > li > a:hover {
   text-decoration: none;
-  color: #ed991a;
+  color: #000000;
 }
 .evo-head-links > li > a.sel,
 .evo-head-links2 > li > a.sel {
@@ -106,7 +106,7 @@
 }
 .evo-title,
 .evo-title2 {
-  background-color: #1f497d;
+  background-color: #0099cc;
   position: relative;
 }
 .evo-title > h1,
