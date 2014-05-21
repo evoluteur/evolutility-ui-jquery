@@ -181,7 +181,7 @@ Evol.ViewOne = Backbone.View.extend({
                                 $f.before(newPix);
                                 break;
                             case fTypes.list:
-                                $f.select2('val',fv);
+                                $f.select2('val', fv);
                                 break;
                             default:
                                 $f.val(fv);
@@ -216,7 +216,8 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     clear: function () {
-        var fs = this.getFields(),
+        var ft =Evol.Dico.fieldTypes,
+            fs = this.getFields(),
             that=this,
             $f,
             prefix='#'+ that.prefix + '-',
@@ -228,11 +229,14 @@ Evol.ViewOne = Backbone.View.extend({
             $f = that.$(prefix + f.id);
             defaultVal = f.defaultvalue || '';
             switch(f.type) {
-                case Evol.Dico.fieldTypes.bool:
+                case ft.bool:
                     $f.prop('checked', defaultVal);
                     break;
-                case Evol.Dico.fieldTypes.bool:
+                case ft.bool:
                     $f.prop('checked', defaultVal);
+                    break;
+                case ft.list:
+                    $f.select2('val', null);
                     break;
                 default:
                     if(f.readonly){
