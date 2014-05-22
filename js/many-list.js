@@ -53,6 +53,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         this.$('.table > tbody').html(h.join(''));
         //this.options.pageIndex=pageIdx;
         this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
+        return this;
     },
 
     _HTMLlistBody: function(h, fields, pSize, icon, pageIdx, selectable){
