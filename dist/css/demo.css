@@ -252,12 +252,12 @@ h4 {
   font-weight: normal;
 }
 /* winecellar demo */
-.winecellar .evol-many-cards > div.panel {
+.winecellar .evol-many-badges > div.panel {
   height: 260px !important;
 }
-.winecellar .evol-many-cards p {
+.winecellar .evol-many-badges p {
   clear: left;
 }
-.test .evol-many-cards > div.panel {
+.test .evol-many-badges > div.panel {
   height: 182px !important;
 }
