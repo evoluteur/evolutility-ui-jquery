@@ -1,17 +1,17 @@
 /*! ***************************************************************************
  *
- * evolutility :: many-cards.js
+ * evolutility :: many-badges.js
  *
- * View many cards
+ * View many badges
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2014, Olivier Giulieri
  *
  *************************************************************************** */
 
-Evol.ViewMany.Cards = Evol.ViewMany.extend({
+Evol.ViewMany.Badges = Evol.ViewMany.extend({
 
-    viewName: 'cards',
+    viewName: 'badges',
 
     customize: function () {
         var labels = this.$('h4 > a.evol-nav-id');
@@ -32,7 +32,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
                 uim = opts.uiModel,
                 pSize = opts.pageSize || 50,
                 pSummary = this.pageSummary(0, pSize, models.length, uim.entity, uim.entities);
-            h.push('<div class="evol-many-cards">');
+            h.push('<div class="evol-many-badges">');
             this.renderBody(h, this.getFields(), pSize, uim.icon, 0,opts.selectable);
             h.push(pSummary);
             //this._HTMLpagination(h,0, pSize, models.length);
@@ -52,7 +52,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
             pSize = opts.pageSize || 20;
 
         this.renderBody(h, fields, pSize, uim.icon, pageIdx, opts.selectable);
-        this.$('.evol-many-cards').html(h.join(''));
+        this.$('.evol-many-badges').html(h.join(''));
         this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
     },
 

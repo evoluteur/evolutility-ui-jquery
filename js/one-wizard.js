@@ -157,6 +157,7 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
                 $(d).attr('class', 'badge present');
             }
         });
+        return this;
     }
 
 });
