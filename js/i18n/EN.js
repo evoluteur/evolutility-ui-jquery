@@ -46,9 +46,17 @@ Evol.i18n = {
     //Print:'Print',
     //pdf:'PDF',
 
+    // --- buttons ---
+    Save:'Save',
+    SaveAdd:'Save and Add Another',
+    Cancel:'Cancel',
+
     // --- msg & status ---
+    saved: 'Record saved.',
     DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value,
     DeleteEntities: 'Delete {0} {1}?', // delete 5 tasks
+    NoChange:'No Change',
+    NoX:'No {0}',
     Back2SearchResults:'Back to search results',
     yes: 'Yes',
     no: 'No',
@@ -62,13 +70,6 @@ Evol.i18n = {
     selected: '{0} selected',
     'sgn_money': '$', // indicator for money
     'sgn_email': '@', // indicator for email
-
-    // --- buttons ---
-    Save:'Save',
-    SaveAdd:'Save and Add Another',
-    Cancel:'Cancel',
-    NoChange:'No Change',
-    NoX:'No {0}',
 
     // --- status ---
     status:{

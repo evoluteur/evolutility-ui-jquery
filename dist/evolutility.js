@@ -456,9 +456,17 @@ Evol.i18n = {
     //Print:'Print',
     //pdf:'PDF',
 
+    // --- buttons ---
+    Save:'Save',
+    SaveAdd:'Save and Add Another',
+    Cancel:'Cancel',
+
     // --- msg & status ---
+    saved: 'Record saved.',
     DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value,
     DeleteEntities: 'Delete {0} {1}?', // delete 5 tasks
+    NoChange:'No Change',
+    NoX:'No {0}',
     Back2SearchResults:'Back to search results',
     yes: 'Yes',
     no: 'No',
@@ -472,13 +480,6 @@ Evol.i18n = {
     selected: '{0} selected',
     'sgn_money': '$', // indicator for money
     'sgn_email': '@', // indicator for email
-
-    // --- buttons ---
-    Save:'Save',
-    SaveAdd:'Save and Add Another',
-    Cancel:'Cancel',
-    NoChange:'No Change',
-    NoX:'No {0}',
 
     // --- status ---
     status:{
@@ -1562,6 +1563,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         this.$('.table > tbody').html(h.join(''));
         //this.options.pageIndex=pageIdx;
         this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
+        return this;
     },
 
     _HTMLlistBody: function(h, fields, pSize, icon, pageIdx, selectable){
@@ -2911,6 +2913,7 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
                 $(d).attr('class', 'badge present');
             }
         });
+        return this;
     }
 
 });
@@ -4512,7 +4515,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     collec.create(this.getData(), {
                         success: function(m){
                             fnSuccess(m);
-                            that.setMessage('Record saved.', Evol.i18n.getLabel('status.added',entityName, _.escape(vw.getTitle())), 'success');
+                            that.setMessage(Evol.i18n.saved, Evol.i18n.getLabel('status.added',entityName, _.escape(vw.getTitle())), 'success');
                         },
                         error:function(err){
                             alert('error');
@@ -4528,7 +4531,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.model.save('','',{
                     success: function(m){
                         fnSuccess(m);
-                        that.setMessage('Record saved.', Evol.i18n.getLabel('status.updated', Evol.UI.capitalize(entityName),_.escape(vw.getTitle())), 'success');
+                        that.setMessage(Evol.i18n.saved, Evol.i18n.getLabel('status.updated', Evol.UI.capitalize(entityName),_.escape(vw.getTitle())), 'success');
                     },
                     error:function(err){
                         alert('error');
@@ -4640,8 +4643,8 @@ Evol.ViewToolbar = Backbone.View.extend({
     action_view: function(evt, actionId){
         switch(actionId){
             case 'cancel':
-                if(this.curView.viewName==='edit' && !this.model.isNew){
-                    this.setView('view');
+                if(this.curView.cardinality==='1' && !this.model.isNew){
+                    this.setView(this._prevOne || 'view');
                 }else{
                     this.setView(this._prevMany || 'list');
                 }

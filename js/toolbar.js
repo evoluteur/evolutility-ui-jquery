@@ -476,7 +476,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     collec.create(this.getData(), {
                         success: function(m){
                             fnSuccess(m);
-                            that.setMessage('Record saved.', Evol.i18n.getLabel('status.added',entityName, _.escape(vw.getTitle())), 'success');
+                            that.setMessage(Evol.i18n.saved, Evol.i18n.getLabel('status.added',entityName, _.escape(vw.getTitle())), 'success');
                         },
                         error:function(err){
                             alert('error');
@@ -492,7 +492,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.model.save('','',{
                     success: function(m){
                         fnSuccess(m);
-                        that.setMessage('Record saved.', Evol.i18n.getLabel('status.updated', Evol.UI.capitalize(entityName),_.escape(vw.getTitle())), 'success');
+                        that.setMessage(Evol.i18n.saved, Evol.i18n.getLabel('status.updated', Evol.UI.capitalize(entityName),_.escape(vw.getTitle())), 'success');
                     },
                     error:function(err){
                         alert('error');
@@ -604,8 +604,8 @@ Evol.ViewToolbar = Backbone.View.extend({
     action_view: function(evt, actionId){
         switch(actionId){
             case 'cancel':
-                if(this.curView.viewName==='edit' && !this.model.isNew){
-                    this.setView('view');
+                if(this.curView.cardinality==='1' && !this.model.isNew){
+                    this.setView(this._prevOne || 'view');
                 }else{
                     this.setView(this._prevMany || 'list');
                 }
