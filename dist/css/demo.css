@@ -3,7 +3,7 @@
 .evo-logo {
   float: left;
   font-size: 2em;
-  margin: 5px 80px 5px 10px;
+  margin: 16px 80px 5px 10px;
 }
 .evo-logo > a {
   text-decoration: none;
@@ -170,14 +170,31 @@
 .evo-content3 > p > img {
   width: 500px;
 }
+.evo-asection {
+  display: block;
+  margin-top: 200px;
+  content: " ";
+}
+@media only screen and (min-width: 900px) {
+  .evo-h-gap {
+    display: none;
+  }
+}
 body {
   font-size: 11pt;
   font-family: "Century Gothic", arial;
   color: #0d0d0d;
   font-weight: 300;
 }
-h1 {
-  color: #0099cc;
+h1,
+h2,
+h3,
+h4 {
+  color: #0099cc !important;
+}
+.evo-title > h1,
+.evo-title2 > h1 {
+  color: white !important;
 }
 .blueBox {
   float: left;

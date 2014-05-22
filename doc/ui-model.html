@@ -33,19 +33,18 @@
 
 <div class="evo-content3">
 
-<p>This page describes the "vocabulary" or API to define UI models.
-    </p>
+<p>Attributes in your Backbone model are mapped to <a href="#fields">fields</a> in UI model. This page describes the "vocabulary" (or API) to define UI models.</p>
+
+<p>Fields are grouped in <a href="#panels">panels</a>, panels can be grouped in <a href="#tabs">tabs</a>.
+    Sub-collections can be included as <a href="#panel-list">panel-list</a>.
+</p>
 
 <p>It is a first draft and it is nor fully implemented yet but a work in progress based on
     <a href="http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications" target="evomm">Evolutility minimalist meta-model</a>.</p>
 
-<p>
-    Attributes in your Backbone model are mapped to fields in the UI model.
-    These fields can be grouped into panels and tabs.
-</p>
 
 
-
+<p class="evo-h-gap">&nbsp;</p>
 <section id="object">
     <p></p>
 <h1>object</h1>
@@ -97,10 +96,12 @@ This ui-model defines all <a href="views.html">views</a>.</p>
     </tr>
     </tbody></table>
 
-    <a name="field"></a>
     <span class="evol-required">*</span>: required attribute.
 </section>
 
+<a name="fields"></a>
+<p class="evo-h-gap">&nbsp;</p>
+<p>&nbsp;</p>
 <section id="field">
     <h1>field</h1>
     <p>Attributes in your Backbone model are mapped to fields in the UI.</p>
@@ -314,7 +315,8 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         <tr>
             <td>viewmany, viewlist, <br/>
                 viewcards, viewedit, <br/>
-                viewmini, viewexport
+                viewmini, viewexport,
+                viewcharts
             </td>
             <td>Determines if the field is available in specific views.
             </td>
@@ -322,6 +324,9 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         </tbody></table>
 </section>
 
+<a name="panels"></a>
+<p class="evo-h-gap">&nbsp;</p>
+<p>&nbsp;</p>
 <section id="panel">
     <p></p>
     <h1>panel</h1>
@@ -379,7 +384,11 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         </tbody></table>
 
     </section>
-    <section id="panel-list">
+
+<a name="panel-list"></a>
+<p class="evo-h-gap">&nbsp;</p>
+<p>&nbsp;</p>
+<section id="panel-list">
         <p></p>
         <h1>panel-list</h1>
 
@@ -431,6 +440,10 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         </tbody></table>
 
     </section>
+
+<a name="tabs"></a>
+<p class="evo-h-gap">&nbsp;</p>
+<p>&nbsp;</p>
 <section id="tab">
     <p></p>
     <h1>tab</h1>
@@ -470,6 +483,9 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         </tbody></table>
 </section>
 
+<a name="sample"></a>
+<p class="evo-h-gap">&nbsp;</p>
+<p>&nbsp;</p>
 <section id="sample">
     <p></p>
 
