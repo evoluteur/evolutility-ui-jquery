@@ -34,7 +34,6 @@
   left: 0;
   overflow: auto;
   background-color: #0099cc;
-  border-bottom: #366092 solid 1px;
   width: 100%;
   padding: 2px 5px 2px 10px;
   z-index: 300;
@@ -176,6 +175,9 @@ body {
   font-family: "Century Gothic", arial;
   color: #0d0d0d;
   font-weight: 300;
+}
+h1 {
+  color: #0099cc;
 }
 .blueBox {
   float: left;
