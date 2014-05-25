@@ -1676,6 +1676,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     postRender: function (){
         // to overwrite...
+
     },
 
     getFields: function (){
@@ -2202,7 +2203,7 @@ Evol.ViewOne = Backbone.View.extend({
             var ft = Evol.Dico.fieldTypes,
                 fv = _.isArray(v)?'':Evol.UI.trim(v),
                 i18nVal=Evol.i18n.validation;
-            if (fv !== '' && !_.isArray(fv) && !isNaN(fv)){
+            if (fv !== '' && !_.isArray(fv)){ // && !isNaN(fv)
                 switch (fd.type) {
                     case ft.integer:
                     case ft.email:
@@ -2263,9 +2264,8 @@ Evol.ViewOne = Backbone.View.extend({
                     (f.type===ft.list && v.length===0) ||
                     (f.type===ft.color && v==='#000000'))){
                 flagField(f, i18nVal.empty);
-            } else {
-                checkType(f, v);
             }
+            checkType(f, v);
 
             // Check regexp
             if (f.regex !== null && !_.isUndefined(f.regex)) {
