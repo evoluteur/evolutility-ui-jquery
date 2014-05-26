@@ -105,7 +105,7 @@ Evol.Dico = {
     },
 
     // get field value (not id but text) for a field of type lov
-    lovText:function(f, v, hash){
+    lovText:function(f, v, hash, iconPath){
         if(f.list && f.list.length>0 && hash){
             if(!(f.id in hash)){
                 hash[f.id]={};
@@ -120,7 +120,7 @@ Evol.Dico = {
                 if(listItem){
                     var txt=listItem.text;
                     if(listItem.icon){
-                        txt='<img src="'+listItem.icon+'"> '+txt;
+                        txt='<img src="'+iconPath+listItem.icon+'"> '+txt;
                     }
                     hashLov[v]=txt;
                     return txt;
@@ -269,7 +269,7 @@ Evol.Dico = {
         return models;
     },
 
-    HTMLField4Many: function(f, v, hashLov){
+    HTMLField4Many: function(f, v, hashLov, iconsPath){
         var fTypes = Evol.Dico.fieldTypes;
         switch(f.type){
             case fTypes.bool:
@@ -282,7 +282,8 @@ Evol.Dico = {
                     //if(f.icon && f.list & f.list[0].icon){
                     //    return 'f.icon' + this._lovText(f,v);
                     //}else{
-                    return Evol.Dico.lovText(f, v, hashLov);
+                    //return Evol.Dico.lovText(f, iconPath+v, hashLov);
+                    return Evol.Dico.lovText(f, v, hashLov, iconsPath);
                     //}
                 }
                 break;
@@ -293,7 +294,7 @@ Evol.Dico = {
                 if(v && v.length){
                     var vs=[];
                     _.each(v, function(vi){
-                        vs.push(Evol.Dico.lovText(f, vi, hashLov));
+                        vs.push(Evol.Dico.lovText(f, vi, hashLov, iconsPath));
                     });
                     return vs.join(', ');
                 }
@@ -306,7 +307,7 @@ Evol.Dico = {
                 return Evol.UI.formatDateTime(v);
             case fTypes.pix:
                 if (v && v.length) {
-                    return Evol.UI.input.img(f.id, v);
+                    return Evol.UI.input.img(f.id, iconsPath + v);
                 }
                 break;
             case fTypes.money:
@@ -321,7 +322,7 @@ Evol.Dico = {
         return '';
     },
 
-    HTMLField4One: function(fld, fid, fv, mode, skipLabel){
+    HTMLField4One: function(fld, fid, fv, mode, iconsPath, skipLabel){
         var h=[],
             size=50, // TODO fix it
             EvoUI=Evol.UI,
@@ -345,7 +346,7 @@ Evol.Dico = {
                 //h.push(Evol.UI.input.colorBox(fid, fv), fv);
                 h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
             }else{
-                h.push(this.HTMLField4Many(fld, fv, {}));
+                h.push(this.HTMLField4Many(fld, fv, {}, iconsPath));
             }
             h.push('&nbsp;</div>');
         }else{
@@ -370,7 +371,7 @@ Evol.Dico = {
                     if (fld.height === null) {
                         fld.height = 5;
                     } else {
-                        fHeight = parseInt(fld.height,10);
+                        var fHeight = parseInt(fld.height,10);
                         if (fHeight < 1) {
                             fld.height = 5;
                         }
@@ -410,7 +411,7 @@ Evol.Dico = {
                 //case fTypes.doc:
                 case fTypes.pix:
                     if(fv!==''){
-                        h.push('<img src="',fv,'" class="img-thumbnail">');
+                        h.push('<img src="',iconsPath+fv,'" class="img-thumbnail">');
                     }else{
                         h.push('<p class="">',Evol.i18n.nopix,'</p>');
                     }
@@ -451,7 +452,7 @@ Evol.Dico = {
             h.push('<a href="#" id="', id, '" class="evol-nav-id">');
         }
         if (icon) {
-            h.push('<img class="evol-table-icon" src="pix/', icon, '">');
+            h.push('<img class="evol-table-icon" src="', icon, '">');
         }/*
         if(_.isUndefined(value) || value===''){
             value='('+model.id+')';

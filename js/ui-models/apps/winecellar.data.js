@@ -2,7 +2,7 @@
 var winecellar_data = [
     {
         "name": "Macrostie",
-        "label_img": "pix/wine/macrostie.gif",
+        "label_img": "wine/macrostie.gif",
         "vintage": 2008,
         "winery": "Mc Williams",
         "bsize": "750",
@@ -53,7 +53,7 @@ var winecellar_data = [
     },
     {
         name: "Château d'Yquem",
-        label_img: 'pix/wine/yquem.gif',
+        label_img: 'wine/yquem.gif',
         vintage: 2012,
         winery:'Lur Saluces',
         bsize: '750',
@@ -87,7 +87,7 @@ var winecellar_data = [
     },
     {
         name: 'Château St Jean',
-        label_img: 'pix/wine/stjean.gif',
+        label_img: 'wine/stjean.gif',
         vintage: 2008,
         winery:'Ch St Jean',
         bsize: '750',
@@ -113,7 +113,7 @@ var winecellar_data = [
     },
     {
         name: 'Vine Cliff',
-        label_img: 'pix/wine/vinecliff.gif',
+        label_img: 'wine/vinecliff.gif',
         vintage: 2013,
         winery:'Vine Cliff',
         bsize: '750',
@@ -147,7 +147,7 @@ var winecellar_data = [
     },
     {
         name: 'Château Montelena',
-        label_img: 'pix/wine/montelena.gif',
+        label_img: 'wine/montelena.gif',
         vintage: 2005,
         winery:'Château Montelena',
         bsize: '1500',

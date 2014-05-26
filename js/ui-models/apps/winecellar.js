@@ -92,11 +92,11 @@ var winecellar_lovs = {
     ],
 
     type: [
-        {id:'red',text:'Red', icon:'pix/wine/winered.gif'},
-        {id:'white',text:'White', icon:'pix/wine/winewhite.gif'},
-        {id:'sweet',text:'Sweet', icon:'pix/wine/winesweet.gif'},
-        {id:'spark',text:'Sparkling', icon:'pix/wine/winespark.gif'},
-        {id:'rose',text:'Rose', icon:'pix/wine/winerose.gif'}
+        {id:'red',text:'Red', icon:'wine/winered.gif'},
+        {id:'white',text:'White', icon:'wine/winewhite.gif'},
+        {id:'sweet',text:'Sweet', icon:'wine/winesweet.gif'},
+        {id:'spark',text:'Sparkling', icon:'wine/winespark.gif'},
+        {id:'rose',text:'Rose', icon:'wine/winerose.gif'}
     ],
 
     score: [

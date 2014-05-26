@@ -29,7 +29,8 @@ Evol.ViewOne = Backbone.View.extend({
     options: {
         button_addAnother: false,
         style: 'panel-info',
-        titleSelector: '#title'
+        titleSelector: '#title',
+        iconsPath: 'pix/'
     },
 
     initialize: function (opts) {
@@ -155,14 +156,23 @@ Evol.ViewOne = Backbone.View.extend({
                 that=this,
                 fTypes = Evol.Dico.fieldTypes,
                 $f, fv,
-                prefix='#'+ that.prefix + '-',
-                subCollecs=this.getSubCollecs();
+                prefix='#'+ this.prefix + '-',
+                subCollecs=this.getSubCollecs(),
+                iconsPath=this.options.iconsPath||'',
+                newPix;
             _.each(fs, function (f) {
                 $f=that.$(prefix + f.id);
                 fv=model.get(f.id);
                 if(model){
                     if(f.readonly){
-                        $f.text(fv || '');
+                        if(f.type===fTypes.pix){
+                            newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
+                            $f.val(fv)
+                                .prev().remove();
+                            $f.before(newPix);
+                        }else{
+                            $f.text(fv || '');
+                        }
                     }else{
                         switch(f.type) {
                             case fTypes.lov:
@@ -176,7 +186,7 @@ Evol.ViewOne = Backbone.View.extend({
                                 $f.prop('checked', fv);
                                 break;
                             case fTypes.pix:
-                                var newPix=(fv)?('<img src="'+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
+                                newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
                                 $f.val(fv)
                                     .prev().remove();
                                 $f.before(newPix);
@@ -238,6 +248,13 @@ Evol.ViewOne = Backbone.View.extend({
                     break;
                 case ft.list:
                     $f.select2('val', null);
+                    break;
+                case ft.pix:
+                    //var newPix=(defaultVal)?('<img src="'+iconsPath+defaultVal+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
+                    var newPix='<p class="">'+Evol.i18n.nopix+'</p>';
+                    $f.val('')
+                        .prev().remove();
+                    $f.before(newPix);
                     break;
                 default:
                     if(f.readonly){
@@ -388,7 +405,8 @@ Evol.ViewOne = Backbone.View.extend({
 
     renderPanel: function (h, p, pid, mode, visible) {
         var that = this,
-            fTypes=Evol.Dico.fieldTypes;
+            fTypes=Evol.Dico.fieldTypes,
+            iconsPath = this.options.iconsPath || '';
         if(mode==='wiz'){
             var hidden= _.isUndefined(visible)?false:!visible;
             h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%;',hidden?'display:none;':'','">');
@@ -409,7 +427,7 @@ Evol.ViewOne = Backbone.View.extend({
                     h.push(Evol.UI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
                 }else{
                     h.push('<div class="pull-left evol-fld w-100">');
-                    that.renderField(h, elem, mode);
+                    that.renderField(h, elem, mode, iconsPath);
                     h.push("</div>");
                 }
             });
@@ -422,7 +440,7 @@ Evol.ViewOne = Backbone.View.extend({
                         h.push(Evol.UI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
                     }else{
                         h.push('<div style="width:', parseInt(elem.width, 10), '%" class="pull-left evol-fld">');
-                        that.renderField(h, elem, mode);
+                        that.renderField(h, elem, mode, iconsPath);
                         h.push("</div>");
                     }
                 }
@@ -451,7 +469,8 @@ Evol.ViewOne = Backbone.View.extend({
 
     _renderPanelListBody: function (h, uiPnl, fv, mode){
         var that=this,
-            fs = uiPnl.elements;
+            fs = uiPnl.elements,
+            iconsPath=this.options.iconsPath || '';
 
         if(this.model){
             var vs = this.model.get(uiPnl.attr);
@@ -468,12 +487,12 @@ Evol.ViewOne = Backbone.View.extend({
                             if(row[f.id]){
                                 //form-control
                                 if(f.type!==Evol.Dico.fieldTypes.bool){
-                                    h.push(_.escape(Evol.Dico.HTMLField4Many(f, row[f.id], Evol.hashLov)));
+                                    h.push(_.escape(Evol.Dico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath)));
                                 }else{
-                                    h.push(Evol.Dico.HTMLField4Many(f, row[f.id], Evol.hashLov));
+                                    h.push(Evol.Dico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath));
                                 }
                             }else{
-                                h.push(Evol.Dico.HTMLField4Many(f, '', Evol.hashLov));
+                                h.push(Evol.Dico.HTMLField4Many(f, '', Evol.hashLov, iconsPath));
                             }
                             h.push('</td>');
                         });
@@ -494,23 +513,24 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     _TDsFieldsEdit: function(h, fs, m){
-        var fv;
+        var fv,
+            iconPath=this.options.iconPath || '';
         _.each(fs, function (f) {
             fv=m[f.id];
             if(_.isUndefined(fv)){
                 fv='';
             }
-            h.push('<td>', Evol.Dico.HTMLField4One(f, f.id, fv, 'edit-details', true), '</td>');
+            h.push('<td>', Evol.Dico.HTMLField4One(f, f.id, fv, 'edit-details', iconPath, true), '</td>');
         });
     },
 
-    renderField: function (h, f, mode) {
+    renderField: function (h, f, mode, iconsPath) {
         var fid = this.fieldViewId(f.id),
             fv='';
         if(this.model && this.model.has(f.id)){
             fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultvalue || '';
         }
-        h.push(Evol.Dico.HTMLField4One(f, fid, fv, mode));
+        h.push(Evol.Dico.HTMLField4One(f, fid, fv, mode, iconsPath));
         return this;
     },
 

@@ -25,7 +25,8 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                 fTypes = Evol.Dico.fieldTypes,
                 $f, fv,
                 prefix='#'+ that.prefix + '-',
-                subCollecs=this.getSubCollecs();
+                subCollecs=this.getSubCollecs(),
+                iconsPath=this.options.iconsPath||'';
             _.each(fs, function (f) {
                 $f=that.$(prefix + f.id);
                 fv=model.get(f.id);
@@ -42,7 +43,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                             $f.html(Evol.UI.linkEmail(f.id, fv));
                             break;
                         case fTypes.pix:
-                            $f.html((fv)?('<img src="'+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
+                            $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
                             break;
                         default:
                             $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov) || ' ');
@@ -65,6 +66,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
         var fs = this.getFields(),
             that=this,
             $f,
+            fTypes = Evol.Dico.fieldTypes,
             prefix='#'+ that.prefix + '-',
             subCollecs=this.getSubCollecs();
 
@@ -72,8 +74,12 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
         _.each(fs, function (f) {
             $f=that.$(prefix + f.id);
             switch(f.type) {
-                case 'boolean':
+                case fTypes.bool:
                     $f.prop('checked', f.defaultvalue || '');
+                    break;
+                case fTypes.pix:
+                    // TODO
+
                     break;
                 default:
                     $f.html(f.defaultvalue || '');
