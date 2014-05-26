@@ -114,15 +114,15 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
 
         h.push('<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-id="main">');
-        linkOpt2h('list',Evol.i18n.All,'th-list');
-        linkOpt2h('new',Evol.i18n.New,'plus');
-        linkOpt2h('edit',Evol.i18n.Edit,'pencil','1');
-        linkOpt2h('save',Evol.i18n.Save,'floppy-disk','1');
-        linkOpt2h('del',Evol.i18n.Delete,'trash','1');
-        linkOpt2h('filter','Filter','filter','n');
+        linkOpt2h('list',Evol.i18n.bAll,'th-list');
+        linkOpt2h('new',Evol.i18n.bNew,'plus');
+        linkOpt2h('edit',Evol.i18n.bEdit,'pencil','1');
+        linkOpt2h('save',Evol.i18n.bSave,'floppy-disk','1');
+        linkOpt2h('del',Evol.i18n.bDelete,'trash','1');
+        linkOpt2h('filter',Evol.i18n.bFilter,'filter','n');
         //linkOpt2h('group','Group','resize-horizontal','n');
-        linkOpt2h('charts','Charts','stats','n');
-        linkOpt2h('export','Export','cloud-download','n');
+        linkOpt2h('charts',Evol.i18n.bCharts,'stats','n');
+        linkOpt2h('export',Evol.i18n.bExport,'cloud-download','n');
         //linkOpt2h('selections','','star');
         if(opts.toolbar){
             link2h('prev','','chevron-left','x');
@@ -374,8 +374,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                     $ff=$(Evol.UI.HTMLEmptyPanel('filters', 'evo-filters', 'info'));
                 this.$('.evo-toolbar').after($ff);
                 this._filters = new Evol.ViewAction.Filter({
-                    el:$ff,
-                    fields:Evol.Dico.getFields(this.options.uiModel)
+                    el: $ff,
+                    fields: Evol.Dico.getFields(this.options.uiModel)
                 }).render();
                 $ff.on('change.filter', function(){
                     that.curView.setFilter(that._filters.val())
@@ -577,7 +577,6 @@ Evol.ViewToolbar = Backbone.View.extend({
     setMessage: function(title, content, style){
         var $msg=this.$('[data-id="msg"]');
         if($msg.length){
-            var ch=$msg.children();
             $msg.attr('class', 'evo-msg alert alert-'+style+' alert-dismissable');
             $msg.find('>strong').text(title);
             $msg.find('>span').html(content); //TODO text?

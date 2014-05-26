@@ -440,9 +440,9 @@ Evol.i18n = {
 
     // --- toolbar ---
     View:'View',
-    Edit:'Edit',
+    bEdit:'Edit',
     // Login:'Login',
-    New:'New',
+    bNew:'New',
     NewEntity:'New {0}', //'New Item',
     NewUpload:'New Upload',
     //Search:'Search',
@@ -450,18 +450,20 @@ Evol.i18n = {
     //NewSearch:'New Search',
     Selections:'Selections',
     Selection:'Selection',
-    Export:'Export',
+    bExport:'Export',
+    bCharts:'Charts',
     SearchRes:'Search Result',
     //MassUpdate:'Mass Update',
-    Delete:'Delete',
-    All:'All',
+    bDelete:'Delete',
+    bAll:'All',
+    bFilter: 'Filter',
     //ListAll:'List All',
     //Print:'Print',
     //pdf:'PDF',
 
     // --- buttons ---
-    Save:'Save',
-    SaveAdd:'Save and Add Another',
+    bSave:'Save',
+    bSaveAdd:'Save and Add Another',
     Cancel:'Cancel',
 
     // --- msg & status ---
@@ -521,13 +523,13 @@ Evol.i18n = {
     export:{
         ExportEntity: 'Export {0}', // {0}=entity
         ExportEntities: 'Export {0}', // {0}=entities
-        preview:'Export Preview',
+        preview:'Export preview',
         ExportHeader: 'Header',
         ExportSeparator: 'Separator',
         ExportFirstLine:'First line for field names',
         ExportFormat: 'Export format',
         ExportFields: 'Fields to include in the export',
-        IDkey: 'ID - Primary Key',
+        IDkey: 'ID - Primary key',
         AllFields: 'Show all fields',
         ExportFormats: 'Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)',
         //xpColors:'Header color-Color odd rows-Color even rows',
@@ -1935,9 +1937,9 @@ Evol.ViewOne = Backbone.View.extend({
         h.push(Evol.UI.html.clearer,
             '<div class="evol-buttons">',
             Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
-            Evol.UI.input.button('save', Evol.i18n.Save, 'btn-primary'));
+            Evol.UI.input.button('save', Evol.i18n.bSave, 'btn-primary'));
         if (this.model && this.model.isNew() && this.options.button_addAnother && mode!=='json') {
-            h.push(Evol.UI.input.button('save-add', Evol.i18n.SaveAdd, 'btn-default'));
+            h.push(Evol.UI.input.button('save-add', Evol.i18n.bSaveAdd, 'btn-default'));
         }
         h.push('</div>');
     },
@@ -2707,7 +2709,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                     switch(f.type){
                         case fTypes.lov:
                         case fTypes.bool:
-                            $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov));
+                            $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
                             break;
                         case fTypes.url:
                             $f.html(Evol.UI.link(f.id, fv, fv, f.id));
@@ -2719,7 +2721,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                             $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
                             break;
                         default:
-                            $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov) || ' ');
+                            $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
                     }
                 }
             });
@@ -2771,7 +2773,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
         h.push(Evol.UI.html.clearer,
             '<div class="evol-buttons">',
             Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
-            Evol.UI.input.button('edit', Evol.i18n.Edit, 'btn-primary'),
+            Evol.UI.input.button('edit', Evol.i18n.bEdit, 'btn-primary'),
             '</div>');
     }
 
@@ -4176,15 +4178,15 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
 
         h.push('<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-id="main">');
-        linkOpt2h('list',Evol.i18n.All,'th-list');
-        linkOpt2h('new',Evol.i18n.New,'plus');
-        linkOpt2h('edit',Evol.i18n.Edit,'pencil','1');
-        linkOpt2h('save',Evol.i18n.Save,'floppy-disk','1');
-        linkOpt2h('del',Evol.i18n.Delete,'trash','1');
-        linkOpt2h('filter','Filter','filter','n');
+        linkOpt2h('list',Evol.i18n.bAll,'th-list');
+        linkOpt2h('new',Evol.i18n.bNew,'plus');
+        linkOpt2h('edit',Evol.i18n.bEdit,'pencil','1');
+        linkOpt2h('save',Evol.i18n.bSave,'floppy-disk','1');
+        linkOpt2h('del',Evol.i18n.bDelete,'trash','1');
+        linkOpt2h('filter',Evol.i18n.bFilter,'filter','n');
         //linkOpt2h('group','Group','resize-horizontal','n');
-        linkOpt2h('charts','Charts','stats','n');
-        linkOpt2h('export','Export','cloud-download','n');
+        linkOpt2h('charts',Evol.i18n.bCharts,'stats','n');
+        linkOpt2h('export',Evol.i18n.bExport,'cloud-download','n');
         //linkOpt2h('selections','','star');
         if(opts.toolbar){
             link2h('prev','','chevron-left','x');
@@ -4436,8 +4438,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                     $ff=$(Evol.UI.HTMLEmptyPanel('filters', 'evo-filters', 'info'));
                 this.$('.evo-toolbar').after($ff);
                 this._filters = new Evol.ViewAction.Filter({
-                    el:$ff,
-                    fields:Evol.Dico.getFields(this.options.uiModel)
+                    el: $ff,
+                    fields: Evol.Dico.getFields(this.options.uiModel)
                 }).render();
                 $ff.on('change.filter', function(){
                     that.curView.setFilter(that._filters.val())
@@ -4639,7 +4641,6 @@ Evol.ViewToolbar = Backbone.View.extend({
     setMessage: function(title, content, style){
         var $msg=this.$('[data-id="msg"]');
         if($msg.length){
-            var ch=$msg.children();
             $msg.attr('class', 'evo-msg alert alert-'+style+' alert-dismissable');
             $msg.find('>strong').text(title);
             $msg.find('>span').html(content); //TODO text?

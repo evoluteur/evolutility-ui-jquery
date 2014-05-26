@@ -34,7 +34,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                     switch(f.type){
                         case fTypes.lov:
                         case fTypes.bool:
-                            $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov));
+                            $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
                             break;
                         case fTypes.url:
                             $f.html(Evol.UI.link(f.id, fv, fv, f.id));
@@ -46,7 +46,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                             $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
                             break;
                         default:
-                            $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov) || ' ');
+                            $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
                     }
                 }
             });
@@ -98,7 +98,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
         h.push(Evol.UI.html.clearer,
             '<div class="evol-buttons">',
             Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
-            Evol.UI.input.button('edit', Evol.i18n.Edit, 'btn-primary'),
+            Evol.UI.input.button('edit', Evol.i18n.bEdit, 'btn-primary'),
             '</div>');
     }
 
