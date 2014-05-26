@@ -356,27 +356,27 @@ Evol.ViewOne = Backbone.View.extend({
         this._renderButtons(h, mode);
     },
 
-    renderTabs: function (h, ts) {
+    renderTabs: function (h, tabs) {
         var isFirst = true;
         h.push('<ul class="nav nav-tabs evol-tabs">');
-        _.each(ts, function (t, idx) {
-            if (t.type == 'tab') {
+        _.each(tabs, function (tab, idx) {
+            if (tab.type == 'tab') {
                 if (isFirst) {
                     h.push('<li class="active">');
                     isFirst = false;
                 } else {
                     h.push('<li>');
                 }
-                h.push('<a href="#evol-tab-', idx, '">', t.label, '</a></li>');
+                h.push('<a href="#evol-tab-', idx, '">', tab.label, '</a></li>');
             }
         });
         h.push('</ul>');
     },
 
-    renderTab: function (h, t, mode) {
+    renderTab: function (h, tab, mode) {
         var that = this;
         h.push('<div class="evol-pnls">');
-        _.each(t.elements, function (uip, idx) {
+        _.each(tab.elements, function (uip, idx) {
             if (uip.type === 'panel-list') {
                 that.renderPanelList(h, uip, mode);
             } else {
@@ -511,11 +511,6 @@ Evol.ViewOne = Backbone.View.extend({
             fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultvalue || '';
         }
         h.push(Evol.Dico.HTMLField4One(f, fid, fv, mode));
-        return this;
-    },
-
-    renderFieldLabel: function (h, fld, mode) {
-        h.push(Evol.Dico.HTMLFieldLabel(fld, mode));
         return this;
     },
 

@@ -445,10 +445,10 @@ Evol.Dico = {
         return h.join('');
     },
 
-    HTMLFieldLink: function (fid, fld, value, icon, noLink) {
+    HTMLFieldLink: function (id, fld, value, icon, noLink) {
         var h=[];
         if(!noLink){
-            h.push('<a href="#" id="', fid, '" class="evol-nav-id">');
+            h.push('<a href="#" id="', id, '" class="evol-nav-id">');
         }
         if (icon) {
             h.push('<img class="evol-table-icon" src="pix/', icon, '">');

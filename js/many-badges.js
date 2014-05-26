@@ -45,7 +45,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
     },
 
     setPage: function(pageIdx){
-        var h=[],
+        var h = [],
             fields = this.getFields(),
             opts = this.options,
             uim = opts.uiModel,
@@ -63,7 +63,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
             rMax = _.min([data.length, rMin+pSize]);
 
         if(pageIdx>0){
-            rMin=pageIdx*pSize;
+            rMin = pageIdx*pSize;
             rMax = _.min([data.length, rMin+pSize]);
         }
         if (rMax > 0) {
