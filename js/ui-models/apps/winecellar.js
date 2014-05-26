@@ -196,7 +196,7 @@ var winecellar_ui = {
                             type: 'lov',
                             label: 'Bottle Size',
                             labellist: 'Bottle',
-                            width: '38',
+                            width: 38,
                             list: winecellar_lovs.bottleSize
                         },
                         {
@@ -204,7 +204,7 @@ var winecellar_ui = {
                             type: 'lov',
                             label: 'Grape',
                             viewmany: false,
-                            width: '62',
+                            width: 62,
                             list: winecellar_lovs.grape
                         },
                         {
@@ -212,7 +212,7 @@ var winecellar_ui = {
                             type: 'lov',
                             label: 'Type',
                             viewmany: true,
-                            width: '38',
+                            width: 38,
                             list: winecellar_lovs.type
                         },
                         {
@@ -233,15 +233,15 @@ var winecellar_ui = {
                             id:'region',
                             type: 'text',
                             label: 'Region',
-                            maxlength: '100',
-                            width: '30'
+                            maxlength: 100,
+                            width: 30
                         },
                         {
                             id:'area',
                             type: 'text',
                             label: 'Area',
-                            maxlength: '100',
-                            width: '38'
+                            maxlength: 100,
+                            width: 38
                         }
 
                     ]
@@ -249,7 +249,7 @@ var winecellar_ui = {
                 {
                     type: 'panel',
                     label: 'Bottle Label',
-                    width: '20',
+                    width: 20,
                     elements: [
                         {
                             id:'label_img',
@@ -283,7 +283,7 @@ var winecellar_ui = {
                             type: 'money',
                             label: 'Price',
                             viewmany: true,
-                            width: '30'
+                            width: 30
                         },
                         {
                             id:'value',
@@ -305,7 +305,8 @@ var winecellar_ui = {
                             label: 'Remaining',
                             labeledit: 'Bottles Remaining',
                             maxlength: 10,
-                            width: 60
+                            width: 60,
+                            viewcharts:false
                         },
                         {
                             id:'notes',
@@ -328,7 +329,7 @@ var winecellar_ui = {
                 {
                     type: 'panel',
                     label: 'Drinking',
-                    width: '62',
+                    width: 62,
                     elements: [
                         {
                             id:'drink_from',
@@ -346,7 +347,7 @@ var winecellar_ui = {
                             id:'drink_to',
                             type: 'integer',
                             label: 'to',
-                            maxlength: '10',
+                            maxlength: 4,
                             width: 50,
                             min: 1900,
                             max: '2100'
@@ -356,7 +357,7 @@ var winecellar_ui = {
                             type: 'integer',
                             label: 'Peak from',
                             labellist: 'Peak',
-                            maxlength: '10',
+                            maxlength: 4,
                             width: 50,
                             min: 1900,
                             max: 2100
@@ -365,7 +366,7 @@ var winecellar_ui = {
                             id:'peak_to',
                             type: 'integer',
                             label: 'to',
-                            maxlength: '10',
+                            maxlength: 4,
                             width: 50,
                             min: 1900,
                             max: 2100
@@ -384,7 +385,7 @@ var winecellar_ui = {
                 {
                     type: 'panel',
                     label: 'Score',
-                    width: '38',
+                    width: 38,
                     elements: [
                         {
                             id:'score',
@@ -399,14 +400,18 @@ var winecellar_ui = {
                             id:'score_parker',
                             type: 'integer',
                             label: 'Parker',
-                            maxlength: 10,
+                            min: 50,
+                            max: 100,
+                            maxlength: 3,
                             width: 100
                         },
                         {
                             id:'score_winespectator',
                             type: 'integer',
                             label: 'WineSpectator',
-                            maxlength: 10,
+                            min: 0,
+                            max: 100,
+                            maxlength: 3,
                             width: 100
                         }
 
@@ -425,12 +430,12 @@ var winecellar_ui = {
                     label: 'Degustations',
                     width: 100,
                     elements: [
-                        {id: 'ddate', type: 'date', label: 'Date', maxlength: 20, viewmany: '1',
+                        {id: 'ddate', type: 'date', label: 'Date', maxlength: 20, viewmany: true,
                             required:true},
-                        {id: 'robe',  type: 'text', label: 'Robe', maxlength: 100, viewmany: '1'},
-                        {id: 'nose', type: 'text', label: 'Nose', maxlength: 100, viewmany: '1'},
-                        {id: 'taste', type: 'text', label: 'Taste', maxlength: 100, viewmany: '1'},
-                        {id: 'notes', type: 'textmultiline', label: 'Note', maxlength: 300, viewmany: '1', width: 100, height: '2'}
+                        {id: 'robe',  type: 'text', label: 'Robe', maxlength: 100, viewmany: true},
+                        {id: 'nose', type: 'text', label: 'Nose', maxlength: 100, viewmany: true},
+                        {id: 'taste', type: 'text', label: 'Taste', maxlength: 100, viewmany: true},
+                        {id: 'notes', type: 'textmultiline', label: 'Note', maxlength: 300, viewmany: true, width: 100, height: 2}
                     ]
                 }
             ]
@@ -448,11 +453,10 @@ var winecellar_ui = {
                             id: 'comments',
                             type: 'textmultiline',
                             label: 'Comments',
-                            maxlength: '300',
+                            maxlength: 500,
                             width: 100,
-                            height: '8'
+                            height: 8
                         }
-
                     ]
                 }
             ]

@@ -1427,12 +1427,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
     options: {
         //sizes: '600x300',
         style: 'panel-info',
-        pageSize: 20,
-        pageIndex:0,
-        autoUpdate: false,
-        //titleSelector: '#title',
-        selectable: false,
-        links: true
+        autoUpdate: false
     },
 
     events: {
@@ -1453,8 +1448,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
     },
 
     _HTMLcharts: function (h, style, sizes) {
-        var that=this,
-            EvoUI = Evol.UI,
+        var EvoUI = Evol.UI,
             EvoDico = Evol.Dico,
             i18n = Evol.i18n,
             fTypes = EvoDico.fieldTypes,
