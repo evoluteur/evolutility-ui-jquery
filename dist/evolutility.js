@@ -697,7 +697,7 @@ Evol.Dico = {
     },
 
     // get field value (not id but text) for a field of type lov
-    lovText:function(f, v, hash, iconPath){
+    lovText:function(f, v, hash, iconsPath){
         if(f.list && f.list.length>0 && hash){
             if(!(f.id in hash)){
                 hash[f.id]={};
@@ -706,13 +706,13 @@ Evol.Dico = {
             if(v in hashLov){
                 return hashLov[v];
             }else{
-                var listItem=_.find(f.list,function(item){
+                var listItem=_.find(f.list, function(item){
                     return item.id==v;
                 });
                 if(listItem){
                     var txt=listItem.text;
-                    if(listItem.icon){
-                        txt='<img src="'+iconPath+listItem.icon+'"> '+txt;
+                    if(listItem.icon!='' && !_.isUndefined(listItem.icon)){
+                        txt='<img src="'+iconsPath+listItem.icon+'"> '+txt;
                     }
                     hashLov[v]=txt;
                     return txt;
@@ -723,7 +723,7 @@ Evol.Dico = {
     },
 
     lovTextNoPix:function(f, v){
-        var listItem=_.find(f.list,function(item){
+        var listItem=_.find(f.list, function(item){
             return item.id==v;
         });
         if(listItem){
@@ -990,7 +990,7 @@ Evol.Dico = {
                         h.push(EvoUI.linkEmail(fid, fv));
                     } else {
                         h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
-                            EvoUI.input.text(fid, fv, fld.maxlength), '</div>');
+                            EvoUI.input.text(fid, fv, fld.maxlength, 'evo-field form-control'), '</div>');
                     }
                     break;
                 case fTypes.url:
@@ -1379,7 +1379,8 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
         var data = this.collection.models,
             r,
             rMin=0,
-            rMax = _.min([data.length, rMin+pSize]);
+            rMax = _.min([data.length, rMin+pSize]),
+            ico = icon?(this.options.iconsPath || '')+icon:null;
 
         if(pageIdx>0){
             rMin = pageIdx*pSize;
@@ -1387,7 +1388,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
         }
         if (rMax > 0) {
             for (r = rMin; r < rMax; r++) {
-                this.HTMLItem(h, fields, data[r], icon, selectable);
+                this.HTMLItem(h, fields, data[r], ico, selectable);
             }
             h.push(Evol.UI.html.clearer);
         }else{
@@ -1398,15 +1399,14 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
     HTMLItem: function(h, fields, model, icon, selectable){
         var that=this,
             opts = this.options,
-            link = (opts.links!==false),
-            ico = (opts.iconsPath || '')+icon;
+            link = (opts.links!==false);
         h.push('<div class="panel ',this.options.style,'">');
         _.each(fields, function(f, idx){
             var v = that._HTMLField(f, model.escape(f.id));
             if (idx === 0) {
                 h.push('<div data-mid="', model.id, '"><h4>',
                     selectable?that._HTMLCheckbox(model.id):'',
-                    Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, ico, !link),
+                    Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link),
                     '</h4></div>');
             }else{
                 h.push('<div><label>',f.label,':</label> ', v, '</div>');
@@ -1574,7 +1574,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             r,
             rMin=0,
             rMax = _.min([data.length, rMin+pSize]),
-            ico=(this.options.iconsPath || '')+icon;
+            ico=icon?(this.options.iconsPath || '')+icon:null;
 
         if(pageIdx>0){
             rMin=pageIdx*pSize;
@@ -1589,9 +1589,9 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
 
     HTMLItem: function(h, fields, model, icon, selectable){
         var that=this,
-            f,
             v,
-            link = (this.options.links!==false);
+            opts=this.options,
+            link = (opts.links!==false);
         h.push('<tr data-mid="', model.id, '">');
         if(selectable){
             h.push('<td class="list-td-sel">',this._HTMLCheckbox(model.id),'</td>');

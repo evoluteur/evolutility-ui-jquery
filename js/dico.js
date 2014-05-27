@@ -105,7 +105,7 @@ Evol.Dico = {
     },
 
     // get field value (not id but text) for a field of type lov
-    lovText:function(f, v, hash, iconPath){
+    lovText:function(f, v, hash, iconsPath){
         if(f.list && f.list.length>0 && hash){
             if(!(f.id in hash)){
                 hash[f.id]={};
@@ -114,13 +114,13 @@ Evol.Dico = {
             if(v in hashLov){
                 return hashLov[v];
             }else{
-                var listItem=_.find(f.list,function(item){
+                var listItem=_.find(f.list, function(item){
                     return item.id==v;
                 });
                 if(listItem){
                     var txt=listItem.text;
-                    if(listItem.icon){
-                        txt='<img src="'+iconPath+listItem.icon+'"> '+txt;
+                    if(listItem.icon!='' && !_.isUndefined(listItem.icon)){
+                        txt='<img src="'+iconsPath+listItem.icon+'"> '+txt;
                     }
                     hashLov[v]=txt;
                     return txt;
@@ -131,7 +131,7 @@ Evol.Dico = {
     },
 
     lovTextNoPix:function(f, v){
-        var listItem=_.find(f.list,function(item){
+        var listItem=_.find(f.list, function(item){
             return item.id==v;
         });
         if(listItem){
@@ -398,7 +398,7 @@ Evol.Dico = {
                         h.push(EvoUI.linkEmail(fid, fv));
                     } else {
                         h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
-                            EvoUI.input.text(fid, fv, fld.maxlength), '</div>');
+                            EvoUI.input.text(fid, fv, fld.maxlength, 'evo-field form-control'), '</div>');
                     }
                     break;
                 case fTypes.url:
