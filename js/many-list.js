@@ -48,7 +48,6 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             opts = this.options,
             uim = opts.uiModel,
             pSize = opts.pageSize || 20;
-
         this._HTMLlistBody(h, fields, pSize, uim.icon, pageIdx, opts.selectable);
         this.$('.table > tbody').html(h.join(''));
         //this.options.pageIndex=pageIdx;
@@ -60,7 +59,8 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         var data = this.collection.models,
             r,
             rMin=0,
-            rMax = _.min([data.length, rMin+pSize]);
+            rMax = _.min([data.length, rMin+pSize]),
+            ico=icon?(this.options.iconsPath || '')+icon:null;
 
         if(pageIdx>0){
             rMin=pageIdx*pSize;
@@ -68,16 +68,16 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         }
         if (rMax > 0) {
             for (r = rMin; r < rMax; r++) {
-                this.HTMLItem(h, fields, data[r], icon, selectable);
+                this.HTMLItem(h, fields, data[r], ico, selectable);
             }
         }
     },
 
     HTMLItem: function(h, fields, model, icon, selectable){
         var that=this,
-            f,
             v,
-            link = (this.options.links!==false);
+            opts=this.options,
+            link = (opts.links!==false);
         h.push('<tr data-mid="', model.id, '">');
         if(selectable){
             h.push('<td class="list-td-sel">',this._HTMLCheckbox(model.id),'</td>');

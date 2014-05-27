@@ -255,13 +255,16 @@ img.evol-table-icon {
   float: left;
   width: 240px;
   min-width: 140px;
-  height: 164px;
+  height: 182px;
   margin: 5px;
   padding: 10px;
   border-radius: 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   overflow: auto;
+}
+.evol-many-badges > div.panel > div > label {
+  vertical-align: top;
 }
 /* --- charts --- */
 .evol-chart-holder {

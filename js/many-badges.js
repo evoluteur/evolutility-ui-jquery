@@ -45,7 +45,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
     },
 
     setPage: function(pageIdx){
-        var h=[],
+        var h = [],
             fields = this.getFields(),
             opts = this.options,
             uim = opts.uiModel,
@@ -60,15 +60,16 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
         var data = this.collection.models,
             r,
             rMin=0,
-            rMax = _.min([data.length, rMin+pSize]);
+            rMax = _.min([data.length, rMin+pSize]),
+            ico = icon?(this.options.iconsPath || '')+icon:null;
 
         if(pageIdx>0){
-            rMin=pageIdx*pSize;
+            rMin = pageIdx*pSize;
             rMax = _.min([data.length, rMin+pSize]);
         }
         if (rMax > 0) {
             for (r = rMin; r < rMax; r++) {
-                this.HTMLItem(h, fields, data[r], icon, selectable);
+                this.HTMLItem(h, fields, data[r], ico, selectable);
             }
             h.push(Evol.UI.html.clearer);
         }else{
@@ -77,20 +78,21 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
     },
 
     HTMLItem: function(h, fields, model, icon, selectable){
-        var link = (this.options.links!==false);
+        var that=this,
+            opts = this.options,
+            link = (opts.links!==false);
         h.push('<div class="panel ',this.options.style,'">');
-        for (var i = 0; i < fields.length; i++) {
-            var f = fields[i],
-                v = this._HTMLField(f, model.get(f.id));
-            if (i === 0) {
+        _.each(fields, function(f, idx){
+            var v = that._HTMLField(f, model.escape(f.id));
+            if (idx === 0) {
                 h.push('<div data-mid="', model.id, '"><h4>',
-                    selectable?this._HTMLCheckbox(model.id):'',
+                    selectable?that._HTMLCheckbox(model.id):'',
                     Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link),
                     '</h4></div>');
             }else{
                 h.push('<div><label>',f.label,':</label> ', v, '</div>');
             }
-        }
+        });
         h.push('</div>');
     }
 

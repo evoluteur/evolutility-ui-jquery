@@ -27,9 +27,9 @@ Evol.i18n = {
 
     // --- toolbar ---
     View:'View',
-    Edit:'Edit',
+    bEdit:'Edit',
     // Login:'Login',
-    New:'New',
+    bNew:'New',
     NewEntity:'New {0}', //'New Item',
     NewUpload:'New Upload',
     //Search:'Search',
@@ -37,18 +37,20 @@ Evol.i18n = {
     //NewSearch:'New Search',
     Selections:'Selections',
     Selection:'Selection',
-    Export:'Export',
+    bExport:'Export',
+    bCharts:'Charts',
     SearchRes:'Search Result',
     //MassUpdate:'Mass Update',
-    Delete:'Delete',
-    All:'All',
+    bDelete:'Delete',
+    bAll:'All',
+    bFilter: 'Filter',
     //ListAll:'List All',
     //Print:'Print',
     //pdf:'PDF',
 
     // --- buttons ---
-    Save:'Save',
-    SaveAdd:'Save and Add Another',
+    bSave:'Save',
+    bSaveAdd:'Save and Add Another',
     Cancel:'Cancel',
 
     // --- msg & status ---
@@ -108,13 +110,13 @@ Evol.i18n = {
     export:{
         ExportEntity: 'Export {0}', // {0}=entity
         ExportEntities: 'Export {0}', // {0}=entities
-        preview:'Export Preview',
+        preview:'Export preview',
         ExportHeader: 'Header',
         ExportSeparator: 'Separator',
         ExportFirstLine:'First line for field names',
         ExportFormat: 'Export format',
         ExportFields: 'Fields to include in the export',
-        IDkey: 'ID - Primary Key',
+        IDkey: 'ID - Primary key',
         AllFields: 'Show all fields',
         ExportFormats: 'Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)',
         //xpColors:'Header color-Color odd rows-Color even rows',

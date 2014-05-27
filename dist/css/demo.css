@@ -95,8 +95,12 @@
     margin-top: 83px;
   }
 }
+.evo-head-links2 {
+  font-size: 1.2em;
+}
 @media only screen and (min-width: 900px) {
   .evo-head-links2 {
+    font-size: 1em;
     position: absolute;
     padding: 0;
     top: 71px;
@@ -175,6 +179,16 @@
   margin-top: 200px;
   content: " ";
 }
+.evo-links-views > li {
+  margin: 4px 0 10px;
+}
+.evo-links-views a > i {
+  margin: 5px;
+}
+#evol-views-params > div {
+  float: left;
+  margin-right: 5px;
+}
 @media only screen and (min-width: 900px) {
   .evo-h-gap {
     display: none;
@@ -188,7 +202,7 @@ body {
 }
 h1,
 h2,
-h3,
+h3:not.panel-title,
 h4 {
   color: #0099cc !important;
 }

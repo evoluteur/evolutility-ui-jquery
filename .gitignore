@@ -12,6 +12,7 @@ dico/
 dico/pix/
 doc/pix/
 doc/Doc_*
+demo/demo-ui.js
 
 # Windows stuff
 Thumbs.db

@@ -32,16 +32,35 @@
 
 <div class="evo-content3">
 
-<p>Evolutility provides 3 types of views:
+<p>For a <a href="ui-model.html">ui-model</a> (mapping a Backbone model),
+    Evolutility provides a set of generic Backbone Views for CRUD and more.</p>
 
-<ul>
-    <li>Evol.ViewOne - Views for <strong>one</strong> model</li>
-    <li>Evol.ViewMany - Views for a collection of <strong>many</strong> models</li>
-    <li>Evol.ViewAction - Views for actions on a model or a collection</li>
+<p>3 types of views:
+
+<ul class="evo-links-views">
+    <li><b><a href="#one">Evol.ViewOne</a></b>
+        <br/>Views for <strong>one</strong> model:
+        <a href="#one-view"><i class="glyphicon glyphicon-file"></i>View</a>,
+        <a href="#one-edit"><i class="glyphicon glyphicon-th"></i>Edit</a>,
+        <a href="#one-mini"><i class="glyphicon glyphicon-th-large"></i>Mini</a> (quick-edit),
+        <a href="#one-json"><i class="glyphicon glyphicon-barcode"></i>JSON</a>...</li>
+
+    <li><b><a href="#many">Evol.ViewMany</a></b>
+        <br/>Views for a collection of <strong>many</strong> models:
+        <a href="#many-list"><i class="glyphicon glyphicon-th-list"></i>List</a>,
+        <a href="#many-badges"><i class="glyphicon glyphicon-th-large"></i>Badges</a>,
+        <a href="#many-charts"><i class="glyphicon glyphicon-stats"></i>Charts</a>...</li>
+
+    <li><b><a href="#action">Evol.ViewAction</a></b>
+        <br/>Views for <strong>actions</strong> on a collection or a model:
+        <a href="#action-filter"><i class="glyphicon glyphicon-filter"></i>Filter</a>,
+        <a href="#action-export"><i class="glyphicon glyphicon-cloud-download"></i>Export</a>...</li>
+
 </ul>
-</p>
 
-    <p>For each Backbone model all views are defined by a single <a href="ui-model.html">ui-model</a>.</p>
+More Views will be added on the future.
+
+</p>
 
 <div class="evol-doc-views">
 
@@ -52,7 +71,16 @@
     <h2>Evol.ViewOne</h2>
 
     <p>Backbone views for <strong>one</strong> model.</p>
+    <p class="evo-links-views">
+        <a href="#one-view"><i class="glyphicon glyphicon-file"></i>View</a>,
+        <a href="#one-edit"><i class="glyphicon glyphicon-th"></i>Edit</a>,
+        <a href="#one-mini"><i class="glyphicon glyphicon-th-large"></i>Mini</a> (quick-edit),
+        <a href="#one-json"><i class="glyphicon glyphicon-barcode"></i>JSON</a>...
+    </p>
 
+    <a name="one-view"></a>
+    <p class="evo-h-gap">&nbsp;</p>
+    <p>&nbsp;</p>
     <h3><i class="glyphicon glyphicon-file"></i>&nbsp;View</h3>
     <p>Shows all fields for viewing (read only). Fields are grouped in panels and tabs.</p>
     <code>new Evol.ViewOne.Edit(myConfig);</code>
@@ -62,6 +90,9 @@
     </div>
 
 
+    <a name="one-edit"></a>
+    <p class="evo-h-gap">&nbsp;</p>
+    <p>&nbsp;</p>
 <h3><i class="glyphicon glyphicon-th"></i>&nbsp;Edit</h3>
 <p>Shows all fields for edition. Fields are grouped in panels and tabs.</p>
 <code>
@@ -72,6 +103,9 @@
     </div>
 
 
+    <a name="one-mini"></a>
+    <p class="evo-h-gap">&nbsp;</p>
+    <p>&nbsp;</p>
 <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Mini (quick-edit)</h3>
 <p>Only shows important fields (required or showing as a column in grids) in one panel.</p>
 <code>
@@ -80,6 +114,10 @@
         <img class="pixEvoMode shadow" src="screenshots/one-mini.png"/> <br />&nbsp;
     </div>
 
+
+    <a name="one-json"></a>
+    <p class="evo-h-gap">&nbsp;</p>
+    <p>&nbsp;</p>
 <h3><i class="glyphicon glyphicon-barcode"></i>&nbsp;JSON</h3>
 <p>JSON representation of the data.</p>
 <code>
@@ -100,8 +138,14 @@
 <h2>Evol.ViewMany</h2>
 
 <p>Backbone views for a collection containing <strong>many</strong> models.</p>
-
-
+    <p class="evo-links-views">
+        <a href="#many-list"><i class="glyphicon glyphicon-th-list"></i>List</a>,
+        <a href="#many-badges"><i class="glyphicon glyphicon-th-large"></i>Badges</a>,
+        <a href="#many-charts"><i class="glyphicon glyphicon-stats"></i>Charts</a>...</li>
+    </p>
+        <a name="many-list"></a>
+        <p class="evo-h-gap">&nbsp;</p>
+        <p>&nbsp;</p>
 <h3><i class="glyphicon glyphicon-th-list"></i>&nbsp;List</h3>
 <p>Gives a tabular view of a collection.</p>
 <code>
@@ -110,6 +154,9 @@
         <img class="pixEvoMode shadow" src="screenshots/many-list.png"/> <br />&nbsp;
     </div>
 
+        <a name="many-badges"></a>
+        <p class="evo-h-gap">&nbsp;</p>
+        <p>&nbsp;</p>
 <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Badges</h3>
  <p>Shows records side by side as badges.</p>
 <code>
@@ -119,6 +166,9 @@
     </div>
 
 
+        <a name="many-charts"></a>
+        <p class="evo-h-gap">&nbsp;</p>
+        <p>&nbsp;</p>
 <h3><i class="glyphicon glyphicon-stats"></i>&nbsp;Charts</h3>
 <p>Draws charts about the collection.</p>
 <code>
@@ -137,6 +187,16 @@
 
 <h2>Evol.ViewAction</h2>
 
+        <p>Backbone Views for actions on a collection or a model.</p>
+        <p class="evo-links-views">
+            <a href="#action-filter"><i class="glyphicon glyphicon-filter"></i>Filter</a>,
+            <a href="#action-export"><i class="glyphicon glyphicon-cloud-download"></i>Export</a>...
+        </p>
+
+
+        <a name="action-filter"></a>
+        <p class="evo-h-gap">&nbsp;</p>
+        <p>&nbsp;</p>
         <h3><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter</h3>
         <p>Filter collection.</p>
         <code>
@@ -147,6 +207,10 @@
         <p>Filter example: "phone number start by 415" or "for
             categories Finances and Business"...&nbsp;</p>
 
+
+        <a name="action-export"></a>
+        <p class="evo-h-gap">&nbsp;</p>
+        <p>&nbsp;</p>
         <h3><i class="glyphicon glyphicon-cloud-download"></i>&nbsp;Export</h3>
         <p>Export in different data formats.</p>
         <code>
@@ -158,6 +222,9 @@
         <p>Other possible views: Mass Update, Group...</p>
         
     </section>
+
+
+
 
 
     <p class="evo-h-gap">&nbsp;</p>
@@ -199,13 +266,23 @@
     <p>&nbsp;</p>
     <section>
 
-<h2>Properties</h2>
+<h2>Options</h2>
 
 <h3>Evol.ViewOne and Evol.ViewMany</h3>
 
 <p>cardinality: '1' for Evol.ViewOne.*, 'n' for Evol.ViewMany.*.</p>
 <p>viewName: name of the view (the '*' in the Evol.ViewOne.* instanciated). i.e.: "Edit" or "List".</p>
 
+<p>iconsPath: path to icons for model and list of values.</p>
+
+        <h3>Evol.ViewOne</h3>
+        <p>button_addAnother: Show a "Save and Add Another" button next to "Save".</p>
+
+
+        <h3>Evol.ViewMany</h3>
+        <p>pageSize: 20.</p>
+        <p>pageIndex: 0.</p>
+        <p>selectable: false.</p>
 
 
     </section>

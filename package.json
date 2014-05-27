@@ -2,6 +2,7 @@
   "name": "evolutility",
   "version": "0.0.4",
   "copyright": "(c) 2014 Olivier Giulieri",
+  "license": "AGPL-3.0",
   "target": "dist",
   "devDependencies": {
     "grunt": "0.4.1",
@@ -13,11 +14,10 @@
     "grunt-bower-task": "~0.3.4"
   },
   "dependencies": {
-    "jquery": "2.0.3",
-    "backbone": "1.1.0",
+    "jquery": "2.1.1",
+    "backbone": "1.1.2",
     "backbone.localStorage": "v1.1.7",
-    "underscore": "1.5.2",
-    "underscore.string": "2.3.3",
+    "underscore": "1.6.0",
     "bootstrap": "3.1.1"
   }
 }

@@ -68,6 +68,21 @@ module.exports = function (grunt) {
                     //'js/ui-models/dico/field.js'
                 ],
                 dest: '<%= pkg.target %>/evolutility.js'
+            },
+            demo:{
+                options: {
+                    banner: '<%= banner %>',
+                    separator: ';\n'
+                    },
+                src: [
+                    "js/ui-models/apps/todo.js",
+                    "js/ui-models/apps/todo.data.js",
+                    "js/ui-models/apps/contacts.js",
+                    "js/ui-models/apps/contacts.data.js",
+                    "js/ui-models/apps/winecellar.js",
+                    "js/ui-models/apps/winecellar.data.js"
+                ],
+                dest: 'demo/demo-ui.js'
             }
         },
 
@@ -113,6 +128,18 @@ module.exports = function (grunt) {
                     {
                         src: '<%= pkg.target %>/evolutility.js',
                         dest: '<%= pkg.target %>/evolutility.min.js'
+                    }
+                ]
+            },
+            demo: {
+                options: {
+                    banner: '/* <%= pkg.name %> <%= pkg.version %> sample UI-models and data: todo, addressbook, wine cellar. */\n ',
+                    mangle: true
+                },
+                files: [
+                    {
+                        src: 'demo/demo-ui.js',
+                        dest: 'demo/demo-ui.min.js'
                     }
                 ]
             },
@@ -178,7 +205,7 @@ module.exports = function (grunt) {
     grunt.registerTask('dev', ['concat:js', 'less:dev', 'less:demo']);
 
     // Prod task(s).
-    grunt.registerTask('prod', ['jshint', 'dev', 'concat:vendors', 'less:prod', 'uglify']);
+    grunt.registerTask('prod', ['jshint', 'dev', 'concat:demo', 'concat:vendors', 'less:prod', 'uglify']);
 
 };
 

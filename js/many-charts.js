@@ -16,12 +16,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
     options: {
         //sizes: '600x300',
         style: 'panel-info',
-        pageSize: 20,
-        pageIndex:0,
-        autoUpdate: false,
-        //titleSelector: '#title',
-        selectable: false,
-        links: true
+        autoUpdate: false
     },
 
     events: {
@@ -42,13 +37,13 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
     },
 
     _HTMLcharts: function (h, style, sizes) {
-        var that=this,
-            EvoUI = Evol.UI,
+        var EvoUI = Evol.UI,
             EvoDico = Evol.Dico,
             i18n = Evol.i18n,
             fTypes = EvoDico.fieldTypes,
             uiModel = this.options.uiModel,
             models = this.collection.models,
+            iconsPath = this.options.iconsPath || '',
             chartFields = EvoDico.getFields(uiModel, function(f){
                 return f.viewcharts || f.type==fTypes.lov || f.type==fTypes.bool || f.type==fTypes.integer;
             });
@@ -72,7 +67,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                         if(f.list && f.list.length && f.list[0].icon){
                             lb = EvoDico.lovTextNoPix(f, dataSetName);
                         }else{
-                            lb = EvoDico.lovText(f, dataSetName, Evol.hashLov);
+                            lb = EvoDico.lovText(f, dataSetName, Evol.hashLov, iconsPath);
                         }
                     }else if(f.type===fTypes.bool){
                         lb = (dataSetName==='true')?i18n.yes:i18n.no;

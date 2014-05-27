@@ -23,7 +23,8 @@ Evol.ViewMany = Backbone.View.extend({
         autoUpdate: false,
         //titleSelector: '#title',
         selectable: false,
-        links: true
+        links: true,
+        iconsPath: 'pix/'
     },
 
     events: {
@@ -131,7 +132,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     _HTMLField: function(f, v){
-        return Evol.Dico.HTMLField4Many( f, v, Evol.hashLov);
+        return Evol.Dico.HTMLField4Many( f, v, Evol.hashLov, this.options.iconsPath || '');
     },
 
     _$Selection:function(){

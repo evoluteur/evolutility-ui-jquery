@@ -368,7 +368,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
         }
     },
 
-    _ValFields: function () {
+    _valFields: function () {
         var v = [],
             flds = this.$('.evol-xpt-flds input:checked');//.not('#showID')
         _.each(flds, function(fe){
@@ -380,7 +380,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
     _getValue: function () {
         var v = {
                 format: this._bFormat.val(),
-                fields: this._ValFields(),
+                fields: this._valFields(),
                 options: {}
             },
             ps = this.$('.evol-xpt-para input'),
