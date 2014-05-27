@@ -95,8 +95,12 @@
     margin-top: 83px;
   }
 }
+.evo-head-links2 {
+  font-size: 1.2em;
+}
 @media only screen and (min-width: 900px) {
   .evo-head-links2 {
+    font-size: 1em;
     position: absolute;
     padding: 0;
     top: 71px;
