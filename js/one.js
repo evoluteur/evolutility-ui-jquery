@@ -329,7 +329,7 @@ Evol.ViewOne = Backbone.View.extend({
 
         h.push('<div class="evo-one-',mode,'">');
         _.each(elems, function(p, idx){
-            if(p.type==='tabs'){
+            if(p.type==='tab'){
                 if (iPanel > 0) {
                     h.push('</div>');
                     iPanel = -1;
