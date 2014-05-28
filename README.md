@@ -1,65 +1,50 @@
 # evolutility.js
 
-evolutility.js is a work in progress. Eventually it will be a generic UI to build applications who can change form, volume, and structure like living organisms.
+Evolutility provides a set of Backbone views which can change form, volume and structure like living organisms.
+For each Backbone model, all the views are defined by a shared UI-model describing fields mapping, layout, and behavior for CRUD (Create, Read, Update and Delete) and more.
 
-The idea is to build a set of generic Backbone views to perform all CRUD (Create, Read, Update and Delete) operations on records of any data structure.
-For each object the whole set of views is defined in a single UI-model containing the description of the UI (fields mapping, layout, and behavior).
-
-## Roadmap
-
-1. Update [Evolutility metamodel] (http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications) (model of the UI models)
-2. Code the generic UI views based on the metamodel
-3. Add a toolbar and a controller for all these views
-4. Make [demo apps](http://evoluteur.github.io/evolutility/demo/index.html)
-5. Make [an app to make apps] (http://www.codeproject.com/Articles/28810/Wizard-and-CRUD-Applications-to-Build-other-CRUD-A)
-
-
-## 1 - UI-model
-
-To define UI-models evolutility uses some kind of UI language.
-It is not fully defined yet but the syntax of UI-models will be based on [Minimalist Meta-Model for CRUD Applications](http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications)
-using JSON rather than XML this time.
-
-Elements: tabs, panels, panel-list, fields.
-
-Sample UI Models:
-[To Do list](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/todo.js),
-[AddressBook](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/contacts.js),
-[Wine Cellar](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/winecellar.js).
-
-## 2 - Views
-
-evolutility's views have a Backbone model (to define the data) and also a UI model (to define the UI for interacting with the data).
-
-Evolutility will have 3 types of view
-* Views for one record (one): new, edit, mini, json...
-* Views for a collection (many): list, badges, charts...
-* Views for actions on one record or a collection: export, filter, dashboards, Mass Update...
-
-## 3 - Toolbar/Controller
-
-We will also need a toolbar and a controller (for now the same js class).
-
-## 4 - Demo apps
+## Demo apps
 
 [To Do list](http://evoluteur.github.io/evolutility/demo/todo.html),
 [AddressBook](http://evoluteur.github.io/evolutility/demo/contact.html),
 [Wine Cellar](http://evoluteur.github.io/evolutility/demo/winecellar.html).
 
+## UI-model
 
-## 5 - The app to make other apps
+All UI-models use the same [API or vocabulary](http://evoluteur.github.io/evolutility/doc/ui-model.html) with words like "tabs", "panels", "panel-list", "fields" rather than "INPUT" and "DIV" to describe UI elements.
 
-A set of ui-models and models for the ui-model itself: fields, panels, tabs.
-(...and some code in the view themselves to make it possible)
+UI Models for the demo apps:
+[To Do list](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/todo.js),
+[AddressBook](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/contacts.js),
+[Wine Cellar](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/winecellar.js).
 
+## Views
 
-## Techno and Libraries
+evolutility's views have a Backbone model (to define the data) and also a UI-model (to define the UI for this model).
+
+Evolutility provides 3 types of view
+* Views for one record (one): New, Edit, Mini (quick edit), JSON.
+* Views for a collection (many): List, Badges, Charts.
+* Views for actions on one record or a collection: Export, Filter.
+TODO: add Dashboards and Mass update...
+
+Web demo of [all views](http://evoluteur.github.io/evolutility/index.html)
+
+## Toolbar/Controller
+
+Still under development.
+
+A toolbar and a controller for all views.
+
+## Techno and Open Source Libraries used
 
 Javascript, HTML5, CSS3,
 [Backbone] (http://backbonejs.org),
 [Underscore] (http://underscorejs.org/),
 [jQuery] (http://jquery.com),
-[Bootstrap] (http://getbootstrap.com/).
+[Bootstrap] (http://getbootstrap.com/),
+[bootstrap-datepicker] (http://eternicode.github.io/bootstrap-datepicker/),
+[Select2] (http://ivaynberg.github.io/select2/).
 
 ## Previous incarnation
 
