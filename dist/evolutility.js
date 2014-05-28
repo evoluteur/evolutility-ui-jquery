@@ -782,18 +782,6 @@ Evol.Dico = {
         return this;
     },
 
-    bbComparator:  function(fid){
-        return function(modelA) {
-            return modelA.get(fid);
-        };
-    },
-
-    bbComparatorText: function(fid){
-        return function(modelA,modelB) {
-            return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
-        };
-    },
-
     filterModels: function(models, filters){
         if(filters.length){
             return models.filter(function(model){
@@ -916,7 +904,6 @@ Evol.Dico = {
 
     HTMLField4One: function(fld, fid, fv, mode, iconsPath, skipLabel){
         var h=[],
-            size=50, // TODO fix it
             EvoUI=Evol.UI,
             fTypes=Evol.Dico.fieldTypes;
         // --- field label ---
@@ -928,6 +915,7 @@ Evol.Dico = {
         }else if(!skipLabel){
             h.push(this.HTMLFieldLabel(fld, mode || 'edit'));
         }
+        // --- field value ---
         if(fld.readonly || mode==='view'){
             h.push('<div class="disabled evo-rdonly" id="',fid);
             if(fld.type===fTypes.txtm && fld.height>1){
@@ -944,7 +932,7 @@ Evol.Dico = {
         }else{
             switch (fld.type) {
                 case fTypes.text:
-                    h.push(EvoUI.input.text(fid, fv, fld, null, size));
+                    h.push(EvoUI.input.text(fid, fv, fld, null));
                     break;
                 case fTypes.integer:
                 case fTypes.dec:
@@ -1007,7 +995,7 @@ Evol.Dico = {
                     }else{
                         h.push('<p class="">',Evol.i18n.nopix,'</p>');
                     }
-                    h.push(EvoUI.input.text(fid, fv, fld, null, size));
+                    h.push(EvoUI.input.text(fid, fv, fld, null));
                     break;
                 case fTypes.color:
                     //h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
@@ -1054,6 +1042,18 @@ Evol.Dico = {
             h.push('</a>');
         }
         return h.join('');
+    },
+
+    bbComparator:  function(fid){
+        return function(modelA) {
+            return modelA.get(fid);
+        };
+    },
+
+    bbComparatorText: function(fid){
+        return function(modelA,modelB) {
+            return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
+        };
     }
 
 };
@@ -1866,9 +1866,6 @@ Evol.ViewOne = Backbone.View.extend({
                 case ft.bool:
                     $f.prop('checked', defaultVal);
                     break;
-                case ft.bool:
-                    $f.prop('checked', defaultVal);
-                    break;
                 case ft.list:
                     $f.select2('val', null);
                     break;
@@ -1954,39 +1951,33 @@ Evol.ViewOne = Backbone.View.extend({
             iMax = elems.length;
 
         h.push('<div class="evo-one-',mode,'">');
-        _.each(elems, function(p,idx){
-            switch (p.type) {
-                case 'tab':
-                    if (iPanel > 0) {
-                        h.push('</div>');
-                        iPanel = -1;
-                    }
-                    if (iTab < 0) {
-                        h.push(Evol.UI.html.clearer);
-                        that.renderTabs(h, elems);
-                        h.push('<div class="tab-content">');
-                    }
-                    iTab++;
-                    h.push('<div id="evol-tab-', idx, '" class="tab-pane', (idx === 1 ? ' active">' : '">'));
-                    that.renderTab(h, p, mode);
-                    if (iTab == iMax - 1) {
-                        h.push('</div>');
-                    }
-                    break;
-                case 'panel':
-                    if (iPanel < 0) {
-                        h.push('<div class="evol-pnls">');
-                        iPanel = 1;
-                    }
+        _.each(elems, function(p, idx){
+            if(p.type==='tabs'){
+                if (iPanel > 0) {
+                    h.push('</div>');
+                    iPanel = -1;
+                }
+                if (iTab < 0) {
+                    h.push(Evol.UI.html.clearer);
+                    that.renderTabs(h, elems);
+                    h.push('<div class="tab-content">');
+                }
+                iTab++;
+                h.push('<div id="evol-tab-', idx, '" class="tab-pane', (idx === 1 ? ' active">' : '">'));
+                that.renderTab(h, p, mode);
+                if (iTab == iMax - 1) {
+                    h.push('</div>');
+                }
+            }else{
+                if (iPanel < 0) {
+                    h.push('<div class="evol-pnls">');
+                    iPanel = 1;
+                }
+                if(p.type==='panel'){
                     that.renderPanel(h, p, 'p-' + p.id, mode);
-                    break;
-                case 'panel-list':
-                    if (iPanel < 0) {
-                        h.push('<div class="evol-pnls">');
-                        iPanel = 1;
-                    }
+                }else{
                     that.renderPanelList(h, p, mode);
-                    break;
+                }
             }
         });
         if (iPanel > 0) {
@@ -2000,7 +1991,7 @@ Evol.ViewOne = Backbone.View.extend({
         var isFirst = true;
         h.push('<ul class="nav nav-tabs evol-tabs">');
         _.each(tabs, function (tab, idx) {
-            if (tab.type == 'tab') {
+            if (tab.type === 'tab') {
                 if (isFirst) {
                     h.push('<li class="active">');
                     isFirst = false;
@@ -2129,7 +2120,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     _TRnodata: function(colspan, mode){
-        return ['<tr data-id="nodata"><td colspan="',mode==='edit'?(colspan+1):colspan,'" class="evol-pl-nodata">',
+        return ['<tr data-id="nodata"><td colspan="', mode==='edit'?(colspan+1):colspan, '" class="evol-pl-nodata">',
             Evol.i18n.nodata,
             mode==='edit'?'<div data-id="bPlus" class="glyphicon glyphicon-plus-sign"></div>':'',
             '</td></tr>'].join('');
@@ -3459,6 +3450,10 @@ Evol.ViewAction.Filter = Backbone.View.extend({
 
     initialize: function (opts) {
         this.options=_.extend(this.options, opts);
+        // - if no fields are provided, then get them from the uiModel
+        if(this.options.uiModel && (!this.options.fields || this.options.fields.length===0)){
+            this.options.fields = Evol.Dico.getFields(this.options.uiModel);
+        }
         return this;
     },
 
@@ -4203,14 +4198,6 @@ Evol.ViewToolbar = Backbone.View.extend({
             linkOpt2h('mini','Mini','th-large','1'); //Important Fields only
             linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
-            // TODO
-            //linkOpt2h('json','JSON','barcode','n');
-/*
-            h.push(menuDeviderCard1);
-            linkOpt2h('lg','Big','font','1');
-            linkOpt2h('','Normal','font','1');
-            linkOpt2h('sm','Small','font','1');
-*/
             h.push(endMenu);
 
             linkOpt2h('customize','','wrench', '1', 'Customize');
@@ -4439,6 +4426,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.$('.evo-toolbar').after($ff);
                 this._filters = new Evol.ViewAction.Filter({
                     el: $ff,
+                    //uiModel: this.options.uiModel,
                     fields: Evol.Dico.getFields(this.options.uiModel)
                 }).render();
                 $ff.on('change.filter', function(){
