@@ -1973,10 +1973,10 @@ Evol.ViewOne = Backbone.View.extend({
                     h.push('<div class="evol-pnls">');
                     iPanel = 1;
                 }
-                if(p.type==='panel'){
-                    that.renderPanel(h, p, 'p-' + p.id, mode);
-                }else{
+                if(p.type==='panel-list'){
                     that.renderPanelList(h, p, mode);
+                }else{ // if(p.type==='panel')
+                    that.renderPanel(h, p, 'p-' + p.id, mode);
                 }
             }
         });
@@ -3773,12 +3773,13 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                     opBetween=opVal==fOps.sBetween;
                     switch (fType){
                         case fTypes.lov:
-                            h.push('<span id="value">');
+                            // TODO use "section" ?
+                            h.push('<section id="value">');
                             if(this._field.list.length>7){
                                 h.push('(<input type="checkbox" id="checkAll" value="1"/><label for="checkAll">All</label>) ');
                             }
                             h.push(Evol.UI.input.checkboxLOV(this._field.list));
-                            h.push('</span>');
+                            h.push('</section>');
                             break;
                         case fTypes.bool:
                             h.push('<span id="value">',
