@@ -139,14 +139,6 @@ Evol.ViewToolbar = Backbone.View.extend({
             linkOpt2h('mini','Mini','th-large','1'); //Important Fields only
             linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
-            // TODO
-            //linkOpt2h('json','JSON','barcode','n');
-/*
-            h.push(menuDeviderCard1);
-            linkOpt2h('lg','Big','font','1');
-            linkOpt2h('','Normal','font','1');
-            linkOpt2h('sm','Small','font','1');
-*/
             h.push(endMenu);
 
             linkOpt2h('customize','','wrench', '1', 'Customize');
@@ -375,6 +367,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.$('.evo-toolbar').after($ff);
                 this._filters = new Evol.ViewAction.Filter({
                     el: $ff,
+                    //uiModel: this.options.uiModel,
                     fields: Evol.Dico.getFields(this.options.uiModel)
                 }).render();
                 $ff.on('change.filter', function(){

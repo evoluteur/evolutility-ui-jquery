@@ -243,9 +243,6 @@ Evol.ViewOne = Backbone.View.extend({
                 case ft.bool:
                     $f.prop('checked', defaultVal);
                     break;
-                case ft.bool:
-                    $f.prop('checked', defaultVal);
-                    break;
                 case ft.list:
                     $f.select2('val', null);
                     break;
@@ -331,39 +328,33 @@ Evol.ViewOne = Backbone.View.extend({
             iMax = elems.length;
 
         h.push('<div class="evo-one-',mode,'">');
-        _.each(elems, function(p,idx){
-            switch (p.type) {
-                case 'tab':
-                    if (iPanel > 0) {
-                        h.push('</div>');
-                        iPanel = -1;
-                    }
-                    if (iTab < 0) {
-                        h.push(Evol.UI.html.clearer);
-                        that.renderTabs(h, elems);
-                        h.push('<div class="tab-content">');
-                    }
-                    iTab++;
-                    h.push('<div id="evol-tab-', idx, '" class="tab-pane', (idx === 1 ? ' active">' : '">'));
-                    that.renderTab(h, p, mode);
-                    if (iTab == iMax - 1) {
-                        h.push('</div>');
-                    }
-                    break;
-                case 'panel':
-                    if (iPanel < 0) {
-                        h.push('<div class="evol-pnls">');
-                        iPanel = 1;
-                    }
-                    that.renderPanel(h, p, 'p-' + p.id, mode);
-                    break;
-                case 'panel-list':
-                    if (iPanel < 0) {
-                        h.push('<div class="evol-pnls">');
-                        iPanel = 1;
-                    }
+        _.each(elems, function(p, idx){
+            if(p.type==='tabs'){
+                if (iPanel > 0) {
+                    h.push('</div>');
+                    iPanel = -1;
+                }
+                if (iTab < 0) {
+                    h.push(Evol.UI.html.clearer);
+                    that.renderTabs(h, elems);
+                    h.push('<div class="tab-content">');
+                }
+                iTab++;
+                h.push('<div id="evol-tab-', idx, '" class="tab-pane', (idx === 1 ? ' active">' : '">'));
+                that.renderTab(h, p, mode);
+                if (iTab == iMax - 1) {
+                    h.push('</div>');
+                }
+            }else{
+                if (iPanel < 0) {
+                    h.push('<div class="evol-pnls">');
+                    iPanel = 1;
+                }
+                if(p.type==='panel-list'){
                     that.renderPanelList(h, p, mode);
-                    break;
+                }else{ // if(p.type==='panel')
+                    that.renderPanel(h, p, 'p-' + p.id, mode);
+                }
             }
         });
         if (iPanel > 0) {
@@ -377,7 +368,7 @@ Evol.ViewOne = Backbone.View.extend({
         var isFirst = true;
         h.push('<ul class="nav nav-tabs evol-tabs">');
         _.each(tabs, function (tab, idx) {
-            if (tab.type == 'tab') {
+            if (tab.type === 'tab') {
                 if (isFirst) {
                     h.push('<li class="active">');
                     isFirst = false;
@@ -506,7 +497,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     _TRnodata: function(colspan, mode){
-        return ['<tr data-id="nodata"><td colspan="',mode==='edit'?(colspan+1):colspan,'" class="evol-pl-nodata">',
+        return ['<tr data-id="nodata"><td colspan="', mode==='edit'?(colspan+1):colspan, '" class="evol-pl-nodata">',
             Evol.i18n.nodata,
             mode==='edit'?'<div data-id="bPlus" class="glyphicon glyphicon-plus-sign"></div>':'',
             '</td></tr>'].join('');

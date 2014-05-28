@@ -190,18 +190,6 @@ Evol.Dico = {
         return this;
     },
 
-    bbComparator:  function(fid){
-        return function(modelA) {
-            return modelA.get(fid);
-        };
-    },
-
-    bbComparatorText: function(fid){
-        return function(modelA,modelB) {
-            return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
-        };
-    },
-
     filterModels: function(models, filters){
         if(filters.length){
             return models.filter(function(model){
@@ -324,7 +312,6 @@ Evol.Dico = {
 
     HTMLField4One: function(fld, fid, fv, mode, iconsPath, skipLabel){
         var h=[],
-            size=50, // TODO fix it
             EvoUI=Evol.UI,
             fTypes=Evol.Dico.fieldTypes;
         // --- field label ---
@@ -336,6 +323,7 @@ Evol.Dico = {
         }else if(!skipLabel){
             h.push(this.HTMLFieldLabel(fld, mode || 'edit'));
         }
+        // --- field value ---
         if(fld.readonly || mode==='view'){
             h.push('<div class="disabled evo-rdonly" id="',fid);
             if(fld.type===fTypes.txtm && fld.height>1){
@@ -352,7 +340,7 @@ Evol.Dico = {
         }else{
             switch (fld.type) {
                 case fTypes.text:
-                    h.push(EvoUI.input.text(fid, fv, fld, null, size));
+                    h.push(EvoUI.input.text(fid, fv, fld, null));
                     break;
                 case fTypes.integer:
                 case fTypes.dec:
@@ -415,7 +403,7 @@ Evol.Dico = {
                     }else{
                         h.push('<p class="">',Evol.i18n.nopix,'</p>');
                     }
-                    h.push(EvoUI.input.text(fid, fv, fld, null, size));
+                    h.push(EvoUI.input.text(fid, fv, fld, null));
                     break;
                 case fTypes.color:
                     //h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
@@ -462,6 +450,18 @@ Evol.Dico = {
             h.push('</a>');
         }
         return h.join('');
+    },
+
+    bbComparator:  function(fid){
+        return function(modelA) {
+            return modelA.get(fid);
+        };
+    },
+
+    bbComparatorText: function(fid){
+        return function(modelA,modelB) {
+            return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
+        };
     }
 
 };
