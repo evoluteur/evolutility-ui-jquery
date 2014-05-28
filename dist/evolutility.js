@@ -1,4 +1,4 @@
-/*   evolutility 0.0.4   */
+/*   evolutility v0.1   */
 /*   (c) 2014 Olivier Giulieri   */
 /*   https://github.com/evoluteur/evolutility   */
 /*! ***************************************************************************
@@ -31,7 +31,7 @@ Evol.UI = {
         clearer: '<div class="clearfix"></div>',
         emptyOption: '<option value=""></option>',
         glyphicon: 'glyphicon glyphicon-',
-        required: '<span class="evol-required">*</span>',
+        required: '<span class="evol-required">*</span>', // TODO replace by div w/ ":after" css for icon
         buttonClose: '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'
     },
 
