@@ -8,7 +8,7 @@ module.exports = function (grunt) {
 
         pkg: grunt.file.readJSON('package.json'),
 
-        banner :  '/*   <%= pkg.name  %> <%= pkg.version %>   */\n' +
+        banner :  '/*   <%= pkg.name  %> v<%= pkg.version %>   */\n' +
             '/*   <%= pkg.copyright %>   */\n' +
             '/*   https://github.com/evoluteur/evolutility   */\n',
 
@@ -60,6 +60,7 @@ module.exports = function (grunt) {
                     'js/many-*.js',
                     'js/one.js',
                     'js/one-*.js',
+                    '!js/one-wizard.js', // NOT ! here
                     'js/action.js',
                     'js/action-*.js',
 
@@ -133,7 +134,7 @@ module.exports = function (grunt) {
             },
             demo: {
                 options: {
-                    banner: '/* <%= pkg.name %> <%= pkg.version %> sample UI-models and data: todo, addressbook, wine cellar. */\n ',
+                    banner: '/* <%= pkg.name %> v<%= pkg.version %> sample UI-models and data: todo, addressbook, wine cellar. */\n ',
                     mangle: true
                 },
                 files: [
@@ -145,7 +146,7 @@ module.exports = function (grunt) {
             },
             vendors: {
                 options: {
-                    banner: '/* <%= pkg.name %> <%= pkg.version %> dependencies: \n jquery + backbone + underscore + backbone.localStorage + bootstrap-datepicker */',
+                    banner: '/* <%= pkg.name %> v<%= pkg.version %> dependencies: \n jquery + backbone + underscore + backbone.localStorage + bootstrap-datepicker */',
                     mangle: true
                 },
                 files: [

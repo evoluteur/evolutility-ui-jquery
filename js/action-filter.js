@@ -45,6 +45,10 @@ Evol.ViewAction.Filter = Backbone.View.extend({
 
     initialize: function (opts) {
         this.options=_.extend(this.options, opts);
+        // - if no fields are provided, then get them from the uiModel
+        if(this.options.uiModel && (!this.options.fields || this.options.fields.length===0)){
+            this.options.fields = Evol.Dico.getFields(this.options.uiModel);
+        }
         return this;
     },
 
@@ -364,12 +368,13 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                     opBetween=opVal==fOps.sBetween;
                     switch (fType){
                         case fTypes.lov:
-                            h.push('<span id="value">');
+                            // TODO use "section" ?
+                            h.push('<section id="value">');
                             if(this._field.list.length>7){
                                 h.push('(<input type="checkbox" id="checkAll" value="1"/><label for="checkAll">All</label>) ');
                             }
                             h.push(Evol.UI.input.checkboxLOV(this._field.list));
-                            h.push('</span>');
+                            h.push('</section>');
                             break;
                         case fTypes.bool:
                             h.push('<span id="value">',
