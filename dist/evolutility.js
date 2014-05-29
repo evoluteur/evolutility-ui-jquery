@@ -524,23 +524,23 @@ Evol.i18n = {
         ExportEntity: 'Export {0}', // {0}=entity
         ExportEntities: 'Export {0}', // {0}=entities
         preview:'Export preview',
-        ExportHeader: 'Header',
-        ExportSeparator: 'Separator',
-        ExportFirstLine:'First line for field names',
-        ExportFormat: 'Export format',
-        ExportFields: 'Fields to include in the export',
+        header: 'Header',
+        separator: 'Separator',
+        firstLine:'First line for field names',
+        format: 'Export format',
+        xpFields: 'Fields to include in the export',
         IDkey: 'ID - Primary key',
-        AllFields: 'Show all fields',
-        ExportFormats: 'Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)',
+        allFields: 'Show all fields',
+        formats: 'Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)',
         //xpColors:'Header color-Color odd rows-Color even rows',
         //xpColMap:'Columns map to',
-        xpXMLroot:'Element name', // 'Root element name'
+        XMLroot:'Element name', // 'Root element name'
         //xpXMLAttr:'Attributes',
         //xpXMLElem:'Elements',
-        xpSQL:'SQL Options',
-        xpSQLTable:'Table name',
-        xpSQLTrans:'Inside transaction',
-        xpSQLId:'Enable identity insert',
+        SQL:'SQL Options',
+        SQLTable:'Table name',
+        SQLTrans:'Inside transaction',
+        SQLId:'Enable identity insert',
         DownloadEntity:'Download {0}'
     },
 
@@ -2779,7 +2779,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
  *
  *************************************************************************** */
 
-var evoLangXpt = Evol.i18n.export;
+var i18nXpt = Evol.i18n.export;
 
 Evol.ViewAction.Export = Backbone.View.extend({
 
@@ -2829,8 +2829,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
         //string fieldName, fieldlabel, expOut, buffer;
         h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds"><fieldset>');
         //### list of columns to export #########################################
-        h.push('<div class="evol-id">', EvoUI.label('', evoLangXpt.ExportFields),'</div>'/*,
-            '<div>',EvoUI.input.checkbox('showID','1'), '<label for="showID">', evoLangXpt.IDkey, '</label>','</div>'*/
+        h.push('<div class="evol-id">', EvoUI.label('', i18nXpt.xpFields),'</div>'/*,
+            '<div>',EvoUI.input.checkbox('showID','1'), '<label for="showID">', i18nXpt.IDkey, '</label>','</div>'*/
         );
         for (var i = 0, iMax = fields.length; i < iMax; i++) {
             var f = fields[i],
@@ -2841,7 +2841,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             }
             h.push('<div><input type="checkbox" value="1" id="', fID, '" checked="true"><label class="checkbox" for="', fID, '">', fLabel, '</label></div>');
             if (i == 10 && iMax > 14){
-                h.push(EvoExport.html_more2(evoLangXpt.AllFields));
+                h.push(EvoExport.html_more2(i18nXpt.allFields));
             }
         }
         if (iMax > 14){
@@ -2850,47 +2850,48 @@ Evol.ViewAction.Export = Backbone.View.extend({
         h.push('</fieldset></div><div class="evol-xpt-para">'); // table = 2 columns
         //##### export formats ########################################
         var fId = prefix + 'evol-xpt-format',
-            myLabels = evoLangXpt.ExportFormats.split('-');
-        h.push('<label for="', fId, '">', evoLangXpt.ExportFormat, '</label>',
+            formatsList = i18nXpt.formats.split('-');
+        h.push('<label for="', fId, '">', i18nXpt.format, '</label>',
             EvoUI.input.select(fId, '', 'evol-xpt-format', false, [
-                {id: 'CSV', text: myLabels[0]},
-                {id: 'TAB', text: myLabels[3]},
-                {id: 'HTML', text: myLabels[1]},
-                {id: 'JSON', text: myLabels[5]},
-                {id: 'SQL', text: myLabels[2]},
-                {id: 'XML', text: myLabels[4]}
+                {id: 'CSV', text: formatsList[0]},
+                {id: 'TAB', text: formatsList[3]},
+                {id: 'HTML', text: formatsList[1]},
+                {id: 'JSON', text: formatsList[5]},
+                {id: 'SQL', text: formatsList[2]},
+                {id: 'XML', text: formatsList[4]}
             ])
         );
         fId = prefix + "FLH";
-        h.push('<div class="evol-xpt-opts">');
-        //# field (shared b/w formats - header #######
-        h.push('<div class="evol-FLH clearfix">');
-        //h.push('<label>', evoLangXpt.ExportHeader, '</label>');
-        h.push(EvoUI.input.checkbox(fId, true), EvoUI.fieldLabelSpan(fId, evoLangXpt.ExportFirstLine));
-        //##### CSV, TAB - First line for field names #######
-        h.push('</div><div id="', prefix, 'CSV">');
-        //# field - separator
-        //# - csv - any separator #######
-        h.push('<div data-id="csv2" class="evol-w120">',
+        h.push('<div class="evol-xpt-opts">',
+            //# field (shared b/w formats - header #######
+            '<div class="evol-FLH clearfix">',
+            //h.push('<label>', i18nXpt.header, '</label>');
+            EvoUI.input.checkbox(fId, true), EvoUI.fieldLabelSpan(fId, i18nXpt.firstLine),
+            //##### CSV, TAB - First line for field names #######
+            '</div><div id="', prefix, 'CSV">',
+            //# field - separator
+            //# - csv - any separator #######
+            '<div data-id="csv2" class="evol-w120">',
             //EvoExport.html_more2('options'),
             //.evol-FLH
-            EvoUI.fieldLabel('FLS_evol', evoLangXpt.ExportSeparator),
+            EvoUI.fieldLabel('FLS_evol', i18nXpt.separator),
             EvoUI.input.text(prefix+'FLS_evol', ',', 0),
-            '</div>'); // </div>
-        h.push('</div>');
+            '</div>', // </div>
+        '</div>');
         _.each(['XML','HTML','SQL','JSON'], function(f){
             h.push('<div id="', prefix, f, '" style="display:none;"></div>');
         });
-        h.push('</div>');
-        //# Preview #######
-        h.push('<label>',evoLangXpt.preview,'</label><div class="evol-xpt-preview">');
-        // ## Samples
-        h.push('<textarea class="Field evol-xpt-val form-control"></textarea>');
-        h.push('</div></div></div></div>');
-        // ## Download button
-        h.push('<div class="evol-buttons form-actions">',
-            EvoUI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
-            EvoUI.input.button('export', evoLangXpt.DownloadEntity.replace('{0}', this.options.uiModel.entities), 'btn btn-primary'));
+        h.push('</div>',
+            //# Preview #######
+            '<label>',i18nXpt.preview,'</label><div class="evol-xpt-preview">',
+            // ## Samples
+            '<textarea class="Field evol-xpt-val form-control"></textarea>',
+            '</div></div></div></div>',
+            // ## Download button
+            '<div class="evol-buttons form-actions">',
+                EvoUI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
+                EvoUI.input.button('export', i18nXpt.DownloadEntity.replace('{0}', this.options.uiModel.entities), 'btn btn-primary')
+        );
         return h.join('');
     },
 
@@ -3210,8 +3211,8 @@ var EvoExport = {
     formXML: function (entity) {
         return [
             EvoExport.html_more2('options'),
-            EvoExport.formEntityName('evoRoot', evoLangXpt.xpXMLroot, entity),
-            Evol.UI.fieldLabel('evoxpC2X', evoLangXpt.xpColMap),
+            EvoExport.formEntityName('evoRoot', i18nXpt.XMLroot, entity),
+            Evol.UI.fieldLabel('evoxpC2X', i18nXpt.xpColMap),
             '</div>'
         ].join('');
     },
@@ -3223,9 +3224,9 @@ var EvoExport = {
     formSQL: function (entity) {
         return [
             EvoExport.html_more2('options'),
-            EvoExport.formEntityName('evoTable', evoLangXpt.xpSQLTable, entity),
-            '<div>', Evol.UI.input.checkbox('evoxpTRS2', '0'), Evol.UI.fieldLabelSpan('evoxpTRS2', evoLangXpt.xpSQLId), '</div>',
-            '<div>', Evol.UI.input.checkbox('evoxpTRS1', '0'), Evol.UI.fieldLabelSpan('evoxpTRS1', evoLangXpt.xpSQLTrans), '</div>',
+            EvoExport.formEntityName('evoTable', i18nXpt.SQLTable, entity),
+            '<div>', Evol.UI.input.checkbox('evoxpTRS2', '0'), Evol.UI.fieldLabelSpan('evoxpTRS2', i18nXpt.SQLId), '</div>',
+            '<div>', Evol.UI.input.checkbox('evoxpTRS1', '0'), Evol.UI.fieldLabelSpan('evoxpTRS1', i18nXpt.SQLTrans), '</div>',
             '</div>'
            ].join('');
     },

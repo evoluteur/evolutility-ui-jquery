@@ -111,23 +111,23 @@ Evol.i18n = {
         ExportEntity: 'Export {0}', // {0}=entity
         ExportEntities: 'Export {0}', // {0}=entities
         preview:'Export preview',
-        ExportHeader: 'Header',
-        ExportSeparator: 'Separator',
-        ExportFirstLine:'First line for field names',
-        ExportFormat: 'Export format',
-        ExportFields: 'Fields to include in the export',
+        header: 'Header',
+        separator: 'Separator',
+        firstLine:'First line for field names',
+        format: 'Export format',
+        xpFields: 'Fields to include in the export',
         IDkey: 'ID - Primary key',
-        AllFields: 'Show all fields',
-        ExportFormats: 'Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)',
+        allFields: 'Show all fields',
+        formats: 'Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)',
         //xpColors:'Header color-Color odd rows-Color even rows',
         //xpColMap:'Columns map to',
-        xpXMLroot:'Element name', // 'Root element name'
+        XMLroot:'Element name', // 'Root element name'
         //xpXMLAttr:'Attributes',
         //xpXMLElem:'Elements',
-        xpSQL:'SQL Options',
-        xpSQLTable:'Table name',
-        xpSQLTrans:'Inside transaction',
-        xpSQLId:'Enable identity insert',
+        SQL:'SQL Options',
+        SQLTable:'Table name',
+        SQLTrans:'Inside transaction',
+        SQLId:'Enable identity insert',
         DownloadEntity:'Download {0}'
     },
 
