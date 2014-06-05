@@ -3289,7 +3289,19 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         this.options=_.extend(this.options, opts);
         // - if no fields are provided, then get them from the uiModel
         if(this.options.uiModel && (!this.options.fields || this.options.fields.length===0)){
-            this.options.fields = Evol.Dico.getFields(this.options.uiModel);
+            this.options.fields = _.map(Evol.Dico.getFields(this.options.uiModel, function(f){
+                    return f.type!==Evol.Dico.fieldTypes.hidden;
+                }),
+                function(f){
+                    if(f.type!==Evol.Dico.fieldTypes.list){
+                        return f;
+                    }else{
+                        return _.extend(f, {
+                            type: Evol.Dico.fieldTypes.lov,
+                            trueType: Evol.Dico.fieldTypes.list
+                        });
+                    }
+                });
         }
         return this;
     },
@@ -4264,8 +4276,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.$('.evo-toolbar').after($ff);
                 this._filters = new Evol.ViewAction.Filter({
                     el: $ff,
-                    //uiModel: this.options.uiModel,
-                    fields: Evol.Dico.getFields(this.options.uiModel)
+                    uiModel: this.options.uiModel
                 }).render();
                 $ff.on('change.filter', function(){
                     that.curView.setFilter(that._filters.val())
