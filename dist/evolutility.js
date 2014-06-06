@@ -501,13 +501,14 @@ Evol.i18n = {
         email:'"{0}" must be a valid email like "abc@company.com".',
         integer:'"{0}" must only use numbers.',
         decimal:'"{0}" must be a valid decimal numbers.',
+        money:'"{0}" must be a valid number.',
         date:'"{0}" must be a valid date, format must be "MM/DD/YYYY" like "12/24/2014".',
         datetime:'"{0}" must be a valid date/time, format must be "MM/DD/YYYY hh:mm AM/PM" like "12/24/2014 10:30 AM".',
         time:'"{0}" must be a valid date/time, format must be "hh:mm AM/PM" like "10:30 AM".',
         max:'"{0}" must be smaller or equal to {1}.',
         min:'"{0}" must be greater or equal to {1}.',
         maxlength:'"{0}" must be {1} characters long maximum.',
-        minlength:'"{0}" must be less than {1} characters long.',
+        minlength:'"{0}" must be at least {1} characters long.',
         minmaxlength:'"{0}" must be between {1} and {2} characters long.',
         regex:'The value "{0}" is not of the expected format.'
         //regex:'"{0}" must match the regular expression pattern for "{1}".'
@@ -524,23 +525,23 @@ Evol.i18n = {
         ExportEntity: 'Export {0}', // {0}=entity
         ExportEntities: 'Export {0}', // {0}=entities
         preview:'Export preview',
-        ExportHeader: 'Header',
-        ExportSeparator: 'Separator',
-        ExportFirstLine:'First line for field names',
-        ExportFormat: 'Export format',
-        ExportFields: 'Fields to include in the export',
+        header: 'Header',
+        separator: 'Separator',
+        firstLine:'First line for field names',
+        format: 'Export format',
+        xpFields: 'Fields to include in the export',
         IDkey: 'ID - Primary key',
-        AllFields: 'Show all fields',
-        ExportFormats: 'Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)',
+        allFields: 'Show all fields',
+        formats: 'Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)',
         //xpColors:'Header color-Color odd rows-Color even rows',
         //xpColMap:'Columns map to',
-        xpXMLroot:'Element name', // 'Root element name'
+        XMLroot:'Element name', // 'Root element name'
         //xpXMLAttr:'Attributes',
         //xpXMLElem:'Elements',
-        xpSQL:'SQL Options',
-        xpSQLTable:'Table name',
-        xpSQLTrans:'Inside transaction',
-        xpSQLId:'Enable identity insert',
+        SQL:'SQL Options',
+        SQLTable:'Table name',
+        SQLTrans:'Inside transaction',
+        SQLId:'Enable identity insert',
         DownloadEntity:'Download {0}'
     },
 
@@ -608,10 +609,10 @@ Evol.Dico = {
     // enum of supported field types
     fieldTypes: {
         text: 'text',
-        txtm: 'textmultiline',
+        textml: 'textmultiline',
         bool: 'boolean',
         dec: 'decimal',
-        integer: 'integer',
+        int: 'integer',
         date: 'date',
         time: 'time',
         datetime: 'datetime',
@@ -659,9 +660,9 @@ Evol.Dico = {
         switch(f.type) {
             case ft.bool:
                 return $f.prop('checked');
-            case ft.integer:
+            case ft.int:
                 return parseInt($f.val(),10);
-            case ft.decimal:
+            case ft.dec:
             case ft.money:
                 return parseFloat($f.val());
             case ft.list:
@@ -896,6 +897,10 @@ Evol.Dico = {
                     return '$'+nv.toFixed(2);
                 }
                 break;
+            case fTypes.email:
+                return Evol.UI.linkEmail(f.id, v);
+            case fTypes.url:
+                return Evol.UI.link(f.id, v, v, f.id);
             default:
                 return v;
         }
@@ -918,7 +923,7 @@ Evol.Dico = {
         // --- field value ---
         if(fld.readonly || mode==='view'){
             h.push('<div class="disabled evo-rdonly" id="',fid);
-            if(fld.type===fTypes.txtm && fld.height>1){
+            if(fld.type===fTypes.textml && fld.height>1){
                 h.push('" style="height:', fld.height, 'em;');
             }
             h.push('">');
@@ -934,7 +939,7 @@ Evol.Dico = {
                 case fTypes.text:
                     h.push(EvoUI.input.text(fid, fv, fld, null));
                     break;
-                case fTypes.integer:
+                case fTypes.int:
                 case fTypes.dec:
                     h.push(EvoUI.input.textInt(fid, fv, fld.max, fld.min));
                     break;
@@ -945,7 +950,7 @@ Evol.Dico = {
                 case fTypes.bool:
                     h.push(EvoUI.input.checkbox(fid, fv));
                     break;
-                case fTypes.txtm:
+                case fTypes.textml:
                 case fTypes.html:
                     // fv = _.escape(fv);
                     if (fld.height === null) {
@@ -1254,7 +1259,7 @@ Evol.ViewMany = Backbone.View.extend({
         var collec=this.collection,
             ft=Evol.Dico.fieldTypes;
         if(!_.isUndefined(collec)){
-            if(f.type==ft.text || f.type==ft.txtm || f.type==ft.email){
+            if(f.type==ft.text || f.type==ft.textml || f.type==ft.email){
                 collec.comparator = Evol.Dico.bbComparatorText(f.id);
             }else{
                 collec.comparator = Evol.Dico.bbComparator(f.id);
@@ -1465,7 +1470,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             models = this.collection.models,
             iconsPath = this.options.iconsPath || '',
             chartFields = EvoDico.getFields(uiModel, function(f){
-                return f.viewcharts || f.type==fTypes.lov || f.type==fTypes.bool || f.type==fTypes.integer;
+                return f.viewcharts || f.type==fTypes.lov || f.type==fTypes.bool || f.type==fTypes.int;
             });
 
         if(chartFields && chartFields.length){
@@ -1638,6 +1643,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     viewType:'one',
     cardinality: '1',
+    _tabId: false,
 
     events: {
         'click .evol-buttons>button': 'click_button',
@@ -1741,7 +1747,7 @@ Evol.ViewOne = Backbone.View.extend({
         }
     },
 
-    getData: function () {
+    getData: function (skipReadOnlyFields) {
         var that = this,
             fs=this.getFields(),
             vs = {},
@@ -1770,6 +1776,13 @@ Evol.ViewOne = Backbone.View.extend({
                 vs[sc.attr]=vs2;
             });
         }
+        if(skipReadOnlyFields){
+            _.each(this.getFields(),function(f){
+                if(f.readonly){
+                    delete vs[f.id];
+                }
+            });
+        }
         return vs;
     },
 
@@ -1785,7 +1798,7 @@ Evol.ViewOne = Backbone.View.extend({
                 newPix;
             _.each(fs, function (f) {
                 $f=that.$(prefix + f.id);
-                fv=model.get(f.id);
+                fv=model.get(f.attribute || f.id);
                 if(model){
                     if(f.readonly){
                         if(f.type===fTypes.pix){
@@ -1794,7 +1807,17 @@ Evol.ViewOne = Backbone.View.extend({
                                 .prev().remove();
                             $f.before(newPix);
                         }else{
-                            $f.text(fv || '');
+                            switch(f.type){
+                                case fTypes.lov:
+                                case fTypes.bool:
+                                    $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
+                                    break;
+                                case fTypes.pix:
+                                    $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
+                                    break;
+                                default:
+                                    $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
+                            }
                         }
                     }else{
                         switch(f.type) {
@@ -1901,32 +1924,32 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     isDirty: function(){
-        // TODO
-        /*
          var data=this.getData(),
          model=this.model;
 
-         for(var prop in data){
-         if(data[prop] !== model.get(prop)){
-         alert('data[prop]='+data[prop]+' - model.get(prop)='+model.get(prop)); //TODO remove this alert
-         return true;
-         }
-         }*/
+        _.each(data, function(value, prop){
+            if(data[prop] !== model.get(prop)){
+                //alert('data[prop]='+data[prop]+' - model.get(prop)='+model.get(prop)); //TODO remove this alert
+                return true;
+            }
+
+        });
         return false;
     },
 
-    showTab: function (tabid) {
-        var tab = this.$(tabid);
+    showTab: function (tabId) {
+        var tab = this.$(tabId);
         if (tab.length > 0) {
             tab.siblings('.tab-pane').hide();
             tab.show();
         }
-        tab = this.$('.evol-tabs > li a[href="' + tabid + '"]').parent();
+        tab = this.$('.evol-tabs > li a[href="' + tabId + '"]').parent();
         if (tab.length > 0) {
             tab.siblings('li').removeClass('active');
             tab.addClass('active');
         }
-        this.$el.trigger('tab.show');
+        this._tabId = tabId;
+        this.$el.trigger('tab.show', {id:tabId});
         return this;
     },
 
@@ -2194,28 +2217,26 @@ Evol.ViewOne = Backbone.View.extend({
 
     valRegEx: {
         email: /^[\w\.\-]+@[\w\.\-]+\.[\w\.\-]+$/,
-        integer: /^-?\d+$/,
+        integer: /^[-+]?\d+$/,
         decimalEN: /^\d+(\.\d+)?$/,
         decimalFR: /^\d+(\,\d+)?$/,
         decimalDA: /^\d+(\,\d+)?$/
     },
 
     checkFields: function (holder, fds) {
-
         var that = this,
             ft = Evol.Dico.fieldTypes,
             i18nVal = Evol.i18n.validation,
             msgs = [],
             v,
-            values = this.getData();
+            values = this.getData(true);
 
-        function checkType(fd, v) {
+        function checkType(fd, fv) {
             var ft = Evol.Dico.fieldTypes,
-                fv = _.isArray(v)?'':Evol.UI.trim(v),
                 i18nVal=Evol.i18n.validation;
             if (fv !== '' && !_.isArray(fv)){ // && !isNaN(fv)
                 switch (fd.type) {
-                    case ft.integer:
+                    case ft.int:
                     case ft.email:
                         if (!that.valRegEx[fd.type].test(fv)) {
                             flagField(fd, i18nVal[fd.type]);
@@ -2223,10 +2244,7 @@ Evol.ViewOne = Backbone.View.extend({
                         break;
                     case ft.dec:
                     case ft.money:
-                        var regex = that.valRegEx[ft.dec + Evol.i18n.LOCALE];
-                        if (regex === null) {
-                            regex = that.valRegEx[ft.dec + 'EN']; // default to English with "."
-                        }
+                        var regex = that.valRegEx[ft.dec + Evol.i18n.LOCALE] || that.valRegEx[ft.dec + 'EN'];
                         if (!regex.test(fv))
                             flagField(fd, i18nVal[fd.type]);
                         break;
@@ -2268,12 +2286,13 @@ Evol.ViewOne = Backbone.View.extend({
 
             // Check required/empty or check type
             if (f.required && (v==='' ||
-                    (f.type===ft.integer && isNaN(v)) ||
-                    (f.type===ft.money && isNaN(v)) ||
-                    (f.type===ft.lov && v==='0') ||
-                    (f.type===ft.list && v.length===0) ||
-                    (f.type===ft.color && v==='#000000'))){
-                flagField(f, i18nVal.empty);
+                (f.type===ft.int && isNaN(v)) ||
+                (f.type===ft.dec && isNaN(v)) ||
+                (f.type===ft.money && isNaN(v)) ||
+                (f.type===ft.lov && v==='0') ||
+                (f.type===ft.list && v.length===0) ||
+                (f.type===ft.color && v==='#000000'))){
+                    flagField(f, i18nVal.empty);
             }
             checkType(f, v);
 
@@ -2294,7 +2313,7 @@ Evol.ViewOne = Backbone.View.extend({
              }*/
 
             // Check min & max
-            if (f.type===ft.integer || f.type===ft.decimal || f.type===ft.money) {
+            if (f.type===ft.int || f.type===ft.dec || f.type===ft.money) {
                 if (v !== '') {
                     if (f.max !== null && parseFloat(v) > f.max) {
                         flagField(f, i18nVal.max, f.max);
@@ -2431,6 +2450,14 @@ Evol.ViewOne = Backbone.View.extend({
         });
     },
 
+    setTab: function(tabId){
+        this._tabId = tabId;
+        this.showTab(tabId);
+    },
+    getTab: function(){
+        return this._tabId;
+    },
+
     click_button: function (evt) {
         var bId = $(evt.currentTarget).data('id');
         evt.stopImmediatePropagation();
@@ -2477,6 +2504,7 @@ Evol.ViewOne = Backbone.View.extend({
         }else{
             this.showTab(id);
         }
+        this._tabId = id;
     },
 
     click_help: function (evt) {
@@ -2557,9 +2585,9 @@ Evol.ViewOne.Edit = Evol.ViewOne.extend({
 
     postRender:function(){
         var pref = '#' + this.prefix + '-',
-            fs=Evol.Dico.getFields(this.options.uiModel, function(m){
-            return m.type === 'list';
-        });
+            fs= _.filter(this.getFields(), function(f){
+                return f.type === 'list' && !f.readonly;
+            });
         _.each(fs, function(f){
             this.$(pref + f.id).select2(
                 {
@@ -2681,6 +2709,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
     prefix: 'ovw',
 
     getData: function () {
+        // TODO make JSON obj w/ model limited to fields in uimodel?
         return {};
     },
 
@@ -2695,18 +2724,12 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                 iconsPath=this.options.iconsPath||'';
             _.each(fs, function (f) {
                 $f=that.$(prefix + f.id);
-                fv=model.get(f.id);
+                fv=model.get(f.attribute || f.id);
                 if(model){
                     switch(f.type){
                         case fTypes.lov:
                         case fTypes.bool:
                             $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
-                            break;
-                        case fTypes.url:
-                            $f.html(Evol.UI.link(f.id, fv, fv, f.id));
-                            break;
-                        case fTypes.email:
-                            $f.html(Evol.UI.linkEmail(f.id, fv));
                             break;
                         case fTypes.pix:
                             $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
@@ -2779,7 +2802,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
  *
  *************************************************************************** */
 
-var evoLangXpt = Evol.i18n.export;
+var i18nXpt = Evol.i18n.export;
 
 Evol.ViewAction.Export = Backbone.View.extend({
 
@@ -2829,8 +2852,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
         //string fieldName, fieldlabel, expOut, buffer;
         h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds"><fieldset>');
         //### list of columns to export #########################################
-        h.push('<div class="evol-id">', EvoUI.label('', evoLangXpt.ExportFields),'</div>'/*,
-            '<div>',EvoUI.input.checkbox('showID','1'), '<label for="showID">', evoLangXpt.IDkey, '</label>','</div>'*/
+        h.push('<div class="evol-id">', EvoUI.label('', i18nXpt.xpFields),'</div>'/*,
+            '<div>',EvoUI.input.checkbox('showID','1'), '<label for="showID">', i18nXpt.IDkey, '</label>','</div>'*/
         );
         for (var i = 0, iMax = fields.length; i < iMax; i++) {
             var f = fields[i],
@@ -2841,7 +2864,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             }
             h.push('<div><input type="checkbox" value="1" id="', fID, '" checked="true"><label class="checkbox" for="', fID, '">', fLabel, '</label></div>');
             if (i == 10 && iMax > 14){
-                h.push(EvoExport.html_more2(evoLangXpt.AllFields));
+                h.push(EvoExport.html_more2(i18nXpt.allFields));
             }
         }
         if (iMax > 14){
@@ -2850,47 +2873,48 @@ Evol.ViewAction.Export = Backbone.View.extend({
         h.push('</fieldset></div><div class="evol-xpt-para">'); // table = 2 columns
         //##### export formats ########################################
         var fId = prefix + 'evol-xpt-format',
-            myLabels = evoLangXpt.ExportFormats.split('-');
-        h.push('<label for="', fId, '">', evoLangXpt.ExportFormat, '</label>',
+            formatsList = i18nXpt.formats.split('-');
+        h.push('<label for="', fId, '">', i18nXpt.format, '</label>',
             EvoUI.input.select(fId, '', 'evol-xpt-format', false, [
-                {id: 'CSV', text: myLabels[0]},
-                {id: 'TAB', text: myLabels[3]},
-                {id: 'HTML', text: myLabels[1]},
-                {id: 'JSON', text: myLabels[5]},
-                {id: 'SQL', text: myLabels[2]},
-                {id: 'XML', text: myLabels[4]}
+                {id: 'CSV', text: formatsList[0]},
+                {id: 'TAB', text: formatsList[3]},
+                {id: 'HTML', text: formatsList[1]},
+                {id: 'JSON', text: formatsList[5]},
+                {id: 'SQL', text: formatsList[2]},
+                {id: 'XML', text: formatsList[4]}
             ])
         );
         fId = prefix + "FLH";
-        h.push('<div class="evol-xpt-opts">');
-        //# field (shared b/w formats - header #######
-        h.push('<div class="evol-FLH clearfix">');
-        //h.push('<label>', evoLangXpt.ExportHeader, '</label>');
-        h.push(EvoUI.input.checkbox(fId, true), EvoUI.fieldLabelSpan(fId, evoLangXpt.ExportFirstLine));
-        //##### CSV, TAB - First line for field names #######
-        h.push('</div><div id="', prefix, 'CSV">');
-        //# field - separator
-        //# - csv - any separator #######
-        h.push('<div data-id="csv2" class="evol-w120">',
+        h.push('<div class="evol-xpt-opts">',
+            //# field (shared b/w formats - header #######
+            '<div class="evol-FLH clearfix">',
+            //h.push('<label>', i18nXpt.header, '</label>');
+            EvoUI.input.checkbox(fId, true), EvoUI.fieldLabelSpan(fId, i18nXpt.firstLine),
+            //##### CSV, TAB - First line for field names #######
+            '</div><div id="', prefix, 'CSV">',
+            //# field - separator
+            //# - csv - any separator #######
+            '<div data-id="csv2" class="evol-w120">',
             //EvoExport.html_more2('options'),
             //.evol-FLH
-            EvoUI.fieldLabel('FLS_evol', evoLangXpt.ExportSeparator),
+            EvoUI.fieldLabel('FLS_evol', i18nXpt.separator),
             EvoUI.input.text(prefix+'FLS_evol', ',', 0),
-            '</div>'); // </div>
-        h.push('</div>');
+            '</div>', // </div>
+        '</div>');
         _.each(['XML','HTML','SQL','JSON'], function(f){
             h.push('<div id="', prefix, f, '" style="display:none;"></div>');
         });
-        h.push('</div>');
-        //# Preview #######
-        h.push('<label>',evoLangXpt.preview,'</label><div class="evol-xpt-preview">');
-        // ## Samples
-        h.push('<textarea class="Field evol-xpt-val form-control"></textarea>');
-        h.push('</div></div></div></div>');
-        // ## Download button
-        h.push('<div class="evol-buttons form-actions">',
-            EvoUI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
-            EvoUI.input.button('export', evoLangXpt.DownloadEntity.replace('{0}', this.options.uiModel.entities), 'btn btn-primary'));
+        h.push('</div>',
+            //# Preview #######
+            '<label>',i18nXpt.preview,'</label><div class="evol-xpt-preview">',
+            // ## Samples
+            '<textarea class="Field evol-xpt-val form-control"></textarea>',
+            '</div></div></div></div>',
+            // ## Download button
+            '<div class="evol-buttons form-actions">',
+                EvoUI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
+                EvoUI.input.button('export', i18nXpt.DownloadEntity.replace('{0}', this.options.uiModel.entities), 'btn btn-primary')
+        );
         return h.join('');
     },
 
@@ -3063,8 +3087,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
                         _.each(flds, function(f, idx){
                             fValue=m.get(f.id);
                             switch(f.type){
-                                case fTypes.integer:
-                                case fTypes.decimal:
+                                case fTypes.int:
+                                case fTypes.dec:
                                 case fTypes.money:
                                     h.push(fValue?fValue:'NULL');
                                     break;
@@ -3109,7 +3133,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                         h.push('<', elemName, ' ');
                         _.each(flds, function(f){
                             h.push(f.id, '="');
-                            if(f.type===fTypes.text || f.type===fTypes.txtm){
+                            if(f.type===fTypes.text || f.type===fTypes.textml){
                                 fv=m.get(f.id);
                                 if(!_.isUndefined(fv)){
                                     h.push(fv.replace(/"/g, '\\"'));
@@ -3210,8 +3234,8 @@ var EvoExport = {
     formXML: function (entity) {
         return [
             EvoExport.html_more2('options'),
-            EvoExport.formEntityName('evoRoot', evoLangXpt.xpXMLroot, entity),
-            Evol.UI.fieldLabel('evoxpC2X', evoLangXpt.xpColMap),
+            EvoExport.formEntityName('evoRoot', i18nXpt.XMLroot, entity),
+            Evol.UI.fieldLabel('evoxpC2X', i18nXpt.xpColMap),
             '</div>'
         ].join('');
     },
@@ -3223,9 +3247,9 @@ var EvoExport = {
     formSQL: function (entity) {
         return [
             EvoExport.html_more2('options'),
-            EvoExport.formEntityName('evoTable', evoLangXpt.xpSQLTable, entity),
-            '<div>', Evol.UI.input.checkbox('evoxpTRS2', '0'), Evol.UI.fieldLabelSpan('evoxpTRS2', evoLangXpt.xpSQLId), '</div>',
-            '<div>', Evol.UI.input.checkbox('evoxpTRS1', '0'), Evol.UI.fieldLabelSpan('evoxpTRS1', evoLangXpt.xpSQLTrans), '</div>',
+            EvoExport.formEntityName('evoTable', i18nXpt.SQLTable, entity),
+            '<div>', Evol.UI.input.checkbox('evoxpTRS2', '0'), Evol.UI.fieldLabelSpan('evoxpTRS2', i18nXpt.SQLId), '</div>',
+            '<div>', Evol.UI.input.checkbox('evoxpTRS1', '0'), Evol.UI.fieldLabelSpan('evoxpTRS1', i18nXpt.SQLTrans), '</div>',
             '</div>'
            ].join('');
     },
@@ -3288,7 +3312,19 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         this.options=_.extend(this.options, opts);
         // - if no fields are provided, then get them from the uiModel
         if(this.options.uiModel && (!this.options.fields || this.options.fields.length===0)){
-            this.options.fields = Evol.Dico.getFields(this.options.uiModel);
+            this.options.fields = _.map(Evol.Dico.getFields(this.options.uiModel, function(f){
+                    return f.type!==Evol.Dico.fieldTypes.hidden;
+                }),
+                function(f){
+                    if(f.type!==Evol.Dico.fieldTypes.list){
+                        return f;
+                    }else{
+                        return _.extend(f, {
+                            type: Evol.Dico.fieldTypes.lov,
+                            trueType: Evol.Dico.fieldTypes.list
+                        });
+                    }
+                });
         }
         return this;
     },
@@ -3565,8 +3601,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                                 fOption(fOps.sSmaller, evoLang.sBefore),
                                 fOption(fOps.sBetween, evoLang.sBetween));
                             break;
-                        case fTypes.integer:
-                        case fTypes.decimal:
+                        case fTypes.int:
+                        case fTypes.dec:
                         case fTypes.money:
                             h.push(fOption(fOps.sEqual, evoLang.sNumEqual),
                                 fOption(fOps.sNotEqual, evoLang.sNumNotEqual),
@@ -3626,8 +3662,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                         case fTypes.date:
                         case fTypes.datetime:
                         case fTypes.time:
-                        case fTypes.integer:
-                        case fTypes.decimal:
+                        case fTypes.int:
+                        case fTypes.dec:
                         case fTypes.money:
                             var iType=(fType==fTypes.date)?'text':fType;
                             h.push('<input id="value" type="',iType,'" class="form-control"/>');
@@ -3735,8 +3771,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                         fv.label=vval;
                         fv.value=vval.toLocaleLowerCase();
                         break;
-                    case ft.integer:
-                    case ft.decimal:
+                    case ft.int:
+                    case ft.dec:
                     case ft.time:
                         fv.label=vval;
                         fv.value=vval;
@@ -3960,6 +3996,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 	views:[],
 	viewsHash:{},
 	curView:null,
+    tabId:false,
 
     _group:false,
 
@@ -4075,6 +4112,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             config,
             collec=this._curCollec();
 
+        if(this.curView && this.curView.getTab){
+            this.tabId = this.curView.getTab();
+        }
         if(viewName==='new'){
             viewName=this._prevOne?this._prevOne:'edit';
             this.setView(viewName);
@@ -4114,6 +4154,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 }
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
+                this._keepTab(viewName);
                 $v.show()
                     .siblings().not('.evo-toolbar,.evo-filters,.clearfix').hide();
             }else{
@@ -4145,13 +4186,14 @@ Evol.ViewToolbar = Backbone.View.extend({
                         vw = new Evol.ViewOne[this.modesHash[viewName]](config)
                             .render();
                         this._prevOne=viewName;
+                        this.curView=vw;
+                        this._keepTab(viewName);
                         break;
                     // --- many ---
                     case 'charts':
                     case 'badges':
                     case 'list':
                         vw = new Evol.ViewMany[this.modesHash[viewName]](config)
-                        //vw = new Evol.ViewMany.JSON(config)
                             .render();
                         this._prevMany=viewName;
                         vw.setTitle();
@@ -4186,6 +4228,12 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     getView:function(){
         return this.curView;
+    },
+
+    _keepTab: function(viewName){
+        if(this.tabId && (viewName=='view'||viewName=='edit'||viewName=='mini')){
+            this.curView.setTab(this.tabId);
+        }
     },
 
     getToolbarButtons: function(){
@@ -4263,8 +4311,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.$('.evo-toolbar').after($ff);
                 this._filters = new Evol.ViewAction.Filter({
                     el: $ff,
-                    //uiModel: this.options.uiModel,
-                    fields: Evol.Dico.getFields(this.options.uiModel)
+                    uiModel: this.options.uiModel
                 }).render();
                 $ff.on('change.filter', function(){
                     that.curView.setFilter(that._filters.val())
@@ -4310,9 +4357,9 @@ Evol.ViewToolbar = Backbone.View.extend({
 		return this;
 	},
 
-	getData: function(){
+	getData: function(skipReadOnlyFields){
 		if(this.curView){
-			return this.curView.getData();
+			return this.curView.getData(skipReadOnlyFields);
 		}
 		return null;
 	},
@@ -4362,29 +4409,29 @@ Evol.ViewToolbar = Backbone.View.extend({
             if(this.model.isNew()){
                 var collec=this.collection;
                 if(collec){
-                    collec.create(this.getData(), {
+                    collec.create(this.getData(true), {
                         success: function(m){
                             fnSuccess(m);
                             that.setMessage(Evol.i18n.saved, Evol.i18n.getLabel('status.added',entityName, _.escape(vw.getTitle())), 'success');
                         },
-                        error:function(err){
-                            alert('error');
+                        error:function(m, err){
+                            alert('error in "saveItem"');
                         }
                     });
                     this.options.mode='edit';
                 }else{
-                    alert('Can\'t save record b/c no collection is specified.'); //TODO pretty
+                    alert('Can\'t save record b/c no collection is specified.'); //TODO use bootstrap modal
                 }
             }else{
                 // TODO fix bug w/ insert when filter applied => dup record
-                this.model.set(this.getData());
+                this.model.set(this.getData(true));
                 this.model.save('','',{
                     success: function(m){
                         fnSuccess(m);
                         that.setMessage(Evol.i18n.saved, Evol.i18n.getLabel('status.updated', Evol.UI.capitalize(entityName),_.escape(vw.getTitle())), 'success');
                     },
-                    error:function(err){
-                        alert('error');
+                    error:function(m, err){
+                        alert('error in "saveItem"');
                     }
                 });
             }
@@ -4445,8 +4492,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                         }
                         that.setMessage('Record Deleted.', i18n.getLabel('status.deleted', Evol.UI.capitalize(entityName), entityValue), 'success');
                     },
-                    error:function(err){
-                        alert('error');
+                    error:function(m, err){
+                        alert('error in "deleteItem"');
                     }
                 });
             }

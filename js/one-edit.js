@@ -16,9 +16,9 @@ Evol.ViewOne.Edit = Evol.ViewOne.extend({
 
     postRender:function(){
         var pref = '#' + this.prefix + '-',
-            fs=Evol.Dico.getFields(this.options.uiModel, function(m){
-            return m.type === 'list';
-        });
+            fs= _.filter(this.getFields(), function(f){
+                return f.type === 'list' && !f.readonly;
+            });
         _.each(fs, function(f){
             this.$(pref + f.id).select2(
                 {

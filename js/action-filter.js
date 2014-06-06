@@ -47,7 +47,19 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         this.options=_.extend(this.options, opts);
         // - if no fields are provided, then get them from the uiModel
         if(this.options.uiModel && (!this.options.fields || this.options.fields.length===0)){
-            this.options.fields = Evol.Dico.getFields(this.options.uiModel);
+            this.options.fields = _.map(Evol.Dico.getFields(this.options.uiModel, function(f){
+                    return f.type!==Evol.Dico.fieldTypes.hidden;
+                }),
+                function(f){
+                    if(f.type!==Evol.Dico.fieldTypes.list){
+                        return f;
+                    }else{
+                        return _.extend(f, {
+                            type: Evol.Dico.fieldTypes.lov,
+                            trueType: Evol.Dico.fieldTypes.list
+                        });
+                    }
+                });
         }
         return this;
     },
@@ -324,8 +336,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                                 fOption(fOps.sSmaller, evoLang.sBefore),
                                 fOption(fOps.sBetween, evoLang.sBetween));
                             break;
-                        case fTypes.integer:
-                        case fTypes.decimal:
+                        case fTypes.int:
+                        case fTypes.dec:
                         case fTypes.money:
                             h.push(fOption(fOps.sEqual, evoLang.sNumEqual),
                                 fOption(fOps.sNotEqual, evoLang.sNumNotEqual),
@@ -385,8 +397,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                         case fTypes.date:
                         case fTypes.datetime:
                         case fTypes.time:
-                        case fTypes.integer:
-                        case fTypes.decimal:
+                        case fTypes.int:
+                        case fTypes.dec:
                         case fTypes.money:
                             var iType=(fType==fTypes.date)?'text':fType;
                             h.push('<input id="value" type="',iType,'" class="form-control"/>');
@@ -494,8 +506,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                         fv.label=vval;
                         fv.value=vval.toLocaleLowerCase();
                         break;
-                    case ft.integer:
-                    case ft.decimal:
+                    case ft.int:
+                    case ft.dec:
                     case ft.time:
                         fv.label=vval;
                         fv.value=vval;

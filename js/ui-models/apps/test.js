@@ -12,8 +12,53 @@ var bottleSizes=[
 var degustationFields = [
     {id: 'str1',  type: 'text', label: 'Text 1', maxlength: 100, viewmany: '1'},
     {id: 'str2',  type: 'text', label: 'Text 2', maxlength: 100, viewmany: '1'},
-    {id: 'str3',  type: 'text', label: 'Text 3', maxlength: 100, viewmany: '1'}
+    {id: 'str3',  type: 'lov', label: 'LOV 100', list: bottleSizes, viewmany: '1'}
 ];
+
+function fieldTypePanel(id, label){
+    var fields=[
+        {
+            id: id,
+            type: id,
+            label: label,
+            required: true,
+            viewmany: true,
+            width: 100
+        },
+        {
+            id: id+'3',
+            attribute: id,
+            readonly: true,
+            type: id,
+            label: label+' 3',
+            width: 100
+        },
+        {
+            id: id+'2',
+            type: id,
+            label: label+' 2',
+            width: 100
+        }
+    ];
+
+    if(id==='list' || id==='lov'){
+        fields= _.each(fields, function(f){
+            f.list=bottleSizes;
+        });
+    }
+    if(id===''){
+        fields= _.each(fields, function(f){
+            f.list=bottleSizes;
+        });
+    }
+
+    return {
+        type: 'panel',
+        label: label || id,
+        width: 33,
+        elements: fields
+    };
+}
 
 var test_ui = {
     entity: 'test',
@@ -23,30 +68,17 @@ var test_ui = {
     elements: [
         {
             type: 'panel',
-            label: 'Panel 1',
+            label: 'Testing Evolutility',
             width: 100,
             elements: [
                 {
                     id:'name',
                     type: 'text',
-                    label: 'Name',
+                    label: 'Title',
                     required: true,
                     maxlength: '150',
                     viewmany: true,
-                    width: 42
-                },
-                {
-                    id:'name2',
-                    type: 'text',
-                    label: 'Text 2',
-                    width: '38'
-                },
-                {
-                    id:'name3',
-                    type: 'text',
-                    label: 'Text (readonly)',
-                    readonly: '1',
-                    width: '20'
+                    width: 100
                 }
             ]
         },
@@ -54,336 +86,89 @@ var test_ui = {
             type: 'tab',
             label: 'General',
             elements: [
-                {
-                    type: 'panel',
-                    label: 'Strings',
-                    width: 100,
-                    elements: [
-                        {
-                            id:'str5',
-                            type: 'text',
-                            label: 'Name 5',
-                            required: true,
-                            maxlength: '150',
-                            width: 42
-                        },
-                        {
-                            id:'str6',
-                            type: 'email',
-                            required: true,
-                            label: 'email',
-                            width: '38'
-                        },
-                        {
-                            id:'str7',
-                            type: 'text',
-                            label: 'More text',
-                            readonly: '1',
-                            width: '20'
-                        }
-                    ]
-                },
-                {
-                    type: 'panel',
-                    label: 'Date',
-                    width: 33,
-                    elements: [
-                        {
-                            type: 'date',
-                            id:'fd1',
-                            label: 'Date 1',
-                            required: true,
-                            width: 100
-                        },
-                        {
-                            type: 'date',
-                            id:'fd2',
-                            label: 'Date 2',
-                            width: 100
-                        },
-                        {
-                            type: 'datetime',
-                            id:'fdt',
-                            label: 'DateTime field',
-                            maxlength: 100,
-                            required: true,
-                            width: 100
-                        },
-                        {
-                            type: 'time',
-                            id:'ft',
-                            label: 'Time field',
-                            maxlength: 100,
-                            required: true,
-                            width: 100
-                        }
-
-                    ]
-                },
-                {
-                    type: 'panel',
-                    eindex: '1',
-                    label: 'LOVs',
-                    width: '33',
-                    elements: [
-                        {
-                            type: 'lov',
-                            id:'bsize',
-                            label: 'Bottle (LOV)',
-                            required: true,
-                            width: 100,
-                            list:bottleSizes,
-                            viewmany:true
-                        },
-                        {
-                            type: 'lov',
-                            id:'bsize2',
-                            label: 'Bottle Size again',
-                            labellist: 'Bottle',
-                            width: 100,
-                            list:bottleSizes
-                        },
-                        {
-                            type: 'lov',
-                            id:'grape',
-                            label: 'Grape (big LOV)',
-                            viewmany: false,
-                            width: 100,
-                            list:[
-                                {text: 'Chardonnay'},
-                                {text: 'Shiraz'},
-                                {text: 'Merlot'},
-                                {text: 'Pinot Noir'},
-                                {text: 'Cabernet'},
-                                {text: 'Zinfandel'},
-                                {text: 'Sauvignon'},
-                                {text: 'Cabernet Sauvignon'},
-                                {text: 'Aligoté'},
-                                {text: 'Alvarinho'},
-                                {text: 'Blanc Fumé'},
-                                {text: 'Bual'},
-                                {text: 'Carignan'},
-                                {text: 'Chasselas'},
-                                {text: 'Chemin Blanc'},
-                                {text: 'Cinsault'},
-                                {text: 'Clairette'},
-                                {text: 'Colombard'},
-                                {text: 'Counoise'},
-                                {text: 'Fendant'},
-                                {text: 'Folle Blanche'},
-                                {text: 'Fürmint'},
-                                {text: 'Gamay'},
-                                {text: 'Gewürztraminer'},
-                                {text: 'Grauburgunder'},
-                                {text: 'Grechetto'},
-                                {text: 'Grenache Blanc'},
-                                {text: 'Grenache Noir'},
-                                {text: 'Gros Plan'},
-                                {text: 'Grüner Veltliner'},
-                                {text: 'Italienischer Riestling'},
-                                {text: 'Kadarka'},
-                                {text: 'Kerner'},
-                                {text: 'Macabeo'},
-                                {text: 'Malmsey'},
-                                {text: 'Malvasier'},
-                                {text: 'Marsanne'},
-                                {text: 'Melon de Bourgogne'},
-                                {text: 'Mourvèdre'},
-                                {text: 'Müller-Thurgau'},
-                                {text: 'Muscadelle'},
-                                {text: 'Muscadet'},
-                                {text: 'Musca'},
-                                {text: 'Musca d\'Alsace'},
-                                {text: 'Muskateller'},
-                                {text: 'Nebbiolo'},
-                                {text: 'Palomino'},
-                                {text: 'Pedro Ximérez'},
-                                {text: 'Petit Verdot'},
-                                {text: 'Pinot Blanc'},
-                                {text: 'Pinot Gris'},
-                                {text: 'Pinot Noir'},
-                                {text: 'Pinotage'},
-                                {text: 'Riesling'},
-                                {text: 'Ruländer'},
-                                {text: 'Sangiovese'},
-                                {text: 'Sauvignon Blanc'},
-                                {text: 'Scheurebe'},
-                                {text: 'Sémilion'},
-                                {text: 'Sercial'},
-                                {text: 'Seyval Blanc'},
-                                {text: 'Siegerrebe'},
-                                {text: 'Silvaner'},
-                                {text: 'Spätburgunder'},
-                                {text: 'Steen'},
-                                {text: 'Syrah'},
-                                {text: 'Tempranillo'},
-                                {text: 'Tokay'},
-                                {text: 'Traminer'},
-                                {text: 'Trebbiano'},
-                                {text: 'Ugni Blanc'},
-                                {text: 'Verdejo'},
-                                {text: 'Verdelho'},
-                                {text: 'Vermentino'},
-                                {text: 'Vernaccia'},
-                                {text: 'Viognier'},
-                                {text: 'Viura'},
-                                {text: 'Weißburgunder'}
-                            ]
-                        }
-
-                    ]
-                },
-                {
-                    type: 'panel',
-                    eindex: '1',
-                    label: 'List',
-                    width: '34',
-                    elements: [
-                        {
-                            type: 'list',
-                            id:'bsizelist',
-                            label: 'Bottles (List)',
-                            width: 100,
-                            list:bottleSizes,
-                            viewmany: true
-                        }
-                    ]
-                }
-
+                fieldTypePanel('text', 'Text'),
+                fieldTypePanel('lov', 'LoV'),
+                fieldTypePanel('list', 'List')
+            ]
+        },
+        {
+            type: 'tab',
+            label: 'Date & Time',
+            elements: [
+                fieldTypePanel('date', 'Date'),
+                fieldTypePanel('time', 'Time'),
+                fieldTypePanel('datetime', 'Date and Time')
             ]
         },
         {
             type: 'tab',
             label: 'Numbers',
             elements: [
-                {
-                    type: 'panel',
-                    id: 'pnl1',
-                    label: 'Integers',
-                    width: 34,
-                    elements: [
-                        {
-                            type: 'integer',
-                            id:'int1',
-                            label: 'Integer (min=0 max=10)',
-                            required: true,
-                            maxlength: 10,
-                            min: 0,
-                            max: 10,
-                            width:100
-                        },
-                        {
-                            type: 'integer',
-                            id:'int2',
-                            label: 'Integer 2',
-                            width:100
-                        }
-                    ]
-                },
-                {
-                    type: 'panel',
-                    eindex: '1',
-                    label: 'Decimals',
-                    width: '33',
-                    elements: [
-                        {
-                            type: 'decimal',
-                            id:'dec1',
-                            label: 'Decimal 1',
-                            required: true,
-                            width:100
-                        },
-                        {
-                            type: 'decimal',
-                            id:'dec2',
-                            label: 'Decimal 2',
-                            maxlength: 10,
-                            search: '1',
-                            viewmany: false,
-                            width:100
-                        },
-                        {
-                            type: 'money',
-                            id:'money',
-                            label: 'Money',
-                            maxlength: 10,
-                            search: '1',
-                            viewmany: true,
-                            required: true,
-                            width:100
-                        }
-                    ]
-                },
-                {
-                    type: 'panel',
-                    eindex: '1',
-                    label: 'Colors',
-                    width: '33',
-                    elements: [
-                        {
-                            type: 'color',
-                            id:'color1',
-                            label: 'Color',
-                            required: true,
-                            width: 50,
-                            viewmany:true
-                        },
-                        {
-                            type: 'color',
-                            id:'color2',
-                            label: 'Color 2',
-                            width: 50
-                        },
-                        {
-                            type: 'color',
-                            id:'color3',
-                            label: 'Color 3',
-                            width: 50
-                        },
-                        {
-                            type: 'color',
-                            id:'color4',
-                            label: 'Color 4',
-                            width: 50
-                        }
-                    ]
-                }
-
+                fieldTypePanel('integer', 'Integer'),
+                fieldTypePanel('decimal', 'Decimal'),
+                fieldTypePanel('money', 'Money')
             ]
         },
         {
             type: 'tab',
-            label: 'Notes',
+            label: 'Image & Color',
             elements: [
+                fieldTypePanel('image', 'Image'),
+                fieldTypePanel('color', 'Color'),
                 {
                     type: 'panel',
-                    id: 'bigtxt1',
-                    label: 'Comments',
-                    width: 66,
+                    label: 'HTML',
+                    width: 33,
                     elements: [
                         {
-                            id: 'notes',
-                            type: 'textmultiline',
-                            label: 'Comments',
-                            maxlength: '300',
+                            id: 'html',
+                            type: 'html',
+                            label: 'HTML',
+                            maxlength: 5000,
                             width: 100,
-                            height: '8'
+                            height: 8
                         }
 
                     ]
-                },
+                }
+            ]
+        },
+        {
+            type: 'tab',
+            label: 'Text big',
+            elements: [
                 {
                     type: 'panel',
-                    label: 'An Image',
-                    width: 34,
+                    label: 'Text multilines',
+                    width: 99,
                     elements: [
                         {
-                            id:'pix',
-                            type: 'image',
-                            label: 'Image',
-                            maxlength: 200,
-                            width: 100,
-                            viewmany: false
+                            id: 'notes',
+                            required: true,
+                            type: 'textmultiline',
+                            label: 'Big Text',
+                            maxlength: 300,
+                            width: 33,
+                            height: 4
+                        },
+                        {
+                            id: 'notes2',
+                            type: 'textmultiline',
+                            label: 'Big Text 2',
+                            maxlength: 10,
+                            help: 'maxlength = 10 for testing',
+                            width: 33,
+                            height: 4
+                        },
+                        {
+                            id: 'notes3',
+                            attribute: 'notes',
+                            readonly: true,
+                            type: 'textmultiline',
+                            label: 'Big Text 3',
+                            maxlength: 300,
+                            width: 34,
+                            height: 4
                         }
 
                     ]
@@ -409,103 +194,6 @@ var test_ui = {
                     label: 'Collection 2',
                     width: 100,
                     elements: degustationFields
-                }
-            ]
-        },
-        {
-            type: 'tab',
-            label: 'Read Only',
-            elements: [
-                {
-                    type: 'panel',
-                    label: 'Read Only Fields',
-                    width: 100,
-                    elements: [
-                        {
-                            id:'txtro',
-                            type: 'text',
-                            label: 'Text',
-                            readonly: true,
-                            width: 33
-                        },
-                        {
-                            id:'txtml',
-                            type: 'textmultiline',
-                            label: 'Big Text',
-                            readonly: true,
-                            width: 67
-                        },
-                        {
-                            type: 'date',
-                            id:'fd1ro',
-                            label: 'Date 1',
-                            readonly: true,
-                            width: 33
-                        },
-                        {
-                            type: 'datetime',
-                            id:'fdtro',
-                            label: 'DateTime field',
-                            maxlength: 100,
-                            readonly: true,
-                            width: 33
-                        },
-                        {
-                            type: 'time',
-                            id:'ftro',
-                            label: 'Time field',
-                            maxlength: 100,
-                            readonly: true,
-                            width: 34
-                        },
-                        {
-                            type: 'lov',
-                            id:'bsizero',
-                            label: 'Bottle Size (LOV)',
-                            labellist: 'Bottle',
-                            readonly: true,
-                            width: 33,
-                            list:bottleSizes
-                        },
-                        {
-                            type: 'boolean',
-                            id:'bro',
-                            label: 'Boolean',
-                            maxlength: 100,
-                            readonly: true,
-                            width: 33
-                        },
-                        {
-                            type: 'email',
-                            id:'emailro',
-                            label: 'email',
-                            readonly: true,
-                            width: 34
-                        },
-                        {
-                            type: 'integer',
-                            id:'int5',
-                            label: 'Integer',
-                            readonly: true,
-                            width: 33,
-                            list:bottleSizes
-                        },
-                        {
-                            type: 'decimal',
-                            id:'decro',
-                            label: 'Decimal',
-                            readonly: true,
-                            width: 33
-                        },
-                        {
-                            type: 'money',
-                            id:'moneyfield1',
-                            label: 'Money',
-                            maxlength: 100,
-                            readonly: true,
-                            width: 34
-                        }
-                    ]
                 }
             ]
         }
