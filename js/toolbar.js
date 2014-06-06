@@ -64,6 +64,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 	views:[],
 	viewsHash:{},
 	curView:null,
+    tabId:false,
 
     _group:false,
 
@@ -179,6 +180,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             config,
             collec=this._curCollec();
 
+        if(this.curView && this.curView.getTab){
+            this.tabId = this.curView.getTab();
+        }
         if(viewName==='new'){
             viewName=this._prevOne?this._prevOne:'edit';
             this.setView(viewName);
@@ -218,6 +222,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 }
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
+                this._keepTab(viewName);
                 $v.show()
                     .siblings().not('.evo-toolbar,.evo-filters,.clearfix').hide();
             }else{
@@ -249,13 +254,14 @@ Evol.ViewToolbar = Backbone.View.extend({
                         vw = new Evol.ViewOne[this.modesHash[viewName]](config)
                             .render();
                         this._prevOne=viewName;
+                        this.curView=vw;
+                        this._keepTab(viewName);
                         break;
                     // --- many ---
                     case 'charts':
                     case 'badges':
                     case 'list':
                         vw = new Evol.ViewMany[this.modesHash[viewName]](config)
-                        //vw = new Evol.ViewMany.JSON(config)
                             .render();
                         this._prevMany=viewName;
                         vw.setTitle();
@@ -290,6 +296,12 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     getView:function(){
         return this.curView;
+    },
+
+    _keepTab: function(viewName){
+        if(this.tabId && (viewName=='view'||viewName=='edit'||viewName=='mini')){
+            this.curView.setTab(this.tabId);
+        }
     },
 
     getToolbarButtons: function(){
@@ -413,9 +425,9 @@ Evol.ViewToolbar = Backbone.View.extend({
 		return this;
 	},
 
-	getData: function(){
+	getData: function(skipReadOnlyFields){
 		if(this.curView){
-			return this.curView.getData();
+			return this.curView.getData(skipReadOnlyFields);
 		}
 		return null;
 	},
@@ -465,29 +477,29 @@ Evol.ViewToolbar = Backbone.View.extend({
             if(this.model.isNew()){
                 var collec=this.collection;
                 if(collec){
-                    collec.create(this.getData(), {
+                    collec.create(this.getData(true), {
                         success: function(m){
                             fnSuccess(m);
                             that.setMessage(Evol.i18n.saved, Evol.i18n.getLabel('status.added',entityName, _.escape(vw.getTitle())), 'success');
                         },
-                        error:function(err){
-                            alert('error');
+                        error:function(m, err){
+                            alert('error in "saveItem"');
                         }
                     });
                     this.options.mode='edit';
                 }else{
-                    alert('Can\'t save record b/c no collection is specified.'); //TODO pretty
+                    alert('Can\'t save record b/c no collection is specified.'); //TODO use bootstrap modal
                 }
             }else{
                 // TODO fix bug w/ insert when filter applied => dup record
-                this.model.set(this.getData());
+                this.model.set(this.getData(true));
                 this.model.save('','',{
                     success: function(m){
                         fnSuccess(m);
                         that.setMessage(Evol.i18n.saved, Evol.i18n.getLabel('status.updated', Evol.UI.capitalize(entityName),_.escape(vw.getTitle())), 'success');
                     },
-                    error:function(err){
-                        alert('error');
+                    error:function(m, err){
+                        alert('error in "saveItem"');
                     }
                 });
             }
@@ -548,8 +560,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                         }
                         that.setMessage('Record Deleted.', i18n.getLabel('status.deleted', Evol.UI.capitalize(entityName), entityValue), 'success');
                     },
-                    error:function(err){
-                        alert('error');
+                    error:function(m, err){
+                        alert('error in "deleteItem"');
                     }
                 });
             }

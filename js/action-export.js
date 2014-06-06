@@ -292,8 +292,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
                         _.each(flds, function(f, idx){
                             fValue=m.get(f.id);
                             switch(f.type){
-                                case fTypes.integer:
-                                case fTypes.decimal:
+                                case fTypes.int:
+                                case fTypes.dec:
                                 case fTypes.money:
                                     h.push(fValue?fValue:'NULL');
                                     break;
@@ -338,7 +338,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                         h.push('<', elemName, ' ');
                         _.each(flds, function(f){
                             h.push(f.id, '="');
-                            if(f.type===fTypes.text || f.type===fTypes.txtm){
+                            if(f.type===fTypes.text || f.type===fTypes.textml){
                                 fv=m.get(f.id);
                                 if(!_.isUndefined(fv)){
                                     h.push(fv.replace(/"/g, '\\"'));

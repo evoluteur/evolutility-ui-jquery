@@ -336,8 +336,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                                 fOption(fOps.sSmaller, evoLang.sBefore),
                                 fOption(fOps.sBetween, evoLang.sBetween));
                             break;
-                        case fTypes.integer:
-                        case fTypes.decimal:
+                        case fTypes.int:
+                        case fTypes.dec:
                         case fTypes.money:
                             h.push(fOption(fOps.sEqual, evoLang.sNumEqual),
                                 fOption(fOps.sNotEqual, evoLang.sNumNotEqual),
@@ -397,8 +397,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                         case fTypes.date:
                         case fTypes.datetime:
                         case fTypes.time:
-                        case fTypes.integer:
-                        case fTypes.decimal:
+                        case fTypes.int:
+                        case fTypes.dec:
                         case fTypes.money:
                             var iType=(fType==fTypes.date)?'text':fType;
                             h.push('<input id="value" type="',iType,'" class="form-control"/>');
@@ -506,8 +506,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                         fv.label=vval;
                         fv.value=vval.toLocaleLowerCase();
                         break;
-                    case ft.integer:
-                    case ft.decimal:
+                    case ft.int:
+                    case ft.dec:
                     case ft.time:
                         fv.label=vval;
                         fv.value=vval;

@@ -16,10 +16,10 @@ Evol.Dico = {
     // enum of supported field types
     fieldTypes: {
         text: 'text',
-        txtm: 'textmultiline',
+        textml: 'textmultiline',
         bool: 'boolean',
         dec: 'decimal',
-        integer: 'integer',
+        int: 'integer',
         date: 'date',
         time: 'time',
         datetime: 'datetime',
@@ -67,9 +67,9 @@ Evol.Dico = {
         switch(f.type) {
             case ft.bool:
                 return $f.prop('checked');
-            case ft.integer:
+            case ft.int:
                 return parseInt($f.val(),10);
-            case ft.decimal:
+            case ft.dec:
             case ft.money:
                 return parseFloat($f.val());
             case ft.list:
@@ -304,6 +304,10 @@ Evol.Dico = {
                     return '$'+nv.toFixed(2);
                 }
                 break;
+            case fTypes.email:
+                return Evol.UI.linkEmail(f.id, v);
+            case fTypes.url:
+                return Evol.UI.link(f.id, v, v, f.id);
             default:
                 return v;
         }
@@ -326,7 +330,7 @@ Evol.Dico = {
         // --- field value ---
         if(fld.readonly || mode==='view'){
             h.push('<div class="disabled evo-rdonly" id="',fid);
-            if(fld.type===fTypes.txtm && fld.height>1){
+            if(fld.type===fTypes.textml && fld.height>1){
                 h.push('" style="height:', fld.height, 'em;');
             }
             h.push('">');
@@ -342,7 +346,7 @@ Evol.Dico = {
                 case fTypes.text:
                     h.push(EvoUI.input.text(fid, fv, fld, null));
                     break;
-                case fTypes.integer:
+                case fTypes.int:
                 case fTypes.dec:
                     h.push(EvoUI.input.textInt(fid, fv, fld.max, fld.min));
                     break;
@@ -353,7 +357,7 @@ Evol.Dico = {
                 case fTypes.bool:
                     h.push(EvoUI.input.checkbox(fid, fv));
                     break;
-                case fTypes.txtm:
+                case fTypes.textml:
                 case fTypes.html:
                     // fv = _.escape(fv);
                     if (fld.height === null) {

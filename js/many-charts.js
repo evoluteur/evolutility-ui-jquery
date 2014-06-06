@@ -45,7 +45,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             models = this.collection.models,
             iconsPath = this.options.iconsPath || '',
             chartFields = EvoDico.getFields(uiModel, function(f){
-                return f.viewcharts || f.type==fTypes.lov || f.type==fTypes.bool || f.type==fTypes.integer;
+                return f.viewcharts || f.type==fTypes.lov || f.type==fTypes.bool || f.type==fTypes.int;
             });
 
         if(chartFields && chartFields.length){

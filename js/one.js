@@ -15,6 +15,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     viewType:'one',
     cardinality: '1',
+    _tabId: false,
 
     events: {
         'click .evol-buttons>button': 'click_button',
@@ -118,7 +119,7 @@ Evol.ViewOne = Backbone.View.extend({
         }
     },
 
-    getData: function () {
+    getData: function (skipReadOnlyFields) {
         var that = this,
             fs=this.getFields(),
             vs = {},
@@ -147,6 +148,13 @@ Evol.ViewOne = Backbone.View.extend({
                 vs[sc.attr]=vs2;
             });
         }
+        if(skipReadOnlyFields){
+            _.each(this.getFields(),function(f){
+                if(f.readonly){
+                    delete vs[f.id];
+                }
+            });
+        }
         return vs;
     },
 
@@ -162,7 +170,7 @@ Evol.ViewOne = Backbone.View.extend({
                 newPix;
             _.each(fs, function (f) {
                 $f=that.$(prefix + f.id);
-                fv=model.get(f.id);
+                fv=model.get(f.attribute || f.id);
                 if(model){
                     if(f.readonly){
                         if(f.type===fTypes.pix){
@@ -171,7 +179,17 @@ Evol.ViewOne = Backbone.View.extend({
                                 .prev().remove();
                             $f.before(newPix);
                         }else{
-                            $f.text(fv || '');
+                            switch(f.type){
+                                case fTypes.lov:
+                                case fTypes.bool:
+                                    $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
+                                    break;
+                                case fTypes.pix:
+                                    $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
+                                    break;
+                                default:
+                                    $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
+                            }
                         }
                     }else{
                         switch(f.type) {
@@ -278,32 +296,32 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     isDirty: function(){
-        // TODO
-        /*
          var data=this.getData(),
          model=this.model;
 
-         for(var prop in data){
-         if(data[prop] !== model.get(prop)){
-         alert('data[prop]='+data[prop]+' - model.get(prop)='+model.get(prop)); //TODO remove this alert
-         return true;
-         }
-         }*/
+        _.each(data, function(value, prop){
+            if(data[prop] !== model.get(prop)){
+                //alert('data[prop]='+data[prop]+' - model.get(prop)='+model.get(prop)); //TODO remove this alert
+                return true;
+            }
+
+        });
         return false;
     },
 
-    showTab: function (tabid) {
-        var tab = this.$(tabid);
+    showTab: function (tabId) {
+        var tab = this.$(tabId);
         if (tab.length > 0) {
             tab.siblings('.tab-pane').hide();
             tab.show();
         }
-        tab = this.$('.evol-tabs > li a[href="' + tabid + '"]').parent();
+        tab = this.$('.evol-tabs > li a[href="' + tabId + '"]').parent();
         if (tab.length > 0) {
             tab.siblings('li').removeClass('active');
             tab.addClass('active');
         }
-        this.$el.trigger('tab.show');
+        this._tabId = tabId;
+        this.$el.trigger('tab.show', {id:tabId});
         return this;
     },
 
@@ -571,28 +589,26 @@ Evol.ViewOne = Backbone.View.extend({
 
     valRegEx: {
         email: /^[\w\.\-]+@[\w\.\-]+\.[\w\.\-]+$/,
-        integer: /^-?\d+$/,
+        integer: /^[-+]?\d+$/,
         decimalEN: /^\d+(\.\d+)?$/,
         decimalFR: /^\d+(\,\d+)?$/,
         decimalDA: /^\d+(\,\d+)?$/
     },
 
     checkFields: function (holder, fds) {
-
         var that = this,
             ft = Evol.Dico.fieldTypes,
             i18nVal = Evol.i18n.validation,
             msgs = [],
             v,
-            values = this.getData();
+            values = this.getData(true);
 
-        function checkType(fd, v) {
+        function checkType(fd, fv) {
             var ft = Evol.Dico.fieldTypes,
-                fv = _.isArray(v)?'':Evol.UI.trim(v),
                 i18nVal=Evol.i18n.validation;
             if (fv !== '' && !_.isArray(fv)){ // && !isNaN(fv)
                 switch (fd.type) {
-                    case ft.integer:
+                    case ft.int:
                     case ft.email:
                         if (!that.valRegEx[fd.type].test(fv)) {
                             flagField(fd, i18nVal[fd.type]);
@@ -600,10 +616,7 @@ Evol.ViewOne = Backbone.View.extend({
                         break;
                     case ft.dec:
                     case ft.money:
-                        var regex = that.valRegEx[ft.dec + Evol.i18n.LOCALE];
-                        if (regex === null) {
-                            regex = that.valRegEx[ft.dec + 'EN']; // default to English with "."
-                        }
+                        var regex = that.valRegEx[ft.dec + Evol.i18n.LOCALE] || that.valRegEx[ft.dec + 'EN'];
                         if (!regex.test(fv))
                             flagField(fd, i18nVal[fd.type]);
                         break;
@@ -645,12 +658,13 @@ Evol.ViewOne = Backbone.View.extend({
 
             // Check required/empty or check type
             if (f.required && (v==='' ||
-                    (f.type===ft.integer && isNaN(v)) ||
-                    (f.type===ft.money && isNaN(v)) ||
-                    (f.type===ft.lov && v==='0') ||
-                    (f.type===ft.list && v.length===0) ||
-                    (f.type===ft.color && v==='#000000'))){
-                flagField(f, i18nVal.empty);
+                (f.type===ft.int && isNaN(v)) ||
+                (f.type===ft.dec && isNaN(v)) ||
+                (f.type===ft.money && isNaN(v)) ||
+                (f.type===ft.lov && v==='0') ||
+                (f.type===ft.list && v.length===0) ||
+                (f.type===ft.color && v==='#000000'))){
+                    flagField(f, i18nVal.empty);
             }
             checkType(f, v);
 
@@ -671,7 +685,7 @@ Evol.ViewOne = Backbone.View.extend({
              }*/
 
             // Check min & max
-            if (f.type===ft.integer || f.type===ft.decimal || f.type===ft.money) {
+            if (f.type===ft.int || f.type===ft.dec || f.type===ft.money) {
                 if (v !== '') {
                     if (f.max !== null && parseFloat(v) > f.max) {
                         flagField(f, i18nVal.max, f.max);
@@ -808,6 +822,14 @@ Evol.ViewOne = Backbone.View.extend({
         });
     },
 
+    setTab: function(tabId){
+        this._tabId = tabId;
+        this.showTab(tabId);
+    },
+    getTab: function(){
+        return this._tabId;
+    },
+
     click_button: function (evt) {
         var bId = $(evt.currentTarget).data('id');
         evt.stopImmediatePropagation();
@@ -854,6 +876,7 @@ Evol.ViewOne = Backbone.View.extend({
         }else{
             this.showTab(id);
         }
+        this._tabId = id;
     },
 
     click_help: function (evt) {

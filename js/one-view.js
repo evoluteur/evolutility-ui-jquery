@@ -15,6 +15,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
     prefix: 'ovw',
 
     getData: function () {
+        // TODO make JSON obj w/ model limited to fields in uimodel?
         return {};
     },
 
@@ -29,18 +30,12 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                 iconsPath=this.options.iconsPath||'';
             _.each(fs, function (f) {
                 $f=that.$(prefix + f.id);
-                fv=model.get(f.id);
+                fv=model.get(f.attribute || f.id);
                 if(model){
                     switch(f.type){
                         case fTypes.lov:
                         case fTypes.bool:
                             $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
-                            break;
-                        case fTypes.url:
-                            $f.html(Evol.UI.link(f.id, fv, fv, f.id));
-                            break;
-                        case fTypes.email:
-                            $f.html(Evol.UI.linkEmail(f.id, fv));
                             break;
                         case fTypes.pix:
                             $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
