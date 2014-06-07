@@ -62,7 +62,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
         );
         for (var i = 0, iMax = fields.length; i < iMax; i++) {
             var f = fields[i],
-                fLabel = f.label,
+                fLabel = f.labelexport || f.label,
                 fID = 'fx-' + f.id;
             if (fLabel === null || fLabel === '') {
                 fLabel = '(' + fID + ')';
@@ -210,7 +210,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     //header
                     if (useHeader) {
                         _.each(flds, function(f,idx){
-                            h.push(f.label);
+                            h.push(f.label); //TODO f.labelexported || f.label, // name when "exported"
                             if(idx<iMax){
                                 h.push(sep);
                             }
