@@ -1810,6 +1810,8 @@ Evol.ViewOne = Backbone.View.extend({
                             switch(f.type){
                                 case fTypes.lov:
                                 case fTypes.bool:
+                                case fTypes.email:
+                                case fTypes.url:
                                     $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
                                     break;
                                 case fTypes.pix:
@@ -2284,76 +2286,81 @@ Evol.ViewOne = Backbone.View.extend({
         _.each(fds,function(f){
             v = values[f.id];
 
-            // Check required/empty or check type
-            if (f.required && (v==='' ||
-                (f.type===ft.int && isNaN(v)) ||
-                (f.type===ft.dec && isNaN(v)) ||
-                (f.type===ft.money && isNaN(v)) ||
-                (f.type===ft.lov && v==='0') ||
-                (f.type===ft.list && v.length===0) ||
-                (f.type===ft.color && v==='#000000'))){
+            if(!f.readonly){
+
+                // Check required/empty or check type
+                if (f.required && (v==='' ||
+                    (f.type===ft.int && isNaN(v)) ||
+                    (f.type===ft.dec && isNaN(v)) ||
+                    (f.type===ft.money && isNaN(v)) ||
+                    (f.type===ft.lov && v==='0') ||
+                    (f.type===ft.list && v.length===0) ||
+                    (f.type===ft.color && v==='#000000'))){
                     flagField(f, i18nVal.empty);
-            } else {
-                if( !(isNaN(v) && (f.type===ft.int || f.type===ft.dec || f.type===ft.money))) {
-                    checkType(f, v);
-                }
-
-                // Check regexp
-                if (f.regex !== null && !_.isUndefined(f.regex)) {
-                    var rg = new RegExp(f.regex);
-                    if (!v.match(rg)) {
-                        flagField(f, i18nVal.regex, f.label);
+                } else {
+                    if( !(isNaN(v) && (f.type===ft.int || f.type===ft.dec || f.type===ft.money))) {
+                        checkType(f, v);
                     }
-                }
-                /*
-                 // Check custom
-                 if (f.jsv !== null) {
-                 var p = eval([f.jsv, '("', that.prefix, f.id, '","', f.label, '")'].join(''));
-                 if (p !== null && p.length > 0) {
-                 flagField(f, p);
-                 }
-                 }*/
 
-                // Check min & max
-                if (f.type === ft.int || f.type === ft.dec || f.type === ft.money) {
-                    if (v !== '') {
-                        if (f.max !== null && parseFloat(v) > f.max) {
-                            flagField(f, i18nVal.max, f.max);
-                        }
-                        if (f.min !== null && parseFloat(v) < f.min) {
-                            flagField(f, i18nVal.min, f.min);
+                    // Check regexp
+                    if (f.regex !== null && !_.isUndefined(f.regex)) {
+                        var rg = new RegExp(f.regex);
+                        if (!v.match(rg)) {
+                            flagField(f, i18nVal.regex, f.label);
                         }
                     }
-                }
-            }
+                    /*
+                     // Check custom
+                     if (f.jsv !== null) {
+                     var p = eval([f.jsv, '("', that.prefix, f.id, '","', f.label, '")'].join(''));
+                     if (p !== null && p.length > 0) {
+                     flagField(f, p);
+                     }
+                     }*/
 
-            // Check minlength and maxlength
-            if (_.isString(v) && v.length > 0) {
-                var ok = true,
-                    len = v.length;
-                if (len > 0) {
-                    if (f.maxlength) {
-                        ok = len <= f.maxlength;
-                        if (!ok) {
-                            if (f.minlength) {
-                                flagField(f, i18nVal.minmaxlength, f.minlength, f.maxlength);
-                            } else {
-                                flagField(f, i18nVal.maxlength, f.maxlength);
+                    // Check min & max
+                    if (f.type === ft.int || f.type === ft.dec || f.type === ft.money) {
+                        if (v !== '') {
+                            if (f.max !== null && parseFloat(v) > f.max) {
+                                flagField(f, i18nVal.max, f.max);
                             }
-                        }
-                    }
-                    if (ok && f.minlength) {
-                        ok = len >= f.minlength;
-                        if (!ok) {
-                            if (f.maxlength) {
-                                flagField(f, i18nVal.minmaxlength, f.minlength, f.maxlength);
-                            } else {
-                                flagField(f, i18nVal.minlength, f.minlength);
+                            if (f.min !== null && parseFloat(v) < f.min) {
+                                flagField(f, i18nVal.min, f.min);
                             }
                         }
                     }
                 }
+
+                // Check minlength and maxlength
+                if (_.isString(v) && v.length > 0) {
+                    var ok = true,
+                        len = v.length;
+                    if (len > 0) {
+                        if (f.maxlength) {
+                            ok = len <= f.maxlength;
+                            if (!ok) {
+                                if (f.minlength) {
+                                    flagField(f, i18nVal.minmaxlength, f.minlength, f.maxlength);
+                                } else {
+                                    flagField(f, i18nVal.maxlength, f.maxlength);
+                                }
+                            }
+                        }
+                        if (ok && f.minlength) {
+                            ok = len >= f.minlength;
+                            if (!ok) {
+                                if (f.maxlength) {
+                                    flagField(f, i18nVal.minmaxlength, f.minlength, f.maxlength);
+                                } else {
+                                    flagField(f, i18nVal.minlength, f.minlength);
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
+
         });
 
         if (msgs.length > 0) {
@@ -2730,6 +2737,9 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                     switch(f.type){
                         case fTypes.lov:
                         case fTypes.bool:
+                        case fTypes.email:
+                        case fTypes.url:
+                        case fTypes.html:
                             $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
                             break;
                         case fTypes.pix:
