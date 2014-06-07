@@ -2730,6 +2730,9 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                     switch(f.type){
                         case fTypes.lov:
                         case fTypes.bool:
+                        case fTypes.email:
+                        case fTypes.url:
+                        case fTypes.html:
                             $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
                             break;
                         case fTypes.pix:
