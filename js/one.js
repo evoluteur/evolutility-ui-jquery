@@ -606,7 +606,7 @@ Evol.ViewOne = Backbone.View.extend({
         function checkType(fd, fv) {
             var ft = Evol.Dico.fieldTypes,
                 i18nVal=Evol.i18n.validation;
-            if (fv !== '' && !_.isArray(fv)){ // && !isNaN(fv)
+            if (fv !== '' && !_.isArray(fv)){
                 switch (fd.type) {
                     case ft.int:
                     case ft.email:
@@ -665,33 +665,36 @@ Evol.ViewOne = Backbone.View.extend({
                 (f.type===ft.list && v.length===0) ||
                 (f.type===ft.color && v==='#000000'))){
                     flagField(f, i18nVal.empty);
-            }
-            checkType(f, v);
-
-            // Check regexp
-            if (f.regex !== null && !_.isUndefined(f.regex)) {
-                var rg = new RegExp(f.regex);
-                if (!v.match(rg)) {
-                    flagField(f, i18nVal.regex, f.label);
+            } else {
+                if( !(isNaN(v) && (f.type===ft.int || f.type===ft.dec || f.type===ft.money))) {
+                    checkType(f, v);
                 }
-            }
-/*
-             // Check custom
-             if (f.jsv !== null) {
+
+                // Check regexp
+                if (f.regex !== null && !_.isUndefined(f.regex)) {
+                    var rg = new RegExp(f.regex);
+                    if (!v.match(rg)) {
+                        flagField(f, i18nVal.regex, f.label);
+                    }
+                }
+                /*
+                 // Check custom
+                 if (f.jsv !== null) {
                  var p = eval([f.jsv, '("', that.prefix, f.id, '","', f.label, '")'].join(''));
                  if (p !== null && p.length > 0) {
-                    flagField(f, p);
+                 flagField(f, p);
                  }
-             }*/
+                 }*/
 
-            // Check min & max
-            if (f.type===ft.int || f.type===ft.dec || f.type===ft.money) {
-                if (v !== '') {
-                    if (f.max !== null && parseFloat(v) > f.max) {
-                        flagField(f, i18nVal.max, f.max);
-                    }
-                    if (f.min !== null && parseFloat(v) < f.min) {
-                        flagField(f, i18nVal.min, f.min);
+                // Check min & max
+                if (f.type === ft.int || f.type === ft.dec || f.type === ft.money) {
+                    if (v !== '') {
+                        if (f.max !== null && parseFloat(v) > f.max) {
+                            flagField(f, i18nVal.max, f.max);
+                        }
+                        if (f.min !== null && parseFloat(v) < f.min) {
+                            flagField(f, i18nVal.min, f.min);
+                        }
                     }
                 }
             }
@@ -700,30 +703,29 @@ Evol.ViewOne = Backbone.View.extend({
             if (_.isString(v) && v.length > 0) {
                 var ok = true,
                     len = v.length;
-                if(len>0){
-                    if(f.maxlength){
+                if (len > 0) {
+                    if (f.maxlength) {
                         ok = len <= f.maxlength;
-                        if(!ok){
-                            if(f.minlength){
+                        if (!ok) {
+                            if (f.minlength) {
                                 flagField(f, i18nVal.minmaxlength, f.minlength, f.maxlength);
-                            }else{
+                            } else {
                                 flagField(f, i18nVal.maxlength, f.maxlength);
                             }
                         }
                     }
-                    if(ok && f.minlength){
+                    if (ok && f.minlength) {
                         ok = len >= f.minlength;
-                        if(!ok){
-                            if(f.maxlength){
+                        if (!ok) {
+                            if (f.maxlength) {
                                 flagField(f, i18nVal.minmaxlength, f.minlength, f.maxlength);
-                            }else{
+                            } else {
                                 flagField(f, i18nVal.minlength, f.minlength);
                             }
                         }
                     }
                 }
             }
-
         });
 
         if (msgs.length > 0) {
@@ -731,7 +733,6 @@ Evol.ViewOne = Backbone.View.extend({
         } else {
             return '';
         }
-
     },
 
     clearErrors: function () {
