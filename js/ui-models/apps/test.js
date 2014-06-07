@@ -1,19 +1,28 @@
 
-var bottleSizes=[
-    {id:750, text: '750 ml'},
-    {id:500, text: '500 ml'},
-    {id:375, text: '375 cl'},
-    {id:1500, text: '1.5 L'},
-    {id:3000, text: '3.0 L'},
-    {id:6000, text: '6.0 L'},
-    {id:8000, text: '8.0 L'}
+var testLOV=[
+    {text:'yotta',id:'Y'},
+    {text:'zetta',id:'Z'},
+    {text:'exa',id:'E'},
+    {text:'peta',id:'P'},
+    {text:'tera',id:'T'},
+    {text:'giga',id:'G'},
+    {text:'mega',id:'M'},
+    {text:'kilo',id:'k'},
+    {text:'hecto',id:'h'},
+    {text:'deca',id:'da'}
 ];
 
-var degustationFields = [
-    {id: 'str1',  type: 'text', label: 'Text 1', maxlength: 100, viewmany: '1'},
-    {id: 'str2',  type: 'text', label: 'Text 2', maxlength: 100, viewmany: '1'},
-    {id: 'str3',  type: 'lov', label: 'LOV 100', list: bottleSizes, viewmany: '1'}
-];
+var fieldsPanelList = [
+        {id: 'pl1f1',  type: 'text', label: 'Name', maxlength: 100, viewmany: '1'},
+        {id: 'pl1f2',  type: 'text', label: 'Text 2', maxlength: 100, viewmany: '1'},
+        {id: 'pl1f3',  type: 'lov', label: 'Sizes', list: testLOV, viewmany: '1'}
+    ],
+    fieldsPanelList2 = [
+        {id: 'pl2f1',  type: 'text', label: 'Name', maxlength: 100, viewmany: '1'},
+        {id: 'pl2f3',  type: 'date', label: 'Date', viewmany: '1'},
+        {id: 'pl2f4',  type: 'boolean', label: 'Bool', viewmany: '1'},
+        {id: 'pl2f2',  type: 'text', label: 'Text 2', maxlength: 100, viewmany: '1'}
+    ];
 
 function fieldTypePanel(id, label){
     var fields=[
@@ -29,6 +38,7 @@ function fieldTypePanel(id, label){
             id: id+'3',
             attribute: id,
             readonly: true,
+            help: 'The field "' + label+' 3" is readonly.',
             type: id,
             label: label+' 3',
             width: 100
@@ -43,13 +53,10 @@ function fieldTypePanel(id, label){
 
     if(id==='list' || id==='lov'){
         fields= _.each(fields, function(f){
-            f.list=bottleSizes;
+            f.list=testLOV;
         });
-    }
-    if(id===''){
-        fields= _.each(fields, function(f){
-            f.list=bottleSizes;
-        });
+    }else if(id==='hidden'){
+        fields[0].required=false;
     }
 
     return {
@@ -84,11 +91,13 @@ var test_ui = {
         },
         {
             type: 'tab',
-            label: 'General',
+            label: 'Text & Lists',
             elements: [
                 fieldTypePanel('text', 'Text'),
-                fieldTypePanel('lov', 'LoV'),
-                fieldTypePanel('list', 'List')
+                fieldTypePanel('lov', 'List (value)'),
+                fieldTypePanel('list', 'List (multiple values)'),
+                fieldTypePanel('textmultiline', 'Large Text'),
+                fieldTypePanel('html', 'HTML')
             ]
         },
         {
@@ -111,73 +120,25 @@ var test_ui = {
         },
         {
             type: 'tab',
+            label: 'Checkbox & links',
+            elements: [
+                fieldTypePanel('boolean', 'Boolean'),
+                fieldTypePanel('email', 'email'),
+                fieldTypePanel('url', 'url')
+            ]
+        },
+        {
+            type: 'tab',
             label: 'Image & Color',
             elements: [
                 fieldTypePanel('image', 'Image'),
                 fieldTypePanel('color', 'Color'),
-                {
-                    type: 'panel',
-                    label: 'HTML',
-                    width: 33,
-                    elements: [
-                        {
-                            id: 'html',
-                            type: 'html',
-                            label: 'HTML',
-                            maxlength: 5000,
-                            width: 100,
-                            height: 8
-                        }
-
-                    ]
-                }
+                fieldTypePanel('hidden', 'Hidden')
             ]
         },
         {
             type: 'tab',
-            label: 'Text big',
-            elements: [
-                {
-                    type: 'panel',
-                    label: 'Text multilines',
-                    width: 99,
-                    elements: [
-                        {
-                            id: 'notes',
-                            required: true,
-                            type: 'textmultiline',
-                            label: 'Big Text',
-                            maxlength: 300,
-                            width: 33,
-                            height: 4
-                        },
-                        {
-                            id: 'notes2',
-                            type: 'textmultiline',
-                            label: 'Big Text 2',
-                            maxlength: 10,
-                            help: 'maxlength = 10 for testing',
-                            width: 33,
-                            height: 4
-                        },
-                        {
-                            id: 'notes3',
-                            attribute: 'notes',
-                            readonly: true,
-                            type: 'textmultiline',
-                            label: 'Big Text 3',
-                            maxlength: 300,
-                            width: 34,
-                            height: 4
-                        }
-
-                    ]
-                }
-            ]
-        },
-        {
-            type: 'tab',
-            label: '2 Collections',
+            label: 'Collections',
             elements: [
                 {
                     type: 'panel-list',
@@ -185,7 +146,7 @@ var test_ui = {
                     attr:'degustation2',
                     label: 'Collection 1',
                     width: 100,
-                    elements: degustationFields
+                    elements: fieldsPanelList
                 },
                 {
                     type: 'panel-list',
@@ -193,7 +154,7 @@ var test_ui = {
                     attr:'degustation3',
                     label: 'Collection 2',
                     width: 100,
-                    elements: degustationFields
+                    elements: fieldsPanelList2
                 }
             ]
         }
