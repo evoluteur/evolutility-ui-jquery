@@ -683,11 +683,12 @@ Evol.ViewOne = Backbone.View.extend({
                     }
                     /*
                      // Check custom
-                     if (f.jsv !== null) {
-                     var p = eval([f.jsv, '("', that.prefix, f.id, '","', f.label, '")'].join(''));
-                     if (p !== null && p.length > 0) {
-                     flagField(f, p);
-                     }
+                     if (f.customvalidation !== null) {
+                         //TODO do not use eval
+                         var p = eval([f.customvalidation, '("', that.prefix, f.id, '","', f.label, '")'].join(''));
+                         if (p !== null && p.length > 0) {
+                             flagField(f, p);
+                         }
                      }*/
 
                     // Check min & max

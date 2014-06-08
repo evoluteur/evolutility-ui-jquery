@@ -2311,11 +2311,12 @@ Evol.ViewOne = Backbone.View.extend({
                     }
                     /*
                      // Check custom
-                     if (f.jsv !== null) {
-                     var p = eval([f.jsv, '("', that.prefix, f.id, '","', f.label, '")'].join(''));
-                     if (p !== null && p.length > 0) {
-                     flagField(f, p);
-                     }
+                     if (f.customvalidation !== null) {
+                         //TODO do not use eval
+                         var p = eval([f.customvalidation, '("', that.prefix, f.id, '","', f.label, '")'].join(''));
+                         if (p !== null && p.length > 0) {
+                             flagField(f, p);
+                         }
                      }*/
 
                     // Check min & max
@@ -2868,7 +2869,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
         );
         for (var i = 0, iMax = fields.length; i < iMax; i++) {
             var f = fields[i],
-                fLabel = f.label,
+                fLabel = f.labelexport || f.label,
                 fID = 'fx-' + f.id;
             if (fLabel === null || fLabel === '') {
                 fLabel = '(' + fID + ')';
@@ -3016,7 +3017,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     //header
                     if (useHeader) {
                         _.each(flds, function(f,idx){
-                            h.push(f.label);
+                            h.push(f.label); //TODO f.labelexported || f.label, // name when "exported"
                             if(idx<iMax){
                                 h.push(sep);
                             }

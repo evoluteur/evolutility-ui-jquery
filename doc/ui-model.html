@@ -49,23 +49,21 @@
     <p></p>
 <h1>object</h1>
 
-<p>An "object" is the UI information added to the Backbone model.
-This ui-model defines all <a href="views.html">views</a>.</p>
-
-
+<p>An "object" is the UI information mapped to a Backbone model to drive all <a href="views.html">views</a> for that model.
 
 <table class="table table-bordered">
     <tbody><tr>
         <td style="width: 120px; ">entity<span class="evol-required">*</span>
         </td>
-        <td>User's object name for the database object (for example: "task" for a
-            to do list application).
+        <td>User's object name for the Backbone model.
+            <br>Example: "task" for a
+            to do list application.
         </td>
     </tr>
     <tr>
         <td>entities<span class="evol-required">*</span>
         </td>
-        <td>Plural for <code>entity</code> (example &quot;tasks&quot; for the to do list).
+        <td>Plural for <code>entity</code>.<br>Example &quot;tasks&quot;.
         </td>
     </tr>
     <tr>
@@ -97,6 +95,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
     </tbody></table>
 
     <span class="evol-required">*</span>: required attribute.
+    <span class="evol-asterix">*</span>: partially or not implemented yet.
 </section>
 
 <a name="fields"></a>
@@ -114,18 +113,24 @@ This ui-model defines all <a href="views.html">views</a>.</p>
             <th colspan="2">Identity</th>
         </tr>
         <tr>
+            <td>id<span class="evol-required">*</span></td>
+            <td>Field Id in the UI.</td>
+        </tr>
+        <tr>
             <td>attribute </td>
             <td>Model attribute mapping to the field.
                 If no value is provided for "attribute", the value of the attribute "id" is used.</td>
         </tr>
         <tr>
-            <td>id<span class="evol-required">*</span></td>
-            <td>Field Id in the UI.</td>
+            <td>label<span class="evol-required">*</span>
+            </td>
+            <td>Field title in all views. (Can be overridden for specific views with labellist, labelexport...).
+            </td>
         </tr>
         <tr>
-            <td>label<span class="evol-required">*</span>, label-one,<br /> label-many
+            <td>defaultvalue<span class="evol-asterix">*</span>
             </td>
-            <td>Field title (in different views). Only <code>label</code> is mandatory and will be the default for all other modes if not specified.
+            <td>Default value for the field displayed while creating a new record.
             </td>
         </tr>
         <tr>
@@ -138,24 +143,24 @@ This ui-model defines all <a href="views.html">views</a>.</p>
                     <li><span data-id="#boolean"><img src="pix/dico/ft-bool.gif" class="Icon">boolean</span></li>
                     <li><span data-id="#color"><img src="pix/dico/ft-color.gif" class="Icon">color</span></li>
                     <li><span data-id="#date"><img src="pix/dico/ft-date.gif" class="Icon">date</span></li>
-                    <li><span data-id="#datetime"><img src="pix/dico/ft-datehm.gif" class="Icon">datetime</span></li>
+                    <li><span data-id="#datetime"><img src="pix/dico/ft-datehm.gif" class="Icon">datetime</span><span class="evol-asterix">*</span></li>
                     <li><span data-id="#decimal"><img src="pix/dico/ft-dec.gif" class="Icon">decimal</span></li>
                     <li><span data-id="#document"><img src="pix/dico/ft-doc.gif" class="Icon">document</span></li>
                     <li><span data-id="#email"><img src="pix/dico/ft-email.gif" class="Icon">email</span></li>
-                    <li><span data-id="#formula"><img src="pix/dico/ft-fn.gif" class="Icon">formula</span></li>
+                    <li><span data-id="#formula"><img src="pix/dico/ft-fn.gif" class="Icon">formula</span><span class="evol-asterix">*</span></li>
                     <li><span data-id="#hidden"><img class="Icon" src="pix/dico/ft-hidden.png">hidden</span></li>
-                    <li><span data-id="#html"><img class="Icon" src="pix/dico/ft-htm.gif">html</span></li>
+                    <li><span data-id="#html"><img class="Icon" src="pix/dico/ft-htm.gif">html</span><span class="evol-asterix">*</span></li>
                 </ul>
                 <ul class="indent list-unstyled" style="float:left;width:170px">
                     <li><span data-id="#image"><img src="pix/dico/ft-img.gif" class="Icon">image</span></li>
-                    <li><span data-id="#url"><img src="pix/dico/ft-url.gif" class="Icon">URL</span></li>
-                    <li><span data-id="#lov"><img src="pix/dico/ft-lov.gif" class="Icon">lov (list of values)</span></li>
+                    <li><span data-id="#url"><img src="pix/dico/ft-url.gif" class="Icon">url</span></li>
+                    <li><span data-id="#lov"><img src="pix/dico/ft-lov.gif" class="Icon">lov (single value)</span></li>
                     <li><span data-id="#list"><img src="pix/dico/ft-list.png" class="Icon">list (multiple values)</span></li>
                     <li><span data-id="#money"><img src="pix/dico/ft-money.gif" class="Icon">money</span></li>
                     <li><span data-id="#text"><img src="pix/dico/ft-txt.gif" class="Icon">text</span></li>
                     <li><span data-id="#textmultiline"><img src="pix/dico/ft-txtml.gif" class="Icon">textmultiline</span></li>
                     <li><span data-id="#integer"><img src="pix/dico/ft-int.gif" class="Icon">integer</span></li>
-                    <li><span data-id="#time"><img src="pix/dico/ft-time.gif" class="Icon">time</span></li>
+                    <li><span data-id="#time"><img src="pix/dico/ft-time.gif" class="Icon">time</span><span class="evol-asterix">*</span></li>
                 </ul>
 
                 <div class="clearfix"></div>
@@ -172,13 +177,13 @@ This ui-model defines all <a href="views.html">views</a>.</p>
             </td>
         </tr>
         <tr>
-            <td>csslabel
+            <td>csslabel<span class="evol-asterix">*</span>
             </td>
             <td>CSS class name for the specific field label (in modes Edit and View).
             </td>
         </tr>
         <tr>
-            <td>format
+            <td>format<span class="evol-asterix">*</span>
             </td>
             <td>Field format (for fields of type boolean, date, decimal, or integer).
                 <br />
@@ -190,12 +195,6 @@ This ui-model defines all <a href="views.html">views</a>.</p>
             </td>
             <td>Height of the field, in number of rows (default to 1 for all field except
                 fields of type TextMultilines).
-            </td>
-        </tr>
-        <tr>
-            <td>help
-            </td>
-            <td>Help tooltip for the field (only used in Edit mode).
             </td>
         </tr>
         <tr>
@@ -215,12 +214,6 @@ This ui-model defines all <a href="views.html">views</a>.</p>
 
         <tr>
             <th colspan="2">Validation</th>
-        </tr>
-        <tr>
-            <td>defaultvalue
-            </td>
-            <td>Default value for the field displayed while creating a new record.
-            </td>
         </tr>
         <tr>
             <td>max</td>
@@ -249,12 +242,12 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         <tr>
             <td>required
             </td>
-            <td>Determines if the field is required for saving the record.
+            <td>Determines if the field is required for saving the model.
             </td>
         </tr>
         <tr>
-            <td>jsvalidation</td>
-            <td>Name of the Javascript custom method for the field validation (validation for required, min, max, type is automatically done).</td>
+            <td>customvalidation<span class="evol-asterix">*</span></td>
+            <td>Name of the Javascript custom method for the field validation (validation for required, min, max, type is still performed in addition).</td>
         </tr>
 
 
@@ -262,47 +255,52 @@ This ui-model defines all <a href="views.html">views</a>.</p>
             <th colspan="2">Behavior</th>
         </tr>
         <tr>
-            <td>link
+            <td>help
             </td>
-            <td>Forces the field to be displayed as a link to another web page. It can use
-                the following variables @itemid, @userid, @fieldid.
-            </td>
-        </tr>
-        <tr>
-            <td>linklabel
-            </td>
-            <td>Display a sentence or an image as the link. Can also be a function (model)
+            <td>Help tooltip for the field (only used in Edit mode).
             </td>
         </tr>
         <tr>
-            <td>linktarget
+            <td>link<span class="evol-asterix">*</span>
+            </td>
+            <td>Displays the field as a link to another web page.
+            </td>
+        </tr>
+        <tr>
+            <td>linklabel<span class="evol-asterix">*</span>
+            </td>
+            <td>Display a sentence or an image as the link. Can also be a function (model).
+            </td>
+        </tr>
+        <tr>
+            <td>linktarget<span class="evol-asterix">*</span>
             </td>
             <td>Directs to a new tab in the browser (HTML attribute "target").
             </td>
         </tr>
         <tr>
-            <td>optional
+            <td>optional<span class="evol-asterix">*</span>
             </td>
-            <td>Filter condition to hide the field. Example: function(model){return model.get('type')=='integer';}
+            <td>Filter condition to hide the field.
+                <br>Example: function(model){return model.get('type')=='integer';}
             </td>
         </tr>
         <tr>
             <td>readonly
             </td>
             <td>
-                <code>readonly</code>=1 presents edition of the field. <code>
-                readonly</code>=2 presents edition of the field, but allows typing in
-                insertion.
+                Determines if the field is read only or can be edited
+                (will later have the possibility for fields that can be set at creation but not edited later).
             </td>
         </tr>
         <tr>
-            <td>sortable
+            <td>sortable<span class="evol-asterix">*</span>
             </td>
             <td>Column can be sorted by the field value (using ViewMany).
             </td>
         </tr>
         <tr>
-            <td>tooltip
+            <td>tooltip<span class="evol-asterix">*</span>
             </td>
             <td>Tooltip when the mouse is over the field.
             </td>
@@ -310,7 +308,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         <tr>
             <td>viewcharts
             </td>
-            <td>Determines if a chart of record grouped by the field is shown (using ViewMany in chart mode).
+            <td>Determines if a chart is displayed in the Charts view for grouping by this specific field.
             </td>
         </tr>
         <tr>
@@ -342,13 +340,13 @@ This ui-model defines all <a href="views.html">views</a>.</p>
             <td>Panel Id in the UI (if not specified, the default is "p-&lt;panel index&gt;").</td>
         </tr>
         <tr>
-            <td style="width: 120px; ">css
+            <td style="width: 120px; ">css<span class="evol-asterix">*</span>
             </td>
-            <td>CSS class for the panel. The default value is &quot;Panel&quot;.
+            <td>CSS class for the panel.
             </td>
         </tr>
         <tr>
-            <td>csslabel
+            <td>csslabel<span class="evol-asterix">*</span>
             </td>
             <td>
                 CSS class for the panel title. The default value is &quot;PanelLabel&quot;.
@@ -368,7 +366,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
             </td>
         </tr>
         <tr>
-            <td>optional
+            <td>optional<span class="evol-asterix">*</span>
             </td>
             <td>
                 Skips the panel from displaying, if every field contained is empty and
@@ -406,13 +404,13 @@ This ui-model defines all <a href="views.html">views</a>.</p>
             <td>Panel Id in the UI.</td>
         </tr>
         <tr>
-            <td style="width: 120px; ">css
+            <td style="width: 120px; ">css<span class="evol-asterix">*</span>
             </td>
-            <td>CSS class for the panel. The default value is &quot;Panel&quot;.
+            <td>CSS class for the panel. The default value is "panel".
             </td>
         </tr>
         <tr>
-            <td>csslabel
+            <td>csslabel<span class="evol-asterix">*</span>
             </td>
             <td>
                 CSS class for the panel title. The default value is &quot;PanelLabel&quot;.
@@ -460,7 +458,7 @@ This ui-model defines all <a href="views.html">views</a>.</p>
         </tr>
         <tr>
             <td>
-                csslabel
+                csslabel<span class="evol-asterix">*</span>
             </td>
             <td>
                 CSS class for the tab title. The default value is &quot;TabLabel&quot;.

@@ -32,35 +32,42 @@
 
 <div class="evo-content3">
 
-<p>For a <a href="ui-model.html">ui-model</a> (mapping a Backbone model),
-    Evolutility provides a set of generic Backbone Views for CRUD and more.</p>
+<p>Evolutility provides a set of Backbone views
+    for manipulating (viewing, editing, filtering, exporting...) collections or single models.
+    These views are not defined in code
+but by a <a href="ui-model.html">ui-model</a> which is shared between all views mapped to a specific Backbone model.</p>
 
-<p>3 types of views:
+
+<p>Evolutility view are of 3 different types:
 
 <ul class="evo-links-views">
-    <li><b><a href="#one">Evol.ViewOne</a></b>
-        <br/>Views for <strong>one</strong> model:
+    <li>Views for <strong>one</strong> model: <a href="#one">Evol.ViewOne</a>
+        <br/>
         <a href="#one-view"><i class="glyphicon glyphicon-file"></i>View</a>,
         <a href="#one-edit"><i class="glyphicon glyphicon-th"></i>Edit</a>,
         <a href="#one-mini"><i class="glyphicon glyphicon-th-large"></i>Mini</a> (quick-edit),
         <a href="#one-json"><i class="glyphicon glyphicon-barcode"></i>JSON</a>...</li>
 
-    <li><b><a href="#many">Evol.ViewMany</a></b>
-        <br/>Views for a collection of <strong>many</strong> models:
+    <li>Views for a collection of <strong>many</strong> models: <a href="#many">Evol.ViewMany</a>
+        <br/>
         <a href="#many-list"><i class="glyphicon glyphicon-th-list"></i>List</a>,
         <a href="#many-badges"><i class="glyphicon glyphicon-th-large"></i>Badges</a>,
         <a href="#many-charts"><i class="glyphicon glyphicon-stats"></i>Charts</a>...</li>
 
-    <li><b><a href="#action">Evol.ViewAction</a></b>
-        <br/>Views for <strong>actions</strong> on a collection or a model:
+    <li>Views for <strong>actions</strong> on a collection or a model: <a href="#action">Evol.ViewAction</a>
+        <br/>
         <a href="#action-filter"><i class="glyphicon glyphicon-filter"></i>Filter</a>,
         <a href="#action-export"><i class="glyphicon glyphicon-cloud-download"></i>Export</a>...</li>
 
 </ul>
 
-More Views will be added on the future.
+More Views will be added in the future.
 
 </p>
+
+<p>A large part of the API is common for all views.
+    Each type of view and each view will have
+    additional <a href="#methods">methods</a>, <a href="#options">options</a> and <a href="#events">events</a>.</p>
 
 <div class="evol-doc-views">
 
@@ -227,45 +234,39 @@ More Views will be added on the future.
 
 
 
+    <a name="methods"></a>
     <p class="evo-h-gap">&nbsp;</p>
     <p>&nbsp;</p>
     <section>
 <h2>Methods</h2>
-
+<p></p>
 <h3>Evol.ViewOne and Evol.ViewMany</h3>
 
 <p>cardinality: '1' for Evol.ViewOne.*, 'n' for Evol.ViewMany.*.</p>
 <p>render()</p>
 <p>getFields(): returns the list of fields present in the view.</p>
-<p>setModel(model)</p>
-<p>getModel()</p>
-<p>setUIModel(uiModel)</p>
-<p>getUIModel()</p>
-<p>getTitle()</p>
+<p>setModel(model), getModel()</p>
+<p>setUIModel(uiModel), getUIModel()</p>
+<p>setTitle(), getTitle()</p>
 
 <h3>Evol.ViewOne</h3>
 <p>clear()</p>
-<p>getData()</p>
-<p>setData(data)</p>
-<p>getFields()</p>
-<p>setFieldValue(fid, value)</p>
-<p>getFieldValue(fid)</p>
-<p>validate</p>
-<p>clearErrors</p>
+<p>setData(data), getData()</p>
+<p>setFieldValue(fid, value), getFieldValue(fid)</p>
+<p>validate()</p>
+<p>clearErrors()</p>
 
 <h3>Evol.ViewMany</h3>
-<p>setCollection(collec)</p>
-<p>getCollection()</p>
-<p>setFilter(filter)</p>
-<p>getFilter()</p>
+<p>setCollection(collec), getCollection()</p>
+<p>setFilter(filter), getFilter()</p>
 
 
     </section>
 
+    <a name="options"></a>
     <p class="evo-h-gap">&nbsp;</p>
     <p>&nbsp;</p>
     <section>
-
 <h2>Options</h2>
 
 <h3>Evol.ViewOne and Evol.ViewMany</h3>
@@ -276,17 +277,19 @@ More Views will be added on the future.
 <p>iconsPath: path to icons for model and list of values.</p>
 
         <h3>Evol.ViewOne</h3>
-        <p>button_addAnother: Show a "Save and Add Another" button next to "Save".</p>
+        <p>button_addAnother: Show a "Save and Add Another" button next to "Save". Default value = false.</p>
 
 
         <h3>Evol.ViewMany</h3>
-        <p>pageSize: 20.</p>
-        <p>pageIndex: 0.</p>
-        <p>selectable: false.</p>
+        <p>pageSize: Default value = 20.</p>
+        <p>pageIndex: Default value = 0.</p>
+        <p>selectable: Default value = false.</p>
 
 
     </section>
 
+
+    <a name="events"></a>
     <p class="evo-h-gap">&nbsp;</p>
     <p>&nbsp;</p>
     <section>

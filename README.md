@@ -11,7 +11,7 @@ For each Backbone model, all the views are defined by a shared UI-model describi
 
 ## UI-model
 
-All UI-models use the same [API or vocabulary](http://evoluteur.github.io/evolutility/doc/ui-model.html) with words like "tabs", "panels", "panel-list", "fields" rather than "INPUT" and "DIV" to describe UI elements.
+All UI-models use the same [API or vocabulary](http://evoluteur.github.io/evolutility/doc/ui-model.html) with words like "field", "panel" and "tab" rather than "INPUT" and "DIV" to describe UI elements.
 
 UI Models for the demo apps:
 [To Do list](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/todo.js),
@@ -25,8 +25,7 @@ evolutility's views have a Backbone model (to define the data) and also a UI-mod
 Evolutility provides 3 types of view
 * Views for one record (one): New, Edit, Mini (quick edit), JSON.
 * Views for a collection (many): List, Badges, Charts.
-* Views for actions on one record or a collection: Export, Filter.
-TODO: add Dashboards and Mass update...
+* Views for actions on one record or a collection: Export, Filter (will add later Dashboards, Mass update, clone...).
 
 Web demo of [all views](http://evoluteur.github.io/evolutility/index.html)
 
