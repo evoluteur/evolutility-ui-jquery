@@ -24,8 +24,9 @@ var fieldsPanelList = [
         {id: 'pl2f2',  type: 'text', label: 'Text 2', maxlength: 100, viewmany: '1'}
     ];
 
-function fieldTypePanel(id, label){
-    var fields=[
+function fieldTypePanel(id, label, labelPanel){
+    var labelP = labelPanel || label || id,
+        fields=[
         {
             id: id,
             type: id,
@@ -61,7 +62,7 @@ function fieldTypePanel(id, label){
 
     return {
         type: 'panel',
-        label: label || id,
+        label: labelP,
         width: 33,
         elements: fields
     };
@@ -94,8 +95,8 @@ var test_ui = {
             label: 'Text & Lists',
             elements: [
                 fieldTypePanel('text', 'Text'),
-                fieldTypePanel('lov', 'List (value)'),
-                fieldTypePanel('list', 'List (multiple values)'),
+                fieldTypePanel('lov', 'List', 'List (value)'),
+                fieldTypePanel('list', 'List mv', 'List (multiple values)'),
                 fieldTypePanel('textmultiline', 'Large Text'),
                 fieldTypePanel('html', 'HTML')
             ]
