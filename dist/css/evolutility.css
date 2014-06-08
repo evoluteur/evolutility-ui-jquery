@@ -241,10 +241,10 @@ img.evol-table-icon {
   float: left;
   text-align: center;
   background-color: #FFFFFF;
-  padding: 10px 5px 5px 5px;
-  margin: 10px;
+  margin: 10px 10px 5px 5px;
+  margin-bottom: 5px !important;
   width: 400px;
-  min-height: 300px;
+  min-height: 280px;
 }
 .evol-chart-title {
   text-align: center;
