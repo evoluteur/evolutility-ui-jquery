@@ -119,7 +119,12 @@ Evol.i18n = {
         xpFields: 'Fields to include in the export',
         IDkey: 'ID - Primary key',
         allFields: 'Show all fields',
-        formats: 'Comma separated (CSV, TXT, XLS...)-HTML-SQL Insert Statements (SQL)-Tab separated values (TXT)-XML-Javascript Object Notation (JSON)',
+        formatCSV: 'Comma separated (CSV, TXT, XLS...)',
+        formatHTML: 'HTML',
+        formatSQL: 'SQL Insert Statements (SQL)',
+        formatTAB: 'Tab separated values (TXT)',
+        formatXML: 'XML',
+        formatJSON: 'Javascript Object Notation (JSON)',
         //xpColors:'Header color-Color odd rows-Color even rows',
         //xpColMap:'Columns map to',
         XMLroot:'Element name', // 'Root element name'

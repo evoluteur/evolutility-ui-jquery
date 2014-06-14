@@ -26,7 +26,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
         uiModel: null,
         many: true,
         //style: 'normal',
-        prefix: 'tbr'
+        prefix: 'tbr',
+        formats: ['CSV', 'TAB', 'HTML', 'XML', 'SQL', 'JSON']
     },
 
 
@@ -52,7 +53,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
             EvoUI = Evol.UI,
             opts = this.options,
             prefix = opts.prefix || '',
-            fields = this.getFields();
+            fields = this.getFields(),
+            iMax = fields.length;
 
         //string fieldName, fieldlabel, expOut, buffer;
         h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds"><fieldset>');
@@ -60,9 +62,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
         h.push('<div class="evol-id">', EvoUI.label('', i18nXpt.xpFields),'</div>'/*,
             '<div>',EvoUI.input.checkbox('showID','1'), '<label for="showID">', i18nXpt.IDkey, '</label>','</div>'*/
         );
-        for (var i = 0, iMax = fields.length; i < iMax; i++) {
-            var f = fields[i],
-                fLabel = f.labelexport || f.label,
+        _.each(fields, function(f, i){
+            var fLabel = f.labelexport || f.label,
                 fID = 'fx-' + f.id;
             if (fLabel === null || fLabel === '') {
                 fLabel = '(' + fID + ')';
@@ -71,24 +72,20 @@ Evol.ViewAction.Export = Backbone.View.extend({
             if (i == 10 && iMax > 14){
                 h.push(EvoExport.html_more2(i18nXpt.allFields));
             }
-        }
+
+        });
         if (iMax > 14){
             h.push('</div>');
         }
         h.push('</fieldset></div><div class="evol-xpt-para">'); // table = 2 columns
         //##### export formats ########################################
         var fId = prefix + 'evol-xpt-format',
-            formatsList = i18nXpt.formats.split('-');
-        h.push('<label for="', fId, '">', i18nXpt.format, '</label>',
-            EvoUI.input.select(fId, '', 'evol-xpt-format', false, [
-                {id: 'CSV', text: formatsList[0]},
-                {id: 'TAB', text: formatsList[3]},
-                {id: 'HTML', text: formatsList[1]},
-                {id: 'JSON', text: formatsList[5]},
-                {id: 'SQL', text: formatsList[2]},
-                {id: 'XML', text: formatsList[4]}
-            ])
-        );
+            formatsList = [];//.split('-');
+        h.push('<label for="', fId, '">', i18nXpt.format, '</label>');
+        _.each(opts.formats, function(format){
+            formatsList.push({id: format, text: i18nXpt['format'+format]});
+        });
+        h.push(EvoUI.input.select(fId, '', 'evol-xpt-format', false, formatsList));
         fId = prefix + "FLH";
         h.push('<div class="evol-xpt-opts">',
             //# field (shared b/w formats - header #######
