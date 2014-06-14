@@ -24,8 +24,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             hover;
 
         h.push('<div class="evol-many-list">',
-            //'<div class="panel ',this.options.style,'">',
-            '<table class="table table-bordered',link?' table-hover':'','"><thead><tr>');
+            '<table class="table table-bordered', link?' table-hover':'', '"><thead><tr>');
         if(selectable){
             h.push('<th>',this._HTMLCheckbox('cbxAll'),'</th>');
         }
@@ -36,7 +35,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         this._HTMLlistBody(h, fields, pSize, uim.icon, 0, selectable);
         h.push('</tbody></table>');
         // TODO uncomment & finish it
-        // h.push(this.pageSummary(opts.pageIndex, pSize, models.length, uim.entity, uim.entities));
+        h.push(this.pageSummary(opts.pageIndex, pSize, models.length, uim.entity, uim.entities));
         // //this._HTMLpagination(h, 0, pSize, models.length);
         h.push('</div>');
         this.$el.html(h.join(''));
