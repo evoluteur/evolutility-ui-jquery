@@ -18,15 +18,13 @@ Evol.ViewAction.Export = Backbone.View.extend({
         'change input': 'click_preview', //[type="checkbox"],
         'click .evol-xpt-more': 'click_toggle_sel',
         'click button': 'click_button'
-        // TODO #tbrevol-xpt-format is a bug if change prefix...
     },
 
     options: {
         model: null,
         uiModel: null,
         many: true,
-        //style: 'normal',
-        prefix: 'tbr',
+        prefix: 'xpt',
         formats: ['CSV', 'TAB', 'HTML', 'XML', 'SQL', 'JSON']
     },
 
@@ -141,7 +139,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             case 'JSON':
                 var c = this.$(prefix + xFormat);
                 if (c.html() === '') {
-                    c.html(EvoExport['form' + xFormat](this.options.uiModel.entity));
+                    c.html(EvoExport['opts' + xFormat](this.options.uiModel.entity));
                 }
                 break;
         }
@@ -196,7 +194,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     return true;
                 }
             });
-            switch (format) {
+            switch (format){
                 case 'CSV':
                 case 'TAB':
                 case 'TXT':
@@ -207,7 +205,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     }
                     //header
                     if (useHeader) {
-                        _.each(flds, function(f,idx){
+                        _.each(flds, function(f, idx){
                             h.push(f.label); //TODO f.labelexported || f.label, // name when "exported"
                             if(idx<iMax){
                                 h.push(sep);
@@ -217,7 +215,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     }
                     //data
                     _.each(data, function(m){
-                        _.each(flds, function(f,idx){
+                        _.each(flds, function(f, idx){
                             var mj = m.get(f.id);
                             if (mj) {
                                 h.push(mj);
@@ -257,6 +255,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     break;
                 case 'JSON':
                     _.each(data, function(m){
+                        // TODO only show selected fields
                         h.push(JSON.stringify(m.toJSON(), null, 2));
                     });
                     break;
@@ -356,7 +355,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
         }else{
             h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
-        if(format==='JSON'){
+        if(this.options.many && format==='JSON'){
             $e.html('['+h.join(',\n')+']');
         }else{
             $e.html(h.join(''));
@@ -367,7 +366,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
         if (_.isUndefined(value)) {
             return this._getValue();
         } else {
-            this._setValue(value);
+            // TODO implement setvalue?
+            //this._setValue(value);
             return this;
         }
     },
@@ -376,14 +376,14 @@ Evol.ViewAction.Export = Backbone.View.extend({
         var v = [],
             flds = this.$('.evol-xpt-flds input:checked');//.not('#showID')
         _.each(flds, function(fe){
-            v.push(fe.attr('id'));
+            v.push(fe.id.substr(3));
         });
         return v;
     },
 
     _getValue: function () {
         var v = {
-                format: this._bFormat.val(),
+                format: EvoExport.cFormat,
                 fields: this._valFields(),
                 options: {}
             },
@@ -397,7 +397,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
     click_format: function (evt) {
         var format = $(evt.currentTarget).val();//this.$('.evol-xpt-format').val();
         if (format === 'XML') {
-            this.$('#XML').html(EvoExport.formXML(this.options.uiModel.entity))
+            this.$('#XML').html(EvoExport.optsXML(this.options.uiModel.entity))
                 .show()
                 .siblings().not('.evol-FLH').hide();
             EvoExport.cFormat = 'XML';
@@ -435,34 +435,34 @@ var EvoExport = {
         ].join('');
     },
 
-    formHTML: function () {
+    optsHTML: function(){
         return '';
     },
 
-    formXML: function (entity) {
+    optsXML: function(entity){
         return [
             EvoExport.html_more2('options'),
-            EvoExport.formEntityName('evoRoot', i18nXpt.XMLroot, entity),
+            EvoExport.optEntityName('evoRoot', i18nXpt.XMLroot, entity),
             Evol.UI.fieldLabel('evoxpC2X', i18nXpt.xpColMap),
             '</div>'
         ].join('');
     },
 
-    formJSON: function () {
+    optsJSON: function(){
         return '';
     },
 
-    formSQL: function (entity) {
+    optsSQL: function(entity){
         return [
             EvoExport.html_more2('options'),
-            EvoExport.formEntityName('evoTable', i18nXpt.SQLTable, entity),
+            EvoExport.optEntityName('evoTable', i18nXpt.SQLTable, entity),
             '<div>', Evol.UI.input.checkbox('evoxpTRS2', '0'), Evol.UI.fieldLabelSpan('evoxpTRS2', i18nXpt.SQLId), '</div>',
             '<div>', Evol.UI.input.checkbox('evoxpTRS1', '0'), Evol.UI.fieldLabelSpan('evoxpTRS1', i18nXpt.SQLTrans), '</div>',
             '</div>'
            ].join('');
     },
 
-    formEntityName: function(id,label,entity){
+    optEntityName: function(id,label,entity){
         return [
             Evol.UI.fieldLabel(id, label),
             Evol.UI.input.text(id, entity.replace(' ', '_'), 30),'<br/>'
