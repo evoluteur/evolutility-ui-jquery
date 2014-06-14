@@ -38,12 +38,12 @@ Evol.ViewMany = Backbone.View.extend({
 
     initialize: function (opts) {
         var that=this;
-        this.options=_.extend(this.options, opts);
+        _.extend(this.options, opts);
         this.mode=this.options.mode || '';
         this._filter=[];
         if(this.options.autoUpdate){
             if(this.collection){
-                this.collection.on('change', function(model){
+                this.collection.on('change', function(){
                     that.render();
                 });
             }
@@ -153,14 +153,15 @@ Evol.ViewMany = Backbone.View.extend({
             return cSize + ' ' + entities;
         } else if (cSize === 1) {
             return cSize + ' ' + entity;
-        }else{
+        } else {
             var rangeBegin = (pIdx || 0) * pSize + 1, rangeEnd;
             if (pIdx < 1) {
                 rangeEnd = _.min([pSize, cSize]);
             } else {
                 rangeEnd = _.min([rangeBegin + pSize -1, cSize]);
             }
-            return Evol.i18n.range.replace('{0}',rangeBegin)
+            return Evol.i18n.range
+                .replace('{0}',rangeBegin)
                 .replace('{1}',rangeEnd)
                 .replace('{2}',cSize)
                 .replace('{3}',entities);

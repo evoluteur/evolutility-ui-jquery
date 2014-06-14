@@ -104,7 +104,7 @@
     position: absolute;
     padding: 0;
     top: 71px;
-    left: 82px;
+    left: 80px;
   }
 }
 .evo-title,
@@ -195,9 +195,7 @@
   }
 }
 body {
-  font-size: 11pt;
-  font-family: "Century Gothic", arial;
-  color: #0d0d0d;
+  font-size: 15px !important;
   font-weight: 300;
 }
 h1,

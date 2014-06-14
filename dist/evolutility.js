@@ -983,14 +983,14 @@ Evol.Dico = {
                         h.push(EvoUI.linkEmail(fid, fv));
                     } else {
                         h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
-                            EvoUI.input.text(fid, fv, fld.maxlength, 'evo-field form-control'), '</div>');
+                            EvoUI.input.text(fid, fv, fld), '</div>');
                     }
                     break;
                 case fTypes.url:
                     if (mode === 'view') {
                         h.push(EvoUI.link(fid, fv, encodeURI(fv), fid));
                     } else {
-                        h.push(EvoUI.input.text(fid, fv, fld.maxlength));
+                        h.push(EvoUI.input.text(fid, fv, fld));
                     }
                     break;
                 //case fTypes.doc:
@@ -1103,12 +1103,12 @@ Evol.ViewMany = Backbone.View.extend({
 
     initialize: function (opts) {
         var that=this;
-        this.options=_.extend(this.options, opts);
+        _.extend(this.options, opts);
         this.mode=this.options.mode || '';
         this._filter=[];
         if(this.options.autoUpdate){
             if(this.collection){
-                this.collection.on('change', function(model){
+                this.collection.on('change', function(){
                     that.render();
                 });
             }
@@ -1218,14 +1218,15 @@ Evol.ViewMany = Backbone.View.extend({
             return cSize + ' ' + entities;
         } else if (cSize === 1) {
             return cSize + ' ' + entity;
-        }else{
+        } else {
             var rangeBegin = (pIdx || 0) * pSize + 1, rangeEnd;
             if (pIdx < 1) {
                 rangeEnd = _.min([pSize, cSize]);
             } else {
                 rangeEnd = _.min([rangeBegin + pSize -1, cSize]);
             }
-            return Evol.i18n.range.replace('{0}',rangeBegin)
+            return Evol.i18n.range
+                .replace('{0}',rangeBegin)
                 .replace('{1}',rangeEnd)
                 .replace('{2}',cSize)
                 .replace('{3}',entities);
@@ -1663,7 +1664,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        this.options=_.extend(this.options, opts);
+        _.extend(this.options, opts);
         this.mode= opts.mode || this.options.mode || this.viewName;
         this._uTitle=(!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
         /*
@@ -1931,10 +1932,8 @@ Evol.ViewOne = Backbone.View.extend({
 
         _.each(data, function(value, prop){
             if(data[prop] !== model.get(prop)){
-                //alert('data[prop]='+data[prop]+' - model.get(prop)='+model.get(prop)); //TODO remove this alert
                 return true;
             }
-
         });
         return false;
     },
@@ -3321,7 +3320,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        this.options=_.extend(this.options, opts);
+        _.extend(this.options, opts);
         // - if no fields are provided, then get them from the uiModel
         if(this.options.uiModel && (!this.options.fields || this.options.fields.length===0)){
             this.options.fields = _.map(Evol.Dico.getFields(this.options.uiModel, function(f){

@@ -35,7 +35,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        this.options=_.extend(this.options, opts);
+        _.extend(this.options, opts);
         this.mode= opts.mode || this.options.mode || this.viewName;
         this._uTitle=(!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
         /*
@@ -303,10 +303,8 @@ Evol.ViewOne = Backbone.View.extend({
 
         _.each(data, function(value, prop){
             if(data[prop] !== model.get(prop)){
-                //alert('data[prop]='+data[prop]+' - model.get(prop)='+model.get(prop)); //TODO remove this alert
                 return true;
             }
-
         });
         return false;
     },
