@@ -174,6 +174,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
     _preview: function (format) { // TODO add field ID
         var h=[],
+            $e = this.$('.evol-xpt-val'),
             fTypes=Evol.Dico.fieldTypes;
         if(this.model && this.model.collection){
             var data = this.model.collection.models,
@@ -255,7 +256,9 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     h.push('</table>');
                     break;
                 case 'JSON':
-                    h.push(JSON.stringify(this.model.toJSON(), null, 2));
+                    _.each(data, function(m){
+                        h.push(JSON.stringify(m.toJSON(), null, 2));
+                    });
                     break;
                 case 'SQL':
                     var fMax = flds.length -1,
@@ -353,8 +356,11 @@ Evol.ViewAction.Export = Backbone.View.extend({
         }else{
             h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
-        this.$('.evol-xpt-val')
-            .html(h.join(''));
+        if(format==='JSON'){
+            $e.html('['+h.join(',\n')+']');
+        }else{
+            $e.html(h.join(''));
+        }
     },
 
     val: function (value) {
