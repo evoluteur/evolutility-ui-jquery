@@ -617,7 +617,10 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.setView(actionId);
                 break;
             case 'export':
-                alert('Sorry, no demo server yet...');
+                alert(
+                    'Sorry, no demo server yet...\n\n' +
+                    JSON.stringify(this.curView.val(), null, 2)
+                );
                 break;
             case 'save':
             case 'save-add':
