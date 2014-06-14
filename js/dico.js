@@ -390,14 +390,14 @@ Evol.Dico = {
                         h.push(EvoUI.linkEmail(fid, fv));
                     } else {
                         h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
-                            EvoUI.input.text(fid, fv, fld.maxlength, 'evo-field form-control'), '</div>');
+                            EvoUI.input.text(fid, fv, fld), '</div>');
                     }
                     break;
                 case fTypes.url:
                     if (mode === 'view') {
                         h.push(EvoUI.link(fid, fv, encodeURI(fv), fid));
                     } else {
-                        h.push(EvoUI.input.text(fid, fv, fld.maxlength));
+                        h.push(EvoUI.input.text(fid, fv, fld));
                     }
                     break;
                 //case fTypes.doc:
