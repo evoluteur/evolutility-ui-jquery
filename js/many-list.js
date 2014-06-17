@@ -15,10 +15,10 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
 
     _render: function (models) {
         var h = [],
+            that = this,
             opts = this.options,
             selectable = opts.selectable,
             fields = this.getFields(),
-            uim = opts.uiModel,
             pSize = opts.pageSize || 50,
             link = (this.options.links!==false),
             hover;
@@ -28,29 +28,31 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         if(selectable){
             h.push('<th>',this._HTMLCheckbox('cbxAll'),'</th>');
         }
-        for (var i=0; i<fields.length; i++) {
-            this._HTMLlistHeader(h, fields[i]);
-        }
+        _.each(fields, function(field){
+            that._HTMLlistHeader(h, field);
+        });
         h.push('</tr></thead><tbody>');
-        this._HTMLlistBody(h, fields, pSize, uim.icon, 0, selectable);
+        this._HTMLlistBody(h, fields, pSize, opts.uiModel.icon, 0, selectable);
         h.push('</tbody></table>');
-        // TODO uncomment & finish it
-        h.push(this.pageSummary(opts.pageIndex, pSize, models.length, uim.entity, uim.entities));
-        // //this._HTMLpagination(h, 0, pSize, models.length);
+        //this._HTMLpagination(h, 0, pSize, models.length);
+        h.push('<div class="evo-many-summary">', this.pageSummary(opts.pageIndex, pSize, models.length), '</div>');
         h.push('</div>');
         this.$el.html(h.join(''));
     },
 
     setPage: function(pageIdx){
+        // TODO consolidate setPage across views "many"
+        // TODO refresh summary & paginator
         var h=[],
             fields = this.getFields(),
             opts = this.options,
-            uim = opts.uiModel,
             pSize = opts.pageSize || 20;
-        this._HTMLlistBody(h, fields, pSize, uim.icon, pageIdx, opts.selectable);
+
+        this._HTMLlistBody(h, fields, pSize, opts.uiModel.icon, pageIdx, opts.selectable);
         this.$('.table > tbody').html(h.join(''));
+
         //this.options.pageIndex=pageIdx;
-        this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
+        this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
         return this;
     },
 

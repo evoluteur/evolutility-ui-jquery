@@ -29,13 +29,12 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
         var h = [];
         //if(models && models.length>0){
             var opts = this.options,
-                uim = opts.uiModel,
                 pSize = opts.pageSize || 50,
-                pSummary = this.pageSummary(0, pSize, models.length, uim.entity, uim.entities);
+                pSummary = this.pageSummary(0, pSize, models.length);
             h.push('<div class="evol-many-badges">');
-            this.renderBody(h, this.getFields(), pSize, uim.icon, 0,opts.selectable);
-            h.push(pSummary);
+            this.renderBody(h, this.getFields(), pSize, opts.uiModel.icon, 0, opts.selectable);
             //this._HTMLpagination(h,0, pSize, models.length);
+            h.push('<div class="evo-many-summary">', pSummary, '</div>');
             h.push('</div>');
         //}else{
         //    h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
@@ -45,15 +44,16 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
     },
 
     setPage: function(pageIdx){
+        // TODO consolidate setPage across views "many"
+        // TODO refresh summary & paginator
         var h = [],
             fields = this.getFields(),
             opts = this.options,
-            uim = opts.uiModel,
             pSize = opts.pageSize || 20;
 
-        this.renderBody(h, fields, pSize, uim.icon, pageIdx, opts.selectable);
+        this.renderBody(h, fields, pSize, opts.uiModel.icon, pageIdx, opts.selectable);
         this.$('.evol-many-badges').html(h.join(''));
-        this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
+        this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
     },
 
     renderBody: function (h, fields, pSize, icon, pageIdx, selectable) {

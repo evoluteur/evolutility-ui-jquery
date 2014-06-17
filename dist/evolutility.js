@@ -1099,7 +1099,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     events: {
         'click .evol-nav-id': 'click_navigate',
-        'click .evol-sort-icons > i': 'click_sort',
+        'click .evol-sort-icons>i': 'click_sort',
         'click .pagination>li': 'click_pagination',
         'click .evol-field-label .glyphicon-wrench': 'click_customize',
         'change .list-sel': 'click_selection',
@@ -1218,11 +1218,11 @@ Evol.ViewMany = Backbone.View.extend({
         return [];
     },
 
-    pageSummary: function (pIdx, pSize, cSize, entity, entities) {
+    pageSummary: function (pIdx, pSize, cSize) {
         if (cSize === 0) {
             return '';
         } else if (cSize === 1) {
-            return cSize + ' ' + entity;
+            return cSize + ' ' + this.options.uiModel.entity;
         } else {
             var rangeBegin = (pIdx || 0) * pSize + 1, rangeEnd;
             if (pIdx < 1) {
@@ -1234,10 +1234,10 @@ Evol.ViewMany = Backbone.View.extend({
                 .replace('{0}', rangeBegin)
                 .replace('{1}', rangeEnd)
                 .replace('{2}', cSize)
-                .replace('{3}', entities);
+                .replace('{3}', this.options.uiModel.entities);
         }
     },
-        /*
+
     _HTMLpagination: function (h, pIdx, pSize, cSize) {
         if(cSize>pSize){
             var nbPages = Math.ceil(cSize / pSize),
@@ -1259,7 +1259,7 @@ Evol.ViewMany = Backbone.View.extend({
                 '><a href="#">&raquo;</a></li>');
             h.push('</ul>');
         }
-    },*/
+    },
 
     sortList: function(f, down){
         var collec=this.collection,
@@ -1311,11 +1311,9 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     click_selection: function (evt) {
-        if($(evt.currentTarget).data('id')==='cbxAll'){
-
-        }else{
+        //if($(evt.currentTarget).data('id')!=='cbxAll'){
             this.$el.trigger('selection');
-        }
+        //}
     },
 
     click_checkall: function (evt) {
@@ -1359,13 +1357,12 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
         var h = [];
         //if(models && models.length>0){
             var opts = this.options,
-                uim = opts.uiModel,
                 pSize = opts.pageSize || 50,
-                pSummary = this.pageSummary(0, pSize, models.length, uim.entity, uim.entities);
+                pSummary = this.pageSummary(0, pSize, models.length);
             h.push('<div class="evol-many-badges">');
-            this.renderBody(h, this.getFields(), pSize, uim.icon, 0,opts.selectable);
-            h.push(pSummary);
+            this.renderBody(h, this.getFields(), pSize, opts.uiModel.icon, 0, opts.selectable);
             //this._HTMLpagination(h,0, pSize, models.length);
+            h.push('<div class="evo-many-summary">', pSummary, '</div>');
             h.push('</div>');
         //}else{
         //    h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
@@ -1375,15 +1372,16 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
     },
 
     setPage: function(pageIdx){
+        // TODO consolidate setPage across views "many"
+        // TODO refresh summary & paginator
         var h = [],
             fields = this.getFields(),
             opts = this.options,
-            uim = opts.uiModel,
             pSize = opts.pageSize || 20;
 
-        this.renderBody(h, fields, pSize, uim.icon, pageIdx, opts.selectable);
+        this.renderBody(h, fields, pSize, opts.uiModel.icon, pageIdx, opts.selectable);
         this.$('.evol-many-badges').html(h.join(''));
-        this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
+        this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
     },
 
     renderBody: function (h, fields, pSize, icon, pageIdx, selectable) {
@@ -1540,10 +1538,10 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
 
     _render: function (models) {
         var h = [],
+            that = this,
             opts = this.options,
             selectable = opts.selectable,
             fields = this.getFields(),
-            uim = opts.uiModel,
             pSize = opts.pageSize || 50,
             link = (this.options.links!==false),
             hover;
@@ -1553,29 +1551,31 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         if(selectable){
             h.push('<th>',this._HTMLCheckbox('cbxAll'),'</th>');
         }
-        for (var i=0; i<fields.length; i++) {
-            this._HTMLlistHeader(h, fields[i]);
-        }
+        _.each(fields, function(field){
+            that._HTMLlistHeader(h, field);
+        });
         h.push('</tr></thead><tbody>');
-        this._HTMLlistBody(h, fields, pSize, uim.icon, 0, selectable);
+        this._HTMLlistBody(h, fields, pSize, opts.uiModel.icon, 0, selectable);
         h.push('</tbody></table>');
-        // TODO uncomment & finish it
-        h.push(this.pageSummary(opts.pageIndex, pSize, models.length, uim.entity, uim.entities));
-        // //this._HTMLpagination(h, 0, pSize, models.length);
+        //this._HTMLpagination(h, 0, pSize, models.length);
+        h.push('<div class="evo-many-summary">', this.pageSummary(opts.pageIndex, pSize, models.length), '</div>');
         h.push('</div>');
         this.$el.html(h.join(''));
     },
 
     setPage: function(pageIdx){
+        // TODO consolidate setPage across views "many"
+        // TODO refresh summary & paginator
         var h=[],
             fields = this.getFields(),
             opts = this.options,
-            uim = opts.uiModel,
             pSize = opts.pageSize || 20;
-        this._HTMLlistBody(h, fields, pSize, uim.icon, pageIdx, opts.selectable);
+
+        this._HTMLlistBody(h, fields, pSize, opts.uiModel.icon, pageIdx, opts.selectable);
         this.$('.table > tbody').html(h.join(''));
+
         //this.options.pageIndex=pageIdx;
-        this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
+        this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
         return this;
     },
 
@@ -1861,6 +1861,9 @@ Evol.ViewOne = Backbone.View.extend({
                         .html(h.join(''));
                 });
             }
+        }else{
+            // TODO show no data msg or something
+            this.clear();
         }
         return this.setTitle();
     },
@@ -3163,7 +3166,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     break;
             }
         }else{
-            h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
+            h.push(Evol.i18n.nodata);
         }
         if(this.options.many && format==='JSON'){
             $e.html('['+h.join(',\n')+']');
@@ -3963,7 +3966,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     events: {
         'click .nav a': 'click_toolbar',
         'list.navigate >div': 'click_navigate',
-        //'list.paginate >div': 'paginate',
+        'list.paginate >div': 'paginate',
         'action >div': 'action_view',
         'status >div': 'status_update',
         'filter.change >div': 'change_filter',
@@ -4143,11 +4146,11 @@ Evol.ViewToolbar = Backbone.View.extend({
         }else{
             if($v.length){
             // -- view already exists and was rendered
-                //if(this.curView.model){
-                //TODO debug
-                    this.model=this.curView.model;
-                //}
-                this.model.collection=collec;
+                this.model=this.curView.model;
+                if(this.curView.model){
+                    //TODO debug
+                    this.model.collection=collec;
+                }
                 this.curView=this.viewsHash[viewName];
                 if(this.curView.setCollection){
                     this.curView.setCollection(collec);
@@ -4218,7 +4221,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                         if(viewName!='charts' && this.options.pageIndex > 0){
                             vw.setPage(this.options.pageIndex || 0);
                         }
-                        //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
+                        //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
                         break;
                     // --- actions ---
                     case 'export':
@@ -4297,7 +4300,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             }
 			if((this.model && this.model.isNew()) || mode==='export'){
                 oneMany(false, false);
-                if(this.model.isNew()){
+                if(this.model && this.model.isNew()){
                     $('.evo-dropdown-icons>li[data-cardi="1"]').show();
                 }
 			}else{
@@ -4581,7 +4584,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     paginate: function(bId, ui){
         if(ui){//TODO no need? event?
-            bId=ui;
+            bId=ui.id;
         }
         var pIdx=this.options.pageIndex || 0;
         if(bId==='prev'){
@@ -4591,9 +4594,9 @@ Evol.ViewToolbar = Backbone.View.extend({
                 pIdx++;
             }
         }else{
-            var bIdx=parseInt(bId,10);
+            var bIdx=parseInt(bId, 10);
             if(bIdx>0){
-                pIdx=bIdx;
+                pIdx=bIdx-1;
             }
         }
         this.options.pageIndex=pIdx;

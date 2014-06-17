@@ -13,7 +13,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     events: {
         'click .nav a': 'click_toolbar',
         'list.navigate >div': 'click_navigate',
-        //'list.paginate >div': 'paginate',
+        'list.paginate >div': 'paginate',
         'action >div': 'action_view',
         'status >div': 'status_update',
         'filter.change >div': 'change_filter',
@@ -268,7 +268,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                         if(viewName!='charts' && this.options.pageIndex > 0){
                             vw.setPage(this.options.pageIndex || 0);
                         }
-                        //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length ,uim.entity, uim.entities));
+                        //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
                         break;
                     // --- actions ---
                     case 'export':
@@ -631,7 +631,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     paginate: function(bId, ui){
         if(ui){//TODO no need? event?
-            bId=ui;
+            bId=ui.id;
         }
         var pIdx=this.options.pageIndex || 0;
         if(bId==='prev'){
@@ -641,9 +641,9 @@ Evol.ViewToolbar = Backbone.View.extend({
                 pIdx++;
             }
         }else{
-            var bIdx=parseInt(bId,10);
+            var bIdx=parseInt(bId, 10);
             if(bIdx>0){
-                pIdx=bIdx;
+                pIdx=bIdx-1;
             }
         }
         this.options.pageIndex=pIdx;

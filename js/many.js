@@ -29,7 +29,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     events: {
         'click .evol-nav-id': 'click_navigate',
-        'click .evol-sort-icons > i': 'click_sort',
+        'click .evol-sort-icons>i': 'click_sort',
         'click .pagination>li': 'click_pagination',
         'click .evol-field-label .glyphicon-wrench': 'click_customize',
         'change .list-sel': 'click_selection',
@@ -148,11 +148,11 @@ Evol.ViewMany = Backbone.View.extend({
         return [];
     },
 
-    pageSummary: function (pIdx, pSize, cSize, entity, entities) {
+    pageSummary: function (pIdx, pSize, cSize) {
         if (cSize === 0) {
             return '';
         } else if (cSize === 1) {
-            return cSize + ' ' + entity;
+            return cSize + ' ' + this.options.uiModel.entity;
         } else {
             var rangeBegin = (pIdx || 0) * pSize + 1, rangeEnd;
             if (pIdx < 1) {
@@ -164,10 +164,10 @@ Evol.ViewMany = Backbone.View.extend({
                 .replace('{0}', rangeBegin)
                 .replace('{1}', rangeEnd)
                 .replace('{2}', cSize)
-                .replace('{3}', entities);
+                .replace('{3}', this.options.uiModel.entities);
         }
     },
-        /*
+
     _HTMLpagination: function (h, pIdx, pSize, cSize) {
         if(cSize>pSize){
             var nbPages = Math.ceil(cSize / pSize),
@@ -189,7 +189,7 @@ Evol.ViewMany = Backbone.View.extend({
                 '><a href="#">&raquo;</a></li>');
             h.push('</ul>');
         }
-    },*/
+    },
 
     sortList: function(f, down){
         var collec=this.collection,
@@ -241,11 +241,9 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     click_selection: function (evt) {
-        if($(evt.currentTarget).data('id')==='cbxAll'){
-
-        }else{
+        //if($(evt.currentTarget).data('id')!=='cbxAll'){
             this.$el.trigger('selection');
-        }
+        //}
     },
 
     click_checkall: function (evt) {
