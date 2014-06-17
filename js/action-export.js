@@ -353,7 +353,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     break;
             }
         }else{
-            h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
+            h.push(Evol.i18n.nodata);
         }
         if(this.options.many && format==='JSON'){
             $e.html('['+h.join(',\n')+']');

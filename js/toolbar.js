@@ -193,11 +193,11 @@ Evol.ViewToolbar = Backbone.View.extend({
         }else{
             if($v.length){
             // -- view already exists and was rendered
-                //if(this.curView.model){
-                //TODO debug
-                    this.model=this.curView.model;
-                //}
-                this.model.collection=collec;
+                this.model=this.curView.model;
+                if(this.curView.model){
+                    //TODO debug
+                    this.model.collection=collec;
+                }
                 this.curView=this.viewsHash[viewName];
                 if(this.curView.setCollection){
                     this.curView.setCollection(collec);
@@ -347,7 +347,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             }
 			if((this.model && this.model.isNew()) || mode==='export'){
                 oneMany(false, false);
-                if(this.model.isNew()){
+                if(this.model && this.model.isNew()){
                     $('.evo-dropdown-icons>li[data-cardi="1"]').show();
                 }
 			}else{

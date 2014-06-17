@@ -228,6 +228,9 @@ Evol.ViewOne = Backbone.View.extend({
                         .html(h.join(''));
                 });
             }
+        }else{
+            // TODO show no data msg or something
+            this.clear();
         }
         return this.setTitle();
     },
