@@ -1107,7 +1107,8 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        var that=this;
+        var lastSort = localStorage.getItem(opts.uiModel.id+'-sort'),
+            that=this;
         _.extend(this.options, opts);
         this.mode=this.options.mode || '';
         this._filter=[];
@@ -1119,6 +1120,13 @@ Evol.ViewMany = Backbone.View.extend({
             }
         }
         this._custOn=false;
+        if(lastSort!==null){
+            var ls=lastSort.split('-'),
+                f=this.getField(ls[0]);
+            if(ls.length>1 && !_.isUndefined(f)){
+                this.sortList(f, ls[1]==='down', true);
+            }
+        }
     },
 
     render:function(){
@@ -1198,6 +1206,9 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     getField: function (fid){
+        if(!this._fieldHash){
+            this.getFields();
+        }
         return this._fieldHash[fid];
     },
 
@@ -1297,7 +1308,7 @@ Evol.ViewMany = Backbone.View.extend({
         }
     },
 
-    sortList: function(f, down){
+    sortList: function(f, down, noRemember){
         var collec = this.collection,
             ft = Evol.Dico.fieldTypes;
         if(!_.isUndefined(collec)){
@@ -1312,6 +1323,9 @@ Evol.ViewMany = Backbone.View.extend({
             }
             this.setPage(0);
             var direction = down?'down':'up';
+            if(!noRemember){
+                localStorage.setItem(this.options.uiModel.id+'-sort', f.id+'-'+direction);
+            }
             this.$el.trigger('list.sort', {id: f.id, direction:direction});
         }
     },
