@@ -26,37 +26,26 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
     },
 
     _render: function (models) {
-        var h = [];
-        //if(models && models.length>0){
-            var opts = this.options,
-                pSize = opts.pageSize || 50,
-                pSummary = this.pageSummary(0, pSize, models.length);
-            h.push('<div class="evol-many-badges">');
-            this.renderBody(h, this.getFields(), pSize, opts.uiModel.icon, 0, opts.selectable);
-            //this._HTMLpagination(h,0, pSize, models.length);
-            h.push('<div class="evo-many-summary">', pSummary, '</div>');
-            h.push('</div>');
-        //}else{
-        //    h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
-        //}
+        var h = [],
+            opts = this.options,
+            pSize = opts.pageSize || 50,
+            pSummary = this.pageSummary(0, pSize, models.length);
+
+        h.push('<div class="evol-many-badges"><div class="evol-badges-body">');
+        this._HTMLbody(h, this.getFields(), pSize, opts.uiModel.icon, 0, opts.selectable);
+        h.push('</div>');
+        this._HTMLpagination(h, 0, pSize, models.length);
+        h.push('<div class="evo-many-summary">', pSummary, '</div>');
+        h.push('</div>');
         this.$el.html(h.join(''));
         return this;
     },
 
-    setPage: function(pageIdx){
-        // TODO consolidate setPage across views "many"
-        // TODO refresh summary & paginator
-        var h = [],
-            fields = this.getFields(),
-            opts = this.options,
-            pSize = opts.pageSize || 20;
-
-        this.renderBody(h, fields, pSize, opts.uiModel.icon, pageIdx, opts.selectable);
-        this.$('.evol-many-badges').html(h.join(''));
-        this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
+    _$body: function(){
+        return this.$('.evol-badges-body');
     },
 
-    renderBody: function (h, fields, pSize, icon, pageIdx, selectable) {
+    _HTMLbody: function (h, fields, pSize, icon, pageIdx, selectable) {
         var data = this.collection.models,
             r,
             rMin=0,

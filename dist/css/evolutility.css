@@ -221,7 +221,7 @@ img.evol-table-icon {
   width: 30px;
 }
 /* --- badges --- */
-.evol-many-badges > div.panel {
+.evol-badges-body > div.panel {
   float: left;
   width: 240px;
   min-width: 140px;
@@ -233,7 +233,7 @@ img.evol-table-icon {
   -webkit-border-radius: 10px;
   overflow: auto;
 }
-.evol-many-badges > div.panel > div > label {
+.evol-badges-body > div.panel > div > label {
   vertical-align: top;
 }
 /* --- charts --- */

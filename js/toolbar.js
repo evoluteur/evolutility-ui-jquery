@@ -266,6 +266,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                         this._prevMany=viewName;
                         vw.setTitle();
                         if(viewName!='charts' && this.options.pageIndex > 0){
+                            //var pIdx=this.curView.getPage();
                             vw.setPage(this.options.pageIndex || 0);
                         }
                         //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
@@ -548,11 +549,11 @@ Evol.ViewToolbar = Backbone.View.extend({
                     newModel = collec.at(newIdx);
                 }
                 if(newModel){
-                    newModel.collection=collec;
+                    newModel.collection = collec;
                 }
                 delModel.destroy({
                     success:function(){
-                        if(collec.length===0){
+                        if(newModel===null || collec.length===0){
                             that.curView.clear();
                         }else{
                             this.model = newModel;
@@ -637,7 +638,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(bId==='prev'){
             pIdx=(pIdx>0)?pIdx-1:0;
         }else if(bId==='next'){
-            if((pIdx+1)*(this.options.pageSize||20)<this.collection.length){
+            if((pIdx+1)*(this.options.pageSize)<this.collection.length){
                 pIdx++;
             }
         }else{

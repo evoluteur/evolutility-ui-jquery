@@ -88,6 +88,11 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             h.push(EvoUI.HTMLMsg(i18n.nochart, i18n.badchart));
         }
         h.push(EvoUI.html.clearer);
+    },
+
+    setPage: function(){
+        // do nothing
+        // b/c it can be invoked for all view Many
     }
 
 });

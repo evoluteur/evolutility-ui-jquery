@@ -131,6 +131,29 @@ Evol.ViewMany = Backbone.View.extend({
         return this._fieldHash[fid];
     },
 
+    setPage: function(pageIdx){
+        var h = [],
+            fields = this.getFields(),
+            opts = this.options,
+            pSize = opts.pageSize,
+            collecLength =this.collection.length,
+            pSummary = this.pageSummary(pageIdx, pSize, collecLength);
+
+        this._HTMLbody(h, fields, pSize, opts.uiModel.icon, pageIdx, opts.selectable);
+        this._$body().html(h.join(''));
+        h=[];
+        this._HTMLpaginationBody(h, pageIdx, pSize, collecLength);
+        this.$('.evo-pagination').html(h.join(''));
+        this.$('.evo-many-summary').html(pSummary);
+        opts.pageIndex = pageIdx;
+        this.$el.trigger('status', pSummary);
+        return this;
+    },
+
+    getPage: function(){
+        return this.options.pageIndex;
+    },
+
     _HTMLField: function(f, v){
         return Evol.Dico.HTMLField4Many(f, v, Evol.hashLov, this.options.iconsPath || '');
     },
@@ -169,31 +192,44 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     _HTMLpagination: function (h, pIdx, pSize, cSize) {
-        if(cSize>pSize){
-            var nbPages = Math.ceil(cSize / pSize),
-                pageId = pIdx + 1,
-                iMin = pIdx * pSize + 1,
-                iMax = ((nbPages > 5) ? 5 : nbPages);
-
+        if(cSize > pSize){
             h.push('<ul class="evo-pagination pagination pagination-sm">');
-            h.push('<li data-id="prev"',
-                (pageId===1)?' class="disabled"':'',
-                '><a href="#">&laquo;</a></li>');
-            for (var i=iMin; i<iMax+1; i++) {
-                h.push('<li',
-                    (pageId===i)?' class="active"':'',
-                    ' data-id="', i, '"><a href="#">', i, '</a></li>');
-            }
-            h.push('<li data-id="next"',
-                (cSize > pageId * pSize)?'':' class="disabled"',
-                '><a href="#">&raquo;</a></li>');
+            this._HTMLpaginationBody(h, pIdx, pSize, cSize);
             h.push('</ul>');
         }
     },
 
+    _HTMLpaginationBody: function (h, pIdx, pSize, cSize){
+        if(cSize > pSize){
+            var nbPages = Math.ceil(cSize / pSize),
+                pId = pIdx + 1,
+                iMin,
+                iMax;
+
+            if(nbPages<6){
+                iMin = 1;
+                iMax = nbPages;
+            }else {
+                iMin = pIdx + 1;
+                iMax = iMin + 5;
+            }
+            h.push('<li data-id="prev"',
+                (pId===1)?' class="disabled"':'',
+                '><a href="#">&laquo;</a></li>');
+            for (var i=iMin; i<iMax+1; i++) {
+                h.push('<li',
+                    (pId===i)?' class="active"':'',
+                    ' data-id="', i, '"><a href="#">', i, '</a></li>');
+            }
+            h.push('<li data-id="next"',
+                (cSize > pId * pSize)?'':' class="disabled"',
+                '><a href="#">&raquo;</a></li>');
+        }
+    },
+
     sortList: function(f, down){
-        var collec=this.collection,
-            ft=Evol.Dico.fieldTypes;
+        var collec = this.collection,
+            ft = Evol.Dico.fieldTypes;
         if(!_.isUndefined(collec)){
             if(f.type==ft.text || f.type==ft.textml || f.type==ft.email){
                 collec.comparator = Evol.Dico.bbComparatorText(f.id);
@@ -204,17 +240,14 @@ Evol.ViewMany = Backbone.View.extend({
             if(down){
                 collec.models.reverse();
             }
-            if(this.setPage){
-                this.setPage(0);
-            }else{
-                this.render();
-            }
-            this.$el.trigger('list.sort', {id: f.id, direction:down?'down':'up'});
+            this.setPage(0);
+            var direction = down?'down':'up';
+            this.$el.trigger('list.sort', {id: f.id, direction:direction});
         }
     },
 
     click_navigate: function (evt) {
-        evt.type='list.navigate';
+        evt.type = 'list.navigate';
         this.$el.trigger(evt, {id: $(evt.currentTarget).closest('[data-mid]').data('mid')});
     },
 

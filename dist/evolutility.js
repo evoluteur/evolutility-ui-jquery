@@ -1201,6 +1201,29 @@ Evol.ViewMany = Backbone.View.extend({
         return this._fieldHash[fid];
     },
 
+    setPage: function(pageIdx){
+        var h = [],
+            fields = this.getFields(),
+            opts = this.options,
+            pSize = opts.pageSize,
+            collecLength =this.collection.length,
+            pSummary = this.pageSummary(pageIdx, pSize, collecLength);
+
+        this._HTMLbody(h, fields, pSize, opts.uiModel.icon, pageIdx, opts.selectable);
+        this._$body().html(h.join(''));
+        h=[];
+        this._HTMLpaginationBody(h, pageIdx, pSize, collecLength);
+        this.$('.evo-pagination').html(h.join(''));
+        this.$('.evo-many-summary').html(pSummary);
+        opts.pageIndex = pageIdx;
+        this.$el.trigger('status', pSummary);
+        return this;
+    },
+
+    getPage: function(){
+        return this.options.pageIndex;
+    },
+
     _HTMLField: function(f, v){
         return Evol.Dico.HTMLField4Many(f, v, Evol.hashLov, this.options.iconsPath || '');
     },
@@ -1239,31 +1262,44 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     _HTMLpagination: function (h, pIdx, pSize, cSize) {
-        if(cSize>pSize){
-            var nbPages = Math.ceil(cSize / pSize),
-                pageId = pIdx + 1,
-                iMin = pIdx * pSize + 1,
-                iMax = ((nbPages > 5) ? 5 : nbPages);
-
+        if(cSize > pSize){
             h.push('<ul class="evo-pagination pagination pagination-sm">');
-            h.push('<li data-id="prev"',
-                (pageId===1)?' class="disabled"':'',
-                '><a href="#">&laquo;</a></li>');
-            for (var i=iMin; i<iMax+1; i++) {
-                h.push('<li',
-                    (pageId===i)?' class="active"':'',
-                    ' data-id="', i, '"><a href="#">', i, '</a></li>');
-            }
-            h.push('<li data-id="next"',
-                (cSize > pageId * pSize)?'':' class="disabled"',
-                '><a href="#">&raquo;</a></li>');
+            this._HTMLpaginationBody(h, pIdx, pSize, cSize);
             h.push('</ul>');
         }
     },
 
+    _HTMLpaginationBody: function (h, pIdx, pSize, cSize){
+        if(cSize > pSize){
+            var nbPages = Math.ceil(cSize / pSize),
+                pId = pIdx + 1,
+                iMin,
+                iMax;
+
+            if(nbPages<6){
+                iMin = 1;
+                iMax = nbPages;
+            }else {
+                iMin = pIdx + 1;
+                iMax = iMin + 5;
+            }
+            h.push('<li data-id="prev"',
+                (pId===1)?' class="disabled"':'',
+                '><a href="#">&laquo;</a></li>');
+            for (var i=iMin; i<iMax+1; i++) {
+                h.push('<li',
+                    (pId===i)?' class="active"':'',
+                    ' data-id="', i, '"><a href="#">', i, '</a></li>');
+            }
+            h.push('<li data-id="next"',
+                (cSize > pId * pSize)?'':' class="disabled"',
+                '><a href="#">&raquo;</a></li>');
+        }
+    },
+
     sortList: function(f, down){
-        var collec=this.collection,
-            ft=Evol.Dico.fieldTypes;
+        var collec = this.collection,
+            ft = Evol.Dico.fieldTypes;
         if(!_.isUndefined(collec)){
             if(f.type==ft.text || f.type==ft.textml || f.type==ft.email){
                 collec.comparator = Evol.Dico.bbComparatorText(f.id);
@@ -1274,17 +1310,14 @@ Evol.ViewMany = Backbone.View.extend({
             if(down){
                 collec.models.reverse();
             }
-            if(this.setPage){
-                this.setPage(0);
-            }else{
-                this.render();
-            }
-            this.$el.trigger('list.sort', {id: f.id, direction:down?'down':'up'});
+            this.setPage(0);
+            var direction = down?'down':'up';
+            this.$el.trigger('list.sort', {id: f.id, direction:direction});
         }
     },
 
     click_navigate: function (evt) {
-        evt.type='list.navigate';
+        evt.type = 'list.navigate';
         this.$el.trigger(evt, {id: $(evt.currentTarget).closest('[data-mid]').data('mid')});
     },
 
@@ -1354,37 +1387,26 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
     },
 
     _render: function (models) {
-        var h = [];
-        //if(models && models.length>0){
-            var opts = this.options,
-                pSize = opts.pageSize || 50,
-                pSummary = this.pageSummary(0, pSize, models.length);
-            h.push('<div class="evol-many-badges">');
-            this.renderBody(h, this.getFields(), pSize, opts.uiModel.icon, 0, opts.selectable);
-            //this._HTMLpagination(h,0, pSize, models.length);
-            h.push('<div class="evo-many-summary">', pSummary, '</div>');
-            h.push('</div>');
-        //}else{
-        //    h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
-        //}
+        var h = [],
+            opts = this.options,
+            pSize = opts.pageSize || 50,
+            pSummary = this.pageSummary(0, pSize, models.length);
+
+        h.push('<div class="evol-many-badges"><div class="evol-badges-body">');
+        this._HTMLbody(h, this.getFields(), pSize, opts.uiModel.icon, 0, opts.selectable);
+        h.push('</div>');
+        this._HTMLpagination(h, 0, pSize, models.length);
+        h.push('<div class="evo-many-summary">', pSummary, '</div>');
+        h.push('</div>');
         this.$el.html(h.join(''));
         return this;
     },
 
-    setPage: function(pageIdx){
-        // TODO consolidate setPage across views "many"
-        // TODO refresh summary & paginator
-        var h = [],
-            fields = this.getFields(),
-            opts = this.options,
-            pSize = opts.pageSize || 20;
-
-        this.renderBody(h, fields, pSize, opts.uiModel.icon, pageIdx, opts.selectable);
-        this.$('.evol-many-badges').html(h.join(''));
-        this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
+    _$body: function(){
+        return this.$('.evol-badges-body');
     },
 
-    renderBody: function (h, fields, pSize, icon, pageIdx, selectable) {
+    _HTMLbody: function (h, fields, pSize, icon, pageIdx, selectable) {
         var data = this.collection.models,
             r,
             rMin=0,
@@ -1517,6 +1539,11 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             h.push(EvoUI.HTMLMsg(i18n.nochart, i18n.badchart));
         }
         h.push(EvoUI.html.clearer);
+    },
+
+    setPage: function(){
+        // do nothing
+        // b/c it can be invoked for all view Many
     }
 
 });
@@ -1555,31 +1582,19 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             that._HTMLlistHeader(h, field);
         });
         h.push('</tr></thead><tbody>');
-        this._HTMLlistBody(h, fields, pSize, opts.uiModel.icon, 0, selectable);
+        this._HTMLbody(h, fields, pSize, opts.uiModel.icon, 0, selectable);
         h.push('</tbody></table>');
-        //this._HTMLpagination(h, 0, pSize, models.length);
+        this._HTMLpagination(h, 0, pSize, models.length);
         h.push('<div class="evo-many-summary">', this.pageSummary(opts.pageIndex, pSize, models.length), '</div>');
         h.push('</div>');
         this.$el.html(h.join(''));
     },
 
-    setPage: function(pageIdx){
-        // TODO consolidate setPage across views "many"
-        // TODO refresh summary & paginator
-        var h=[],
-            fields = this.getFields(),
-            opts = this.options,
-            pSize = opts.pageSize || 20;
-
-        this._HTMLlistBody(h, fields, pSize, opts.uiModel.icon, pageIdx, opts.selectable);
-        this.$('.table > tbody').html(h.join(''));
-
-        //this.options.pageIndex=pageIdx;
-        this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
-        return this;
+    _$body: function(){
+        return this.$('.table > tbody');
     },
 
-    _HTMLlistBody: function(h, fields, pSize, icon, pageIdx, selectable){
+    _HTMLbody: function(h, fields, pSize, icon, pageIdx, selectable){
         var data = this.collection.models,
             r,
             rMin=0,
@@ -4219,6 +4234,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                         this._prevMany=viewName;
                         vw.setTitle();
                         if(viewName!='charts' && this.options.pageIndex > 0){
+                            //var pIdx=this.curView.getPage();
                             vw.setPage(this.options.pageIndex || 0);
                         }
                         //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
@@ -4501,11 +4517,11 @@ Evol.ViewToolbar = Backbone.View.extend({
                     newModel = collec.at(newIdx);
                 }
                 if(newModel){
-                    newModel.collection=collec;
+                    newModel.collection = collec;
                 }
                 delModel.destroy({
                     success:function(){
-                        if(collec.length===0){
+                        if(newModel===null || collec.length===0){
                             that.curView.clear();
                         }else{
                             this.model = newModel;
@@ -4590,7 +4606,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(bId==='prev'){
             pIdx=(pIdx>0)?pIdx-1:0;
         }else if(bId==='next'){
-            if((pIdx+1)*(this.options.pageSize||20)<this.collection.length){
+            if((pIdx+1)*(this.options.pageSize)<this.collection.length){
                 pIdx++;
             }
         }else{

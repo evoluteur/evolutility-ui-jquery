@@ -63,6 +63,7 @@ function setDemo(uiModel, localStorage, data, style){
                     collection: ms,
                     collectionClass: Ms,
                     uiModel: uiModel,
+                    pageSize: 20,
                     titleSelector: '#title'
                 }).render();
 
