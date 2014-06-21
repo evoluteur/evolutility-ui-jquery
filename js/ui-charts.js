@@ -19,7 +19,7 @@ Evol.UI.Charts = {
     },
 
     Pie: function (label, data, labels, style, sizes){
-        var size=sizes?sizes:'360x200';
+        var size=sizes?sizes:'390x200';
         var urlGoogleChart = [this.URL,'?chd=t:',
             data.join(','),
             '&amp;chl=',
@@ -29,7 +29,7 @@ Evol.UI.Charts = {
     },
 
     Bars: function (label, data, labels, style, sizes){
-        var size=sizes?sizes:'350x200';
+        var size=sizes?sizes:'360x200';
         var maxCount = _.max(data),
             urlGoogleChart = [this.URL,'?chbh=a&amp;chs=',size,'&cht=bvg&chco=3a87ad,d9edf7&chds=0,',
                 maxCount,

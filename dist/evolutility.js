@@ -386,7 +386,7 @@ Evol.UI.Charts = {
     },
 
     Pie: function (label, data, labels, style, sizes){
-        var size=sizes?sizes:'360x200';
+        var size=sizes?sizes:'390x200';
         var urlGoogleChart = [this.URL,'?chd=t:',
             data.join(','),
             '&amp;chl=',
@@ -396,7 +396,7 @@ Evol.UI.Charts = {
     },
 
     Bars: function (label, data, labels, style, sizes){
-        var size=sizes?sizes:'350x200';
+        var size=sizes?sizes:'360x200';
         var maxCount = _.max(data),
             urlGoogleChart = [this.URL,'?chbh=a&amp;chs=',size,'&cht=bvg&chco=3a87ad,d9edf7&chds=0,',
                 maxCount,
@@ -4613,14 +4613,14 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     paginate: function(bId, ui){
-        if(ui){//TODO no need? event?
+        if(ui){
             bId=ui.id;
         }
         var pIdx=this.options.pageIndex || 0;
         if(bId==='prev'){
             pIdx=(pIdx>0)?pIdx-1:0;
         }else if(bId==='next'){
-            if((pIdx+1)*(this.options.pageSize)<this.collection.length){
+            if((pIdx+1)*(this.options.pageSize)<this.curView.collection.length){
                 pIdx++;
             }
         }else{
