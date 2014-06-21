@@ -631,14 +631,14 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     paginate: function(bId, ui){
-        if(ui){//TODO no need? event?
+        if(ui){
             bId=ui.id;
         }
         var pIdx=this.options.pageIndex || 0;
         if(bId==='prev'){
             pIdx=(pIdx>0)?pIdx-1:0;
         }else if(bId==='next'){
-            if((pIdx+1)*(this.options.pageSize)<this.collection.length){
+            if((pIdx+1)*(this.options.pageSize)<this.curView.collection.length){
                 pIdx++;
             }
         }else{
