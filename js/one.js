@@ -374,7 +374,7 @@ Evol.ViewOne = Backbone.View.extend({
                 if(p.type==='panel-list'){
                     that.renderPanelList(h, p, mode);
                 }else{ // if(p.type==='panel')
-                    that.renderPanel(h, p, 'p-' + p.id, mode);
+                    that.renderPanel(h, p, 'p-' + ((p.id)?p.id:idx), mode);
                 }
             }
         });
@@ -430,8 +430,8 @@ Evol.ViewOne = Backbone.View.extend({
                 h.push(' pull-left" style="width:', p.width, '%">');
             }
         }
-        h.push('<div class="panel ', this.options.style, '">',
-            Evol.UI.HTMLPanelLabel(p.label, pid, 'PanelLabel'),
+        h.push(
+            Evol.UI.HTMLPanelBegin(pid, p.label, this.options.style),
             '<fieldset data-pid="', pid, '">');
         if(mode==='mini'){
             _.each(p.elements, function (elem) {
@@ -458,14 +458,15 @@ Evol.ViewOne = Backbone.View.extend({
                 }
             });
         }
-        h.push('</fieldset></div></div>');
+        h.push('</fieldset>',
+            Evol.UI.HTMLPanelEnd(),
+            '</div>');
         return this;
     },
 
     renderPanelList: function (h, p, mode) {
         h.push('<div style="width:', p.width, '%" class="evol-pnl pull-left" data-pid="', p.id,'">',
-            '<div class="panel ', this.options.style, '">',
-            Evol.UI.HTMLPanelLabel(p.label, p.id, 'PanelLabel'),
+            Evol.UI.HTMLPanelBegin(p.id, p.label, this.options.style),
             '<table class="table" data-mid="', p.attr,'"><thead><tr>'); // table-striped
         _.each(p.elements, function (elem) {
             h.push('<th>', elem.label, '</th>');
@@ -475,7 +476,9 @@ Evol.ViewOne = Backbone.View.extend({
         }
         h.push('</tr></thead><tbody>');
         this._renderPanelListBody(h, p, null, mode);
-        h.push('</tbody></table></div></div>');
+        h.push('</tbody></table>',
+            Evol.UI.HTMLPanelEnd(),
+            '</div>');
         return this;
     },
 

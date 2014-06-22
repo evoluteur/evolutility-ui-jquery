@@ -258,11 +258,15 @@ Evol.UI = {
     },
 
     // --- panels ---
-    HTMLPanelLabel: function (label) {
+    HTMLPanelBegin: function (pid, label, css) {
         return [
+            '<div data-pid="', pid, '" class=", panel ', css, '">',
             '<div class="panel-heading">', Evol.UI.icon('chevron-up', 'evol-title-toggle'),
             '<h3 class="panel-title">', label, '</h3></div>'
         ].join('');
+    },
+    HTMLPanelEnd: function () {
+        return '</div>';
     },
 
     HTMLEmptyPanel: function(id, css, style){
