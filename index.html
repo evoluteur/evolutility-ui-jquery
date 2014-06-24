@@ -52,13 +52,13 @@
 
         <div>View:
             <select id="evolView" class="form-control" style="width:auto">
-                <optgroup label="One">
+                <optgroup label="One = model">
                     <option value="view">View</option>
                     <option value="edit" selected="selected">Edit</option>
                     <option value="mini">Mini</option>
                     <option value="json">JSON</option>
                 </optgroup>
-                <optgroup label="Many">
+                <optgroup label="Many = collection">
                     <option value="list">List</option>
                     <option value="badges">Badges</option>
                     <option value="charts">Charts</option>
@@ -147,6 +147,9 @@
         // Action
         'filter': Evol.ViewAction.Filter,
         'export': Evol.ViewAction.Export
+        // UI Model
+        //'uimodel': Evol.ViewAction.UI_Model,
+        //'doc': Evol.ViewAction.Doc
     };
 
     function showView(){
@@ -198,9 +201,11 @@
         if(viewName==='filter'){
             config.fields=Evol.Dico.getFields(uiModel);
         }
-        new viewClasses[viewName](config)
+        var vw=new viewClasses[viewName](config)
                 .render();
-
+        if(vw.clearCache){
+            vw.clearCache();
+        }
     }
 
     $(document).ready(function(){
