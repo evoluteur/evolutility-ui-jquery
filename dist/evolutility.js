@@ -1707,6 +1707,7 @@ Evol.ViewOne = Backbone.View.extend({
         _.extend(this.options, opts);
         this.mode= opts.mode || this.options.mode || this.viewName;
         this._uTitle=(!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
+        this._subCollecs=this._subCollecsOK=false;
         /*
         if(this.model){
             this.model.on('change', function(model){
@@ -1744,8 +1745,9 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     getSubCollecs: function (){
-        if(!this._subCollecs){
+        if(!this._subCollecsOK){
             this._subCollecs=Evol.Dico.getSubCollecs(this.options.uiModel);
+            this._subCollecsOK=true;
         }
         return this._subCollecs;
     },
@@ -1764,7 +1766,6 @@ Evol.ViewOne = Backbone.View.extend({
     setUIModel: function(uimodel) {
         this.options.uiModel = uimodel;
         //var d=this.getData();
-        this._fields=null;
         return this.clearCache().render();  //.setData(d);
     },
     getUIModel: function() {
@@ -1964,8 +1965,9 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     clearCache: function(fid, fvDefault, mode){
-        this._fieldHash={};
+        this._fieldHash=null;
         this._fields=null;
+        this._subCollecsOK=false;
         return this;
     },
 
@@ -2319,10 +2321,11 @@ Evol.ViewOne = Backbone.View.extend({
         if(this._subCollecs){
             var that=this;
             //TODO
-            //_.each(subCollecs, function (sc) {
+            //_.each(this._subCollecs, function (sc) {
             //    var trs=that.$('[data-pid="'+sc.id+'"] tbody > tr');
+            //    _.each(fs, function(f){
 
-
+                //  });
             //});
         }
         this.$el.trigger('action', 'validate', {valid:isValid});
