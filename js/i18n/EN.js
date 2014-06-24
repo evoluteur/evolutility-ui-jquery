@@ -55,6 +55,7 @@ Evol.i18n = {
 
     // --- msg & status ---
     saved: 'Record saved.',
+    unSavedChanges: 'You have unsaved changes.\nClick OK to navigate without saving your changes.',
     DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value,
     DeleteEntities: 'Delete {0} {1}?', // delete 5 tasks
     NoChange:'No Change',

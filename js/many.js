@@ -14,6 +14,7 @@ var Evol = Evol || {};
 Evol.ViewMany = Backbone.View.extend({
 
     viewType:'many',
+    editable: false,
     cardinality: 'n',
 
     options: {

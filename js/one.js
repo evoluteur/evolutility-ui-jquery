@@ -15,6 +15,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     viewType:'one',
     cardinality: '1',
+    editable: true,
     _tabId: false,
 
     events: {
@@ -53,7 +54,7 @@ Evol.ViewOne = Backbone.View.extend({
         this.$el.html(h.join(''));
         this.custOn=false;
         this.postRender();
-        this.setData(this.model); // TODO remove it
+        this.setData(this.model, true); // TODO remove it
         return this;
     },
 
@@ -85,7 +86,7 @@ Evol.ViewOne = Backbone.View.extend({
         this.model = model;
         return this
             .clearMessages()
-            .setData(model);
+            .setData(model, true);
     },
 
     getModel:function() {
@@ -94,10 +95,9 @@ Evol.ViewOne = Backbone.View.extend({
 
     setUIModel: function(uimodel) {
         this.options.uiModel = uimodel;
-        var d=this.getData();
-        return this
-            .render()
-            .setData(d);
+        //var d=this.getData();
+        this._fields=null;
+        return this.clearCache().render();  //.setData(d);
     },
     getUIModel: function() {
         return this.options.uiModel;
@@ -145,7 +145,7 @@ Evol.ViewOne = Backbone.View.extend({
                     });
                     vs2.push(v);
                 });
-                vs[sc.attr]=vs2;
+                vs[sc.attr||sc.id]=vs2;
             });
         }
         if(skipReadOnlyFields){
@@ -158,8 +158,8 @@ Evol.ViewOne = Backbone.View.extend({
         return vs;
     },
 
-    setData: function (model) {
-        if((!_.isUndefined(model)) && model!==null){
+    setData: function (model, isModel) {
+        if(!_.isUndefined(model) && model!==null){
             var fs = this.getFields(),
                 that=this,
                 fTypes = Evol.Dico.fieldTypes,
@@ -170,53 +170,55 @@ Evol.ViewOne = Backbone.View.extend({
                 newPix;
             _.each(fs, function (f) {
                 $f=that.$(prefix + f.id);
-                fv=model.get(f.attribute || f.id);
-                if(model){
-                    if(f.readonly){
-                        if(f.type===fTypes.pix){
+                if(isModel){
+                    fv=model.get(f.attribute || f.id);
+                }else{
+                    fv=model[f.attribute || f.id];
+                }
+                if(f.readonly){
+                    if(f.type===fTypes.pix){
+                        newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
+                        $f.val(fv)
+                            .prev().remove();
+                        $f.before(newPix);
+                    }else{
+                        switch(f.type){
+                            case fTypes.lov:
+                            case fTypes.bool:
+                            case fTypes.email:
+                            case fTypes.url:
+                                $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
+                                break;
+                            case fTypes.pix:
+                                $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
+                                break;
+                            default:
+                                $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
+                        }
+                    }
+                }else{
+                    switch(f.type) {
+                        case fTypes.lov:
+                            var $fc=$f.children().removeAttr('selected');
+                            if(fv!==''){
+                                $fc.filter('[value='+fv+']')
+                                    .attr('selected', true);
+                            }
+                            break;
+                        case fTypes.bool:
+                            $f.prop('checked', fv);
+                            break;
+                        case fTypes.pix:
                             newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
                             $f.val(fv)
                                 .prev().remove();
                             $f.before(newPix);
-                        }else{
-                            switch(f.type){
-                                case fTypes.lov:
-                                case fTypes.bool:
-                                case fTypes.email:
-                                case fTypes.url:
-                                    $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
-                                    break;
-                                case fTypes.pix:
-                                    $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
-                                    break;
-                                default:
-                                    $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
-                            }
-                        }
-                    }else{
-                        switch(f.type) {
-                            case fTypes.lov:
-                                var $fc=$f.children().removeAttr('selected');
-                                if(fv!==''){
-                                    $fc.filter('[value='+fv+']')
-                                        .attr('selected', true);
-                                }
-                                break;
-                            case fTypes.bool:
-                                $f.prop('checked', fv);
-                                break;
-                            case fTypes.pix:
-                                newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
-                                $f.val(fv)
-                                    .prev().remove();
-                                $f.before(newPix);
-                                break;
-                            case fTypes.list:
-                                $f.select2('val', fv);
-                                break;
-                            default:
-                                $f.val(fv);
-                        }
+                            break;
+                        case fTypes.list:
+                            $f.select2('val', fv);
+                            break;
+                        default:
+                            $f.val(fv);
                     }
                 }
             });
@@ -293,6 +295,12 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 
+    clearCache: function(fid, fvDefault, mode){
+        this._fieldHash={};
+        this._fields=null;
+        return this;
+    },
+
     getModelFieldValue: function(fid, fvDefault, mode){
         if(this.model && this.model.has(fid)){
             return (mode !== 'new') ? this.model.get(fid) : fvDefault || '';
@@ -301,14 +309,74 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     isDirty: function(){
-         var data=this.getData(),
-         model=this.model;
+        function nullOrUndef(v){
+            return v==='' || _.isUndefined(v) || v===null || v===false;
+        }
+        function emptyOrUndef(v){
+            return v===null || _.isUndefined(v) || v===[];
+        }
+        if(this.editable){
+            var fs= this.getFields(),
+                ft=Evol.Dico.fieldTypes,
+                data=this.getData(),
+                model=this.model,
+                i,
+                iMax=fs.length,
+                subCollecs=this.getSubCollecs(),
+                noModelVal,
+                noDataVal;
 
-        _.each(data, function(value, prop){
-            if(data[prop] !== model.get(prop)){
-                return true;
+            for (i = 0; i < iMax; i++) {
+                var f=fs[i],
+                    prop = f.attribute || f.id,
+                    dataVal = data[prop],
+                    modelVal = model.get(prop);
+                noModelVal = nullOrUndef(modelVal);
+                noDataVal = nullOrUndef(dataVal) || (isNaN(dataVal) && (f.type===ft.int || f.type===ft.dec || f.type===ft.money));
+                if(_.isArray(modelVal)){
+                    if(!_.isEqual(modelVal, dataVal)){
+                        return true;
+                    }
+                    // TODO compare arrays?
+                }else if(!(dataVal == modelVal || (noDataVal && noModelVal))) {
+                    return true;
+                }
             }
-        });
+            if(subCollecs){
+                var scIds=Object.keys(subCollecs);
+                iMax=scIds.length;
+                for (i = 0; i<iMax; i++) {
+                    var scId=scIds[i],
+                        dVals=data[scId],
+                        mVals=this.model.get(scId),
+                        fs2=subCollecs[scId].elements;
+                    if(emptyOrUndef(dVals)){
+                        dVals=[];
+                    }
+                    if(emptyOrUndef(mVals)){
+                        mVals=[];
+                    }
+                    if(dVals.length!==mVals.length){
+                        return true;
+                    }else{
+                        for(var r=0;r<dVals.length;r++){
+                            var dObj = dVals[r],
+                                mObj = mVals[r];
+                            for(var j=0;j<fs2.length;j++) {
+                                var fid = fs2[j].id,
+                                    dv=dObj[fid],
+                                    mv=mObj[fid],
+                                    dNo=nullOrUndef(dv),
+                                    mNo=nullOrUndef(mv);
+                                if(dNo!==mNo || (dv!==mv)){
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return false;
     },
 
@@ -781,7 +849,7 @@ Evol.ViewOne = Backbone.View.extend({
         var fs=this.getFields(),
             fld=_.findWhere(fs,{id:id});
 
-        if(fld||fld.help){
+        if(fld && fld.help){
             var $f=$el.closest('.evol-fld'),
                 $fh=$f.find('.help-block');
             if($fh.length>0){

@@ -12,6 +12,7 @@
 Evol.ViewOne.View = Evol.ViewOne.extend({
 
     viewName: 'view',
+    editable: false,
     prefix: 'ovw',
 
     getData: function () {

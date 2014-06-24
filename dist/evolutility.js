@@ -261,11 +261,15 @@ Evol.UI = {
     },
 
     // --- panels ---
-    HTMLPanelLabel: function (label) {
+    HTMLPanelBegin: function (pid, label, css) {
         return [
+            '<div data-pid="', pid, '" class=", panel ', css, '">',
             '<div class="panel-heading">', Evol.UI.icon('chevron-up', 'evol-title-toggle'),
             '<h3 class="panel-title">', label, '</h3></div>'
         ].join('');
+    },
+    HTMLPanelEnd: function () {
+        return '</div>';
     },
 
     HTMLEmptyPanel: function(id, css, style){
@@ -468,6 +472,7 @@ Evol.i18n = {
 
     // --- msg & status ---
     saved: 'Record saved.',
+    unSavedChanges: 'You have unsaved changes.\nClick OK to navigate without saving your changes.',
     DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value,
     DeleteEntities: 'Delete {0} {1}?', // delete 5 tasks
     NoChange:'No Change',
@@ -1084,6 +1089,7 @@ var Evol = Evol || {};
 Evol.ViewMany = Backbone.View.extend({
 
     viewType:'many',
+    editable: false,
     cardinality: 'n',
 
     options: {
@@ -1677,6 +1683,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     viewType:'one',
     cardinality: '1',
+    editable: true,
     _tabId: false,
 
     events: {
@@ -1715,7 +1722,7 @@ Evol.ViewOne = Backbone.View.extend({
         this.$el.html(h.join(''));
         this.custOn=false;
         this.postRender();
-        this.setData(this.model); // TODO remove it
+        this.setData(this.model, true); // TODO remove it
         return this;
     },
 
@@ -1747,7 +1754,7 @@ Evol.ViewOne = Backbone.View.extend({
         this.model = model;
         return this
             .clearMessages()
-            .setData(model);
+            .setData(model, true);
     },
 
     getModel:function() {
@@ -1756,10 +1763,9 @@ Evol.ViewOne = Backbone.View.extend({
 
     setUIModel: function(uimodel) {
         this.options.uiModel = uimodel;
-        var d=this.getData();
-        return this
-            .render()
-            .setData(d);
+        //var d=this.getData();
+        this._fields=null;
+        return this.clearCache().render();  //.setData(d);
     },
     getUIModel: function() {
         return this.options.uiModel;
@@ -1807,7 +1813,7 @@ Evol.ViewOne = Backbone.View.extend({
                     });
                     vs2.push(v);
                 });
-                vs[sc.attr]=vs2;
+                vs[sc.attr||sc.id]=vs2;
             });
         }
         if(skipReadOnlyFields){
@@ -1820,8 +1826,8 @@ Evol.ViewOne = Backbone.View.extend({
         return vs;
     },
 
-    setData: function (model) {
-        if((!_.isUndefined(model)) && model!==null){
+    setData: function (model, isModel) {
+        if(!_.isUndefined(model) && model!==null){
             var fs = this.getFields(),
                 that=this,
                 fTypes = Evol.Dico.fieldTypes,
@@ -1832,53 +1838,55 @@ Evol.ViewOne = Backbone.View.extend({
                 newPix;
             _.each(fs, function (f) {
                 $f=that.$(prefix + f.id);
-                fv=model.get(f.attribute || f.id);
-                if(model){
-                    if(f.readonly){
-                        if(f.type===fTypes.pix){
+                if(isModel){
+                    fv=model.get(f.attribute || f.id);
+                }else{
+                    fv=model[f.attribute || f.id];
+                }
+                if(f.readonly){
+                    if(f.type===fTypes.pix){
+                        newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
+                        $f.val(fv)
+                            .prev().remove();
+                        $f.before(newPix);
+                    }else{
+                        switch(f.type){
+                            case fTypes.lov:
+                            case fTypes.bool:
+                            case fTypes.email:
+                            case fTypes.url:
+                                $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
+                                break;
+                            case fTypes.pix:
+                                $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
+                                break;
+                            default:
+                                $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
+                        }
+                    }
+                }else{
+                    switch(f.type) {
+                        case fTypes.lov:
+                            var $fc=$f.children().removeAttr('selected');
+                            if(fv!==''){
+                                $fc.filter('[value='+fv+']')
+                                    .attr('selected', true);
+                            }
+                            break;
+                        case fTypes.bool:
+                            $f.prop('checked', fv);
+                            break;
+                        case fTypes.pix:
                             newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
                             $f.val(fv)
                                 .prev().remove();
                             $f.before(newPix);
-                        }else{
-                            switch(f.type){
-                                case fTypes.lov:
-                                case fTypes.bool:
-                                case fTypes.email:
-                                case fTypes.url:
-                                    $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
-                                    break;
-                                case fTypes.pix:
-                                    $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
-                                    break;
-                                default:
-                                    $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
-                            }
-                        }
-                    }else{
-                        switch(f.type) {
-                            case fTypes.lov:
-                                var $fc=$f.children().removeAttr('selected');
-                                if(fv!==''){
-                                    $fc.filter('[value='+fv+']')
-                                        .attr('selected', true);
-                                }
-                                break;
-                            case fTypes.bool:
-                                $f.prop('checked', fv);
-                                break;
-                            case fTypes.pix:
-                                newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
-                                $f.val(fv)
-                                    .prev().remove();
-                                $f.before(newPix);
-                                break;
-                            case fTypes.list:
-                                $f.select2('val', fv);
-                                break;
-                            default:
-                                $f.val(fv);
-                        }
+                            break;
+                        case fTypes.list:
+                            $f.select2('val', fv);
+                            break;
+                        default:
+                            $f.val(fv);
                     }
                 }
             });
@@ -1955,6 +1963,12 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 
+    clearCache: function(fid, fvDefault, mode){
+        this._fieldHash={};
+        this._fields=null;
+        return this;
+    },
+
     getModelFieldValue: function(fid, fvDefault, mode){
         if(this.model && this.model.has(fid)){
             return (mode !== 'new') ? this.model.get(fid) : fvDefault || '';
@@ -1963,14 +1977,74 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     isDirty: function(){
-         var data=this.getData(),
-         model=this.model;
+        function nullOrUndef(v){
+            return v==='' || _.isUndefined(v) || v===null || v===false;
+        }
+        function emptyOrUndef(v){
+            return v===null || _.isUndefined(v) || v===[];
+        }
+        if(this.editable){
+            var fs= this.getFields(),
+                ft=Evol.Dico.fieldTypes,
+                data=this.getData(),
+                model=this.model,
+                i,
+                iMax=fs.length,
+                subCollecs=this.getSubCollecs(),
+                noModelVal,
+                noDataVal;
 
-        _.each(data, function(value, prop){
-            if(data[prop] !== model.get(prop)){
-                return true;
+            for (i = 0; i < iMax; i++) {
+                var f=fs[i],
+                    prop = f.attribute || f.id,
+                    dataVal = data[prop],
+                    modelVal = model.get(prop);
+                noModelVal = nullOrUndef(modelVal);
+                noDataVal = nullOrUndef(dataVal) || (isNaN(dataVal) && (f.type===ft.int || f.type===ft.dec || f.type===ft.money));
+                if(_.isArray(modelVal)){
+                    if(!_.isEqual(modelVal, dataVal)){
+                        return true;
+                    }
+                    // TODO compare arrays?
+                }else if(!(dataVal == modelVal || (noDataVal && noModelVal))) {
+                    return true;
+                }
             }
-        });
+            if(subCollecs){
+                var scIds=Object.keys(subCollecs);
+                iMax=scIds.length;
+                for (i = 0; i<iMax; i++) {
+                    var scId=scIds[i],
+                        dVals=data[scId],
+                        mVals=this.model.get(scId),
+                        fs2=subCollecs[scId].elements;
+                    if(emptyOrUndef(dVals)){
+                        dVals=[];
+                    }
+                    if(emptyOrUndef(mVals)){
+                        mVals=[];
+                    }
+                    if(dVals.length!==mVals.length){
+                        return true;
+                    }else{
+                        for(var r=0;r<dVals.length;r++){
+                            var dObj = dVals[r],
+                                mObj = mVals[r];
+                            for(var j=0;j<fs2.length;j++) {
+                                var fid = fs2[j].id,
+                                    dv=dObj[fid],
+                                    mv=mObj[fid],
+                                    dNo=nullOrUndef(dv),
+                                    mNo=nullOrUndef(mv);
+                                if(dNo!==mNo || (dv!==mv)){
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return false;
     },
 
@@ -2036,7 +2110,7 @@ Evol.ViewOne = Backbone.View.extend({
                 if(p.type==='panel-list'){
                     that.renderPanelList(h, p, mode);
                 }else{ // if(p.type==='panel')
-                    that.renderPanel(h, p, 'p-' + p.id, mode);
+                    that.renderPanel(h, p, 'p-' + ((p.id)?p.id:idx), mode);
                 }
             }
         });
@@ -2092,8 +2166,8 @@ Evol.ViewOne = Backbone.View.extend({
                 h.push(' pull-left" style="width:', p.width, '%">');
             }
         }
-        h.push('<div class="panel ', this.options.style, '">',
-            Evol.UI.HTMLPanelLabel(p.label, pid, 'PanelLabel'),
+        h.push(
+            Evol.UI.HTMLPanelBegin(pid, p.label, this.options.style),
             '<fieldset data-pid="', pid, '">');
         if(mode==='mini'){
             _.each(p.elements, function (elem) {
@@ -2120,14 +2194,15 @@ Evol.ViewOne = Backbone.View.extend({
                 }
             });
         }
-        h.push('</fieldset></div></div>');
+        h.push('</fieldset>',
+            Evol.UI.HTMLPanelEnd(),
+            '</div>');
         return this;
     },
 
     renderPanelList: function (h, p, mode) {
         h.push('<div style="width:', p.width, '%" class="evol-pnl pull-left" data-pid="', p.id,'">',
-            '<div class="panel ', this.options.style, '">',
-            Evol.UI.HTMLPanelLabel(p.label, p.id, 'PanelLabel'),
+            Evol.UI.HTMLPanelBegin(p.id, p.label, this.options.style),
             '<table class="table" data-mid="', p.attr,'"><thead><tr>'); // table-striped
         _.each(p.elements, function (elem) {
             h.push('<th>', elem.label, '</th>');
@@ -2137,7 +2212,9 @@ Evol.ViewOne = Backbone.View.extend({
         }
         h.push('</tr></thead><tbody>');
         this._renderPanelListBody(h, p, null, mode);
-        h.push('</tbody></table></div></div>');
+        h.push('</tbody></table>',
+            Evol.UI.HTMLPanelEnd(),
+            '</div>');
         return this;
     },
 
@@ -2440,7 +2517,7 @@ Evol.ViewOne = Backbone.View.extend({
         var fs=this.getFields(),
             fld=_.findWhere(fs,{id:id});
 
-        if(fld||fld.help){
+        if(fld && fld.help){
             var $f=$el.closest('.evol-fld'),
                 $fh=$f.find('.help-block');
             if($fh.length>0){
@@ -2750,6 +2827,7 @@ Evol.ViewOne.Mini = Evol.ViewOne.Edit.extend({
 Evol.ViewOne.View = Evol.ViewOne.extend({
 
     viewName: 'view',
+    editable: false,
     prefix: 'ovw',
 
     getData: function () {
@@ -4027,7 +4105,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             filter: true,
             'export': true,
             group: false,
-            customize:false
+            customize: false
         },
         pageSize:20
     },
@@ -4153,7 +4231,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
 	},
 
-	setView:function(viewName){
+	setView:function(viewName, navOk){
 		var opts=this.options,
             $e=this.$el,
             eid ='evolw-'+viewName,
@@ -4162,120 +4240,132 @@ Evol.ViewToolbar = Backbone.View.extend({
             config,
             collec=this._curCollec();
 
-        if(this.curView && this.curView.getTab){
-            this.tabId = this.curView.getTab();
-        }
-        if(viewName==='new'){
-            viewName=this._prevOne?this._prevOne:'edit';
-            this.setView(viewName);
-            this.model=new opts.modelClass();
-            this.model.collection=collec;
-            this.newItem();
-            this.curView.options.mode='new';
-        }else{
-            if($v.length){
-            // -- view already exists and was rendered
-                this.model=this.curView.model;
-                if(this.curView.model){
-                    //TODO debug
-                    this.model.collection=collec;
-                }
-                this.curView=this.viewsHash[viewName];
-                if(this.curView.setCollection){
-                    this.curView.setCollection(collec);
-                }
-                if(this.model && !this.model.isNew()){
-                    if(this.curView.setModel){
-                        if(!this.curView.collection && m.collection){
-                            this.curView.collection=this.model.collection;
-                        }
-                        this.curView.setModel(this.model);
-                    }else{
-                        this.curView.model = this.model;
-                    }
-                    if(this.curView.setTitle){
-                        this.curView.setTitle();
-                    }
-                    if(this.curView.cardinality==='n' && this.curView.setPage){
-                        this.curView.setPage(this.options.pageIndex);
-                    }
-                }else if(this.curView.clear){
-                    this.curView.clear();
-                }
-                this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
-                    .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
-                this._keepTab(viewName);
-                $v.show()
-                    .siblings().not('.evo-toolbar,.evo-filters,.clearfix').hide();
+        //if(navOk || (vw && vw.options.mode==='new' && !vw.isEmpty()) || this._ok2go()){
+            if(vw && vw.getTab){
+                this.tabId = vw.getTab();
+            }
+            if(viewName==='new'){
+                viewName=this._prevOne?this._prevOne:'edit';
+                this.setView(viewName, true);
+                this.model=new opts.modelClass();
+                this.model.collection=collec;
+                this.newItem();
+                vw.options.mode='new';
             }else{
-            // -- create new instance of the view
-                $v=$('<div data-vid="evolw-'+viewName+'"></div>');
-                $e.children().not('.evo-toolbar,.evo-filters,.clearfix').hide();
-                $e.append($v);
-                config = {
-                    el: $v,
-                    mode: viewName,
-                    model: this.model,
-                    collection: collec,
-                    uiModel: opts.uiModel,
-                    style: opts.style,
-                    pageSize: opts.pageSize || 20,
-                    pageIndex: opts.pageIndex || 0,
-                    titleSelector: opts.titleSelector
-                };
-                this.$('[data-id="new"]').show();
-                this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
-                    .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
-                switch(viewName){
-                    // --- one ---
-                    case 'view':
-                    case 'edit':
-                    case 'mini':
-                    case 'json':
-                    case 'wiz':
-                        vw = new Evol.ViewOne[this.modesHash[viewName]](config)
-                            .render();
-                        this._prevOne=viewName;
-                        this.curView=vw;
-                        this._keepTab(viewName);
-                        break;
-                    // --- many ---
-                    case 'charts':
-                    case 'badges':
-                    case 'list':
-                        vw = new Evol.ViewMany[this.modesHash[viewName]](config)
-                            .render();
-                        this._prevMany=viewName;
-                        vw.setTitle();
-                        if(viewName!='charts' && this.options.pageIndex > 0){
-                            //var pIdx=this.curView.getPage();
-                            vw.setPage(this.options.pageIndex || 0);
+                if($v.length){
+                    // -- view already exists and was rendered
+                    this.model=vw.model;
+                    if(vw.model){
+                        //TODO debug
+                        this.model.collection=collec;
+                    }
+                    vw=this.viewsHash[viewName];
+                    if(vw.setCollection){
+                        vw.setCollection(collec);
+                    }
+                    if(this.model && !this.model.isNew()){
+                        if(vw.setModel){
+                            if(!vw.collection && m.collection){
+                                vw.collection=this.model.collection;
+                            }
+                            vw.setModel(this.model);
+                        }else{
+                            vw.model = this.model;
                         }
-                        //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
-                        break;
-                    // --- actions ---
-                    case 'export':
-                        vw = new Evol.ViewAction.Export(config);
-                        $v.addClass('panel panel-info')
-                            .slideDown();
-                        break;
+                        if(vw.setTitle){
+                            vw.setTitle();
+                        }
+                        if(vw.cardinality==='n' && vw.setPage){
+                            vw.setPage(this.options.pageIndex);
+                        }
+                    }else if(vw.clear){
+                        vw.clear();
+                    }
+                    this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
+                        .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
+                    this.curView=vw;
+                    this._keepTab(viewName);
+                    $v.show()
+                        .siblings().not('.evo-toolbar,.evo-filters,.clearfix').hide();
+                }else{
+                    // -- create new instance of the view
+                    $v=$('<div data-vid="evolw-'+viewName+'"></div>');
+                    $e.children().not('.evo-toolbar,.evo-filters,.clearfix').hide();
+                    $e.append($v);
+                    config = {
+                        el: $v,
+                        mode: viewName,
+                        model: this.model,
+                        collection: collec,
+                        uiModel: opts.uiModel,
+                        style: opts.style,
+                        pageSize: opts.pageSize || 20,
+                        pageIndex: opts.pageIndex || 0,
+                        titleSelector: opts.titleSelector
+                    };
+                    this.$('[data-id="new"]').show();
+                    this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
+                        .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
+
+                    switch(viewName){
+                        // --- one ---
+                        case 'view':
+                        case 'edit':
+                        case 'mini':
+                        case 'json':
+                        case 'wiz':
+                            var vwPrev = null,
+                                cData;
+                            if(vw && vw.editable){
+                                vwPrev = vw;
+                                cData=vw.getData();
+                            }
+                            vw = new Evol.ViewOne[this.modesHash[viewName]](config)
+                                .render();
+                            this._prevOne=viewName;
+                            this._keepTab(viewName);
+                            //if(vwPrev && vw.cardinality==='1'){
+                            //    vw.setData(cData);
+                            //}
+                            break;
+                        // --- many ---
+                        case 'charts':
+                        case 'badges':
+                        case 'list':
+                            vw = new Evol.ViewMany[this.modesHash[viewName]](config)
+                                .render();
+                            this._prevMany=viewName;
+                            vw.setTitle();
+                            if(viewName!='charts' && this.options.pageIndex > 0){
+                                //var pIdx=this.curView.getPage();
+                                vw.setPage(this.options.pageIndex || 0);
+                            }
+                            //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
+                            break;
+                        // --- actions ---
+                        case 'export':
+                            vw = new Evol.ViewAction.Export(config);
+                            $v.addClass('panel panel-info')
+                                .slideDown();
+                            break;
+                    }
+                    this.curView=vw;
+                    this.viewsHash[viewName]=vw;
+                    $(this.options.titleSelector).html(this.curView.getTitle());
                 }
-                this.curView=vw;
-                this.viewsHash[viewName]=vw;
-                $(this.options.titleSelector).html(this.curView.getTitle());
             }
-        }
-        if(this.curView.cardinality==='n'){ // TODO do not always change flag
-            this.showFilter(false);
-        }else{
-            if(this.curView.viewName==='wizard'){
-                this.curView.stepIndex(0);
+            if(this.curView.cardinality==='n'){ // TODO do not always change flag
+                this.showFilter(false);
+            }else{
+                if(this.curView.viewName==='wizard'){
+                    this.curView.stepIndex(0);
+                }
+                this.hideFilter();
             }
-            this.hideFilter();
-        }
-        this.setIcons(viewName);
+            this.setIcons(viewName);
+        //}
         return this;
-	},
+    },
 
     getView:function(){
         return this.curView;
@@ -4650,6 +4740,16 @@ Evol.ViewToolbar = Backbone.View.extend({
             }
         }
     },
+/*
+    _ok2go: function(){
+        if(this.curView && this.curView.editable && this.curView.isDirty && this.curView.isDirty()){
+            if(confirm(Evol.i18n.unSavedChanges)){
+                return true;
+            }
+            return false;
+        }
+        return true;
+    },*/
 
     click_toolbar: function(evt, ui){
         var $e=$(evt.currentTarget);
@@ -4678,10 +4778,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             case 'prev':
             case 'next':
                 if(this.curView.cardinality==='1'){
-                    if(this.curView.isDirty && this.curView.isDirty()){
-                        // TODO prompt for save changes
-                    }
-                    this.browse(toolId);
+                    //if(this._ok2go()){
+                        this.browse(toolId);
+                    //}
                 }else if(this.curView.cardinality==='n'){
                     this.paginate(toolId);
                 }

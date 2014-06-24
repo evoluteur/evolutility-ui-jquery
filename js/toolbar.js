@@ -45,7 +45,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             filter: true,
             'export': true,
             group: false,
-            customize:false
+            customize: false
         },
         pageSize:20
     },
@@ -171,7 +171,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
 	},
 
-	setView:function(viewName){
+	setView:function(viewName, navOk){
 		var opts=this.options,
             $e=this.$el,
             eid ='evolw-'+viewName,
@@ -180,120 +180,132 @@ Evol.ViewToolbar = Backbone.View.extend({
             config,
             collec=this._curCollec();
 
-        if(this.curView && this.curView.getTab){
-            this.tabId = this.curView.getTab();
-        }
-        if(viewName==='new'){
-            viewName=this._prevOne?this._prevOne:'edit';
-            this.setView(viewName);
-            this.model=new opts.modelClass();
-            this.model.collection=collec;
-            this.newItem();
-            this.curView.options.mode='new';
-        }else{
-            if($v.length){
-            // -- view already exists and was rendered
-                this.model=this.curView.model;
-                if(this.curView.model){
-                    //TODO debug
-                    this.model.collection=collec;
-                }
-                this.curView=this.viewsHash[viewName];
-                if(this.curView.setCollection){
-                    this.curView.setCollection(collec);
-                }
-                if(this.model && !this.model.isNew()){
-                    if(this.curView.setModel){
-                        if(!this.curView.collection && m.collection){
-                            this.curView.collection=this.model.collection;
-                        }
-                        this.curView.setModel(this.model);
-                    }else{
-                        this.curView.model = this.model;
-                    }
-                    if(this.curView.setTitle){
-                        this.curView.setTitle();
-                    }
-                    if(this.curView.cardinality==='n' && this.curView.setPage){
-                        this.curView.setPage(this.options.pageIndex);
-                    }
-                }else if(this.curView.clear){
-                    this.curView.clear();
-                }
-                this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
-                    .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
-                this._keepTab(viewName);
-                $v.show()
-                    .siblings().not('.evo-toolbar,.evo-filters,.clearfix').hide();
+        //if(navOk || (vw && vw.options.mode==='new' && !vw.isEmpty()) || this._ok2go()){
+            if(vw && vw.getTab){
+                this.tabId = vw.getTab();
+            }
+            if(viewName==='new'){
+                viewName=this._prevOne?this._prevOne:'edit';
+                this.setView(viewName, true);
+                this.model=new opts.modelClass();
+                this.model.collection=collec;
+                this.newItem();
+                vw.options.mode='new';
             }else{
-            // -- create new instance of the view
-                $v=$('<div data-vid="evolw-'+viewName+'"></div>');
-                $e.children().not('.evo-toolbar,.evo-filters,.clearfix').hide();
-                $e.append($v);
-                config = {
-                    el: $v,
-                    mode: viewName,
-                    model: this.model,
-                    collection: collec,
-                    uiModel: opts.uiModel,
-                    style: opts.style,
-                    pageSize: opts.pageSize || 20,
-                    pageIndex: opts.pageIndex || 0,
-                    titleSelector: opts.titleSelector
-                };
-                this.$('[data-id="new"]').show();
-                this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
-                    .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
-                switch(viewName){
-                    // --- one ---
-                    case 'view':
-                    case 'edit':
-                    case 'mini':
-                    case 'json':
-                    case 'wiz':
-                        vw = new Evol.ViewOne[this.modesHash[viewName]](config)
-                            .render();
-                        this._prevOne=viewName;
-                        this.curView=vw;
-                        this._keepTab(viewName);
-                        break;
-                    // --- many ---
-                    case 'charts':
-                    case 'badges':
-                    case 'list':
-                        vw = new Evol.ViewMany[this.modesHash[viewName]](config)
-                            .render();
-                        this._prevMany=viewName;
-                        vw.setTitle();
-                        if(viewName!='charts' && this.options.pageIndex > 0){
-                            //var pIdx=this.curView.getPage();
-                            vw.setPage(this.options.pageIndex || 0);
+                if($v.length){
+                    // -- view already exists and was rendered
+                    this.model=vw.model;
+                    if(vw.model){
+                        //TODO debug
+                        this.model.collection=collec;
+                    }
+                    vw=this.viewsHash[viewName];
+                    if(vw.setCollection){
+                        vw.setCollection(collec);
+                    }
+                    if(this.model && !this.model.isNew()){
+                        if(vw.setModel){
+                            if(!vw.collection && m.collection){
+                                vw.collection=this.model.collection;
+                            }
+                            vw.setModel(this.model);
+                        }else{
+                            vw.model = this.model;
                         }
-                        //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
-                        break;
-                    // --- actions ---
-                    case 'export':
-                        vw = new Evol.ViewAction.Export(config);
-                        $v.addClass('panel panel-info')
-                            .slideDown();
-                        break;
+                        if(vw.setTitle){
+                            vw.setTitle();
+                        }
+                        if(vw.cardinality==='n' && vw.setPage){
+                            vw.setPage(this.options.pageIndex);
+                        }
+                    }else if(vw.clear){
+                        vw.clear();
+                    }
+                    this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
+                        .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
+                    this.curView=vw;
+                    this._keepTab(viewName);
+                    $v.show()
+                        .siblings().not('.evo-toolbar,.evo-filters,.clearfix').hide();
+                }else{
+                    // -- create new instance of the view
+                    $v=$('<div data-vid="evolw-'+viewName+'"></div>');
+                    $e.children().not('.evo-toolbar,.evo-filters,.clearfix').hide();
+                    $e.append($v);
+                    config = {
+                        el: $v,
+                        mode: viewName,
+                        model: this.model,
+                        collection: collec,
+                        uiModel: opts.uiModel,
+                        style: opts.style,
+                        pageSize: opts.pageSize || 20,
+                        pageIndex: opts.pageIndex || 0,
+                        titleSelector: opts.titleSelector
+                    };
+                    this.$('[data-id="new"]').show();
+                    this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
+                        .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
+
+                    switch(viewName){
+                        // --- one ---
+                        case 'view':
+                        case 'edit':
+                        case 'mini':
+                        case 'json':
+                        case 'wiz':
+                            var vwPrev = null,
+                                cData;
+                            if(vw && vw.editable){
+                                vwPrev = vw;
+                                cData=vw.getData();
+                            }
+                            vw = new Evol.ViewOne[this.modesHash[viewName]](config)
+                                .render();
+                            this._prevOne=viewName;
+                            this._keepTab(viewName);
+                            //if(vwPrev && vw.cardinality==='1'){
+                            //    vw.setData(cData);
+                            //}
+                            break;
+                        // --- many ---
+                        case 'charts':
+                        case 'badges':
+                        case 'list':
+                            vw = new Evol.ViewMany[this.modesHash[viewName]](config)
+                                .render();
+                            this._prevMany=viewName;
+                            vw.setTitle();
+                            if(viewName!='charts' && this.options.pageIndex > 0){
+                                //var pIdx=this.curView.getPage();
+                                vw.setPage(this.options.pageIndex || 0);
+                            }
+                            //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
+                            break;
+                        // --- actions ---
+                        case 'export':
+                            vw = new Evol.ViewAction.Export(config);
+                            $v.addClass('panel panel-info')
+                                .slideDown();
+                            break;
+                    }
+                    this.curView=vw;
+                    this.viewsHash[viewName]=vw;
+                    $(this.options.titleSelector).html(this.curView.getTitle());
                 }
-                this.curView=vw;
-                this.viewsHash[viewName]=vw;
-                $(this.options.titleSelector).html(this.curView.getTitle());
             }
-        }
-        if(this.curView.cardinality==='n'){ // TODO do not always change flag
-            this.showFilter(false);
-        }else{
-            if(this.curView.viewName==='wizard'){
-                this.curView.stepIndex(0);
+            if(this.curView.cardinality==='n'){ // TODO do not always change flag
+                this.showFilter(false);
+            }else{
+                if(this.curView.viewName==='wizard'){
+                    this.curView.stepIndex(0);
+                }
+                this.hideFilter();
             }
-            this.hideFilter();
-        }
-        this.setIcons(viewName);
+            this.setIcons(viewName);
+        //}
         return this;
-	},
+    },
 
     getView:function(){
         return this.curView;
@@ -668,6 +680,16 @@ Evol.ViewToolbar = Backbone.View.extend({
             }
         }
     },
+/*
+    _ok2go: function(){
+        if(this.curView && this.curView.editable && this.curView.isDirty && this.curView.isDirty()){
+            if(confirm(Evol.i18n.unSavedChanges)){
+                return true;
+            }
+            return false;
+        }
+        return true;
+    },*/
 
     click_toolbar: function(evt, ui){
         var $e=$(evt.currentTarget);
@@ -696,10 +718,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             case 'prev':
             case 'next':
                 if(this.curView.cardinality==='1'){
-                    if(this.curView.isDirty && this.curView.isDirty()){
-                        // TODO prompt for save changes
-                    }
-                    this.browse(toolId);
+                    //if(this._ok2go()){
+                        this.browse(toolId);
+                    //}
                 }else if(this.curView.cardinality==='n'){
                     this.paginate(toolId);
                 }
