@@ -61,7 +61,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             '<div>',EvoUI.input.checkbox('showID','1'), '<label for="showID">', i18nXpt.IDkey, '</label>','</div>'*/
         );
         _.each(fields, function(f, i){
-            var fLabel = f.labelexport || f.label,
+            var fLabel = f.labelexport || f.label || f.labellist,
                 fID = 'fx-' + f.id;
             if (fLabel === null || fLabel === '') {
                 fLabel = '(' + fID + ')';

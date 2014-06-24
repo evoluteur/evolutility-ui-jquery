@@ -2981,7 +2981,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             '<div>',EvoUI.input.checkbox('showID','1'), '<label for="showID">', i18nXpt.IDkey, '</label>','</div>'*/
         );
         _.each(fields, function(f, i){
-            var fLabel = f.labelexport || f.label,
+            var fLabel = f.labelexport || f.label || f.labellist,
                 fID = 'fx-' + f.id;
             if (fLabel === null || fLabel === '') {
                 fLabel = '(' + fID + ')';
@@ -3679,7 +3679,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                     h=['<select id="field" class="form-control"><option value=""></option>'];
                 for (var i=0,iMax=fields.length;i<iMax;i++){
                     var f=fields[i];
-                    h.push(Evol.UI.input.option(f.id,f.label));
+                    h.push(Evol.UI.input.option(f.id,f.label || f.labellist));
                 }
                 h.push('</select>');
                 this._fList=h.join('');

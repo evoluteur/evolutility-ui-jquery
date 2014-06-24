@@ -286,7 +286,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                     h=['<select id="field" class="form-control"><option value=""></option>'];
                 for (var i=0,iMax=fields.length;i<iMax;i++){
                     var f=fields[i];
-                    h.push(Evol.UI.input.option(f.id,f.label));
+                    h.push(Evol.UI.input.option(f.id,f.label || f.labellist));
                 }
                 h.push('</select>');
                 this._fList=h.join('');
