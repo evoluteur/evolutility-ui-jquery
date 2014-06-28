@@ -28,7 +28,7 @@ var dico_field_ui = {
                 {
                     id: 'type',
                     label: "Type",
-                    help: "User Type for the field on screen. Text, or emails can be char, varchar or nvarchar...",
+                    help: "User Type for the field on screen.",
                     type: "lov",
                     list:[
                         {id:'text',text:"text", icon:'ft-txt.gif'},
@@ -71,90 +71,23 @@ var dico_field_ui = {
                     help: 'Field ID in UI = prefix + ID',
                     maxlength: 100,
                     width: 38
-                }
-            ]
-        },
-        {
-            type: "panel",
-            label: "Field Help",
-            width: 38,
-            elements: [
-                {
-                    id: 'help',
-                    label: "Help",
-                    help: "Help on the field for edition",
-                    type: "textmultiline",
-                    maxlength: 500,
-                    width: 100,
-                    height: 5
-                }
-            ]
-        },
-        {
-            type: "panel",
-            label: "Display",
-            width: 31,
-            elements: [
+                },
                 {
                     id:'format',
                     label: "Format",
                     type: "text",
                     help: "example '$ 0.00'",
                     maxlength: 30,
-                    width: 100
+                    width: 62
                 },
                 {
                     id: 'css',
-                    label: "CSS Field Edit",
+                    label: "CSS",
                     labellist: "CSS Edit",
-                    help: "Stylesheet class name for the field in edit mode.",
+                    help: "Stylesheet class name for the field for the edit view.",
                     type: "text",
                     maxlength: 20,
-                    width: 100
-                },
-                {
-                    id:'viewmany',
-                    label: "List",
-                    help: "Field shows in lists",
-                    labellist: "List",
-                    type: "boolean",
-                    viewmany: true,
-                    width: 100
-                }
-            ]
-        },
-        {
-            type: "panel",
-            label: "Layout",
-            width: 31,
-            elements: [
-                {
-                    id:'position',
-                    label: "Position",
-                    help: "Integer (do not have to be consecutive)",
-                    type: "integer",
-                    maxlength: 3,
-                    width: 100
-                },
-                {
-                    id:'height',
-                    label: "Height",
-                    help: "Height in number of lines (for ''Textmultiline'' fields)",
-                    type: "integer",
-                    maxlength: 3,
-                    defaultvalue: 1,
-                    max:30,
-                    width: 100
-                },
-                {
-                    id:'width',
-                    label: "Width",
-                    defaultvalue: 100,
-                    help: "Relative width of the field (in percentage)",
-                    type: "integer",
-                    format: "0 '%'",
-                    maxlength: 3,
-                    width: 100
+                    width: 38
                 }
             ]
         },
@@ -166,7 +99,7 @@ var dico_field_ui = {
                 {
                     id:'required',
                     label: "Required",
-                    defaultvalue: false,
+                    //defaultvalue: false,
                     help: "Mandatory field",
                     type: "boolean",
                     viewmany: true,
@@ -199,7 +132,8 @@ var dico_field_ui = {
                 },
                 {
                     id:'minvalue',
-                    label: "Minimum value",
+                    label: "Min. value",
+                    help: "Minimum value allowed for the field",
                     conditions: [{
                         'visible': showIfNumber
                     }],
@@ -210,7 +144,7 @@ var dico_field_ui = {
                 },
                 {
                     id:'maxvalue',
-                    label: "Maximum value",
+                    label: "Max. value",
                     help: "Maximum value allowed for the field",
                     conditions: [{
                         'visible': showIfNumber
@@ -219,6 +153,66 @@ var dico_field_ui = {
                     type: "integer",
                     maxlength: 4,
                     width: 50
+                }
+            ]
+        },
+        {
+            type: "panel",
+            label: "Layout",
+            width: 62,
+            elements: [
+                {
+                    id:'position',
+                    label: "Position",
+                    help: "Integer (do not have to be consecutive)",
+                    type: "integer",
+                    maxlength: 3,
+                    width: 62
+                },
+                {
+                    id:'viewmany',
+                    label: "List",
+                    help: "Field shows in lists",
+                    labellist: "List",
+                    type: "boolean",
+                    viewmany: true,
+                    width: 38
+                },
+                {
+                    id:'height',
+                    label: "Height",
+                    help: "Height in number of lines (for ''Textmultiline'' fields)",
+                    type: "integer",
+                    maxlength: 3,
+                    defaultvalue: 1,
+                    max:30,
+                    width: 62
+                },
+                {
+                    id:'width',
+                    label: "Width",
+                    defaultvalue: 100,
+                    help: "Relative width of the field (in percentage)",
+                    type: "integer",
+                    format: "0 '%'",
+                    maxlength: 3,
+                    width: 38
+                }
+            ]
+        },
+        {
+            type: "panel",
+            label: "Field Help",
+            width: 38,
+            elements: [
+                {
+                    id: 'help',
+                    label: "Help",
+                    help: "Help on the field for edition",
+                    type: "textmultiline",
+                    maxlength: 500,
+                    width: 100,
+                    height: 6
                 }
             ]
         }
