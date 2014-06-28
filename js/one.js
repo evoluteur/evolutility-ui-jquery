@@ -169,6 +169,7 @@ Evol.ViewOne = Backbone.View.extend({
                 subCollecs=this.getSubCollecs(),
                 iconsPath=this.options.iconsPath||'',
                 newPix;
+
             _.each(fs, function (f) {
                 $f=that.$(prefix + f.id);
                 if(isModel){
@@ -207,7 +208,11 @@ Evol.ViewOne = Backbone.View.extend({
                             }
                             break;
                         case fTypes.bool:
-                            $f.prop('checked', fv);
+                            if(fv){
+                                $f.prop('checked', fv);
+                            }else{
+                                $f.removeProp('checked');
+                            }
                             break;
                         case fTypes.pix:
                             newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
