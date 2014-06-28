@@ -257,6 +257,34 @@ Evol.UI = {
         return ['<i class="',Evol.UI.html.glyphicon, icon, '" data-id="', id, '" data-type="', type, '"></i>'].join('');
     },
 
+    // --- menu ---
+    menu: {
+        hBegin: function (id, tag, icon){
+            return ['<', tag,' class="dropdown" data-id="',id,'">',
+                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',Evol.UI.icon(icon),' <b class="caret"></b></a>',
+                '<ul class="dropdown-menu evo-dropdown-icons">'].join('');
+        },
+        hEnd: function(tag){
+            return '</ul></' + tag + '>';
+        },
+        hItem: function(id, label, icon, cardi, style){
+            var h=[];
+            h.push('<li data-id="',id,'"');
+            if(cardi){
+                h.push(' data-cardi="'+cardi,'"');
+            }
+            if(style!=='label'){
+                h.push(' data-toggle="tooltip" data-placement="bottom" title="" data-original-title="',label,'"');
+            }
+            h.push('><a href="#" data-id="',id,'">',Evol.UI.icon(icon));
+            if(style!=='tooltip'){
+                h.push('&nbsp;',label);
+            }
+            h.push('</a></li>');
+            return h.join('');
+        }
+    },
+
     // --- panels ---
     HTMLPanelBegin: function (pid, label, css) {
         return [

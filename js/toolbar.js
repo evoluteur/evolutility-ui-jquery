@@ -82,35 +82,15 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     _toolbarHTML: function(){
         var h=[],
+            eui=Evol.UI.menu,
             opts=this.options,
             endMenu='</ul></li>',
             menuDevider='<li role="presentation" class="divider" data-cardi="1"></li>',
             menuDeviderCard1='<li role="presentation" class="divider" data-cardi="1"></li>';
 
-        function beginMenu(id, icon){
-            return ['<li class="dropdown" data-id="',id,'">',
-                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',Evol.UI.icon(icon),' <b class="caret"></b></a>',
-                '<ul class="dropdown-menu evo-dropdown-icons">'].join('');
-        }
-
-        function link2h(id, label, icon, cardi, style){
-            h.push('<li data-id="',id,'"');
-            if(cardi){
-                h.push(' data-cardi="'+cardi,'"');
-            }
-            if(style!=='label'){
-                h.push(' data-toggle="tooltip" data-placement="bottom" title="" data-original-title="',label,'"');
-            }
-            h.push('><a href="#" data-id="',id,'">',Evol.UI.icon(icon));
-            if(style!=='tooltip'){
-                h.push('&nbsp;',label);
-            }
-            h.push('</a></li>');
-        }
-
         function linkOpt2h (id, label, icon, cardi){
             if(opts.buttons && opts.buttons[id]){
-                link2h(id, label, icon, cardi, 'label');
+                h.push(eui.hItem(id, label, icon, cardi));
             }
         }
 
@@ -126,12 +106,11 @@ Evol.ViewToolbar = Backbone.View.extend({
         linkOpt2h('export',Evol.i18n.bExport,'cloud-download','n');
         //linkOpt2h('selections','','star');
         if(opts.toolbar){
-            link2h('prev','','chevron-left','x');
-            link2h('next','','chevron-right','x');
-            h.push('<li class="evo-tb-status" data-cardi="n"></li>');
-            h.push('</ul><ul class="nav nav-pills pull-right" data-id="views">');
-
-            h.push(beginMenu('views','eye-open'));
+            h.push(eui.hItem('prev','','chevron-left','x'),
+                eui.hItem('next','','chevron-right','x'),
+                '<li class="evo-tb-status" data-cardi="n"></li>',
+                '</ul><ul class="nav nav-pills pull-right" data-id="views">');
+            h.push(eui.hBegin('views','li','eye-open'));
             linkOpt2h('list','List','th-list','n');
             linkOpt2h('badges','Badges','th-large','n');
             linkOpt2h('charts','Charts','stats','n');
@@ -140,9 +119,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             linkOpt2h('mini','Mini','th-large','1'); //Important Fields only
             linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
-            h.push(endMenu);
+            h.push(eui.hEnd('li'));
 
-            linkOpt2h('customize','','wrench', '1', 'Customize');
+            //linkOpt2h('customize','','wrench', '1', 'Customize');
             /*
             if(opts.buttons.customize){
                 h.push(beginMenu('cust','wrench'));
@@ -336,6 +315,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     setIcons: function(mode){
         var setVisible=Evol.UI.setVisible;
+
         function oneMany(showOne, showMany){
             setVisible(tbBs.ones, showOne);
             setVisible(tbBs.manys, showMany);
