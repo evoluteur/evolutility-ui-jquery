@@ -79,9 +79,9 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                 }
                 var entityName=EvoUI.capitalize(uiModel.entities);
                 if(f.type===fTypes.lov){
-                    h.push(EvoUI.Charts.Pie(i18n.getLabel('charts.aByB',entityName,f.label), data, labels, style, sizes));
+                    h.push(EvoUI.Charts.Pie(i18n.getLabel('charts.aByB', entityName, f.labelcharts || f.label), data, labels, style, sizes));
                 }else{
-                    h.push(EvoUI.Charts.Bars(i18n.getLabel('charts.aB',entityName,f.label), data, labels, style, sizes));
+                    h.push(EvoUI.Charts.Bars(i18n.getLabel('charts.aB', entityName, f.labelcharts || f.label), data, labels, style, sizes));
                 }
             });
         }else{
