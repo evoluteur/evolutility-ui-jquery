@@ -312,7 +312,7 @@ var contacts_LOVs = {
 };
 
 var contacts_ui = {
-    id: 'evol-contact',
+    id: 'contact',
     label: 'Address book',
     icon: 'contact.gif',
     entity: 'contact', entities: 'contacts',
