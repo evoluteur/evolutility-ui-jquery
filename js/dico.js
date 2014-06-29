@@ -141,17 +141,17 @@ Evol.Dico = {
     },
 
     isTypeDateOrTime: function(fType){
-        return fType == EvoDico.fieldTypes.datetime || EvoDico.fieldTypes.date || fType==EvoDico.fieldTypes.time;
+        var ft=this.fieldTypes;
+        return fType == ft.datetime || ft.date || fType == ft.time;
     },
-
+/*
     showDesigner: function(id, type, $el, context){
         var $elDes=$('<div class="evodico-'+type+'"></div>'),
             model,
-            uiModel;
-//TODO set record
-        this.getFields (dico_field_ui, function(m){
-            return m.get('id')=='';
-        })
+            uiModel=context.options.uiModel;
+
+        //TODO set record
+        context.getFields(dico_field_ui);
         switch(type){
             case 'object':
                 //TODO
@@ -186,10 +186,11 @@ Evol.Dico = {
             //TODO save field => dependency: uiModel persistence...
             $elDes.remove();
         });
+        Evol.UI.HTMLModal();
 
         return this;
     },
-
+*/
     filterModels: function(models, filters){
         if(filters.length){
             return models.filter(function(model){

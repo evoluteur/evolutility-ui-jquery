@@ -74,7 +74,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
             $f=that.$(prefix + f.id);
             switch(f.type) {
                 case fTypes.bool:
-                    $f.prop('checked', f.defaultvalue || '');
+                    $f.prop('checked', f.defaultvalue?'checked':false);
                     break;
                 case fTypes.pix:
                     // TODO

@@ -220,6 +220,15 @@ Evol.UI = {
          },*/
     },
 
+    toggleCheckbox: function($cb, v){
+        if(v){
+            $cb.prop('checked', 'checked');
+        }else{
+            //$cb.removeProp('checked');
+            $cb.prop('checked', false);
+        }
+    },
+
     // --- links ---
     link: function (id, label, url, target) {
         var h=['<a class="evo-field" href="', url];

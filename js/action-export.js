@@ -389,7 +389,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             },
             ps = this.$('.evol-xpt-para input'),
             f = ps.eq(0),
-            fv = !_.isUndefined(f.attr('checked'));
+            fv = !_.isUndefined(f.prop('checked'));
         v.options[f.attr('id')] = fv;
         return v;
     },

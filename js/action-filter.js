@@ -155,13 +155,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                 }
             }).on('click', '#checkAll', function(){
                 var $this=$(this),
-                    vc=$this.attr('checked'),
-                    allChecks=$this.siblings();
-                if(vc=='checked'){
-                    allChecks.attr('checked',vc);
-                }else{
-                    allChecks.removeAttr('checked');
-                }
+                    vc=$this.prop('checked');
+                Evol.UI.toggleCheckbox($this.siblings(), $this.prop('checked'));
             });
         this._filters=e.find('.evo-zfilters').on('click', 'a', function(){
             that._editFilter($(this));
@@ -421,10 +416,10 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                     var $value=editor.find('#value');
                     switch (fType){
                         case fTypes.lov:
-                            $value.find('#'+v.split(',').join(',#')).attr('checked', 'checked');
+                            $value.find('#'+v.split(',').join(',#')).prop('checked', 'checked');
                             break;
                         case fTypes.bool:
-                            $value.find('#value'+v).attr('checked', 'checked');
+                            $value.find('#value'+v).prop('checked', 'checked');
                             break;
                         default:
                             $value.val(v);

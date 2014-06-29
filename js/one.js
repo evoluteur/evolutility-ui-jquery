@@ -209,9 +209,9 @@ Evol.ViewOne = Backbone.View.extend({
                             break;
                         case fTypes.bool:
                             if(fv){
-                                $f.prop('checked', fv);
+                                $f.prop('checked', 'checked');
                             }else{
-                                $f.removeProp('checked');
+                                $f.prop('checked', false);
                             }
                             break;
                         case fTypes.pix:
@@ -272,7 +272,7 @@ Evol.ViewOne = Backbone.View.extend({
             defaultVal = f.defaultvalue || '';
             switch(f.type) {
                 case ft.bool:
-                    $f.prop('checked', defaultVal);
+                    $f.prop('checked', defaultVal?'checked':false);
                     break;
                 case ft.list:
                     $f.select2('val', null);
