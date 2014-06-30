@@ -42,6 +42,7 @@ Evol.ViewMany = Backbone.View.extend({
             that=this;
         this.options=_.extend({}, this.options, opts);
         this.uiModel=this.options.uiModel;
+        this.pageIndex=this.options.pageIndex;
         this.mode=this.options.mode || '';
         this._filter=[];
         if(this.options.autoUpdate){
@@ -158,13 +159,13 @@ Evol.ViewMany = Backbone.View.extend({
         this._HTMLpaginationBody(h, pageIdx, pSize, collecLength);
         this.$('.evo-pagination').html(h.join(''));
         this.$('.evo-many-summary').html(pSummary);
-        opts.pageIndex = pageIdx;
+        this.pageIndex = pageIdx;
         this.$el.trigger('status', pSummary);
         return this;
     },
 
     getPage: function(){
-        return this.options.pageIndex;
+        return this.pageIndex;
     },
 
     _HTMLField: function(f, v){

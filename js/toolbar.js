@@ -63,6 +63,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     initialize: function (opts) {
         this.options=_.extend(this.options, opts);
+        this.pageIndex = this.options.pageIndex;
         this.uiModel = this.options.uiModel;
         this.views=[];
         this.viewsHash={};
@@ -196,7 +197,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                             vw.setTitle();
                         }
                         if(vw.cardinality==='n' && vw.setPage){
-                            vw.setPage(this.options.pageIndex);
+                            vw.setPage(this.pageIndex);
                         }
                     }else if(vw.clear){
                         vw.clear();
@@ -220,7 +221,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                         uiModel: this.uiModel,
                         style: opts.style,
                         pageSize: opts.pageSize || 20,
-                        pageIndex: opts.pageIndex || 0,
+                        pageIndex: this.pageIndex || 0,
                         titleSelector: opts.titleSelector
                     };
                     this.$('[data-id="new"]').show();
@@ -256,9 +257,9 @@ Evol.ViewToolbar = Backbone.View.extend({
                                 .render();
                             this._prevMany=viewName;
                             vw.setTitle();
-                            if(viewName!='charts' && this.options.pageIndex > 0){
+                            if(viewName!='charts' && this.pageIndex > 0){
                                 //var pIdx=this.curView.getPage();
-                                vw.setPage(this.options.pageIndex || 0);
+                                vw.setPage(this.pageIndex || 0);
                             }
                             //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
                             break;
@@ -639,7 +640,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(ui){
             bId=ui.id;
         }
-        var pIdx=this.options.pageIndex || 0;
+        var pIdx=this.pageIndex || 0;
         if(bId==='prev'){
             pIdx=(pIdx>0)?pIdx-1:0;
         }else if(bId==='next'){
@@ -652,7 +653,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 pIdx=bIdx-1;
             }
         }
-        this.options.pageIndex=pIdx;
+        this.pageIndex=pIdx;
         if(this.curView.setPage){
             this.curView.setPage(pIdx);
         }
