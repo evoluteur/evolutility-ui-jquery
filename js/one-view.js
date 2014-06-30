@@ -44,6 +44,13 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                         case fTypes.pix:
                             $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
                             break;
+                        case fTypes.textml:
+                            if(fv){
+                                $f.html(_.escape(fv).replace(/[\r\n]/g, '</br>'));
+                            }else{
+                                $f.html('');
+                            }
+                            break;
                         default:
                             $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
                     }
