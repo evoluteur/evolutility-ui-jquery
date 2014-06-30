@@ -40,7 +40,8 @@ Evol.ViewMany = Backbone.View.extend({
     initialize: function (opts) {
         var lastSort = localStorage.getItem(opts.uiModel.id+'-sort'),
             that=this;
-        _.extend(this.options, opts);
+        this.options=_.extend({}, this.options, opts);
+        this.uiModel=this.options.uiModel;
         this.mode=this.options.mode || '';
         this._filter=[];
         if(this.options.autoUpdate){
@@ -119,12 +120,12 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     getTitle: function (){
-        return Evol.UI.capitalize(this.options.uiModel.entities);
+        return Evol.UI.capitalize(this.uiModel.entities);
     },
 
     getFields: function (){
         if(!this._fields){
-            this._fields=Evol.Dico.getFields(this.options.uiModel, function(f){
+            this._fields=Evol.Dico.getFields(this.uiModel, function(f){
                 return f.viewmany;
             });
             this._fieldHash={};
@@ -151,7 +152,7 @@ Evol.ViewMany = Backbone.View.extend({
             collecLength =this.collection.length,
             pSummary = this.pageSummary(pageIdx, pSize, collecLength);
 
-        this._HTMLbody(h, fields, pSize, opts.uiModel.icon, pageIdx, opts.selectable);
+        this._HTMLbody(h, fields, pSize, this.uiModel.icon, pageIdx, opts.selectable);
         this._$body().html(h.join(''));
         h=[];
         this._HTMLpaginationBody(h, pageIdx, pSize, collecLength);
@@ -187,7 +188,7 @@ Evol.ViewMany = Backbone.View.extend({
         if (cSize === 0) {
             return '';
         } else if (cSize === 1) {
-            return cSize + ' ' + this.options.uiModel.entity;
+            return cSize + ' ' + this.uiModel.entity;
         } else {
             var rangeBegin = (pIdx || 0) * pSize + 1, rangeEnd;
             if (pIdx < 1) {
@@ -199,7 +200,7 @@ Evol.ViewMany = Backbone.View.extend({
                 .replace('{0}', rangeBegin)
                 .replace('{1}', rangeEnd)
                 .replace('{2}', cSize)
-                .replace('{3}', this.options.uiModel.entities);
+                .replace('{3}', this.uiModel.entities);
         }
     },
 
@@ -255,7 +256,7 @@ Evol.ViewMany = Backbone.View.extend({
             this.setPage(0);
             var direction = down?'down':'up';
             if(!noRemember){
-                localStorage.setItem(this.options.uiModel.id+'-sort', f.id+'-'+direction);
+                localStorage.setItem(this.uiModel.id+'-sort', f.id+'-'+direction);
             }
             this.$el.trigger('list.sort', {id: f.id, direction:direction});
         }

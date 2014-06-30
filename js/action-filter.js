@@ -44,10 +44,12 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        _.extend(this.options, opts);
+        this.options=_.extend({}, this.options, opts);
+        this.uiModel=this.options.uiModel;
+
         // - if no fields are provided, then get them from the uiModel
-        if(this.options.uiModel && (!this.options.fields || this.options.fields.length===0)){
-            this.options.fields = _.map(Evol.Dico.getFields(this.options.uiModel, function(f){
+        if(this.uiModel && (!this.options.fields || this.options.fields.length===0)){
+            this.options.fields = _.map(Evol.Dico.getFields(this.uiModel, function(f){
                     return f.type!==Evol.Dico.fieldTypes.hidden;
                 }),
                 function(f){

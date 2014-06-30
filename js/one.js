@@ -16,7 +16,6 @@ Evol.ViewOne = Backbone.View.extend({
     viewType:'one',
     cardinality: '1',
     editable: true,
-    _tabId: false,
 
     events: {
         'click .evol-buttons>button': 'click_button',
@@ -36,9 +35,11 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        _.extend(this.options, opts);
-        this.mode= opts.mode || this.options.mode || this.viewName;
-        this._uTitle=(!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
+        this.options=_.extend({}, this.options, opts);
+        this.mode = opts.mode || this.options.mode || this.viewName;
+        this.uiModel = this.options.uiModel;
+        this._tabId = false;
+        this._uTitle = (!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
         this._subCollecs=this._subCollecsOK=false;
         /*
         if(this.model){
@@ -66,7 +67,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     getFields: function (){
         if(!this._fields){
-            this._fields=Evol.Dico.getFields(this.options.uiModel, this.getFieldsCondition);
+            this._fields=Evol.Dico.getFields(this.uiModel, this.getFieldsCondition);
             this._fieldHash={};
             var that=this;
             _.each(this._fields,function(f){
@@ -78,7 +79,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     getSubCollecs: function (){
         if(!this._subCollecsOK){
-            this._subCollecs=Evol.Dico.getSubCollecs(this.options.uiModel);
+            this._subCollecs=Evol.Dico.getSubCollecs(this.uiModel);
             this._subCollecsOK=true;
         }
         return this._subCollecs;
@@ -96,12 +97,12 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     setUIModel: function(uimodel) {
-        this.options.uiModel = uimodel;
+        this.uiModel = uimodel;
         //var d=this.getData();
         return this.clearCache().render();  //.setData(d);
     },
     getUIModel: function() {
-        return this.options.uiModel;
+        return this.uiModel;
     },
 /*
     modelUpdate: function (model) {
@@ -113,10 +114,10 @@ Evol.ViewOne = Backbone.View.extend({
 
     getTitle: function(){
         if(this.model){
-            var lf=this.options.uiModel.leadfield;
+            var lf=this.uiModel.leadfield;
             return _.isFunction(lf)?lf(this.model):this.model.get(lf);
         }else{
-            return Evol.UI.capitalize(this.options.uiModel.entity);
+            return Evol.UI.capitalize(this.uiModel.entity);
         }
     },
 
@@ -193,6 +194,9 @@ Evol.ViewOne = Backbone.View.extend({
                                 break;
                             case fTypes.pix:
                                 $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
+                                break;
+                            case fTypes.textml:
+                                $f.html(v.replace(/[\r\n]/g, '<br/>'));
                                 break;
                             default:
                                 $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
@@ -419,8 +423,7 @@ Evol.ViewOne = Backbone.View.extend({
         var that=this,
             iTab = -1,
             iPanel = -1,
-            opts = this.options,
-            elems = opts.uiModel.elements,
+            elems = this.uiModel.elements,
             iMax = elems.length;
 
         h.push('<div class="evo-one-',mode,'">');
@@ -626,16 +629,15 @@ Evol.ViewOne = Backbone.View.extend({
 
     setTitle: function (title){
         if(this._uTitle){
-            var opts=this.options,
-                selector=opts.titleSelector;
+            var selector=this.options.titleSelector;
             if(selector && selector!==''){
-                var t,lf=opts.uiModel.leadfield;
+                var t,lf=this.uiModel.leadfield;
                 if(title){
                     t=title;
                 }else if((!_.isUndefined(lf)) && lf!==''){
                     t=this.getTitle();
                 }else{
-                    t=Evol.UI.capitalize(opts.uiModel.entities);
+                    t=Evol.UI.capitalize(this.uiModel.entities);
                 }
                 $(selector).text(t);
                 this._uTitle=true;

@@ -13,18 +13,6 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
 
     viewName: 'badges',
 
-    customize: function () {
-        var labels = this.$('h4 > a.evol-nav-id');
-        if(this._custOn){
-            labels.find('i').remove();
-            this._custOn=false;
-        }else{
-            labels.append(Evol.UI.iconCustomize('id','field'));
-            this._custOn=true;
-        }
-        return this;
-    },
-
     _render: function (models) {
         var h = [],
             opts = this.options,
@@ -32,7 +20,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
             pSummary = this.pageSummary(0, pSize, models.length);
 
         h.push('<div class="evol-many-badges"><div class="evol-badges-body">');
-        this._HTMLbody(h, this.getFields(), pSize, opts.uiModel.icon, 0, opts.selectable);
+        this._HTMLbody(h, this.getFields(), pSize, this.uiModel.icon, 0, opts.selectable);
         h.push('</div>');
         this._HTMLpagination(h, 0, pSize, models.length);
         h.push('<div class="evo-many-summary">', pSummary, '</div>');
@@ -83,7 +71,19 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
             }
         });
         h.push('</div>');
-    }
+    }/*,
+
+    customize: function () {
+        var labels = this.$('h4 > a.evol-nav-id');
+        if(this._custOn){
+            labels.find('i').remove();
+            this._custOn=false;
+        }else{
+            labels.append(Evol.UI.iconCustomize('id','field'));
+            this._custOn=true;
+        }
+        return this;
+    }*/
 
 });
 

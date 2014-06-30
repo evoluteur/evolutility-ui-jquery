@@ -28,14 +28,10 @@ Evol.ViewAction.Export = Backbone.View.extend({
         formats: ['CSV', 'TAB', 'HTML', 'XML', 'SQL', 'JSON']
     },
 
-
     initialize: function (opts) {
-        _.extend(this.options, opts);
+        this.options=_.extend({}, this.options, opts);
+        this.uiModel = this.options.uiModel;
         this.render();
-        var e = this.$el;
-        //###  html ###
-        //e.addClass('Panel table table-bordered');
-        e.addClass('Panel');
         this._preview('CSV');
         return this;
     },
@@ -113,7 +109,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             // ## Download button
             '<div class="evol-buttons form-actions">',
                 EvoUI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
-                EvoUI.input.button('export', i18nXpt.DownloadEntity.replace('{0}', this.options.uiModel.entities), 'btn btn-primary')
+                EvoUI.input.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary')
         );
         return h.join('');
     },
@@ -139,7 +135,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             case 'JSON':
                 var c = this.$(prefix + xFormat);
                 if (c.html() === '') {
-                    c.html(EvoExport['opts' + xFormat](this.options.uiModel.entity));
+                    c.html(EvoExport['opts' + xFormat](this.uiModel.entity));
                 }
                 break;
         }
@@ -157,16 +153,16 @@ Evol.ViewAction.Export = Backbone.View.extend({
     getFields: function (){
         var opts=this.options;
         if(!this.fields){
-            this.fields=Evol.Dico.getFields(opts.uiModel,opts.fnFilter,opts.mode);
+            this.fields=Evol.Dico.getFields(this.uiModel, opts.fnFilter, opts.mode);
         }
         return this.fields;
     },
 
     getTitle: function(){
         if(this.options.many){
-            return Evol.i18n.getLabel('export.ExportEntities', this.options.uiModel.entities);
+            return Evol.i18n.getLabel('export.ExportEntities', this.uiModel.entities);
         }else{
-            return Evol.i18n.getLabel('export.ExportEntity', this.options.uiModel.entity);
+            return Evol.i18n.getLabel('export.ExportEntity', this.uiModel.entity);
         }
     },
 
@@ -267,7 +263,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                         sql = ['INSERT INTO ',sqlTable,' ('];
 
                     if(sqlTable===''){
-                        sqlTable = this.options.uiModel.entity.replace(/ /g,'_');
+                        sqlTable = this.uiModel.entity.replace(/ /g,'_');
                     }
                     _.each(flds, function(f,idx){
                         sql.push(f.id);
@@ -330,7 +326,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     }
                     break;
                 case 'XML':
-                    var elemName = this.$('#evoRoot').val() || this.options.uiModel.entity.replace(/ /g,'_'),
+                    var elemName = this.$('#evoRoot').val() || this.uiModel.entity.replace(/ /g,'_'),
                         fv;
                     h.push('<xml>\n');
                     _.each(data, function(m){
@@ -397,7 +393,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
     click_format: function (evt) {
         var format = $(evt.currentTarget).val();//this.$('.evol-xpt-format').val();
         if (format === 'XML') {
-            this.$('#XML').html(EvoExport.optsXML(this.options.uiModel.entity))
+            this.$('#XML').html(EvoExport.optsXML(this.uiModel.entity))
                 .show()
                 .siblings().not('.evol-FLH').hide();
             EvoExport.cFormat = 'XML';
