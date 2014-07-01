@@ -52,6 +52,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
         //string fieldName, fieldlabel, expOut, buffer;
         h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds"><fieldset>');
+
         //### list of columns to export #########################################
         h.push('<div class="evol-id">', EvoUI.label('', i18nXpt.xpFields),'</div>'/*,
             '<div>',EvoUI.input.checkbox('showID','1'), '<label for="showID">', i18nXpt.IDkey, '</label>','</div>'*/
@@ -62,15 +63,15 @@ Evol.ViewAction.Export = Backbone.View.extend({
             if (fLabel === null || fLabel === '') {
                 fLabel = '(' + fID + ')';
             }
-            h.push('<div><input type="checkbox" value="1" id="', fID, '" checked="true"><label class="checkbox" for="', fID, '">', fLabel, '</label></div>');
+            h.push('<div><label class="checkbox"><input type="checkbox" value="1" id="', fID, '" checked="checked">', fLabel, '</label></div>');
             if (i == 10 && iMax > 14){
                 h.push(EvoExport.html_more2(i18nXpt.allFields));
             }
-
         });
         if (iMax > 14){
             h.push('</div>');
         }
+
         h.push('</fieldset></div><div class="evol-xpt-para">'); // table = 2 columns
         //##### export formats ########################################
         var fId = prefix + 'evol-xpt-format',
@@ -85,7 +86,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             //# field (shared b/w formats - header #######
             '<div class="evol-FLH clearfix">',
             //h.push('<label>', i18nXpt.header, '</label>');
-            EvoUI.input.checkbox(fId, true), EvoUI.fieldLabelSpan(fId, i18nXpt.firstLine),
+            '<label>', EvoUI.input.checkbox(fId, true), i18nXpt.firstLine, '</label>',
             //##### CSV, TAB - First line for field names #######
             '</div><div id="', prefix, 'CSV">',
             //# field - separator
@@ -109,8 +110,10 @@ Evol.ViewAction.Export = Backbone.View.extend({
             // ## Download button
             '<div class="evol-buttons form-actions">',
                 EvoUI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
-                EvoUI.input.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary')
+                EvoUI.input.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary'),
+            '</div>'
         );
+
         return h.join('');
     },
 
