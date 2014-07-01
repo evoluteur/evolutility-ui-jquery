@@ -332,7 +332,7 @@ Evol.Dico = {
         if(fld.readonly || mode==='view'){
             h.push('<div class="disabled evo-rdonly" id="',fid);
             if(fld.type===fTypes.textml && fld.height>1){
-                h.push('" style="height:', fld.height, 'em;');
+                h.push('" style="height:', fld.height, 'em;overflow-y: auto;');
             }
             h.push('">');
             if(fld.type==fTypes.color){
