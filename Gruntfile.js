@@ -65,7 +65,8 @@ module.exports = function (grunt) {
                     'js/action-*.js',
 
                     //'js/navbar.js',
-                    'js/toolbar.js'
+                    'js/toolbar.js',
+                    'js/shell.js'
                     //'js/ui-models/dico/field.js'
                 ],
                 dest: '<%= pkg.target %>/evolutility.js'

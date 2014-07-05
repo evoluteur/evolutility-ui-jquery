@@ -162,9 +162,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             collec=this._curCollec();
 
         //if(navOk || (vw && vw.options.mode==='new' && !vw.isEmpty()) || this._ok2go()){
-            if(vw && vw.getTab){
-                this.tabId = vw.getTab();
-            }
+            //if(vw && vw.getTab){
+            //    this.tabId = vw.getTab();
+            //}
             if(viewName==='new'){
                 viewName=this._prevOne?this._prevOne:'edit';
                 this.setView(viewName, true);

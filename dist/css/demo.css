@@ -108,6 +108,9 @@
     top: 71px;
     left: 80px;
   }
+  .evo-head-links2 > li {
+    display: block;
+  }
 }
 .evo-title,
 .evo-title2 {
