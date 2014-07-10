@@ -1364,7 +1364,7 @@ Evol.ViewMany = Backbone.View.extend({
                 collec.comparator = Evol.Dico.bbComparator(f.id);
             }
             collec.sort();
-            if(down){
+            if(!down){
                 collec.models.reverse();
             }
             this.setPage(0);
@@ -5590,12 +5590,12 @@ Evol.Shell = Backbone.View.extend({
         //'click .evo-head-links2>li': 'click_entity'
     },
 
-    options: {
+    options: {/*
         uiModelsObj: {
             todo: todo_ui,
             contact: contacts_ui,
             winecellar: winecellar_ui//, test_ui
-        },
+        },*/
         elements:{
             nav: '.evo-head-links',
             nav2: '.evo-head-links2',

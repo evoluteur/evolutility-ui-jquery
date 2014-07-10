@@ -50,8 +50,14 @@
 <script>
 
 $(document).ready(function(){
-    new Evol.Shell({el:$('#evol')})
-            .render();
+    new Evol.Shell({
+        el:$('#evol'),
+        uiModelsObj: {
+            todo: todo_ui,
+            contact: contacts_ui,
+            winecellar: winecellar_ui//, test_ui
+        }
+    }).render();
 });
 
 </script>
