@@ -1364,7 +1364,7 @@ Evol.ViewMany = Backbone.View.extend({
                 collec.comparator = Evol.Dico.bbComparator(f.id);
             }
             collec.sort();
-            if(!down){
+            if(down){
                 collec.models.reverse();
             }
             this.setPage(0);
