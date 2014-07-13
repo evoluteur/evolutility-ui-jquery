@@ -1,7 +1,8 @@
 # evolutility.js
 
 Evolutility provides a set of Backbone views which can change form, volume and structure like living organisms.
-For each Backbone model, all the views are defined by a shared UI-model describing fields mapping, layout, and behavior for CRUD (Create, Read, Update and Delete) and more.
+For each Backbone model, all the views are defined by a shared UI-model describing fields mapping, layout, and behavior.
+With it you can build CRUD (Create, Read, Update and Delete) pages and more without hand-coding any Javascript or CSS.
 
 ## Demo apps
 
@@ -23,9 +24,9 @@ UI Models for the demo apps:
 evolutility's views have a Backbone model (to define the data) and also a UI-model (to define the UI for this model).
 
 Evolutility provides 3 types of view
-* Views for one model (one): View, Edit, Mini (quick edit), JSON.
-* Views for a collection (many): List, Badges, Charts.
-* Views for actions on one record or a collection: Export, Filter (will add later Dashboards, Mass update, clone...).
+* Views for one model: View, Edit, Mini (quick edit), JSON.
+* Views for a collection: List, Badges, Charts.
+* Views for actions on one record or a collection: Export, Filter (will add later Dashboards, Mass update, Clone...).
 
 Web demo of [all views](http://evoluteur.github.io/evolutility/index.html)
 
