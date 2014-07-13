@@ -352,7 +352,7 @@ var contacts_ui = {
             type: 'panel', label: 'Contact Info', width: 38,
             elements: [
                 {
-                    type: 'text', id: 'phone', label: 'Work Phone', maxlength: 20, width: 100
+                    type: 'text', id: 'phone', label: 'Work Phone', maxlength: 20, width: 100, mini:'1'
                 },
                 {
                     type: 'text', id: 'phonehome', label: 'Home Phone', maxlength: 20, width: 100
@@ -377,11 +377,11 @@ var contacts_ui = {
                     type: 'text', id: 'city', label: 'City', maxlength: 100, width: 62
                 },
                 {
-                    type: 'lov', id: 'state', label: 'State', maxlength: 3, width: 15,
+                    type: 'lov', id: 'state', label: 'State', width: 23,
                     list: contacts_LOVs.states
                 },
                 {
-                    type: 'text', id: 'zip', label: 'Zip', maxlength: 12, width: 23
+                    type: 'text', id: 'zip', label: 'Zip', maxlength: 12, width: 15
                 },
                 {
                     type: 'lov', id: 'country', label: 'Country', maxlength: 60, width: 100,
