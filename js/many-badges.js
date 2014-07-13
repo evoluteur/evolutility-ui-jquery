@@ -54,17 +54,18 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
         }
     },
 
-    HTMLItem: function(h, fields, model, icon, selectable){
-        var that=this,
+    HTMLItem: function(h, fields, model, icon, selectable, route){
+        var that = this,
             opts = this.options,
             link = (opts.links!==false);
+
         h.push('<div class="panel ',this.options.style,'">');
         _.each(fields, function(f, idx){
             var v = that._HTMLField(f, model.escape(f.id));
             if (idx === 0) {
                 h.push('<div data-mid="', model.id, '"><h4>',
                     selectable?that._HTMLCheckbox(model.id):'',
-                    Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link),
+                    Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link, route?route+model.id:null),
                     '</h4></div>');
             }else{
                 h.push('<div><label>',f.label,':</label> ', v, '</div>');

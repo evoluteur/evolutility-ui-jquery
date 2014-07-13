@@ -12,6 +12,7 @@ var i18nXpt = Evol.i18n.export;
 Evol.ViewAction.Export = Backbone.View.extend({
 
     viewName: 'export',
+    cardinality: 'n',
 
     events: {
         "change .evol-xpt-format": "click_format",

@@ -439,10 +439,14 @@ Evol.Dico = {
         return h.join('');
     },
 
-    HTMLFieldLink: function (id, fld, value, icon, noLink) {
+    HTMLFieldLink: function (id, fld, value, icon, noLink, route) {
         var h=[];
         if(!noLink){
-            h.push('<a href="#" id="', id, '" class="evol-nav-id">');
+            if(route){
+                h.push('<a href="', route, '" id="', id, '" class="evol-nav-id">');
+            }else{
+                h.push('<a href="javascript:void(0);" id="', id, '" class="evol-nav-id">');
+            }
         }
         if (icon) {
             h.push('<img class="evol-table-icon" src="', icon, '">');
@@ -467,6 +471,24 @@ Evol.Dico = {
         return function(modelA,modelB) {
             return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
         };
+    },
+
+    getRoute: function(){
+        var cURL=window.location.href,
+            idx=cURL.indexOf('#');
+        return (idx>-1)?cURL.substr(idx+1):'';
+    },
+
+    setRoute: function(router, entity, view, opts, trigger){
+        if(!_.isUndefined(router)){
+            var route = entity + '/' + view;
+            if(opts){
+                route+='/' + opts;
+            }
+            if(route!==this.getRoute()){
+                router.navigate('#' + route, {trigger: trigger});
+            }
+        }
     }
 
 };

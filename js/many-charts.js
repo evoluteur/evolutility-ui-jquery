@@ -11,7 +11,7 @@
 
 Evol.ViewMany.Charts = Evol.ViewMany.extend({
 
-    viewName: 'chart',
+    viewName: 'charts',
 
     options: {
         //sizes: '600x300',

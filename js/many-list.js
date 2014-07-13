@@ -45,11 +45,12 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
     },
 
     _HTMLbody: function(h, fields, pSize, icon, pageIdx, selectable){
-        var data = this.collection.models,
+        var opts = this.options,
+            data = this.collection.models,
             r,
             rMin=0,
             rMax = _.min([data.length, rMin+pSize]),
-            ico=icon?(this.options.iconsPath || '')+icon:null;
+            ico = icon?(opts.iconsPath || '')+icon:null;
 
         if(pageIdx>0){
             rMin=pageIdx*pSize;
@@ -57,37 +58,38 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         }
         if (rMax > 0) {
             for (r = rMin; r < rMax; r++) {
-                this.HTMLItem(h, fields, data[r], ico, selectable);
+                this.HTMLItem(h, fields, data[r], ico, selectable, this.getRoute());
             }
         }
     },
 
-    HTMLItem: function(h, fields, model, icon, selectable){
-        var that=this,
+    HTMLItem: function(h, fields, model, icon, selectable, route){
+        var that = this,
             v,
-            opts=this.options,
+            opts = this.options,
             link = (opts.links!==false);
         h.push('<tr data-mid="', model.id, '">');
         if(selectable){
-            h.push('<td class="list-td-sel">',this._HTMLCheckbox(model.id),'</td>');
+            h.push('<td class="list-td-sel">', this._HTMLCheckbox(model.id), '</td>');
         }
-        _.each(fields,function(f, idx){
+        _.each(fields, function(f, idx){
             if(f.type===Evol.Dico.fieldTypes.color){
-                v = Evol.UI.input.colorBox(f.id, model.get(f.id));
+                v = Evol.UI.input.colorBox(f.id, model.escape(f.id));
             }else{
                 v = that._HTMLField(f, model.escape(f.id));
             }
-            h.push('<td>',
-                (idx===0)?Evol.Dico.HTMLFieldLink('fv-'+f.id, f, v, icon, !link):v,
-                '</td>');
+            if(idx===0){
+                v = Evol.Dico.HTMLFieldLink('fv-'+f.id, f, v, icon, !link, route?route+model.id:null);
+            }
+            h.push('<td>', v, '</td>');
         });
         h.push('</tr>');
     },
 
     _HTMLlistHeader: function (h, field) {
         h.push('<th><span id="', field.id, '-lbl">',
-            field.labellist || field.label,
-            '<span class="evol-sort-icons" data-fid="',field.id,'">',
+            field.labellist || field.labelmany || field.label,
+            '<span class="evol-sort-icons" data-fid="', field.id, '">',
             Evol.UI.icon('chevron-up'),//'sort-by-alphabet'
             Evol.UI.icon('chevron-down'),//'sort-by-alphabet-alt'
             '</span></span></th>');

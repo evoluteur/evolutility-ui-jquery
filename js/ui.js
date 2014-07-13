@@ -285,7 +285,7 @@ Evol.UI = {
             if(style!=='label'){
                 h.push(' data-toggle="tooltip" data-placement="bottom" title="" data-original-title="',label,'"');
             }
-            h.push('><a href="#" data-id="',id,'">',Evol.UI.icon(icon));
+            h.push('><a href="javascript:void(0);" data-id="',id,'">',Evol.UI.icon(icon));
             if(style!=='tooltip'){
                 h.push('&nbsp;',label);
             }

@@ -22,6 +22,7 @@ Evol.ViewMany = Backbone.View.extend({
         pageSize: 20,
         pageIndex:0,
         autoUpdate: false,
+        // router: ...
         //titleSelector: '#title',
         selectable: false,
         links: true,
@@ -30,10 +31,9 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     events: {
-        'click .evol-nav-id': 'click_navigate',
         'click .evol-sort-icons>i': 'click_sort',
         'click .pagination>li': 'click_pagination',
-        'click .evol-field-label .glyphicon-wrench': 'click_customize',
+        //'click .evol-field-label .glyphicon-wrench': 'click_customize',
         'change .list-sel': 'click_selection',
         'change [data-id="cbxAll"]': 'click_checkall'
     },
@@ -53,6 +53,11 @@ Evol.ViewMany = Backbone.View.extend({
                 });
             }
         }
+        if(!this.options.router){
+            this.$el.on('click', '.evol-nav-id', function(evt){
+                that.click_navigate(evt);
+            });
+        }
         this._custOn=false;
         if(lastSort!==null){
             var ls=lastSort.split('-'),
@@ -69,7 +74,7 @@ Evol.ViewMany = Backbone.View.extend({
             models=Evol.Dico.filterModels(models, this._filter);
             this._render(models);
         }else{
-            this.$el.html(Evol.UI.HTMLMsg(this.options.noDataString || Evol.i18n.nodata,'','info'));
+            this.$el.html(Evol.UI.HTMLMsg(this.options.noDataString || Evol.i18n.nodata, '', 'info'));
         }
         return this.setTitle();
     },
@@ -87,7 +92,7 @@ Evol.ViewMany = Backbone.View.extend({
         if(this._custOn){
             labels.find('i').remove();
         }else{
-            labels.append(Evol.UI.iconCustomize('id','field'));
+            labels.append(Evol.UI.iconCustomize('id', 'field'));
         }
         this._custOn=!this._custOn;
         return this;
@@ -95,8 +100,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     setCollection: function(collection){
         this.collection = collection;
-        this.render();
-        return this;
+        return this.render();
     },
 
     getCollection: function(){
@@ -264,9 +268,21 @@ Evol.ViewMany = Backbone.View.extend({
         }
     },
 
+    getRoute: function(){
+        var opts= this.options,
+            router = opts.router,
+            route = null;
+
+        if(router){
+            route = '#' + opts.uiModel.id + '/view/';
+        }
+        return route;
+    },
+
     click_navigate: function (evt) {
+        var id=$(evt.currentTarget).closest('[data-mid]').data('mid');
         evt.type = 'list.navigate';
-        this.$el.trigger(evt, {id: $(evt.currentTarget).closest('[data-mid]').data('mid')});
+        this.$el.trigger(evt, {id: id});
     },
 
     click_sort: function (evt) {

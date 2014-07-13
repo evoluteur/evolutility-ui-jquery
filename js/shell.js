@@ -24,25 +24,20 @@ Evol.Shell = Backbone.View.extend({
             nav2: '.evo-head-links2',
             content: '#evol'
         },
+        useRouter: true,
         pageSize:20
     },
 
     initialize: function (opts) {
-        var that=this,
-            es;
-
+        var that=this;
         this.options=_.extend({}, this.options, opts);
         this.options.uiModels = _.flatten(this.options.uiModelsObj);
         this._tbs={};
-        es = this.options.elements;
+        var es = this.options.elements;
         //this.$nav = $(es.nav);
         this.$nav2 = $(es.nav2);
-        this.$content = $(es.content);
-        //this.setupRouter();
-
-        this.$nav2.on('click', 'a',function(evt){
-            that.setEntity($(evt.target).data('id'));
-        });/* */
+        //this.$content = $(es.content);
+        this.setupRouter();
     },
 
 	render: function() {
@@ -52,29 +47,84 @@ Evol.Shell = Backbone.View.extend({
         return this;
 	},
 
-    setEntity: function(eName, view, id){
-        var $v;
+    setupRouter: function(){
+        var that=this,
+            EvolRouter=Backbone.Router.extend ({
+                routes: {
+                    '' : 'nav',
+                    ':entity/:view/:id': 'nav',
+                    ':entity/:view': 'nav',
+                    ':entity': 'nav',
+                    '*noroute': that.noRoute
+                },
+                nav: function(entity, view, id){
+                    if(entity){
+                        that.setEntity(entity, view, id);
+                    }
+                }
+            });
+
+        this.router = new EvolRouter();
+        Backbone.history.start();
+    },
+
+    setRoute: function(id, triggerRoute){
+        var cView = this._curEntity.curView;
+        if(cView){
+            Evol.Dico.setRoute(this.options.router, cView.uiModel.id, cView.viewName, id, triggerRoute);
+        }else{
+            debugger;
+            alert('TODO: debug it')
+        }
+        return this;
+    },
+
+    noRoute: function(route){
+        alert('invalid route "'+route+'".');
+    },
+
+    setEntity: function(eName, view, options){
+        var that=this;
+
+        function cb(){
+            that._ents[eName].show().siblings().hide();
+            var tb=that._tbs[eName];
+            if(tb){
+                that._curEntity = tb;
+                tb.setView(view)
+                    .setTitle();
+                if(options){
+                    if(tb.curView.cardinality==='1'){
+                        tb.setModelById(options);
+                        that.setRoute(options, false);
+                    }else{
+                        that.setRoute('', false);
+                    }
+                }
+            }
+        }
+
         if(!this._ents){
             this._ents={};
         }
         if(this._ents[eName]){
-            this._ents[eName].show().siblings().hide();
-            if(this._tbs[eName]){
-                this._tbs[eName].setTitle();
-            }
+            cb();
         }else{
-            $v=$('<div data-eid="'+eName+'"></div>');
+            var $v=$('<div data-eid="'+eName+'"></div>');
             this._ents[eName]=$v;
             this.$el.children().hide();
             this.$el.append($v);
-            this.createEntity($v, this.options.uiModelsObj[eName], []);
+            this.createEntity($v, this.options.uiModelsObj[eName], [], view, options, cb);
         }
-        //this._curEntity=eName;
-        this.$nav2.find('>li>a').removeClass('sel')
-            .filter('[data-id="'+eName+'"]').addClass('sel');
+        if(this._curEntity!==eName){
+            this.$nav2.find('>li>a').removeClass('sel')
+                .filter('[data-id="'+eName+'"]').addClass('sel');
+            this._curEntity=eName;
+        }
+        return this;
     },
 
-    createEntity: function($v, uiModel, data){
+    createEntity: function($v, uiModel, data, defaultView, options, cb){
         var lc=new Backbone.LocalStorage('evol-'+uiModel.id),
                 M = Backbone.Model.extend({
                 localStorage: lc
@@ -88,11 +138,13 @@ Evol.Shell = Backbone.View.extend({
             ms = new Ms();
         ms.fetch({
             success: function(collection){
+                // TODO no more insertCollection
+                // insertCollection is for demo purpose only. it will be removed.
                 if(collection.length===0){
                     Evol.UI.insertCollection(collection, data);
                 }
-                var m = ms.models[0];
-                that._tbs[uiModel.id] = new Evol.ViewToolbar({
+                var m = ms.models[0],
+                    config = {
                         el: $v,
                         mode: 'one',
                         model: m,
@@ -102,7 +154,24 @@ Evol.Shell = Backbone.View.extend({
                         uiModel: uiModel,
                         pageSize: 20,
                         titleSelector: '#title'
-                    }).render();//.setTitle();
+                    };
+
+                if(defaultView){
+                    config.defaultView = defaultView;
+                }
+                if(that.options.useRouter){
+                    config.router = that.router;
+                }
+                var tb = new Evol.ViewToolbar(config).render();//.setTitle();
+                if(options){
+                    if(tb.cardinality==='1'){
+                        tb.setModelById(options);
+                    }
+                }
+                that._tbs[uiModel.id] = tb;
+                if(cb){
+                    cb(tb);
+                }
             }
         });
     },
@@ -110,13 +179,9 @@ Evol.Shell = Backbone.View.extend({
     _HTMLentities: function (es) {
         var h=[];
         _.each(es, function(e){
-            h.push('<li><a href="#', e.id, '" data-id="', e.id, '">', e.id, '</a></li>');
+            h.push('<li><a href="#', e.id, '/list" data-id="', e.id, '">', e.id, '</a></li>');
         });
         return h.join('');
-    },
-
-    click_entity: function (evt, ui) {
-        debugger;
     }
 
 });
