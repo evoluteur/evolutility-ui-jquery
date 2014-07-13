@@ -23,7 +23,7 @@ UI Models for the demo apps:
 evolutility's views have a Backbone model (to define the data) and also a UI-model (to define the UI for this model).
 
 Evolutility provides 3 types of view
-* Views for one record (one): New, Edit, Mini (quick edit), JSON.
+* Views for one model (one): View, Edit, Mini (quick edit), JSON.
 * Views for a collection (many): List, Badges, Charts.
 * Views for actions on one record or a collection: Export, Filter (will add later Dashboards, Mass update, clone...).
 
@@ -42,17 +42,17 @@ Javascript, HTML5, CSS3,
 [Underscore] (http://underscorejs.org/),
 [jQuery] (http://jquery.com),
 [Bootstrap] (http://getbootstrap.com/),
-[bootstrap-datepicker] (http://eternicode.github.io/bootstrap-datepicker/),
+[Bootstrap-datepicker] (http://eternicode.github.io/bootstrap-datepicker/),
 [Select2] (http://ivaynberg.github.io/select2/).
 
 ## Previous incarnation
 
-evolutility.js is a re-write of [Evolutility] (http://www.evolutility.org) generic CRUD UI for ASP.net.
+Evolutility.js is a re-write of [Evolutility] (http://www.evolutility.org) generic CRUD UI for ASP.net.
 
 
 ## License
 
 Copyright (c) 2014 Olivier Giulieri.
 
-evolutility.js is released under the GNU Affero General Public License version 3 [GNU AGPLv3](http://www.gnu.org/licenses/agpl-3.0.html).
+Evolutility.js is released under the GNU Affero General Public License version 3 [GNU AGPLv3](http://www.gnu.org/licenses/agpl-3.0.html).
 
