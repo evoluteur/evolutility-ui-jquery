@@ -1192,6 +1192,8 @@ Evol.ViewMany = Backbone.View.extend({
             this.$el.on('click', '.evol-nav-id', function(evt){
                 that.click_navigate(evt);
             });
+        }else{
+            this.router=this.options.router;
         }
         this._custOn=false;
         if(lastSort!==null){
@@ -1290,7 +1292,7 @@ Evol.ViewMany = Backbone.View.extend({
             fields = this.getFields(),
             opts = this.options,
             pSize = opts.pageSize,
-            collecLength =this.collection.length,
+            collecLength = this.collection.length,
             pSummary = this.pageSummary(pageIdx, pSize, collecLength);
 
         this._HTMLbody(h, fields, pSize, this.uiModel.icon, pageIdx, opts.selectable);
@@ -1404,12 +1406,11 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     getRoute: function(){
-        var opts= this.options,
-            router = opts.router,
+        var router = this.router,
             route = null;
 
         if(router){
-            route = '#' + opts.uiModel.id + '/view/';
+            route = '#' + this.uiModel.id + '/view/';
         }
         return route;
     },
@@ -5667,7 +5668,6 @@ Evol.Shell = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        var that=this;
         this.options=_.extend({}, this.options, opts);
         this.options.uiModels = _.flatten(this.options.uiModelsObj);
         this._tbs={};

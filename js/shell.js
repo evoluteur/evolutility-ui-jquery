@@ -29,7 +29,6 @@ Evol.Shell = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        var that=this;
         this.options=_.extend({}, this.options, opts);
         this.options.uiModels = _.flatten(this.options.uiModelsObj);
         this._tbs={};
