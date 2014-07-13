@@ -25,6 +25,7 @@ Evol.ViewMany = Backbone.View.extend({
         //titleSelector: '#title',
         selectable: false,
         links: true,
+        //noDataString: 'No data to display',
         iconsPath: 'pix/'
     },
 
@@ -68,7 +69,7 @@ Evol.ViewMany = Backbone.View.extend({
             models=Evol.Dico.filterModels(models, this._filter);
             this._render(models);
         }else{
-            this.$el.html(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
+            this.$el.html(Evol.UI.HTMLMsg(this.options.noDataString || Evol.i18n.nodata,'','info'));
         }
         return this.setTitle();
     },
