@@ -16,7 +16,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
     events: {
         "change .evol-xpt-format": "click_format",
-        'change input': 'click_preview', //[type="checkbox"],
+        'change input': 'click_preview',
         'click .evol-xpt-more': 'click_toggle_sel',
         'click button': 'click_button'
     },
@@ -31,10 +31,9 @@ Evol.ViewAction.Export = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        this.options=_.extend({}, this.options, opts);
+        this.options = _.extend({}, this.options, opts);
         this.uiModel = this.options.uiModel;
         this.render();
-        this._preview('CSV');
         return this;
     },
 
@@ -115,7 +114,6 @@ Evol.ViewAction.Export = Backbone.View.extend({
                 EvoUI.input.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary'),
             '</div>'
         );
-
         return h.join('');
     },
 
@@ -146,12 +144,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
         }
         var divOpts=this.$(prefix + xFormat).show()
             .siblings().hide();
-        var e1=divOpts.filter('.evol-FLH');
-        if(xFormat==='TAB' || xFormat==='CSV'){
-            e1.show();
-        }else{
-            e1.hide();
-        }
+        var $e1=divOpts.filter('.evol-FLH');
+        Evol.UI.setVisible($e1, xFormat==='TAB' || xFormat==='CSV');
         EvoExport.cFormat = xFormat;
     },
 
