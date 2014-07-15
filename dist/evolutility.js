@@ -3045,6 +3045,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
         model: null,
         uiModel: null,
         many: true,
+        sampleMaxSize: 20,
         prefix: 'xpt',
         formats: ['CSV', 'TAB', 'HTML', 'XML', 'SQL', 'JSON']
     },
@@ -3193,7 +3194,9 @@ Evol.ViewAction.Export = Backbone.View.extend({
     _preview: function (format) { // TODO add field ID
         var h=[],
             $e = this.$('.evol-xpt-val'),
-            fTypes=Evol.Dico.fieldTypes;
+            fTypes = Evol.Dico.fieldTypes,
+            maxItem = this.options.sampleMaxSize-1;
+
         if(this.model && this.model.collection){
             var data = this.model.collection.models,
                 flds = this.getFields(),
@@ -3209,17 +3212,17 @@ Evol.ViewAction.Export = Backbone.View.extend({
             _.each(fldsDom, function(fd){
                 fldsDomHash[fd.id.substring(3)]='';
             });
-            flds=_.filter(flds, function(f){
+            flds = _.filter(flds, function(f){
                 if(f.id && _.has(fldsDomHash, f.id)){
                     return true;
                 }
             });
+            var fMax = flds.length-1;
             switch (format){
                 case 'CSV':
                 case 'TAB':
                 case 'TXT':
-                    var iMax=flds.length-1,
-                        sep = Evol.UI.trim(this.$(prefix+'FLS_evol').val());
+                    var sep = Evol.UI.trim(this.$(prefix+'FLS_evol').val());
                     if(format=='TAB'){
                         sep='&#09;';
                     }
@@ -3227,24 +3230,25 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     if (useHeader) {
                         _.each(flds, function(f, idx){
                             h.push(f.label); //TODO f.labelexported || f.label, // name when "exported"
-                            if(idx<iMax){
+                            if(idx<fMax){
                                 h.push(sep);
                             }
                         });
                         h.push('\n');
                     }
                     //data
-                    _.each(data, function(m){
+                    _.every(data, function(m, idx){
                         _.each(flds, function(f, idx){
                             var mj = m.get(f.id);
                             if (mj) {
                                 h.push(mj);
                             }
-                            if(idx<iMax){
+                            if(idx<fMax){
                                 h.push(sep);
                             }
                         });
                         h.push('\n');
+                        return idx<maxItem;
                     });
                     h.push('\n');
                     break;
@@ -3259,7 +3263,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                         h.push('</tr>\n');
                     }
                     //data
-                    _.each(data, function(d,idx){
+                    _.every(data, function(d, idx){
                         h.push('<tr>');
                         _.each(flds, function(f){
                             var mj = d.get(f.id);
@@ -3270,18 +3274,19 @@ Evol.ViewAction.Export = Backbone.View.extend({
                             }
                         });
                         h.push('</tr>\n');
+                        return idx<maxItem;
                     });
                     h.push('</table>');
                     break;
                 case 'JSON':
-                    _.each(data, function(m){
+                    _.every(data, function(m, idx){
                         // TODO only show selected fields
                         h.push(JSON.stringify(m.toJSON(), null, 2));
+                        return idx<maxItem;
                     });
                     break;
                 case 'SQL':
-                    var fMax = flds.length -1,
-                        optTransaction = this.$('#evoxpTRS1').prop('checked'),
+                    var optTransaction = this.$('#evoxpTRS1').prop('checked'),
                         optIdInsert = this.$('#evoxpTRS2').prop('checked'),
                         sqlTable = this.$('#evoTable').val().replace(/ /g,'_'),
                         sql = ['INSERT INTO ',sqlTable,' ('];
@@ -3302,11 +3307,11 @@ Evol.ViewAction.Export = Backbone.View.extend({
                         h.push('BEGIN TRANSACTION\n');
                     }
                     if(optIdInsert){
-                        h.push('SET IDENTITY_INSERT ',sqlTable,' ON;\n');
+                        h.push('SET IDENTITY_INSERT ', sqlTable, ' ON;\n');
                     }
                     //data
                     var fValue;
-                    _.each(data, function(m){
+                    _.every(data, function(m, idx){
                         h.push(sql);
                         _.each(flds, function(f, idx){
                             fValue=m.get(f.id);
@@ -3340,10 +3345,11 @@ Evol.ViewAction.Export = Backbone.View.extend({
                             }
                         });
                         h.push(');\n');
+                        return idx<maxItem;
                     });
                     //options
                     if(optIdInsert){
-                        h.push('SET IDENTITY_INSERT ',sqlTable,' OFF;\n');
+                        h.push('SET IDENTITY_INSERT ', sqlTable, ' OFF;\n');
                     }
                     if(optTransaction){
                         h.push('COMMIT TRANSACTION\n');
@@ -3353,7 +3359,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     var elemName = this.$('#evoRoot').val() || this.uiModel.entity.replace(/ /g,'_'),
                         fv;
                     h.push('<xml>\n');
-                    _.each(data, function(m){
+                    _.every(data, function(m, idx){
                         h.push('<', elemName, ' ');
                         _.each(flds, function(f){
                             h.push(f.id, '="');
@@ -3368,6 +3374,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                             h.push('" ');
                         });
                         h.push('></', elemName, '>\n');
+                        return idx<maxItem;
                     });
                     h.push('</xml>');
                     break;

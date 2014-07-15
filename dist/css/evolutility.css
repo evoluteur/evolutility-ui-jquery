@@ -278,8 +278,7 @@ img.evol-table-icon {
   border-left: 0 !important;
 }
 .evol-xpt-format {
-  width: auto !important;
-  display: block;
+  max-width: 270px;
   margin-bottom: 6px;
 }
 .evol-xpt-val {
