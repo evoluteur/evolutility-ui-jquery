@@ -449,7 +449,7 @@ Evol.Dico = {
             }
         }
         if (icon) {
-            h.push('<img class="evol-table-icon" src="', icon, '">');
+            h.push('<img class="evol-many-icon" src="', icon, '">');
         }/*
         if(_.isUndefined(value) || value===''){
             value='('+model.id+')';
