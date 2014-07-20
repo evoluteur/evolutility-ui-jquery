@@ -4,12 +4,11 @@
 //  Copyright (c) 2014, Olivier Giulieri
 
 .evo-toolbar{
-  border: 1px solid #bce8f1;
+  border: 1px solid @toolbar-border-color;
   .border-radius(4px);
   margin-bottom:10px;
   padding:3px;
   background-color: @toolbar-background-color;
-  height: 43px;
 
   > [data-cid="views"]{
     color:black;
@@ -19,8 +18,15 @@
     > .evo-sel .glyphicon:before{
       color:black;
     }
-    > li > a{
-      max-height:35px;
+    > li {
+      &.divider-h{
+        height: 35px;
+        width: 1px;
+        background-color: @toolbar-border-color;
+      }
+      > a{
+        max-height:35px;
+      }
     }
   }
 

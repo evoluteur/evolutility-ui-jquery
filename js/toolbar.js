@@ -89,8 +89,8 @@ Evol.ViewToolbar = Backbone.View.extend({
             eui=Evol.UI.menu,
             opts=this.options,
             endMenu='</ul></li>',
-            menuDevider='<li role="presentation" class="divider" data-cardi="1"></li>',
-            menuDeviderCard1='<li role="presentation" class="divider" data-cardi="1"></li>';
+            menuDevider='<li class="divider" data-cardi="1"></li>',
+            menuDeviderH='<li class="divider-h"></li>';
 
         function linkOpt2h (id, label, icon, cardi){
             if(opts.buttons && opts.buttons[id]){
@@ -99,8 +99,11 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
 
         h.push('<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-id="main">');
-        linkOpt2h('list',Evol.i18n.bAll,'th-list');
-        linkOpt2h('new',Evol.i18n.bNew,'plus');
+        linkOpt2h('list','','th-list');
+        linkOpt2h('new','','plus');
+        //linkOpt2h('list',Evol.i18n.bAll,'th-list');
+        //linkOpt2h('new',Evol.i18n.bNew,'plus');
+        h.push(menuDeviderH);
         linkOpt2h('edit',Evol.i18n.bEdit,'pencil','1');
         linkOpt2h('save',Evol.i18n.bSave,'floppy-disk','1');
         linkOpt2h('del',Evol.i18n.bDelete,'trash','1');
@@ -110,19 +113,22 @@ Evol.ViewToolbar = Backbone.View.extend({
         linkOpt2h('export',Evol.i18n.bExport,'cloud-download','n');
         //linkOpt2h('selections','','star');
         if(opts.toolbar){
-            h.push(eui.hItem('prev','','chevron-left','x'),
-                eui.hItem('next','','chevron-right','x'),
+            h.push('</ul><ul class="nav nav-pills pull-right" data-id="views">',
                 '<li class="evo-tb-status" data-cardi="n"></li>',
-                '</ul><ul class="nav nav-pills pull-right" data-id="views">');
+                eui.hItem('prev','','chevron-left','x'),
+                eui.hItem('next','','chevron-right','x')
+            );
+
             h.push(eui.hBegin('views','li','eye-open'));
-            linkOpt2h('list','List','th-list','n');
-            linkOpt2h('badges','Badges','th-large','n');
-            linkOpt2h('charts','Charts','stats','n');
             linkOpt2h('view','View','file','1');
             linkOpt2h('edit','All Fields','th','1');
             linkOpt2h('mini','Mini','th-large','1'); //Important Fields only
             linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
+            h.push(menuDevider);
+            linkOpt2h('list','List','th-list','x');
+            linkOpt2h('badges','Badges','th-large','x');
+            linkOpt2h('charts','Charts','stats','x');
             h.push(eui.hEnd('li'));
 
             //linkOpt2h('customize','','wrench', '1', 'Customize');
