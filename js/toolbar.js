@@ -278,7 +278,9 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
         if(this.curView.cardinality==='n'){ // TODO do not always change flag
             this.setRoute('', false);
-            this.showFilter(false);
+            if(this._filterOn){
+                this.showFilter(false);
+            }
         }else{
             //if(this.curView.viewName==='wizard'){
             //    this.curView.stepIndex(0);
@@ -395,6 +397,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     that.curView.setFilter(that._filters.val())
                         .render();
                 });
+                this._filterOn=true;
             }else{
                 return this;
             }
@@ -407,6 +410,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     hideFilter: function(){
         if(this._filters){
             this._filters.$el.hide();
+            this._filterOn=false;
         }
         return this;
     },
