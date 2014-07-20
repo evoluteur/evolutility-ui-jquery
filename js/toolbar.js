@@ -651,9 +651,9 @@ Evol.ViewToolbar = Backbone.View.extend({
                     this.setView(this._prevMany || 'list');
                 }
                 break;
-            //case 'edit':
-            //    this.setView(actionId, true);
-            //    break;
+            case 'edit':
+                this.setView(actionId, true);
+                break;
             case 'export':
                 alert(
                     'Sorry, no demo server yet...\n\n' +
