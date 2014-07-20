@@ -66,7 +66,7 @@ Evol.UI = {
                 if(fd.readonly){
                     h.push('" ', item, '="', item);
                 }
-                if(fCss && fCss!==''){
+                if(fCss){
                     h.push('" class="', fCss);
                 }
             }
@@ -125,17 +125,18 @@ Evol.UI = {
                 '" title="', value, '"></div>'
             ].join('');
         },
+
         checkbox: function (id, value) {
-            var fh = ['<input type="checkbox" id="', id, '"'];
-            if (value === true || value==='1') {
-                fh.push(' checked="checked"');
+            var fh = ['<input type="checkbox" id="', id];
+            if (value) {
+                fh.push('" checked="checked');
             }
-            fh.push(' value="1">');
+            fh.push('" value="1">');
             return fh.join('');
         },
         checkbox2: function (id, value, css) {
             var fh = ['<input type="checkbox" data-id="', id, '" class="',css,'"'];
-            if (value === true || value==='1') {
+            if (value) {
                 fh.push(' checked="checked"');
             }
             fh.push(' value="1">');
@@ -150,6 +151,7 @@ Evol.UI = {
             }
             return h.join('');
         },
+
         radio: function (fN, value, label, sel, id) {
             return ['<label for="', id, '"><input id="', id, '" name="', fN,
                 '" type="radio" value="', value,
@@ -165,9 +167,11 @@ Evol.UI = {
             h.push('</select>');
             return h.join('');
         },
+
         img: function (id, value) {
             return ['<img id="', id, '" src="', value, '"/>'].join('');
         },
+
         hidden: function (id, value) {
             return ['<input type="hidden" name="', id, '" id="', id, '" value="', value, '"/>'].join('');
         },/*
@@ -190,6 +194,7 @@ Evol.UI = {
                 '</select>'
             ].join('');
         },
+
         option: function (id, text) {
             return ['<option value="', id, '">', text, '</option>'].join('');
         },
@@ -205,6 +210,7 @@ Evol.UI = {
             });
             return opts.join('');
         },
+
         button: function (id, label, css) {
             return '<button type="button" data-id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
         },
@@ -572,7 +578,7 @@ Evol.i18n = {
         firstLine:'First line for field names',
         format: 'Export format',
         xpFields: 'Fields to include in the export',
-        IDkey: 'ID - Primary key',
+        IDkey: 'ID',
         allFields: 'Show all fields',
         formatCSV: 'Comma separated (CSV, TXT, XLS...)',
         formatHTML: 'HTML',
@@ -1089,7 +1095,7 @@ Evol.Dico = {
             }
         }
         if (icon) {
-            h.push('<img class="evol-table-icon" src="', icon, '">');
+            h.push('<img class="evol-many-icon" src="', icon, '">');
         }/*
         if(_.isUndefined(value) || value===''){
             value='('+model.id+')';
@@ -1214,6 +1220,27 @@ Evol.ViewMany = Backbone.View.extend({
             this.$el.html(Evol.UI.HTMLMsg(this.options.noDataString || Evol.i18n.nodata, '', 'info'));
         }
         return this.setTitle();
+    },
+
+    _HTMLbody: function (h, fields, pSize, icon, pageIdx, selectable) {
+        var models = this.collection.models,
+            model,
+            r,
+            rMin=0,
+            rMax = _.min([models.length, rMin+pSize]),
+            ico = icon?(this.options.iconsPath || '')+icon:null,
+            route=this.getRoute();
+
+        if(pageIdx>0){
+            rMin = pageIdx*pSize;
+            rMax = _.min([models.length, rMin+pSize]);
+        }
+        if (rMax > 0) {
+            for (r = rMin; r < rMax; r++) {
+                model=models[r];
+                this.HTMLItem(h, fields, model, ico, selectable, route);
+            }
+        }
     },
 
     _render:function(models){
@@ -1482,7 +1509,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
 
         h.push('<div class="evol-many-badges"><div class="evol-badges-body">');
         this._HTMLbody(h, this.getFields(), pSize, this.uiModel.icon, 0, opts.selectable);
-        h.push('</div>');
+        h.push(Evol.UI.html.clearer, '</div>');
         this._HTMLpagination(h, 0, pSize, models.length);
         h.push('<div class="evo-many-summary">', pSummary, '</div>');
         h.push('</div>');
@@ -1492,27 +1519,6 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
 
     _$body: function(){
         return this.$('.evol-badges-body');
-    },
-
-    _HTMLbody: function (h, fields, pSize, icon, pageIdx, selectable) {
-        var data = this.collection.models,
-            r,
-            rMin=0,
-            rMax = _.min([data.length, rMin+pSize]),
-            ico = icon?(this.options.iconsPath || '')+icon:null;
-
-        if(pageIdx>0){
-            rMin = pageIdx*pSize;
-            rMax = _.min([data.length, rMin+pSize]);
-        }
-        if (rMax > 0) {
-            for (r = rMin; r < rMax; r++) {
-                this.HTMLItem(h, fields, data[r], ico, selectable);
-            }
-            h.push(Evol.UI.html.clearer);
-        }else{
-            h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
-        }
     },
 
     HTMLItem: function(h, fields, model, icon, selectable, route){
@@ -1693,25 +1699,6 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
 
     _$body: function(){
         return this.$('.table > tbody');
-    },
-
-    _HTMLbody: function(h, fields, pSize, icon, pageIdx, selectable){
-        var opts = this.options,
-            data = this.collection.models,
-            r,
-            rMin=0,
-            rMax = _.min([data.length, rMin+pSize]),
-            ico = icon?(opts.iconsPath || '')+icon:null;
-
-        if(pageIdx>0){
-            rMin=pageIdx*pSize;
-            rMax = _.min([data.length, rMin+pSize]);
-        }
-        if (rMax > 0) {
-            for (r = rMin; r < rMax; r++) {
-                this.HTMLItem(h, fields, data[r], ico, selectable, this.getRoute());
-            }
-        }
     },
 
     HTMLItem: function(h, fields, model, icon, selectable, route){
@@ -3036,7 +3023,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
     events: {
         "change .evol-xpt-format": "click_format",
-        'change input': 'click_preview', //[type="checkbox"],
+        'change input': 'click_preview',
         'click .evol-xpt-more': 'click_toggle_sel',
         'click button': 'click_button'
     },
@@ -3051,10 +3038,9 @@ Evol.ViewAction.Export = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        this.options=_.extend({}, this.options, opts);
+        this.options = _.extend({}, this.options, opts);
         this.uiModel = this.options.uiModel;
         this.render();
-        this._preview('CSV');
         return this;
     },
 
@@ -3076,9 +3062,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
         h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds"><fieldset>');
 
         //### list of columns to export #########################################
-        h.push('<div class="evol-id">', EvoUI.label('', i18nXpt.xpFields),'</div>'/*,
-            '<div>',EvoUI.input.checkbox('showID','1'), '<label for="showID">', i18nXpt.IDkey, '</label>','</div>'*/
-        );
+        //'<div><label class="checkbox"><input type="checkbox" value="1" id="showID" checked="checked">', i18nXpt.IDkey, '</label></div>'
         _.each(fields, function(f, i){
             var fLabel = f.labelexport || f.label || f.labellist,
                 fID = 'fx-' + f.id;
@@ -3114,10 +3098,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
             //# field - separator
             //# - csv - any separator #######
             '<div data-id="csv2" class="evol-w120">',
-            //EvoExport.html_more2('options'),
-            //.evol-FLH
-            EvoUI.fieldLabel('FLS_evol', i18nXpt.separator),
-            EvoUI.input.text(prefix+'FLS_evol', ',', 0),
+            EvoUI.fieldLabel(prefix+'FLS_evol', i18nXpt.separator),
+            EvoUI.input.text(prefix+'FLS_evol', ',', '0'),
             '</div>', // </div>
         '</div>');
         _.each(['XML','HTML','SQL','JSON'], function(f){
@@ -3135,7 +3117,6 @@ Evol.ViewAction.Export = Backbone.View.extend({
                 EvoUI.input.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary'),
             '</div>'
         );
-
         return h.join('');
     },
 
@@ -3166,12 +3147,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
         }
         var divOpts=this.$(prefix + xFormat).show()
             .siblings().hide();
-        var e1=divOpts.filter('.evol-FLH');
-        if(xFormat==='TAB' || xFormat==='CSV'){
-            e1.show();
-        }else{
-            e1.hide();
-        }
+        var $e1=divOpts.filter('.evol-FLH');
+        Evol.UI.setVisible($e1, xFormat==='TAB' || xFormat==='CSV');
         EvoExport.cFormat = xFormat;
     },
 
@@ -3209,8 +3186,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
             //if(showID){
             //    flds.unshift({id: 'id', type: 'text', label: 'Id'});
             //}
-            _.each(fldsDom, function(fd){
-                fldsDomHash[fd.id.substring(3)]='';
+            _.each(fldsDom, function(f){
+                fldsDomHash[f.id.substring(3)]='';
             });
             flds = _.filter(flds, function(f){
                 if(f.id && _.has(fldsDomHash, f.id)){
@@ -3379,6 +3356,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     h.push('</xml>');
                     break;
             }
+            //this._resizeSampleBox();
         }else{
             h.push(Evol.i18n.nodata);
         }
@@ -3415,11 +3393,15 @@ Evol.ViewAction.Export = Backbone.View.extend({
                 options: {}
             },
             ps = this.$('.evol-xpt-para input'),
-            f = ps.eq(0),
-            fv = !_.isUndefined(f.prop('checked'));
-        v.options[f.attr('id')] = fv;
+            f = ps.eq(0);
+        v.options[f.attr('id')] = !_.isUndefined(f.prop('checked'));
         return v;
     },
+
+    //_resizeSampleBox: function(){
+    // TODO:code and plug to events
+    //    this.$().height(xxxx);
+    //},
 
     click_format: function (evt) {
         var format = $(evt.currentTarget).val();//this.$('.evol-xpt-format').val();
@@ -5121,7 +5103,9 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
         if(this.curView.cardinality==='n'){ // TODO do not always change flag
             this.setRoute('', false);
-            this.showFilter(false);
+            if(this._filterOn){
+                this.showFilter(false);
+            }
         }else{
             //if(this.curView.viewName==='wizard'){
             //    this.curView.stepIndex(0);
@@ -5238,6 +5222,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     that.curView.setFilter(that._filters.val())
                         .render();
                 });
+                this._filterOn=true;
             }else{
                 return this;
             }
@@ -5250,6 +5235,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     hideFilter: function(){
         if(this._filters){
             this._filters.$el.hide();
+            this._filterOn=false;
         }
         return this;
     },
@@ -5824,7 +5810,7 @@ Evol.Shell = Backbone.View.extend({
     _HTMLentities: function (es) {
         var h=[];
         _.each(es, function(e){
-            h.push('<li><a href="#', e.id, '/list" data-id="', e.id, '">', e.id, '</a></li>');
+            h.push('<li><a href="#', e.id, '/list" data-id="', e.id, '">', e.entities, '</a></li>');
         });
         return h.join('');
     }

@@ -63,7 +63,7 @@ Evol.UI = {
                 if(fd.readonly){
                     h.push('" ', item, '="', item);
                 }
-                if(fCss && fCss!==''){
+                if(fCss){
                     h.push('" class="', fCss);
                 }
             }
@@ -122,17 +122,18 @@ Evol.UI = {
                 '" title="', value, '"></div>'
             ].join('');
         },
+
         checkbox: function (id, value) {
-            var fh = ['<input type="checkbox" id="', id, '"'];
-            if (value === true || value==='1') {
-                fh.push(' checked="checked"');
+            var fh = ['<input type="checkbox" id="', id];
+            if (value) {
+                fh.push('" checked="checked');
             }
-            fh.push(' value="1">');
+            fh.push('" value="1">');
             return fh.join('');
         },
         checkbox2: function (id, value, css) {
             var fh = ['<input type="checkbox" data-id="', id, '" class="',css,'"'];
-            if (value === true || value==='1') {
+            if (value) {
                 fh.push(' checked="checked"');
             }
             fh.push(' value="1">');
@@ -147,6 +148,7 @@ Evol.UI = {
             }
             return h.join('');
         },
+
         radio: function (fN, value, label, sel, id) {
             return ['<label for="', id, '"><input id="', id, '" name="', fN,
                 '" type="radio" value="', value,
@@ -162,9 +164,11 @@ Evol.UI = {
             h.push('</select>');
             return h.join('');
         },
+
         img: function (id, value) {
             return ['<img id="', id, '" src="', value, '"/>'].join('');
         },
+
         hidden: function (id, value) {
             return ['<input type="hidden" name="', id, '" id="', id, '" value="', value, '"/>'].join('');
         },/*
@@ -187,6 +191,7 @@ Evol.UI = {
                 '</select>'
             ].join('');
         },
+
         option: function (id, text) {
             return ['<option value="', id, '">', text, '</option>'].join('');
         },
@@ -202,6 +207,7 @@ Evol.UI = {
             });
             return opts.join('');
         },
+
         button: function (id, label, css) {
             return '<button type="button" data-id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
         },

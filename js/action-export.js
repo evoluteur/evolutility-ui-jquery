@@ -55,9 +55,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
         h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds"><fieldset>');
 
         //### list of columns to export #########################################
-        h.push('<div class="evol-id">', EvoUI.label('', i18nXpt.xpFields),'</div>'/*,
-            '<div>',EvoUI.input.checkbox('showID','1'), '<label for="showID">', i18nXpt.IDkey, '</label>','</div>'*/
-        );
+        //'<div><label class="checkbox"><input type="checkbox" value="1" id="showID" checked="checked">', i18nXpt.IDkey, '</label></div>'
         _.each(fields, function(f, i){
             var fLabel = f.labelexport || f.label || f.labellist,
                 fID = 'fx-' + f.id;
@@ -93,10 +91,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
             //# field - separator
             //# - csv - any separator #######
             '<div data-id="csv2" class="evol-w120">',
-            //EvoExport.html_more2('options'),
-            //.evol-FLH
-            EvoUI.fieldLabel('FLS_evol', i18nXpt.separator),
-            EvoUI.input.text(prefix+'FLS_evol', ',', 0),
+            EvoUI.fieldLabel(prefix+'FLS_evol', i18nXpt.separator),
+            EvoUI.input.text(prefix+'FLS_evol', ',', '0'),
             '</div>', // </div>
         '</div>');
         _.each(['XML','HTML','SQL','JSON'], function(f){
@@ -183,8 +179,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
             //if(showID){
             //    flds.unshift({id: 'id', type: 'text', label: 'Id'});
             //}
-            _.each(fldsDom, function(fd){
-                fldsDomHash[fd.id.substring(3)]='';
+            _.each(fldsDom, function(f){
+                fldsDomHash[f.id.substring(3)]='';
             });
             flds = _.filter(flds, function(f){
                 if(f.id && _.has(fldsDomHash, f.id)){
@@ -353,6 +349,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     h.push('</xml>');
                     break;
             }
+            //this._resizeSampleBox();
         }else{
             h.push(Evol.i18n.nodata);
         }
@@ -389,11 +386,15 @@ Evol.ViewAction.Export = Backbone.View.extend({
                 options: {}
             },
             ps = this.$('.evol-xpt-para input'),
-            f = ps.eq(0),
-            fv = !_.isUndefined(f.prop('checked'));
-        v.options[f.attr('id')] = fv;
+            f = ps.eq(0);
+        v.options[f.attr('id')] = !_.isUndefined(f.prop('checked'));
         return v;
     },
+
+    //_resizeSampleBox: function(){
+    // TODO:code and plug to events
+    //    this.$().height(xxxx);
+    //},
 
     click_format: function (evt) {
         var format = $(evt.currentTarget).val();//this.$('.evol-xpt-format').val();

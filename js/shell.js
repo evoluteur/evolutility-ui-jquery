@@ -178,7 +178,7 @@ Evol.Shell = Backbone.View.extend({
     _HTMLentities: function (es) {
         var h=[];
         _.each(es, function(e){
-            h.push('<li><a href="#', e.id, '/list" data-id="', e.id, '">', e.id, '</a></li>');
+            h.push('<li><a href="#', e.id, '/list" data-id="', e.id, '">', e.entities, '</a></li>');
         });
         return h.join('');
     }

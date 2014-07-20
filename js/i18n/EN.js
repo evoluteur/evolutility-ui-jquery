@@ -118,7 +118,7 @@ Evol.i18n = {
         firstLine:'First line for field names',
         format: 'Export format',
         xpFields: 'Fields to include in the export',
-        IDkey: 'ID - Primary key',
+        IDkey: 'ID',
         allFields: 'Show all fields',
         formatCSV: 'Comma separated (CSV, TXT, XLS...)',
         formatHTML: 'HTML',
