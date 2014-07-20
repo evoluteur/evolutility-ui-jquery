@@ -1125,7 +1125,13 @@ Evol.Dico = {
         return (idx>-1)?cURL.substr(idx+1):'';
     },
 
-    setRoute: function(router, entity, view, opts, trigger){
+    setRoute: function(router, title, entity, view, opts, trigger){
+        // set page title in head
+        if(_.isUndefined(this._$headTitle)){
+            this._$headTitle = $('#headTitle');
+        }
+        this._$headTitle.html(title);
+        // set route
         if(!_.isUndefined(router)){
             var route = entity + '/' + view;
             if(opts){
@@ -1290,7 +1296,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     getTitle: function (){
-        return Evol.UI.capitalize(this.uiModel.entities);
+        return Evol.UI.capitalize(this.uiModel.entities)+' '+this.viewName;
     },
 
     getFields: function (){
@@ -1509,7 +1515,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
 
         h.push('<div class="evol-many-badges"><div class="evol-badges-body">');
         this._HTMLbody(h, this.getFields(), pSize, this.uiModel.icon, 0, opts.selectable);
-        h.push(Evol.UI.html.clearer, '</div>');
+        h.push('</div>', Evol.UI.html.clearer);
         this._HTMLpagination(h, 0, pSize, models.length);
         h.push('<div class="evo-many-summary">', pSummary, '</div>');
         h.push('</div>');
@@ -4858,7 +4864,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             view: true,
             edit: true,
             mini: true,
-            wiz: false,
+            //wiz: false,
             json: true,
             // --- views for many ---
             list: true,
@@ -4880,7 +4886,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         'view':'View',
         'edit':'Edit',
         'mini':'Mini',
-        'wiz':'Wizard',
+        //'wiz':'Wizard',
         'json':'JSON',
         'badges':'Badges',
         'list':'List',
@@ -4894,7 +4900,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         this.router = this.options.router;
         this.views=[];
         this.viewsHash={};
-        this.tabId=false;
+        //this.tabId=false;
         //this._group=false;
     },
 
@@ -4914,8 +4920,8 @@ Evol.ViewToolbar = Backbone.View.extend({
             eui=Evol.UI.menu,
             opts=this.options,
             endMenu='</ul></li>',
-            menuDevider='<li role="presentation" class="divider" data-cardi="1"></li>',
-            menuDeviderCard1='<li role="presentation" class="divider" data-cardi="1"></li>';
+            menuDevider='<li class="divider" data-cardi="1"></li>',
+            menuDeviderH='<li class="divider-h"></li>';
 
         function linkOpt2h (id, label, icon, cardi){
             if(opts.buttons && opts.buttons[id]){
@@ -4924,8 +4930,11 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
 
         h.push('<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-id="main">');
-        linkOpt2h('list',Evol.i18n.bAll,'th-list');
-        linkOpt2h('new',Evol.i18n.bNew,'plus');
+        linkOpt2h('list','','th-list');
+        linkOpt2h('new','','plus');
+        //linkOpt2h('list',Evol.i18n.bAll,'th-list');
+        //linkOpt2h('new',Evol.i18n.bNew,'plus');
+        h.push(menuDeviderH);
         linkOpt2h('edit',Evol.i18n.bEdit,'pencil','1');
         linkOpt2h('save',Evol.i18n.bSave,'floppy-disk','1');
         linkOpt2h('del',Evol.i18n.bDelete,'trash','1');
@@ -4935,19 +4944,22 @@ Evol.ViewToolbar = Backbone.View.extend({
         linkOpt2h('export',Evol.i18n.bExport,'cloud-download','n');
         //linkOpt2h('selections','','star');
         if(opts.toolbar){
-            h.push(eui.hItem('prev','','chevron-left','x'),
-                eui.hItem('next','','chevron-right','x'),
+            h.push('</ul><ul class="nav nav-pills pull-right" data-id="views">',
                 '<li class="evo-tb-status" data-cardi="n"></li>',
-                '</ul><ul class="nav nav-pills pull-right" data-id="views">');
+                eui.hItem('prev','','chevron-left','x'),
+                eui.hItem('next','','chevron-right','x')
+            );
+
             h.push(eui.hBegin('views','li','eye-open'));
-            linkOpt2h('list','List','th-list','n');
-            linkOpt2h('badges','Badges','th-large','n');
-            linkOpt2h('charts','Charts','stats','n');
             linkOpt2h('view','View','file','1');
             linkOpt2h('edit','All Fields','th','1');
             linkOpt2h('mini','Mini','th-large','1'); //Important Fields only
             linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
+            h.push(menuDevider);
+            linkOpt2h('list','List','th-list','x');
+            linkOpt2h('badges','Badges','th-large','x');
+            linkOpt2h('charts','Charts','stats','x');
             h.push(eui.hEnd('li'));
 
             //linkOpt2h('customize','','wrench', '1', 'Customize');
@@ -5293,20 +5305,20 @@ Evol.ViewToolbar = Backbone.View.extend({
                 idx=(idx<l)?idx+1:0;
             }
             cModel = collec.models[idx];
-            if(cModel){
-                this.setRoute(cModel?cModel.id:null, false);
-            }
         }else{
             cModel = null;
         }
         this.model = cModel;
         this.curView.setModel(cModel);
+        if(cModel){
+            this.setRoute(cModel?cModel.id:null, false);
+        }
         return this
             .clearMessage();
     },
 
     setRoute: function(id, triggerRoute){
-        Evol.Dico.setRoute(this.router, this.uiModel.id, this.curView.viewName, id, triggerRoute);
+        Evol.Dico.setRoute(this.router, this.curView.getTitle(), this.uiModel.id, this.curView.viewName, id, triggerRoute);
         return this;
     },
 
@@ -5702,7 +5714,7 @@ Evol.Shell = Backbone.View.extend({
     setRoute: function(id, triggerRoute){
         var cView = this._curEntity.curView;
         if(cView){
-            Evol.Dico.setRoute(this.options.router, cView.uiModel.id, cView.viewName, id, triggerRoute);
+            Evol.Dico.setRoute(this.options.router, cView.getTitle(), cView.uiModel.id, cView.viewName, id, triggerRoute);
         }else{
             debugger;
             alert('TODO: debug it')

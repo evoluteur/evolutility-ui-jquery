@@ -12,7 +12,6 @@
   margin-bottom: 10px;
   padding: 3px;
   background-color: #fbfbfb;
-  height: 43px;
 }
 .evo-toolbar > [data-cid="views"] {
   color: black;
@@ -20,8 +19,10 @@
 .evo-toolbar > ul > .evo-sel .glyphicon:before {
   color: black;
 }
-.evo-toolbar > ul > li > a {
-  max-height: 35px;
+.evo-toolbar > ul > li.divider-h {
+  height: 41px;
+  width: 1px;
+  background-color: #bce8f1;
 }
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
