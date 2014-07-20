@@ -33,7 +33,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             view: true,
             edit: true,
             mini: true,
-            wiz: false,
+            //wiz: false,
             json: true,
             // --- views for many ---
             list: true,
@@ -55,7 +55,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         'view':'View',
         'edit':'Edit',
         'mini':'Mini',
-        'wiz':'Wizard',
+        //'wiz':'Wizard',
         'json':'JSON',
         'badges':'Badges',
         'list':'List',
@@ -69,7 +69,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         this.router = this.options.router;
         this.views=[];
         this.viewsHash={};
-        this.tabId=false;
+        //this.tabId=false;
         //this._group=false;
     },
 
@@ -474,20 +474,20 @@ Evol.ViewToolbar = Backbone.View.extend({
                 idx=(idx<l)?idx+1:0;
             }
             cModel = collec.models[idx];
-            if(cModel){
-                this.setRoute(cModel?cModel.id:null, false);
-            }
         }else{
             cModel = null;
         }
         this.model = cModel;
         this.curView.setModel(cModel);
+        if(cModel){
+            this.setRoute(cModel?cModel.id:null, false);
+        }
         return this
             .clearMessage();
     },
 
     setRoute: function(id, triggerRoute){
-        Evol.Dico.setRoute(this.router, this.uiModel.id, this.curView.viewName, id, triggerRoute);
+        Evol.Dico.setRoute(this.router, this.curView.getTitle(), this.uiModel.id, this.curView.viewName, id, triggerRoute);
         return this;
     },
 

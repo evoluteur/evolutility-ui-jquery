@@ -70,7 +70,7 @@ Evol.Shell = Backbone.View.extend({
     setRoute: function(id, triggerRoute){
         var cView = this._curEntity.curView;
         if(cView){
-            Evol.Dico.setRoute(this.options.router, cView.uiModel.id, cView.viewName, id, triggerRoute);
+            Evol.Dico.setRoute(this.options.router, cView.getTitle(), cView.uiModel.id, cView.viewName, id, triggerRoute);
         }else{
             debugger;
             alert('TODO: debug it')

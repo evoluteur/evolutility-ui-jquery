@@ -479,7 +479,13 @@ Evol.Dico = {
         return (idx>-1)?cURL.substr(idx+1):'';
     },
 
-    setRoute: function(router, entity, view, opts, trigger){
+    setRoute: function(router, title, entity, view, opts, trigger){
+        // set page title in head
+        if(_.isUndefined(this._$headTitle)){
+            this._$headTitle = $('#headTitle');
+        }
+        this._$headTitle.html(title);
+        // set route
         if(!_.isUndefined(router)){
             var route = entity + '/' + view;
             if(opts){

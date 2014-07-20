@@ -149,7 +149,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     getTitle: function (){
-        return Evol.UI.capitalize(this.uiModel.entities);
+        return Evol.UI.capitalize(this.uiModel.entities)+' '+this.viewName;
     },
 
     getFields: function (){
