@@ -44,25 +44,6 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         return this.$('.table > tbody');
     },
 
-    _HTMLbody: function(h, fields, pSize, icon, pageIdx, selectable){
-        var opts = this.options,
-            data = this.collection.models,
-            r,
-            rMin=0,
-            rMax = _.min([data.length, rMin+pSize]),
-            ico = icon?(opts.iconsPath || '')+icon:null;
-
-        if(pageIdx>0){
-            rMin=pageIdx*pSize;
-            rMax = _.min([data.length, rMin+pSize]);
-        }
-        if (rMax > 0) {
-            for (r = rMin; r < rMax; r++) {
-                this.HTMLItem(h, fields, data[r], ico, selectable, this.getRoute());
-            }
-        }
-    },
-
     HTMLItem: function(h, fields, model, icon, selectable, route){
         var that = this,
             v,
