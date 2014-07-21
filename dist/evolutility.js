@@ -1126,11 +1126,6 @@ Evol.Dico = {
     },
 
     setRoute: function(router, title, entity, view, opts, trigger){
-        // set page title in head
-        if(_.isUndefined(this._$headTitle)){
-            this._$headTitle = $('#headTitle');
-        }
-        this._$headTitle.html(title);
         // set route
         if(!_.isUndefined(router)){
             var route = entity + '/' + view;
@@ -1141,6 +1136,11 @@ Evol.Dico = {
                 router.navigate('#' + route, {trigger: trigger});
             }
         }
+        // set page title in head
+        if(_.isUndefined(this._$headTitle)){
+            this._$headTitle = $('#headTitle');
+        }
+        this._$headTitle.html(title);
     }
 
 };
