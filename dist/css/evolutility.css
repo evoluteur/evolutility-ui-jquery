@@ -34,7 +34,6 @@
   margin-top: 2px;
 }
 /* --- panels & tabs --- */
-.evol-pnls,
 .evol-pnl > div > fieldset {
   padding: 10px 10px 5px 2px;
 }
@@ -50,7 +49,7 @@
   padding-left: 10px !important;
 }
 .evol-tabs {
-  margin: 0 10px;
+  margin: 0 10px 10px;
 }
 /* --- fields --- */
 .evol-required,
@@ -81,7 +80,7 @@
 .evol-json {
   width: 100%;
   height: 350px;
-  margin: 10px 0;
+  margin: 0 0 10px;
 }
 .glyphicon-wrench {
   margin-left: 5px;
