@@ -218,6 +218,8 @@ Evol.ViewMany = Backbone.View.extend({
             return '';
         } else if (cSize === 1) {
             return cSize + ' ' + this.uiModel.entity;
+        } else if(pSize>=cSize){
+            return cSize + ' ' + this.uiModel.entities;
         } else {
             var rangeBegin = (pIdx || 0) * pSize + 1, rangeEnd;
             if (pIdx < 1) {
