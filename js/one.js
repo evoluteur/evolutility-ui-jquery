@@ -503,7 +503,7 @@ Evol.ViewOne = Backbone.View.extend({
         }else{
             h.push('<div data-p-width="', p.width, '" class="evol-pnl');
             if(mode==='mini'){
-                h.push(' w-100 ', (p.class || ''), '">');
+                h.push(' evol-p-mini ', (p.class || ''), '">');
             }else{
                 h.push(' pull-left" style="width:', p.width, '%">');
             }
