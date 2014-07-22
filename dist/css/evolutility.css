@@ -103,6 +103,9 @@
   padding-left: 4px;
   color: silver;
 }
+.evol-field-label > label > .glyphicon-question-sign:hover {
+  color: #428bca;
+}
 .w-100 {
   width: 100%;
 }
@@ -126,6 +129,10 @@
   margin-top: 10px;
   margin-left: 10px;
   cursor: pointer;
+  color: #31708f;
+}
+.evo-td-plusminus > div:hover {
+  color: #428bca;
 }
 .evo-td-plusminus > div:last-child:after {
   clear: left;
