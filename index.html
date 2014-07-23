@@ -4,6 +4,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
+    <meta name="keywords" content="UI Backbone model view open source metadata driven SPA single page app application CRUDBootstrap" />
+    <meta name="description" content="Evolutility :: UI models for your Backbone models" /></head>
+
     <title>evolutility.js</title>
     <link href="dist/css/demo.css" rel="stylesheet" />
     <link href="dist/css/evolutility.min.css" rel="stylesheet" />
@@ -34,11 +37,9 @@
 
     <p></p>
 
-<p>
+<h4>
     Evolutility (currently v0.2.1) provides a set of Backbone views which can change form, volume and structure based on a UI-model.
-</p>
-
-
+</h4>
 
     <div id="evol-views-params" >
 
@@ -101,12 +102,7 @@
         <ul>
             <li><a href="doc/ui-model.html">ui-model</a></li>
             <li><a href="doc/views.html">views</a></li>
-        </ul>
-    </div>
-
-    <div class="blueBox">
-        <h2>Download</h2>
-        <ul>
+            <li>&nbsp;</li>
             <li><a href="https://github.com/evoluteur/evolutility">GitHub</a></li>
         </ul>
     </div>
@@ -184,7 +180,9 @@
                 uiModel=winecellar_ui;
                 break;
         }
-        var $e=$('#evol1').empty(),
+        var $e=$('#evol1')
+                .empty()
+                .attr('data-eid', uiModel.id),// .data('eid') is cached and not updating CSS
             collec = new Backbone.Collection(sampleData),
             config={
                 style: 'panel-primary',

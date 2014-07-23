@@ -144,7 +144,7 @@
   padding: 80px 30px 30px;
 }
 .evo-content2 {
-  padding: 90px 30px 30px;
+  padding: 70px 30px 30px;
 }
 .evo-content3 {
   padding: 96px 30px 30px;
@@ -213,6 +213,9 @@ h4 {
 .evo-title2 > h1 {
   color: white !important;
 }
+#evol-views-params {
+  margin: 20px;
+}
 .blueBox {
   float: left;
   padding: 5px 10px;
@@ -267,13 +270,17 @@ h4 {
   font-size: smaller;
   font-weight: normal;
 }
-/* winecellar demo */
-.winecellar .evol-many-badges > div.panel {
-  height: 260px !important;
+/* demo badge view*/
+[data-eid="todo"] .evol-badges-body > div.panel,
+[data-eid="contact"] .evol-badges-body > div.panel {
+  height: 160px !important;
 }
-.winecellar .evol-many-badges p {
+[data-eid="winecellar"] .evol-badges-body > div.panel {
+  height: 272px !important;
+}
+[data-eid="winecellar"] .evol-badges-body p {
   clear: left;
 }
-.test .evol-many-badges > div.panel {
+[data-eid="test"] .evol-badges-body > div.panel {
   height: 182px !important;
 }

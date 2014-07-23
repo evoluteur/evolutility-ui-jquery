@@ -21,6 +21,9 @@ h4{
   color:white !important;
 }
 
+#evol-views-params{
+  margin: 20px;
+}
 
 .blueBox{
   float:left;
@@ -78,21 +81,27 @@ h4{
   font-weight: normal;
 }
 
-/* winecellar demo */
-.winecellar .evol-many-badges {
-
-  > div.panel {
-    height: 260px !important;
+.mixin-badgeHeight(@h){
+  .evol-badges-body > div.panel {
+      @height: @h !important;
   }
-
+}
+/* demo badge view*/
+[data-eid="todo"],
+[data-eid="contact"] {
+  .evol-badges-body > div.panel {
+    height: 160px !important;
+  }
+}
+[data-eid="winecellar"] .evol-badges-body {
+  > div.panel {
+    height: 272px !important;
+  }
   p{
     clear:left;
   }
 }
 
-.test .evol-many-badges {
-
-  > div.panel {
-    height: 182px !important;
-  }
+[data-eid="test"] .evol-badges-body > div.panel {
+  height: 182px !important;
 }

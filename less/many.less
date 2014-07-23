@@ -13,6 +13,9 @@
 
   > .table th {
 
+    font-weight: 500 !important;
+    background-color: @toolbar-background-color;
+
     .glyphicon {
       display:none;
       position:absolute;
@@ -46,8 +49,12 @@
   padding: 3px;
   width:300px;
   > .glyphicon {
+    color:@color-icon;
     position: absolute;
     top:2px;
+    &:hover{
+      color:@color-icon-hover;
+    }
   }
   > .glyphicon-chevron-up {
     left:7px;

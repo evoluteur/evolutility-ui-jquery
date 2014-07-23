@@ -64,7 +64,8 @@
   color: #0099cc;
 }
 .evo-rdonly {
-  min-height: 20px;
+  min-height: 32px;
+  padding-top: 5px;
 }
 .evol-buttons {
   clear: both;
@@ -87,6 +88,10 @@
   display: inline !important;
 }
 /* bootstrap customizations*/
+label {
+  font-weight: 500 !important;
+  margin-bottom: 2px;
+}
 .evol-mini-holder .help-block,
 .evolw-edit .help-block {
   color: #737373 !important;
@@ -184,6 +189,10 @@
 .evol-many-icon {
   margin-right: 6px !important;
 }
+.evol-many-list > .table th {
+  font-weight: 500 !important;
+  background-color: #fbfbfb;
+}
 .evol-many-list > .table th .glyphicon {
   display: none;
   position: absolute;
@@ -210,8 +219,12 @@
   width: 300px;
 }
 .evol-sort-icons > .glyphicon {
+  color: #31708f;
   position: absolute;
   top: 2px;
+}
+.evol-sort-icons > .glyphicon:hover {
+  color: #428bca;
 }
 .evol-sort-icons > .glyphicon-chevron-up {
   left: 7px;
@@ -235,7 +248,7 @@
   min-width: 140px;
   height: 182px;
   margin: 5px;
-  padding: 10px;
+  padding: 2px 10px 10px;
   border-radius: 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
