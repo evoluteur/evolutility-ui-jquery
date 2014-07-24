@@ -30,7 +30,7 @@
 <a href="https://github.com/evoluteur/evolutility" class="forkMe" target="forkMe"><img alt="Fork me on GitHub" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
 <div class="evo-title" >
     <h1 class="title1" style="color: white">UI models for your Backbone models</h1>
-    <h1 class="title1"><span class="title2" >...plus a set of views which follow UI models.</span></h1>
+    <h1 class="title1"><span class="title2" >+ a set of Backbone views which can change form, volume and structure based on a UI-model.</span></h1>
 </div>
 
 <div class="evo-content">
@@ -38,7 +38,7 @@
     <p></p>
 
 <h4>
-    Evolutility (currently v0.2.1) provides a set of Backbone views which can change form, volume and structure based on a UI-model.
+    Evolutility is currently v0.2.1 and a work in progress (pull-requests friendly).
 </h4>
 
     <div id="evol-views-params" >
@@ -79,12 +79,15 @@
 
     <p></p>
 
-    <p>For each Backbone model, a single UI-model defines all the views.
-        <br/>See the UI model for the sample apps:
+    <p>For each Backbone model and collection, a single UI-model defines all view.</p>
+
+    <p>UI models for the examples above:
         <a href="javascript:showUIdef2(todo_ui)">To Do</a>,
         <a href="javascript:showUIdef2(contacts_ui)">Addressbook</a>,
         <a href="javascript:showUIdef2(winecellar_ui)">Wine Cellar</a>.
         <small id="hide_def" style="display:none;"><a href="javascript:showUIdef2no()">[Hide]</a></small></p>
+    </p>
+
     <div style="display:none;" id="uimodel"></div>
 
 
@@ -116,6 +119,8 @@
 
 
 <script>
+
+    var curView=null;
 
     function showUIdef2(uiModel){
         var $ui=$('#uimodel');
@@ -180,9 +185,8 @@
                 uiModel=winecellar_ui;
                 break;
         }
-        var $e=$('#evol1')
-                .empty()
-                .attr('data-eid', uiModel.id),// .data('eid') is cached and not updating CSS
+
+        var $e=$('<div data-eid="'+uiModel.id+'"></div>'),
             collec = new Backbone.Collection(sampleData),
             config={
                 style: 'panel-primary',
@@ -196,14 +200,15 @@
                 iconsPath:'demo/pix/'
             };
 
+        $('#evol1').append($e);
         if(viewName==='filter'){
             config.fields=Evol.Dico.getFields(uiModel);
         }
-        var vw=new viewClasses[viewName](config)
-                .render();
-        if(vw.clearCache){
-            vw.clearCache();
+        if(curView){
+            curView.remove();
         }
+        curView=new viewClasses[viewName](config)
+                .render();
     }
 
     $(document).ready(function(){
