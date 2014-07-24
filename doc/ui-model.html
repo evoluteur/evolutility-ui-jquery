@@ -43,6 +43,8 @@
     <a href="http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications" target="evomm">Evolutility minimalist meta-model</a>.</p>
 
 
+<span class="evol-required">*</span>: required attribute.
+<span class="evol-asterix">*</span>: partially or not implemented yet.
 
 <p class="evo-h-gap">&nbsp;</p>
 <section id="object">
@@ -95,8 +97,6 @@
     </tr>
     </tbody></table>
 
-    <span class="evol-required">*</span>: required attribute.
-    <span class="evol-asterix">*</span>: partially or not implemented yet.
 </section>
 
 <a name="fields"></a>
@@ -118,7 +118,7 @@
             <td>Field Id in the UI.</td>
         </tr>
         <tr>
-            <td>attribute </td>
+            <td>attribute <span class="evol-asterix">*</span> </td>
             <td>Model attribute mapping to the field.
                 If no value is provided for "attribute", the value of the attribute "id" is used.</td>
         </tr>
@@ -136,6 +136,7 @@
         </tr>
         <tr>
             <td>type<span class="evol-required">*</span>
+                <span class="evol-asterix">*</span>
             </td>
             <td>
                 <p>The type of the field in the UI.</p>
@@ -172,7 +173,7 @@
             <th colspan="2">Layout</th>
         </tr>
         <tr>
-            <td >css
+            <td >css<span class="evol-asterix">*</span>
             </td>
             <td>CSS class name for the specific field.
             </td>
@@ -382,7 +383,6 @@
             </td>
         </tr>
         </tbody></table>
-
     </section>
 
 <a name="panel-list"></a>
@@ -438,7 +438,6 @@
             </td>
         </tr>
         </tbody></table>
-
     </section>
 
 <a name="tabs"></a>
@@ -451,7 +450,7 @@
     <table class="table table-bordered">
         <tbody><tr>
             <td style="width: 120px; ">
-                css
+                css<span class="evol-asterix">*</span>
             </td>
             <td>
                 CSS class for the tab. The default value is &quot;Tab&quot;.
