@@ -52,7 +52,10 @@ Evol.ViewAction.Export = Backbone.View.extend({
             iMax = fields.length;
 
         //string fieldName, fieldlabel, expOut, buffer;
-        h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds"><fieldset>');
+        h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds">',
+            '<div ><label>', i18nXpt.xpFields, '</label></div>',
+             '<fieldset>'
+        );
 
         //### list of columns to export #########################################
         //'<div><label class="checkbox"><input type="checkbox" value="1" id="showID" checked="checked">', i18nXpt.IDkey, '</label></div>'
