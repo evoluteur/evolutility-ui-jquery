@@ -24,7 +24,6 @@ Evol.ViewOne = Backbone.View.extend({
         'click label>.glyphicon-question-sign': 'click_help',
         'click .evol-field-label .glyphicon-wrench': 'click_customize',
         'click [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel'
-        // extra evt for $(window) resize
     },
 
     options: {
@@ -305,10 +304,11 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 
-    clearCache: function(fid, fvDefault, mode){
+    clearCache: function(){
         this._fieldHash=null;
         this._fields=null;
         this._subCollecsOK=false;
+        this._subCollecs=null;
         return this;
     },
 
@@ -744,12 +744,10 @@ Evol.ViewOne = Backbone.View.extend({
 
                 // Check required/empty or check type
                 if (f.required && (v==='' ||
-                    (f.type===ft.int && isNaN(v)) ||
-                    (f.type===ft.dec && isNaN(v)) ||
-                    (f.type===ft.money && isNaN(v)) ||
-                    (f.type===ft.lov && v==='0') ||
-                    (f.type===ft.list && v.length===0) ||
-                    (f.type===ft.color && v==='#000000'))){
+                        ((f.type===ft.int || f.type===ft.dec || f.type===ft.money) && isNaN(v)) ||
+                        (f.type===ft.lov && v==='0') ||
+                        (f.type===ft.list && v.length===0) ||
+                        (f.type===ft.color && v==='#000000'))){
                     flagField(f, i18nVal.empty);
                 } else {
                     if( !(isNaN(v) && (f.type===ft.int || f.type===ft.dec || f.type===ft.money))) {
@@ -855,19 +853,28 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 
-    showHelp:function(id, type, $el){
+    showHelp: function(id, type, $el, isField){ // isField to be used by shift-click on help icon
         var fs=this.getFields(),
-            fld=_.findWhere(fs,{id:id});
+            fld=_.findWhere(fs,{id:id}),
+            $f,
+            $fh;
 
         if(fld && fld.help){
-            var $f=$el.closest('.evol-fld'),
+            if(isField){
+                $f=$el;
+                $fh=[];
+            }else{
+                $f=$el.closest('.evol-fld');
                 $fh=$f.find('.help-block');
+            }
+
             if($fh.length>0){
                 $fh.slideUp(200, function(){
                     $fh.remove();
                 });
-            }else{
-                $fh=$('<span class="help-block">' + _.escape(fld.help) + '</span>').hide();
+            }else {
+                $fh=$('<span class="help-block">' + _.escape(fld.help) + '</span>')
+                    .hide();
                 $f.append($fh);
                 $fh.slideDown(200);
             }
@@ -976,16 +983,17 @@ Evol.ViewOne = Backbone.View.extend({
             eType=$e.data('type');
 
         evt.stopImmediatePropagation();
-        this.showHelp(id, eType, $e);
+        // todo: shift-click => show help for all fields which have help content.
         /*if(evt.shiftKey){
-            id=0;
-            var flds=$e.closest('.evo-one-edit').find('label > .glyphicon-question-sign');
-            _.each(flds, function(f){
-                // that.showHelp(id, eType, $e);
+            var that=this,
+                flds=this.$('label > .glyphicon-question-sign').toArray();
+            _.each(flds, function($f){
+                that.showHelp(id, eType, $f, true);
             });
         }else{
             this.showHelp(id, eType, $e);
         }*/
+        this.showHelp(id, eType, $e);
         this.$el.trigger(eType+'.help', {id: id});
     },
 
