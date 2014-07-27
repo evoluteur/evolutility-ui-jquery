@@ -39,12 +39,12 @@ Evol.Shell = Backbone.View.extend({
         this.setupRouter();
     },
 
-	render: function() {
-		//this.$el.html(this._HTML());
-        this.$nav2.html(this._HTMLentities(this.options.uiModels));
-        //this.$content;
-        return this;
-	},
+	//render: function() {
+		//this.$el.html(...
+        //this.$nav2.html(this._HTMLentities(this.options.uiModels));
+        //this.$content.html(...;
+        //return this;
+	//},
 
     setupRouter: function(){
         var that=this,
@@ -84,6 +84,8 @@ Evol.Shell = Backbone.View.extend({
 
     setEntity: function(eName, view, options){
         var that=this;
+
+        view = view || 'list';
 
         function cb(){
             that._ents[eName].show().siblings().hide();
@@ -173,7 +175,7 @@ Evol.Shell = Backbone.View.extend({
                 }
             }
         });
-    },
+    }/*,
 
     _HTMLentities: function (es) {
         var h=[];
@@ -181,7 +183,7 @@ Evol.Shell = Backbone.View.extend({
             h.push('<li><a href="#', e.id, '/list" data-id="', e.id, '">', e.entities, '</a></li>');
         });
         return h.join('');
-    }
+    }*/
 
 });
 
