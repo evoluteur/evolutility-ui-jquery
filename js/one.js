@@ -207,7 +207,7 @@ Evol.ViewOne = Backbone.View.extend({
                             var $fc=$f.children().removeAttr('selected');
                             if(fv!==''){
                                 $fc.filter('[value='+fv+']')
-                                    .attr('selected', true);
+                                    .prop('selected', 'selected'); // FF need prop not attr
                             }
                             break;
                         case fTypes.bool:

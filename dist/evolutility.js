@@ -1953,7 +1953,7 @@ Evol.ViewOne = Backbone.View.extend({
                             var $fc=$f.children().removeAttr('selected');
                             if(fv!==''){
                                 $fc.filter('[value='+fv+']')
-                                    .attr('selected', true);
+                                    .prop('selected', 'selected'); // FF need prop not attr
                             }
                             break;
                         case fTypes.bool:
@@ -3056,6 +3056,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
     initialize: function (opts) {
         this.options = _.extend({}, this.options, opts);
         this.uiModel = this.options.uiModel;
+        this.filterOn = this.options.filterOn;
         this.render();
         return this;
     },
@@ -3125,7 +3126,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
         _.each(['XML','HTML','SQL','JSON'], function(f){
             h.push('<div id="', prefix, f, '" style="display:none;"></div>');
         });
-        h.push('</div>',
+        h.push('<div class="clearfix"></div></div>',
             //# Preview #######
             '<label>',i18nXpt.preview,'</label><div class="evol-xpt-preview">',
             // ## Samples
@@ -6175,12 +6176,12 @@ Evol.Shell = Backbone.View.extend({
         this.setupRouter();
     },
 
-	render: function() {
-		//this.$el.html(this._HTML());
-        this.$nav2.html(this._HTMLentities(this.options.uiModels));
-        //this.$content;
-        return this;
-	},
+	//render: function() {
+		//this.$el.html(...
+        //this.$nav2.html(this._HTMLentities(this.options.uiModels));
+        //this.$content.html(...;
+        //return this;
+	//},
 
     setupRouter: function(){
         var that=this,
@@ -6220,6 +6221,8 @@ Evol.Shell = Backbone.View.extend({
 
     setEntity: function(eName, view, options){
         var that=this;
+
+        view = view || 'list';
 
         function cb(){
             that._ents[eName].show().siblings().hide();
@@ -6309,7 +6312,7 @@ Evol.Shell = Backbone.View.extend({
                 }
             }
         });
-    },
+    }/*,
 
     _HTMLentities: function (es) {
         var h=[];
@@ -6317,7 +6320,7 @@ Evol.Shell = Backbone.View.extend({
             h.push('<li><a href="#', e.id, '/list" data-id="', e.id, '">', e.entities, '</a></li>');
         });
         return h.join('');
-    }
+    }*/
 
 });
 
