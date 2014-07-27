@@ -49,7 +49,7 @@
   padding-left: 10px !important;
 }
 .evol-tabs {
-  margin: 0 10px 10px;
+  margin: 0 10px 10px !important;
 }
 /* --- fields --- */
 .evol-required,
