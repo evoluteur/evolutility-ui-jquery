@@ -4,17 +4,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
+    <meta name="keywords" content="open source metadata UI SPA Backbone View Model Bootstrap" />
+    <meta name="description" content="Evolutility :: Demo Single Page App" /></head>
+
     <link href="../dist/css/vendors.min.css" rel="stylesheet" />
     <link href="../dist/css/demo.css" rel="stylesheet" />
     <link href="../dist/css/evolutility.css" rel="stylesheet" />
 
+    <script src="demo-ui.min.js" type="text/javascript"></script>
     <script src="../dist/vendors.min.js" type="text/javascript"></script>
     <script src="../dist/evolutility.js" type="text/javascript"></script>
 
-    <script src="../js/demo.js" type="text/javascript"></script>
-    <script src="demo-ui.min.js" type="text/javascript"></script>
-
-    <title>demos</title>
+    <title id="headTitle">Evolutility.js Demo</title>
 </head>
 
 <body>
@@ -27,49 +28,105 @@
         <li><a href="https://github.com/evoluteur/evolutility" target="_new">GitHub</a></li>
     </ul>
     <ul class="evo-head-links2">
-        <li><a href="todo.html">todo</a></li>
-        <li><a href="contact.html">addressbook</a></li>
-        <li><a href="winecellar.html">wine cellar</a></li>
-        <li><a href="test.html">test</a></li>
+        <li><a href="#todo/badges" data-id="todo">todo</a></li>
+        <li><a href="#contact" data-id="contact">addressbook</a></li>
+        <li><a href="#winecellar" data-id="winecellar">wine cellar</a></li>
     </ul>
     <div class="clearfix"></div>
 </div>
 
 <div class="evo-title2">
-    <h1 id="title">Demos</h1>
+    <h1 id="title">Demo</h1>
 </div>
 
-<div class="evo-content">
+<div class="evo-content2">
 
-<p>These sample applications are not anything you haven't seen before.
-    The interesting thing is that these different apps are in fact the same code with different UI-models
-    and it did not require any hand coded Javascript or CSS to build them.
-    </p>
+    <div id="evol" class="">
 
-<ul class="">
-    <li><a href="todo.html"><img src="pix/todo.gif" class="evo-icon-16">To Do</a></li>
-    <li><a href="contact.html"><img src="pix/contact.gif" class="evo-icon-16">AddressBook</a></li>
-    <li><a href="winecellar.html"><img src="pix/wine.gif" class="evo-icon-16">Wine cellar</a></li>
-</ul>
+        <p><br/>These sample applications are not anything you haven't seen before.
+            The interesting thing is that these different apps are in fact the same code with different UI-models
+            and it did not require any hand coded Javascript or CSS to build them.
+        </p>
 
-    <p>For each Backbone model, a single UI-model defines all views.
-        <br/>See the UI model for the sample apps: <a href="javascript:showUIdef2(todo_ui)">To Do</a>,
-        <a href="javascript:showUIdef2(contacts_ui)">Addressbook</a>,
-        <a href="javascript:showUIdef2(winecellar_ui)">Wine Cellar</a>.
-        <small id="hide_def" style="display:none;"><a href="javascript:showUIdef2no(winecellar_ui)">[Hide]</a></small></p>
-    </p>
-    <div style="display:none;" id="uimodel"></div>
+        <ul class="">
+            <li><a href="#todo/badges" data-id="todo"><img src="pix/todo.gif" class="evo-icon-16">To Do</a></li>
+            <li><a href="#contact/list" data-id="contact"><img src="pix/contact.gif" class="evo-icon-16">AddressBook</a></li>
+            <li><a href="#winecellar/list" data-id="wine"><img src="pix/wine.gif" class="evo-icon-16">Wine cellar</a></li>
+        </ul>
 
-    <p>These examples can also all run as a <a href="SinglePageApp.html">Single Page App</a> with routing.</p>
+        <p>For each Backbone model, a single UI-model defines all views.
+            See the UI model for the sample apps: <a href="javascript:showUIdef2(todo_ui)">To Do</a>,
+            <a href="javascript:showUIdef2(contacts_ui)">Addressbook</a>,
+            <a href="javascript:showUIdef2(winecellar_ui)">Wine Cellar</a>.
+            <small id="hide_def" style="display:none;"><a href="javascript:showUIdef2no(winecellar_ui)">[Hide]</a></small></p>
+        </p>
+        <div style="display:none;" id="uimodel"></div>
 
-<p>The data for these demos is stored in your browser local storage
-    (using <a href="https://github.com/jeromegn/Backbone.localStorage" target"bbls">Backbone.localStorage</a>).</p>
+        <p>The data for these demos is stored in your browser local storage
+            (using <a href="https://github.com/jeromegn/Backbone.localStorage" target="bbls">Backbone.localStorage</a>).</p>
 
-<p>Evolutility.js is not finished yet. Only Chrome is fully supported for now.</p>
+        <p>Evolutility.js is still a work in progress. Only Chrome is fully supported for now.</p>
 
-<p><br/>evolutility.js at <a href="https://github.com/evoluteur/evolutility" target="download">GitHub</a></p>
+
+    </div>
+
+
+    <div class="clearfix"></div>
 
 </div>
+
+<script>
+
+    $(document).ready(function(){
+        // - create sample data if none is there
+        createSampleDataIfEmpty(todo_ui, todo_data);
+        createSampleDataIfEmpty(contacts_ui, contacts_data);
+        createSampleDataIfEmpty(winecellar_ui, winecellar_data);
+
+        // - run shell which set demo
+        new Evol.Shell({
+            el:$('#evol'),
+            uiModelsObj: {
+                todo: todo_ui,
+                contact: contacts_ui,
+                winecellar: winecellar_ui//, test_ui
+            }
+        }).render();
+    });
+
+    function showUIdef2(uiModel){
+        var $ui=$('#uimodel');
+        $ui.html(Evol.UI.input.textMJSON('uimodel2', uiModel, 10))
+            .slideDown();
+        $('#hide_def').show();
+    }
+
+    function showUIdef2no(){
+        $('#uimodel').slideUp();
+        $('#hide_def').hide();
+    }
+
+    function createSampleDataIfEmpty(uiModel, data){
+        var lc = new Backbone.LocalStorage('evol-'+uiModel.id),
+            M = Backbone.Model.extend({
+                localStorage: lc
+            }),
+            Ms = Backbone.Collection.extend({
+                model: M,
+                localStorage: lc
+            }),
+            ms = new Ms();
+        ms.fetch({
+            success: function(collection){
+                // TODO remove sample data
+                if(collection.length===0){
+                    Evol.UI.insertCollection(collection, data);
+                }
+            }
+        });
+    }
+
+</script>
 <div class="footer">&#169; 2014 Olivier Giulieri</div>
 </body>
 

@@ -18,6 +18,7 @@
 </head>
 
 <body>
+<body>
 
 <div class="evo-header">
     <div class="evo-logo"><a href="index.html"><span>evol</span>utility<span>.js</span></a></div>
@@ -35,11 +36,16 @@
 
 <div class="evo-content">
 
-    <p></p>
 
 <h4>
     Evolutility is currently v0.2.1 and a work in progress on <a href="https://github.com/evoluteur/evolutility" target="ghe">GitHub</a>.
 </h4>
+    <p>&nbsp;</p>
+
+    <p>For each UI-model Evolutility provides
+        9 views for browsing, editing, filtering and making charts
+        of a Backbone model.
+    </p>
 
     <div id="evol-views-params" >
 
@@ -65,8 +71,8 @@
                     <option value="charts">Charts</option>
                 </optgroup>
                 <optgroup label="Action">
-                    <option value="filter">Filter</option>
                     <option value="export">Export</option>
+                    <option value="filter">Filter</option>
                 </optgroup>
             </select>
         </div>
@@ -78,38 +84,44 @@
 
 <div id="evol1"></div>
 
-    <p></p>
+    <p>&nbsp;</p>
 
-    <p>For each Backbone model and collection, a single UI-model defines all view.</p>
 
-    <p>UI models for the examples above:
+    <h4>What do UI models look like?</h4>
+
+    <p>A UI model describe all views for a model (i.e.: task, contact).
+        It maps model attributes to fields and groups fields into panels and tabs.
+
+    These UI models define the views above:
         <a href="javascript:showUIdef2(todo_ui)">To Do</a>,
         <a href="javascript:showUIdef2(contacts_ui)">Addressbook</a>,
         <a href="javascript:showUIdef2(winecellar_ui)">Wine Cellar</a>.
-        <small id="hide_def" style="display:none;"><a href="javascript:showUIdef2no()">[Hide]</a></small></p>
+        <small id="hide_def" style="display:none;"><a href="javascript:showUIdef2no()">[Hide]</a></small>
     </p>
 
     <div style="display:none;" id="uimodel"></div>
 
 
-    <div class="blueBox">
-        <h2>Demos</h2>
-        <ul>
-            <li><a href="demo/todo.html">todo</a></li>
-            <li><a href="demo/contact.html">addressbook</a></li>
-            <li><a href="demo/winecellar.html">winecellar</a></li>
-        </ul>
-    </div>
 
-    <div class="blueBox">
-        <h2>Documentation</h2>
-        <ul>
-            <li><a href="doc/ui-model.html">ui-model</a></li>
-            <li><a href="doc/views.html">views</a></li>
-            <li>&nbsp;</li>
-            <li><a href="https://github.com/evoluteur/evolutility">GitHub</a></li>
-        </ul>
-    </div>
+    <p>&nbsp;</p>
+
+
+    <h4>Demo</h4>
+
+    <p>With a toolbar and a router, a set of views can now act together as a full app:
+        <a href="demo/index.html#todo/badges">To Do</a>,
+        <a href="demo/index.html#contact">Addressbook</a>,
+        <a href="demo/index.html#winecellar">Wine Cellar</a>.
+    </p>
+
+    <p>&nbsp;</p>
+    <h4>Documentation</h4>
+    <p>Learn more about <a href="doc/ui-model.html">ui-model</a> & <a href="doc/views.html">views</a>.</p>
+
+    <p>&nbsp;</p>
+    <h4>Download & Code</h4>
+    <p><a href="https://github.com/evoluteur/evolutility" target="gh">GitHub</a></p>
+
     <div class="clearfix"></div>
 
 <p>License: GNU AGPLv3</p>
@@ -173,17 +185,6 @@
             case 'wine':
                 uiModel=winecellar_ui;
                 sampleData=winecellar_data;
-                break;
-        }
-        switch(viewName){
-            case 'todo':
-                uiModel=todo_ui;
-                break;
-            case 'contact':
-                uiModel=contacts_ui;
-                break;
-            case 'wine':
-                uiModel=winecellar_ui;
                 break;
         }
 
