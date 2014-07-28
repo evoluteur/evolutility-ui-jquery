@@ -10,12 +10,21 @@
 //}
 .evol-mini-label{
     float:left;
-    width:@widthR1;
+    width:25%;
     padding-right:10px;
+
+    >div{
+      text-align: right;
+
+      @media only screen and (max-width: @screen1) {
+        text-align: left;
+      }
+
+    }
 }
 .evol-mini-content{
     float:left;
-    width:@widthR2;
+    width:75%;
 
   > .help-block{
     min-width:50px;

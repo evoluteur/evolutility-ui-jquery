@@ -561,53 +561,60 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     deleteItem: function(){
-        var i18n=Evol.i18n,
+        var that=this,
+            i18n=Evol.i18n,
             entityName=this.uiModel.entity,
             entityValue=this.curView.getTitle();
 
         if(this.curView.cardinality==='1'){
             var delModel=this.curView.model;
-            // TODO good looking msgbox
-            if (delModel && confirm(i18n.getLabel('DeleteEntity', entityName, entityValue))) {
-                var that=this,
-                    collec=this.collection,
-                    delIdx=_.indexOf(collec.models, delModel),
-                    newIdx=delIdx,
-                    newModel=null;
+            if(delModel){
+                Evol.UI.modal.confirm(
+                    'delete',
+                    i18n.getLabel('deleteX', entityName),
+                    i18n.getLabel('delete1', entityName, entityValue), i18n.bOK, i18n.bCancel,
+                    // if OK clicked
+                    function(){
+                        var collec=that.collection,
+                            delIdx=_.indexOf(collec.models, delModel),
+                            newIdx=delIdx,
+                            newModel=null;
 
-                if(collec.length>1){
-                    if(delIdx===0){
-                        newIdx=1;
-                    }else if(delIdx<collec.length-1){
-                        newIdx=delIdx+1;
-                    }else{
-                        newIdx=delIdx-1;
-                    }
-                    newModel = collec.at(newIdx);
-                }
-                if(newModel){
-                    newModel.collection = collec;
-                }
-                delModel.destroy({
-                    success:function(){
-                        if(newModel===null || collec.length===0){
-                            that.curView.clear();
-                        }else{
-                            this.model = newModel;
-                            that.curView.setModel(newModel);
+                        if(collec.length>1){
+                            if(delIdx===0){
+                                newIdx=1;
+                            }else if(delIdx<collec.length-1){
+                                newIdx=delIdx+1;
+                            }else{
+                                newIdx=delIdx-1;
+                            }
+                            newModel = collec.at(newIdx);
                         }
-                        that.setMessage('Record Deleted.', i18n.getLabel('status.deleted', Evol.UI.capitalize(entityName), entityValue), 'success');
-                    },
-                    error:function(m, err){
-                        alert('error in "deleteItem"');
-                    }
-                });
+                        if(newModel){
+                            newModel.collection = collec;
+                        }
+                        delModel.destroy({
+                            success:function(){
+                                if(newModel===null || collec.length===0){
+                                    that.curView.clear();
+                                }else{
+                                    that.model = newModel;
+                                    that.curView.setModel(newModel);
+                                }
+                                var eName=Evol.UI.capitalize(entityName);
+                                that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('status.deleted', eName, entityValue), 'success');
+                            },
+                            error:function(m, err){
+                                alert('error in "deleteItem"');
+                            }
+                        });
+                    });
             }
         }else{
-            if(this.curView.getSelection){
-                var selection=this.curView.getSelection();
+            if(that.curView.getSelection){
+                var selection=that.curView.getSelection();
                 if(selection.length>0){
-                    if (confirm(i18n.getLabel('DeleteEntities', selection.length, this.uiModel.entities))) {
+                    if (confirm(i18n.getLabel('deleteN', selection.length, that.uiModel.entities))) {
                         //TODO
 
                     }

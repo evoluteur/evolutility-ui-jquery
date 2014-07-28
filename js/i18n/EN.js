@@ -25,7 +25,7 @@ Evol.i18n = {
         return l;
     },
 
-    // --- toolbar ---
+    // --- toolbar & buttons ---
     View:'View',
     bEdit:'Edit',
     // Login:'Login',
@@ -39,7 +39,7 @@ Evol.i18n = {
     Selection:'Selection',
     bExport:'Export',
     bCharts:'Charts',
-    SearchRes:'Search Result',
+    //SearchRes:'Search Result',
     //MassUpdate:'Mass Update',
     bDelete:'Delete',
     bAll:'All',
@@ -47,20 +47,22 @@ Evol.i18n = {
     //ListAll:'List All',
     //Print:'Print',
     //pdf:'PDF',
-
-    // --- buttons ---
     bSave:'Save',
     bSaveAdd:'Save and Add Another',
-    Cancel:'Cancel',
+    bOK:'OK',
+    bCancel:'Cancel',
 
     // --- msg & status ---
     saved: 'Record saved.',
     unSavedChanges: 'You have unsaved changes.\nClick OK to navigate without saving your changes.',
-    DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value,
-    DeleteEntities: 'Delete {0} {1}?', // delete 5 tasks
+    deleteX:'Delete {0}',// {0}=entity
+    delete1:'Do you really want to delete the {0} "{1}"?', // {0}=entity {1}=leadfield value,
+    deleteN: 'Delete {0} {1}?', // delete 5 tasks
+    deleted1:'{0} deleted.', // {0}=entity ,
+
     NoChange:'No Change',
     NoX:'No {0}',
-    Back2SearchResults:'Back to search results',
+    //Back2SearchResults:'Back to search results',
     yes: 'Yes',
     no: 'No',
     none:'None',
@@ -78,7 +80,7 @@ Evol.i18n = {
     status:{
         added:'New {0} "{1}" added.',
         updated:'{0} "{1}" updated.',
-        deleted:'{0} "{1}" removed.'
+        deleted:'{0} "{1}" deleted.'
     },
 
     // --- validation ---
@@ -101,6 +103,9 @@ Evol.i18n = {
         regex:'The value "{0}" is not of the expected format.'
         //regex:'"{0}" must match the regular expression pattern for "{1}".'
     },
+
+    // --- errors ---
+    error:'Error',
 
     // --- charts ---
     charts:{

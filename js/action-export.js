@@ -109,7 +109,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             '</div></div></div></div>',
             // ## Download button
             '<div class="evol-buttons form-actions">',
-                EvoUI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
+                EvoUI.input.button('cancel', Evol.i18n.bCancel, 'btn-default'),
                 EvoUI.input.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary'),
             '</div>'
         );

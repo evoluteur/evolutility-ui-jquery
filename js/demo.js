@@ -48,6 +48,7 @@ function setDemo(uiModel, localStorage, data, style){
     var ms = new Ms();
     ms.fetch({
         success: function(collection){
+            // TODO remove sample data
             if(collection.length===0){
                 Evol.UI.insertCollection(collection, data);
             }

@@ -303,6 +303,57 @@ Evol.UI = {
         }
     },
 
+    // --- modal ---
+    modal:{
+
+        alert: function(title, msg){
+            var $m=$(this.HTMLModal('alert', title, msg, Evol.i18n.bOK))
+                    .on('click', 'button', function(evt){
+                        $m.remove();
+                    })
+                    .modal('show');
+        },
+
+        confirm: function(id, title, msg, bOK, bCancel, cbOK, cbCancel){
+            var $m=$(this.HTMLModal(id, title, msg, bOK, bCancel))
+                    .on('click', 'button', function(evt){
+                        var isOK=$(evt.currentTarget).hasClass('btn-primary');
+                        if(isOK && cbOK){
+                            cbOK();
+                        }
+                        if(!isOK && cbCancel){
+                            cbCancel();
+                        }
+                        $m.remove();
+                    })
+                    .modal('show');
+        },
+
+        HTMLModal: function(id, title, msg, bOK, bCancel) {
+            var h=[
+                '<div class="modal fade" id="', id, '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">',
+                '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">',
+                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>',
+                '<h4 class="modal-title">', title, '</h4>',
+                '</div>',
+                '<div class="modal-body">', msg, '</div>',
+                '<div class="modal-footer">'
+            ];
+            if(bCancel){
+                h.push(this._HTMLButton(bCancel, 'btn-default'));
+            }
+            if(bOK){
+                h.push(this._HTMLButton(bOK, 'btn-primary'));
+            }
+            h.push('</div></div></div></div>');
+            return h.join('');
+        },
+
+        _HTMLButton: function(label, css){
+            return ['<button type="button" class="btn ', css, '" data-dismiss="modal">', label, '</button>'].join('');
+        }
+    },
+
     // --- panels ---
     HTMLPanelBegin: function (pid, label, css) {
         return [
@@ -485,7 +536,7 @@ Evol.i18n = {
         return l;
     },
 
-    // --- toolbar ---
+    // --- toolbar & buttons ---
     View:'View',
     bEdit:'Edit',
     // Login:'Login',
@@ -499,7 +550,7 @@ Evol.i18n = {
     Selection:'Selection',
     bExport:'Export',
     bCharts:'Charts',
-    SearchRes:'Search Result',
+    //SearchRes:'Search Result',
     //MassUpdate:'Mass Update',
     bDelete:'Delete',
     bAll:'All',
@@ -507,20 +558,22 @@ Evol.i18n = {
     //ListAll:'List All',
     //Print:'Print',
     //pdf:'PDF',
-
-    // --- buttons ---
     bSave:'Save',
     bSaveAdd:'Save and Add Another',
-    Cancel:'Cancel',
+    bOK:'OK',
+    bCancel:'Cancel',
 
     // --- msg & status ---
     saved: 'Record saved.',
     unSavedChanges: 'You have unsaved changes.\nClick OK to navigate without saving your changes.',
-    DeleteEntity:'Delete {0} "{1}"?', // {0}=entity {1}=leadfield value,
-    DeleteEntities: 'Delete {0} {1}?', // delete 5 tasks
+    deleteX:'Delete {0}',// {0}=entity
+    delete1:'Do you really want to delete the {0} "{1}"?', // {0}=entity {1}=leadfield value,
+    deleteN: 'Delete {0} {1}?', // delete 5 tasks
+    deleted1:'{0} deleted.', // {0}=entity ,
+
     NoChange:'No Change',
     NoX:'No {0}',
-    Back2SearchResults:'Back to search results',
+    //Back2SearchResults:'Back to search results',
     yes: 'Yes',
     no: 'No',
     none:'None',
@@ -538,7 +591,7 @@ Evol.i18n = {
     status:{
         added:'New {0} "{1}" added.',
         updated:'{0} "{1}" updated.',
-        deleted:'{0} "{1}" removed.'
+        deleted:'{0} "{1}" deleted.'
     },
 
     // --- validation ---
@@ -561,6 +614,9 @@ Evol.i18n = {
         regex:'The value "{0}" is not of the expected format.'
         //regex:'"{0}" must match the regular expression pattern for "{1}".'
     },
+
+    // --- errors ---
+    error:'Error',
 
     // --- charts ---
     charts:{
@@ -2156,7 +2212,7 @@ Evol.ViewOne = Backbone.View.extend({
     _renderButtons: function (h, mode) {
         h.push(Evol.UI.html.clearer,
             '<div class="evol-buttons">',
-            Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
+            Evol.UI.input.button('cancel', Evol.i18n.bCancel, 'btn-default'),
             Evol.UI.input.button('save', Evol.i18n.bSave, 'btn-primary'));
         if (this.model && this.model.isNew() && this.options.button_addAnother && mode!=='json') {
             h.push(Evol.UI.input.button('save-add', Evol.i18n.bSaveAdd, 'btn-default'));
@@ -3014,7 +3070,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
     _renderButtons: function (h) {
         h.push(Evol.UI.html.clearer,
             '<div class="evol-buttons">',
-            Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
+            Evol.UI.input.button('cancel', Evol.i18n.bCancel, 'btn-default'),
             Evol.UI.input.button('edit', Evol.i18n.bEdit, 'btn-primary'),
             '</div>');
     }
@@ -3134,7 +3190,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             '</div></div></div></div>',
             // ## Download button
             '<div class="evol-buttons form-actions">',
-                EvoUI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
+                EvoUI.input.button('cancel', Evol.i18n.bCancel, 'btn-default'),
                 EvoUI.input.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary'),
             '</div>'
         );
@@ -3612,7 +3668,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             '</div></div></div></div>',
             // ## Download button
             '<div class="evol-buttons form-actions">',
-                EvoUI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
+                EvoUI.input.button('cancel', Evol.i18n.bCancel, 'btn-default'),
                 EvoUI.input.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary'),
             '</div>'
         );
@@ -5885,53 +5941,60 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     deleteItem: function(){
-        var i18n=Evol.i18n,
+        var that=this,
+            i18n=Evol.i18n,
             entityName=this.uiModel.entity,
             entityValue=this.curView.getTitle();
 
         if(this.curView.cardinality==='1'){
             var delModel=this.curView.model;
-            // TODO good looking msgbox
-            if (delModel && confirm(i18n.getLabel('DeleteEntity', entityName, entityValue))) {
-                var that=this,
-                    collec=this.collection,
-                    delIdx=_.indexOf(collec.models, delModel),
-                    newIdx=delIdx,
-                    newModel=null;
+            if(delModel){
+                Evol.UI.modal.confirm(
+                    'delete',
+                    i18n.getLabel('deleteX', entityName),
+                    i18n.getLabel('delete1', entityName, entityValue), i18n.bOK, i18n.bCancel,
+                    // if OK clicked
+                    function(){
+                        var collec=that.collection,
+                            delIdx=_.indexOf(collec.models, delModel),
+                            newIdx=delIdx,
+                            newModel=null;
 
-                if(collec.length>1){
-                    if(delIdx===0){
-                        newIdx=1;
-                    }else if(delIdx<collec.length-1){
-                        newIdx=delIdx+1;
-                    }else{
-                        newIdx=delIdx-1;
-                    }
-                    newModel = collec.at(newIdx);
-                }
-                if(newModel){
-                    newModel.collection = collec;
-                }
-                delModel.destroy({
-                    success:function(){
-                        if(newModel===null || collec.length===0){
-                            that.curView.clear();
-                        }else{
-                            this.model = newModel;
-                            that.curView.setModel(newModel);
+                        if(collec.length>1){
+                            if(delIdx===0){
+                                newIdx=1;
+                            }else if(delIdx<collec.length-1){
+                                newIdx=delIdx+1;
+                            }else{
+                                newIdx=delIdx-1;
+                            }
+                            newModel = collec.at(newIdx);
                         }
-                        that.setMessage('Record Deleted.', i18n.getLabel('status.deleted', Evol.UI.capitalize(entityName), entityValue), 'success');
-                    },
-                    error:function(m, err){
-                        alert('error in "deleteItem"');
-                    }
-                });
+                        if(newModel){
+                            newModel.collection = collec;
+                        }
+                        delModel.destroy({
+                            success:function(){
+                                if(newModel===null || collec.length===0){
+                                    that.curView.clear();
+                                }else{
+                                    that.model = newModel;
+                                    that.curView.setModel(newModel);
+                                }
+                                var eName=Evol.UI.capitalize(entityName);
+                                that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('status.deleted', eName, entityValue), 'success');
+                            },
+                            error:function(m, err){
+                                alert('error in "deleteItem"');
+                            }
+                        });
+                    });
             }
         }else{
-            if(this.curView.getSelection){
-                var selection=this.curView.getSelection();
+            if(that.curView.getSelection){
+                var selection=that.curView.getSelection();
                 if(selection.length>0){
-                    if (confirm(i18n.getLabel('DeleteEntities', selection.length, this.uiModel.entities))) {
+                    if (confirm(i18n.getLabel('deleteN', selection.length, that.uiModel.entities))) {
                         //TODO
 
                     }
@@ -6210,7 +6273,7 @@ Evol.Shell = Backbone.View.extend({
             Evol.Dico.setRoute(this.options.router, cView.getTitle(), cView.uiModel.id, cView.viewName, id, triggerRoute);
         }else{
             debugger;
-            alert('TODO: debug it')
+            alert('Error in setRoute')
         }
         return this;
     },

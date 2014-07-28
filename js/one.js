@@ -410,7 +410,7 @@ Evol.ViewOne = Backbone.View.extend({
     _renderButtons: function (h, mode) {
         h.push(Evol.UI.html.clearer,
             '<div class="evol-buttons">',
-            Evol.UI.input.button('cancel', Evol.i18n.Cancel, 'btn-default'),
+            Evol.UI.input.button('cancel', Evol.i18n.bCancel, 'btn-default'),
             Evol.UI.input.button('save', Evol.i18n.bSave, 'btn-primary'));
         if (this.model && this.model.isNew() && this.options.button_addAnother && mode!=='json') {
             h.push(Evol.UI.input.button('save-add', Evol.i18n.bSaveAdd, 'btn-default'));
