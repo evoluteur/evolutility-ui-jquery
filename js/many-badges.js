@@ -47,7 +47,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
                     Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link, route?route+model.id:null),
                     '</h4></div>');
             }else{
-                h.push('<div><label>',f.label,':</label> ', v, '</div>');
+                h.push('<div><label>', f.labelbadges?f.labelbadges:f.label,':</label> ', v, '</div>');
             }
         });
         h.push('</div>');
