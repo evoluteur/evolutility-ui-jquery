@@ -456,6 +456,10 @@ Evol.UI = {
         }else{
             $e.hide();
         }
+    },
+
+    cr2br: function(v){
+        return v.replace(/[\r\n]/g, '<br/>');
     }
 
 };

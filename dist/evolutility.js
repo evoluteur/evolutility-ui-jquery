@@ -459,6 +459,10 @@ Evol.UI = {
         }else{
             $e.hide();
         }
+    },
+
+    cr2br: function(v){
+        return v.replace(/[\r\n]/g, '<br/>');
     }
 
 };
@@ -570,6 +574,11 @@ Evol.i18n = {
     delete1:'Do you really want to delete the {0} "{1}"?', // {0}=entity {1}=leadfield value,
     deleteN: 'Delete {0} {1}?', // delete 5 tasks
     deleted1:'{0} deleted.', // {0}=entity ,
+
+    notFound:'Item not found.',
+    //this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity);
+    notFoundMsg:'No {0} found.',
+    notFoundMsgId:'No {0} found for ID="(1}".',
 
     NoChange:'No Change',
     NoX:'No {0}',
@@ -1599,7 +1608,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
                     Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link, route?route+model.id:null),
                     '</h4></div>');
             }else{
-                h.push('<div><label>',f.label,':</label> ', v, '</div>');
+                h.push('<div><label>', f.labelbadges?f.labelbadges:f.label,':</label> ', v, '</div>');
             }
         });
         h.push('</div>');
@@ -1997,7 +2006,7 @@ Evol.ViewOne = Backbone.View.extend({
                                 $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
                                 break;
                             case fTypes.textml:
-                                $f.html(fv.replace(/[\r\n]/g, '<br/>'));
+                                $f.html(Evol.UI.cr2br(fv));
                                 break;
                             default:
                                 $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
@@ -2896,8 +2905,11 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
         if(this.model){
             var jsonStr=JSON.stringify(this.model, null, 2);
             h.push(Evol.UI.input.textMJSON('',jsonStr,10));
+            this._renderButtons(h, 'json');
+        }else{
+            h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
         }
-        this._renderButtons(h, 'json');
+        //this._renderButtons(h, 'json');
         this.$el.html(h.join(''));
         this.setData(this.model);
         this.custOn=false;
@@ -3653,8 +3665,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
             //# field - separator
             //# - csv - any separator #######
             '<div data-id="csv2" class="evol-w120">',
-            EvoUI.fieldLabel(prefix+'FLS_evol', i18nXpt.separator),
-            EvoUI.input.text(prefix+'FLS_evol', ',', '0'),
+            EvoUI.fieldLabel('separator', i18nXpt.separator),
+            EvoUI.input.text('separator', ',', '0'),
             '</div>', // </div>
         '</div>');
         _.each(['XML','HTML','SQL','JSON'], function(f){
@@ -3754,7 +3766,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                 case 'CSV':
                 case 'TAB':
                 case 'TXT':
-                    var sep = Evol.UI.trim(this.$(prefix+'FLS_evol').val());
+                    var sep = Evol.UI.trim(this.$('#separator').val());
                     if(format=='TAB'){
                         sep='&#09;';
                     }
@@ -3818,9 +3830,9 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     });
                     break;
                 case 'SQL':
-                    var optTransaction = this.$('#evoxpTRS1').prop('checked'),
-                        optIdInsert = this.$('#evoxpTRS2').prop('checked'),
-                        sqlTable = this.$('#evoTable').val().replace(/ /g,'_'),
+                    var optTransaction = this.$('#transaction').prop('checked'),
+                        optIdInsert = this.$('#insertId').prop('checked'),
+                        sqlTable = this.$('#table').val().replace(/ /g,'_'),
                         sql = ['INSERT INTO ',sqlTable,' ('];
 
                     if(sqlTable===''){
@@ -3888,7 +3900,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     }
                     break;
                 case 'XML':
-                    var elemName = this.$('#evoRoot').val() || this.uiModel.entity.replace(/ /g,'_'),
+                    var elemName = this.$('#elementName').val() || this.uiModel.entity.replace(/ /g,'_'),
                         fv;
                     h.push('<xml>\n');
                     _.every(data, function(m, idx){
@@ -3943,13 +3955,32 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
     _getValue: function () {
         var v = {
-                format: EvoExport.cFormat,
+                //format: EvoExport.cFormat,
+                format: this.$('#xptevol-xpt-format').val(),
                 fields: this._valFields(),
                 options: {}
-            },
-            ps = this.$('.evol-xpt-para input'),
-            f = ps.eq(0);
-        v.options[f.attr('id')] = !_.isUndefined(f.prop('checked'));
+            };
+
+        var fvs=this.$('#xpt'+EvoExport.cFormat+' input');
+        for(var i=0,iMax=fvs.length;i<iMax;i++){
+            var $f=fvs.eq(i),
+                fv;
+            if($f.attr('type')=='checkbox'){
+                fv = $f.prop('checked');
+            }else if($f.is(':selected')){
+                fv = $f.val();
+            }else{
+                fv = $f.val();
+            }
+            v.options[$f.attr('id')] = fv;
+        }
+        if(v.format==='CSV' || v.format==='TAB'){
+            v.options.firstLineHeader = this.$('#xptFLH').prop('checked');
+            if(v.format==='TAB'){
+                delete v.options.separator;
+            }
+        }
+
         return v;
     },
 
@@ -4006,8 +4037,7 @@ var EvoExport = {
     optsXML: function(entity){
         return [
             EvoExport.html_more2('options'),
-            EvoExport.optEntityName('evoRoot', i18nXpt.XMLroot, entity),
-            Evol.UI.fieldLabel('evoxpC2X', i18nXpt.xpColMap),
+            EvoExport.optEntityName('elementName', i18nXpt.XMLroot, entity),
             '</div>'
         ].join('');
     },
@@ -4019,9 +4049,9 @@ var EvoExport = {
     optsSQL: function(entity){
         return [
             EvoExport.html_more2('options'),
-            EvoExport.optEntityName('evoTable', i18nXpt.SQLTable, entity),
-            '<div>', Evol.UI.input.checkbox('evoxpTRS2', '0'), Evol.UI.fieldLabelSpan('evoxpTRS2', i18nXpt.SQLId), '</div>',
-            '<div>', Evol.UI.input.checkbox('evoxpTRS1', '0'), Evol.UI.fieldLabelSpan('evoxpTRS1', i18nXpt.SQLTrans), '</div>',
+            EvoExport.optEntityName('table', i18nXpt.SQLTable, entity),
+            '<div>', Evol.UI.input.checkbox('insertId', '0'), Evol.UI.fieldLabelSpan('insertId', i18nXpt.SQLId), '</div>',
+            '<div>', Evol.UI.input.checkbox('transaction', '0'), Evol.UI.fieldLabelSpan('transaction', i18nXpt.SQLTrans), '</div>',
             '</div>'
            ].join('');
     },
@@ -5424,9 +5454,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             'save':true,
             del: true,
             filter: true,
-            'export': true,
-            group: false,
-            customize: false
+            'export': true
+            //group: false,
+            //customize: false
         },
         pageSize:20
     },
@@ -5711,7 +5741,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 del: lis.filter('[data-id="del"]'),
                 save: lis.filter('[data-id="save"]'),
                 prevNext: this.$('.evo-toolbar [data-id="prev"],.evo-toolbar [data-id="next"]'),
-                customize: this.$('.evo-toolbar a[data-id="customize"]').parent(),
+                //customize: this.$('.evo-toolbar a[data-id="customize"]').parent(),
                 views: this.$('.evo-toolbar [data-id="views"]')
             };
         }
@@ -5728,7 +5758,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 
 		if(this.$el){
 			var tbBs=this.getToolbarButtons();
-            setVisible(tbBs.customize, mode!='json');
+            //setVisible(tbBs.customize, mode!='json');
             tbBs.prevNext.hide();
             setVisible(tbBs.views, mode!=='export');
             tbBs.del.hide();
@@ -5861,6 +5891,9 @@ Evol.ViewToolbar = Backbone.View.extend({
         this.curView.setModel(cModel);
         if(cModel){
             this.setRoute(cModel?cModel.id:null, false);
+        }else{
+            Evol.UI.modal.alert(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity));
+            //this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity));
         }
         return this
             .clearMessage();
@@ -6042,9 +6075,10 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.setView(actionId, true);
                 break;
             case 'export':
-                alert(
-                    'Sorry, no demo server yet...\n\n' +
+                Evol.UI.modal.alert(
+                    'This feature must be implemented server side.',
                     JSON.stringify(this.curView.val(), null, 2)
+                    //Evol.UI.cr2br(JSON.stringify(this.curView.val(), null, 2))
                 );
                 break;
             case 'save':
@@ -6075,6 +6109,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(this.curView.setPage){
             this.curView.setPage(pIdx);
         }
+        return this;
     },
 
     status_update: function(evt, ui){
@@ -6117,10 +6152,10 @@ Evol.ViewToolbar = Backbone.View.extend({
                 break;
             case 'del':
                 this.deleteItem();
-                break;
+                break;/*
             case 'customize':
                 this.curView.customize();
-                break;/*
+                break;
             case 'group':
                 this.showGroup();
                 break;*/
@@ -6339,11 +6374,6 @@ Evol.Shell = Backbone.View.extend({
             ms = new Ms();
         ms.fetch({
             success: function(collection){
-                // TODO no more insertCollection
-                // insertCollection is for demo purpose only. it will be removed.
-                if(collection.length===0){
-                    Evol.UI.insertCollection(collection, data);
-                }
                 var m = ms.models[0],
                     config = {
                         el: $v,

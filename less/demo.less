@@ -82,14 +82,14 @@ h4{
 }
 
 .mixin-badgeHeight(@h){
-  .evol-badges-body > div.panel {
+  .evol-badges-body > .panel {
       @height: @h !important;
   }
 }
 /* demo badge view*/
 [data-eid="todo"],
 [data-eid="contact"] {
-  .evol-badges-body > div.panel {
+  .evol-badges-body > .panel {
     height: 160px !important;
   }
 }
@@ -97,9 +97,14 @@ h4{
   > div.panel {
     height: 272px !important;
   }
+  /*label {
+    text-align:right;
+    min-width: 80px;
+  }*/
   p{
     clear:left;
   }
+
 }
 
 [data-eid="test"] .evol-badges-body > div.panel {

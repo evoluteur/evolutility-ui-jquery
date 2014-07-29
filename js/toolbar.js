@@ -44,9 +44,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             'save':true,
             del: true,
             filter: true,
-            'export': true,
-            group: false,
-            customize: false
+            'export': true
+            //group: false,
+            //customize: false
         },
         pageSize:20
     },
@@ -331,7 +331,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 del: lis.filter('[data-id="del"]'),
                 save: lis.filter('[data-id="save"]'),
                 prevNext: this.$('.evo-toolbar [data-id="prev"],.evo-toolbar [data-id="next"]'),
-                customize: this.$('.evo-toolbar a[data-id="customize"]').parent(),
+                //customize: this.$('.evo-toolbar a[data-id="customize"]').parent(),
                 views: this.$('.evo-toolbar [data-id="views"]')
             };
         }
@@ -348,7 +348,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 
 		if(this.$el){
 			var tbBs=this.getToolbarButtons();
-            setVisible(tbBs.customize, mode!='json');
+            //setVisible(tbBs.customize, mode!='json');
             tbBs.prevNext.hide();
             setVisible(tbBs.views, mode!=='export');
             tbBs.del.hide();
@@ -481,6 +481,9 @@ Evol.ViewToolbar = Backbone.View.extend({
         this.curView.setModel(cModel);
         if(cModel){
             this.setRoute(cModel?cModel.id:null, false);
+        }else{
+            Evol.UI.modal.alert(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity));
+            //this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity));
         }
         return this
             .clearMessage();
@@ -662,9 +665,10 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.setView(actionId, true);
                 break;
             case 'export':
-                alert(
-                    'Sorry, no demo server yet...\n\n' +
+                Evol.UI.modal.alert(
+                    'This feature must be implemented server side.',
                     JSON.stringify(this.curView.val(), null, 2)
+                    //Evol.UI.cr2br(JSON.stringify(this.curView.val(), null, 2))
                 );
                 break;
             case 'save':
@@ -695,6 +699,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(this.curView.setPage){
             this.curView.setPage(pIdx);
         }
+        return this;
     },
 
     status_update: function(evt, ui){
@@ -737,10 +742,10 @@ Evol.ViewToolbar = Backbone.View.extend({
                 break;
             case 'del':
                 this.deleteItem();
-                break;
+                break;/*
             case 'customize':
                 this.curView.customize();
-                break;/*
+                break;
             case 'group':
                 this.showGroup();
                 break;*/

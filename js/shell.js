@@ -139,11 +139,6 @@ Evol.Shell = Backbone.View.extend({
             ms = new Ms();
         ms.fetch({
             success: function(collection){
-                // TODO no more insertCollection
-                // insertCollection is for demo purpose only. it will be removed.
-                if(collection.length===0){
-                    Evol.UI.insertCollection(collection, data);
-                }
                 var m = ms.models[0],
                     config = {
                         el: $v,

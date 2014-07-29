@@ -60,6 +60,11 @@ Evol.i18n = {
     deleteN: 'Delete {0} {1}?', // delete 5 tasks
     deleted1:'{0} deleted.', // {0}=entity ,
 
+    notFound:'Item not found.',
+    //this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity);
+    notFoundMsg:'No {0} found.',
+    notFoundMsgId:'No {0} found for ID="(1}".',
+
     NoChange:'No Change',
     NoX:'No {0}',
     //Back2SearchResults:'Back to search results',

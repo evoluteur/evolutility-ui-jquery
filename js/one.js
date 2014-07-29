@@ -195,7 +195,7 @@ Evol.ViewOne = Backbone.View.extend({
                                 $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
                                 break;
                             case fTypes.textml:
-                                $f.html(fv.replace(/[\r\n]/g, '<br/>'));
+                                $f.html(Evol.UI.cr2br(fv));
                                 break;
                             default:
                                 $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');

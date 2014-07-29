@@ -271,9 +271,15 @@ h4 {
   font-weight: normal;
 }
 /* demo badge view*/
-[data-eid="todo"] .evol-badges-body > div.panel,
-[data-eid="contact"] .evol-badges-body > div.panel {
+[data-eid="todo"] .evol-badges-body > .panel,
+[data-eid="contact"] .evol-badges-body > .panel {
   height: 160px !important;
+}
+[data-eid="winecellar"] .evol-badges-body {
+  /*label {
+    text-align:right;
+    min-width: 80px;
+  }*/
 }
 [data-eid="winecellar"] .evol-badges-body > div.panel {
   height: 272px !important;
