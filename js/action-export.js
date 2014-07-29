@@ -94,8 +94,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
             //# field - separator
             //# - csv - any separator #######
             '<div data-id="csv2" class="evol-w120">',
-            EvoUI.fieldLabel(prefix+'FLS_evol', i18nXpt.separator),
-            EvoUI.input.text(prefix+'FLS_evol', ',', '0'),
+            EvoUI.fieldLabel('separator', i18nXpt.separator),
+            EvoUI.input.text('separator', ',', '0'),
             '</div>', // </div>
         '</div>');
         _.each(['XML','HTML','SQL','JSON'], function(f){
@@ -195,7 +195,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                 case 'CSV':
                 case 'TAB':
                 case 'TXT':
-                    var sep = Evol.UI.trim(this.$(prefix+'FLS_evol').val());
+                    var sep = Evol.UI.trim(this.$('#separator').val());
                     if(format=='TAB'){
                         sep='&#09;';
                     }
@@ -259,9 +259,9 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     });
                     break;
                 case 'SQL':
-                    var optTransaction = this.$('#evoxpTRS1').prop('checked'),
-                        optIdInsert = this.$('#evoxpTRS2').prop('checked'),
-                        sqlTable = this.$('#evoTable').val().replace(/ /g,'_'),
+                    var optTransaction = this.$('#transaction').prop('checked'),
+                        optIdInsert = this.$('#insertId').prop('checked'),
+                        sqlTable = this.$('#table').val().replace(/ /g,'_'),
                         sql = ['INSERT INTO ',sqlTable,' ('];
 
                     if(sqlTable===''){
@@ -329,7 +329,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     }
                     break;
                 case 'XML':
-                    var elemName = this.$('#evoRoot').val() || this.uiModel.entity.replace(/ /g,'_'),
+                    var elemName = this.$('#elementName').val() || this.uiModel.entity.replace(/ /g,'_'),
                         fv;
                     h.push('<xml>\n');
                     _.every(data, function(m, idx){
@@ -384,13 +384,32 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
     _getValue: function () {
         var v = {
-                format: EvoExport.cFormat,
+                //format: EvoExport.cFormat,
+                format: this.$('#xptevol-xpt-format').val(),
                 fields: this._valFields(),
                 options: {}
-            },
-            ps = this.$('.evol-xpt-para input'),
-            f = ps.eq(0);
-        v.options[f.attr('id')] = !_.isUndefined(f.prop('checked'));
+            };
+
+        var fvs=this.$('#xpt'+EvoExport.cFormat+' input');
+        for(var i=0,iMax=fvs.length;i<iMax;i++){
+            var $f=fvs.eq(i),
+                fv;
+            if($f.attr('type')=='checkbox'){
+                fv = $f.prop('checked');
+            }else if($f.is(':selected')){
+                fv = $f.val();
+            }else{
+                fv = $f.val();
+            }
+            v.options[$f.attr('id')] = fv;
+        }
+        if(v.format==='CSV' || v.format==='TAB'){
+            v.options.firstLineHeader = this.$('#xptFLH').prop('checked');
+            if(v.format==='TAB'){
+                delete v.options.separator;
+            }
+        }
+
         return v;
     },
 
@@ -447,8 +466,7 @@ var EvoExport = {
     optsXML: function(entity){
         return [
             EvoExport.html_more2('options'),
-            EvoExport.optEntityName('evoRoot', i18nXpt.XMLroot, entity),
-            Evol.UI.fieldLabel('evoxpC2X', i18nXpt.xpColMap),
+            EvoExport.optEntityName('elementName', i18nXpt.XMLroot, entity),
             '</div>'
         ].join('');
     },
@@ -460,9 +478,9 @@ var EvoExport = {
     optsSQL: function(entity){
         return [
             EvoExport.html_more2('options'),
-            EvoExport.optEntityName('evoTable', i18nXpt.SQLTable, entity),
-            '<div>', Evol.UI.input.checkbox('evoxpTRS2', '0'), Evol.UI.fieldLabelSpan('evoxpTRS2', i18nXpt.SQLId), '</div>',
-            '<div>', Evol.UI.input.checkbox('evoxpTRS1', '0'), Evol.UI.fieldLabelSpan('evoxpTRS1', i18nXpt.SQLTrans), '</div>',
+            EvoExport.optEntityName('table', i18nXpt.SQLTable, entity),
+            '<div>', Evol.UI.input.checkbox('insertId', '0'), Evol.UI.fieldLabelSpan('insertId', i18nXpt.SQLId), '</div>',
+            '<div>', Evol.UI.input.checkbox('transaction', '0'), Evol.UI.fieldLabelSpan('transaction', i18nXpt.SQLTrans), '</div>',
             '</div>'
            ].join('');
     },
