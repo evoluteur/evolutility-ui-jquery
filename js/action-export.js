@@ -26,7 +26,6 @@ Evol.ViewAction.Export = Backbone.View.extend({
         uiModel: null,
         many: true,
         sampleMaxSize: 20,
-        prefix: 'xpt',
         formats: ['CSV', 'TAB', 'HTML', 'XML', 'SQL', 'JSON']
     },
 
@@ -47,7 +46,6 @@ Evol.ViewAction.Export = Backbone.View.extend({
         var h = [],
             EvoUI = Evol.UI,
             opts = this.options,
-            prefix = opts.prefix || '',
             fields = this.getFields(),
             iMax = fields.length;
 
@@ -76,21 +74,21 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
         h.push('</fieldset></div><div class="evol-xpt-para">'); // table = 2 columns
         //##### export formats ########################################
-        var fId = prefix + 'evol-xpt-format',
-            formatsList = [];//.split('-');
+        var fId = 'evol-xpt-format',
+            formatsList = [];
         h.push('<label for="', fId, '">', i18nXpt.format, '</label>');
         _.each(opts.formats, function(format){
             formatsList.push({id: format, text: i18nXpt['format'+format]});
         });
         h.push(EvoUI.input.select(fId, '', 'evol-xpt-format', false, formatsList));
-        fId = prefix + "FLH";
+        fId = 'xptFLH';
         h.push('<div class="evol-xpt-opts">',
             //# field (shared b/w formats - header #######
             '<div class="evol-FLH clearfix">',
             //h.push('<label>', i18nXpt.header, '</label>');
             '<label>', EvoUI.input.checkbox(fId, true), i18nXpt.firstLine, '</label>',
             //##### CSV, TAB - First line for field names #######
-            '</div><div id="', prefix, 'CSV">',
+            '</div><div id="xptCSV">',
             //# field - separator
             //# - csv - any separator #######
             '<div data-id="csv2" class="evol-w120">',
@@ -99,7 +97,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             '</div>', // </div>
         '</div>');
         _.each(['XML','HTML','SQL','JSON'], function(f){
-            h.push('<div id="', prefix, f, '" style="display:none;"></div>');
+            h.push('<div id="xpt', f, '" style="display:none;"></div>');
         });
         h.push('</div>',
             //# Preview #######
@@ -121,8 +119,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
     },
 
     showFormatOpts: function (xFormat) {
-        var prefix = '#'+(this.options.prefix||''),
-            e=this.$el;
+        var e=this.$el;
         switch (xFormat) {
             case 'TAB':
                 xFormat = 'CSV';
@@ -135,16 +132,16 @@ Evol.ViewAction.Export = Backbone.View.extend({
             case 'XML':
             case 'SQL':
             case 'JSON':
-                var c = this.$(prefix + xFormat);
+                var c = this.$('#xpt' + xFormat);
                 if (c.html() === '') {
                     c.html(EvoExport['opts' + xFormat](this.uiModel.entity));
                 }
                 break;
         }
-        var divOpts=this.$(prefix + xFormat).show()
+        var divOpts=this.$('#xpt' + xFormat).show()
             .siblings().hide();
         var $e1=divOpts.filter('.evol-FLH');
-        Evol.UI.setVisible($e1, xFormat==='TAB' || xFormat==='CSV');
+        Evol.UI.setVisible($e1, xFormat==='TAB' || xFormat==='CSV' || xFormat==='HTML');
         EvoExport.cFormat = xFormat;
     },
 
@@ -175,8 +172,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                 flds = this.getFields(),
                 fldsDom = this.$('.evol-xpt-flds > fieldset input:checked'),
                 fldsDomHash = {},
-                prefix='#'+ this.options.prefix,
-                useHeader = this.$(prefix+'FLH').prop('checked');
+                useHeader = this.$('#xptFLH').prop('checked');
                 //showID=this.$('#showID').prop('checked');
 
             //if(showID){
@@ -252,9 +248,11 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     h.push('</table>');
                     break;
                 case 'JSON':
+                    var propList= _.map(flds, function(f){
+                        return f.id;
+                    });
                     _.every(data, function(m, idx){
-                        // TODO only show selected fields
-                        h.push(JSON.stringify(m.toJSON(), null, 2));
+                        h.push(JSON.stringify(_.pick(m.toJSON(), propList), null, 2));
                         return idx<maxItem;
                     });
                     break;
@@ -365,7 +363,33 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
     val: function (value) {
         if (_.isUndefined(value)) {
-            return this._getValue();
+            var format = this.$('#evol-xpt-format').val(), //EvoExport.cFormat
+                v = {
+                    format: format,
+                    fields: this._valFields(),
+                    options: {}
+                },
+                fvs=this.$('#xpt'+format+' input');
+
+            for(var i=0,iMax=fvs.length;i<iMax;i++){
+                var $f=fvs.eq(i),
+                    fv;
+                if($f.attr('type')=='checkbox'){
+                    fv = $f.prop('checked');
+                }else{
+                    fv = $f.val();
+                }
+                v.options[$f.attr('id')] = fv;
+            }
+            if(v.format==='CSV' || v.format==='TAB' || v.format==='HTML'){
+                v.options.firstLineHeader = this.$('#xptFLH').prop('checked');
+                if(v.format==='TAB'){
+                    delete v.options.separator;
+                }
+            }else if(v.format==='HTML'){
+                delete v.options;
+            }
+            return v;
         } else {
             // TODO implement setvalue?
             //this._setValue(value);
@@ -377,39 +401,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
         var v = [],
             flds = this.$('.evol-xpt-flds input:checked');//.not('#showID')
         _.each(flds, function(fe){
-            v.push(fe.id.substr(3));
+            v.push(fe.id.substr(3)); // remove prefix "xpt"
         });
-        return v;
-    },
-
-    _getValue: function () {
-        var v = {
-                //format: EvoExport.cFormat,
-                format: this.$('#xptevol-xpt-format').val(),
-                fields: this._valFields(),
-                options: {}
-            };
-
-        var fvs=this.$('#xpt'+EvoExport.cFormat+' input');
-        for(var i=0,iMax=fvs.length;i<iMax;i++){
-            var $f=fvs.eq(i),
-                fv;
-            if($f.attr('type')=='checkbox'){
-                fv = $f.prop('checked');
-            }else if($f.is(':selected')){
-                fv = $f.val();
-            }else{
-                fv = $f.val();
-            }
-            v.options[$f.attr('id')] = fv;
-        }
-        if(v.format==='CSV' || v.format==='TAB'){
-            v.options.firstLineHeader = this.$('#xptFLH').prop('checked');
-            if(v.format==='TAB'){
-                delete v.options.separator;
-            }
-        }
-
         return v;
     },
 
