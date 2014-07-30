@@ -39,7 +39,8 @@ Evol.ViewOne = Backbone.View.extend({
         this.uiModel = this.options.uiModel;
         this._tabId = false;
         this._uTitle = (!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
-        this._subCollecs=this._subCollecsOK=false;
+        this._subCollecs=false;
+        this._subCollecsOK=false;
         /*
         if(this.model){
             this.model.on('change', function(model){
@@ -211,11 +212,7 @@ Evol.ViewOne = Backbone.View.extend({
                             }
                             break;
                         case fTypes.bool:
-                            if(fv){
-                                $f.prop('checked', 'checked');
-                            }else{
-                                $f.prop('checked', false);
-                            }
+                            $f.prop('checked', fv?'checked':false);
                             break;
                         case fTypes.pix:
                             newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
@@ -853,18 +850,17 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 
-    showHelp: function(id, type, $el, isField){ // isField to be used by shift-click on help icon
+    showHelp: function(id, type, $el, forceOn){ // isField to be used by shift-click on help icon
         var fs=this.getFields(),
             fld=_.findWhere(fs,{id:id}),
             $f,
             $fh;
 
         if(fld && fld.help){
-            if(isField){
-                $f=$el;
+            $f=$el.closest('.evol-fld');
+            if(forceOn){
                 $fh=[];
             }else{
-                $f=$el.closest('.evol-fld');
                 $fh=$f.find('.help-block');
             }
 
@@ -983,17 +979,26 @@ Evol.ViewOne = Backbone.View.extend({
             eType=$e.data('type');
 
         evt.stopImmediatePropagation();
-        // todo: shift-click => show help for all fields which have help content.
-        /*if(evt.shiftKey){
+        // --- show/hide ALL help tips
+        if(evt.shiftKey){
             var that=this,
-                flds=this.$('label > .glyphicon-question-sign').toArray();
-            _.each(flds, function($f){
-                that.showHelp(id, eType, $f, true);
+                prefix='#'+this.prefix+'-',
+                mustAdd=!this._allHelp;
+
+            if(mustAdd){
+                this.$('.evol-fld>.help-block').remove();
+                this._allHelp=true;
+            }
+            _.each(this.getFields(), function(f){
+                if(f.help){
+                    var $f=this.$(prefix+ f.id);
+                    that.showHelp(f.id, f.type, $f, mustAdd);
+                }
             });
+        // --- show/hide one help tip
         }else{
             this.showHelp(id, eType, $e);
-        }*/
-        this.showHelp(id, eType, $e);
+        }
         this.$el.trigger(eType+'.help', {id: id});
     },
 
