@@ -575,7 +575,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 Evol.UI.modal.confirm(
                     'delete',
                     i18n.getLabel('deleteX', entityName),
-                    i18n.getLabel('delete1', entityName, entityValue), i18n.bOK, i18n.bCancel,
+                    i18n.getLabel('delete1', entityName, _.escape(entityValue)), i18n.bOK, i18n.bCancel,
                     // if OK clicked
                     function(){
                         var collec=that.collection,

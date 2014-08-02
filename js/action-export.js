@@ -47,7 +47,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
             EvoUI = Evol.UI,
             opts = this.options,
             fields = this.getFields(),
-            iMax = fields.length;
+            iMax = fields.length,
+            useMore = iMax > 14;
 
         //string fieldName, fieldlabel, expOut, buffer;
         h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds">',
@@ -57,18 +58,18 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
         //### list of columns to export #########################################
         //'<div><label class="checkbox"><input type="checkbox" value="1" id="showID" checked="checked">', i18nXpt.IDkey, '</label></div>'
-        _.each(fields, function(f, i){
+        _.each(fields, function(f, idx){
             var fLabel = f.labelexport || f.label || f.labellist,
                 fID = 'fx-' + f.id;
             if (fLabel === null || fLabel === '') {
                 fLabel = '(' + fID + ')';
             }
             h.push('<div><label class="checkbox"><input type="checkbox" value="1" id="', fID, '" checked="checked">', fLabel, '</label></div>');
-            if (i == 10 && iMax > 14){
+            if (idx == 10 && useMore){
                 h.push(EvoExport.html_more2(i18nXpt.allFields));
             }
         });
-        if (iMax > 14){
+        if (useMore){
             h.push('</div>');
         }
 
@@ -446,14 +447,11 @@ var EvoExport = {
 
     cFormat: 'CSV',
 
-    html_more2: function (label) {
+    optEntityName: function(id,label,entity){
         return [
-            '<a href="javascript:void(0)" class="evol-xpt-more">', label, '</a><div style="display:none;">'
+            Evol.UI.fieldLabel(id, label),
+            Evol.UI.input.text(id, entity.replace(' ', '_'), 30),'<br/>'
         ].join('');
-    },
-
-    optsHTML: function(){
-        return '';
     },
 
     optsXML: function(entity){
@@ -464,25 +462,28 @@ var EvoExport = {
         ].join('');
     },
 
-    optsJSON: function(){
-        return '';
-    },
-
     optsSQL: function(entity){
         return [
             EvoExport.html_more2('options'),
             EvoExport.optEntityName('table', i18nXpt.SQLTable, entity),
-            '<div>', Evol.UI.input.checkbox('insertId', '0'), Evol.UI.fieldLabelSpan('insertId', i18nXpt.SQLId), '</div>',
+            '<div>', Evol.UI.input.checkbox('insertId', '0'), Evol.UI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert), '</div>',
             '<div>', Evol.UI.input.checkbox('transaction', '0'), Evol.UI.fieldLabelSpan('transaction', i18nXpt.SQLTrans), '</div>',
             '</div>'
            ].join('');
     },
 
-    optEntityName: function(id,label,entity){
+    optsHTML: function(){
+        return '';
+    },
+
+    optsJSON: function(){
+        return '';
+    },
+
+    html_more2: function (label) {
         return [
-            Evol.UI.fieldLabel(id, label),
-            Evol.UI.input.text(id, entity.replace(' ', '_'), 30),'<br/>'
-            ].join('');
+            '<a href="javascript:void(0)" class="evol-xpt-more">', label, '</a><div style="display:none;">'
+        ].join('');
     }
 
 };

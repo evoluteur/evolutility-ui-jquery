@@ -143,8 +143,8 @@ Evol.i18n = {
         //xpXMLElem:'Elements',
         SQL:'SQL Options',
         SQLTable:'Table name',
-        SQLTrans:'Inside transaction',
-        SQLId:'Enable identity insert',
+        SQLTrans:'In transaction',
+        SQLIdInsert:'Identity insert',
         DownloadEntity:'Download {0}'
     },
 

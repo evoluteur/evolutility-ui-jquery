@@ -71,6 +71,8 @@ Evol.UI = {
             return h.join('');
         },
         textInt: function (id, value, min, max) {
+            // TODO validation on leave field
+            // TODO textDec
             var h=['<input class="evo-field form-control" type="number" id="', id,
                 '" value="', value];
             if(!_.isUndefined(min)){

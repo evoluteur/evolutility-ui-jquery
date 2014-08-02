@@ -88,7 +88,7 @@ Evol.ViewMany = Backbone.View.extend({
             rMin=0,
             rMax = _.min([models.length, rMin+pSize]),
             ico = icon?(this.options.iconsPath || '')+icon:null,
-            route=this.getRoute();
+            route=this.getItemRoute();
 
         if(pageIdx>0){
             rMin = pageIdx*pSize;
@@ -109,7 +109,7 @@ Evol.ViewMany = Backbone.View.extend({
     _HTMLCheckbox: function(cid){
         return Evol.UI.input.checkbox2(cid, false, 'list-sel');
     },
-
+/*
     customize: function () {
         var labels = this.$('th>span');
         if(this._custOn){
@@ -119,7 +119,7 @@ Evol.ViewMany = Backbone.View.extend({
         }
         this._custOn=!this._custOn;
         return this;
-    },
+    },*/
 
     setCollection: function(collection){
         this.collection = collection;
@@ -138,10 +138,6 @@ Evol.ViewMany = Backbone.View.extend({
     getFilter: function(){
         return this._filter;
     },
-
-    //updateModel: function () {
-    //    alert('updateModel');
-    //},
 
     setTitle: function (){
         $(this.options.titleSelector).html(this.getTitle());
@@ -277,6 +273,8 @@ Evol.ViewMany = Backbone.View.extend({
         if(!_.isUndefined(collec)){
             if(f.type==ft.text || f.type==ft.textml || f.type==ft.email){
                 collec.comparator = Evol.Dico.bbComparatorText(f.id);
+            }else if(f.value){
+                collec.comparator = f.value;
             }else{
                 collec.comparator = Evol.Dico.bbComparator(f.id);
             }
@@ -293,7 +291,7 @@ Evol.ViewMany = Backbone.View.extend({
         }
     },
 
-    getRoute: function(){
+    getItemRoute: function(){
         var router = this.router,
             route = null;
 
