@@ -92,6 +92,14 @@ label {
   font-weight: 500 !important;
   margin-bottom: 2px;
 }
+.help-block {
+  padding: 2px 5px;
+  background-color: #fafbd2;
+  border: 1px solid #e8eac0;
+  border-right-color: #f5f7ce;
+  border-bottom-color: #f5f7ce;
+  border-radius: 4px;
+}
 .evol-mini-holder .help-block,
 .evolw-edit .help-block {
   color: #737373 !important;
