@@ -7,17 +7,17 @@
 }
 .evo-logo > a {
   text-decoration: none;
-  color: #ffc000 !important;
-}
-.evo-logo > a > span {
-  color: white;
-}
-.evo-logo > a > span:hover {
-  color: #92cddc;
+  color: #ffc107 !important;
 }
 .evo-logo > a:hover {
   text-decoration: none;
-  color: #000000 !important;
+  color: #92cddc !important;
+}
+.evo-logo > a:hover > span {
+  color: #ffc107;
+}
+.evo-logo > a > span {
+  color: white;
 }
 .logop1,
 .logop3 {
