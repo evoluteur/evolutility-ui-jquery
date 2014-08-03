@@ -31,7 +31,11 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                 iconsPath=this.options.iconsPath||'';
             _.each(fs, function (f) {
                 $f=that.$(prefix + f.id);
-                fv=model.get(f.attribute || f.id);
+                if(f.value){
+                    fv=f.value(model);
+                }else{
+                    fv=model.get(f.attribute || f.id);
+                }
                 if(model){
                     switch(f.type){
                         case fTypes.lov:

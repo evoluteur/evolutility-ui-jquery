@@ -123,6 +123,13 @@
                 If no value is provided for "attribute", the value of the attribute "id" is used.</td>
         </tr>
         <tr>
+            <td>value
+            </td>
+            <td>Function to evaluate to render the field content.
+                <br/>i.e.: value = function(model) {return model.escape('name');}
+            </td>
+        </tr>
+        <tr>
             <td>label<span class="evol-required">*</span>
             </td>
             <td>Field title in all views. (Can be overridden for specific views with labellist, labelexport...).
@@ -219,7 +226,7 @@
         </tr>
         <tr>
             <td>max</td>
-            <td>Maximum value allowed for the field (depending on field type).</td>
+            <td>Maximum value allowed for the field (N/A for some field types).</td>
         </tr>
         <tr>
             <td>maxlength</td>
@@ -228,7 +235,7 @@
         </tr>
         <tr>
             <td>min</td>
-            <td>Minimum value allowed for the field (depending on field type).</td>
+            <td>Minimum value allowed for the field (only applicable to integer, decimal, money field types).</td>
         </tr>
         <tr>
             <td>minlength</td>

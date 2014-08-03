@@ -174,7 +174,11 @@ Evol.ViewOne = Backbone.View.extend({
             _.each(fs, function (f) {
                 $f=that.$(prefix + f.id);
                 if(isModel){
-                    fv=model.get(f.attribute || f.id);
+                    if(f.value){
+                        fv=f.value(model);
+                    }else{
+                        fv=model.get(f.attribute || f.id);
+                    }
                 }else{
                     fv=model[f.attribute || f.id];
                 }
@@ -974,10 +978,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     click_help: function (evt) {
-        var $e=$(evt.currentTarget),
-            id=$e.closest('label').attr('for'),
-            eType=$e.data('type');
-
+        var id='none';
         evt.stopImmediatePropagation();
         // --- show/hide ALL help tips
         if(evt.shiftKey){
@@ -988,6 +989,7 @@ Evol.ViewOne = Backbone.View.extend({
             if(mustAdd){
                 this.$('.evol-fld>.help-block').remove();
                 this._allHelp=true;
+                id='all';
             }
             _.each(this.getFields(), function(f){
                 if(f.help){
@@ -995,11 +997,16 @@ Evol.ViewOne = Backbone.View.extend({
                     that.showHelp(f.id, f.type, $f, mustAdd);
                 }
             });
+            this.$el.trigger(eType+'.help', {id: id});
         // --- show/hide one help tip
         }else{
+            var $e=$(evt.currentTarget),
+                eType=$e.data('type');
+
+            id=$e.closest('label').attr('for');
             this.showHelp(id, eType, $e);
+            this.$el.trigger(eType+'.help', {id: id});
         }
-        this.$el.trigger(eType+'.help', {id: id});
     },
 
     click_customize: function (evt) {
