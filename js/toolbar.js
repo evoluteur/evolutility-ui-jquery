@@ -76,7 +76,6 @@ Evol.ViewToolbar = Backbone.View.extend({
 	render: function() {
 		this.$el.html(this._toolbarHTML());
 		this.setView(this.options.defaultView || 'list', false);
-        this._viewsIcon=this.$('.glyphicon-eye-open');
         //this.$('[data-toggle="tooltip"]').tooltip();
         this.$('.dropdown-toggle').dropdown();
         // TODO remove test below
@@ -329,7 +328,8 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     getToolbarButtons: function(){
         if(!this._toolbarButtons){
-            var lis=this.$('.evo-toolbar li');
+            var lis=this.$('.evo-toolbar li'),
+                vw=this.$('.evo-toolbar [data-id="views"]');
             this._toolbarButtons = {
                 ones: lis.filter('li[data-cardi="1"]'),
                 manys: lis.filter('li[data-cardi="n"]'),
@@ -338,7 +338,9 @@ Evol.ViewToolbar = Backbone.View.extend({
                 save: lis.filter('[data-id="save"]'),
                 prevNext: this.$('.evo-toolbar [data-id="prev"],.evo-toolbar [data-id="next"]'),
                 //customize: this.$('.evo-toolbar a[data-id="customize"]').parent(),
-                views: this.$('.evo-toolbar [data-id="views"]')
+                views: vw,
+                viewsIcon: this.$('.glyphicon-eye-open,.glyphicon-eye-close'),
+                vws: vw.find('ul>li>a')
             };
         }
         return this._toolbarButtons;
@@ -347,9 +349,11 @@ Evol.ViewToolbar = Backbone.View.extend({
     setIcons: function(mode){
         var setVisible=Evol.UI.setVisible;
 
-        function oneMany(showOne, showMany){
+        function oneMany(mode, showOne, showMany){
             setVisible(tbBs.ones, showOne);
             setVisible(tbBs.manys, showMany);
+            tbBs.vws.removeAttr('style');
+            tbBs.views.find('[data-id="'+mode+'"]>a').css('color', '#428bca');
         }
 
 		if(this.$el){
@@ -358,33 +362,29 @@ Evol.ViewToolbar = Backbone.View.extend({
             tbBs.prevNext.hide();
             setVisible(tbBs.views, !(mode==='export' || mode=='new'));
             tbBs.del.hide();
-            if(this._viewsIcon){
-                var cssOpen='glyphicon-eye-open',
-                    cssClose='glyphicon-eye-close';
-                if(mode==='mini' || mode==='json'){
-                    this._viewsIcon
-                        .removeClass(cssOpen).addClass(cssClose);
-                }else{
-                    this._viewsIcon
-                        .removeClass(cssClose).addClass(cssOpen);
-                }
+            var cssOpen='glyphicon-eye-open',
+                cssClose='glyphicon-eye-close';
+            if(mode==='mini' || mode==='json'){
+                tbBs.viewsIcon.removeClass(cssOpen).addClass(cssClose);
+            }else{
+                tbBs.viewsIcon.removeClass(cssClose).addClass(cssOpen);
             }
             if(mode==='badges' || mode==='list' || mode==='charts'){
                 this._prevViewMany=mode;
-                oneMany(false, true);
+                oneMany(mode, false, true);
                 if(mode==='charts'){
                     this.setStatus('');
                 }else if(this.collection.length > this.options.pageSize){
                     tbBs.prevNext.show();
                 }
             }else if((this.model && this.model.isNew()) || mode==='new' || mode==='export'){
-                oneMany(false, false);
+                oneMany(mode, false, false);
                 tbBs.del.hide();
                 tbBs.views.hide();
                 setVisible(tbBs.save, mode!=='export');
 			}else{
                 this._prevViewOne=mode;
-                oneMany(true, false);
+                oneMany(mode, true, false);
                 tbBs.prevNext.show();
                 setVisible(tbBs.save, mode!=='view');
                 setVisible(tbBs.edit, mode==='view');
