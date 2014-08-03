@@ -160,7 +160,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
 	},
 
-	setView:function(viewName, updateRoute){
+	setView:function(viewName, updateRoute, skipIcons){
 		var opts=this.options,
             $e=this.$el,
             eid ='evolw-'+viewName,
@@ -170,11 +170,13 @@ Evol.ViewToolbar = Backbone.View.extend({
             collec=this._curCollec();
 
         if(viewName==='new'){
-            viewName=this._prevOne?this._prevOne:'edit';
-            this.setView(viewName, true);
+            viewName=(this._prevViewOne && this._prevViewOne!='view' && this._prevViewOne!='json')?this._prevViewOne:'edit';
+            this.setView(viewName, false, true);
             this.model=new opts.modelClass();
             this.model.collection=collec;
+            vw.model=this.model;
             this.newItem();
+            this.setIcons('new');
             vw.options.mode='new';
         }else{
             if($v.length){
@@ -248,7 +250,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                         }
                         vw = new Evol.ViewOne[this.modesHash[viewName]](config)
                             .render();
-                        this._prevOne=viewName;
+                        this._prevViewOne=viewName;
                         //this._keepTab(viewName);
                         break;
                     // --- many ---
@@ -257,7 +259,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     case 'list':
                         vw = new Evol.ViewMany[this.modesHash[viewName]](config)
                             .render();
-                        this._prevMany=viewName;
+                        this._prevViewMany=viewName;
                         vw.setTitle();
                         if(viewName!='charts' && this.pageIndex > 0){
                             //var pIdx=this.curView.getPage();
@@ -278,7 +280,9 @@ Evol.ViewToolbar = Backbone.View.extend({
                 }else{
                     this.curView=vw;
                     this.viewsHash[viewName]=vw;
-                    $(this.options.titleSelector).html(vw.getTitle());
+                    if(!skipIcons){
+                        $(this.options.titleSelector).html(vw.getTitle());
+                    }
                 }
             }
         }
@@ -296,7 +300,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             }
             this.hideFilter();
         }
-        this.setIcons(viewName);
+        if(!skipIcons){
+            this.setIcons(viewName);
+        }
         return this;
     },
 
@@ -350,7 +356,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 			var tbBs=this.getToolbarButtons();
             //setVisible(tbBs.customize, mode!='json');
             tbBs.prevNext.hide();
-            setVisible(tbBs.views, mode!=='export');
+            setVisible(tbBs.views, !(mode==='export' || mode=='new'));
             tbBs.del.hide();
             if(this._viewsIcon){
                 var cssOpen='glyphicon-eye-open',
@@ -363,28 +369,26 @@ Evol.ViewToolbar = Backbone.View.extend({
                         .removeClass(cssClose).addClass(cssOpen);
                 }
             }
-			if((this.model && this.model.isNew()) || mode==='export'){
-                oneMany(false, false);
-                if(this.model && this.model.isNew()){
-                    $('.evo-dropdown-icons>li[data-cardi="1"]').show();
-                }
-			}else{
-				if(mode==='badges' || mode==='list' || mode==='charts'){
-                    this._prevMany=mode;
-                    oneMany(false, true);
-                    if(mode==='charts'){
-                        this.setStatus('');
-                    }else if(this.collection.length > this.options.pageSize){
-                        tbBs.prevNext.show();
-                    }
-                }else{
-                    this._prevOne=mode;
-                    oneMany(true, false);
+            if(mode==='badges' || mode==='list' || mode==='charts'){
+                this._prevViewMany=mode;
+                oneMany(false, true);
+                if(mode==='charts'){
+                    this.setStatus('');
+                }else if(this.collection.length > this.options.pageSize){
                     tbBs.prevNext.show();
-                    setVisible(tbBs.save, mode!=='view');
-                    setVisible(tbBs.edit, mode==='view');
-				}
-			}
+                }
+            }else if((this.model && this.model.isNew()) || mode==='new' || mode==='export'){
+                oneMany(false, false);
+                tbBs.del.hide();
+                tbBs.views.hide();
+                setVisible(tbBs.save, mode!=='export');
+			}else{
+                this._prevViewOne=mode;
+                oneMany(true, false);
+                tbBs.prevNext.show();
+                setVisible(tbBs.save, mode!=='view');
+                setVisible(tbBs.edit, mode==='view');
+            }
             setVisible(tbBs.manys.filter('[data-id="group"]'), mode==='badges');
 		}
 	},
@@ -411,6 +415,17 @@ Evol.ViewToolbar = Backbone.View.extend({
             this._filters.$el.show();
         }
         return this;
+    },
+
+    _flagFilterIcon: function(fOn){
+        var css = 'evo-filter-on', //'active',
+            $fIco=this.$('a[data-id="filter"]');
+
+        if(fOn){
+            $fIco.addClass(css);
+        }else{
+            $fIco.removeClass(css);
+        }
     },
 
     hideFilter: function(){
@@ -456,7 +471,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         var m=this.collection.get(id);
         this.model=m;
         if(this.curView.cardinality!='1'){
-            this.setView('view');//(this._prevOne || 'edit');
+            this.setView('view');//(this._prevViewOne || 'edit');
         }
         this.curView.setModel(m);
         // todo: decide change model for all views or model event
@@ -553,10 +568,10 @@ Evol.ViewToolbar = Backbone.View.extend({
     newItem: function(){
         var vw=this.curView;
         if(vw.viewName=='view'){
-            if(this._prevOne!=='view'){
-                this.setView(this._prevOne);
+            if(this._prevViewOne!=='view' && this._prevViewOne!=='json'){
+                this.setView(this._prevViewOne);
             }else{
-                this.setView('edit');
+                this.setView('edit', false, true);
             }
         }
         return this.curView.clear()
@@ -656,9 +671,9 @@ Evol.ViewToolbar = Backbone.View.extend({
         switch(actionId){
             case 'cancel':
                 if(this.curView.cardinality==='1' && !this.model.isNew){
-                    this.setView(this._prevOne || 'view');
+                    this.setView(this._prevViewOne || 'view');
                 }else{
-                    this.setView(this._prevMany || 'list');
+                    this.setView(this._prevViewMany || 'list');
                 }
                 break;
             case 'edit':
@@ -742,13 +757,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 break;
             case 'del':
                 this.deleteItem();
-                break;/*
-            case 'customize':
-                this.curView.customize();
                 break;
-            case 'group':
-                this.showGroup();
-                break;*/
             case 'filter':
                 this.toggleFilter();
                 break;
@@ -761,11 +770,17 @@ Evol.ViewToolbar = Backbone.View.extend({
                 }else if(this.curView.cardinality==='n'){
                     this.paginate(toolId);
                 }
+                break;/*
+            case 'group':
+                this.showGroup();
+                break;
+            case 'customize':
+                this.curView.customize();
                 break;
             case 'new-field':
-                Evol.Dico.showDesigner('', 'field', $e);
-                break;
-            //case 'new-panel':// ui-dico
+            case 'new-panel':
+                Evol.Dico.showDesigner('', toolId.substr(4), $e);
+                break;*/
             default:// 'edit', 'mini', 'list', 'badges', 'export', 'json', 'new'
                 if(toolId && toolId!==''){
                     this.setView(toolId, true);
@@ -787,22 +802,18 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(fvs.length){
             var models=Evol.Dico.filterModels(this.model.collection.models, fvs);
             if(this.collectionClass){
-                collec=new collectionClass(models);
+                collec=new this.collectionClass(models);
             }else{
                 collec=new Backbone.Collection(models);
             }
             this._filteredCollection=collec;
-            var ccSel=collec.length,
-                ccAll=this.collection.length;
-            if(ccSel){
-
-            }
-            this.setStatus(ccSel+' / '+ccAll+' '+this.uiModel.entities);
+            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.entities);
         }else{
             collec=this.collection;
             this._filteredCollection=null;
             this.setStatus(collec.length+' '+this.uiModel.entities);
         }
+        this._flagFilterIcon(fvs.length);
         this.curView.setCollection(collec);
     }
     /*
