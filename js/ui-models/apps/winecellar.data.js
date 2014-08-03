@@ -27,7 +27,7 @@ var winecellar_data = [
         "score_parker": null,
         "score_winespectator": null,
         "comments": "",
-        "degustation": [
+        "degustations": [
             {
                 "ddate": "2008-05-08",
                 "robe": "light",
@@ -70,7 +70,7 @@ var winecellar_data = [
         area:'Sauternes and Barsac',
         score_parker: 92,
         score_winespectator: 94,
-        degustation: [
+        degustations: [
             {
                 ddate: '2012-04-23',
                 robe: 'golden',
@@ -101,7 +101,7 @@ var winecellar_data = [
         country: 'FR',
         score_parker: 68,
         score_winespectator: 72,
-        degustation: [
+        degustations: [
             {
                 ddate: '2013-24-12',
                 robe: 'thick',
@@ -124,7 +124,7 @@ var winecellar_data = [
         country: 'US',
         score_parker: 67,
         score_winespectator: 62,
-        degustation: [
+        degustations: [
             {
                 ddate: '2013-05-05',
                 robe: 'light',
@@ -161,6 +161,19 @@ var winecellar_data = [
         remaining: 8,
         country: 'US',
         score_parker: 64,
-        score_winespectator: 64
+        score_winespectator: 64,
+        degustations: [
+            {
+                ddate: '2012-05-05',
+                nose: 'strong+',
+                taste: 'excellent'
+            },
+            {
+                ddate: '2013-05-05',
+                robe: 'rich',
+                nose: 'strong',
+                taste: 'very good'
+            }
+        ]
     }
 ];

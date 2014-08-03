@@ -169,7 +169,6 @@ var winecellar_ui = {
                     max: 2020,
                     help: 'Year the wine was produced.'
                 }
-
             ]
         },
         {
@@ -339,7 +338,6 @@ var winecellar_ui = {
                             labelcharts: 'Drink from',
                             placeholder: '2012',
                             maxlength: 10,
-                            viewmany: true,
                             width: 50,
                             min: 1900,
                             max: 2100
@@ -429,7 +427,7 @@ var winecellar_ui = {
                 {
                     type: 'panel-list',
                     id:'degustations',
-                    attr:'degustation',
+                    attribute:'degustations',
                     label: 'Degustations',
                     width: 100,
                     elements: [

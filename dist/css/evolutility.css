@@ -33,6 +33,12 @@
   line-height: 35px;
   margin-top: 2px;
 }
+.evo-toolbar .evo-filter-on {
+  background-color: #e0f2f1;
+}
+.evo-toolbar .evo-view-on {
+  color: #428bca;
+}
 /* --- panels & tabs --- */
 .evol-pnl > div > fieldset {
   padding: 10px 10px 5px 2px;
