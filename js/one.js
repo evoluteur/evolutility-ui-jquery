@@ -546,7 +546,7 @@ Evol.ViewOne = Backbone.View.extend({
     renderPanelList: function (h, p, mode) {
         h.push('<div style="width:', p.width, '%" class="evol-pnl pull-left" data-pid="', p.id,'">',
             Evol.UI.HTMLPanelBegin(p.id, p.label, this.options.style),
-            '<table class="table" data-mid="', p.attr,'"><thead><tr>'); // table-striped
+            '<table class="table" data-mid="', (p.attribute || p.id),'"><thead><tr>'); // table-striped
         _.each(p.elements, function (elem) {
             h.push('<th>', elem.label, '</th>');
         });
@@ -567,7 +567,7 @@ Evol.ViewOne = Backbone.View.extend({
             iconsPath=this.options.iconsPath || '';
 
         if(this.model){
-            var vs = this.model.get(uiPnl.attr);
+            var vs = this.model.get(uiPnl.attribute);
             if(vs && vs.length>0){
                 var TDbPM='<td class="evo-td-plusminus">'+Evol.UI.input.buttonsPlusMinus()+'</td>';
                 _.each(vs, function(row, idx){
