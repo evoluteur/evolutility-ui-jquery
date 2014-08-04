@@ -10,7 +10,6 @@
   color: #ffc107 !important;
 }
 .evo-logo > a:hover {
-  text-decoration: none;
   color: #92cddc !important;
 }
 .evo-logo > a:hover > span {
@@ -69,7 +68,7 @@
 .evo-head-links > li > a:hover,
 .evo-head-links2 > li > a:hover {
   text-decoration: none;
-  color: #000000;
+  color: #ffc107;
 }
 .evo-head-links > li > a.sel,
 .evo-head-links2 > li > a.sel {
