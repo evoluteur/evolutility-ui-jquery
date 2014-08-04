@@ -75,7 +75,7 @@ Evol.i18n = {
     nodata:'No data available.',
     nopix:'No picture.',
     nochart:'No charts available.',
-    badchart:'The data structure doesn\'t allow for auto-generated charts.',
+    badchart:'Not enough information provided to draw charts.',
     range: '{0} - {1} of {2} {3}', //rangeBegin, '-', rangeEnd, ' of ', mSize, ' ', entities'
     selected: '{0} selected',
     'sgn_money': '$', // indicator for money
