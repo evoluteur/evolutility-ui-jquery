@@ -798,17 +798,17 @@ Evol.Dico = {
 
         function collectCollecs(te) {
             if(te.type==='panel-list'){
-                ls[te.attr]=te;
+                ls[te.attribute]=te;
             }else if (te.type!=='panel' && te.elements && te.elements.length > 0) {
                 _.each(te.elements, function (te) {
                     if(te.type==='panel-list'){
-                        ls[te.attr]=te;
+                        ls[te.attribute]=te;
                     }else if(te.type!=='panel'){
                         collectCollecs(te);
                     }
                 });
             } else {
-                ls[te.attr]=te;
+                ls[te.attribute]=te;
             }
         }
 
