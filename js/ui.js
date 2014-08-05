@@ -91,7 +91,9 @@ Evol.UI = {
             ].join('');
         },
         textMJSON: function (id, fVobj, height) {
-            return ['<textarea id="', id, '" rows="',height,'" class="evol-json">', _.escape(JSON.stringify(fVobj, null, '\t')), '</textarea>'].join('');
+            return ['<textarea id="', id, '" rows="',height,'" class="evol-json evo-field form-control">',
+                _.escape(JSON.stringify(fVobj, null, '\t')),
+                '</textarea>'].join('');
         },
         myType: function (type, id, value) {
             return [

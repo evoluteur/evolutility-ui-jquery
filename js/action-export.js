@@ -209,9 +209,13 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     //data
                     _.every(data, function(m, idx){
                         _.each(flds, function(f, idx){
-                            var mj = m.get(f.id);
-                            if (mj) {
-                                h.push(mj);
+                            var mv = m.get(f.id);
+                            if (mv) {
+                                if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
+                                    h.push('"', mv, '"');
+                                }else{
+                                    h.push(mv);
+                                }
                             }
                             if(idx<fMax){
                                 h.push(sep);
@@ -303,6 +307,13 @@ Evol.ViewAction.Export = Backbone.View.extend({
                                         h.push('NULL');
                                     }else{
                                         h.push('"', fValue.replace(/"/g, '""'), '"');
+                                    }
+                                    break;
+                                case fTypes.list:
+                                    if(_.isUndefined(fValue)||fValue===''){
+                                        h.push('NULL');
+                                    }else {
+                                        h.push('"', Evol.Dico.HTMLField4Many(f, fValue, Evol.hashLov, '').replace(/"/g, '""'), '"');
                                     }
                                     break;
                                 default:

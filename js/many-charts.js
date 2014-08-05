@@ -9,6 +9,8 @@
  *
  *************************************************************************** */
 
+// Quick and easy implementation w/ the old version of google charts
+// must be re-written to use D3.js or other cool stuff
 Evol.ViewMany.Charts = Evol.ViewMany.extend({
 
     viewName: 'charts',

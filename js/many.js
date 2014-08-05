@@ -85,12 +85,12 @@ Evol.ViewMany = Backbone.View.extend({
         var models = this.collection.models,
             model,
             r,
-            rMin=0,
+            rMin = 0,
             rMax = _.min([models.length, rMin+pSize]),
             ico = icon?(this.options.iconsPath || '')+icon:null,
             route=this.getItemRoute();
 
-        if(pageIdx>0){
+        if(pageIdx > 0){
             rMin = pageIdx*pSize;
             rMax = _.min([models.length, rMin+pSize]);
         }
@@ -104,6 +104,14 @@ Evol.ViewMany = Backbone.View.extend({
 
     _render:function(models){
         alert('_render must be overwritten');
+    },
+
+    _HTMLField: function(f, v){
+        var fv=Evol.Dico.HTMLField4Many(f, v, Evol.hashLov, this.options.iconsPath || '');
+        if(f.type==='list'){
+            fv= _.escape(fv);
+        }
+        return fv;
     },
 
     _HTMLCheckbox: function(cid){
@@ -190,10 +198,6 @@ Evol.ViewMany = Backbone.View.extend({
 
     getPage: function(){
         return this.pageIndex;
-    },
-
-    _HTMLField: function(f, v){
-        return Evol.Dico.HTMLField4Many(f, v, Evol.hashLov, this.options.iconsPath || '');
     },
 
     _$Selection:function(){

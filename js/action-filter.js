@@ -56,7 +56,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                     if(f.type!==Evol.Dico.fieldTypes.list){
                         return f;
                     }else{
-                        return _.extend(f, {
+                        return _.extend({}, f, {
                             type: Evol.Dico.fieldTypes.lov,
                             trueType: Evol.Dico.fieldTypes.list
                         });
@@ -564,15 +564,15 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     },
 
     val: function(value){
+        // --- get value
         if (_.isUndefined(value)){
-            // --- get value
             var v=[];
             this._filters.find('a').each(function(){
                 v.push($(this).data('filter'));
             });
             return v;
+        // --- set value
         }else{
-            // --- set value
             this._filters.empty();
             for(var i=0,iMax=value.length;i<iMax;i++){
                 this.addFilter(value[i]);

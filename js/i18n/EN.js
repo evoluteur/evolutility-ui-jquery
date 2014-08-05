@@ -91,6 +91,7 @@ Evol.i18n = {
     // --- validation ---
     validation:{
         incomplete: 'Incomplete information',
+        invalid: 'Invalid format.',
         intro:'You are not finished yet:',
         empty:'"{0}" must have a value.',
         email:'"{0}" must be a valid email like "abc@company.com".',

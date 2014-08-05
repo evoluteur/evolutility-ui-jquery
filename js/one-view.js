@@ -22,14 +22,13 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
 
     setData: function (model) {
         if(!_.isUndefined(model) && model!==null){
-            var fs = this.getFields(),
-                that=this,
+            var that=this,
                 fTypes = Evol.Dico.fieldTypes,
                 $f, fv,
                 prefix='#'+ that.prefix + '-',
                 subCollecs=this.getSubCollecs(),
                 iconsPath=this.options.iconsPath||'';
-            _.each(fs, function (f) {
+            _.each(this.getFields(), function (f) {
                 $f=that.$(prefix + f.id);
                 if(f.value){
                     fv=f.value(model);
@@ -73,15 +72,14 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
     },
 
     clear: function () {
-        var fs = this.getFields(),
-            that=this,
+        var that=this,
             $f,
             fTypes = Evol.Dico.fieldTypes,
             prefix='#'+ that.prefix + '-',
             subCollecs=this.getSubCollecs();
 
         this.clearMessages();
-        _.each(fs, function (f) {
+        _.each(this.getFields(), function (f) {
             $f=that.$(prefix + f.id);
             switch(f.type) {
                 case fTypes.bool:

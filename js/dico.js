@@ -200,6 +200,8 @@ Evol.Dico = {
                     var filter=filters[i],
                         vf=filter.value.value,
                         vm=model.get(filter.field.value);
+                    // TODO use field.value(m) || field.id
+
                     if(_.isUndefined(vm)){
                         vm='';
                     }

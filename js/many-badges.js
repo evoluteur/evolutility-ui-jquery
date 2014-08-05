@@ -44,7 +44,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
             if(f.value){
                 v = f.value(model);
             }else{
-                v = that._HTMLField(f, model.escape(f.id));
+                v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
             if (idx === 0) {
                 h.push('<div data-mid="', model.id, '"><h4>',

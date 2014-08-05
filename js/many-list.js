@@ -55,11 +55,11 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         }
         _.each(fields, function(f, idx){
             if(f.type===Evol.Dico.fieldTypes.color){
-                v = Evol.UI.input.colorBox(f.id, model.escape(f.id));
+                v = Evol.UI.input.colorBox(f.id, model.escape(f.attribute || f.id));
             }else if(f.value){
                 v = f.value(model);
             }else{
-                v = that._HTMLField(f, model.escape(f.id));
+                v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
             if(idx===0){
                 v = Evol.Dico.HTMLFieldLink('fv-'+f.id, f, v, icon, !link, route?route+model.id:null);

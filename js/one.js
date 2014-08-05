@@ -151,7 +151,7 @@ Evol.ViewOne = Backbone.View.extend({
             });
         }
         if(skipReadOnlyFields){
-            _.each(this.getFields(),function(f){
+            _.each(fs, function(f){
                 if(f.readonly){
                     delete vs[f.id];
                 }
@@ -162,8 +162,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     setData: function (model, isModel) {
         if(!_.isUndefined(model) && model!==null){
-            var fs = this.getFields(),
-                that=this,
+            var that=this,
                 fTypes = Evol.Dico.fieldTypes,
                 $f, fv,
                 prefix='#'+ this.prefix + '-',
@@ -171,7 +170,7 @@ Evol.ViewOne = Backbone.View.extend({
                 iconsPath=this.options.iconsPath||'',
                 newPix;
 
-            _.each(fs, function (f) {
+            _.each(this.getFields(), function (f) {
                 $f=that.$(prefix + f.id);
                 if(isModel){
                     if(f.value){
@@ -183,28 +182,19 @@ Evol.ViewOne = Backbone.View.extend({
                     fv=model[f.attribute || f.id];
                 }
                 if(f.readonly){
-                    if(f.type===fTypes.pix){
-                        newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
-                        $f.val(fv)
-                            .prev().remove();
-                        $f.before(newPix);
-                    }else{
-                        switch(f.type){
-                            case fTypes.lov:
-                            case fTypes.bool:
-                            case fTypes.email:
-                            case fTypes.url:
-                                $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
-                                break;
-                            case fTypes.pix:
-                                $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
-                                break;
-                            case fTypes.textml:
-                                $f.html(Evol.UI.cr2br(fv));
-                                break;
-                            default:
-                                $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
-                        }
+                    switch(f.type){
+                        case fTypes.pix:
+                            newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
+                            $f.val(fv)
+                                .prev().remove();
+                            $f.before(newPix);
+                            //$f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
+                            break;
+                        case fTypes.textml:
+                            $f.html(Evol.UI.cr2br(fv));
+                            break;
+                        default:
+                            $f.text(Evol.Dico.HTMLField4Many(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                     }
                 }else{
                     switch(f.type) {
@@ -262,16 +252,15 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     clear: function () {
-        var ft =Evol.Dico.fieldTypes,
-            fs = this.getFields(),
-            that=this,
+        var that=this,
+            ft =Evol.Dico.fieldTypes,
             $f,
             prefix='#'+ that.prefix + '-',
             subCollecs=this.getSubCollecs(),
             defaultVal;
 
         this.clearMessages();
-        _.each(fs, function (f) {
+        _.each(this.getFields(), function (f) {
             $f = that.$(prefix + f.id);
             defaultVal = f.defaultvalue || '';
             switch(f.type) {
@@ -425,7 +414,7 @@ Evol.ViewOne = Backbone.View.extend({
             iTab = -1,
             iPanel = -1,
             elems = this.uiModel.elements,
-            iMax = elems.length;
+            iMax1 = elems.length - 1;
 
         h.push('<div class="evo-one-',mode,'">');
         _.each(elems, function(p, idx){
@@ -442,7 +431,7 @@ Evol.ViewOne = Backbone.View.extend({
                 iTab++;
                 h.push('<div id="evol-tab-', idx, '" class="tab-pane', (idx === 1 ? ' active">' : '">'));
                 that.renderTab(h, p, mode);
-                if (iTab == iMax - 1) {
+                if (iTab == iMax1) {
                     h.push('</div>');
                 }
             }else{
