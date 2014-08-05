@@ -901,7 +901,7 @@ Evol.ViewOne = Backbone.View.extend({
         return this.clearErrors();
     },
 
-    sendMessage: function(title,content,style){
+    sendMessage: function(title, content, style){
         return this.$el.trigger('message',{
             title:title,
             content:content,

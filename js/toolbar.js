@@ -646,7 +646,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if($msg.length){
             $msg.attr('class', 'evo-msg alert alert-'+style+' alert-dismissable');
             $msg.find('>strong').text(title);
-            $msg.find('>span').html(content); //TODO text?
+            $msg.find('>div').html(content); //TODO text ?
             $msg.show();
         }else{
             $(Evol.UI.HTMLMsg(title, ' '+content, style)).insertAfter(this.$el.children()[0]);
