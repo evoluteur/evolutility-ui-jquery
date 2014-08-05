@@ -33,18 +33,46 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
         return this;
     },
 
+    validate: function () {
+        var isValid=true,
+            data=this.getData(),
+            $fp=this._getDOMField().parent();
+
+        //this.clearMessages();
+        if(data===null){
+            isValid=false;
+            $fp.addClass('has-error');
+        }else{
+            $fp.removeClass('has-error');
+        }
+        this.$el.trigger('action', 'validate', {valid:isValid});
+        return isValid?'':Evol.i18n.validation.invalid;
+    },
+
     getData: function () {
-        var jsonStr=this._getDOMField().val();
-        return $.parseJSON(jsonStr);
+        var jsonStr=this._getDOMField().val(),
+            obj;
+
+        try{
+            obj=$.parseJSON(jsonStr);
+        }catch(err){
+            obj=null;
+        }
+        return obj;
     },
 
     setData: function (m) {
-        this._getDOMField().val(JSON.stringify(m, null, 2));
+        this.clearError()._getDOMField().val(JSON.stringify(m, null, 2));
         return this.setTitle();
     },
 
     clear: function () {
         this._getDOMField().val('');
+        return this;
+    },
+
+    clearError: function(){
+        this._getDOMField().parent().removeClass('has-error');
         return this;
     },
 
