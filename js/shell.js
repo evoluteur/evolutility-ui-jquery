@@ -139,7 +139,7 @@ Evol.Shell = Backbone.View.extend({
             ms = new Ms();
         ms.fetch({
             success: function(collection){
-                var m = ms.models[0],
+                var m = ms.at(0),
                     config = {
                         el: $v,
                         mode: 'one',

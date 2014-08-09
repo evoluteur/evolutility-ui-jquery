@@ -109,7 +109,7 @@ Evol.ViewMany = Backbone.View.extend({
     _HTMLField: function(f, v){
         var fv=Evol.Dico.HTMLField4Many(f, v, Evol.hashLov, this.options.iconsPath || '');
         if(f.type==='list'){
-            fv= _.escape(fv);
+            return _.escape(fv);
         }
         return fv;
     },

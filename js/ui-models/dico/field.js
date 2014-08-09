@@ -44,10 +44,11 @@ var dico_field_ui = {
                         {id:'document',text:"document", icon:'ft-doc.gif'},
                         {id:'color',text:"color", icon:'ft-color.gif'},
                         {id:'lov',text:"lov", icon:'ft-lov.gif'},
-                        {id:'formula',text:"formula", icon:'ft-.gif'},
+                        {id:'list',text:"list", icon:'ft-list.gif'},
                         {id:'html',text:"html", icon:'ft-htm.gif'},
                         {id:'email',text:"email", icon:'ft-email.gif'},
-                        {id:'url',text:"url", icon:'ft-url.gif'}
+                        {id:'url',text:"url", icon:'ft-url.gif'},
+                        {id:'hidden',text:"hidden", icon:'ft-hidden.gif'}
                     ],
                     maxlength: 100,
                     required: true,

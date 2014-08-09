@@ -52,8 +52,8 @@ function setDemo(uiModel, localStorage, data, style){
             if(collection.length===0){
                 Evol.UI.insertCollection(collection, data);
             }
-            var m = ms.models[0];
-            var el =$('#evol'),
+            var m = ms.at(0),
+                el =$('#evol'),
                 vw = new Evol.ViewToolbar({
                     el: el,
                     mode: 'one',
