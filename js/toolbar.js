@@ -359,7 +359,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 		if(this.$el){
 			var tbBs=this.getToolbarButtons();
             //setVisible(tbBs.customize, mode!='json');
-            tbBs.prevNext.hide();
+            tbBs.prevNext.hide();//.removeClass('nav-disabled');
             setVisible(tbBs.views, !(mode==='export' || mode=='new'));
             tbBs.del.hide();
             var cssOpen='glyphicon-eye-open',
@@ -374,8 +374,23 @@ Evol.ViewToolbar = Backbone.View.extend({
                 oneMany(mode, false, true);
                 if(mode==='charts'){
                     this.setStatus('');
-                }else if(this.collection.length > this.options.pageSize){
-                    tbBs.prevNext.show();
+                }else{
+                    var cSize=this.collection.length,
+                        pSize=this.curView.options.pageSize;
+                    if( cSize > pSize ){
+                        tbBs.prevNext.show();/*
+                        // TODO finish disabling of paging buttons
+                        if(this.curView.pageIndex===0){
+                            tbBs.prevNext.eq(0).addClass('nav-disabled');
+                        }else{
+                            tbBs.prevNext.eq(0).removeClass('nav-disabled');
+                        }
+                        if(this.collection.length/this.options.pageSize){
+                            tbBs.prevNext.eq(1).addClass('nav-disabled');
+                        }else{
+                            tbBs.prevNext.eq(1).removeClass('nav-disabled');
+                        }*/
+                    }
                 }
             }else if((this.model && this.model.isNew()) || mode==='new' || mode==='export'){
                 oneMany(mode, false, false);
@@ -512,7 +527,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     saveItem: function(saveAndAdd){
         var that=this,
             vw=this.curView,
-            msg=vw.validate();
+            msgs=vw.validate();
 
         function fnSuccess(m){
             if (saveAndAdd) {
@@ -528,15 +543,15 @@ Evol.ViewToolbar = Backbone.View.extend({
             vw.setTitle();
         }
 
-        if(msg===''){
+        if(msgs && msgs.length===0){
             var entityName=this.uiModel.entity;
-            if(this.model.isNew()){
+            if(_.isUndefined(this.model) || (this.model && this.model.isNew())){
                 var collec=this.collection;
                 if(collec){
                     collec.create(this.getData(true), {
                         success: function(m){
                             fnSuccess(m);
-                            that.setMessage(Evol.i18n.saved, Evol.i18n.getLabel('status.added',entityName, _.escape(vw.getTitle())), 'success');
+                            that.setMessage(Evol.i18n.getLabel('saved', Evol.UI.capitalize(entityName)), Evol.i18n.getLabel('status.added', entityName, _.escape(vw.getTitle())), 'success');
                         },
                         error:function(m, err){
                             alert('error in "saveItem"');
@@ -552,7 +567,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.model.save('','',{
                     success: function(m){
                         fnSuccess(m);
-                        that.setMessage(Evol.i18n.saved, Evol.i18n.getLabel('status.updated', Evol.UI.capitalize(entityName), _.escape(vw.getTitle())), 'success');
+                        that.setMessage(Evol.i18n.getLabel('saved', Evol.UI.capitalize(entityName)), Evol.i18n.getLabel('status.updated', Evol.UI.capitalize(entityName), _.escape(vw.getTitle())), 'success');
                     },
                     error:function(m, err){
                         alert('error in "saveItem"');
@@ -560,7 +575,10 @@ Evol.ViewToolbar = Backbone.View.extend({
                 });
             }
         }else{
-            this.setMessage(Evol.i18n.validation.incomplete, msg, 'warning');
+            if (msgs.length > 0) {
+                var msg = ['<ul><li>', msgs.join('</li><li>'), '</li></ul>'].join(''); // i18nVal.intro,
+                this.setMessage(Evol.i18n.validation.incomplete, msg, 'warning');
+            }
         }
         return this;
     },
@@ -646,7 +664,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if($msg.length){
             $msg.attr('class', 'evo-msg alert alert-'+style+' alert-dismissable');
             $msg.find('>strong').text(title);
-            $msg.find('>div').html(content); //TODO text ?
+            $msg.find('>*').eq(0).html(content); //TODO text ?
             $msg.show();
         }else{
             $(Evol.UI.HTMLMsg(title, ' '+content, style)).insertAfter(this.$el.children()[0]);

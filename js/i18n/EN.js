@@ -16,7 +16,7 @@ Evol.i18n = {
         }else{
             l=this[label];
         }
-        if(string1){
+        if(string1 && l){
             l= l.replace('{0}',string1);
             if(string2){
                 l= l.replace('{1}',string2);
@@ -53,7 +53,7 @@ Evol.i18n = {
     bCancel:'Cancel',
 
     // --- msg & status ---
-    saved: 'Record saved.',
+    saved: '{0} saved.',
     unSavedChanges: 'You have unsaved changes.\nClick OK to navigate without saving your changes.',
     deleteX:'Delete {0}',// {0}=entity
     delete1:'Do you really want to delete the {0} "{1}"?', // {0}=entity {1}=leadfield value,
@@ -92,7 +92,9 @@ Evol.i18n = {
     validation:{
         incomplete: 'Incomplete information',
         invalid: 'Invalid format.',
-        intro:'You are not finished yet:',
+        invalidList: '{0} values in "{1}" are invalid.',
+        invalidList1: '1 value in "{1}" is invalid.',
+        //intro:'You are not finished yet:',
         empty:'"{0}" must have a value.',
         email:'"{0}" must be a valid email like "abc@company.com".',
         integer:'"{0}" must only use numbers.',
@@ -106,7 +108,7 @@ Evol.i18n = {
         maxlength:'"{0}" must be {1} characters long maximum.',
         minlength:'"{0}" must be at least {1} characters long.',
         minmaxlength:'"{0}" must be between {1} and {2} characters long.',
-        regex:'The value "{0}" is not of the expected format.'
+        regex:'"{0}" is not of the expected format.'
         //regex:'"{0}" must match the regular expression pattern for "{1}".'
     },
 

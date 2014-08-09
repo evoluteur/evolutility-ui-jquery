@@ -114,6 +114,9 @@ Evol.ViewOne = Backbone.View.extend({
 
     getTitle: function(){
         if(this.model){
+            if(this.model.isNew()){
+                return Evol.i18n.getLabel('NewEntity', this.uiModel.entity);
+            }
             var lf=this.uiModel.leadfield;
             return _.isFunction(lf)?lf(this.model):this.model.get(lf);
         }else{
@@ -639,26 +642,41 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     validate: function (fields) {
-        // validate top level fields
-        var isValid=true,
-            fs = fields?fields:this.getFields();
+        // --- validate top level fields
+        var fs = fields?fields:this.getFields(),
+            data = this.getData(true),
+            isValid,
+            errMsgs=[];
+
         this.clearMessages();
-        if (_.isArray(fs)) {
-            isValid = this.checkFields(this.$el, fs);
-        }
+        errMsgs = this._checkFields(this.$el, fs, data);
+        isValid = errMsgs==='';
         // validate sub-collections
         if(this._subCollecs){
-            var that=this;
-            //TODO
-            //_.each(this._subCollecs, function (sc) {
-            //    var trs=that.$('[data-pid="'+sc.id+'"] tbody > tr');
-            //    _.each(fs, function(f){
-
-                //  });
-            //});
+            var that = this;
+            _.each(this._subCollecs, function (sc) {
+                var scData = data[sc.id],
+                    trs = that.$('[data-pid="'+sc.id+'"] tbody > tr'),
+                    scInvalid = 0;
+                _.each(scData, function(rowData, idx){
+                    _.each(sc.elements, function(f){
+                        var msg = that.validateField(f, rowData[f.id]);
+                        if(msg){
+                            trs.eq(idx).find('#'+f.id).parent().addClass('has-error');
+                            scInvalid++;
+                        }
+                    });
+                });
+                if(scInvalid>0){
+                    var pMsg='validation.invalidList'+((scInvalid.length===1)?'1':'');
+                    pMsg=Evol.i18n.getLabel(pMsg, scInvalid, sc.label);
+                    errMsgs.push(pMsg);
+                    isValid = false;
+                }
+            });
         }
         this.$el.trigger('action', 'validate', {valid:isValid});
-        return isValid;
+        return errMsgs;
     },
 
     valRegEx: {
@@ -669,148 +687,140 @@ Evol.ViewOne = Backbone.View.extend({
         decimalDA: /^\d+(\,\d+)?$/
     },
 
-    checkFields: function (holder, fds) {
+    _checkFields: function (holder, fds, values) {
         var that = this,
-            ft = Evol.Dico.fieldTypes,
-            i18nVal = Evol.i18n.validation,
             msgs = [],
-            v,
-            values = this.getData(true);
+            msg1;
 
-        function checkType(fd, fv) {
-            var ft = Evol.Dico.fieldTypes,
-                i18nVal=Evol.i18n.validation;
-            if (fv !== '' && !_.isArray(fv)){
-                switch (fd.type) {
-                    case ft.int:
-                    case ft.email:
-                        if (!that.valRegEx[fd.type].test(fv)) {
-                            flagField(fd, i18nVal[fd.type]);
-                        }
-                        break;
-                    case ft.dec:
-                    case ft.money:
-                        var regex = that.valRegEx[ft.dec + Evol.i18n.LOCALE] || that.valRegEx[ft.dec + 'EN'];
-                        if (!regex.test(fv))
-                            flagField(fd, i18nVal[fd.type]);
-                        break;
-                    case ft.date:
-                    case ft.datetime:
-                    case ft.time:
-                        if ((fv !== '') && (!_.isDate(new Date(fv)))) {
-                            flagField(fd, i18nVal[fd.type]);
-                        }
-                        break;
-                }
-            }
-        }
-
-        function flagField(fd, msg, r2, r3) {
-            var msgf = msg.replace('{0}', fd.label);
-            // TODO loop through args
-            if (r2 !== null) {
-                msgf = msgf.replace('{1}', r2);
-            }
-            if (r3 !== null) {
-                msgf = msgf.replace('{2}', r3);
-            }
+        function flagField(fd, msg) {
             if(_.isArray(msgs)){
-                msgs.push(msgf);
+                msgs.push(msg);
             }
-            var p=that.$field(fd).parent();
+            var p=that.$field(fd).parent();//holder.find()
             var errlabel = p.find('.text-danger');
             if (errlabel.length) {
-                errlabel.html(msgf);
+                errlabel.html(msg);
             } else {
-                p.append('<p class="text-danger">' + msgf + '</p>');
+                p.append('<p class="text-danger">' + msg + '</p>');
             }
             p.addClass('has-error');
         }
 
         _.each(fds,function(f){
-            v = values[f.id];
-
-            if(!f.readonly){
-
-                // Check required/empty or check type
-                if (f.required && (v==='' ||
-                        ((f.type===ft.int || f.type===ft.dec || f.type===ft.money) && isNaN(v)) ||
-                        (f.type===ft.lov && v==='0') ||
-                        (f.type===ft.list && v.length===0) ||
-                        (f.type===ft.color && v==='#000000'))){
-                    flagField(f, i18nVal.empty);
-                } else {
-                    if( !(isNaN(v) && (f.type===ft.int || f.type===ft.dec || f.type===ft.money))) {
-                        checkType(f, v);
-                    }
-
-                    // Check regexp
-                    if (f.regex !== null && !_.isUndefined(f.regex)) {
-                        var rg = new RegExp(f.regex);
-                        if (!v.match(rg)) {
-                            flagField(f, i18nVal.regex, f.label);
-                        }
-                    }
-                    /*
-                     // Check custom
-                     if (f.customvalidation !== null) {
-                         //TODO do not use eval
-                         var p = eval([f.customvalidation, '("', that.prefix, f.id, '","', f.label, '")'].join(''));
-                         if (p !== null && p.length > 0) {
-                             flagField(f, p);
-                         }
-                     }*/
-
-                    // Check min & max
-                    if (f.type === ft.int || f.type === ft.dec || f.type === ft.money) {
-                        if (v !== '') {
-                            if (f.max !== null && parseFloat(v) > f.max) {
-                                flagField(f, i18nVal.max, f.max);
-                            }
-                            if (f.min !== null && parseFloat(v) < f.min) {
-                                flagField(f, i18nVal.min, f.min);
-                            }
-                        }
-                    }
-                }
-
-                // Check minlength and maxlength
-                if (_.isString(v) && v.length > 0) {
-                    var ok = true,
-                        len = v.length;
-                    if (len > 0) {
-                        if (f.maxlength) {
-                            ok = len <= f.maxlength;
-                            if (!ok) {
-                                if (f.minlength) {
-                                    flagField(f, i18nVal.minmaxlength, f.minlength, f.maxlength);
-                                } else {
-                                    flagField(f, i18nVal.maxlength, f.maxlength);
-                                }
-                            }
-                        }
-                        if (ok && f.minlength) {
-                            ok = len >= f.minlength;
-                            if (!ok) {
-                                if (f.maxlength) {
-                                    flagField(f, i18nVal.minmaxlength, f.minlength, f.maxlength);
-                                } else {
-                                    flagField(f, i18nVal.minlength, f.minlength);
-                                }
-                            }
-                        }
-                    }
-                }
-
+            msg1=that.validateField(f, values[f.id]);
+            if(msg1!==''){
+                //.addClass('has-error')
+                flagField(f, msg1);
             }
-
         });
 
-        if (msgs.length > 0) {
-            return [i18nVal.intro, '<ul><li>', msgs.join('</li><li>'), '</li></ul>'].join('');
-        } else {
-            return '';
+        return msgs;
+    },
+
+    validateField: function(f, v){
+        var i18nVal = Evol.i18n.validation,
+            ft = Evol.Dico.fieldTypes;
+
+        function formatMsg(fLabel, msg, r2, r3){
+            return msg.replace('{0}', fLabel)
+                .replace('{1}', r2)
+                .replace('{2}', r3);
         }
+
+        if(!f.readonly){
+
+            // Check required/empty
+            if (f.required && (v==='' ||
+                    ((f.type===ft.int || f.type===ft.dec || f.type===ft.money) && isNaN(v)) ||
+                    (f.type===ft.lov && v==='0') ||
+                    (f.type===ft.list && v.length===0) ||
+                    (f.type===ft.color && v==='#000000'))){
+                return formatMsg(f.label, i18nVal.empty);
+            } else {
+
+                // Check field type
+                if( !(isNaN(v) && (f.type===ft.int || f.type===ft.dec || f.type===ft.money))) {
+                    if (v !== '' && !_.isArray(v)){
+                        switch (f.type) {
+                            case ft.int:
+                            case ft.email:
+                                if (!this.valRegEx[f.type].test(v)) {
+                                    return formatMsg(f.label, i18nVal[f.type]);
+                                }
+                                break;
+                            case ft.dec:
+                            case ft.money:
+                                var regex = this.valRegEx[ft.dec + Evol.i18n.LOCALE] || this.valRegEx[ft.dec + 'EN'];
+                                if (!regex.test(v)){
+                                    return formatMsg(f.label, i18nVal[f.type]);
+                                }
+                                break;
+                            case ft.date:
+                            case ft.datetime:
+                            case ft.time:
+                                if ((v !== '') && (!_.isDate(new Date(v)))) {
+                                    return formatMsg(f.label, i18nVal[f.type]);
+                                }
+                                break;
+                        }
+                    }
+                }
+
+                // Check regexp
+                if (f.regex !== null && !_.isUndefined(f.regex)) {
+                    var rg = new RegExp(f.regex);
+                    if (!v.match(rg)) {
+                        return formatMsg(f.label, i18nVal.regex, f.label);
+                    }
+                }
+                /*
+                 // Check custom
+                 if (f.customvalidation !== null) {
+                 //TODO do not use eval
+                 var p = eval([f.customvalidation, '("', that.prefix, f.id, '","', f.label, '")'].join(''));
+                 if (p !== null && p.length > 0) {
+                 flagField(f, p);
+                 }
+                 }*/
+
+                // Check min & max
+                if (f.type === ft.int || f.type === ft.dec || f.type === ft.money) {
+                    if (v !== '') {
+                        if (f.max !== null && parseFloat(v) > f.max) {
+                            return formatMsg(f.label, i18nVal.max, f.max);
+                        }
+                        if (f.min !== null && parseFloat(v) < f.min) {
+                            return formatMsg(f.label, i18nVal.min, f.min);
+                        }
+                    }
+                }
+            }
+
+            // Check minlength and maxlength
+            if (_.isString(v)) {
+                var len = v.length,
+                    badMax = false,
+                    badMin = false;
+                if (f.maxlength) {
+                    badMax = len > f.maxlength;
+                }
+                if (f.minlength) {
+                    badMin = len < f.minlength;
+                }
+                if(badMax || badMin){
+                    if(f.maxlength && f.minlength){
+                        return formatMsg(f.label, i18nVal.minmaxlength, f.minlength, f.maxlength);
+                    }else if(f.maxlength){
+                        return formatMsg(f.label, i18nVal.maxlength, f.maxlength);
+                    }else{
+                        return formatMsg(f.label, i18nVal.minlength, f.minlength);
+                    }
+                }
+            }
+
+        }
+
+        return '';
     },
 
     clearErrors: function () {
