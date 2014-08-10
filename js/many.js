@@ -323,7 +323,7 @@ Evol.ViewMany = Backbone.View.extend({
     click_pagination: function (evt) {
         this.$el.trigger('list.paginate', {id: $(evt.currentTarget).closest('li').data('id')});
     },
-
+/*
     click_customize: function (evt) {
         var $e=$(evt.currentTarget),
             id=$e.data('id'),
@@ -332,7 +332,7 @@ Evol.ViewMany = Backbone.View.extend({
         Evol.Dico.showDesigner(id, eType, $e);
         this.$el.trigger(eType+'.customize', {id: id, type:eType});
     },
-
+*/
     click_selection: function (evt) {
         //if($(evt.currentTarget).data('id')!=='cbxAll'){
             this.$el.trigger('selection');

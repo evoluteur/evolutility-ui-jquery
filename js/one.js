@@ -22,7 +22,7 @@ Evol.ViewOne = Backbone.View.extend({
         'click .evol-title-toggle': 'click_toggle',
         'click ul.evol-tabs>li>a': 'click_tab',
         'click label>.glyphicon-question-sign': 'click_help',
-        'click .evol-field-label .glyphicon-wrench': 'click_customize',
+        //'click .evol-field-label .glyphicon-wrench': 'click_customize',
         'click [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel'
     },
 
@@ -37,6 +37,17 @@ Evol.ViewOne = Backbone.View.extend({
         this.options=_.extend({}, this.options, opts);
         this.mode = opts.mode || this.options.mode || this.viewName;
         this.uiModel = this.options.uiModel;
+            /*
+            var uim = this.options.uiModel;
+            debugger
+            if(uim && uim.getFields){
+                this.uiModel = uim;
+            }else{
+                this.uiModel = new Evol.UIModel(uim);
+            }
+
+            //var aaaa=this.uiModel.getFields();
+    */
         this._tabId = false;
         this._uTitle = (!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
         this._subCollecs=false;
@@ -234,7 +245,8 @@ Evol.ViewOne = Backbone.View.extend({
                 });
             }
         }else{
-            // TODO show no data msg or something
+            // TODO show no data or error msg or something
+
             this.clear();
         }
         return this.setTitle();
@@ -834,7 +846,7 @@ Evol.ViewOne = Backbone.View.extend({
     fieldViewId: function(fid){
         return this.prefix + '-' + fid;
     },
-
+/*
     customize: function(){
         var labelSelector = '.evol-field-label>label',
             panelSelector ='.evol-pnl .panel-title';
@@ -852,7 +864,7 @@ Evol.ViewOne = Backbone.View.extend({
         }
         return this;
     },
-
+*/
     showHelp: function(id, type, $el, forceOn){ // isField to be used by shift-click on help icon
         var fs=this.getFields(),
             fld=_.findWhere(fs,{id:id}),
@@ -1007,7 +1019,7 @@ Evol.ViewOne = Backbone.View.extend({
             this.$el.trigger(eType+'.help', {id: id});
         }
     },
-
+/*
     click_customize: function (evt) {
         var $e=$(evt.currentTarget),
             id=$e.data('id'),
@@ -1016,7 +1028,7 @@ Evol.ViewOne = Backbone.View.extend({
         Evol.Dico.showDesigner(id, eType, $e, this);
         this.$el.trigger(eType+'.customize', {id: id, type:eType});
     },
-
+*/
     click_detailsAddDel: function(evt){
         var $targ=$(evt.currentTarget),
             bId=$targ.data('id'),
