@@ -533,6 +533,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             if (saveAndAdd) {
                 that.newItem();
             }else{
+                m.unset(''); // TODO why is there a "" prop?
                 that.model=m;
                 if(that._filteredCollection){
                     that._filteredCollection.add(m);
@@ -543,7 +544,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             vw.setTitle();
         }
 
-        if(msgs && msgs.length===0){
+        if(msgs.length===0){
             var entityName=this.uiModel.entity;
             if(_.isUndefined(this.model) || (this.model && this.model.isNew())){
                 var collec=this.collection;
@@ -664,7 +665,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if($msg.length){
             $msg.attr('class', 'evo-msg alert alert-'+style+' alert-dismissable');
             $msg.find('>strong').text(title);
-            $msg.find('>*').eq(0).html(content); //TODO text ?
+            $msg.find('>span').eq(0).html(content); //TODO text ?
             $msg.show();
         }else{
             $(Evol.UI.HTMLMsg(title, ' '+content, style)).insertAfter(this.$el.children()[0]);
