@@ -120,7 +120,6 @@ Evol.ViewAction.Export = Backbone.View.extend({
     },
 
     showFormatOpts: function (xFormat) {
-        var e=this.$el;
         switch (xFormat) {
             case 'TAB':
                 xFormat = 'CSV';
@@ -155,11 +154,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
     },
 
     getTitle: function(){
-        if(this.options.many){
-            return Evol.i18n.getLabel('export.ExportEntities', this.uiModel.entities);
-        }else{
-            return Evol.i18n.getLabel('export.ExportEntity', this.uiModel.entity);
-        }
+        var keyEnd=this.options.many?'ies':'y';
+        return Evol.i18n.getLabel('export.ExportEntit'+keyEnd, this.uiModel['entit'+keyEnd]);
     },
 
     _preview: function (format) { // TODO add field ID
@@ -211,8 +207,10 @@ Evol.ViewAction.Export = Backbone.View.extend({
                         _.each(flds, function(f, idx){
                             var mv = m.get(f.id);
                             if (mv) {
-                                if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
-                                    h.push('"', mv, '"');
+                                if(f.type===fTypes.bool){
+                                    h.push(mv);
+                                }else if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
+                                    h.push('"', mv.replace('"', '\\"'), '"');
                                 }else{
                                     h.push(mv);
                                 }
