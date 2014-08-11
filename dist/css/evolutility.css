@@ -12,6 +12,17 @@
   margin-bottom: 10px;
   padding: 3px;
   background-color: #fbfbfb;
+  /*
+  [data-id="prev"].nav-disabled,
+  [data-id="next"].nav-disabled{
+    a {
+      color: @color-disabled;
+      &:hover{
+        background-color: transparent;
+        cursor:default;
+      }
+    }
+  }*/
 }
 .evo-toolbar > [data-cid="views"] {
   color: black;
@@ -163,8 +174,8 @@ label {
   top: 0 !important;
   right: 0 !important;
 }
-.evo-msg > div {
-  margin-top: 5px;
+.evo-msg ul {
+  margin-top: 10px;
 }
 .evo-color-box {
   height: 20px;

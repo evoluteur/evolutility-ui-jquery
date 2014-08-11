@@ -1,5 +1,6 @@
+var uiModels = uiModels || {};
 
-var todo_ui = {
+uiModels.todo = {
     id: 'todo',
     label: 'To Do',
     entity: 'task',

@@ -1,5 +1,4 @@
-
-var todo_data = [
+uiModels.todo_data = [
     {id: '322', title: 'Add routing to Evolutility', priority: '2', category: 'others', complete: false, notes: 'Use Backbone router.'},
     {id: '304', title: 'Fix open bugs', duedate: '2014-07-25', priority: '3', category: 'work', complete: false, notes: 'bla bla'},
     {id: '335', title: 'Testing App', duedate: '2014-06-11', priority: '3', category: 'work', complete: false, notes: 'test'},

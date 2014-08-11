@@ -1,4 +1,4 @@
-var contacts_LOVs = {
+var contact_LOVs = {
 
     categories: [
         {id: '1', text: 'Work'},
@@ -311,7 +311,9 @@ var contacts_LOVs = {
     ]
 };
 
-var contacts_ui = {
+var uiModels = uiModels || {};
+
+uiModels.contact = {
     id: 'contact',
     label: 'Address book',
     icon: 'contact.gif',
@@ -378,14 +380,14 @@ var contacts_ui = {
                 },
                 {
                     type: 'lov', id: 'state', label: 'State', width: 23,
-                    list: contacts_LOVs.states
+                    list: contact_LOVs.states
                 },
                 {
                     type: 'text', id: 'zip', label: 'Zip', maxlength: 12, width: 15
                 },
                 {
                     type: 'lov', id: 'country', label: 'Country', maxlength: 60, width: 100,
-                    list: contacts_LOVs.countries
+                    list: contact_LOVs.countries
                 }
             ]
         },
@@ -394,7 +396,7 @@ var contacts_ui = {
                 {
                     type: 'lov', id: 'category', label: 'Category', width: 100,
                     viewmany: true,
-                    list: contacts_LOVs.categories
+                    list: contact_LOVs.categories
                 },
                 {
                     type: 'text', id: 'custom1', label: 'Custom 1', maxlength: 250,

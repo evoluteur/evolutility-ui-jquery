@@ -79,17 +79,17 @@
 
     $(document).ready(function(){
         // - create sample data if none is there
-        createSampleDataIfEmpty(todo_ui, todo_data);
-        createSampleDataIfEmpty(contacts_ui, contacts_data);
-        createSampleDataIfEmpty(winecellar_ui, winecellar_data);
+        createSampleDataIfEmpty('todo');
+        createSampleDataIfEmpty('contact');
+        createSampleDataIfEmpty('winecellar');
 
         // - run shell which set demo
         new Evol.Shell({
             el:$('#evol'),
             uiModelsObj: {
-                todo: todo_ui,
-                contact: contacts_ui,
-                winecellar: winecellar_ui//, test_ui
+                todo: uiModels.todo,
+                contact: uiModels.contact,
+                winecellar: uiModels.winecellar//, test_ui
             }
         }).render();
     });
@@ -106,8 +106,8 @@
         $('#hide_def').hide();
     }
 
-    function createSampleDataIfEmpty(uiModel, data){
-        var lc = new Backbone.LocalStorage('evol-'+uiModel.id),
+    function createSampleDataIfEmpty(entityName){
+        var lc = new Backbone.LocalStorage('evol-'+entityName),
             M = Backbone.Model.extend({
                 localStorage: lc
             }),
@@ -120,7 +120,7 @@
             success: function(collection){
                 // TODO remove sample data
                 if(collection.length===0){
-                    Evol.UI.insertCollection(collection, data);
+                    Evol.UI.insertCollection(collection, uiModels[entityName+'_data']);
                 }
             }
         });

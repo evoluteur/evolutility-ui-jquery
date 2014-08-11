@@ -693,10 +693,10 @@ Evol.ViewOne = Backbone.View.extend({
 
     valRegEx: {
         email: /^[\w\.\-]+@[\w\.\-]+\.[\w\.\-]+$/,
-        integer: /^[-+]?\d+$/,
-        decimalEN: /^\d+(\.\d+)?$/,
-        decimalFR: /^\d+(\,\d+)?$/,
-        decimalDA: /^\d+(\,\d+)?$/
+        integer: /^[-+]?\d+$/, // /^[0-9]*/,
+        decimalEN: /(\+|-)?(\d*\.\d*)?$/
+        //decimalFR: /(\+|-)?(\d*\,\d*)?$/,
+        //decimalDA: /(\+|-)?(\d*\,\d*)?$/
     },
 
     _checkFields: function (holder, fds, values) {
@@ -798,10 +798,10 @@ Evol.ViewOne = Backbone.View.extend({
                 // Check min & max
                 if (f.type === ft.int || f.type === ft.dec || f.type === ft.money) {
                     if (v !== '') {
-                        if (f.max !== null && parseFloat(v) > f.max) {
+                        if (f.max && parseFloat(v) > f.max) {
                             return formatMsg(f.label, i18nVal.max, f.max);
                         }
-                        if (f.min !== null && parseFloat(v) < f.min) {
+                        if (f.min && parseFloat(v) < f.min) {
                             return formatMsg(f.label, i18nVal.min, f.min);
                         }
                     }
@@ -811,14 +811,8 @@ Evol.ViewOne = Backbone.View.extend({
             // Check minlength and maxlength
             if (_.isString(v)) {
                 var len = v.length,
-                    badMax = false,
-                    badMin = false;
-                if (f.maxlength) {
-                    badMax = len > f.maxlength;
-                }
-                if (f.minlength) {
-                    badMin = len < f.minlength;
-                }
+                    badMax = f.maxlength?len > f.maxlength:false,
+                    badMin = f.minlength?len < f.minlength:false;
                 if(badMax || badMin){
                     if(f.maxlength && f.minlength){
                         return formatMsg(f.label, i18nVal.minmaxlength, f.minlength, f.maxlength);

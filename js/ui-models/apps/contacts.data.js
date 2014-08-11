@@ -1,5 +1,4 @@
-
-var contacts_data = [
+uiModels.contact_data = [
     {id: '690', lastname: 'Smallwood', firstname: 'Vincent', jobtitle: 'Director', company: 'EasyDoesIt',
         email: 'vsw@EasyDoesIt.com', phone: '415 234 4323', phonehome: '415 378 3577', phonecell: '415 135 3454',
         web: 'http://EasyDoesIt.com',

@@ -132,7 +132,9 @@ var winecellar_lovs = {
 
 };
 
-var winecellar_ui = {
+var uiModels = uiModels || {};
+
+uiModels.winecellar = {
     id: 'winecellar',
     entity: 'wine',
     entities: 'wines',

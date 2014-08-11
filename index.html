@@ -18,7 +18,6 @@
 </head>
 
 <body>
-<body>
 
 <div class="evo-header">
     <div class="evo-logo"><a href="index.html"><span>evol</span>utility<span>.js</span></a></div>
@@ -53,7 +52,7 @@
             <select id="evolModel" class="form-control" style="width:auto">
                 <option value="todo">To Do</option>
                 <option value="contact">AddressBook</option>
-                <option value="wine">Wine Cellar</option>
+                <option value="winecellar">Wine Cellar</option>
             </select>
         </div>
 
@@ -94,9 +93,9 @@
     </p>
 
     <p>These UI models define the views above:
-        <a href="javascript:showUIdef2(todo_ui)">To Do</a>,
-        <a href="javascript:showUIdef2(contacts_ui)">Addressbook</a>,
-        <a href="javascript:showUIdef2(winecellar_ui)">Wine Cellar</a>.
+        <a href="javascript:showUIdef2('todo')">To Do</a>,
+        <a href="javascript:showUIdef2('contact')">Addressbook</a>,
+        <a href="javascript:showUIdef2('winecellar')">Wine Cellar</a>.
         <small id="hide_def" style="display:none;"><a href="javascript:showUIdef2no()">[Hide]</a></small>
     </p>
 
@@ -138,20 +137,6 @@
 <script>
 
     var curView=null;
-
-    function showUIdef2(uiModel){
-        var $ui=$('#uimodel');
-        $ui.html(Evol.UI.input.textMJSON('uimodel2', uiModel, 10))
-                .slideDown();
-        $('#hide_def').show();
-    }
-
-    function showUIdef2no(){
-        $('#uimodel').slideUp();
-        $('#hide_def').hide();
-    }
-
-
     var viewClasses = {
         // One
         'view': Evol.ViewOne.View,
@@ -170,36 +155,31 @@
         //'doc': Evol.ViewAction.Doc
     };
 
+    function showUIdef2(entityName){
+        var $ui=$('#uimodel');
+        $ui.html(Evol.UI.input.textMJSON('uimodel2', uiModels[entityName], 10))
+                .slideDown();
+        $('#hide_def').show();
+    }
+
+    function showUIdef2no(){
+        $('#uimodel').slideUp();
+        $('#hide_def').hide();
+    }
+
     function showView(){
         var $model=$('#evolModel'),
+            modelName=$model.val(),
             $view=$('#evolView'),
-            uiModel,
-            sampleData,
-            viewName=$view.val();
-
-        switch($model.val()){
-            case 'todo':
-                uiModel=todo_ui;
-                sampleData=todo_data;
-                break;
-            case 'contact':
-                uiModel=contacts_ui;
-                sampleData=contacts_data;
-                break;
-            case 'wine':
-                uiModel=winecellar_ui;
-                sampleData=winecellar_data;
-                break;
-        }
+            viewName=$view.val(),
+            uiModel=uiModels[modelName];
 
         var $e=$('<div data-eid="'+uiModel.id+'"></div>'),
-            collec = new Backbone.Collection(sampleData),
+            collec = new Backbone.Collection(uiModels[modelName+'_data']),
             config={
                 style: 'panel-primary',
                 collection: collec,
-                model: collec.models[0],
-                modelClass: Backbone.Model,
-                collectionClass: Backbone.Collection,
+                model: collec.at(0),
                 uiModel: uiModel,
                 title:'',
                 el: $e,
@@ -207,9 +187,6 @@
             };
 
         $('#evol1').append($e);
-        if(viewName==='filter'){
-            config.fields=Evol.Dico.getFields(uiModel);
-        }
         if(curView){
             curView.remove();
         }
@@ -218,7 +195,7 @@
     }
 
     $(document).ready(function(){
-        $('#evolModel,#evolView').on('change', function(evt){
+        $('#evolModel,#evolView').on('change', function(){
             showView();
         });
         showView();

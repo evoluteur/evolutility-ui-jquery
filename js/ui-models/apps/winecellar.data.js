@@ -1,5 +1,4 @@
-
-var winecellar_data = [
+uiModels.winecellar_data = [
     {
         "name": "Macrostie",
         "label_img": "wine/macrostie.gif",

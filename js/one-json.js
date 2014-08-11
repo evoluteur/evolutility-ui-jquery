@@ -46,7 +46,7 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
             $fp.removeClass('has-error');
         }
         this.$el.trigger('action', 'validate', {valid:isValid});
-        return isValid?'':Evol.i18n.validation.invalid;
+        return isValid?[]:[Evol.i18n.validation.invalid];
     },
 
     getData: function () {

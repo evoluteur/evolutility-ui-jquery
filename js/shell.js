@@ -92,7 +92,7 @@ Evol.Shell = Backbone.View.extend({
             var tb=that._tbs[eName];
             if(tb){
                 that._curEntity = tb;
-                tb.setView(view, true, false)
+                tb.setView(view, false, false) //tb.setView(view, true, false)
                     .setTitle();
                 if(options){
                     if(tb.curView.cardinality==='1'){
