@@ -460,6 +460,13 @@ Evol.Dico = {
         }
         return h.join('');
     },
+    /*
+    copyOptions:  function(context, options, optList){
+        _.each(optList, function(opt){
+            context[opt]=options[opt];
+        });
+        return this;
+    },*/
 
     bbComparator:  function(fid){
         return function(modelA) {

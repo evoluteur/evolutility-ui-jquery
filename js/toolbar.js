@@ -285,9 +285,9 @@ Evol.ViewToolbar = Backbone.View.extend({
                 }
             }
         }
-        if(this.curView.cardinality==='n'){ // TODO do not always change flag
+        if(this.curView.cardinality==='n'){
             this.setRoute('', false);
-            if(this._filterOn){
+            if(this._filterOn){ // TODO do not always change flag
                 this.showFilter(false);
             }
         }else{
@@ -295,6 +295,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             //    this.curView.stepIndex(0);
             //}
             if(updateRoute){
+                /*if(!this.model){
+                    alert('Error: Invalid route.');
+                }*/
                 this.setRoute(this.model?this.model.id:null, false);
             }
             this.hideFilter();

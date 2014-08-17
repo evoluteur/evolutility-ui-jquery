@@ -1178,6 +1178,13 @@ Evol.Dico = {
         }
         return h.join('');
     },
+    /*
+    copyOptions:  function(context, options, optList){
+        _.each(optList, function(opt){
+            context[opt]=options[opt];
+        });
+        return this;
+    },*/
 
     bbComparator:  function(fid){
         return function(modelA) {
@@ -1260,7 +1267,8 @@ Evol.ViewMany = Backbone.View.extend({
     initialize: function (opts) {
         var lastSort = localStorage.getItem(opts.uiModel.id+'-sort'),
             that=this;
-        this.options=_.extend({}, this.options, opts);
+
+        _.extend(this.options, opts);
         this.uiModel=this.options.uiModel;
         this.pageIndex=this.options.pageIndex;
         this.mode=this.options.mode || '';
@@ -1863,7 +1871,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        this.options=_.extend({}, this.options, opts);
+        _.extend(this.options, opts);
         this.mode = opts.mode || this.options.mode || this.viewName;
         this.uiModel = this.options.uiModel;
             /*
@@ -1873,10 +1881,7 @@ Evol.ViewOne = Backbone.View.extend({
                 this.uiModel = uim;
             }else{
                 this.uiModel = new Evol.UIModel(uim);
-            }
-
-            //var aaaa=this.uiModel.getFields();
-    */
+            }*/
         this._tabId = false;
         this._uTitle = (!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
         this._subCollecs=false;
@@ -5282,9 +5287,9 @@ Evol.ViewToolbar = Backbone.View.extend({
                 }
             }
         }
-        if(this.curView.cardinality==='n'){ // TODO do not always change flag
+        if(this.curView.cardinality==='n'){
             this.setRoute('', false);
-            if(this._filterOn){
+            if(this._filterOn){ // TODO do not always change flag
                 this.showFilter(false);
             }
         }else{
@@ -5292,6 +5297,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             //    this.curView.stepIndex(0);
             //}
             if(updateRoute){
+                /*if(!this.model){
+                    alert('Error: Invalid route.');
+                }*/
                 this.setRoute(this.model?this.model.id:null, false);
             }
             this.hideFilter();

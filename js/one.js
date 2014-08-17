@@ -34,7 +34,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        this.options=_.extend({}, this.options, opts);
+        _.extend(this.options, opts);
         this.mode = opts.mode || this.options.mode || this.viewName;
         this.uiModel = this.options.uiModel;
             /*
@@ -44,10 +44,7 @@ Evol.ViewOne = Backbone.View.extend({
                 this.uiModel = uim;
             }else{
                 this.uiModel = new Evol.UIModel(uim);
-            }
-
-            //var aaaa=this.uiModel.getFields();
-    */
+            }*/
         this._tabId = false;
         this._uTitle = (!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
         this._subCollecs=false;

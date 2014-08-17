@@ -41,7 +41,8 @@ Evol.ViewMany = Backbone.View.extend({
     initialize: function (opts) {
         var lastSort = localStorage.getItem(opts.uiModel.id+'-sort'),
             that=this;
-        this.options=_.extend({}, this.options, opts);
+
+        _.extend(this.options, opts);
         this.uiModel=this.options.uiModel;
         this.pageIndex=this.options.pageIndex;
         this.mode=this.options.mode || '';
