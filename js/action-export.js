@@ -209,7 +209,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
                             if (mv) {
                                 if(f.type===fTypes.bool){
                                     h.push(mv);
-                                }else if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
+                                //}else if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
+                                }else if((f.type==fTypes.text || f.type==fTypes.textml) && (mv.indexOf(',')>-1)){ // || f.type==fTypes.list
                                     h.push('"', mv.replace('"', '\\"'), '"');
                                 }else{
                                     h.push(mv);
@@ -308,9 +309,9 @@ Evol.ViewAction.Export = Backbone.View.extend({
                                     }
                                     break;
                                 case fTypes.list:
-                                    if(_.isUndefined(fValue)||fValue===''){
+                                    if(_.isUndefined(fValue) || fValue===''|| (_.isArray(fValue) && fValue.length===0)){
                                         h.push('NULL');
-                                    }else {
+                                    }else{
                                         h.push('"', Evol.Dico.HTMLField4Many(f, fValue, Evol.hashLov, '').replace(/"/g, '""'), '"');
                                     }
                                     break;
