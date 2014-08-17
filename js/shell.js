@@ -126,8 +126,8 @@ Evol.Shell = Backbone.View.extend({
     },
 
     createEntity: function($v, uiModel, data, defaultView, options, cb){
-        var lc=new Backbone.LocalStorage('evol-'+uiModel.id),
-                M = Backbone.Model.extend({
+        var lc = new Backbone.LocalStorage('evol-'+uiModel.id),
+            M = Backbone.Model.extend({
                 localStorage: lc
             }),
             Ms = Backbone.Collection.extend({

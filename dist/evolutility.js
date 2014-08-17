@@ -3370,7 +3370,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
                             if (mv) {
                                 if(f.type===fTypes.bool){
                                     h.push(mv);
-                                }else if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
+                                //}else if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
+                                }else if((f.type==fTypes.text || f.type==fTypes.textml) && (mv.indexOf(',')>-1)){ // || f.type==fTypes.list
                                     h.push('"', mv.replace('"', '\\"'), '"');
                                 }else{
                                     h.push(mv);
@@ -3469,9 +3470,9 @@ Evol.ViewAction.Export = Backbone.View.extend({
                                     }
                                     break;
                                 case fTypes.list:
-                                    if(_.isUndefined(fValue)||fValue===''){
+                                    if(_.isUndefined(fValue) || fValue===''|| (_.isArray(fValue) && fValue.length===0)){
                                         h.push('NULL');
-                                    }else {
+                                    }else{
                                         h.push('"', Evol.Dico.HTMLField4Many(f, fValue, Evol.hashLov, '').replace(/"/g, '""'), '"');
                                     }
                                     break;
@@ -5054,14 +5055,14 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     modesHash: {
-        'view':'View',
-        'edit':'Edit',
-        'mini':'Mini',
-        //'wiz':'Wizard',
-        'json':'JSON',
-        'badges':'Badges',
-        'list':'List',
-        'charts':'Charts'
+        'view': Evol.ViewOne.View,
+        'edit': Evol.ViewOne.Edit,
+        'mini': Evol.ViewOne.Mini,
+        //'wiz': Evol.ViewOne.Wizard,
+        'json': Evol.ViewMany.JSON,
+        'badges': Evol.ViewMany.Badges,
+        'list': Evol.ViewMany.List,
+        'charts': Evol.ViewMany.Charts
     },
 
     initialize: function (opts) {
@@ -5100,10 +5101,8 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
 
         h.push('<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-id="main">');
-        linkOpt2h('list','','th-list');
-        linkOpt2h('new','','plus');
-        //linkOpt2h('list',Evol.i18n.bAll,'th-list');
-        //linkOpt2h('new',Evol.i18n.bNew,'plus');
+        linkOpt2h('list','','th-list'); // linkOpt2h('list',Evol.i18n.bAll,'th-list');
+        linkOpt2h('new','','plus'); // linkOpt2h('new',Evol.i18n.bNew,'plus');
         h.push(menuDeviderH);
         linkOpt2h('edit',Evol.i18n.bEdit,'pencil','1');
         linkOpt2h('save',Evol.i18n.bSave,'floppy-disk','1');
@@ -5131,9 +5130,8 @@ Evol.ViewToolbar = Backbone.View.extend({
             linkOpt2h('badges','Badges','th-large','x');
             linkOpt2h('charts','Charts','stats','x');
             h.push(eui.hEnd('li'));
-
-            //linkOpt2h('customize','','wrench', '1', 'Customize');
             /*
+            //linkOpt2h('customize','','wrench', '1', 'Customize');
             if(opts.buttons.customize){
                 h.push(beginMenu('cust','wrench'));
                 link2h('customize','Customize this view','wrench');
@@ -5146,10 +5144,6 @@ Evol.ViewToolbar = Backbone.View.extend({
         h.push('</ul>',Evol.UI.html.clearer,'</div>');
         return h.join('');
     },
-
-	updateModel:function(m){
-		this.refresh();
-	},
 
 	refresh:function(){
 		if(this.viewsHash.list){
@@ -5235,30 +5229,12 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.$('[data-id="new"]').show();
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
-
                 switch(viewName){
-                    // --- one ---
-                    case 'view':
-                    case 'edit':
-                    case 'mini':
-                    case 'json':
-                    case 'wiz':
-                        var vwPrev = null,
-                            cData;
-                        if(vw && vw.editable){
-                            vwPrev = vw;
-                            cData=vw.getData();
-                        }
-                        vw = new Evol.ViewOne[this.modesHash[viewName]](config)
-                            .render();
-                        this._prevViewOne=viewName;
-                        //this._keepTab(viewName);
-                        break;
                     // --- many ---
                     case 'charts':
                     case 'badges':
                     case 'list':
-                        vw = new Evol.ViewMany[this.modesHash[viewName]](config)
+                        vw = new this.modesHash[viewName](config)
                             .render();
                         this._prevViewMany=viewName;
                         vw.setTitle();
@@ -5273,6 +5249,19 @@ Evol.ViewToolbar = Backbone.View.extend({
                         vw = new Evol.ViewAction.Export(config);
                         $v.addClass('panel panel-info')
                             .slideDown();
+                        break;
+                    // --- one --- view, edit, mini, json, wiz
+                    default :
+                        var vwPrev = null,
+                            cData;
+                        if(vw && vw.editable){
+                            vwPrev = vw;
+                            cData=vw.getData();
+                        }
+                        vw = new this.modesHash[viewName](config)
+                            .render();
+                        this._prevViewOne=viewName;
+                        //this._keepTab(viewName);
                         break;
                 }
                 if(_.isUndefined(vw)){
@@ -5500,6 +5489,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     browse: function(direction){ // direction = "prev" or "next"
         var collec=this._curCollec(),
             cModel=this.curView.model;
+
         if(cModel && collec && collec.length){
             var l=collec.length-1,
                 idx =_.indexOf(collec.models, cModel);
@@ -5517,8 +5507,8 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(cModel){
             this.setRoute(cModel?cModel.id:null, false);
         }else{
-            Evol.UI.modal.alert(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity));
-            //this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity));
+            //Evol.UI.modal.alert(Evol.i18n.notFound, Evol.i18n.getLabel('notFoundMsg', this.uiModel.entity));
+            this.setMessage(Evol.i18n.notFound, Evol.i18n.getLabel('notFoundMsg', this.uiModel.entity));
         }
         return this
             .clearMessage();
@@ -5986,8 +5976,8 @@ Evol.Shell = Backbone.View.extend({
     },
 
     createEntity: function($v, uiModel, data, defaultView, options, cb){
-        var lc=new Backbone.LocalStorage('evol-'+uiModel.id),
-                M = Backbone.Model.extend({
+        var lc = new Backbone.LocalStorage('evol-'+uiModel.id),
+            M = Backbone.Model.extend({
                 localStorage: lc
             }),
             Ms = Backbone.Collection.extend({
