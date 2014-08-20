@@ -61,12 +61,12 @@ Evol.ViewMany = Backbone.View.extend({
         }else{
             this.router=this.options.router;
         }
-        this._custOn=false;
+        //this._custOn=false;
         if(lastSort!==null){
             var ls=lastSort.split('-'),
                 f=this.getField(ls[0]);
             if(ls.length>1 && !_.isUndefined(f)){
-                this.sortList(f, ls[1]==='down', true);
+                this.sortList(f, ls[1]==='down', true, true);
             }
         }
     },
@@ -132,7 +132,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     setCollection: function(collection){
         this.collection = collection;
-        return this.render();
+        return this;//.render();
     },
 
     getCollection: function(){
@@ -260,19 +260,19 @@ Evol.ViewMany = Backbone.View.extend({
             }
             h.push('<li data-id="prev"',
                 (pId===1)?' class="disabled"':'',
-                '><a href="#">&laquo;</a></li>');
+                '><a href="javascript:void(0)">&laquo;</a></li>');
             for (var i=iMin; i<iMax+1; i++) {
                 h.push('<li',
                     (pId===i)?' class="active"':'',
-                    ' data-id="', i, '"><a href="#">', i, '</a></li>');
+                    ' data-id="', i, '"><a href="javascript:void(0)">', i, '</a></li>');
             }
             h.push('<li data-id="next"',
                 (cSize > pId * pSize)?'':' class="disabled"',
-                '><a href="#">&raquo;</a></li>');
+                '><a href="javascript:void(0)">&raquo;</a></li>');
         }
     },
 
-    sortList: function(f, down, noRemember){
+    sortList: function(f, down, noRemember, noTrigger){
         var collec = this.collection,
             ft = Evol.Dico.fieldTypes;
         if(!_.isUndefined(collec)){
@@ -292,7 +292,9 @@ Evol.ViewMany = Backbone.View.extend({
             if(!noRemember){
                 localStorage.setItem(this.uiModel.id+'-sort', f.id+'-'+direction);
             }
-            this.$el.trigger('list.sort', {id: f.id, direction:direction});
+            if(!noTrigger){
+                this.$el.trigger('list.sort', {id: f.id, direction:direction});
+            }
         }
     },
 
@@ -317,7 +319,7 @@ Evol.ViewMany = Backbone.View.extend({
             fid=target.parent().data('fid'),
             f=this.getField(fid),
             down=target.attr('class').indexOf('-down')>0;
-        this.sortList(f,down);
+        this.sortList(f, down);
         target.addClass('evol-last-sort');
     },
 

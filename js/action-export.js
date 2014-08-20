@@ -30,9 +30,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        this.options = _.extend({}, this.options, opts);
+        _.extend(this.options, opts);
         this.uiModel = this.options.uiModel;
-        this.render();
         return this;
     },
 
@@ -73,7 +72,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             h.push('</div>');
         }
 
-        h.push('</fieldset></div><div class="evol-xpt-para">'); // table = 2 columns
+        h.push('</fieldset></div><div class="evol-xpt-para">');
         //##### export formats ########################################
         var fId = 'evol-xpt-format',
             formatsList = [];
@@ -86,7 +85,6 @@ Evol.ViewAction.Export = Backbone.View.extend({
         h.push('<div class="evol-xpt-opts">',
             //# field (shared b/w formats - header #######
             '<div class="evol-FLH clearfix">',
-            //h.push('<label>', i18nXpt.header, '</label>');
             '<label>', EvoUI.input.checkbox(fId, true), i18nXpt.firstLine, '</label>',
             //##### CSV, TAB - First line for field names #######
             '</div><div id="xptCSV">',
@@ -142,13 +140,12 @@ Evol.ViewAction.Export = Backbone.View.extend({
             .siblings().hide();
         var $e1=divOpts.filter('.evol-FLH');
         Evol.UI.setVisible($e1, xFormat==='TAB' || xFormat==='CSV' || xFormat==='HTML');
-        EvoExport.cFormat = xFormat;
     },
 
     getFields: function (){
         var opts=this.options;
         if(!this.fields){
-            this.fields=Evol.Dico.getFields(this.uiModel, opts.fnFilter, opts.mode);
+            this.fields=Evol.Dico.getFields(this.uiModel);
         }
         return this.fields;
     },
@@ -374,7 +371,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
     val: function (value) {
         if (_.isUndefined(value)) {
-            var format = this.$('#evol-xpt-format').val(), //EvoExport.cFormat
+            var format = this.$('#evol-xpt-format').val(),
                 v = {
                     format: format,
                     fields: this._valFields(),
@@ -423,16 +420,15 @@ Evol.ViewAction.Export = Backbone.View.extend({
     //},
 
     click_format: function (evt) {
-        var format = $(evt.currentTarget).val();//this.$('.evol-xpt-format').val();
+        var format = $(evt.currentTarget).val();
         if (format === 'XML') {
             this.$('#XML').html(EvoExport.optsXML(this.uiModel.entity))
                 .show()
                 .siblings().not('.evol-FLH').hide();
-            EvoExport.cFormat = 'XML';
         }
         this.showFormatOpts(format);
         this._preview(format);
-        this.$el.trigger('change.export', 'format', format);//evt.currentTarget.val()
+        this.$el.trigger('change.export', 'format', format);
     },
 
     click_preview: function (evt) {
@@ -441,8 +437,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
     },
 
     click_toggle_sel: function (evt) {
-        $(evt.currentTarget)
-            .hide()
+        $(evt.currentTarget).hide()
             .next().slideDown();
     },
 
@@ -455,8 +450,6 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
 var EvoExport = {
 
-    cFormat: 'CSV',
-
     optEntityName: function(id,label,entity){
         return [
             Evol.UI.fieldLabel(id, label),
@@ -466,16 +459,16 @@ var EvoExport = {
 
     optsXML: function(entity){
         return [
-            EvoExport.html_more2('options'),
-            EvoExport.optEntityName('elementName', i18nXpt.XMLroot, entity),
+            this.html_more2(i18nXpt.options),
+            this.optEntityName('elementName', i18nXpt.XMLroot, entity),
             '</div>'
         ].join('');
     },
 
     optsSQL: function(entity){
         return [
-            EvoExport.html_more2('options'),
-            EvoExport.optEntityName('table', i18nXpt.SQLTable, entity),
+            this.html_more2(i18nXpt.options),
+            this.optEntityName('table', i18nXpt.SQLTable, entity),
             '<div>', Evol.UI.input.checkbox('insertId', '0'), Evol.UI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert), '</div>',
             '<div>', Evol.UI.input.checkbox('transaction', '0'), Evol.UI.fieldLabelSpan('transaction', i18nXpt.SQLTrans), '</div>',
             '</div>'
@@ -491,9 +484,7 @@ var EvoExport = {
     },
 
     html_more2: function (label) {
-        return [
-            '<a href="javascript:void(0)" class="evol-xpt-more">', label, '</a><div style="display:none;">'
-        ].join('');
+        return '<a href="javascript:void(0)" class="evol-xpt-more">' + label + '</a><div style="display:none;">';
     }
 
 };
