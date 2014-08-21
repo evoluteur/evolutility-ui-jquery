@@ -44,12 +44,10 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        this.options=_.extend({}, this.options, opts);
-        this.uiModel=this.options.uiModel;
-
+        _.extend(this.options, opts);
         // - if no fields are provided, then get them from the uiModel
-        if(this.uiModel && (!this.options.fields || this.options.fields.length===0)){
-            this.options.fields = _.map(Evol.Dico.getFields(this.uiModel, function(f){
+        if(this.options.uiModel && (!this.options.fields || this.options.fields.length===0)){
+            this.options.fields = _.map(Evol.Dico.getFields(this.options.uiModel, function(f){
                     return f.type!==Evol.Dico.fieldTypes.hidden;
                 }),
                 function(f){
@@ -70,8 +68,10 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         var bLabels=this.options.buttonLabels,
             that=this,
             e=this.$el,
-            h=['<div class="evo-zfilters"></div>',
-                '<a class="evo-bNew btn btn-primary" href="javascript:void(0)">',evoLang.bNewFilter,'</a>'];
+            h=[];
+
+        h.push('<div class="evo-zfilters"></div>',
+            '<a class="evo-bNew btn btn-primary" href="javascript:void(0)">',evoLang.bNewFilter,'</a>');
         if(this.options.submitButton){
             h.push('<a class="evo-bSubmit btn btn-primary" href="javascript:void(0)">',evoLang.bSubmit,'</a>');
         }
@@ -79,6 +79,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
             '<a class="evo-bAdd btn btn-primary" style="display:none;" href="javascript:void(0)">',evoLang.bAddFilter,'</a>',
             '<a class="evo-bDel btn btn-default" style="display:none;" href="javascript:void(0)">',evoLang.bCancel,'</a>');
         this._step=0;
+        //this._renderMenu(h);
         e.html(h.join(''));
         if(this.options.submitReady){
             this._hValues=$('<span></span>').appendTo(e);
@@ -156,8 +157,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                     that._bAdd.button('disable');
                 }
             }).on('click', '#checkAll', function(){
-                var $this=$(this),
-                    vc=$this.prop('checked');
+                var $this=$(this);
                 Evol.UI.toggleCheckbox($this.siblings(), $this.prop('checked'));
             });
         this._filters=e.find('.evo-zfilters').on('click', 'a', function(){
@@ -175,6 +175,17 @@ Evol.ViewAction.Filter = Backbone.View.extend({
             });
         return this;
     },
+/*
+    _renderMenu: function(h){
+        var eui=Evol.UI.menu;
+
+        h.push(
+            eui.hBegin('file', 'div', 'cog'),
+            eui.hItem('save', 'Save', '', 1),
+            eui.hItem('open', 'Open', '', 1),
+            eui.hEnd('div')
+        );
+    },*/
 
     _getFieldById: function(fId){
         if(!this._hash){

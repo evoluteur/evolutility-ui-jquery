@@ -204,6 +204,9 @@ Evol.ViewOne = Backbone.View.extend({
                         case fTypes.textml:
                             $f.html(Evol.UI.cr2br(fv));
                             break;
+                        case fTypes.bool:
+                            $f.html(Evol.Dico.HTMLField4Many(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
+                            break;
                         default:
                             $f.text(Evol.Dico.HTMLField4Many(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                     }
@@ -677,7 +680,7 @@ Evol.ViewOne = Backbone.View.extend({
                     });
                 });
                 if(scInvalid>0){
-                    var pMsg='validation.invalidList'+((scInvalid.length===1)?'1':'');
+                    var pMsg='validation.invalidList'+((scInvalid===1)?'1':'');
                     pMsg=Evol.i18n.getLabel(pMsg, scInvalid, sc.label);
                     errMsgs.push(pMsg);
                     isValid = false;

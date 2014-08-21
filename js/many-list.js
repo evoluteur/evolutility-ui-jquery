@@ -26,13 +26,13 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         h.push('<div class="evol-many-list">',
             '<table class="table table-bordered', link?' table-hover':'', '"><thead><tr>');
         if(selectable){
-            h.push('<th>',this._HTMLCheckbox('cbxAll'),'</th>');
+            h.push('<th class="list-td-sel">', this._HTMLCheckbox('cbxAll'), '</th>');
         }
         _.each(fields, function(field){
             that._HTMLlistHeader(h, field);
         });
         h.push('</tr></thead><tbody>');
-        this._HTMLbody(h, fields, pSize, opts.uiModel.icon, 0, selectable);
+        this._HTMLbody(h, fields, pSize, this.uiModel.icon, 0, selectable);
         h.push('</tbody></table>');
         this._HTMLpagination(h, 0, pSize, models.length);
         h.push('<div class="evo-many-summary">', this.pageSummary(opts.pageIndex, pSize, models.length), '</div>');
