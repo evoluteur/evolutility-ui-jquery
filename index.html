@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
-    <meta name="keywords" content="UI Backbone model view open source metadata driven SPA single page app application CRUDBootstrap" />
+    <meta name="keywords" content="UI Backbone model view open source metadata driven SPA single page app application generic MDDA MDA CRUD Bootstrap" />
     <meta name="description" content="Evolutility :: UI models for your Backbone models" /></head>
 
     <title>evolutility.js</title>
@@ -88,7 +88,7 @@
     <h4>What do UI models look like?</h4>
 
     <p>A UI model describe all views for a model (i.e.: task, contact).
-        It maps model attributes to fields and groups fields into panels and tabs.
+        It maps attributes in the model to fields on the screen and groups fields into panels and tabs.
     </p>
 
     <p>These are the sample UI models used above:
@@ -107,7 +107,7 @@
 
     <h4>Demo</h4>
 
-    <p>With a toolbar and a router, a set of views can act together as a full app.
+    <p>With a toolbar and a router, a set of views can act together as a single page app.
 
         </p>
     <p>Demo apps:
@@ -122,11 +122,11 @@
 
     <p>&nbsp;</p>
     <h4>Download & Code</h4>
-    <p><a href="https://github.com/evoluteur/evolutility" target="gh">GitHub</a></p>
+    <p>Evolutility.js source code is available at <a href="https://github.com/evoluteur/evolutility" target="gh">GitHub</a>
+       under the GNU AGPLv3 license.</p>
 
     <div class="clearfix"></div>
 
-<p>License: GNU AGPLv3</p>
 
 </div>
 
@@ -136,23 +136,6 @@
 <script>
 
     var curView=null;
-    var viewClasses = {
-        // One
-        'view': Evol.ViewOne.View,
-        'edit': Evol.ViewOne.Edit,
-        'mini': Evol.ViewOne.Mini,
-        'json': Evol.ViewOne.JSON,
-        // Many
-        'list': Evol.ViewMany.List,
-        'badges': Evol.ViewMany.Badges,
-        'charts': Evol.ViewMany.Charts,
-        // Action
-        'filter': Evol.ViewAction.Filter,
-        'export': Evol.ViewAction.Export
-        // UI Model
-        //'uimodel': Evol.ViewAction.UI_Model,
-        //'doc': Evol.ViewAction.Doc
-    };
 
     function showUIdef2(entityName){
         var $ui=$('#uimodel');
@@ -167,10 +150,8 @@
     }
 
     function showView(){
-        var $model=$('#evolModel'),
-            modelName=$model.val(),
-            $view=$('#evolView'),
-            viewName=$view.val(),
+        var modelName=$('#evolModel').val(),
+            viewName=$('#evolView').val(),
             uiModel=uiModels[modelName];
 
         var $e=$('<div data-eid="'+uiModel.id+'"></div>'),
@@ -189,7 +170,7 @@
         if(curView){
             curView.remove();
         }
-        curView=new viewClasses[viewName](config)
+        curView=new Evol.Dico.viewTypes[viewName](config)
                 .render();
     }
 

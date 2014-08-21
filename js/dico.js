@@ -37,6 +37,23 @@ Evol.Dico = {
         url: 'url'
     },
 
+    viewTypes: {
+        // --- One ---
+        'view': Evol.ViewOne.View,
+        'edit': Evol.ViewOne.Edit,
+        'mini': Evol.ViewOne.Mini,
+        'json': Evol.ViewOne.JSON,
+        // --- Many ---
+        'list': Evol.ViewMany.List,
+        'badges': Evol.ViewMany.Badges,
+        'charts': Evol.ViewMany.Charts,
+        // --- Action ---
+        'filter': Evol.ViewAction.Filter,
+        'export': Evol.ViewAction.Export
+        //'uimodel': Evol.ViewAction.UI_Model,
+        //'doc': Evol.ViewAction.Doc
+    },
+
     // get all "shallow" fields (no sub collections) from a UI model
     getFields: function (uiModel, fnFilter) {
         var fs = [];

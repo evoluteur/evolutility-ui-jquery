@@ -13,12 +13,8 @@ Evol.Shell = Backbone.View.extend({
         //'click .evo-head-links2>li': 'click_entity'
     },
 
-    options: {/*
-        uiModelsObj: {
-            todo: todo_ui,
-            contact: contacts_ui,
-            winecellar: winecellar_ui//, test_ui
-        },*/
+    options: {
+        //uiModelsObj: {},
         elements:{
             nav: '.evo-head-links',
             nav2: '.evo-head-links2',
@@ -57,8 +53,11 @@ Evol.Shell = Backbone.View.extend({
                     '*noroute': that.noRoute
                 },
                 nav: function(entity, view, id){
-                    if(entity){
+                    if(entity && that.options.uiModelsObj[entity]){
                         that.setEntity(entity, view, id);
+                    }else {
+                        // TODO !!!
+                        //alert('Error: Invalid route.');
                     }
                 }
             });
@@ -72,14 +71,13 @@ Evol.Shell = Backbone.View.extend({
         if(cView){
             Evol.Dico.setRoute(this.options.router, cView.getTitle(), cView.uiModel.id, cView.viewName, id, triggerRoute);
         }else{
-            debugger;
-            alert('Error in setRoute')
+            alert('Error: Invalid route.');
         }
         return this;
     },
 
     noRoute: function(route){
-        alert('invalid route "'+route+'".');
+        alert('Error: Invalid route "'+route+'".');
     },
 
     setEntity: function(eName, view, options){
@@ -126,7 +124,8 @@ Evol.Shell = Backbone.View.extend({
     },
 
     createEntity: function($v, uiModel, data, defaultView, options, cb){
-        var lc = new Backbone.LocalStorage('evol-'+uiModel.id),
+        var that=this,
+            lc = new Backbone.LocalStorage('evol-'+uiModel.id),
             M = Backbone.Model.extend({
                 localStorage: lc
             }),
@@ -135,8 +134,7 @@ Evol.Shell = Backbone.View.extend({
                 localStorage: lc
             });
 
-        var that=this,
-            ms = new Ms();
+        var ms = new Ms();
         ms.fetch({
             success: function(collection){
                 var m = ms.at(0),
@@ -168,6 +166,9 @@ Evol.Shell = Backbone.View.extend({
                 if(cb){
                     cb(tb);
                 }
+            },
+            error: function(err){
+                alert('Error: invalid route.');
             }
         });
     }/*,

@@ -51,17 +51,6 @@ Evol.ViewToolbar = Backbone.View.extend({
         pageSize:20
     },
 
-    modesHash: {
-        'view': Evol.ViewOne.View,
-        'edit': Evol.ViewOne.Edit,
-        'mini': Evol.ViewOne.Mini,
-        //'wiz': Evol.ViewOne.Wizard,
-        'json': Evol.ViewMany.JSON,
-        'badges': Evol.ViewMany.Badges,
-        'list': Evol.ViewMany.List,
-        'charts': Evol.ViewMany.Charts
-    },
-
     initialize: function (opts) {
         this.options=_.extend(this.options, opts);
         this.pageIndex = this.options.pageIndex;
@@ -143,12 +132,9 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
 	refresh:function(){
-		if(this.viewsHash.list){
-			this.viewsHash.list.render();	
-		}
-		if(this.viewsHash.badges){
-			this.viewsHash.badges.render();
-		}
+        if(this.curView && this.curView.cardinality && this.curView.cardinality==='n'){
+            this.curView.render();
+        }
         return this;
 	},
 
@@ -180,7 +166,8 @@ Evol.ViewToolbar = Backbone.View.extend({
                 }
                 vw=this.viewsHash[viewName];
                 if(vw.setCollection){
-                    vw.setCollection(collec);
+                    vw.setCollection(collec)
+                        .render();
                 }
                 if(this.model && !this.model.isNew()){
                     if(vw.setModel){
@@ -194,7 +181,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     if(vw.setTitle){
                         vw.setTitle();
                     }
-                    if(vw.cardinality==='n' && vw.setPage){
+                    if(vw.cardinality==='n' && vw.setPage && this.pageIndex){
                         vw.setPage(this.pageIndex);
                     }
                 }else if(vw.clear){
@@ -231,7 +218,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     case 'charts':
                     case 'badges':
                     case 'list':
-                        vw = new this.modesHash[viewName](config)
+                        vw = new Evol.Dico.viewTypes[viewName](config)
                             .render();
                         this._prevViewMany=viewName;
                         vw.setTitle();
@@ -243,7 +230,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                         break;
                     // --- actions ---
                     case 'export':
-                        vw = new Evol.ViewAction.Export(config);
+                        vw = new Evol.ViewAction.Export(config).render();
                         $v.addClass('panel panel-info')
                             .slideDown();
                         break;
@@ -255,8 +242,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                             vwPrev = vw;
                             cData=vw.getData();
                         }
-                        vw = new this.modesHash[viewName](config)
-                            .render();
+                        vw = new Evol.Dico.viewTypes[viewName](config).render();
                         this._prevViewOne=viewName;
                         //this._keepTab(viewName);
                         break;
@@ -475,12 +461,18 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     setModelById: function(id){
         var m=this.collection.get(id);
-        this.model=m;
-        if(this.curView.cardinality!='1'){
-            this.setView('view');//(this._prevViewOne || 'edit');
+        if(_.isUndefined(m)){
+            alert('Error: Invalid model ID.');
+            //TODO: do something
+        }else{
+            this.model=m;
+            if(this.curView.cardinality!='1'){
+                this.setView('view');//(this._prevViewOne || 'edit');
+            }
+            this.curView.setModel(m);
+            // todo: decide change model for all views or model event
         }
-        this.curView.setModel(m);
-        // todo: decide change model for all views or model event
+        return m; // TODO: return "this" ???
     },
 
     browse: function(direction){ // direction = "prev" or "next"
@@ -825,7 +817,8 @@ Evol.ViewToolbar = Backbone.View.extend({
             this.setStatus(collec.length+' '+this.uiModel.entities);
         }
         this._flagFilterIcon(fvs.length);
-        this.curView.setCollection(collec);
+        this.curView.setCollection(collec)
+            .render();
     }
     /*
     click_selection: function(evt, ui){
