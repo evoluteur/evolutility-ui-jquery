@@ -3187,8 +3187,10 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     initialize: function (opts) {
         _.extend(this.options, opts);
         // - if no fields are provided, then get them from the uiModel
-        if(this.options.uiModel && (!this.options.fields || this.options.fields.length===0)){
-            this.options.fields = _.map(Evol.Dico.getFields(this.options.uiModel, function(f){
+        if(this.options.fields && this.options.fields.length!==0){
+            this.fields = this.options.fields;
+        }else if(this.options.uiModel){
+            this.fields = _.map(Evol.Dico.getFields(this.options.uiModel, function(f){
                     return f.type!==Evol.Dico.fieldTypes.hidden;
                 }),
                 function(f){
@@ -3201,6 +3203,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                         });
                     }
                 });
+        }else{
+            this.fields = [];
         }
         return this;
     },
@@ -3331,9 +3335,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     _getFieldById: function(fId){
         if(!this._hash){
             this._hash={};
-            var fields=this.options.fields;
-            for (var i=0,iMax=fields.length;i<iMax;i++){
-                this._hash[fields[i].id]=fields[i];
+            for (var i=0,iMax=this.fields.length;i<iMax;i++){
+                this._hash[this.fields[i].id]=this.fields[i];
             }
         }
         return this._hash[fId];
@@ -3431,7 +3434,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
             }
             this._bDel.show();
             if(!this._fList){
-                var fields=this.options.fields,
+                var fields=this.fields,
                     h=['<select id="field" class="form-control"><option value=""></option>'];
                 for (var i=0,iMax=fields.length;i<iMax;i++){
                     var f=fields[i];
