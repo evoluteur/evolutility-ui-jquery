@@ -444,7 +444,7 @@ Evol.ViewOne = Backbone.View.extend({
                     h.push('<div class="tab-content">');
                 }
                 iTab++;
-                h.push('<div id="evol-tab-', idx, '" class="tab-pane', (idx === 1 ? ' active">' : '">'));
+                h.push('<div id="evol-tab-', idx, '" class="tab-pane', (iTab === 0 ? ' active">' : '">'));
                 that.renderTab(h, p, mode);
                 if (iTab == iMax1) {
                     h.push('</div>');
