@@ -298,7 +298,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
     /*
     _keepTab: function(viewName){
-        if(this.tabId && (viewName=='view'||viewName=='edit'||viewName=='mini')){
+        if(this.tabId && (viewName=='view'||viewName=='edit')){
             this.curView.setTab(this.tabId);
         }
     },*/
@@ -354,7 +354,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 }else{
                     var cSize=this.collection.length,
                         pSize=this.curView.options.pageSize;
-                    if( cSize > pSize ){
+                    if(cSize > pSize){
                         tbBs.prevNext.show();/*
                         // TODO finish disabling of paging buttons
                         if(this.curView.pageIndex===0){

@@ -44,14 +44,13 @@ Evol.ViewAction.Export = Backbone.View.extend({
     _renderHTML: function () {
         var h = [],
             EvoUI = Evol.UI,
-            opts = this.options,
             fields = this.getFields(),
             iMax = fields.length,
             useMore = iMax > 14;
 
         //string fieldName, fieldlabel, expOut, buffer;
         h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds">',
-            '<div ><label>', i18nXpt.xpFields, '</label></div>',
+            '<div><label>', i18nXpt.xpFields, '</label></div>',
              '<fieldset>'
         );
 
@@ -77,7 +76,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
         var fId = 'evol-xpt-format',
             formatsList = [];
         h.push('<label for="', fId, '">', i18nXpt.format, '</label>');
-        _.each(opts.formats, function(format){
+        _.each(this.options.formats, function(format){
             formatsList.push({id: format, text: i18nXpt['format'+format]});
         });
         h.push(EvoUI.input.select(fId, '', 'evol-xpt-format', false, formatsList));
@@ -143,7 +142,6 @@ Evol.ViewAction.Export = Backbone.View.extend({
     },
 
     getFields: function (){
-        var opts=this.options;
         if(!this.fields){
             this.fields=Evol.Dico.getFields(this.uiModel);
         }
@@ -155,7 +153,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
         return Evol.i18n.getLabel('export.ExportEntit'+keyEnd, this.uiModel['entit'+keyEnd]);
     },
 
-    _preview: function (format) { // TODO add field ID
+    _preview: function (format) {
         var h=[],
             $e = this.$('.evol-xpt-val'),
             fTypes = Evol.Dico.fieldTypes,
@@ -192,7 +190,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     //header
                     if (useHeader) {
                         _.each(flds, function(f, idx){
-                            h.push(f.label); //TODO f.labelexported || f.label, // name when "exported"
+                            h.push(f.label);
                             if(idx<fMax){
                                 h.push(sep);
                             }
@@ -358,7 +356,6 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     h.push('</xml>');
                     break;
             }
-            //this._resizeSampleBox();
         }else{
             h.push(Evol.i18n.nodata);
         }
@@ -413,11 +410,6 @@ Evol.ViewAction.Export = Backbone.View.extend({
         });
         return v;
     },
-
-    //_resizeSampleBox: function(){
-    // TODO:code and plug to events
-    //    this.$().height(xxxx);
-    //},
 
     click_format: function (evt) {
         var format = $(evt.currentTarget).val();
