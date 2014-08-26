@@ -33,10 +33,11 @@
 
 <div class="evo-content3">
 
-<p>Attributes in your Backbone model are mapped to <a href="#fields">fields</a> in UI model. This page describes the "vocabulary" (or API) to define UI models.</p>
+<p>With Evolutility views are fully defined by UI models (rather than handcoded templates and custom Javascript code).</p>
 
-<p>Fields are grouped in <a href="#panels">panels</a>, panels can be grouped in <a href="#tabs">tabs</a>.
-    Sub-collections can be included as <a href="#panel-list">panel-list</a>.
+<p>For each Backbone model and collection, a single UI model defines all information necessary to render all views associated to that entity.
+    The UI model maps attributes in the Backbone model to <a href="#fields">fields</a> on the screen. It also groups fields into <a href="#panels">panels</a> and panels into <a href="#tabs">tabs</a>.
+    Sub-collections can also be included as <a href="#panel-list">panel-list</a>.
 </p>
 
 <p>It is a first draft and it is nor fully implemented yet but a work in progress based on
