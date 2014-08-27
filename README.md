@@ -29,12 +29,6 @@ Evolutility provides 3 types of view
 
 Web demo of [all views](http://evoluteur.github.io/evolutility/index.html)
 
-## Toolbar/Controller
-
-Still under development.
-
-A toolbar and a controller for all views.
-
 ## Techno and Open Source Libraries used
 
 Javascript, HTML5, CSS3,

@@ -36,7 +36,7 @@
 <div class="evo-content">
 
 
-<h4>
+<h4 class="mt20">
     Evolutility is currently v0.3 and a work in progress on <a href="https://github.com/evoluteur/evolutility" target="ghe">GitHub</a>.
 </h4>
 
@@ -44,6 +44,10 @@
         browse, edit, filter, export and chart
         Backbone models and collections of different structures.
     </p>
+
+    <p>&nbsp;</p>
+
+    <h4 class="mt20">A few examples</h4>
 
     <div id="evol-views-params" >
 
@@ -85,10 +89,14 @@
     <p>&nbsp;</p>
 
 
-    <h4>What do UI models look like?</h4>
+    <h4 class="mt20">UI models rather than templates</h4>
 
-    <p>A UI model describe all views for a model (i.e.: task, contact).
-        It maps attributes in the model to fields on the screen and groups fields into panels and tabs.
+    <p>In the former examples all views are configured with metadata
+        rather than hand-coded with templates, Javascript and CSS.</p>
+
+    <p>For each Backbone model and collection, a single UI model contains all the metadata necessary
+        to configure its views (list, view, edit, export...).
+        UI models map model attributes to form fields and organize fields into lists, panels and tabs.
     </p>
 
     <p>These are the sample UI models used above:
@@ -105,7 +113,7 @@
     <p>&nbsp;</p>
 
 
-    <h4>Demo</h4>
+    <h4 class="mt20">Demo</h4>
 
     <p>With a toolbar and a router, a set of views can act together as a single page app.
 
@@ -117,11 +125,11 @@
     </p>
 
     <p>&nbsp;</p>
-    <h4>Documentation</h4>
+    <h4 class="mt20">Documentation</h4>
     <p>Learn more about <a href="doc/ui-model.html">Evolutility UI-models</a> and <a href="doc/views.html">generic Views</a>.</p>
 
     <p>&nbsp;</p>
-    <h4>Download & Code</h4>
+    <h4 class="mt20">Download & Code</h4>
     <p>Evolutility.js source code is available at <a href="https://github.com/evoluteur/evolutility" target="gh">GitHub</a>
        under the GNU AGPLv3 license.</p>
 
