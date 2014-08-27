@@ -203,11 +203,8 @@ body {
   font-size: 15px !important;
   font-weight: 300;
 }
-h1,
-h2,
-h3:not.panel-title,
-h4 {
-  color: #0099cc !important;
+.mt20 {
+  margin-top: 20px;
 }
 .evo-title > h1,
 .evo-title2 > h1 {
@@ -269,6 +266,7 @@ h4 {
 .title2 {
   font-size: smaller;
   font-weight: normal;
+  color: #b3e5fc;
 }
 /* demo badge view*/
 [data-eid="todo"] .evol-badges-body > .panel,

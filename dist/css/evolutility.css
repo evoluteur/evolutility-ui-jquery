@@ -196,6 +196,9 @@ label {
     text-align: left;
   }
 }
+.evol-mini-label > div > label {
+  margin-top: 5px;
+}
 .evol-mini-content {
   float: left;
   width: 75%;

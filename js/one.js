@@ -278,26 +278,27 @@ Evol.ViewOne = Backbone.View.extend({
         _.each(this.getFields(), function (f) {
             $f = that.$(prefix + f.id);
             defaultVal = f.defaultvalue || '';
-            switch(f.type) {
-                case ft.bool:
-                    $f.prop('checked', defaultVal?'checked':false);
-                    break;
-                case ft.list:
-                    $f.select2('val', null);
-                    break;
-                case ft.pix:
-                    //var newPix=(defaultVal)?('<img src="'+iconsPath+defaultVal+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
-                    var newPix='<p class="">'+Evol.i18n.nopix+'</p>';
-                    $f.val('')
-                        .prev().remove();
-                    $f.before(newPix);
-                    break;
-                default:
-                    if(f.readonly){
-                        $f.html(defaultVal);
-                    }else{
+
+            if(f.readonly){
+                $f.html(defaultVal);
+            }else{
+                switch(f.type) {
+                    case ft.bool:
+                        $f.prop('checked', defaultVal?'checked':false);
+                        break;
+                    case ft.list:
+                        $f.select2('val', null);
+                        break;
+                    case ft.pix:
+                        //var newPix=(defaultVal)?('<img src="'+iconsPath+defaultVal+'" class="img-thumbnail">'):('<p class="">'+Evol.i18n.nopix+'</p>');
+                        var newPix='<p>'+Evol.i18n.nopix+'</p>';
+                        $f.val('')
+                            .prev().remove();
+                        $f.before(newPix);
+                        break;
+                    default:
                         $f.val(defaultVal);
-                    }
+                }
             }
         });
         if(subCollecs){
