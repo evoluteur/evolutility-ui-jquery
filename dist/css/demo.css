@@ -157,6 +157,13 @@
     margin-top: 20px;
     padding-top: 10px;
   }
+  .evo-anchor {
+    top: -10px;
+  }
+}
+.evo-anchor {
+  position: relative;
+  top: -70px;
 }
 .footer {
   text-align: center;
@@ -193,11 +200,6 @@
 #evol-views-params > div {
   float: left;
   margin-right: 5px;
-}
-@media only screen and (min-width: 900px) {
-  .evo-h-gap {
-    display: none;
-  }
 }
 body {
   font-size: 15px !important;
