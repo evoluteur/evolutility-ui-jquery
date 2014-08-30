@@ -158,7 +158,7 @@
     padding-top: 10px;
   }
   .evo-anchor {
-    top: -10px;
+    top: -5px !important;
   }
 }
 .evo-anchor {
