@@ -201,6 +201,11 @@
   float: left;
   margin-right: 5px;
 }
+.Icon {
+  position: relative;
+  top: -3px;
+  margin-right: 4px;
+}
 body {
   font-size: 15px !important;
   font-weight: 300;
