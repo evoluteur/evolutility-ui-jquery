@@ -25,7 +25,7 @@ Evolutility's views have a Backbone model (to define the data) and also a UI-mod
 Evolutility provides 3 types of view
 * Views for one model: View, Edit, Mini (quick edit), JSON.
 * Views for a collection: List, Badges, Charts.
-* Views for actions on one model or a collection: Export, Filter (will add later Dashboards, Mass update, Clone...).
+* Views for actions on a model or collection: Export, Filter (will add later Dashboards, Mass update, Clone...).
 
 Web demo of [all views](http://evoluteur.github.io/evolutility/index.html)
 
