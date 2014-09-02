@@ -105,6 +105,10 @@
   display: inline !important;
 }
 /* bootstrap customizations*/
+.table > thead > tr > th {
+  font-weight: 500;
+  background-color: #fbfbfb;
+}
 label {
   font-weight: 500 !important;
   margin-bottom: 2px;
