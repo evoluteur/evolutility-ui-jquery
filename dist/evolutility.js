@@ -932,6 +932,21 @@ Evol.ViewMany = Backbone.View.extend({
         return [];
     },
 
+    setSelection: function(sel){
+        // - param: sel = array of ids like ['1','2']
+        if(this.options.selectable){
+            if(sel.length>0){
+                // TODO optimize and uncheck prev checked
+                var selector = [];
+                _.each(sel, function(id){
+                    selector.push('[data-mid='+id+'] .list-sel');
+                });
+                this.$(selector.join(',')).prop('checked', true);
+            }
+        }
+        return this;
+    },
+
     pageSummary: function (pIdx, pSize, cSize) {
         if (cSize === 0) {
             return '';
@@ -994,6 +1009,7 @@ Evol.ViewMany = Backbone.View.extend({
         var collec = this.collection,
             ft = Evol.Dico.fieldTypes;
         if(!_.isUndefined(collec)){
+            var sel = this.getSelection();
             if(f.type==ft.text || f.type==ft.textml || f.type==ft.email){
                 collec.comparator = Evol.Dico.bbComparatorText(f.id);
             }else if(f.value){
@@ -1010,10 +1026,12 @@ Evol.ViewMany = Backbone.View.extend({
             if(!noRemember){
                 localStorage.setItem(this.uiModel.id+'-sort', f.id+'-'+direction);
             }
+            this.setSelection(sel);
             if(!noTrigger){
                 this.$el.trigger('list.sort', {id: f.id, direction:direction});
             }
         }
+        return this;
     },
 
     getItemRoute: function(){
