@@ -28,27 +28,27 @@ var dico_field_ui = {
                 {
                     id: 'type',
                     label: "Type",
-                    help: "User Type for the field on screen.",
+                    help: "Type of field: UI type rather than data type.",
                     type: "lov",
                     list:[
-                        {id:'text',text:"text", icon:'ft-txt.gif'},
-                        {id:'textmultiline',text:"textmultiline", icon:'ft-txtml.gif'},
-                        {id:'boolean',text:"boolean", icon:'ft-bool.gif'},
-                        {id:'decimal',text:"decimal", icon:'ft-dec.gif'},
-                        {id:'money',text:"money", icon:'ft-money.gif'},
-                        {id:'integer',text:"integer", icon:'ft-int.gif'},
-                        {id:'date',text:"date", icon:'ft-date.gif'},
-                        {id:'time',text:"time", icon:'ft-time.gif'},
-                        {id:'datetime',text:"datetime", icon:'ft-datehm.gif'},
-                        {id:'image',text:"image", icon:'ft-img.gif'},
-                        {id:'document',text:"document", icon:'ft-doc.gif'},
-                        {id:'color',text:"color", icon:'ft-color.gif'},
-                        {id:'lov',text:"lov", icon:'ft-lov.gif'},
-                        {id:'list',text:"list", icon:'ft-list.gif'},
-                        {id:'html',text:"html", icon:'ft-htm.gif'},
+                        {id:'text',text:"Text", icon:'ft-txt.gif'},
+                        {id:'textmultiline',text:"Text multiline", icon:'ft-txtml.gif'},
+                        {id:'boolean',text:"Boolean", icon:'ft-bool.gif'},
+                        {id:'decimal',text:"Decimal", icon:'ft-dec.gif'},
+                        {id:'money',text:"Money", icon:'ft-money.gif'},
+                        {id:'integer',text:"Integer", icon:'ft-int.gif'},
+                        {id:'date',text:"Date", icon:'ft-date.gif'},
+                        {id:'time',text:"Time", icon:'ft-time.gif'},
+                        {id:'datetime',text:"Date-time", icon:'ft-datehm.gif'},
+                        {id:'image',text:"Image", icon:'ft-img.gif'},
+                        {id:'document',text:"Document", icon:'ft-doc.gif'},
+                        {id:'color',text:"Color", icon:'ft-color.gif'},
+                        {id:'lov',text:"List (dropdown)", icon:'ft-lov.gif'},
+                        {id:'list',text:"List (multi-select)", icon:'ft-list.gif'},
+                        //{id:'html',text:"HTML", icon:'ft-htm.gif'},
                         {id:'email',text:"email", icon:'ft-email.gif'},
-                        {id:'url',text:"url", icon:'ft-url.gif'},
-                        {id:'hidden',text:"hidden", icon:'ft-hidden.gif'}
+                        {id:'url',text:"Link", icon:'ft-url.gif'},
+                        {id:'hidden',text:"Hidden", icon:'ft-hidden.gif'}
                     ],
                     maxlength: 100,
                     required: true,
@@ -69,7 +69,7 @@ var dico_field_ui = {
                     label: "ID",
                     labellist: "ID",
                     type: "text",
-                    help: 'Field ID in UI = prefix + ID',
+                    help: 'Field ID in the DOM = prefix + ID',
                     maxlength: 100,
                     width: 38
                 },
@@ -154,7 +154,16 @@ var dico_field_ui = {
                     type: "integer",
                     maxlength: 4,
                     width: 50
-                }
+                }/*,
+                {
+                    id:'regex',
+                    label: "Regular Expression",
+                    labellist: "RegExp",
+                    type: "integer",
+                    maxlength: 100,
+                    width: 100,
+                    help: 'Regular expression used to validate the field value.'
+                }*/
             ]
         },
         {
