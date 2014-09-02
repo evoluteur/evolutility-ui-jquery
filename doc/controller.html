@@ -33,9 +33,19 @@
 
 <div class="evo-content3">
 
-<p>The controller is not the usual "C" in "MVC".
-    The toolbar is also the controller for all views of a specific Backbone model and collection.
-    The toolbar and the controller will be split into 2 different classes later.</p>
+<p>Evolutility controller is not the usual "C" in "MVC".
+    Very likely you will want to write your own (at least for now).
+</p>
+
+<p>Currently, there is a "toolbar" which also acts as a controller for all views of a specific Backbone model.
+    There is also a "shell" which can manage several toolbars for several models.
+</p>
+
+<p>
+    Using Evolutility shell, toolbar, generic views and some UI models,
+    you get a single page application (SPA) providing CRUD and more for several entities
+    without any custom code or template.
+</p>
 
     <p>
         <code>new Evol.ViewToolbar(myConfig);</code>

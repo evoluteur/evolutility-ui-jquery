@@ -1,27 +1,27 @@
 
-var testLOV=[
-    {text:'yotta',id:'Y'},
-    {text:'zetta',id:'Z'},
-    {text:'exa',id:'E'},
-    {text:'peta',id:'P'},
-    {text:'tera',id:'T'},
-    {text:'giga',id:'G'},
-    {text:'mega',id:'M'},
-    {text:'kilo',id:'k'},
-    {text:'hecto',id:'h'},
-    {text:'deca',id:'da'}
+var testLOV = [
+    {text:'yotta', id:'Y'},
+    {text:'zetta', id:'Z'},
+    {text:'exa', id:'E'},
+    {text:'peta', id:'P'},
+    {text:'tera', id:'T'},
+    {text:'giga', id:'G'},
+    {text:'mega', id:'M'},
+    {text:'kilo', id:'k'},
+    {text:'hecto', id:'h'},
+    {text:'deca', id:'da'}
 ];
 
 var fieldsPanelList = [
-        {id: 'pl1f1',  type: 'text', label: 'Name', maxlength: 100, viewmany: '1'},
-        {id: 'pl1f2',  type: 'text', label: 'Text 2', maxlength: 100, viewmany: '1'},
-        {id: 'pl1f3',  type: 'lov', label: 'Sizes', list: testLOV, viewmany: '1'}
+        {id: 'pl1f1',  type: 'text', label: 'Name', required:true, maxlength: 50, viewmany: true},
+        {id: 'pl1f2',  type: 'text', label: 'Text', required:true, maxlength: 100, viewmany: true},
+        {id: 'pl1f3',  type: 'lov', label: 'Sizes', required:true, list: testLOV, viewmany: true}
     ],
     fieldsPanelList2 = [
-        {id: 'pl2f1',  type: 'text', label: 'Name', maxlength: 100, viewmany: '1'},
-        {id: 'pl2f3',  type: 'date', label: 'Date', viewmany: '1'},
-        {id: 'pl2f4',  type: 'boolean', label: 'Bool', viewmany: '1'},
-        {id: 'pl2f2',  type: 'text', label: 'Text 2', maxlength: 100, viewmany: '1'}
+        {id: 'pl2f1',  type: 'text', label: 'Name', maxlength: 50, viewmany: true},
+        {id: 'pl2f3',  type: 'date', label: 'Date', viewmany: true},
+        {id: 'pl2f4',  type: 'boolean', label: 'Bool', viewmany: true},
+        {id: 'pl2f2',  type: 'text', label: 'Text', maxlength: 100, viewmany: true}
     ];
 
 function fieldTypePanel(id, label, labelPanel){
@@ -143,16 +143,16 @@ var test_ui = {
             elements: [
                 {
                     type: 'panel-list',
-                    id:'degustations2',
-                    attr:'degustation2',
+                    id:'subCollec1',
+                    attribute:'subCollec1',
                     label: 'Collection 1',
                     width: 100,
                     elements: fieldsPanelList
                 },
                 {
                     type: 'panel-list',
-                    id:'degustations3',
-                    attr:'degustation3',
+                    id:'subCollec2',
+                    attribute:'subCollec2',
                     label: 'Collection 2',
                     width: 100,
                     elements: fieldsPanelList2
