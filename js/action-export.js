@@ -37,7 +37,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
     render: function(){
         this.$el.html(this._renderHTML());
-        this._preview('CSV');
+        this._preview(this.options.formats[0]);
         return this;
     },
 
@@ -48,7 +48,6 @@ Evol.ViewAction.Export = Backbone.View.extend({
             iMax = fields.length,
             useMore = iMax > 14;
 
-        //string fieldName, fieldlabel, expOut, buffer;
         h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds">',
             '<div><label>', i18nXpt.xpFields, '</label></div>',
              '<fieldset>'
@@ -63,14 +62,13 @@ Evol.ViewAction.Export = Backbone.View.extend({
                 fLabel = '(' + fID + ')';
             }
             h.push('<div><label class="checkbox"><input type="checkbox" value="1" id="', fID, '" checked="checked">', fLabel, '</label></div>');
-            if (idx == 10 && useMore){
+            if (idx === 10 && useMore){
                 h.push(EvoExport.html_more2(i18nXpt.allFields));
             }
         });
         if (useMore){
             h.push('</div>');
         }
-
         h.push('</fieldset></div><div class="evol-xpt-para">');
         //##### export formats ########################################
         var fId = 'evol-xpt-format',
