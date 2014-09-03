@@ -551,9 +551,9 @@ Evol.ViewOne = Backbone.View.extend({
     renderPanelList: function (h, p, mode) {
         h.push('<div style="width:', p.width, '%" class="evol-pnl pull-left" data-pid="', p.id,'">',
             Evol.UI.HTMLPanelBegin(p.id, p.label, this.options.style),
-            '<table class="table" data-mid="', (p.attribute || p.id),'"><thead><tr>'); // table-striped
+            '<table class="table" data-mid="', (p.attribute || p.id),'"><thead><tr>');
         _.each(p.elements, function (elem) {
-            h.push('<th>', elem.label, '</th>');
+            h.push('<th>', elem.label, elem.required?Evol.UI.html.required:'', '</th>');
         });
         if(mode==='edit'){
             h.push('<th></th>');
@@ -1025,9 +1025,9 @@ Evol.ViewOne = Backbone.View.extend({
     },
 */
     click_detailsAddDel: function(evt){
-        var $targ=$(evt.currentTarget),
-            bId=$targ.data('id'),
-            tr=$targ.closest('tr');
+        var $target=$(evt.currentTarget),
+            bId=$target.data('id'),
+            tr=$target.closest('tr');
 
         evt.stopImmediatePropagation();
         if(bId==='bPlus'){
