@@ -205,6 +205,8 @@ Evol.ViewOne = Backbone.View.extend({
                             $f.html(Evol.UI.cr2br(fv));
                             break;
                         case fTypes.bool:
+                        case fTypes.url:
+                        case fTypes.email:
                             $f.html(Evol.Dico.HTMLField4Many(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                             break;
                         default:

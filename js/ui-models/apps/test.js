@@ -27,30 +27,30 @@ var fieldsPanelList = [
 function fieldTypePanel(id, label, labelPanel){
     var labelP = labelPanel || label || id,
         fields=[
-        {
-            id: id,
-            type: id,
-            label: label,
-            required: true,
-            viewmany: true,
-            width: 100
-        },
-        {
-            id: id+'3',
-            attribute: id,
-            readonly: true,
-            help: 'The field "' + label+' 3" is readonly.',
-            type: id,
-            label: label+' 3',
-            width: 100
-        },
-        {
-            id: id+'2',
-            type: id,
-            label: label+' 2',
-            width: 100
-        }
-    ];
+            {
+                id: id,
+                type: id,
+                label: label,
+                required: true,
+                viewmany: true,
+                width: 100
+            },
+            {
+                id: id+'2',
+                attribute: id,
+                readonly: true,
+                help: 'The field "' + label+' 2" is readonly.',
+                type: id,
+                label: label+' 2',
+                width: 100
+            },
+            {
+                id: id+'3',
+                type: id,
+                label: label+' 3',
+                width: 100
+            }
+        ];
 
     if(id==='list' || id==='lov'){
         fields= _.each(fields, function(f){

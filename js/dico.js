@@ -352,11 +352,19 @@ Evol.Dico = {
                 h.push('" style="height:', fld.height, 'em;overflow-y: auto;');
             }
             h.push('">');
-            if(fld.type==fTypes.color){
-                //h.push(Evol.UI.input.colorBox(fid, fv), fv);
-                h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
-            }else{
-                h.push(this.HTMLField4Many(fld, fv, {}, iconsPath));
+            switch (fld.type) {
+                case fTypes.color:
+                    //h.push(Evol.UI.input.colorBox(fid, fv), fv);
+                    h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
+                    break;
+                case fTypes.email:
+                    h.push(EvoUI.linkEmail(fid, fv));
+                    break;
+                case fTypes.url:
+                    h.push(EvoUI.link(fid, fv, fv, fid));
+                    break;
+                default:
+                    h.push(this.HTMLField4Many(fld, fv, {}, iconsPath));
             }
             h.push('&nbsp;</div>');
         }else{
@@ -404,19 +412,11 @@ Evol.Dico = {
                     h.push('<div id="',fid, '" class="w-100 form-control"></div>');
                     break;
                 case fTypes.email:
-                    if (mode === 'view') {
-                        h.push(EvoUI.linkEmail(fid, fv));
-                    } else {
-                        h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
-                            EvoUI.input.text(fid, fv, fld), '</div>');
-                    }
+                    h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
+                        EvoUI.input.text(fid, fv, fld), '</div>');
                     break;
                 case fTypes.url:
-                    if (mode === 'view') {
-                        h.push(EvoUI.link(fid, fv, encodeURI(fv), fid));
-                    } else {
-                        h.push(EvoUI.input.text(fid, fv, fld));
-                    }
+                    h.push(EvoUI.input.text(fid, fv, fld));
                     break;
                 //case fTypes.doc:
                 case fTypes.pix:

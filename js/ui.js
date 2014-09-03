@@ -170,17 +170,12 @@ Evol.UI = {
         },
 
         img: function (id, value) {
-            return ['<img id="', id, '" src="', value, '"/>'].join('');
+            return ['<img id="', id, '" src="', value.replace(/"/g,'\"'), '"/>'].join('');
         },
 
         hidden: function (id, value) {
-            return ['<input type="hidden" name="', id, '" id="', id, '" value="', value, '"/>'].join('');
-        },/*
-        hiddens: function (h, list) {
-            _.each(function (){
-                h.push('<input type="hidden" name="', fID, '" id="', fID, '" value="', fV, '"/>');
-            });
-        },*/
+            return ['<input type="hidden" name="', id, '" id="', id, '" value="', value.replace(/"/g,'\"'), '"/>'].join('');
+        },
         selectBegin: function (id, css, emptyOption) {
             var h=['<select id="', id, '" class="form-control ',css,'">'];
             if(emptyOption){
@@ -241,19 +236,18 @@ Evol.UI = {
 
     // --- links ---
     link: function (id, label, url, target) {
-        var h=['<a class="evo-field" href="', url];
+        var h=['<a class="evo-field" href="', encodeURI(url)];
         if(id){
             h.push('" id="', id);
         }
         if(target){
             h.push('" target="',target);
         }
-        h.push('">', label, '</a>');
+        h.push('">', _.escape(label), '</a>');
         return h.join('');
     },
     linkEmail: function (id, email) {
         if(email){
-            email = _.escape(email);
             return this.link(id, email, 'mailto:'+email);
         }else{
             return '';
