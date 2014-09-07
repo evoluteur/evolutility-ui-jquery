@@ -9,25 +9,48 @@ With it you configure views with metadata instead of hand-coding templates, Java
 [AddressBook](http://evoluteur.github.io/evolutility/demo/index.html#contact/list),
 [Wine Cellar](http://evoluteur.github.io/evolutility/demo/index.html#winecellar/list).
 
-## UI-model
-
-All UI-models use the same [API or vocabulary](http://evoluteur.github.io/evolutility/doc/ui-model.html) with words like "field", "panel" and "tab" rather than "INPUT" and "DIV" to describe UI elements.
-
-UI Models for the demo apps:
-[To Do list](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/todo.js),
-[AddressBook](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/contacts.js),
-[Wine Cellar](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/winecellar.js).
-
 ## Views
 
 Evolutility's views have a Backbone model (to define the data) and also a UI-model (to define the UI for this model).
 
 Evolutility provides 3 types of view
-* Views for one model: View, Edit, Mini (quick edit), JSON.
+* Views for a model: View, Edit, Mini (quick edit), JSON.
 * Views for a collection: List, Badges, Charts.
 * Views for actions on a model or collection: Export, Filter (will add later Dashboards, Mass update, Clone...).
 
+## Views for One model
+### Edit
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-edit.png)
+### Mini (Quick Edit)
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-mini.png)
+### View
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-view.png)
+
+## Views for a collection of Many models
+### List
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-list.png)
+### Badges
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-badge.png)
+### Charts
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-charts.png)
+
+## Views for Actions
+### Export
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/action-export.png)
+### Filter
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/action-filter.png)
+
+
 Web demo of [all views](http://evoluteur.github.io/evolutility/index.html)
+
+## UI-model
+
+Views are not defined in templates but configured with a UI-model using [vocabulary](http://evoluteur.github.io/evolutility/doc/ui-model.html) with words like "field", "panel" and "tab" rather than "INPUT" and "DIV" to describe UI elements.
+
+UI Models for the demo apps:
+[To Do list](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/todo.js),
+[AddressBook](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/contacts.js),
+[Wine Cellar](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/winecellar.js).
 
 ## Techno and Open Source Libraries used
 
