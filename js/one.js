@@ -744,7 +744,7 @@ Evol.ViewOne = Backbone.View.extend({
 
         if(!f.readonly){
 
-            // Check required/empty
+            // Check required and empty
             if (f.required && (v==='' ||
                     ((f.type===ft.int || f.type===ft.dec || f.type===ft.money) && isNaN(v)) ||
                     (f.type===ft.lov && v==='0') ||
@@ -788,15 +788,6 @@ Evol.ViewOne = Backbone.View.extend({
                         return formatMsg(f.label, i18nVal.regex, f.label);
                     }
                 }
-                /*
-                 // Check custom
-                 if (f.customvalidation !== null) {
-                 //TODO do not use eval
-                 var p = eval([f.customvalidation, '("', that.prefix, f.id, '","', f.label, '")'].join(''));
-                 if (p !== null && p.length > 0) {
-                 flagField(f, p);
-                 }
-                 }*/
 
                 // Check min & max
                 if (f.type === ft.int || f.type === ft.dec || f.type === ft.money) {
@@ -808,6 +799,14 @@ Evol.ViewOne = Backbone.View.extend({
                             return formatMsg(f.label, i18nVal.min, f.min);
                         }
                     }
+                }
+            }
+
+            // Check custom validation
+            if (f.customvalidation) {
+                var fValid = f.customvalidation(f, v);
+                if (fValid !== '') {
+                    return formatMsg(f.label, fValid);
                 }
             }
 
