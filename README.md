@@ -5,9 +5,9 @@ With it you configure views with metadata instead of hand-coding templates, Java
 
 ## Demo apps
 
-[To Do list](http://evoluteur.github.io/evolutility/demo/todo.html),
-[AddressBook](http://evoluteur.github.io/evolutility/demo/contact.html),
-[Wine Cellar](http://evoluteur.github.io/evolutility/demo/winecellar.html).
+[To Do list](http://evoluteur.github.io/evolutility/demo/index.html#todo/list),
+[AddressBook](http://evoluteur.github.io/evolutility/demo/index.html#contact/list),
+[Wine Cellar](http://evoluteur.github.io/evolutility/demo/index.html#winecellar/list).
 
 ## UI-model
 
