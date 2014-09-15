@@ -4,6 +4,16 @@
   "copyright": "(c) 2014 Olivier Giulieri",
   "license": "AGPL-3.0",
   "target": "dist",
+    "homepage": "https://github.com/evoluteur/evolutility",
+    "author": {
+        "name": "Olivier Giulieri",
+        "url": "https://github.com/evoluteur"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/evoluteur/evolutility.git"
+    },
+    "bugs": "https://github.com/evoluteur/evolutility/issues",
   "devDependencies": {
     "grunt": "0.4.1",
     "grunt-contrib-concat": "~0.3.0",
@@ -19,5 +29,13 @@
     "backbone.localStorage": "v1.1.7",
     "underscore": "1.6.0",
     "bootstrap": "3.1.1"
-  }
+  },
+    "keywords": [
+        "MDDA",
+        "metadata",
+        "form",
+        "CRUD",
+        "UI",
+        "Backbone"
+    ]
 }

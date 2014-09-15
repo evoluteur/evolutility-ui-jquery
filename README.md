@@ -41,11 +41,74 @@ Evolutility provides 3 types of view
 ![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/action-filter.png)
 
 
-Web demo of [all views](http://evoluteur.github.io/evolutility/index.html)
+[Live demo](http://evoluteur.github.io/evolutility/index.html) of these views.
 
 ## UI-model
 
 Views are not defined in templates but configured with a UI-model using [vocabulary](http://evoluteur.github.io/evolutility/doc/ui-model.html) with words like "field", "panel" and "tab" rather than "INPUT" and "DIV" to describe UI elements.
+
+Here is the UI model used to configure all views for the ["To Do" app demo](http://evoluteur.github.io/evolutility/demo/index.html#todo/list):
+
+```javascript
+{
+    id: 'todo',
+    label: 'To Do',
+    entity: 'task',
+    entities: 'tasks',
+    icon: 'todo.gif',
+    leadfield:'title',
+    elements: [
+        {
+            type: 'panel', label: 'Task', width: 62,
+            elements: [
+                {
+                    id: 'title', type: 'text', label: 'Title', required: true,
+                    maxlength: 255, width: 100, viewmany: true
+                },
+                {
+                    id: 'duedate', type: 'date', label: 'Due Date', width: 62, viewmany: true
+                },
+                {
+                    id: 'category', type: 'lov', label: 'Category', width: 38, viewmany: true,
+                    list: [
+                        {id: 'home', text: 'Home'},
+                        {id: 'work', text: 'Work'},
+                        {id: 'fun', text: 'Fun'},
+                        {id: 'others', text: 'Others'},
+                        {id: 'misc', text: 'Misc.'}
+                    ]
+                }
+            ]
+        },
+        {
+            type: 'panel', label: 'Status', width: 38,
+            elements: [
+                {
+                    id: 'priority', type: 'lov', label: 'Priority', required: true,
+                    width: 100,  viewmany: true,
+                    list: [
+                        {id: '1', text: '1 - ASAP'},
+                        {id: '2', text: '2 - Urgent'},
+                        {id: '3', text: '3 - Important'},
+                        {id: '4', text: '4 - Medium'},
+                        {id: '5', text: '5 - Low'}
+                    ]
+                },
+                {
+                    id: 'complete', type: 'boolean', label: 'Complete', width: 100, viewmany: true
+                }
+            ]
+        },
+        {
+            type: 'panel', label: 'Notes', width: 100,
+            elements: [
+                {id: 'notes', type: 'textmultiline', label: 'Notes', maxlength: 1000,
+                    width: 100, height: 6, viewmany: false }
+            ]
+        }
+    ]
+}
+```
 
 UI Models for the demo apps:
 [To Do list](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/todo.js),
@@ -61,6 +124,10 @@ Javascript, HTML5, CSS3,
 [Bootstrap] (http://getbootstrap.com/),
 [Bootstrap-datepicker] (http://eternicode.github.io/bootstrap-datepicker/),
 [Select2] (http://ivaynberg.github.io/select2/).
+
+## Documentation
+
+Some documentation is in progress at [this page] (http://evoluteur.github.io/evolutility/doc/index.html).
 
 ## Previous incarnation
 
