@@ -1308,13 +1308,14 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         var that = this,
             v,
             opts = this.options,
-            link = (opts.links!==false);
+            link = (opts.links!==false),
+            ft = Evol.Dico.fieldTypes;
         h.push('<tr data-mid="', model.id, '">');
         if(selectable){
             h.push('<td class="list-td-sel">', this._HTMLCheckbox(model.id), '</td>');
         }
         _.each(fields, function(f, idx){
-            if(f.type===Evol.Dico.fieldTypes.color){
+            if(f.type===ft.color){
                 v = Evol.UI.input.colorBox(f.id, model.escape(f.attribute || f.id));
             }else if(f.value){
                 v = f.value(model);
@@ -1324,7 +1325,11 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             if(idx===0){
                 v = Evol.Dico.HTMLFieldLink('fv-'+f.id, f, v, icon, !link, route?route+model.id:null);
             }
-            h.push('<td>', v, '</td>');
+            if(f.type===ft.textml){
+                h.push('<td class="evol-ellipsis">', v, '</td>');
+            }else{
+                h.push('<td>', v, '</td>');
+            }
         });
         h.push('</tr>');
     },
@@ -5243,9 +5248,7 @@ Evol.Shell = Backbone.View.extend({
             EvolRouter=Backbone.Router.extend ({
                 routes: {
                     '' : 'nav',
-                    ':entity/:view/:id': 'nav',
-                    ':entity/:view': 'nav',
-                    ':entity': 'nav',
+                    ':entity(/:view)(/:id)': 'nav',
                     '*noroute': that.noRoute
                 },
                 nav: function(entity, view, id){

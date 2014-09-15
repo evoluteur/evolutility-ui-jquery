@@ -11,27 +11,36 @@
 
 .evol-many-list{
 
-  > .table th {
+  > .table {
 
-    font-weight: @weight-label !important;
-    background-color: @toolbar-background-color;
+    th {
 
-    .glyphicon {
-      display:none;
-      position:absolute;
-      opacity: .8;
-      margin-left: 6px;
-      background-color: white;
-      cursor: pointer;
-      width:22px;
-      height: 22px;
+      font-weight: @weight-label !important;
+      background-color: @toolbar-background-color;
+
+      .glyphicon {
+        display:none;
+        position:absolute;
+        opacity: .8;
+        margin-left: 6px;
+        background-color: white;
+        cursor: pointer;
+        width:22px;
+        height: 22px;
+      }
+
+      &:hover .glyphicon {
+        display: inline !important;
+        cursor: pointer;
+      }
+
     }
-
-    &:hover .glyphicon {
-      display: inline !important;
-      cursor: pointer;
+    .evol-ellipsis{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 120px;
     }
-
   }
 
   .glyphicon.evol-last-sort {

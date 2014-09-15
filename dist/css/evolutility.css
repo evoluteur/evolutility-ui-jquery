@@ -247,6 +247,12 @@ label {
   display: inline !important;
   cursor: pointer;
 }
+.evol-many-list > .table .evol-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
+}
 .evol-many-list .glyphicon.evol-last-sort {
   display: none;
   position: absolute;
