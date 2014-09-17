@@ -33,8 +33,8 @@
 <div class="evo-content3">
 
 <p>Evolutility provides a set of Backbone views
-    for manipulating (viewing, editing, filtering, exporting...) collections or single models.
-    These views are not defined in code and templates
+    for manipulating (viewing, editing, filtering, exporting...) Backbone models and collections.
+    These views are not defined in templates and custom code
 but configured by a <a href="ui-model.html">ui-model</a>.</p>
 
 
@@ -61,13 +61,18 @@ but configured by a <a href="ui-model.html">ui-model</a>.</p>
 
 </ul>
 
-More Views will be added in the future.
+API: <a href="#methods">Methods</a>,
+<a href="#options">Options</a>,
+<a href="#events">Events</a>.
 
 </p>
 
-<p>A large part of the API is common for all views.
-    Each type of view and each view may have
-    additional <a href="#methods">methods</a>, <a href="#options">options</a> and <a href="#events">events</a>.</p>
+<p>A large part of the API (<a href="#methods">methods</a>, <a href="#options">options</a> and <a href="#events">events</a>) is common to all views.
+    Some views have additional API.
+</p>
+
+<p>More Views will be added in the future (thinking of Summary, Import, Mass update, Group, Dashboard, Report, PDF, Auto-documentation and specs...).
+
 
 <div class="evol-doc-views">
 
@@ -86,7 +91,7 @@ More Views will be added in the future.
     <a name="one-view" class="evo-anchor">&nbsp;</a>
     <h3><i class="glyphicon glyphicon-file"></i>&nbsp;View</h3>
     <p>Shows all fields for viewing (read only). Fields are grouped in panels and tabs.</p>
-    <code>new Evol.ViewOne.Edit(myConfig);</code>
+    <code>var vw = new Evol.ViewOne.View(myConfig);</code>
 
     <div class="evol-doc-views">
         <img class="pixEvoMode shadow" src="screenshots/one-view.png"/> <br/>&nbsp;
@@ -95,9 +100,14 @@ More Views will be added in the future.
 
     <a name="one-edit" class="evo-anchor">&nbsp;</a>
 <h3><i class="glyphicon glyphicon-th"></i>&nbsp;Edit</h3>
-<p>Shows all fields for edition. Fields are grouped in panels and tabs.</p>
+<p>This view shows all fields for edition to create or update models.
+    It automatically performs validation based on the UI-model and supports
+    the Master-Details pattern (nested collections).
+    Fields are grouped in panels and tabs.
+</p>
 <code>
-    new Evol.ViewOne.Edit(myConfig);</code>
+    var vw = new Evol.ViewOne.Edit(myConfig);
+</code>
 
     <div class="evol-doc-views">
         <img class="pixEvoMode shadow" src="screenshots/one-edit.png"/> <br/>&nbsp;
@@ -106,9 +116,9 @@ More Views will be added in the future.
 
     <a name="one-mini" class="evo-anchor">&nbsp;</a>
 <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Mini (quick-edit)</h3>
-<p>Only shows important fields (required or showing as a column in grids) in one panel.</p>
+<p>Only shows important fields (required or showing as a column in grids). Fields are grouped in a single panel.</p>
 <code>
-    new Evol.ViewOne.Mini(myConfig);</code>
+    var vw = new Evol.ViewOne.Mini(myConfig);</code>
     <div class="evol-doc-views">
         <img class="pixEvoMode shadow" src="screenshots/one-mini.png"/> <br/>&nbsp;
     </div>
@@ -118,7 +128,7 @@ More Views will be added in the future.
 <h3><i class="glyphicon glyphicon-barcode"></i>&nbsp;JSON</h3>
 <p>JSON representation of the data.</p>
 <code>
-    new Evol.ViewOne.JSON(myConfig);</code>
+    var vw = new Evol.ViewOne.JSON(myConfig);</code>
     <div class="evol-doc-views">
         <img class="pixEvoMode shadow" src="screenshots/one-json.png"/> <br/>&nbsp;
     </div>
@@ -140,9 +150,9 @@ More Views will be added in the future.
     </p>
         <a name="many-list" class="evo-anchor">&nbsp;</a>
 <h3><i class="glyphicon glyphicon-th-list"></i>&nbsp;List</h3>
-<p>Gives a tabular view of a collection.</p>
+<p>Gives a tabular view of a collection with paging.</p>
 <code>
-    new Evol.ViewMany.List(myConfig);</code>
+    var vw = new Evol.ViewMany.List(myConfig);</code>
     <div class="evol-doc-views">
         <img class="pixEvoMode shadow" src="screenshots/many-list.png"/><br/>&nbsp;
     </div>
@@ -151,7 +161,7 @@ More Views will be added in the future.
 <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Badges</h3>
  <p>Shows records side by side as badges.</p>
 <code>
-    new Evol.ViewMany.Badges(myConfig);</code>
+    var vw = new Evol.ViewMany.Badges(myConfig);</code>
     <div class="evol-doc-views">
         <img class="pixEvoMode shadow" src="screenshots/many-badges.png"/><br/>&nbsp;
     </div>
@@ -161,7 +171,7 @@ More Views will be added in the future.
 <h3><i class="glyphicon glyphicon-stats"></i>&nbsp;Charts</h3>
 <p>Draws charts about the collection.</p>
 <code>
-    new Evol.ViewMany.Charts(myConfig);</code>
+    var vw = new Evol.ViewMany.Charts(myConfig);</code>
     <div class="evol-doc-views">
         <img class="pixEvoMode shadow" src="screenshots/many-charts.png"/><br/>&nbsp;
     </div>
@@ -183,9 +193,9 @@ More Views will be added in the future.
 
         <a name="action-filter" class="evo-anchor">&nbsp;</a>
         <h3><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter</h3>
-        <p>Filter collection.</p>
+        <p>View used to build a structured query to filter a collection.</p>
         <code>
-            new Evol.ViewAction.Filter(myConfig);</code>
+            var vw = new Evol.ViewAction.Filter(myConfig);</code>
         <div class="evol-doc-views">
             <img class="pixEvoMode shadow" src="screenshots/action-filter.png"/><br/>&nbsp;
         </div>
@@ -195,9 +205,10 @@ More Views will be added in the future.
 
         <a name="action-export" class="evo-anchor">&nbsp;</a>
         <h3><i class="glyphicon glyphicon-cloud-download"></i>&nbsp;Export</h3>
-        <p>Export in different data formats.</p>
+        <p>View to define export options and preview the collection export in different data formats (CSV, TAB, HTML, XML, SQL and JSON).
+        </p>
         <code>
-            new Evol.ViewAction.Export(myConfig);</code>
+            var vw = new Evol.ViewAction.Export(myConfig);</code>
         <div class="evol-doc-views">
             <img class="pixEvoMode shadow" src="screenshots/action-export.png"/><br/>&nbsp;
         </div>
