@@ -173,7 +173,7 @@ Evol.UI = {
         },
 
         img: function (id, value) {
-            return ['<img id="', id, '" src="', value.replace(/"/g,'\"'), '"/>'].join('');
+            return ['<img id="', id, '" src="', value.replace(/"/g,'\"'), '">'].join('');
         },
 
         hidden: function (id, value) {
@@ -460,7 +460,7 @@ Evol.UI = {
     },
 
     cr2br: function(v){
-        return v.replace(/[\r\n]/g, '<br/>');
+        return v.replace(/[\r\n]/g, '<br>');
     }
 
 };
@@ -1395,8 +1395,7 @@ Evol.ViewOne = Backbone.View.extend({
             }*/
         this._tabId = false;
         this._uTitle = (!_.isUndefined(this.options.titleSelector)) && this.options.titleSelector!=='';
-        this._subCollecs=false;
-        this._subCollecsOK=false;
+        this._subCollecs = this._subCollecsOK = false;
         /*
         if(this.model){
             this.model.on('change', function(model){
@@ -1426,7 +1425,7 @@ Evol.ViewOne = Backbone.View.extend({
             this._fields=Evol.Dico.getFields(this.uiModel, this.getFieldsCondition);
             this._fieldHash={};
             var that=this;
-            _.each(this._fields,function(f){
+            _.each(this._fields, function(f){
                 that._fieldHash[f.id]=f;
             });
         }
@@ -1524,13 +1523,12 @@ Evol.ViewOne = Backbone.View.extend({
             var that=this,
                 fTypes = Evol.Dico.fieldTypes,
                 $f, fv,
-                prefix='#'+ this.prefix + '-',
                 subCollecs=this.getSubCollecs(),
                 iconsPath=this.options.iconsPath||'',
                 newPix;
 
             _.each(this.getFields(), function (f) {
-                $f=that.$(prefix + f.id);
+                $f=that.$field(f.id);
                 if(isModel){
                     if(f.value){
                         fv=f.value(model);
@@ -1603,30 +1601,29 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     setFieldValue: function (fid, value){
-        this.$('#'+this.fieldViewId(fid))
+        this.$field(fid)
             .val(value);
         return this;
     },
 
     getFieldValue: function (f){
-        return Evol.Dico.getFieldTypedValue(f, this.$field(f));
+        return Evol.Dico.getFieldTypedValue(f, this.$field(f.id));
     },
 
-    $field: function (f){
-        return this.$('#'+this.fieldViewId(f.id));
+    $field: function (id){
+        return this.$('#'+this.fieldViewId(id));
     },
 
     clear: function () {
         var that=this,
             ft =Evol.Dico.fieldTypes,
             $f,
-            prefix='#'+ that.prefix + '-',
             subCollecs=this.getSubCollecs(),
             defaultVal;
 
         this.clearMessages();
         _.each(this.getFields(), function (f) {
-            $f = that.$(prefix + f.id);
+            $f = that.$field(f.id);
             defaultVal = f.defaultvalue || '';
 
             if(f.readonly){
@@ -1661,10 +1658,9 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     clearCache: function(){
-        this._fieldHash=null;
-        this._fields=null;
-        this._subCollecsOK=false;
-        this._subCollecs=null;
+        this._fieldHash = null;
+        this._fields = null;
+        this._subCollecs = this._subCollecsOK = false;
         return this;
     },
 
@@ -2012,7 +2008,7 @@ Evol.ViewOne = Backbone.View.extend({
             errMsgs=[];
 
         this.clearMessages();
-        errMsgs = this._checkFields(this.$el, fs, data);
+        errMsgs = this._checkFields(fs, data);
         isValid = errMsgs==='';
         // validate sub-collections
         if(this._subCollecs){
@@ -2050,7 +2046,7 @@ Evol.ViewOne = Backbone.View.extend({
         //decimalDA: /(\+|-)?(\d*\,\d*)?$/
     },
 
-    _checkFields: function (holder, fds, values) {
+    _checkFields: function (fds, values) {
         var that = this,
             msgs = [],
             msg1;
@@ -2059,7 +2055,7 @@ Evol.ViewOne = Backbone.View.extend({
             if(_.isArray(msgs)){
                 msgs.push(msg);
             }
-            var p=that.$field(fd).parent();//holder.find()
+            var p=that.$field(fd.id).parent();
             var errlabel = p.find('.text-danger');
             if (errlabel.length) {
                 errlabel.html(msg);
@@ -2179,6 +2175,7 @@ Evol.ViewOne = Backbone.View.extend({
         return '';
     },
 
+    // - Remove validation error alerts
     clearErrors: function () {
         this.$('.control-group.error').removeClass("control-group error");
         //this.$('.evol-warn-error').remove();
@@ -2187,6 +2184,7 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 
+    // - return DOM field ID (each view use a different prefix)
     fieldViewId: function(fid){
         return this.prefix + '-' + fid;
     },
@@ -2209,7 +2207,9 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 */
-    showHelp: function(id, type, $el, forceOn){ // isField to be used by shift-click on help icon
+
+    // - Show help below field(s)
+    showHelp: function(id, type, $el, forceOn){
         var fs=this.getFields(),
             fld=_.findWhere(fs,{id:id}),
             $f,
@@ -2222,7 +2222,6 @@ Evol.ViewOne = Backbone.View.extend({
             }else{
                 $fh=$f.find('.help-block');
             }
-
             if($fh.length>0){
                 $fh.slideUp(200, function(){
                     $fh.remove();
@@ -2338,7 +2337,6 @@ Evol.ViewOne = Backbone.View.extend({
         // --- show/hide ALL help tips
         if(evt.shiftKey){
             var that=this,
-                prefix='#'+this.prefix+'-',
                 mustAdd=!this._allHelp;
 
             if(mustAdd){
@@ -2348,7 +2346,7 @@ Evol.ViewOne = Backbone.View.extend({
             }
             _.each(this.getFields(), function(f){
                 if(f.help){
-                    var $f=this.$(prefix+ f.id);
+                    var $f=this.$field(f.id);
                     that.showHelp(f.id, f.type, $f, mustAdd);
                 }
             });
@@ -2380,6 +2378,7 @@ Evol.ViewOne = Backbone.View.extend({
 
         evt.stopImmediatePropagation();
         if(bId==='bPlus'){
+            // - Add row to details
             var h=[],
                 subCollecs=this.getSubCollecs(),
                 mid=tr.closest('table').data('mid'),
@@ -2394,6 +2393,7 @@ Evol.ViewOne = Backbone.View.extend({
                 tr.remove();
             }
         }else if(bId==='bMinus'){
+            // - Remove row from details
             if(tr.siblings().length===0){
                 $(this._TRnodata(tr.children().length, 'edit'))
                     .insertAfter(tr);
@@ -2403,7 +2403,6 @@ Evol.ViewOne = Backbone.View.extend({
     }
 
 });
-
 ;
 /*! ***************************************************************************
  *
@@ -2612,7 +2611,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                             break;
                         case fTypes.textml:
                             if(fv){
-                                $f.html(_.escape(fv).replace(/[\r\n]/g, '</br>'));
+                                $f.html(_.escape(fv).replace(/[\r\n]/g, '<br>'));
                             }else{
                                 $f.html('');
                             }
@@ -3120,7 +3119,7 @@ var EvoExport = {
     optEntityName: function(id,label,entity){
         return [
             Evol.UI.fieldLabel(id, label),
-            Evol.UI.input.text(id, entity.replace(' ', '_'), 30),'<br/>'
+            Evol.UI.input.text(id, entity.replace(/ /g, '_'), 30),'<br>'
         ].join('');
     },
 
@@ -5248,6 +5247,9 @@ Evol.Shell = Backbone.View.extend({
             EvolRouter=Backbone.Router.extend ({
                 routes: {
                     '' : 'nav',
+                    //':entity/:view/:id': 'nav',
+                    //':entity/:view': 'nav',
+                    //':entity': 'nav',
                     ':entity(/:view)(/:id)': 'nav',
                     '*noroute': that.noRoute
                 },

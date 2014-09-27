@@ -263,7 +263,7 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     $field: function (id){
-        return this.$('#'+this.fieldViewId(f.id));
+        return this.$('#'+this.fieldViewId(id));
     },
 
     clear: function () {

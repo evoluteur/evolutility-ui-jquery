@@ -47,9 +47,10 @@ Evol.Shell = Backbone.View.extend({
             EvolRouter=Backbone.Router.extend ({
                 routes: {
                     '' : 'nav',
-                    ':entity/:view/:id': 'nav',
-                    ':entity/:view': 'nav',
-                    ':entity': 'nav',
+                    //':entity/:view/:id': 'nav',
+                    //':entity/:view': 'nav',
+                    //':entity': 'nav',
+                    ':entity(/:view)(/:id)': 'nav',
                     '*noroute': that.noRoute
                 },
                 nav: function(entity, view, id){

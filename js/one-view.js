@@ -49,7 +49,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                             break;
                         case fTypes.textml:
                             if(fv){
-                                $f.html(_.escape(fv).replace(/[\r\n]/g, '</br>'));
+                                $f.html(_.escape(fv).replace(/[\r\n]/g, '<br>'));
                             }else{
                                 $f.html('');
                             }

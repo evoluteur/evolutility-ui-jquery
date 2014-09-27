@@ -443,7 +443,7 @@ var EvoExport = {
     optEntityName: function(id,label,entity){
         return [
             Evol.UI.fieldLabel(id, label),
-            Evol.UI.input.text(id, entity.replace(' ', '_'), 30),'<br/>'
+            Evol.UI.input.text(id, entity.replace(/ /g, '_'), 30),'<br>'
         ].join('');
     },
 

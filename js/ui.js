@@ -170,7 +170,7 @@ Evol.UI = {
         },
 
         img: function (id, value) {
-            return ['<img id="', id, '" src="', value.replace(/"/g,'\"'), '"/>'].join('');
+            return ['<img id="', id, '" src="', value.replace(/"/g,'\"'), '">'].join('');
         },
 
         hidden: function (id, value) {
@@ -457,7 +457,7 @@ Evol.UI = {
     },
 
     cr2br: function(v){
-        return v.replace(/[\r\n]/g, '<br/>');
+        return v.replace(/[\r\n]/g, '<br>');
     }
 
 };
