@@ -54,6 +54,69 @@ Evol.Dico = {
         //'doc': Evol.ViewAction.Doc
     },
 
+
+    fieldConditions: {
+        // filter functions take parameters fv=fieldValue, cv=condition value, cv2
+        // equals
+        'eq': function(fv, cv){
+            return cv==fv;
+        },
+        // not equal
+        'ne': function(fv, cv){
+            return cv!=fv;
+        },
+        // > or after
+        'gt': function(fv, cv){
+            return fv>cv;
+        },
+        // < or before
+        'lt': function(fv, cv){
+            return fv<cv;
+        },
+        // between
+        'bw': function(fv, cv, cv2){
+            return !(cv>fv || fv>cv2);
+        },
+        // start w/
+        'sw': function(fv, cv){
+            return fv.toLocaleLowerCase().indexOf(cv)===0;
+        },
+        // contains
+        'ct': function(fv, cv){
+            return fv.toLocaleLowerCase().indexOf(cv)>-1;
+        },
+        // finish w/
+        'fw': function(fv, cv){
+            var l1=fv.length,
+                l2=cv.length;
+            if (l1<l2){
+                return false;
+            }else{
+                return fv.toLocaleLowerCase().substring(l1-l2)===cv;
+            }
+        },
+        // empty
+        'null': function(fv, cv){
+            return  fv=='' || _.isUndefined(fv);
+        },
+        // not null
+        'nn': function(fv, cv){
+            return !(_.isUndefined(fv) || fv=='');
+        },
+        // in []
+        'in': function(fv, cv){
+            return  _.contains(cv.split(','),fv);
+        },
+        // true
+        '1': function(fv, cv){
+            return fv;
+        },
+        // false
+        '0': function(fv, cv){
+            return !fv;
+        }
+    },
+
     // get all "shallow" fields (no sub collections) from a UI model
     getFields: function (uiModel, fnFilter) {
         var fs = [];
@@ -208,66 +271,20 @@ Evol.Dico = {
 */
     filterModels: function(models, filters){
         if(filters.length){
+            // TODO pre-build function to avoid repeating loop
             return models.filter(function(model){
-                var want=true,
-                    i;
-                for(i= 0, iMax=filters.length;i<iMax && want;i++){
+                var want=true;
+                for(var i= 0, iMax=filters.length;i<iMax && want;i++){
+                    if(want===false){
+                        break;
+                    }
                     var filter=filters[i],
-                        vf=filter.value.value,
-                        vm=model.get(filter.field.value);
-                    // TODO use field.value(m) || field.id
+                        vm=model.get(filter.field.value);// TODO use field.value(m) || field.id
 
                     if(_.isUndefined(vm)){
                         vm='';
                     }
-                    switch(filter.operator.value){
-                        case 'eq': // equals
-                            want=vf==vm;
-                            break;
-                        case 'ne': // not equal
-                            want=vf!=vm;
-                            break;
-                        case 'gt': // > or after
-                            want=vm>vf;
-                            break;
-                        case 'lt': // < or before
-                            want=vm<vf;
-                            break;
-                        case 'bw': // between
-                            var vf2=filter.value.value2;
-                            want = !(vf>vm || vm>vf2);
-                            break;
-                        case 'sw': // start w/
-                            want=vm.toLocaleLowerCase().indexOf(vf)===0;
-                            break;
-                        case 'ct': // contain
-                            want=vm.toLocaleLowerCase().indexOf(vf)>-1;
-                            break;
-                        case 'fw': // finish w/
-                            var l1=vm.length,
-                                l2=vf.length;
-                            if (l1>l2){
-                                want=false;
-                            }else{
-                                want=vm.toLocaleLowerCase().substring(l2-l1)===vf;
-                            }
-                            break;
-                        case 'null':
-                            want= vm=='' || _.isUndefined(vm);
-                            break;
-                        case 'nn': // not null
-                            want=!(_.isUndefined(vm) || vm=='');
-                            break;
-                        case 'in': // in []
-                            want= _.contains(vf.split(','),vm);
-                            break;
-                        case 1:
-                            want=vm;
-                            break;
-                        case 0:
-                            want=!vm;
-                            break;
-                    }
+                    want=Evol.Dico.fieldConditions[filter.operator.value](vm, filter.value.value, filter.value.value2); // vf2 is only used in "between" conditions
                 }
                 return want;
             });
