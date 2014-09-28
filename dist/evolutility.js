@@ -689,8 +689,8 @@ Evol.i18n = {
         //opOr:'or',
         yes:'Yes',
         no:'No',
-        bNewFilter:'New filter',
-        bAddFilter:'Add filter',
+        bNewCond:'New filter condition',
+        bAddCond:'Add condition',
         bUpdateFilter:'Update filter',
         bSubmit:'Submit',
         bCancel:'Cancel'
@@ -1022,7 +1022,7 @@ Evol.ViewMany = Backbone.View.extend({
             }
             this.setSelection(sel);
             if(!noTrigger){
-                this.$el.trigger('list.sort', {id: f.id, direction:direction});
+                this.$el.trigger('sort.many', {id: f.id, direction:direction});
             }
         }
         return this;
@@ -1040,7 +1040,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     click_navigate: function (evt) {
         var id=$(evt.currentTarget).closest('[data-mid]').data('mid');
-        evt.type = 'list.navigate';
+        evt.type = 'navigate.many';
         this.$el.trigger(evt, {id: id});
     },
 
@@ -1054,7 +1054,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     click_pagination: function (evt) {
-        this.$el.trigger('list.paginate', {id: $(evt.currentTarget).closest('li').data('id')});
+        this.$el.trigger('paginate.many', {id: $(evt.currentTarget).closest('li').data('id')});
     },
 /*
     click_customize: function (evt) {
@@ -1068,7 +1068,7 @@ Evol.ViewMany = Backbone.View.extend({
 */
     click_selection: function (evt) {
         //if($(evt.currentTarget).data('id')!=='cbxAll'){
-            this.$el.trigger('selection');
+            this.$el.trigger('selection.many');
         //}
     },
 
@@ -1076,7 +1076,7 @@ Evol.ViewMany = Backbone.View.extend({
         var isChecked=this.$('[data-id="cbxAll"]').prop('checked');
         //this.$('.list-sel:checked').not('[data-id="cbxAll"]');
         this.$('.list-sel').prop('checked', isChecked);
-        this.$el.trigger('selection');
+        this.$el.trigger('selection.many');
     }
 
 });
@@ -1755,7 +1755,7 @@ Evol.ViewOne = Backbone.View.extend({
             tab.addClass('active');
         }
         this._tabId = tabId;
-        this.$el.trigger('tab.show', {id:tabId});
+        this.$el.trigger('show.tab', {id:tabId});
         return this;
     },
 
@@ -2315,7 +2315,7 @@ Evol.ViewOne = Backbone.View.extend({
                     .addClass(cssDown);
             }
         }
-        this.$el.trigger('panel.toggle');
+        this.$el.trigger('toggle.panel');
     },
 
     click_tab: function (evt) {
@@ -3232,12 +3232,12 @@ Evol.ViewAction.Filter = Backbone.View.extend({
             h=[];
 
         h.push('<div class="evo-zfilters"></div>',
-            '<a class="evo-bNew btn btn-primary" href="javascript:void(0)">',evoLang.bNewFilter,'</a>');
+            '<a class="evo-bNew btn btn-primary" href="javascript:void(0)">',evoLang.bNewCond,'</a>');
         if(this.options.submitButton){
             h.push('<a class="evo-bSubmit btn btn-primary" href="javascript:void(0)">',evoLang.bSubmit,'</a>');
         }
         h.push('<div class="evo-editFilter"></div>',
-            '<a class="evo-bAdd btn btn-primary" style="display:none;" href="javascript:void(0)">',evoLang.bAddFilter,'</a>',
+            '<a class="evo-bAdd btn btn-primary" style="display:none;" href="javascript:void(0)">',evoLang.bAddCond,'</a>',
             '<a class="evo-bDel btn btn-default" style="display:none;" href="javascript:void(0)">',evoLang.bCancel,'</a>');
         this._step=0;
         //this._renderMenu(h);
@@ -3322,7 +3322,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                 Evol.UI.toggleCheckbox($this.siblings(), $this.prop('checked'));
             });
         this._filters=e.find('.evo-zfilters').on('click', 'a', function(){
-            that._editFilter($(this));
+            that._editCond($(this));
         //}).on('click', 'a .ui-button-icon-secondary', function(evt){
         }).on('click', 'a>button', function(evt){
                 evt.stopPropagation();
@@ -3362,7 +3362,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         this._editor.empty();
         this._bAdd.hide();
         this._bDel.hide();
-        this._enableFilter(null, false);
+        this._enableCond(null, false);
         this._bNew.removeClass('ui-state-active').show().focus();
         if(this._bSubmit){
             this._bSubmit.removeClass('ui-state-active').show();
@@ -3371,8 +3371,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         this._field=this._type=this._operator=null;
     },
 
-    addFilter: function(filter){
-        var f=$(['<a href="javascript:void(0)">',this._htmlFilter(filter),'</a>'].join(''))
+    addCondition: function(filter){
+        var f=$(['<a href="javascript:void(0)">',this._htmlCond(filter),'</a>'].join(''))
             .prependTo(this._filters)/*
             .button({
                 icons: {secondary:'ui-icon-close'}
@@ -3386,13 +3386,13 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         return this;
     },
 
-    removeFilter: function(index){
+    removeCondition: function(index){
         this._filters.children().eq(index).remove();
         this._triggerChange();
         return this;
     },
 
-    _htmlFilter: function(filter){
+    _htmlCond: function(filter){
         var h=[
             '<span class="evo-lBold">', filter.field.label,'</span> ',
             '<span class="evo-lLight">', filter.operator.label,'</span> ',
@@ -3406,7 +3406,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         return h.join('');
     },
 
-    _enableFilter: function(filter, anim){
+    _enableCond: function(filter, anim){
         if(this._cFilter){
             this._cFilter.removeClass('disabled');
             /*if(anim){
@@ -3414,7 +3414,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
             }*/
             if(filter){
                 this._cFilter.data('filter', filter)//.find(':first-child')
-                    .html(this._htmlFilter(filter));
+                    .html(this._htmlCond(filter));
                 this._cFilter=null;
                 this._triggerChange();
             }else{
@@ -3423,12 +3423,12 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         }
     },
 
-    _editFilter: function($filter){
+    _editCond: function($filter){
         var filter=$filter.data('filter'),
             fid=filter.field.value,
             op=filter.operator.value,
             fv=filter.value;
-        this._enableFilter(null, false);
+        this._enableCond(null, false);
         this._removeEditor();
         this._cFilter=$filter.addClass('disabled');
         this._setEditorField(fid);
@@ -3731,7 +3731,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         if(this.options.submitReady){
             this._setHiddenValues();
         }
-        this.$el.trigger('filter.change');
+        this.$el.trigger('change.filter');
     },
 
     val: function(value){
@@ -3746,7 +3746,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         }else{
             this._filters.empty();
             for(var i=0,iMax=value.length;i<iMax;i++){
-                this.addFilter(value[i]);
+                this.addCondition(value[i]);
             }
             this._triggerChange();
             return this;
@@ -3807,15 +3807,15 @@ Evol.ViewAction.Filter = Backbone.View.extend({
             this._setEditorField();
             this._step=1;
         }
-        this._bAdd.find('.ui-button-text').html(evoLang.bAddFilter);
+        this._bAdd.find('.ui-button-text').html(evoLang.bAddCond);
     },
 
     click_add: function(evt){
         var data=this._getEditorData();
         if(this._cFilter){
-            this._enableFilter(data, this.options.highlight);
+            this._enableCond(data, this.options.highlight);
         }else{
-            this.addFilter(data);
+            this.addCondition(data);
         }
         this._removeEditor();
     },
@@ -4372,11 +4372,12 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     events: {
         'click .nav a': 'click_toolbar',
-        'list.navigate >div': 'click_navigate',
-        'list.paginate >div': 'paginate',
+        'navigate.many >div': 'click_navigate',
+        'paginate.many >div': 'paginate',
+        //'selection.many >div': 'click_select',
         'action >div': 'action_view',
         'status >div': 'status_update',
-        'filter.change >div': 'change_filter',
+        'change.filter >div': 'change_filter',
         'click .alert-dismissable>button': 'clearMessage',
         'message >div':'showMessage'
     },

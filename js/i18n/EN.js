@@ -176,8 +176,8 @@ Evol.i18n = {
         //opOr:'or',
         yes:'Yes',
         no:'No',
-        bNewFilter:'New filter',
-        bAddFilter:'Add filter',
+        bNewCond:'New filter condition',
+        bAddCond:'Add condition',
         bUpdateFilter:'Update filter',
         bSubmit:'Submit',
         bCancel:'Cancel'

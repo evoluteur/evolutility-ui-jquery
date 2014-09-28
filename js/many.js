@@ -310,7 +310,7 @@ Evol.ViewMany = Backbone.View.extend({
             }
             this.setSelection(sel);
             if(!noTrigger){
-                this.$el.trigger('list.sort', {id: f.id, direction:direction});
+                this.$el.trigger('sort.many', {id: f.id, direction:direction});
             }
         }
         return this;
@@ -328,7 +328,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     click_navigate: function (evt) {
         var id=$(evt.currentTarget).closest('[data-mid]').data('mid');
-        evt.type = 'list.navigate';
+        evt.type = 'navigate.many';
         this.$el.trigger(evt, {id: id});
     },
 
@@ -342,7 +342,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     click_pagination: function (evt) {
-        this.$el.trigger('list.paginate', {id: $(evt.currentTarget).closest('li').data('id')});
+        this.$el.trigger('paginate.many', {id: $(evt.currentTarget).closest('li').data('id')});
     },
 /*
     click_customize: function (evt) {
@@ -356,7 +356,7 @@ Evol.ViewMany = Backbone.View.extend({
 */
     click_selection: function (evt) {
         //if($(evt.currentTarget).data('id')!=='cbxAll'){
-            this.$el.trigger('selection');
+            this.$el.trigger('selection.many');
         //}
     },
 
@@ -364,7 +364,7 @@ Evol.ViewMany = Backbone.View.extend({
         var isChecked=this.$('[data-id="cbxAll"]').prop('checked');
         //this.$('.list-sel:checked').not('[data-id="cbxAll"]');
         this.$('.list-sel').prop('checked', isChecked);
-        this.$el.trigger('selection');
+        this.$el.trigger('selection.many');
     }
 
 });

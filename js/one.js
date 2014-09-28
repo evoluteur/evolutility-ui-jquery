@@ -407,7 +407,7 @@ Evol.ViewOne = Backbone.View.extend({
             tab.addClass('active');
         }
         this._tabId = tabId;
-        this.$el.trigger('tab.show', {id:tabId});
+        this.$el.trigger('show.tab', {id:tabId});
         return this;
     },
 
@@ -967,7 +967,7 @@ Evol.ViewOne = Backbone.View.extend({
                     .addClass(cssDown);
             }
         }
-        this.$el.trigger('panel.toggle');
+        this.$el.trigger('toggle.panel');
     },
 
     click_tab: function (evt) {

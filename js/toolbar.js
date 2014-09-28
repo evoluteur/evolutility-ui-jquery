@@ -12,11 +12,12 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     events: {
         'click .nav a': 'click_toolbar',
-        'list.navigate >div': 'click_navigate',
-        'list.paginate >div': 'paginate',
+        'navigate.many >div': 'click_navigate',
+        'paginate.many >div': 'paginate',
+        //'selection.many >div': 'click_select',
         'action >div': 'action_view',
         'status >div': 'status_update',
-        'filter.change >div': 'change_filter',
+        'change.filter >div': 'change_filter',
         'click .alert-dismissable>button': 'clearMessage',
         'message >div':'showMessage'
     },
