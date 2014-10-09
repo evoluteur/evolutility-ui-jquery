@@ -791,7 +791,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 }
                 break;
         }
-        this.$el.trigger('toolbar.'+toolId);
+        this.$el.trigger('toolbar.'+toolId); // toolId+'.toolbar' ?
     },
 
     click_navigate: function(evt, ui){
@@ -818,6 +818,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             this.setStatus(collec.length+' '+this.uiModel.entities);
         }
         this._flagFilterIcon(fvs.length);
+        this.pageIndex=0;
         this.curView.setCollection(collec)
             .render();
     }

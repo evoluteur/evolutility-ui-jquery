@@ -180,11 +180,10 @@ Evol.UI = {
             return ['<input type="hidden" name="', id, '" id="', id, '" value="', value.replace(/"/g,'\"'), '"/>'].join('');
         },
         selectBegin: function (id, css, emptyOption) {
-            var h=['<select id="', id, '" class="form-control ',css,'">'];
-            if(emptyOption){
-                h.push(Evol.UI.html.emptyOption);
-            }
-            return h.join('');
+            return [
+                '<select id="', id, '" class="form-control ',css,'">',
+                emptyOption?Evol.UI.html.emptyOption:''
+            ].join('');
         },
         select:function (id, value, css, emptyOption, list) {
             return [
@@ -328,23 +327,18 @@ Evol.UI = {
         },
 
         HTMLModal: function(id, title, msg, bOK, bCancel) {
-            var h=[
+            return [
                 '<div class="modal fade" id="', id, '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">',
                 '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">',
                 '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>',
                 '<h4 class="modal-title">', title, '</h4>',
                 '</div>',
                 '<div class="modal-body">', msg, '</div>',
-                '<div class="modal-footer">'
-            ];
-            if(bCancel){
-                h.push(this._HTMLButton(bCancel, 'btn-default'));
-            }
-            if(bOK){
-                h.push(this._HTMLButton(bOK, 'btn-primary'));
-            }
-            h.push('</div></div></div></div>');
-            return h.join('');
+                '<div class="modal-footer">',
+                bCancel?this._HTMLButton(bCancel, 'btn-default'):'',
+                bOK?this._HTMLButton(bOK, 'btn-primary'):'',
+                '</div></div></div></div>'
+            ].join('');
         },
 
         _HTMLButton: function(label, css){
@@ -438,17 +432,15 @@ Evol.UI = {
         if(word && word.length>0){
             //return _.capitalize(word);
             return word.substring(0,1).toUpperCase() + word.substring(1);//.toLowerCase();
-        }else{
-            return '';
         }
+        return '';
     },
 
     trim: function(stringValue){ // TODO use _.trim(word);
         if(_.isString(stringValue) && stringValue!==''){
-            return stringValue.replace(/^\s+|\s+$/g,'');
-        }else{
-            return '';
+            return stringValue.replace(/^\s+|\s+$/g, '');
         }
+        return '';
     },
 
     setVisible: function($e, visible){
@@ -3889,51 +3881,66 @@ Evol.Dico = {
         //'doc': Evol.ViewAction.Doc
     },
 
+
     fieldConditions: {
-        'eq': function(vm, vf){ // equals
-            return vf==vm;
+        // filter functions take parameters fv=fieldValue, cv=condition value, cv2
+        // equals
+        'eq': function(fv, cv){
+            return cv==fv;
         },
-        'ne': function(vm, vf){ // not equal
-            return vf!=vm;
+        // not equal
+        'ne': function(fv, cv){
+            return cv!=fv;
         },
-        'gt': function(vm, vf){ // > or after
-            return vm>vf;
+        // > or after
+        'gt': function(fv, cv){
+            return fv>cv;
         },
-        'lt': function(vm, vf){ // < or before
-            return vm<vf;
+        // < or before
+        'lt': function(fv, cv){
+            return fv<cv;
         },
-        'bw': function(vm, vf, vf2){ // between
-            return !(vf>vm || vm>vf2);
+        // between
+        'bw': function(fv, cv, cv2){
+            return !(cv>fv || fv>cv2);
         },
-        'sw': function(vm, vf){ // start w/
-            return vm.toLocaleLowerCase().indexOf(vf)===0;
+        // start w/
+        'sw': function(fv, cv){
+            return fv.toLocaleLowerCase().indexOf(cv)===0;
         },
-        'ct': function(vm, vf){ // contain
-            return vm.toLocaleLowerCase().indexOf(vf)>-1;
+        // contains
+        'ct': function(fv, cv){
+            return fv.toLocaleLowerCase().indexOf(cv)>-1;
         },
-        'fw': function(vm, vf){ // finish w/
-            var l1=vm.length,
-                l2=vf.length;
+        // finish w/
+        'fw': function(fv, cv){
+            var l1=fv.length,
+                l2=cv.length;
             if (l1<l2){
                 return false;
             }else{
-                return vm.toLocaleLowerCase().substring(l1-l2)===vf;
+                return fv.toLocaleLowerCase().substring(l1-l2)===cv;
             }
         },
-        'null': function(vm, vf){
-            return  vm=='' || _.isUndefined(vm);
+        // empty
+        'null': function(fv, cv){
+            return  fv=='' || _.isUndefined(fv);
         },
-        'nn': function(vm, vf){ // not null
-            return !(_.isUndefined(vm) || vm=='');
+        // not null
+        'nn': function(fv, cv){
+            return !(_.isUndefined(fv) || fv=='');
         },
-        'in': function(vm, vf){ // in []
-            return  _.contains(vf.split(','),vm);
+        // in []
+        'in': function(fv, cv){
+            return  _.contains(cv.split(','),fv);
         },
-        '1': function(vm, vf){ // true
-            return vm;
+        // true
+        '1': function(fv, cv){
+            return fv;
         },
-        '0': function(vm, vf){ // false
-            return !vm;
+        // false
+        '0': function(fv, cv){
+            return !fv;
         }
     },
 
@@ -5153,7 +5160,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 }
                 break;
         }
-        this.$el.trigger('toolbar.'+toolId);
+        this.$el.trigger('toolbar.'+toolId); // toolId+'.toolbar' ?
     },
 
     click_navigate: function(evt, ui){
@@ -5180,6 +5187,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             this.setStatus(collec.length+' '+this.uiModel.entities);
         }
         this._flagFilterIcon(fvs.length);
+        this.pageIndex=0;
         this.curView.setCollection(collec)
             .render();
     }

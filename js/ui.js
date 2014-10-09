@@ -177,11 +177,10 @@ Evol.UI = {
             return ['<input type="hidden" name="', id, '" id="', id, '" value="', value.replace(/"/g,'\"'), '"/>'].join('');
         },
         selectBegin: function (id, css, emptyOption) {
-            var h=['<select id="', id, '" class="form-control ',css,'">'];
-            if(emptyOption){
-                h.push(Evol.UI.html.emptyOption);
-            }
-            return h.join('');
+            return [
+                '<select id="', id, '" class="form-control ',css,'">',
+                emptyOption?Evol.UI.html.emptyOption:''
+            ].join('');
         },
         select:function (id, value, css, emptyOption, list) {
             return [
@@ -325,23 +324,18 @@ Evol.UI = {
         },
 
         HTMLModal: function(id, title, msg, bOK, bCancel) {
-            var h=[
+            return [
                 '<div class="modal fade" id="', id, '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">',
                 '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">',
                 '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>',
                 '<h4 class="modal-title">', title, '</h4>',
                 '</div>',
                 '<div class="modal-body">', msg, '</div>',
-                '<div class="modal-footer">'
-            ];
-            if(bCancel){
-                h.push(this._HTMLButton(bCancel, 'btn-default'));
-            }
-            if(bOK){
-                h.push(this._HTMLButton(bOK, 'btn-primary'));
-            }
-            h.push('</div></div></div></div>');
-            return h.join('');
+                '<div class="modal-footer">',
+                bCancel?this._HTMLButton(bCancel, 'btn-default'):'',
+                bOK?this._HTMLButton(bOK, 'btn-primary'):'',
+                '</div></div></div></div>'
+            ].join('');
         },
 
         _HTMLButton: function(label, css){
@@ -435,17 +429,15 @@ Evol.UI = {
         if(word && word.length>0){
             //return _.capitalize(word);
             return word.substring(0,1).toUpperCase() + word.substring(1);//.toLowerCase();
-        }else{
-            return '';
         }
+        return '';
     },
 
     trim: function(stringValue){ // TODO use _.trim(word);
         if(_.isString(stringValue) && stringValue!==''){
-            return stringValue.replace(/^\s+|\s+$/g,'');
-        }else{
-            return '';
+            return stringValue.replace(/^\s+|\s+$/g, '');
         }
+        return '';
     },
 
     setVisible: function($e, visible){
