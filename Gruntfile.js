@@ -77,6 +77,7 @@ module.exports = function (grunt) {
                     separator: ';\n'
                     },
                 src: [
+                    "demo/demo.js",
                     "js/ui-models/apps/todo.js",
                     "js/ui-models/apps/todo.data.js",
                     "js/ui-models/apps/contacts.js",

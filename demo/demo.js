@@ -9,9 +9,29 @@
  *
  *************************************************************************** */
 
+//TODO consolidate this code
 var uidef=null;
 
-//TODO consolidate this code
+function createSampleDataIfEmpty(entityName){
+    var lc = new Backbone.LocalStorage('evol-'+entityName),
+        M = Backbone.Model.extend({
+            localStorage: lc
+        }),
+        Ms = Backbone.Collection.extend({
+            model: M,
+            localStorage: lc
+        }),
+        ms = new Ms();
+    ms.fetch({
+        success: function(collection){
+            // TODO remove sample data
+            if(collection.length===0){
+                Evol.UI.insertCollection(collection, uiModels[entityName+'_data']);
+            }
+        }
+    });
+}
+
 function showUIdef(uiModel){
     if(uidef){
         $('#uimodel').slideUp();

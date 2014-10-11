@@ -13,7 +13,7 @@
 
     <script src="demo-ui.min.js" type="text/javascript"></script>
     <script src="../dist/vendors.min.js" type="text/javascript"></script>
-    <script src="../dist/evolutility.js" type="text/javascript"></script>
+    <script src="../dist/evolutility.min.js" type="text/javascript"></script>
 
     <title id="headTitle">Evolutility Demo</title>
 </head>
@@ -95,8 +95,7 @@
     });
 
     function showUIdef2(uiModel){
-        var $ui=$('#uimodel');
-        $ui.html(Evol.UI.input.textMJSON('uimodel2', uiModel, 10))
+        $('#uimodel').html(Evol.UI.input.textMJSON('uimodel2', uiModel, 10))
             .slideDown();
         $('#hide_def').show();
     }
@@ -104,26 +103,6 @@
     function showUIdef2no(){
         $('#uimodel').slideUp();
         $('#hide_def').hide();
-    }
-
-    function createSampleDataIfEmpty(entityName){
-        var lc = new Backbone.LocalStorage('evol-'+entityName),
-            M = Backbone.Model.extend({
-                localStorage: lc
-            }),
-            Ms = Backbone.Collection.extend({
-                model: M,
-                localStorage: lc
-            }),
-            ms = new Ms();
-        ms.fetch({
-            success: function(collection){
-                // TODO remove sample data
-                if(collection.length===0){
-                    Evol.UI.insertCollection(collection, uiModels[entityName+'_data']);
-                }
-            }
-        });
     }
 
 </script>
