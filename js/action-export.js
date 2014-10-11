@@ -43,6 +43,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
     _renderHTML: function () {
         var h = [],
+            formats = this.options.formats,
             EvoUI = Evol.UI,
             fields = this.getFields(),
             iMax = fields.length,
@@ -50,7 +51,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
         h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds">',
             '<div><label>', i18nXpt.xpFields, '</label></div>',
-             '<fieldset>'
+            '<fieldset>'
         );
 
         //### list of columns to export #########################################
@@ -72,11 +73,13 @@ Evol.ViewAction.Export = Backbone.View.extend({
         h.push('</fieldset></div><div class="evol-xpt-para">');
         //##### export formats ########################################
         var fId = 'evol-xpt-format',
-            formatsList = [];
+            formatsList = _.map(formats, function(format){
+                    return {
+                        id: format,
+                        text: i18nXpt['format'+format]
+                    };
+                });
         h.push('<label for="', fId, '">', i18nXpt.format, '</label>');
-        _.each(this.options.formats, function(format){
-            formatsList.push({id: format, text: i18nXpt['format'+format]});
-        });
         h.push(EvoUI.input.select(fId, '', 'evol-xpt-format', false, formatsList));
         fId = 'xptFLH';
         h.push('<div class="evol-xpt-opts">',
@@ -92,7 +95,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             EvoUI.input.text('separator', ',', '0'),
             '</div>', // </div>
         '</div>');
-        _.each(['XML','HTML','SQL','JSON'], function(f){
+        _.each([formats.shift()], function(f){
             h.push('<div id="xpt', f, '" style="display:none;"></div>');
         });
         h.push('</div>',
