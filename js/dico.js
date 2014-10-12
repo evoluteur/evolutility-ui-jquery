@@ -476,11 +476,7 @@ Evol.Dico = {
     HTMLFieldLink: function (id, fld, value, icon, noLink, route) {
         var h=[];
         if(!noLink){
-            if(route){
-                h.push('<a href="', route, '" id="', id, '" class="evol-nav-id">');
-            }else{
-                h.push('<a href="javascript:void(0);" id="', id, '" class="evol-nav-id">');
-            }
+            h.push('<a href="', route?route:'javascript:void(0);', '" id="', id, '" class="evol-nav-id">');
         }
         if (icon) {
             h.push('<img class="evol-many-icon" src="', icon, '">');

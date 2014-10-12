@@ -517,12 +517,6 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                         fv.label=vval;
                         fv.value=vval.toLocaleLowerCase();
                         break;
-                    case ft.int:
-                    case ft.dec:
-                    case ft.time:
-                        fv.label=vval;
-                        fv.value=vval;
-                        break;
                     case ft.date:
                     case ft.datetime:
                         fv.value=formattedDate(vval);
@@ -531,7 +525,6 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                     default:
                         fv.label=vval;
                         fv.value=vval;
-                        break;
                 }
                 if(opVal==fOps.sBetween){
                     vval = v.next().next().val();
@@ -549,11 +542,11 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     },
 
     _hiddenValue: function(h, filter, idx){
-        var fHidden=Evol.UI.hidden;
+        var fHidden=Evol.UI.hidden,
+            v2=filter.value.value2;
         h.push(fHidden('fld-'+idx, filter.field.value),
             fHidden('op-'+idx, filter.operator.value),
             fHidden('val-'+idx, filter.value.value));
-        var v2=filter.value.value2;
         if(v2){
             h.push(fHidden('val2-'+idx, v2));
         }
