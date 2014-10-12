@@ -53,7 +53,10 @@ Evol.i18n = {
 
     // --- msg & status ---
     saved: '{0} saved.',
-    unSavedChanges: 'You have unsaved changes.\nClick OK to navigate without saving your changes.',
+    unSavedTitle: 'Changes pending',
+    unSavedChanges: 'Do you want to save the changes you made to "{0}"?',
+    warnNoSave: 'Your changes will be lost if you don\'t save them.',
+    bNoSave: 'Don\'t Save',
     deleteX:'Delete {0}',// {0}=entity
     delete1:'Do you really want to delete the {0} "{1}"?', // {0}=entity {1}=leadfield value,
     deleteN: 'Delete {0} {1}?', // delete 5 tasks
@@ -62,7 +65,7 @@ Evol.i18n = {
     notFound:'Item not found.',
     //this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity);
     notFoundMsg:'No {0} found.',
-    notFoundMsgId:'No {0} found for ID="(1}".',
+    notFoundMsgId:'No {0} found for ID="{1}".',
 
     NoChange:'No Change',
     NoX:'No {0}',

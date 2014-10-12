@@ -181,6 +181,9 @@ label {
 .evo-msg ul {
   margin-top: 10px;
 }
+#isDirty [data-id="nosave"] {
+  float: left;
+}
 .evo-color-box {
   height: 20px;
   width: 20px;

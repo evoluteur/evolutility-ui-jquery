@@ -75,6 +75,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     _toolbarHTML: function(){
         var h=[],
+            i18n=Evol.i18n,
             eui=Evol.UI.menu,
             opts=this.options,
             endMenu='</ul></li>',
@@ -82,7 +83,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             menuDeviderH='<li class="divider-h"></li>';
 
         function linkOpt2h (id, label, icon, cardi){
-            if(opts.buttons && opts.buttons[id]){
+            if(opts.buttons[id]){
                 h.push(eui.hItem(id, label, icon, cardi));
             }
         }
@@ -91,13 +92,13 @@ Evol.ViewToolbar = Backbone.View.extend({
         linkOpt2h('list','','th-list'); // linkOpt2h('list',Evol.i18n.bAll,'th-list');
         linkOpt2h('new','','plus'); // linkOpt2h('new',Evol.i18n.bNew,'plus');
         h.push(menuDeviderH);
-        linkOpt2h('edit',Evol.i18n.bEdit,'pencil','1');
-        linkOpt2h('save',Evol.i18n.bSave,'floppy-disk','1');
-        linkOpt2h('del',Evol.i18n.bDelete,'trash','1');
-        linkOpt2h('filter',Evol.i18n.bFilter,'filter','n');
+        linkOpt2h('edit',i18n.bEdit,'pencil','1');
+        linkOpt2h('save',i18n.bSave,'floppy-disk','1');
+        linkOpt2h('del',i18n.bDelete,'trash','1');
+        linkOpt2h('filter',i18n.bFilter,'filter','n');
         //linkOpt2h('group','Group','resize-horizontal','n');
-        linkOpt2h('charts',Evol.i18n.bCharts,'stats','n');
-        linkOpt2h('export',Evol.i18n.bExport,'cloud-download','n');
+        linkOpt2h('charts',i18n.bCharts,'stats','n');
+        linkOpt2h('export',i18n.bExport,'cloud-download','n');
         //linkOpt2h('selections','','star');
         if(opts.toolbar){
             h.push('</ul><ul class="nav nav-pills pull-right" data-id="views">',
@@ -139,12 +140,17 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
 	},
 
-	setView:function(viewName, updateRoute, skipIcons){
-		var opts=this.options,
+    isDirty:function(){
+        // -- true if current view had unsaved values
+        return (this.curView && this.curView.isDirty && this.curView.isDirty())?true:false;
+    },
+
+    _setView:function(viewName, updateRoute, skipIcons){
+        var opts=this.options,
             $e=this.$el,
             eid ='evolw-'+viewName,
-			$v=this.$('[data-vid="'+eid+'"]'),
-			vw=this.curView,
+            $v=this.$('[data-vid="'+eid+'"]'),
+            vw=this.curView,
             config,
             collec=this._curCollec();
 
@@ -212,7 +218,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     router: this.router
                 };
                 this.$('[data-id="new"]').show();
-                this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
+                this.$('[data-id="views"] > li').removeClass('evo-sel')
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
                 switch(viewName){
                     // --- many ---
@@ -271,8 +277,8 @@ Evol.ViewToolbar = Backbone.View.extend({
             //}
             if(updateRoute){
                 /*if(!this.model){
-                    alert('Error: Invalid route.');
-                }*/
+                 alert('Error: Invalid route.');
+                 }*/
                 this.setRoute(this.model?this.model.id:null, false);
             }
             this.hideFilter();
@@ -280,6 +286,13 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(!skipIcons){
             this.setIcons(viewName);
         }
+    },
+
+	setView:function(viewName, updateRoute, skipIcons){
+        var that=this;
+        this.proceedIfReady(function(){
+            that._setView(viewName, updateRoute, skipIcons);
+        });
         return this;
     },
 
@@ -297,6 +310,42 @@ Evol.ViewToolbar = Backbone.View.extend({
             }
         }
     },
+
+    proceedIfReady:function(callback){
+    // -- execute callback if not dirty or after prompt...
+        var that=this,
+            i18n=Evol.i18n,
+            msg;
+        if(this.isDirty()){
+            msg=i18n.unSavedChanges.replace('{0}', this.curView.getTitle())+
+                '<br><br>'+i18n.warnNoSave;
+            Evol.UI.modal.confirm(
+                'isDirty',
+                i18n.unSavedTitle,
+                msg,
+                {
+                    nosave: function(){
+                        callback();
+                    },
+                    ok: function(){
+                        if(that.curView.validate().length===0){
+                            that.saveItem(false, true);
+                            callback();
+                        }
+                    }
+                },
+                [
+                    {id:'nosave', text:Evol.i18n.bNoSave, class:'btn-default'},
+                    {id:'cancel', text:Evol.i18n.bCancel, class:'btn-default'},
+                    {id:'ok', text:Evol.i18n.bSave, class:'btn-primary'}
+                ]
+            );
+        }else{
+            callback();
+        }
+        return this;
+    },
+
     /*
     _keepTab: function(viewName){
         if(this.tabId && (viewName=='view'||viewName=='edit')){
@@ -509,13 +558,13 @@ Evol.ViewToolbar = Backbone.View.extend({
         return this;
     },
 
-    saveItem: function(saveAndAdd){
+    saveItem: function(saveAndAdd, skipValidation){
         var that=this,
             vw=this.curView,
-            msgs=vw.validate();
+            msgs=skipValidation?[]:vw.validate();
 
         function fnSuccess(m){
-            if (saveAndAdd) {
+            if(saveAndAdd) {
                 that.newItem();
             }else{
                 m.unset(''); // TODO why is there a "" prop?
@@ -594,43 +643,45 @@ Evol.ViewToolbar = Backbone.View.extend({
                 Evol.UI.modal.confirm(
                     'delete',
                     i18n.getLabel('deleteX', entityName),
-                    i18n.getLabel('delete1', entityName, _.escape(entityValue)), i18n.bOK, i18n.bCancel,
-                    // if OK clicked
-                    function(){
-                        var collec=that.collection,
-                            delIdx=_.indexOf(collec.models, delModel),
-                            newIdx=delIdx,
-                            newModel=null;
+                    i18n.getLabel('delete1', entityName, _.escape(entityValue)),
+                    {
+                        'ok': function(){
+                            var collec=that.collection,
+                                delIdx=_.indexOf(collec.models, delModel),
+                                newIdx=delIdx,
+                                newModel=null;
 
-                        if(collec.length>1){
-                            if(delIdx===0){
-                                newIdx=1;
-                            }else if(delIdx<collec.length-1){
-                                newIdx=delIdx+1;
-                            }else{
-                                newIdx=delIdx-1;
-                            }
-                            newModel = collec.at(newIdx);
-                        }
-                        if(newModel){
-                            newModel.collection = collec;
-                        }
-                        delModel.destroy({
-                            success:function(){
-                                if(newModel===null || collec.length===0){
-                                    that.curView.clear();
+                            if(collec.length>1){
+                                if(delIdx===0){
+                                    newIdx=1;
+                                }else if(delIdx<collec.length-1){
+                                    newIdx=delIdx+1;
                                 }else{
-                                    that.model = newModel;
-                                    that.curView.setModel(newModel);
+                                    newIdx=delIdx-1;
                                 }
-                                var eName=Evol.UI.capitalize(entityName);
-                                that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('status.deleted', eName, entityValue), 'success');
-                            },
-                            error:function(m, err){
-                                alert('error in "deleteItem"');
+                                newModel = collec.at(newIdx);
                             }
-                        });
-                    });
+                            if(newModel){
+                                newModel.collection = collec;
+                            }
+                            delModel.destroy({
+                                success:function(){
+                                    if(newModel===null || collec.length===0){
+                                        that.curView.clear();
+                                    }else{
+                                        that.model = newModel;
+                                        that.curView.setModel(newModel);
+                                    }
+                                    var eName=Evol.UI.capitalize(entityName);
+                                    that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('status.deleted', eName, entityValue), 'success');
+                                },
+                                error:function(m, err){
+                                    alert('error in "deleteItem"');
+                                }
+                            });
+                        }
+                    }
+                );
             }
         }else{
             if(that.curView.getSelection){
@@ -768,9 +819,10 @@ Evol.ViewToolbar = Backbone.View.extend({
             case 'prev':
             case 'next':
                 if(this.curView.cardinality==='1'){
-                    //if(this._ok2go()){
-                        this.browse(toolId);
-                    //}
+                    var that=this;
+                    this.proceedIfReady(function(){
+                        that.browse(toolId);
+                    });
                 }else if(this.curView.cardinality==='n'){
                     this.paginate(toolId);
                 }
@@ -789,7 +841,6 @@ Evol.ViewToolbar = Backbone.View.extend({
                 if(toolId && toolId!==''){
                     this.setView(toolId, true);
                 }
-                break;
         }
         this.$el.trigger('toolbar.'+toolId); // toolId+'.toolbar' ?
     },
@@ -801,6 +852,9 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     change_filter: function(evt){
+        if(evt.namespace!=='filter'){
+            return;
+        }
         var fvs=this._filters.val(),
             collec;
         if(fvs.length){

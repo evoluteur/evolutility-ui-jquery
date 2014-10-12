@@ -301,45 +301,55 @@ Evol.UI = {
     modal:{
 
         alert: function(title, msg){
-            var $m=$(this.HTMLModal('alert', title, msg, Evol.i18n.bOK))
+            var $m=$(this.HTMLModal('alert', title, msg, [{
+                    id:'ok',
+                    text: Evol.i18n.bOK,
+                    class: 'btn-primary'
+                }]))
+                .on('click', 'button', function(evt){
+                    $m.remove();
+                })
+                .modal('show');
+        },
+
+        confirm: function(id, title, msg, callbacks, buttons){
+            var $m=$(this.HTMLModal(id, title, msg, buttons))
                     .on('click', 'button', function(evt){
+                        var bId=$(evt.currentTarget).data('id');
+                        if(callbacks && callbacks[bId]){
+                            callbacks[bId]();
+                        }
                         $m.remove();
                     })
                     .modal('show');
         },
 
-        confirm: function(id, title, msg, bOK, bCancel, cbOK, cbCancel){
-            var $m=$(this.HTMLModal(id, title, msg, bOK, bCancel))
-                    .on('click', 'button', function(evt){
-                        var isOK=$(evt.currentTarget).hasClass('btn-primary');
-                        if(isOK && cbOK){
-                            cbOK();
-                        }
-                        if(!isOK && cbCancel){
-                            cbCancel();
-                        }
-                        $m.remove();
-                    })
-                    .modal('show');
-        },
-
-        HTMLModal: function(id, title, msg, bOK, bCancel) {
-            return [
+        HTMLModal: function(id, title, msg, buttons) {
+            var that=this,
+                h = [
                 '<div class="modal fade" id="', id, '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">',
                 '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">',
                 '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>',
                 '<h4 class="modal-title">', title, '</h4>',
                 '</div>',
                 '<div class="modal-body">', msg, '</div>',
-                '<div class="modal-footer">',
-                bCancel?this._HTMLButton(bCancel, 'btn-default'):'',
-                bOK?this._HTMLButton(bOK, 'btn-primary'):'',
-                '</div></div></div></div>'
-            ].join('');
+                '<div class="modal-footer">'];
+
+            if(!buttons){
+                buttons=[
+                    {id:'cancel', text:Evol.i18n.bCancel, class:'btn-default'},
+                    {id:'ok', text:Evol.i18n.bOK, class:'btn-primary'}
+                ];
+            }
+            _.each(buttons, function(b){
+                h.push(that._HTMLButton(b.id, b.text, b.class));
+            });
+            h.push('</div></div></div></div>');
+            return h.join('');
         },
 
-        _HTMLButton: function(label, css){
-            return ['<button type="button" class="btn ', css, '" data-dismiss="modal">', label, '</button>'].join('');
+        _HTMLButton: function(id, label, css){
+            return ['<button data-id="', id, '" type="button" class="btn ', css, '" data-dismiss="modal">', label, '</button>'].join('');
         }
     },
 
