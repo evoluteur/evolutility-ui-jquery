@@ -324,6 +324,8 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     isDirty: function(){
+        return false; // TODO not ready yet
+        // TODO fix it
         function nullOrUndef(v){
             return v==='' || _.isUndefined(v) || v===null || v===false;
         }
