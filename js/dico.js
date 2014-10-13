@@ -54,7 +54,6 @@ Evol.Dico = {
         //'doc': Evol.ViewAction.Doc
     },
 
-
     fieldConditions: {
         // filter functions take parameters fv=fieldValue, cv=condition value, cv2
         // equals
@@ -117,6 +116,10 @@ Evol.Dico = {
         }
     },
 
+    isNumberType: function(fType){
+        var ft=Evol.Dico.fieldTypes;
+        return fType===ft.int || fType===ft.dec || fType===ft.money;
+    },
     // get all "shallow" fields (no sub collections) from a UI model
     getFields: function (uiModel, fnFilter) {
         var fs = [];

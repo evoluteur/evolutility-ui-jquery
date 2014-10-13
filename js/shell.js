@@ -28,6 +28,7 @@ Evol.Shell = Backbone.View.extend({
         this.options=_.extend({}, this.options, opts);
         this.options.uiModels = _.flatten(this.options.uiModelsObj);
         this._tbs={};
+        this._ents={};
         var es = this.options.elements;
         //this.$nav = $(es.nav);
         this.$nav2 = $(es.nav2);
@@ -68,9 +69,9 @@ Evol.Shell = Backbone.View.extend({
     },
 
     setRoute: function(id, triggerRoute){
-        var cView = this._curEntity.curView;
+        var cView = this._tbs[this._curEntity].curView;
         if(cView){
-            Evol.Dico.setRoute(this.options.router, cView.getTitle(), cView.uiModel.id, cView.viewName, id, triggerRoute);
+            Evol.Dico.setRoute(this.router, cView.getTitle(), cView.uiModel.id, cView.viewName, id, triggerRoute);
         }else{
             alert('Error: Invalid route.');
         }
@@ -82,6 +83,24 @@ Evol.Shell = Backbone.View.extend({
     },
 
     setEntity: function(eName, view, options){
+        var that=this,
+            tb=this._tbs[this._curEntity],
+            cbOK=function(){
+                that._setEntity(eName, view, options);
+            },
+            cbCancel=function(){
+                //TODO case w/ no/new model
+                that.setRoute(tb.curView.model.id, false);
+            };
+
+        if(this._curEntity){
+            tb.proceedIfReady(cbOK, cbCancel);
+        }else{
+            cbOK();
+        }
+    },
+
+    _setEntity: function(eName, view, options){
         var that=this;
 
         view = view || 'list';
@@ -90,7 +109,7 @@ Evol.Shell = Backbone.View.extend({
             that._ents[eName].show().siblings().hide();
             var tb=that._tbs[eName];
             if(tb){
-                that._curEntity = tb;
+                that._curEntity = eName;
                 tb.setView(view, false, false) //tb.setView(view, true, false)
                     .setTitle();
                 if(options){
@@ -104,9 +123,6 @@ Evol.Shell = Backbone.View.extend({
             }
         }
 
-        if(!this._ents){
-            this._ents={};
-        }
         if(this._ents[eName]){
             cb();
         }else{

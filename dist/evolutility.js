@@ -1685,7 +1685,7 @@ Evol.ViewOne = Backbone.View.extend({
         }
         if(this.editable){
             var fs= this.getFields(),
-                ft=Evol.Dico.fieldTypes,
+                isNumType=Evol.Dico.isNumberType,
                 data=this.getData(),
                 model=this.model,
                 i,
@@ -1699,15 +1699,20 @@ Evol.ViewOne = Backbone.View.extend({
                     prop = f.attribute || f.id,
                     dataVal = data[prop],
                     modelVal = model.get(prop);
-                noModelVal = nullOrUndef(modelVal);
-                noDataVal = nullOrUndef(dataVal) || (isNaN(dataVal) && (f.type===ft.int || f.type===ft.dec || f.type===ft.money));
-                if(_.isArray(modelVal)){
-                    if(!_.isEqual(modelVal, dataVal)){
+
+                if(isNumType(f.type) && ((isNaN(dataVal) && !isNaN(modelVal)) || (isNaN(modelVal) && !isNaN(dataVal)))){
+                    return true;
+                }else{
+                    noModelVal = nullOrUndef(modelVal);
+                    noDataVal = nullOrUndef(dataVal);
+                    if(_.isArray(modelVal)){
+                        // TODO compare arrays?
+                        if(!_.isEqual(modelVal, dataVal)){
+                            return true;
+                        }
+                    }else if(!(dataVal == modelVal || (noDataVal && noModelVal))) {
                         return true;
                     }
-                    // TODO compare arrays?
-                }else if(!(dataVal == modelVal || (noDataVal && noModelVal))) {
-                    return true;
                 }
             }
             if(subCollecs){
@@ -2083,7 +2088,8 @@ Evol.ViewOne = Backbone.View.extend({
 
     validateField: function(f, v){
         var i18nVal = Evol.i18n.validation,
-            ft = Evol.Dico.fieldTypes;
+            ft = Evol.Dico.fieldTypes,
+            numberField = Evol.Dico.isNumberType(f.type);
 
         function formatMsg(fLabel, msg, r2, r3){
             return msg.replace('{0}', fLabel)
@@ -2095,7 +2101,7 @@ Evol.ViewOne = Backbone.View.extend({
 
             // Check required and empty
             if (f.required && (v==='' ||
-                    ((f.type===ft.int || f.type===ft.dec || f.type===ft.money) && isNaN(v)) ||
+                    (numberField && isNaN(v)) ||
                     (f.type===ft.lov && v==='0') ||
                     (f.type===ft.list && v.length===0) ||
                     (f.type===ft.color && v==='#000000'))){
@@ -2103,7 +2109,7 @@ Evol.ViewOne = Backbone.View.extend({
             } else {
 
                 // Check field type
-                if( !(isNaN(v) && (f.type===ft.int || f.type===ft.dec || f.type===ft.money))) {
+                if( !(isNaN(v) && numberField)) {
                     if (v !== '' && !_.isArray(v)){
                         switch (f.type) {
                             case ft.int:
@@ -2139,7 +2145,7 @@ Evol.ViewOne = Backbone.View.extend({
                 }
 
                 // Check min & max
-                if (f.type === ft.int || f.type === ft.dec || f.type === ft.money) {
+                if (numberField) {
                     if (v !== '') {
                         if (f.max && parseFloat(v) > f.max) {
                             return formatMsg(f.label, i18nVal.max, f.max);
@@ -3890,7 +3896,6 @@ Evol.Dico = {
         //'doc': Evol.ViewAction.Doc
     },
 
-
     fieldConditions: {
         // filter functions take parameters fv=fieldValue, cv=condition value, cv2
         // equals
@@ -3953,6 +3958,10 @@ Evol.Dico = {
         }
     },
 
+    isNumberType: function(fType){
+        var ft=Evol.Dico.fieldTypes;
+        return fType===ft.int || fType===ft.dec || fType===ft.money;
+    },
     // get all "shallow" fields (no sub collections) from a UI model
     getFields: function (uiModel, fnFilter) {
         var fs = [];
@@ -4483,8 +4492,8 @@ Evol.ViewToolbar = Backbone.View.extend({
 
             h.push(eui.hBegin('views','li','eye-open'));
             linkOpt2h('view','View','file','1');
-            linkOpt2h('edit','All Fields','th','1');
-            linkOpt2h('mini','Mini','th-large','1'); //Important Fields only
+            linkOpt2h('edit','Edit','th','1'); // All Fields
+            linkOpt2h('mini','Mini','th-large','1'); // Important Fields only
             linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
             h.push(menuDevider);
@@ -4685,29 +4694,32 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
     },
 
-    proceedIfReady:function(callback){
+    proceedIfReady:function(cbOK, cbCancel){
     // -- execute callback if not dirty or after prompt...
         var that=this,
             i18n=Evol.i18n,
-            msg;
+            msg,
+            cbs;
         if(this.isDirty()){
             msg=i18n.unSavedChanges.replace('{0}', this.curView.getTitle())+
                 '<br><br>'+i18n.warnNoSave;
+            cbs={
+                nosave: cbOK,
+                ok: function(){
+                    if(that.curView.validate().length===0){
+                        that.saveItem(false, true);
+                        cbOK();
+                    }
+                }
+            };
+            if(cbCancel){
+                cbs.cancel = cbCancel;
+            }
             Evol.UI.modal.confirm(
                 'isDirty',
                 i18n.unSavedTitle,
                 msg,
-                {
-                    nosave: function(){
-                        callback();
-                    },
-                    ok: function(){
-                        if(that.curView.validate().length===0){
-                            that.saveItem(false, true);
-                            callback();
-                        }
-                    }
-                },
+                cbs,
                 [
                     {id:'nosave', text:Evol.i18n.bNoSave, class:'btn-default'},
                     {id:'cancel', text:Evol.i18n.bCancel, class:'btn-default'},
@@ -4715,7 +4727,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 ]
             );
         }else{
-            callback();
+            cbOK();
         }
         return this;
     },
@@ -5298,6 +5310,7 @@ Evol.Shell = Backbone.View.extend({
         this.options=_.extend({}, this.options, opts);
         this.options.uiModels = _.flatten(this.options.uiModelsObj);
         this._tbs={};
+        this._ents={};
         var es = this.options.elements;
         //this.$nav = $(es.nav);
         this.$nav2 = $(es.nav2);
@@ -5338,9 +5351,9 @@ Evol.Shell = Backbone.View.extend({
     },
 
     setRoute: function(id, triggerRoute){
-        var cView = this._curEntity.curView;
+        var cView = this._tbs[this._curEntity].curView;
         if(cView){
-            Evol.Dico.setRoute(this.options.router, cView.getTitle(), cView.uiModel.id, cView.viewName, id, triggerRoute);
+            Evol.Dico.setRoute(this.router, cView.getTitle(), cView.uiModel.id, cView.viewName, id, triggerRoute);
         }else{
             alert('Error: Invalid route.');
         }
@@ -5352,6 +5365,24 @@ Evol.Shell = Backbone.View.extend({
     },
 
     setEntity: function(eName, view, options){
+        var that=this,
+            tb=this._tbs[this._curEntity],
+            cbOK=function(){
+                that._setEntity(eName, view, options);
+            },
+            cbCancel=function(){
+                //TODO case w/ no/new model
+                that.setRoute(tb.curView.model.id, false);
+            };
+
+        if(this._curEntity){
+            tb.proceedIfReady(cbOK, cbCancel);
+        }else{
+            cbOK();
+        }
+    },
+
+    _setEntity: function(eName, view, options){
         var that=this;
 
         view = view || 'list';
@@ -5360,7 +5391,7 @@ Evol.Shell = Backbone.View.extend({
             that._ents[eName].show().siblings().hide();
             var tb=that._tbs[eName];
             if(tb){
-                that._curEntity = tb;
+                that._curEntity = eName;
                 tb.setView(view, false, false) //tb.setView(view, true, false)
                     .setTitle();
                 if(options){
@@ -5374,9 +5405,6 @@ Evol.Shell = Backbone.View.extend({
             }
         }
 
-        if(!this._ents){
-            this._ents={};
-        }
         if(this._ents[eName]){
             cb();
         }else{

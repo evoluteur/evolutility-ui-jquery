@@ -109,8 +109,8 @@ Evol.ViewToolbar = Backbone.View.extend({
 
             h.push(eui.hBegin('views','li','eye-open'));
             linkOpt2h('view','View','file','1');
-            linkOpt2h('edit','All Fields','th','1');
-            linkOpt2h('mini','Mini','th-large','1'); //Important Fields only
+            linkOpt2h('edit','Edit','th','1'); // All Fields
+            linkOpt2h('mini','Mini','th-large','1'); // Important Fields only
             linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
             h.push(menuDevider);
@@ -311,29 +311,32 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
     },
 
-    proceedIfReady:function(callback){
+    proceedIfReady:function(cbOK, cbCancel){
     // -- execute callback if not dirty or after prompt...
         var that=this,
             i18n=Evol.i18n,
-            msg;
+            msg,
+            cbs;
         if(this.isDirty()){
             msg=i18n.unSavedChanges.replace('{0}', this.curView.getTitle())+
                 '<br><br>'+i18n.warnNoSave;
+            cbs={
+                nosave: cbOK,
+                ok: function(){
+                    if(that.curView.validate().length===0){
+                        that.saveItem(false, true);
+                        cbOK();
+                    }
+                }
+            };
+            if(cbCancel){
+                cbs.cancel = cbCancel;
+            }
             Evol.UI.modal.confirm(
                 'isDirty',
                 i18n.unSavedTitle,
                 msg,
-                {
-                    nosave: function(){
-                        callback();
-                    },
-                    ok: function(){
-                        if(that.curView.validate().length===0){
-                            that.saveItem(false, true);
-                            callback();
-                        }
-                    }
-                },
+                cbs,
                 [
                     {id:'nosave', text:Evol.i18n.bNoSave, class:'btn-default'},
                     {id:'cancel', text:Evol.i18n.bCancel, class:'btn-default'},
@@ -341,7 +344,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 ]
             );
         }else{
-            callback();
+            cbOK();
         }
         return this;
     },

@@ -332,7 +332,7 @@ Evol.ViewOne = Backbone.View.extend({
         }
         if(this.editable){
             var fs= this.getFields(),
-                ft=Evol.Dico.fieldTypes,
+                isNumType=Evol.Dico.isNumberType,
                 data=this.getData(),
                 model=this.model,
                 i,
@@ -346,15 +346,20 @@ Evol.ViewOne = Backbone.View.extend({
                     prop = f.attribute || f.id,
                     dataVal = data[prop],
                     modelVal = model.get(prop);
-                noModelVal = nullOrUndef(modelVal);
-                noDataVal = nullOrUndef(dataVal) || (isNaN(dataVal) && (f.type===ft.int || f.type===ft.dec || f.type===ft.money));
-                if(_.isArray(modelVal)){
-                    if(!_.isEqual(modelVal, dataVal)){
+
+                if(isNumType(f.type) && ((isNaN(dataVal) && !isNaN(modelVal)) || (isNaN(modelVal) && !isNaN(dataVal)))){
+                    return true;
+                }else{
+                    noModelVal = nullOrUndef(modelVal);
+                    noDataVal = nullOrUndef(dataVal);
+                    if(_.isArray(modelVal)){
+                        // TODO compare arrays?
+                        if(!_.isEqual(modelVal, dataVal)){
+                            return true;
+                        }
+                    }else if(!(dataVal == modelVal || (noDataVal && noModelVal))) {
                         return true;
                     }
-                    // TODO compare arrays?
-                }else if(!(dataVal == modelVal || (noDataVal && noModelVal))) {
-                    return true;
                 }
             }
             if(subCollecs){
@@ -730,7 +735,8 @@ Evol.ViewOne = Backbone.View.extend({
 
     validateField: function(f, v){
         var i18nVal = Evol.i18n.validation,
-            ft = Evol.Dico.fieldTypes;
+            ft = Evol.Dico.fieldTypes,
+            numberField = Evol.Dico.isNumberType(f.type);
 
         function formatMsg(fLabel, msg, r2, r3){
             return msg.replace('{0}', fLabel)
@@ -742,7 +748,7 @@ Evol.ViewOne = Backbone.View.extend({
 
             // Check required and empty
             if (f.required && (v==='' ||
-                    ((f.type===ft.int || f.type===ft.dec || f.type===ft.money) && isNaN(v)) ||
+                    (numberField && isNaN(v)) ||
                     (f.type===ft.lov && v==='0') ||
                     (f.type===ft.list && v.length===0) ||
                     (f.type===ft.color && v==='#000000'))){
@@ -750,7 +756,7 @@ Evol.ViewOne = Backbone.View.extend({
             } else {
 
                 // Check field type
-                if( !(isNaN(v) && (f.type===ft.int || f.type===ft.dec || f.type===ft.money))) {
+                if( !(isNaN(v) && numberField)) {
                     if (v !== '' && !_.isArray(v)){
                         switch (f.type) {
                             case ft.int:
@@ -786,7 +792,7 @@ Evol.ViewOne = Backbone.View.extend({
                 }
 
                 // Check min & max
-                if (f.type === ft.int || f.type === ft.dec || f.type === ft.money) {
+                if (numberField) {
                     if (v !== '') {
                         if (f.max && parseFloat(v) > f.max) {
                             return formatMsg(f.label, i18nVal.max, f.max);
