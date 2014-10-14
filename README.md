@@ -168,9 +168,6 @@ With Evolutility, a single UI-model defines a full single page applications (SPA
 
 Try it now: Download Evolutility.JS, make modification to the demo UI-models by adding and modifying fields and panels and see the demo apps become your apps.
 
-## The experience for the user
-Consistent patterns and look and feel across the whole app.
-
 ## Stack and dependencies
 
 Javascript, HTML5, CSS3,
