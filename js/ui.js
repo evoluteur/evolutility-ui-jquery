@@ -205,14 +205,6 @@ Evol.UI = {
             });
             return opts.join('');
         },
-
-        button: function (id, label, css) {
-            return '<button type="button" data-id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
-        },
-        buttonsPlusMinus: function(){
-            return '<div data-id="bPlus" class="glyphicon glyphicon-plus-sign"></div>'+
-                '<div data-id="bMinus" class="glyphicon glyphicon-minus-sign"></div>';
-        }
         /*
          toggle: function  (items) {
              var h=['<div class="btn-group" data-toggle="buttons">'];
@@ -231,6 +223,20 @@ Evol.UI = {
             //$cb.removeProp('checked');
             $cb.prop('checked', false);
         }
+    },
+
+    // --- buttons ---
+    button: function (id, label, css) {
+        return '<button type="button" data-id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
+    },
+    buttonsPlus: function(){
+        return '<div data-id="bPlus" class="glyphicon glyphicon-plus-sign" tabindex="0"></div>';
+    },
+    buttonsMinus: function(){
+        return '<div data-id="bMinus" class="glyphicon glyphicon-minus-sign" tabindex="0"></div>';
+    },
+    buttonsPlusMinus: function(){
+        return this.buttonsPlus()+this.buttonsMinus();
     },
 
     // --- links ---

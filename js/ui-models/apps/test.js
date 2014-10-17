@@ -68,7 +68,10 @@ function fieldTypePanel(id, label, labelPanel){
     };
 }
 
-var test_ui = {
+var uiModels = uiModels || {};
+
+uiModels.test = {
+    id: 'test',
     entity: 'test',
     entities: 'tests',
     title: 'Test Object',

@@ -208,14 +208,6 @@ Evol.UI = {
             });
             return opts.join('');
         },
-
-        button: function (id, label, css) {
-            return '<button type="button" data-id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
-        },
-        buttonsPlusMinus: function(){
-            return '<div data-id="bPlus" class="glyphicon glyphicon-plus-sign"></div>'+
-                '<div data-id="bMinus" class="glyphicon glyphicon-minus-sign"></div>';
-        }
         /*
          toggle: function  (items) {
              var h=['<div class="btn-group" data-toggle="buttons">'];
@@ -234,6 +226,20 @@ Evol.UI = {
             //$cb.removeProp('checked');
             $cb.prop('checked', false);
         }
+    },
+
+    // --- buttons ---
+    button: function (id, label, css) {
+        return '<button type="button" data-id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
+    },
+    buttonsPlus: function(){
+        return '<div data-id="bPlus" class="glyphicon glyphicon-plus-sign" tabindex="0"></div>';
+    },
+    buttonsMinus: function(){
+        return '<div data-id="bMinus" class="glyphicon glyphicon-minus-sign" tabindex="0"></div>';
+    },
+    buttonsPlusMinus: function(){
+        return this.buttonsPlus()+this.buttonsMinus();
     },
 
     // --- links ---
@@ -803,16 +809,12 @@ Evol.ViewMany = Backbone.View.extend({
         var models = this.collection.models,
             model,
             r,
-            rMin = 0,
+            rMin = (pageIdx > 0)?pageIdx*pSize:0,
             rMax = _.min([models.length, rMin+pSize]),
-            ico = icon?(this.options.iconsPath || '')+icon:null,
-            route=this.getItemRoute();
+            ico = icon?(this.options.iconsPath || '')+icon:null;
 
-        if(pageIdx > 0){
-            rMin = pageIdx*pSize;
-            rMax = _.min([models.length, rMin+pSize]);
-        }
-        if (rMax > 0) {
+        if(rMax>0){
+            var route=this.getItemRoute();
             for (r = rMin; r < rMax; r++) {
                 model=models[r];
                 this.HTMLItem(h, fields, model, ico, selectable, route);
@@ -1376,7 +1378,8 @@ Evol.ViewOne = Backbone.View.extend({
         'click ul.evol-tabs>li>a': 'click_tab',
         'click label>.glyphicon-question-sign': 'click_help',
         //'click .evol-field-label .glyphicon-wrench': 'click_customize',
-        'click [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel'
+        'click [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel',
+        'keyup [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel'
     },
 
     options: {
@@ -1676,9 +1679,10 @@ Evol.ViewOne = Backbone.View.extend({
         return '';
     },
 
-    isDirty: function(){
-        return false; // TODO not ready yet
-        // TODO fix it
+    isDirty: function(){ /*
+        // TODO not ready yet
+        // TODO still needs work
+        // diff of top level and subcollecs should use the same code
         function nullOrUndef(v){
             return v==='' || _.isUndefined(v) || v===null || v===false;
         }
@@ -1692,9 +1696,7 @@ Evol.ViewOne = Backbone.View.extend({
                 model=this.model,
                 i,
                 iMax=fs.length,
-                subCollecs=this.getSubCollecs(),
-                noModelVal,
-                noDataVal;
+                subCollecs=this.getSubCollecs();
 
             for (i = 0; i < iMax; i++) {
                 var f=fs[i],
@@ -1702,24 +1704,30 @@ Evol.ViewOne = Backbone.View.extend({
                     dataVal = data[prop],
                     modelVal = model.get(prop);
 
-                if(isNumType(f.type) && ((isNaN(dataVal) && !isNaN(modelVal)) || (isNaN(modelVal) && !isNaN(dataVal)))){
-                    return true;
+                if(isNumType(f.type)){
+                    if(isNaN(dataVal)){
+                        if(!isNaN(modelVal)){
+                            return true;
+                        }
+                    }else if(isNaN(modelVal)){
+                        return true;
+                    }
                 }else{
-                    noModelVal = nullOrUndef(modelVal);
-                    noDataVal = nullOrUndef(dataVal);
                     if(_.isArray(modelVal)){
-                        // TODO compare arrays?
                         if(!_.isEqual(modelVal, dataVal)){
                             return true;
                         }
-                    }else if(!(dataVal == modelVal || (noDataVal && noModelVal))) {
-                        return true;
+                    }else{
+                        if(nullOrUndef(dataVal)!==nullOrUndef(modelVal) || dataVal!==modelVal) {
+                            return true;
+                        }
                     }
                 }
             }
             if(subCollecs){
                 var scIds=Object.keys(subCollecs);
                 iMax=scIds.length;
+                // TODO improve when add sorting to panel-list
                 for (i = 0; i<iMax; i++) {
                     var scId=scIds[i],
                         dVals=data[scId],
@@ -1735,15 +1743,14 @@ Evol.ViewOne = Backbone.View.extend({
                         return true;
                     }else{
                         for(var r=0;r<dVals.length;r++){
+                            // - not using _.isEqual b/c ok if dataObj had less attributes than modelObj
                             var dObj = dVals[r],
                                 mObj = mVals[r];
                             for(var j=0;j<fs2.length;j++) {
                                 var fid = fs2[j].id,
                                     dv=dObj[fid],
-                                    mv=mObj[fid],
-                                    dNo=nullOrUndef(dv),
-                                    mNo=nullOrUndef(mv);
-                                if(dNo!==mNo || (dv!==mv)){
+                                    mv=mObj[fid];
+                                if(nullOrUndef(dv)!==nullOrUndef(mv) || dv!==mv){
                                     return true;
                                 }
                             }
@@ -1751,7 +1758,7 @@ Evol.ViewOne = Backbone.View.extend({
                     }
                 }
             }
-        }
+        }*/
         return false;
     },
 
@@ -1774,10 +1781,10 @@ Evol.ViewOne = Backbone.View.extend({
     _renderButtons: function (h, mode) {
         h.push(Evol.UI.html.clearer,
             '<div class="evol-buttons">',
-            Evol.UI.input.button('cancel', Evol.i18n.bCancel, 'btn-default'),
-            Evol.UI.input.button('save', Evol.i18n.bSave, 'btn-primary'));
+            Evol.UI.button('cancel', Evol.i18n.bCancel, 'btn-default'),
+            Evol.UI.button('save', Evol.i18n.bSave, 'btn-primary'));
         if (this.model && this.model.isNew() && this.options.button_addAnother && mode!=='json') {
-            h.push(Evol.UI.input.button('save-add', Evol.i18n.bSaveAdd, 'btn-default'));
+            h.push(Evol.UI.button('save-add', Evol.i18n.bSaveAdd, 'btn-default'));
         }
         h.push('</div>');
     },
@@ -1932,7 +1939,7 @@ Evol.ViewOne = Backbone.View.extend({
         if(this.model){
             var vs = this.model.get(uiPnl.attribute);
             if(vs && vs.length>0){
-                var TDbPM='<td class="evo-td-plusminus">'+Evol.UI.input.buttonsPlusMinus()+'</td>';
+                var TDbPM='<td class="evo-td-plusminus">'+Evol.UI.buttonsPlusMinus()+'</td>';
                 _.each(vs, function(row, idx){
                     h.push('<tr data-idx="', idx, '">');
                     if(mode==='edit'){
@@ -1965,7 +1972,7 @@ Evol.ViewOne = Backbone.View.extend({
     _TRnodata: function(colspan, mode){
         return ['<tr data-id="nodata"><td colspan="', mode==='edit'?(colspan+1):colspan, '" class="evol-pl-nodata">',
             Evol.i18n.nodata,
-            mode==='edit'?'<div data-id="bPlus" class="glyphicon glyphicon-plus-sign"></div>':'',
+            mode==='edit'?Evol.UI.buttonsPlus():'',
             '</td></tr>'].join('');
     },
 
@@ -2389,6 +2396,9 @@ Evol.ViewOne = Backbone.View.extend({
             bId=$target.data('id'),
             tr=$target.closest('tr');
 
+        if(evt.keyCode && evt.keyCode!==13){
+            return;
+        }
         evt.stopImmediatePropagation();
         if(bId==='bPlus'){
             // - Add row to details
@@ -2399,7 +2409,7 @@ Evol.ViewOne = Backbone.View.extend({
             h.push('<tr>');
             this._TDsFieldsEdit(h, elems, {});
             h.push('<td class="evo-td-plusminus">',
-                Evol.UI.input.buttonsPlusMinus(),
+                Evol.UI.buttonsPlusMinus(),
                 '</td></tr>');
             $(h.join('')).insertAfter(tr);
             if(tr.data('id')==='nodata'){
@@ -2680,8 +2690,8 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
     _renderButtons: function (h) {
         h.push(Evol.UI.html.clearer,
             '<div class="evol-buttons">',
-            Evol.UI.input.button('cancel', Evol.i18n.bCancel, 'btn-default'),
-            Evol.UI.input.button('edit', Evol.i18n.bEdit, 'btn-primary'),
+            Evol.UI.button('cancel', Evol.i18n.bCancel, 'btn-default'),
+            Evol.UI.button('edit', Evol.i18n.bEdit, 'btn-primary'),
             '</div>');
     }
 
@@ -2795,8 +2805,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
             '</div></div></div></div>',
             // ## Download button
             '<div class="evol-buttons form-actions">',
-                EvoUI.input.button('cancel', Evol.i18n.bCancel, 'btn-default'),
-                EvoUI.input.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary'),
+                EvoUI.button('cancel', Evol.i18n.bCancel, 'btn-default'),
+                EvoUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary'),
             '</div>'
         );
         return h.join('');

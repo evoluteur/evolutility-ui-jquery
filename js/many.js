@@ -86,16 +86,12 @@ Evol.ViewMany = Backbone.View.extend({
         var models = this.collection.models,
             model,
             r,
-            rMin = 0,
+            rMin = (pageIdx > 0)?pageIdx*pSize:0,
             rMax = _.min([models.length, rMin+pSize]),
-            ico = icon?(this.options.iconsPath || '')+icon:null,
-            route=this.getItemRoute();
+            ico = icon?(this.options.iconsPath || '')+icon:null;
 
-        if(pageIdx > 0){
-            rMin = pageIdx*pSize;
-            rMax = _.min([models.length, rMin+pSize]);
-        }
-        if (rMax > 0) {
+        if(rMax>0){
+            var route=this.getItemRoute();
             for (r = rMin; r < rMax; r++) {
                 model=models[r];
                 this.HTMLItem(h, fields, model, ico, selectable, route);

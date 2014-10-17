@@ -106,11 +106,12 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
     },
 
     _renderButtons: function (h) {
+        var b=Evol.UI.button;
         h.push(Evol.UI.html.clearer,
             '<div class="evo-wiz-buttons">',
-            Evol.UI.input.button('prev', Evol.i18n.prev, 'btn-default disabled'),
-            Evol.UI.input.button('next', Evol.i18n.next, 'btn-primary'),
-            Evol.UI.input.button('finish', Evol.i18n.finish, 'btn-default'),
+            b('prev', Evol.i18n.prev, 'btn-default disabled'),
+            b('next', Evol.i18n.next, 'btn-primary'),
+            b('finish', Evol.i18n.finish, 'btn-default'),
             '</div>');
         return this;
     },

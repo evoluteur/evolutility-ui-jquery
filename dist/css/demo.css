@@ -32,7 +32,7 @@
   top: 0;
   left: 0;
   opacity: .9;
-  overflow: auto;
+  overflow: none;
   background-color: #0099cc;
   width: 100%;
   min-width: 600px;
