@@ -104,6 +104,7 @@ Views API: <a href="#methods">Methods</a>,
         <img class="pixEvoMode shadow" src="screenshots/one-view.png"/> <br/>&nbsp;
     </div>
     <p><code>var vw = new Evol.ViewOne.View(myConfig);</code></p>
+    <div id="v-view"></div>
 
 
     <a name="one-edit" class="evo-anchor">&nbsp;</a>
@@ -258,26 +259,27 @@ Views API: <a href="#methods">Methods</a>,
     <p><br>Methods common to Evol.ViewOne (Edit, View, Mini, JSON) and Evol.ViewMany (List, Badges, Charts):</p>
     <p><strong>render()</strong>: Renders the view in the DOM.</p>
     <p><strong>getFields()</strong>: Returns an array of the UI-model fields present in the view.</p>
-    <p><strong>getModel(), setModel(model)</strong>: Get or set the Backbone model.</p>
-    <p><strong>getUIModel(), setUIModel(uiModel)</strong>: Get or set the UI model.</p>
-    <p><strong>getTitle(), setTitle(title)</strong>: Get or set the view title.</p>
+    <p><strong>getModel(), setModel(model)</strong>: Gets or sets the Backbone model.</p>
+    <p><strong>getUIModel(), setUIModel(uiModel)</strong>: Gets or sets the UI model.</p>
+    <p><strong>getTitle(), setTitle(title)</strong>: Gets or sets the view title.</p>
 
 
     <p><br>Methods specific to Evol.ViewOne (Edit, View, Mini, JSON):</p>
     <p><strong>clear()</strong>: Clears the content of all fields.</p>
     <p><strong>clearErrors()</strong>: Remove previous validation warnings.</p>
-    <p><strong>getData(data), setData()</strong>: Get or set all fields values at the same time.</p>
-    <p><strong>getFieldValue(fid, value), setFieldValue(fid)</strong>: Get or set the value of a specific field.</p>
+    <p><strong>getData(), setData(data)</strong>: Gets or sets all fields values at the same time.</p>
+    <p><strong>getFieldValue(fid), setFieldValue(fid, value)</strong>: Gets or sets the value of a specific field.</p>
+    <p><strong>getFieldProp(fid, property), setFieldProp(fid, property, value)</strong>: Gets or sets a field property for a specific field. Supported properties: "value", "enabled", "visible".</p>
     <p><strong>getSubCollecs()</strong>: Returns an array of sub-collections definitions from the UI-model.</p>
     <p><strong>validate()</strong>: Validates all fields and shows warnings if necessary.</p>
 
 
     <p><br>Methods specific to Evol.ViewMany (List, Badges, Charts):</p>
-    <p><strong>getCollection(), setCollection(collec)</strong>: Get or set the collection.</p>
-    <p><strong>getFilter(), setFilter(filter)</strong>: Get or set the collection filter (from Evol.ViewAction.Filter).</p>
-    <p><strong>getPage(), setPage(pageIndex)</strong>: Get or set the page index for pagination.</p>
+    <p><strong>getCollection(), setCollection(collec)</strong>: Gets or sets the collection.</p>
+    <p><strong>getFilter(), setFilter(filter)</strong>: Gets or sets the collection filter (from Evol.ViewAction.Filter).</p>
+    <p><strong>getPage(), setPage(pageIndex)</strong>: Gets or sets the page index for pagination.</p>
     <p><strong>sortList(field, upOrDown, [noRemember], [noTrigger])</strong>: Sorts the list by a specific field.</p>
-    <p><strong>getSelection(), setSelection([fieldId])</strong>: Get or set rows selection.</p>
+    <p><strong>getSelection(), setSelection([fieldId])</strong>: Gets or sets rows selection.</p>
 
 
     <p><br>Methods specific to Evol.ViewAction.Filter:</p>
@@ -315,23 +317,32 @@ Views API: <a href="#methods">Methods</a>,
     <h2>Events</h2>
 
     <p>Events for Evol.ViewOne (Edit, View, Mini, JSON):</p>
-    <p><strong>action</strong>: Triggered when buttons are clicked. data = 'add', 'add-new', 'cancel', 'validate'.</p>
-    <p><strong>toggle.panel</strong>: Triggered when a panel is expended or collapsed.</p>
-    <p><strong>show.tab</strong>: Triggered when the active tab changes.</p>
+    <div id="evt-one">
+        <p><strong>action</strong>: Triggered when buttons are clicked. data = 'add', 'add-new', 'cancel', 'validate'.</p>
+        <p><strong>toggle.panel</strong>: Triggered when a panel is expended or collapsed.</p>
+        <p><strong>show.tab</strong>: Triggered when the active tab changes.</p>
+    </div>
+
 
     <p><br>Events for Evol.ViewMany.List and Evol.ViewMany.Badges:</p>
-    <p><strong>selection.many</strong>: Triggered when the selection changes.</p>
-    <p><strong>navigate.many</strong>: Triggered when a link to a model is clicked.</p>
-    <p><strong>sort.many</strong>: Triggered on sort.</p>
-    <p><strong>paginate.many</strong>: Triggered on pagination.</p>
+    <div id="evt-many">
+        <p><strong>selection.many</strong>: Triggered when the selection changes.</p>
+        <p><strong>navigate.many</strong>: Triggered when a link to a model is clicked.</p>
+        <p><strong>sort.many</strong>: Triggered on sort.</p>
+        <p><strong>paginate.many</strong>: Triggered on pagination.</p>
+    </div>
 
     <p><br>Events for Evol.ViewAction.Filter:</p>
-    <p><strong>change.filter</strong>: Triggered when a filter condition changes.</p>
-    <p><strong>submit.filter</strong>: Triggered on submit (if options allow the submit button).</p>
+    <div id="evt-filter">
+        <p><strong>change.filter</strong>: Triggered when a filter condition changes.</p>
+        <p><strong>submit.filter</strong>: Triggered on submit (if options allow the submit button).</p>
+    </div>
 
     <p><br>Events for Evol.ViewAction.Export:</p>
-    <p><strong>action</strong>: Triggered when the "Download" button is clicked. data = format.</p>
-    <p><strong>change.export</strong>: Triggered when any export setting changes.</p>
+    <div id="evt-export">
+        <p><strong>action</strong>: Triggered when the "Download" button is clicked. data = format.</p>
+        <p><strong>change.export</strong>: Triggered when any export setting changes.</p>
+    </div>
 
 </section>
 
