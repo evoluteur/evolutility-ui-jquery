@@ -1602,12 +1602,12 @@ Evol.ViewOne = Backbone.View.extend({
             }
         }else{
             // TODO show no data or error msg or something
-
             this.clear();
         }
         return this.setTitle();
     },
 
+    //TODO standardize param type field & fid in set/get FieldValue method
     setFieldValue: function (fid, value){
         this.$field(fid)
             .val(value);
@@ -1615,7 +1615,50 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     getFieldValue: function (f){
-        return Evol.Dico.getFieldTypedValue(f, this.$field(f.id));
+        if(_.isString(f)){
+            return Evol.Dico.getFieldTypedValue(this._fieldHash[f], this.$field(f));
+        }else{
+            return Evol.Dico.getFieldTypedValue(f, this.$field(f.id));
+        }
+    },
+
+    setFieldProp: function(fid, prop, value){
+        // TODO test and finish
+        if(prop==='value'){
+            this.setFieldValue(fid, value);
+        }else{
+            switch (prop){
+                case 'enabled':
+                    if(value){
+                        this.$field(fid).removeProp('disabled');
+                    }else{
+                        this.$field(fid).prop('disabled', true);
+                    }
+                    break;
+                case 'visible':
+                    Evol.UI.setVisible(this.$field(fid), value);
+                    break;
+            }
+        }
+        return this;
+    },
+
+    getFieldProp: function(fid, prop){
+        // TODO test and finish
+        if(prop==='value'){
+            this.setFieldValue(fid, value);
+        }else{
+            var $f=this.$field(fid);
+            switch (prop){
+                case 'enabled':
+                    return !$f.prop('disabled');
+                case 'visible':
+                    return $f.is(":visible");
+                case 'valid':
+                    // TODO this.validateField(f, v)
+                    break;
+            }
+        }
     },
 
     $field: function (id){
