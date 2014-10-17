@@ -562,14 +562,14 @@ Evol.ViewOne = Backbone.View.extend({
         }else{
             h.push('<div data-p-width="', p.width, '" class="evol-pnl');
             if(mode==='mini'){
-                h.push(' evol-p-mini ', (p.class || ''), '">');
+                h.push(' evol-p-mini">');
             }else{
                 h.push(' pull-left" style="width:', p.width, '%">');
             }
         }
         h.push(
-            Evol.UI.HTMLPanelBegin(pid, p.label, this.options.style),
-            '<fieldset data-pid="', pid, '">');
+            Evol.UI.HTMLPanelBegin(pid, p.label, this.options.style+(p.css?' '+p.css:'')),
+            '<fieldset data-pid="', pid, p.readonly?'" disabled>':'">');
         if(mode==='mini'){
             _.each(p.elements, function (elem) {
                 if(elem.type==fTypes.hidden){
@@ -583,7 +583,7 @@ Evol.ViewOne = Backbone.View.extend({
         }else{
             _.each(p.elements, function (elem) {
                 if(elem.type=='panel-list'){
-                    that.renderPanelList(h, elem, mode);
+                    that.renderPanelList(h, elem, elem.readonly?'view':mode);
                 }else{
                     if(elem.type==fTypes.hidden){
                         h.push(Evol.UI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
@@ -602,17 +602,18 @@ Evol.ViewOne = Backbone.View.extend({
     },
 
     renderPanelList: function (h, p, mode) {
+        var vMode=p.readonly?'view':mode;
         h.push('<div style="width:', p.width, '%" class="evol-pnl pull-left" data-pid="', p.id,'">',
-            Evol.UI.HTMLPanelBegin(p.id, p.label, this.options.style),
+            Evol.UI.HTMLPanelBegin(p.id, p.label, this.options.style+(p.css?' '+p.css:'')),
             '<table class="table" data-mid="', (p.attribute || p.id),'"><thead><tr>');
         _.each(p.elements, function (elem) {
             h.push('<th>', elem.label, elem.required?Evol.UI.html.required:'', '</th>');
         });
-        if(mode==='edit'){
+        if(vMode==='edit'){
             h.push('<th></th>');
         }
         h.push('</tr></thead><tbody>');
-        this._renderPanelListBody(h, p, null, mode);
+        this._renderPanelListBody(h, p, null, vMode);
         h.push('</tbody></table>',
             Evol.UI.HTMLPanelEnd(),
             '</div>');
@@ -622,7 +623,8 @@ Evol.ViewOne = Backbone.View.extend({
     _renderPanelListBody: function (h, uiPnl, fv, mode){
         var that=this,
             fs = uiPnl.elements,
-            iconsPath=this.options.iconsPath || '';
+            iconsPath=this.options.iconsPath || '',
+            editable=mode==='edit';
 
         if(this.model){
             var vs = this.model.get(uiPnl.attribute);
@@ -630,7 +632,7 @@ Evol.ViewOne = Backbone.View.extend({
                 var TDbPM='<td class="evo-td-plusminus">'+Evol.UI.buttonsPlusMinus()+'</td>';
                 _.each(vs, function(row, idx){
                     h.push('<tr data-idx="', idx, '">');
-                    if(mode==='edit'){
+                    if(editable){
                         that._TDsFieldsEdit(h, uiPnl.elements, row);
                         h.push(TDbPM);
                     }else{

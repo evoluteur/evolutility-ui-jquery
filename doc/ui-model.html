@@ -266,7 +266,7 @@
             </td>
         </tr>
         <tr>
-            <td>customvalidation<span class="evol-asterix">*</span></td>
+            <td>customvalidation</td>
             <td>Name of the Javascript custom method for the field validation (validation for required, min, max, type is still performed in addition).</td>
         </tr>
 
@@ -314,9 +314,9 @@
             </td>
         </tr>
         <tr>
-            <td>sortable<span class="evol-asterix">*</span>
+            <td>sortable
             </td>
-            <td>Column can be sorted by the field value (using ViewMany).
+            <td>Column can be sorted by the field value (in "List" view).
             </td>
         </tr>
         <tr>
@@ -357,9 +357,9 @@
             <td>Panel Id in the UI (if not specified, the default is "p-&lt;panel index&gt;").</td>
         </tr>
         <tr>
-            <td style="width: 120px; ">css<span class="evol-asterix">*</span>
+            <td style="width: 120px; ">css
             </td>
-            <td>CSS class for the panel.
+            <td>Additional CSS class for the panel.
             </td>
         </tr>
         <tr>
@@ -391,6 +391,13 @@
             </td>
         </tr>
         <tr>
+            <td>readonly<span class="evol-asterix">*</span>
+            </td>
+            <td>
+                While in "Edit" view, makes all fields in the panel read-only (not implemented yet for the "Mini" view).
+            </td>
+        </tr>
+        <tr>
             <td>width
             </td>
             <td>Width of the panel in percentage of the total width of the form.<br />
@@ -417,7 +424,7 @@
             <td>Panel Id in the UI.</td>
         </tr>
         <tr>
-            <td style="width: 120px; ">css<span class="evol-asterix">*</span>
+            <td style="width: 120px; ">css
             </td>
             <td>CSS class for the panel. The default value is "panel".
             </td>
@@ -440,6 +447,13 @@
             <td>label
             </td>
             <td>Panel title.
+            </td>
+        </tr>
+        <tr>
+            <td>readonly<span class="evol-asterix">*</span>
+            </td>
+            <td>
+                Makes all fields in the panel-list read-only (not implemented yet).
             </td>
         </tr>
         <tr>

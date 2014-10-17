@@ -74,13 +74,16 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         h.push('</tr>');
     },
 
-    _HTMLlistHeader: function (h, field) {
-        h.push('<th><span id="', field.id, '-lbl">',
-            field.labellist || field.labelmany || field.label,
-            '<span class="evol-sort-icons" data-fid="', field.id, '">',
-            Evol.UI.icon('chevron-up'),//'sort-by-alphabet'
-            Evol.UI.icon('chevron-down'),//'sort-by-alphabet-alt'
-            '</span></span></th>');
+    _HTMLlistHeader: function (h, f) {
+        h.push('<th><span id="', f.id, '-lbl">',
+            f.labellist || f.labelmany || f.label);
+        if(f.sortable!==false){
+            h.push('<span class="evol-sort-icons" data-fid="', f.id, '">',
+                Evol.UI.icon('chevron-up'),//'sort-by-alphabet'
+                Evol.UI.icon('chevron-down'),//'sort-by-alphabet-alt'
+                '</span>');
+        }
+        h.push('</span></th>');
     }
 
 });
