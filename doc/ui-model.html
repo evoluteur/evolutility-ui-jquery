@@ -55,8 +55,15 @@
 <p>An "object" is the UI information mapped to a Backbone model to drive all <a href="views.html">views</a> for that model.
 
 <table class="table table-bordered">
-    <tbody><tr>
-        <td style="width: 120px; ">entity<span class="evol-required">*</span>
+    <tbody>
+    <tr>
+        <td style="width: 120px; ">id<span class="evol-required">*</span>
+        </td>
+        <td>UI-model unique ID. It is used as a key to identify the UI-model but never displayed to the user.
+        </td>
+    </tr>
+    <tr>
+        <td>entity<span class="evol-required">*</span>
         </td>
         <td>User's object name for the Backbone model.
             <br>Example: "task" for a
