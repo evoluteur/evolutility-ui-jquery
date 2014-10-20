@@ -4384,7 +4384,7 @@ Evol.Dico = {
 
     HTMLFieldLabel: function (fld, mode) {
         var h=[];
-        h.push('<div class="evol-field-label" id="', fld.id, '-lbl"><label class="control-label" for="', fld.id, '">', fld.label);
+        h.push('<div class="evol-field-label" id="', fld.id, '-lbl"><label class="control-label ',fld.csslabel?fld.csslabel:'','" for="', fld.id, '">', fld.label);
         if (mode != 'view' && fld.required){
             h.push(Evol.UI.html.required);
         }

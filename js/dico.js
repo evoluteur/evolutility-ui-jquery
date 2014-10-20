@@ -398,7 +398,8 @@ Evol.Dico = {
                     break;
                 case fTypes.money:
                     h.push('<div class="input-group">', EvoUI.input.typeFlag('$'),
-                        EvoUI.input.textInt(fid, fv), '</div>');
+                        EvoUI.input.textInt(fid, fv),
+                        '</div>');
                     break;
                 case fTypes.bool:
                     h.push(EvoUI.input.checkbox(fid, fv));
@@ -433,7 +434,8 @@ Evol.Dico = {
                     break;
                 case fTypes.email:
                     h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
-                        EvoUI.input.text(fid, fv, fld), '</div>');
+                        EvoUI.input.text(fid, fv, fld),
+                        '</div>');
                     break;
                 case fTypes.url:
                     h.push(EvoUI.input.text(fid, fv, fld));
@@ -465,7 +467,8 @@ Evol.Dico = {
 
     HTMLFieldLabel: function (fld, mode) {
         var h=[];
-        h.push('<div class="evol-field-label" id="', fld.id, '-lbl"><label class="control-label" for="', fld.id, '">', fld.label);
+        h.push('<div class="evol-field-label" id="', fld.id, '-lbl"><label class="control-label ',fld.csslabel?fld.csslabel:'','" for="', fld.id, '">',
+            fld.label);
         if (mode != 'view' && fld.required){
             h.push(Evol.UI.html.required);
         }
