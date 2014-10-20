@@ -630,7 +630,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.setView('edit', false, true);
             }
         }
-        return this.curView.clear()
+        return this.curView.setDefaults() //.clear()
             .setTitle(Evol.i18n.getLabel('NewEntity', this.uiModel.entity, vw.getTitle()));
     },
 

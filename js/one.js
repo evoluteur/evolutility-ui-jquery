@@ -252,6 +252,18 @@ Evol.ViewOne = Backbone.View.extend({
         return this.setTitle();
     },
 
+    setDefaults: function(){
+        var that=this;
+
+        this.clear();
+        _.each(this.getFields(), function(f){
+            if(f.hasOwnProperty('defaultvalue')){
+                that.setFieldValue(f.id, f.defaultvalue);
+            }
+        });
+        return this;
+    },
+
     //TODO standardize param type field & fid in set/get FieldValue method
     setFieldValue: function (fid, value){
         this.$field(fid)
