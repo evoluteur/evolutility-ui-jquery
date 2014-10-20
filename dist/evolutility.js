@@ -122,11 +122,11 @@ Evol.UI = {
                 '<input type="color" id="', id, '" value="', value, '" size="15">'
             ].join('');
         },
-        colorBox: function (id, value) {
+        colorBox: function (id, value, text) {
             return [
                 '<div class="evo-color-box" id="', id,
                 '" style="background-color:', value,
-                '" title="', value, '"></div>'
+                '" title="', value, '">', text?'<span>'+text+'</span>':'', '</div>'
             ].join('');
         },
 
@@ -1127,6 +1127,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
     HTMLItem: function(h, fields, model, icon, selectable, route){
         var that = this,
             v,
+            ft=Evol.Dico.fieldTypes,
             opts = this.options,
             link = (opts.links!==false);
 
@@ -1134,6 +1135,9 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
         _.each(fields, function(f, idx){
             if(f.value){
                 v = f.value(model);
+            }else if(f.type===ft.color) {
+                v = model.escape(f.attribute || f.id);
+                v = Evol.UI.input.colorBox(f.id, v, v);
             }else{
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
@@ -1302,8 +1306,8 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         this._HTMLbody(h, fields, pSize, this.uiModel.icon, 0, selectable);
         h.push('</tbody></table>');
         this._HTMLpagination(h, 0, pSize, models.length);
-        h.push('<div class="evo-many-summary">', this.pageSummary(opts.pageIndex, pSize, models.length), '</div>');
-        h.push('</div>');
+        h.push('<div class="evo-many-summary">', this.pageSummary(opts.pageIndex, pSize, models.length), '</div>',
+            '</div>');
         this.$el.html(h.join(''));
     },
 
@@ -1993,6 +1997,8 @@ Evol.ViewOne = Backbone.View.extend({
 
     _renderPanelListBody: function (h, uiPnl, fv, mode){
         var that=this,
+            eDico=Evol.Dico,
+            ft=eDico.fieldTypes,
             fs = uiPnl.elements,
             iconsPath=this.options.iconsPath || '',
             editable=mode==='edit';
@@ -2011,13 +2017,13 @@ Evol.ViewOne = Backbone.View.extend({
                             h.push('<td>');
                             if(row[f.id]){
                                 //form-control
-                                if(f.type!==Evol.Dico.fieldTypes.bool){
-                                    h.push(_.escape(Evol.Dico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath)));
+                                if(f.type!==ft.bool){
+                                    h.push(_.escape(eDico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath)));
                                 }else{
-                                    h.push(Evol.Dico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath));
+                                    h.push(eDico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath));
                                 }
                             }else{
-                                h.push(Evol.Dico.HTMLField4Many(f, '', Evol.hashLov, iconsPath));
+                                h.push(eDico.HTMLField4Many(f, '', Evol.hashLov, iconsPath));
                             }
                             h.push('</td>');
                         });
@@ -4265,6 +4271,8 @@ Evol.Dico = {
                 return Evol.UI.linkEmail(f.id, v);
             case fTypes.url:
                 return Evol.UI.link(f.id, v, v, f.id);
+            //case fTypes.color:
+            //    return Evol.UI.input.colorBox(f.id, v, v);
             default:
                 return v;
         }
@@ -4274,6 +4282,7 @@ Evol.Dico = {
     HTMLField4One: function(fld, fid, fv, mode, iconsPath, skipLabel){
         var h=[],
             EvoUI=Evol.UI,
+            uiInput=EvoUI.input,
             fTypes=Evol.Dico.fieldTypes;
         // --- field label ---
         if(mode==='mini'){
@@ -4292,7 +4301,7 @@ Evol.Dico = {
             }
             h.push('">');
             switch (fld.type) {
-                case fTypes.color:
+                case fTypes.color: // TODO is the color switch necessary?
                     //h.push(Evol.UI.input.colorBox(fid, fv), fv);
                     h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
                     break;
@@ -4309,19 +4318,19 @@ Evol.Dico = {
         }else{
             switch (fld.type) {
                 case fTypes.text:
-                    h.push(EvoUI.input.text(fid, fv, fld, null));
+                    h.push(uiInput.text(fid, fv, fld, null));
                     break;
                 case fTypes.int:
                 case fTypes.dec:
-                    h.push(EvoUI.input.textInt(fid, fv, fld.max, fld.min));
+                    h.push(uiInput.textInt(fid, fv, fld.max, fld.min));
                     break;
                 case fTypes.money:
                     h.push('<div class="input-group">', EvoUI.input.typeFlag('$'),
-                        EvoUI.input.textInt(fid, fv),
+                        uiInput.textInt(fid, fv),
                         '</div>');
                     break;
                 case fTypes.bool:
-                    h.push(EvoUI.input.checkbox(fid, fv));
+                    h.push(uiInput.checkbox(fid, fv));
                     break;
                 case fTypes.textml:
                 case fTypes.html:
@@ -4334,30 +4343,30 @@ Evol.Dico = {
                             fld.height = 5;
                         }
                     }
-                    h.push(EvoUI.input.textM(fid, fv, fld.maxlength, fld.height));
+                    h.push(uiInput.textM(fid, fv, fld.maxlength, fld.height));
                     break;
                 case fTypes.date:
-                    h.push(EvoUI.input.date(fid, fv));
+                    h.push(uiInput.date(fid, fv));
                     break;
                 case fTypes.datetime:
-                    h.push(EvoUI.input.dateTime(fid, fv));
+                    h.push(uiInput.dateTime(fid, fv));
                     break;
                 case fTypes.time:
-                    h.push(EvoUI.input.time(fid, fv));
+                    h.push(uiInput.time(fid, fv));
                     break;
                 case fTypes.lov:
-                    h.push(EvoUI.input.select(fid, fv, '', true, fld.list));
+                    h.push(uiInput.select(fid, fv, '', true, fld.list));
                     break;
                 case fTypes.list: // fv is an array. will use select2
                     h.push('<div id="',fid, '" class="w-100 form-control"></div>');
                     break;
                 case fTypes.email:
-                    h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
-                        EvoUI.input.text(fid, fv, fld),
+                    h.push('<div class="input-group">', uiInput.typeFlag(Evol.i18n.sgn_email),
+                        uiInput.text(fid, fv, fld),
                         '</div>');
                     break;
                 case fTypes.url:
-                    h.push(EvoUI.input.text(fid, fv, fld));
+                    h.push(uiInput.text(fid, fv, fld));
                     break;
                 //case fTypes.doc:
                 case fTypes.pix:
@@ -4366,14 +4375,14 @@ Evol.Dico = {
                     }else{
                         h.push('<p class="">',Evol.i18n.nopix,'</p>');
                     }
-                    h.push(EvoUI.input.text(fid, fv, fld, null));
+                    h.push(uiInput.text(fid, fv, fld, null));
                     break;
                 case fTypes.color:
                     //h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
-                    h.push(EvoUI.input.color(fid, fv));
+                    h.push(uiInput.color(fid, fv));
                     break;
                 case fTypes.hidden:
-                    h.push(EvoUI.input.hidden(fid, fv));
+                    h.push(uiInput.hidden(fid, fv));
                     break;
             }
         }

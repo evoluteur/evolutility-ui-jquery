@@ -635,6 +635,8 @@ Evol.ViewOne = Backbone.View.extend({
 
     _renderPanelListBody: function (h, uiPnl, fv, mode){
         var that=this,
+            eDico=Evol.Dico,
+            ft=eDico.fieldTypes,
             fs = uiPnl.elements,
             iconsPath=this.options.iconsPath || '',
             editable=mode==='edit';
@@ -653,13 +655,13 @@ Evol.ViewOne = Backbone.View.extend({
                             h.push('<td>');
                             if(row[f.id]){
                                 //form-control
-                                if(f.type!==Evol.Dico.fieldTypes.bool){
-                                    h.push(_.escape(Evol.Dico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath)));
+                                if(f.type!==ft.bool){
+                                    h.push(_.escape(eDico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath)));
                                 }else{
-                                    h.push(Evol.Dico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath));
+                                    h.push(eDico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath));
                                 }
                             }else{
-                                h.push(Evol.Dico.HTMLField4Many(f, '', Evol.hashLov, iconsPath));
+                                h.push(eDico.HTMLField4Many(f, '', Evol.hashLov, iconsPath));
                             }
                             h.push('</td>');
                         });
