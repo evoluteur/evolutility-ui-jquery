@@ -2847,7 +2847,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             EvoUI.input.text('separator', ',', '0'),
             '</div>', // </div>
         '</div>');
-        _.each([formats.shift()], function(f){
+        _.each(formats, function(f){
             h.push('<div id="xpt', f, '" style="display:none;"></div>');
         });
         h.push('</div>',
