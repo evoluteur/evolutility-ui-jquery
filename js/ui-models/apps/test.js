@@ -24,7 +24,7 @@ var fieldsPanelList = [
         {id: 'pl2f2',  type: 'text', label: 'Text', maxlength: 100, viewmany: true}
     ];
 
-function fieldTypePanel(id, label, labelPanel){
+function fieldTypePanel(id, label, labelPanel, css){
     var labelP = labelPanel || label || id,
         fields=[
             {
@@ -64,7 +64,8 @@ function fieldTypePanel(id, label, labelPanel){
         type: 'panel',
         label: labelP,
         width: 33,
-        elements: fields
+        elements: fields,
+        css: css
     };
 }
 
@@ -79,6 +80,7 @@ uiModels.test = {
     elements: [
         {
             type: 'panel',
+            css: 'panel-primary',
             label: 'Testing Evolutility',
             width: 100,
             elements: [
@@ -97,10 +99,10 @@ uiModels.test = {
             type: 'tab',
             label: 'Text & Lists',
             elements: [
-                fieldTypePanel('text', 'Text'),
-                fieldTypePanel('lov', 'List', 'List (value)'),
-                fieldTypePanel('list', 'List mv', 'List (multiple values)'),
-                fieldTypePanel('textmultiline', 'Large Text'),
+                fieldTypePanel('text', 'Text', 'Text', 'panel-success'),
+                fieldTypePanel('lov', 'List', 'List (value)', 'panel-warning'),
+                fieldTypePanel('list', 'List mv', 'List (multiple values)', 'panel-warning'),
+                fieldTypePanel('textmultiline', 'Large Text', 'Large Text', 'panel-success'),
                 fieldTypePanel('html', 'HTML')
             ]
         },
@@ -119,7 +121,7 @@ uiModels.test = {
             elements: [
                 fieldTypePanel('integer', 'Integer'),
                 fieldTypePanel('decimal', 'Decimal'),
-                fieldTypePanel('money', 'Money')
+                fieldTypePanel('money', 'Money', 'Money', 'panel-success')
             ]
         },
         {
@@ -146,6 +148,7 @@ uiModels.test = {
             elements: [
                 {
                     type: 'panel-list',
+                    css: 'panel-warning',
                     id:'subCollec1',
                     attribute:'subCollec1',
                     label: 'Collection 1',
@@ -154,6 +157,7 @@ uiModels.test = {
                 },
                 {
                     type: 'panel-list',
+                    css:'panel-danger',
                     id:'subCollec2',
                     attribute:'subCollec2',
                     label: 'Collection 2',
