@@ -119,11 +119,11 @@ Evol.UI = {
                 '<input type="color" id="', id, '" value="', value, '" size="15">'
             ].join('');
         },
-        colorBox: function (id, value) {
+        colorBox: function (id, value, text) {
             return [
                 '<div class="evo-color-box" id="', id,
                 '" style="background-color:', value,
-                '" title="', value, '"></div>'
+                '" title="', value, '">', text?'<span>'+text+'</span>':'', '</div>'
             ].join('');
         },
 

@@ -346,6 +346,8 @@ Evol.Dico = {
                 return Evol.UI.linkEmail(f.id, v);
             case fTypes.url:
                 return Evol.UI.link(f.id, v, v, f.id);
+            //case fTypes.color:
+            //    return Evol.UI.input.colorBox(f.id, v, v);
             default:
                 return v;
         }
@@ -355,6 +357,7 @@ Evol.Dico = {
     HTMLField4One: function(fld, fid, fv, mode, iconsPath, skipLabel){
         var h=[],
             EvoUI=Evol.UI,
+            uiInput=EvoUI.input,
             fTypes=Evol.Dico.fieldTypes;
         // --- field label ---
         if(mode==='mini'){
@@ -373,7 +376,7 @@ Evol.Dico = {
             }
             h.push('">');
             switch (fld.type) {
-                case fTypes.color:
+                case fTypes.color: // TODO is the color switch necessary?
                     //h.push(Evol.UI.input.colorBox(fid, fv), fv);
                     h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
                     break;
@@ -390,19 +393,19 @@ Evol.Dico = {
         }else{
             switch (fld.type) {
                 case fTypes.text:
-                    h.push(EvoUI.input.text(fid, fv, fld, null));
+                    h.push(uiInput.text(fid, fv, fld, null));
                     break;
                 case fTypes.int:
                 case fTypes.dec:
-                    h.push(EvoUI.input.textInt(fid, fv, fld.max, fld.min));
+                    h.push(uiInput.textInt(fid, fv, fld.max, fld.min));
                     break;
                 case fTypes.money:
                     h.push('<div class="input-group">', EvoUI.input.typeFlag('$'),
-                        EvoUI.input.textInt(fid, fv),
+                        uiInput.textInt(fid, fv),
                         '</div>');
                     break;
                 case fTypes.bool:
-                    h.push(EvoUI.input.checkbox(fid, fv));
+                    h.push(uiInput.checkbox(fid, fv));
                     break;
                 case fTypes.textml:
                 case fTypes.html:
@@ -415,30 +418,30 @@ Evol.Dico = {
                             fld.height = 5;
                         }
                     }
-                    h.push(EvoUI.input.textM(fid, fv, fld.maxlength, fld.height));
+                    h.push(uiInput.textM(fid, fv, fld.maxlength, fld.height));
                     break;
                 case fTypes.date:
-                    h.push(EvoUI.input.date(fid, fv));
+                    h.push(uiInput.date(fid, fv));
                     break;
                 case fTypes.datetime:
-                    h.push(EvoUI.input.dateTime(fid, fv));
+                    h.push(uiInput.dateTime(fid, fv));
                     break;
                 case fTypes.time:
-                    h.push(EvoUI.input.time(fid, fv));
+                    h.push(uiInput.time(fid, fv));
                     break;
                 case fTypes.lov:
-                    h.push(EvoUI.input.select(fid, fv, '', true, fld.list));
+                    h.push(uiInput.select(fid, fv, '', true, fld.list));
                     break;
                 case fTypes.list: // fv is an array. will use select2
                     h.push('<div id="',fid, '" class="w-100 form-control"></div>');
                     break;
                 case fTypes.email:
-                    h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
-                        EvoUI.input.text(fid, fv, fld),
+                    h.push('<div class="input-group">', uiInput.typeFlag(Evol.i18n.sgn_email),
+                        uiInput.text(fid, fv, fld),
                         '</div>');
                     break;
                 case fTypes.url:
-                    h.push(EvoUI.input.text(fid, fv, fld));
+                    h.push(uiInput.text(fid, fv, fld));
                     break;
                 //case fTypes.doc:
                 case fTypes.pix:
@@ -447,14 +450,14 @@ Evol.Dico = {
                     }else{
                         h.push('<p class="">',Evol.i18n.nopix,'</p>');
                     }
-                    h.push(EvoUI.input.text(fid, fv, fld, null));
+                    h.push(uiInput.text(fid, fv, fld, null));
                     break;
                 case fTypes.color:
                     //h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
-                    h.push(EvoUI.input.color(fid, fv));
+                    h.push(uiInput.color(fid, fv));
                     break;
                 case fTypes.hidden:
-                    h.push(EvoUI.input.hidden(fid, fv));
+                    h.push(uiInput.hidden(fid, fv));
                     break;
             }
         }

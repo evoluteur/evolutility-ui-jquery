@@ -36,6 +36,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
     HTMLItem: function(h, fields, model, icon, selectable, route){
         var that = this,
             v,
+            ft=Evol.Dico.fieldTypes,
             opts = this.options,
             link = (opts.links!==false);
 
@@ -43,6 +44,9 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
         _.each(fields, function(f, idx){
             if(f.value){
                 v = f.value(model);
+            }else if(f.type===ft.color) {
+                v = model.escape(f.attribute || f.id);
+                v = Evol.UI.input.colorBox(f.id, v, v);
             }else{
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }

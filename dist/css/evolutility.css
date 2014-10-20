@@ -189,6 +189,9 @@ label {
   width: 20px;
   border: solid 1px silver;
 }
+.evo-color-box span {
+  margin-left: 24px;
+}
 /* --- mini --- */
 .evol-mini-label {
   float: left;
