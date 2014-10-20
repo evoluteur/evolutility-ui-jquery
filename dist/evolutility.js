@@ -363,10 +363,10 @@ Evol.UI = {
     },
 
     // --- panels ---
-    HTMLPanelBegin: function (pid, label, css) {
+    HTMLPanelBegin: function (pid, label, css, csslabel) {
         return [
             '<div data-pid="', pid, '" class="panel ', css, '">',
-            '<div class="panel-heading">', Evol.UI.icon('chevron-up', 'evol-title-toggle'),
+            '<div class="panel-heading ', csslabel?csslabel:'','">', Evol.UI.icon('chevron-up', 'evol-title-toggle'),
             '<h3 class="panel-title">', label, '</h3></div>'
         ].join('');
     },
@@ -1925,6 +1925,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     renderPanel: function (h, p, pid, mode, visible) {
         var that = this,
+            uiInput = Evol.UI.input,
             fTypes=Evol.Dico.fieldTypes,
             iconsPath = this.options.iconsPath || '';
         if(mode==='wiz'){
@@ -1938,13 +1939,12 @@ Evol.ViewOne = Backbone.View.extend({
                 h.push(' pull-left" style="width:', p.width, '%">');
             }
         }
-        h.push(
-            Evol.UI.HTMLPanelBegin(pid, p.label, this.options.style+(p.css?' '+p.css:'')),
+        h.push(Evol.UI.HTMLPanelBegin(pid, p.label, p.css?p.css:this.options.style, p.csslabel),
             '<fieldset data-pid="', pid, p.readonly?'" disabled>':'">');
         if(mode==='mini'){
             _.each(p.elements, function (elem) {
                 if(elem.type==fTypes.hidden){
-                    h.push(Evol.UI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
+                    h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
                 }else{
                     h.push('<div class="pull-left evol-fld w-100">');
                     that.renderField(h, elem, mode, iconsPath);
@@ -1957,7 +1957,7 @@ Evol.ViewOne = Backbone.View.extend({
                     that.renderPanelList(h, elem, elem.readonly?'view':mode);
                 }else{
                     if(elem.type==fTypes.hidden){
-                        h.push(Evol.UI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
+                        h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
                     }else{
                         h.push('<div style="width:', parseInt(elem.width, 10), '%" class="pull-left evol-fld">');
                         that.renderField(h, elem, mode, iconsPath);
@@ -1975,7 +1975,7 @@ Evol.ViewOne = Backbone.View.extend({
     renderPanelList: function (h, p, mode) {
         var vMode=p.readonly?'view':mode;
         h.push('<div style="width:', p.width, '%" class="evol-pnl pull-left" data-pid="', p.id,'">',
-            Evol.UI.HTMLPanelBegin(p.id, p.label, this.options.style+(p.css?' '+p.css:'')),
+            Evol.UI.HTMLPanelBegin(p.id, p.label, p.css?p.css:this.options.style, p.csslabel),
             '<table class="table" data-mid="', (p.attribute || p.id),'"><thead><tr>');
         _.each(p.elements, function (elem) {
             h.push('<th>', elem.label, elem.required?Evol.UI.html.required:'', '</th>');
@@ -4317,7 +4317,8 @@ Evol.Dico = {
                     break;
                 case fTypes.money:
                     h.push('<div class="input-group">', EvoUI.input.typeFlag('$'),
-                        EvoUI.input.textInt(fid, fv), '</div>');
+                        EvoUI.input.textInt(fid, fv),
+                        '</div>');
                     break;
                 case fTypes.bool:
                     h.push(EvoUI.input.checkbox(fid, fv));
@@ -4352,7 +4353,8 @@ Evol.Dico = {
                     break;
                 case fTypes.email:
                     h.push('<div class="input-group">', EvoUI.input.typeFlag(Evol.i18n.sgn_email),
-                        EvoUI.input.text(fid, fv, fld), '</div>');
+                        EvoUI.input.text(fid, fv, fld),
+                        '</div>');
                     break;
                 case fTypes.url:
                     h.push(EvoUI.input.text(fid, fv, fld));
@@ -4384,7 +4386,8 @@ Evol.Dico = {
 
     HTMLFieldLabel: function (fld, mode) {
         var h=[];
-        h.push('<div class="evol-field-label" id="', fld.id, '-lbl"><label class="control-label ',fld.csslabel?fld.csslabel:'','" for="', fld.id, '">', fld.label);
+        h.push('<div class="evol-field-label" id="', fld.id, '-lbl"><label class="control-label ',fld.csslabel?fld.csslabel:'','" for="', fld.id, '">',
+            fld.label);
         if (mode != 'view' && fld.required){
             h.push(Evol.UI.html.required);
         }
