@@ -272,16 +272,17 @@ Evol.ViewOne = Backbone.View.extend({
         if(prop==='value'){
             this.setFieldValue(fid, value);
         }else{
+            var $f=this.$field(fid);
             switch (prop){
                 case 'enabled':
                     if(value){
-                        this.$field(fid).removeProp('disabled');
+                        $f.removeProp('disabled');
                     }else{
-                        this.$field(fid).prop('disabled', true);
+                        $f.prop('disabled', true);
                     }
                     break;
                 case 'visible':
-                    Evol.UI.setVisible(this.$field(fid), value);
+                    Evol.UI.setVisible($f, value);
                     break;
             }
         }
@@ -757,6 +758,7 @@ Evol.ViewOne = Backbone.View.extend({
 
     _checkFields: function (fds, values) {
         var that = this,
+            typeEmail=Evol.Dico.fieldTypes.email,
             msgs = [],
             msg1;
 
@@ -765,6 +767,9 @@ Evol.ViewOne = Backbone.View.extend({
                 msgs.push(msg);
             }
             var p=that.$field(fd.id).parent();
+            if(fd.type===typeEmail){
+                p=p.parent();
+            }
             var errlabel = p.find('.text-danger');
             if (errlabel.length) {
                 errlabel.html(msg);
