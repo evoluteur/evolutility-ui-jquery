@@ -77,11 +77,12 @@ uiModels.test = {
     entities: 'tests',
     title: 'Test Object',
     leadfield:'name',
+    icon:'color_wheel.png',
     elements: [
         {
             type: 'panel',
             css: 'panel-primary',
-            label: 'Testing Evolutility',
+            label: 'Test object',
             width: 100,
             elements: [
                 {
@@ -102,7 +103,7 @@ uiModels.test = {
                 fieldTypePanel('text', 'Text', 'Text', 'panel-success'),
                 fieldTypePanel('lov', 'List', 'List (value)', 'panel-warning'),
                 fieldTypePanel('list', 'List mv', 'List (multiple values)', 'panel-warning'),
-                fieldTypePanel('textmultiline', 'Large Text', 'Large Text', 'panel-success'),
+                fieldTypePanel('textmultiline', 'Large Text', '', 'panel-success'),
                 fieldTypePanel('html', 'HTML')
             ]
         },
@@ -110,9 +111,9 @@ uiModels.test = {
             type: 'tab',
             label: 'Date & Time',
             elements: [
-                fieldTypePanel('date', 'Date'),
-                fieldTypePanel('time', 'Time'),
-                fieldTypePanel('datetime', 'Date and Time')
+                fieldTypePanel('date', 'Date', '', 'panel-default'),
+                fieldTypePanel('time', 'Time', '', 'panel-info'),
+                fieldTypePanel('datetime', 'Date and Time', '', 'panel-primary')
             ]
         },
         {
