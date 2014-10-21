@@ -35,7 +35,7 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
             this._stepIdx=stepIdx;
             steps.hide()
                 .eq(this._stepIdx).show();
-        }else if(this.validate(this.options.uiModel.elements[this._stepIdx].elements)===''){
+        }else if(this.validate(this.uiModel.elements[this._stepIdx].elements)===''){
             if(bId==='prev' && this._stepIdx>0){
                 steps.hide()
                     .eq(--this._stepIdx).show();
@@ -61,7 +61,7 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
 
     _render: function (h, mode) {
         // WIZARD forms
-        var elems = this.options.uiModel.elements;
+        var elems = this.uiModel.elements;
         this._nbStep=elems.length;
         this._renderBreadcrumb(h, elems, 0)
             ._renderPanels(h, elems, 'wiz')
@@ -92,12 +92,15 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
         var that=this;
         h.push('<div class="evo-one-wiz">');
         _.each(elems, function(pnl, idx){
+            if(!pnl.id){
+                pnl.id='p'+idx;
+            }
             switch (pnl.type) {
                 case 'panel':
-                    that.renderPanel(h, pnl, 'p-'+idx, mode, idx===0);
+                    that._renderPanel(h, pnl, mode, idx===0);
                     break;
                 case 'panel-list':
-                    that.renderPanelList(h, pnl, mode, idx===0);
+                    that._renderPanelList(h, pnl, mode, idx===0);
                     break;
             }
         });

@@ -29,7 +29,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
         var h = [];
         if(this.collection && this.collection.length>0){
             h.push('<div class="evol-many-', this.viewName, '">');
-            this._HTMLcharts(h, this.options.style, this.options.sizes);
+            this._HTMLcharts(h, this.style, this.sizes);
             h.push('</div>');
         }else{
             h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
@@ -43,9 +43,9 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             EvoDico = Evol.Dico,
             i18n = Evol.i18n,
             fTypes = EvoDico.fieldTypes,
-            uiModel = this.options.uiModel,
+            uiModel = this.uiModel,
             models = this.collection.models,
-            iconsPath = this.options.iconsPath || '',
+            iconsPath = this.iconsPath || '',
             chartFields = EvoDico.getFields(uiModel, function(f){
                 return f.viewcharts || f.type==fTypes.lov || f.type==fTypes.bool || f.type==fTypes.int;
             });

@@ -24,10 +24,11 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
         if(!_.isUndefined(model) && model!==null){
             var that=this,
                 fTypes = Evol.Dico.fieldTypes,
+                HTMLField4Many = Evol.Dico.HTMLField4Many,
                 $f, fv,
                 prefix='#'+ that.prefix + '-',
                 subCollecs=this.getSubCollecs(),
-                iconsPath=this.options.iconsPath||'';
+                iconsPath=this.iconsPath||'';
             _.each(this.getFields(), function (f) {
                 $f=that.$(prefix + f.id);
                 if(f.value){
@@ -42,7 +43,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                         case fTypes.email:
                         case fTypes.url:
                         case fTypes.html:
-                            $f.html(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
+                            $f.html(HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
                             break;
                         case fTypes.pix:
                             $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
@@ -55,7 +56,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                             }
                             break;
                         default:
-                            $f.text(Evol.Dico.HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
+                            $f.text(HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
                     }
                 }
             });

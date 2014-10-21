@@ -192,6 +192,9 @@ label {
 .evo-color-box span {
   margin-left: 24px;
 }
+.evo-panel-help {
+  margin-top: 5px;
+}
 /* --- mini --- */
 .evol-mini-label {
   float: left;

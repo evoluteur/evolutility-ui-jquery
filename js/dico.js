@@ -229,7 +229,7 @@ Evol.Dico = {
     showDesigner: function(id, type, $el, context){
         var $elDes=$('<div class="evodico-'+type+'"></div>'),
             model,
-            uiModel=context.options.uiModel;
+            uiModel=context.uiModel;
 
         //TODO set record
         context.getFields(dico_field_ui);

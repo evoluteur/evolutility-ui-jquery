@@ -360,11 +360,13 @@ Evol.UI = {
     },
 
     // --- panels ---
-    HTMLPanelBegin: function (pid, label, css, csslabel) {
+    HTMLPanelBegin: function (p, css) {
         return [
-            '<div data-pid="', pid, '" class="panel ', css, '">',
-            '<div class="panel-heading ', csslabel?csslabel:'','">', Evol.UI.icon('chevron-up', 'evol-title-toggle'),
-            '<h3 class="panel-title">', label, '</h3></div>'
+            '<div data-pid="', p.id, '" class="panel ', p.css?p.css:css, '">',
+            '<div class="panel-heading ', p.csslabel? p.csslabel:'','">', Evol.UI.icon('chevron-up', 'evol-title-toggle'),
+            '<h3 class="panel-title">', p.label, '</h3>',
+            p.help?'<p class="evo-panel-help">'+p.help+'</p>':'',
+            '</div>'
         ].join('');
     },
     HTMLPanelEnd: function () {

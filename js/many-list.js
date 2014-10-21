@@ -16,26 +16,24 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
     _render: function (models) {
         var h = [],
             that = this,
-            opts = this.options,
-            selectable = opts.selectable,
             fields = this.getFields(),
-            pSize = opts.pageSize || 50,
-            link = (this.options.links!==false),
+            pSize = this.pageSize || 50,
+            link = (this.links!==false),
             hover;
 
         h.push('<div class="evol-many-list">',
             '<table class="table table-bordered', link?' table-hover':'', '"><thead><tr>');
-        if(selectable){
+        if(this.selectable){
             h.push('<th class="list-td-sel">', this._HTMLCheckbox('cbxAll'), '</th>');
         }
         _.each(fields, function(field){
             that._HTMLlistHeader(h, field);
         });
         h.push('</tr></thead><tbody>');
-        this._HTMLbody(h, fields, pSize, this.uiModel.icon, 0, selectable);
+        this._HTMLbody(h, fields, pSize, this.uiModel.icon, 0, this.selectable);
         h.push('</tbody></table>');
         this._HTMLpagination(h, 0, pSize, models.length);
-        h.push('<div class="evo-many-summary">', this.pageSummary(opts.pageIndex, pSize, models.length), '</div>',
+        h.push('<div class="evo-many-summary">', this.pageSummary(this.pageIndex, pSize, models.length), '</div>',
             '</div>');
         this.$el.html(h.join(''));
     },
@@ -47,8 +45,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
     HTMLItem: function(h, fields, model, icon, selectable, route){
         var that = this,
             v,
-            opts = this.options,
-            link = (opts.links!==false),
+            link = (this.links!==false),
             ft = Evol.Dico.fieldTypes;
         h.push('<tr data-mid="', model.id, '">');
         if(selectable){

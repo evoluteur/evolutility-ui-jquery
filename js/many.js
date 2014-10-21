@@ -26,7 +26,7 @@ Evol.ViewMany = Backbone.View.extend({
         //titleSelector: '#title',
         selectable: false,
         links: true,
-        //noDataString: 'No data to display',
+        noDataString: Evol.i18n.nodata, //'No data to display.',
         iconsPath: 'pix/'
     },
 
@@ -42,24 +42,19 @@ Evol.ViewMany = Backbone.View.extend({
         var lastSort = localStorage.getItem(opts.uiModel.id+'-sort'),
             that=this;
 
-        _.extend(this.options, opts);
-        this.uiModel=this.options.uiModel;
-        this.pageIndex=this.options.pageIndex;
-        this.mode=this.options.mode || '';
+        _.extend(this, this.options, opts);
+        this.mode=this.mode || '';
         this._filter=[];
-        if(this.options.autoUpdate){
-            if(this.collection){
-                this.collection.on('change', function(){
-                    that.render();
-                });
-            }
+        if(this.autoUpdate && this.collection){
+            // TODO set later if not specified yet
+            this.collection.on('change', function(){
+                that.render();
+            });
         }
-        if(!this.options.router){
+        if(!this.router){
             this.$el.on('click', '.evol-nav-id', function(evt){
                 that.click_navigate(evt);
             });
-        }else{
-            this.router=this.options.router;
         }
         //this._custOn=false;
         if(lastSort!==null){
@@ -77,7 +72,7 @@ Evol.ViewMany = Backbone.View.extend({
             models=Evol.Dico.filterModels(models, this._filter);
             this._render(models);
         }else{
-            this.$el.html(Evol.UI.HTMLMsg(this.options.noDataString || Evol.i18n.nodata, '', 'info'));
+            this.$el.html(Evol.UI.HTMLMsg(this.noDataString, '', 'info'));
         }
         return this.setTitle();
     },
@@ -88,7 +83,7 @@ Evol.ViewMany = Backbone.View.extend({
             r,
             rMin = (pageIdx > 0)?pageIdx*pSize:0,
             rMax = _.min([models.length, rMin+pSize]),
-            ico = icon?(this.options.iconsPath || '')+icon:null;
+            ico = icon?(this.iconsPath || '')+icon:null;
 
         if(rMax>0){
             var route=this.getItemRoute();
@@ -104,7 +99,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     _HTMLField: function(f, v){
-        var fv=Evol.Dico.HTMLField4Many(f, v, Evol.hashLov, this.options.iconsPath || '');
+        var fv=Evol.Dico.HTMLField4Many(f, v, Evol.hashLov, this.iconsPath || '');
         if(f.type==='list'){
             return _.escape(fv);
         }
@@ -145,7 +140,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     setTitle: function (){
-        $(this.options.titleSelector).html(this.getTitle());
+        $(this.titleSelector).html(this.getTitle());
         return this;
     },
 
@@ -177,12 +172,11 @@ Evol.ViewMany = Backbone.View.extend({
     setPage: function(pageIdx){
         var h = [],
             fields = this.getFields(),
-            opts = this.options,
-            pSize = opts.pageSize,
+            pSize = this.pageSize,
             collecLength = this.collection.length,
             pSummary = this.pageSummary(pageIdx, pSize, collecLength);
 
-        this._HTMLbody(h, fields, pSize, this.uiModel.icon, pageIdx, opts.selectable);
+        this._HTMLbody(h, fields, pSize, this.uiModel.icon, pageIdx, this.selectable);
         this._$body().html(h.join(''));
         h=[];
         this._HTMLpaginationBody(h, pageIdx, pSize, collecLength);
@@ -202,7 +196,7 @@ Evol.ViewMany = Backbone.View.extend({
     },
 
     getSelection:function(){
-        if(this.options.selectable){
+        if(this.selectable){
             return _.map(this._$Selection().toArray(), function(cbx){
                 return $(cbx).data('id');
             });
@@ -212,7 +206,7 @@ Evol.ViewMany = Backbone.View.extend({
 
     setSelection: function(sel){
         // - param: sel = array of ids like ['1','2']
-        if(this.options.selectable){
+        if(this.selectable){
             if(sel.length>0){
                 // TODO optimize and uncheck prev checked
                 var selector = [];

@@ -27,12 +27,14 @@ Evol.ViewOne.Mini = Evol.ViewOne.Edit.extend({
 
     _render: function (h, mode) {
         // EDIT and VIEW forms
-        var opts = this.options,
-            miniUIModel= {
-                type: 'panel', class:'evol-mini-holder', label: Evol.UI.capitalize(opts.uiModel.entity), width: 100,
+        var miniUIModel= {
+                type: 'panel',
+                class:'evol-mini-holder',
+                label: Evol.UI.capitalize(this.uiModel.entity),
+                width: 100,
                 elements: this.getFields()
             };
-        this.renderPanel(h, miniUIModel, 'evol-one-mini', mode);
+        this._renderPanel(h, miniUIModel, mode);
         this._renderButtons(h, mode);
     }
 

@@ -12,7 +12,7 @@ Evol.UI.Charts = {
     URL: 'http://chart.apis.google.com/chart',
 
     _HTML: function(title, urlPix, style){
-        return [ //class="panel ', this.options.style, '
+        return [ //class="panel ', this.style, '
             '<div class="evol-chart-holder panel ',style,'"><label class="evol-chart-title">',
             title,'</label><img src="',urlPix,'"><br></div>'
         ].join('');

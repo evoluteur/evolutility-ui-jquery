@@ -25,11 +25,11 @@ Evol.Shell = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        this.options=_.extend({}, this.options, opts);
-        this.options.uiModels = _.flatten(this.options.uiModelsObj);
+        _.extend(this, this.options, opts);
+        this.uiModels = _.flatten(this.uiModelsObj);
         this._tbs={};
         this._ents={};
-        var es = this.options.elements;
+        var es = this.elements;
         //this.$nav = $(es.nav);
         this.$nav2 = $(es.nav2);
         //this.$content = $(es.content);
@@ -38,7 +38,7 @@ Evol.Shell = Backbone.View.extend({
 
 	//render: function() {
 		//this.$el.html(...
-        //this.$nav2.html(this._HTMLentities(this.options.uiModels));
+        //this.$nav2.html(this._HTMLentities(this.uiModels));
         //this.$content.html(...;
         //return this;
 	//},
@@ -55,7 +55,7 @@ Evol.Shell = Backbone.View.extend({
                     '*noroute': that.noRoute
                 },
                 nav: function(entity, view, id){
-                    if(entity && that.options.uiModelsObj[entity]){
+                    if(entity && that.uiModelsObj[entity]){
                         that.setEntity(entity, view, id);
                     }else {
                         // TODO !!!
@@ -130,7 +130,7 @@ Evol.Shell = Backbone.View.extend({
             this._ents[eName]=$v;
             this.$el.children().hide();
             this.$el.append($v);
-            this.createEntity($v, this.options.uiModelsObj[eName], [], view, options, cb);
+            this.createEntity($v, this.uiModelsObj[eName], [], view, options, cb);
         }
         if(this._curEntity!==eName){
             this.$nav2.find('>li>a').removeClass('sel')
@@ -170,7 +170,7 @@ Evol.Shell = Backbone.View.extend({
                 if(defaultView){
                     config.defaultView = defaultView;
                 }
-                if(that.options.useRouter){
+                if(that.useRouter){
                     config.router = that.router;
                 }
                 var tb = new Evol.ViewToolbar(config).render();//.setTitle();

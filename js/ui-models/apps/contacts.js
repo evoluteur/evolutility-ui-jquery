@@ -326,12 +326,11 @@ uiModels.contact = {
             elements: [
                 {
                     type: 'text', id: 'lastname', label: 'Lastname', maxlength: 50,
-                    required: true, css: 'FieldMain', width: '62', viewmany: true
+                    required: true, width: '62', viewmany: true
                 },
                 {
                     type: 'text', id: 'firstname', label: 'Firstname', maxlength: 50,
-                    required: true, css: 'FieldMain',
-                    width: 38, viewmany: true
+                    required: true, width: 38, viewmany: true
                 },
                 {
                     type: 'text', id: 'jobtitle', label: 'Title', maxlength: 50,

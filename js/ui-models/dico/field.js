@@ -17,8 +17,6 @@ var dico_field_ui = {
                     id:'label',
                     label: "Label",
                     type: "text",
-                    cssclass: "FieldMain",
-                    cssclassview: "FieldMain",
                     help: "Field title for the user",
                     maxlength: 100,
                     required: true,

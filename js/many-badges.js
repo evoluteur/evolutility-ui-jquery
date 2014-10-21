@@ -15,12 +15,11 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
 
     _render: function (models) {
         var h = [],
-            opts = this.options,
-            pSize = opts.pageSize || 50,
+            pSize = this.pageSize || 50,
             pSummary = this.pageSummary(0, pSize, models.length);
 
         h.push('<div class="evol-many-badges"><div class="evol-badges-body">');
-        this._HTMLbody(h, this.getFields(), pSize, this.uiModel.icon, 0, opts.selectable);
+        this._HTMLbody(h, this.getFields(), pSize, this.uiModel.icon, 0, this.selectable);
         h.push('</div>', Evol.UI.html.clearer);
         this._HTMLpagination(h, 0, pSize, models.length);
         h.push('<div class="evo-many-summary">', pSummary, '</div>');
@@ -37,10 +36,9 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
         var that = this,
             v,
             ft=Evol.Dico.fieldTypes,
-            opts = this.options,
-            link = (opts.links!==false);
+            link = (this.links!==false);
 
-        h.push('<div class="panel ',this.options.style,'">');
+        h.push('<div class="panel ',this.style,'">');
         _.each(fields, function(f, idx){
             if(f.value){
                 v = f.value(model);

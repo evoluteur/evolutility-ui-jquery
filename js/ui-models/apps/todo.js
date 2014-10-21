@@ -14,7 +14,7 @@ uiModels.todo = {
                 {
                     id: 'title', type: 'text', label: 'Title', required: true,
                     placeholder: 'Call John',
-                    css: 'FieldMain', maxlength: 255,
+                    maxlength: 255,
                     width: 100, viewmany: true
                 },
                 {

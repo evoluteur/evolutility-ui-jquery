@@ -30,20 +30,19 @@ Evol.ViewAction.Export = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        _.extend(this.options, opts);
-        this.uiModel = this.options.uiModel;
+        _.extend(this, this.options, opts);
         return this;
     },
 
     render: function(){
         this.$el.html(this._renderHTML());
-        this._preview(this.options.formats[0]);
+        this._preview(this.formats[0]);
         return this;
     },
 
     _renderHTML: function () {
         var h = [],
-            formats = this.options.formats,
+            formats = this.formats,
             EvoUI = Evol.UI,
             fields = this.getFields(),
             iMax = fields.length,
@@ -114,7 +113,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
     },
 
     setModel: function(model){
-        this.options.model=model;
+        this.model=model;
     },
 
     showFormatOpts: function (xFormat) {
@@ -150,7 +149,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
     },
 
     getTitle: function(){
-        var keyEnd=this.options.many?'ies':'y';
+        var keyEnd=this.many?'ies':'y';
         return Evol.i18n.getLabel('export.ExportEntit'+keyEnd, this.uiModel['entit'+keyEnd]);
     },
 
@@ -158,7 +157,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
         var h=[],
             $e = this.$('.evol-xpt-val'),
             fTypes = Evol.Dico.fieldTypes,
-            maxItem = this.options.sampleMaxSize-1;
+            maxItem = this.sampleMaxSize-1;
 
         if(this.model && this.model.collection){
             var data = this.model.collection.models,
@@ -360,7 +359,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
         }else{
             h.push(Evol.i18n.nodata);
         }
-        if(this.options.many && format==='JSON'){
+        if(this.many && format==='JSON'){
             $e.html('['+h.join(',\n')+']');
         }else{
             $e.html(h.join(''));

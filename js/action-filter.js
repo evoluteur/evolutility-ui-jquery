@@ -44,12 +44,10 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        _.extend(this.options, opts);
+        _.extend(this, this.options, opts);
         // - if no fields are provided, then get them from the uiModel
-        if(this.options.fields && this.options.fields.length!==0){
-            this.fields = this.options.fields;
-        }else if(this.options.uiModel){
-            this.fields = _.map(Evol.Dico.getFields(this.options.uiModel, function(f){
+        if(this.fields.length<1 && this.uiModel){
+            this.fields = _.map(Evol.Dico.getFields(this.uiModel, function(f){
                     return f.type!==Evol.Dico.fieldTypes.hidden;
                 }),
                 function(f){
@@ -62,21 +60,19 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                         });
                     }
                 });
-        }else{
-            this.fields = [];
         }
         return this;
     },
 
     render: function(){
-        var bLabels=this.options.buttonLabels,
+        var bLabels=this.buttonLabels,
             that=this,
             e=this.$el,
             h=[];
 
         h.push('<div class="evo-zfilters"></div>',
             '<a class="evo-bNew btn btn-primary" href="javascript:void(0)">',evoLang.bNewCond,'</a>');
-        if(this.options.submitButton){
+        if(this.submitButton){
             h.push('<a class="evo-bSubmit btn btn-primary" href="javascript:void(0)">',evoLang.bSubmit,'</a>');
         }
         h.push('<div class="evo-editFilter"></div>',
@@ -85,11 +81,11 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         this._step=0;
         //this._renderMenu(h);
         e.html(h.join(''));
-        if(this.options.submitReady){
+        if(this.submitReady){
             this._hValues=$('<span></span>').appendTo(e);
         }
         // - button submit
-        if(this.options.submitButton){
+        if(this.submitButton){
             this._bSubmit=e.find('.evo-bSubmit').button({
                 text: bLabels
             });
@@ -222,7 +218,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
             })*/
             .data('filter', filter)
             .fadeIn();
-        //if(this.options.highlight){
+        //if(this.highlight){
         //    f.effect('highlight');
         //}
         this._triggerChange();
@@ -425,7 +421,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                     }
                     editor.append(h.join(''));
                     if(fType==fTypes.date){// TODO add datepicker widget to build and uncomment this
-                        editor.find('#value,#value2').datepicker({dateFormat:this.options.dateFormat});
+                        editor.find('#value,#value2').datepicker({dateFormat:this.dateFormat});
                     }
                 }
                 if(v){
@@ -564,7 +560,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     },
 
     _triggerChange: function(){
-        if(this.options.submitReady){
+        if(this.submitReady){
             this._setHiddenValues();
         }
         this.$el.trigger('change.filter');
@@ -649,7 +645,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     click_add: function(evt){
         var data=this._getEditorData();
         if(this._cFilter){
-            this._enableCond(data, this.options.highlight);
+            this._enableCond(data, this.highlight);
         }else{
             this.addCondition(data);
         }

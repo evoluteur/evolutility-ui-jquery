@@ -53,10 +53,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     initialize: function (opts) {
-        this.options=_.extend(this.options, opts);
-        this.pageIndex = this.options.pageIndex;
-        this.uiModel = this.options.uiModel;
-        this.router = this.options.router;
+        _.extend(this, this.options, opts);
         this.views=[];
         this.viewsHash={};
         //this.tabId=false;
@@ -65,7 +62,7 @@ Evol.ViewToolbar = Backbone.View.extend({
 
 	render: function() {
 		this.$el.html(this._toolbarHTML());
-		this.setView(this.options.defaultView || 'list', false);
+		this.setView(this.defaultView || 'list', false);
         //this.$('[data-toggle="tooltip"]').tooltip();
         this.$('.dropdown-toggle').dropdown();
         // TODO remove test below
@@ -75,15 +72,15 @@ Evol.ViewToolbar = Backbone.View.extend({
 
     _toolbarHTML: function(){
         var h=[],
+            that=this,
             i18n=Evol.i18n,
             eui=Evol.UI.menu,
-            opts=this.options,
             endMenu='</ul></li>',
             menuDevider='<li class="divider" data-cardi="1"></li>',
             menuDeviderH='<li class="divider-h"></li>';
 
         function linkOpt2h (id, label, icon, cardi){
-            if(opts.buttons[id]){
+            if(that.buttons[id]){
                 h.push(eui.hItem(id, label, icon, cardi));
             }
         }
@@ -100,7 +97,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         linkOpt2h('charts',i18n.bCharts,'stats','n');
         linkOpt2h('export',i18n.bExport,'cloud-download','n');
         //linkOpt2h('selections','','star');
-        if(opts.toolbar){
+        if(this.toolbar){
             h.push('</ul><ul class="nav nav-pills pull-right" data-id="views">',
                 '<li class="evo-tb-status" data-cardi="n"></li>',
                 eui.hItem('prev','','chevron-left','x'),
@@ -120,7 +117,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             h.push(eui.hEnd('li'));
             /*
             //linkOpt2h('customize','','wrench', '1', 'Customize');
-            if(opts.buttons.customize){
+            if(this.buttons.customize){
                 h.push(beginMenu('cust','wrench'));
                 link2h('customize','Customize this view','wrench');
                 h.push(menuDevider);
@@ -146,8 +143,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     _setView:function(viewName, updateRoute, skipIcons){
-        var opts=this.options,
-            $e=this.$el,
+        var $e=this.$el,
             eid ='evolw-'+viewName,
             $v=this.$('[data-vid="'+eid+'"]'),
             vw=this.curView,
@@ -157,12 +153,12 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(viewName==='new'){
             viewName=(this._prevViewOne && this._prevViewOne!='view' && this._prevViewOne!='json')?this._prevViewOne:'edit';
             this.setView(viewName, false, true);
-            this.model=new opts.modelClass();
+            this.model=new this.modelClass();
             this.model.collection=collec;
             vw.model=this.model;
             this.newItem();
             this.setIcons('new');
-            vw.options.mode='new';
+            vw.mode='new';
         }else{
             if($v.length){
                 // -- view already exists and was rendered
@@ -211,10 +207,10 @@ Evol.ViewToolbar = Backbone.View.extend({
                     model: this.model,
                     collection: collec,
                     uiModel: this.uiModel,
-                    style: opts.style,
-                    pageSize: opts.pageSize || 20,
+                    style: this.style,
+                    pageSize: this.pageSize || 20,
                     pageIndex: this.pageIndex || 0,
-                    titleSelector: opts.titleSelector,
+                    titleSelector: this.titleSelector,
                     router: this.router
                 };
                 this.$('[data-id="new"]').show();
@@ -261,7 +257,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     this.curView=vw;
                     this.viewsHash[viewName]=vw;
                     if(!skipIcons){
-                        $(this.options.titleSelector).html(vw.getTitle());
+                        $(this.titleSelector).html(vw.getTitle());
                     }
                 }
             }
@@ -303,7 +299,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     setTitle: function(){
         if(this.curView){
             if(this.curView.viewName==='export'){
-                $(this.options.titleSelector)
+                $(this.titleSelector)
                     .html(this.curView.getTitle());
             }else{
                 this.curView.setTitle();
@@ -406,7 +402,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     this.setStatus('');
                 }else{
                     var cSize=this.collection.length,
-                        pSize=this.curView.options.pageSize;
+                        pSize=this.curView.pageSize;
                     if(cSize > pSize){
                         tbBs.prevNext.show();/*
                         // TODO finish disabling of paging buttons
@@ -415,7 +411,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                         }else{
                             tbBs.prevNext.eq(0).removeClass('nav-disabled');
                         }
-                        if(this.collection.length/this.options.pageSize){
+                        if(this.collection.length/this.pageSize){
                             tbBs.prevNext.eq(1).addClass('nav-disabled');
                         }else{
                             tbBs.prevNext.eq(1).removeClass('nav-disabled');
@@ -595,7 +591,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                             alert('error in "saveItem"');
                         }
                     });
-                    this.options.mode='edit';
+                    this.mode='edit';
                 }else{
                     alert('Can\'t save record b/c no collection is specified.'); //TODO use bootstrap modal
                 }
@@ -759,7 +755,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(bId==='prev'){
             pIdx=(pIdx>0)?pIdx-1:0;
         }else if(bId==='next'){
-            if((pIdx+1)*(this.options.pageSize)<this.curView.collection.length){
+            if((pIdx+1)*(this.pageSize)<this.curView.collection.length){
                 pIdx++;
             }
         }else{
@@ -786,7 +782,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             if(this.collection){
                 return this.collection;
             }else{
-                return this.model?this.model.collection:new this.options.collectionClass();
+                return this.model?this.model.collection:new this.collectionClass();
             }
         }
     },
