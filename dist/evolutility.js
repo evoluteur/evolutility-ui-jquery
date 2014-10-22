@@ -172,8 +172,8 @@ Evol.UI = {
             return h.join('');
         },
 
-        img: function (id, value) {
-            return ['<img id="', id, '" src="', value.replace(/"/g,'\"'), '">'].join('');
+        img: function (id, value, css) {
+            return ['<img id="', id, '" src="', value.replace(/"/g,'\"'), css?'" class="'+css:'', '">'].join('');
         },
 
         hidden: function (id, value) {
@@ -4253,7 +4253,7 @@ Evol.Dico = {
                 return Evol.UI.formatDateTime(v);
             case fTypes.pix:
                 if (v && v.length) {
-                    return Evol.UI.input.img(f.id, iconsPath + v);
+                    return Evol.UI.input.img(f.id, iconsPath + v, 'img-thumbnail');
                 }
                 break;
             case fTypes.money:
@@ -4920,7 +4920,15 @@ Evol.ViewToolbar = Backbone.View.extend({
                 return this;
             }
         }else{
-            this._filters.$el.show();
+            this._filters.$el.slideDown();
+        }
+        return this;
+    },
+
+    hideFilter: function(){
+        if(this._filters){
+            this._filters.$el.fadeOut(300);
+            this._filterOn=false;
         }
         return this;
     },
@@ -4934,14 +4942,6 @@ Evol.ViewToolbar = Backbone.View.extend({
         }else{
             $fIco.removeClass(css);
         }
-    },
-
-    hideFilter: function(){
-        if(this._filters){
-            this._filters.$el.hide();
-            this._filterOn=false;
-        }
-        return this;
     },
 
     toggleFilter: function(){

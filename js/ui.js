@@ -169,8 +169,8 @@ Evol.UI = {
             return h.join('');
         },
 
-        img: function (id, value) {
-            return ['<img id="', id, '" src="', value.replace(/"/g,'\"'), '">'].join('');
+        img: function (id, value, css) {
+            return ['<img id="', id, '" src="', value.replace(/"/g,'\"'), css?'" class="'+css:'', '">'].join('');
         },
 
         hidden: function (id, value) {

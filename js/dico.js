@@ -333,7 +333,7 @@ Evol.Dico = {
                 return Evol.UI.formatDateTime(v);
             case fTypes.pix:
                 if (v && v.length) {
-                    return Evol.UI.input.img(f.id, iconsPath + v);
+                    return Evol.UI.input.img(f.id, iconsPath + v, 'img-thumbnail');
                 }
                 break;
             case fTypes.money:
