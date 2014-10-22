@@ -453,7 +453,15 @@ Evol.ViewToolbar = Backbone.View.extend({
                 return this;
             }
         }else{
-            this._filters.$el.show();
+            this._filters.$el.slideDown();
+        }
+        return this;
+    },
+
+    hideFilter: function(){
+        if(this._filters){
+            this._filters.$el.fadeOut(300);
+            this._filterOn=false;
         }
         return this;
     },
@@ -467,14 +475,6 @@ Evol.ViewToolbar = Backbone.View.extend({
         }else{
             $fIco.removeClass(css);
         }
-    },
-
-    hideFilter: function(){
-        if(this._filters){
-            this._filters.$el.hide();
-            this._filterOn=false;
-        }
-        return this;
     },
 
     toggleFilter: function(){
