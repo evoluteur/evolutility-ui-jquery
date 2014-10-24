@@ -453,14 +453,14 @@ Evol.ViewToolbar = Backbone.View.extend({
                 return this;
             }
         }else{
-            this._filters.$el.slideDown();
+            this._filters.$el.show(); //.slideDown();
         }
         return this;
     },
 
     hideFilter: function(){
         if(this._filters){
-            this._filters.$el.fadeOut(300);
+            this._filters.$el.hide(); //.fadeOut(300);
             this._filterOn=false;
         }
         return this;
