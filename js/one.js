@@ -508,12 +508,12 @@ Evol.ViewOne = Backbone.View.extend({
                 }
                 if (iTab < 0) {
                     h.push(Evol.UI.html.clearer);
-                    that.renderTabs(h, elems);
+                    that._renderTabs(h, elems);
                     h.push('<div class="tab-content">');
                 }
                 iTab++;
                 h.push('<div id="evol-tab-', idx, '" class="tab-pane', (iTab === 0 ? ' active">' : '">'));
-                that.renderTab(h, p, mode);
+                that._renderTab(h, p, mode);
                 if (iTab == iMax1) {
                     h.push('</div>');
                 }
@@ -539,16 +539,20 @@ Evol.ViewOne = Backbone.View.extend({
         this._renderButtons(h, mode);
     },
 
-    renderTabs: function (h, tabs) {
+    _renderTabs: function (h, tabs) {
         var isFirst = true;
         h.push('<ul class="nav nav-tabs evol-tabs">');
         _.each(tabs, function (tab, idx) {
             if (tab.type === 'tab') {
                 if (isFirst) {
-                    h.push('<li class="active">');
+                    h.push('<li class="active ', tab.csslabel||'', '">');
                     isFirst = false;
                 } else {
-                    h.push('<li>');
+                    if(tab.csslabel){
+                        h.push('<li class="', tab.csslabel, '">');
+                    }else{
+                        h.push('<li>');
+                    }
                 }
                 h.push('<a href="#evol-tab-', idx, '">', tab.label, '</a></li>');
             }
@@ -556,9 +560,9 @@ Evol.ViewOne = Backbone.View.extend({
         h.push('</ul>');
     },
 
-    renderTab: function (h, tab, mode) {
+    _renderTab: function (h, tab, mode) {
         var that = this;
-        h.push('<div class="evol-pnls">');
+        h.push('<div class="evol-pnls ',tab.css||'','">');
         _.each(tab.elements, function (uip) {
             if (uip.type === 'panel-list') {
                 that._renderPanelList(h, uip, mode);
