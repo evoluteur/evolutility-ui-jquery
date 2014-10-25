@@ -5240,14 +5240,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             case 'export':
                 Evol.UI.modal.alert(
                     'This feature must be implemented server side.',
-                    [
-                        '<label>Config:</label><br>',
-                        JSON.stringify(this.curView.val(), null, 2)/*,
-                        '<br>Data:<br>',
-                        '<textarea class="Field evol-xpt-val form-control">',
-                        this.curView.exportContent('CSV'),
-                        '</textarea>'*/
-                    ].join('')
+                    JSON.stringify(this.curView.val(), null, 2)
                     //Evol.UI.cr2br(JSON.stringify(this.curView.val(), null, 2))
                 );
                 break;
