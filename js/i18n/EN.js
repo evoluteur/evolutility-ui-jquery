@@ -98,7 +98,7 @@ Evol.i18n = {
         invalidList1: '1 value in "{1}" is invalid.',
         //intro:'You are not finished yet:',
         empty:'"{0}" must have a value.',
-        email:'"{0}" must be a valid email like "abc@company.com".',
+        email:'"{0}" must be a valid email formatted like "name@domain.com".',
         integer:'"{0}" must only use numbers.',
         decimal:'"{0}" must be a valid decimal numbers.',
         money:'"{0}" must be a valid number.',
