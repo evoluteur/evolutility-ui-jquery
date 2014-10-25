@@ -12,17 +12,6 @@
   margin-bottom: 10px;
   padding: 3px;
   background-color: #fbfbfb;
-  /*
-  [data-id="prev"].nav-disabled,
-  [data-id="next"].nav-disabled{
-    a {
-      color: @color-disabled;
-      &:hover{
-        background-color: transparent;
-        cursor:default;
-      }
-    }
-  }*/
 }
 .evo-toolbar > [data-cid="views"] {
   color: black;
@@ -34,6 +23,15 @@
   height: 41px;
   width: 1px;
   background-color: #bce8f1;
+}
+.evo-toolbar [data-id="prev"].nav-disabled a,
+.evo-toolbar [data-id="next"].nav-disabled a {
+  color: #c0c0c0;
+}
+.evo-toolbar [data-id="prev"].nav-disabled a:hover,
+.evo-toolbar [data-id="next"].nav-disabled a:hover {
+  background-color: transparent;
+  cursor: default;
 }
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;

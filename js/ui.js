@@ -128,20 +128,14 @@ Evol.UI = {
         },
 
         checkbox: function (id, value) {
-            var fh = ['<input type="checkbox" id="', id];
-            if (value) {
-                fh.push('" checked="checked');
-            }
-            fh.push('" value="1">');
-            return fh.join('');
+            return ['<input type="checkbox" id="', id,
+                value?'" checked="checked':'',
+                '" value="1">'].join('');
         },
         checkbox2: function (id, value, css) {
-            var fh = ['<input type="checkbox" data-id="', id, '" class="',css,'"'];
-            if (value) {
-                fh.push(' checked="checked"');
-            }
-            fh.push(' value="1">');
-            return fh.join('');
+            return ['<input type="checkbox" data-id="', id, '" class="',css,'"',
+            value?' checked="checked"':'',
+            ' value="1">'].join('');
         },
         checkboxLOV:function(fLOV){
             var h=[];
@@ -374,7 +368,7 @@ Evol.UI = {
     },
 
     HTMLEmptyPanel: function(id, css, style){
-        return '<div class="'+css+' panel panel-'+style+'" data-id="'+id+'"></div>';
+        return ['<div class="', css, ' panel panel-', style, '" data-id="', id, '"></div>'].join('');
     },
 
     // --- status ---

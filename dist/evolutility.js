@@ -4771,6 +4771,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             if(this._filterOn){ // TODO do not always change flag
                 this.showFilter(false);
             }
+            this.updateNav();
         }else{
             //if(this.curView.viewName==='wizard'){
             //    this.curView.stepIndex(0);
@@ -4782,6 +4783,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.setRoute(this.model?this.model.id:null, false);
             }
             this.hideFilter();
+            this._enableNav();
         }
         if(!skipIcons){
             this.setIcons(viewName);
@@ -5259,7 +5261,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(bId==='prev'){
             pIdx=(pIdx>0)?pIdx-1:0;
         }else if(bId==='next'){
-            if((pIdx+1)*(this.pageSize)<this.curView.collection.length){
+            if((pIdx+1)*this.pageSize<this.curView.collection.length){
                 pIdx++;
             }
         }else{
@@ -5269,10 +5271,34 @@ Evol.ViewToolbar = Backbone.View.extend({
             }
         }
         this.pageIndex=pIdx;
+        this.updateNav();
         if(this.curView.setPage){
             this.curView.setPage(pIdx);
         }
         return this;
+    },
+
+    updateNav: function(){
+        var cl=this.curView.collection.length,
+            pIdx=this.pageIndex,
+            $item=this.$('[data-id="prev"]');
+
+        if(pIdx===0){
+            $item.addClass('nav-disabled');
+        }else{
+            $item.removeClass('nav-disabled');
+        }
+        $item=$item.next();
+        if((pIdx+1)*this.pageSize<cl){
+            $item.removeClass('nav-disabled');
+        }else{
+            $item.addClass('nav-disabled');
+        }
+    },
+
+    _enableNav: function(){
+        this.$('[data-id="prev"],[data-id="next"]')
+            .removeClass('nav-disabled');
     },
 
     status_update: function(evt, ui){
@@ -5378,6 +5404,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         this.pageIndex=0;
         this.curView.setCollection(collec)
             .render();
+        this.updateNav();
     }
     /*
     click_selection: function(evt, ui){
