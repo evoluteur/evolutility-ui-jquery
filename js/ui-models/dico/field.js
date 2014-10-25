@@ -2,7 +2,30 @@ function showIfNumber(m, uim){
     return m.get('type')==='integer' || m.get('type')==='decimal'|| m.get('type')==='money';
 }
 
-var dico_field_ui = {
+var uiFieldTypes=[
+    {id:'text',text:"Text", icon:'ft-txt.gif'},
+    {id:'textmultiline',text:"Text multiline", icon:'ft-txtml.gif'},
+    {id:'boolean',text:"Boolean", icon:'ft-bool.gif'},
+    {id:'decimal',text:"Decimal", icon:'ft-dec.gif'},
+    {id:'money',text:"Money", icon:'ft-money.gif'},
+    {id:'integer',text:"Integer", icon:'ft-int.gif'},
+    {id:'date',text:"Date", icon:'ft-date.gif'},
+    {id:'time',text:"Time", icon:'ft-time.gif'},
+    {id:'datetime',text:"Date-time", icon:'ft-datehm.gif'},
+    {id:'image',text:"Image", icon:'ft-img.gif'},
+    {id:'document',text:"Document", icon:'ft-doc.gif'},
+    {id:'color',text:"Color", icon:'ft-color.gif'},
+    {id:'lov',text:"List (dropdown)", icon:'ft-lov.gif'},
+    {id:'list',text:"List (multi-select)", icon:'ft-list.gif'},
+    //{id:'html',text:"HTML", icon:'ft-htm.gif'},
+    {id:'email',text:"email", icon:'ft-email.gif'},
+    {id:'url',text:"Link", icon:'ft-url.gif'},
+    {id:'hidden',text:"Hidden", icon:'ft-hidden.gif'}
+];
+
+var uiModels=uiModels||{};
+uiModels.field = {
+    id:'field',
     icon: "edi_fld.png",
     entity: "field",
     entities: "fields",
@@ -28,26 +51,7 @@ var dico_field_ui = {
                     label: "Type",
                     help: "Type of field: UI type rather than data type.",
                     type: "lov",
-                    list:[
-                        {id:'text',text:"Text", icon:'ft-txt.gif'},
-                        {id:'textmultiline',text:"Text multiline", icon:'ft-txtml.gif'},
-                        {id:'boolean',text:"Boolean", icon:'ft-bool.gif'},
-                        {id:'decimal',text:"Decimal", icon:'ft-dec.gif'},
-                        {id:'money',text:"Money", icon:'ft-money.gif'},
-                        {id:'integer',text:"Integer", icon:'ft-int.gif'},
-                        {id:'date',text:"Date", icon:'ft-date.gif'},
-                        {id:'time',text:"Time", icon:'ft-time.gif'},
-                        {id:'datetime',text:"Date-time", icon:'ft-datehm.gif'},
-                        {id:'image',text:"Image", icon:'ft-img.gif'},
-                        {id:'document',text:"Document", icon:'ft-doc.gif'},
-                        {id:'color',text:"Color", icon:'ft-color.gif'},
-                        {id:'lov',text:"List (dropdown)", icon:'ft-lov.gif'},
-                        {id:'list',text:"List (multi-select)", icon:'ft-list.gif'},
-                        //{id:'html',text:"HTML", icon:'ft-htm.gif'},
-                        {id:'email',text:"email", icon:'ft-email.gif'},
-                        {id:'url',text:"Link", icon:'ft-url.gif'},
-                        {id:'hidden',text:"Hidden", icon:'ft-hidden.gif'}
-                    ],
+                    list:uiFieldTypes,
                     maxlength: 100,
                     required: true,
                     viewmany: true,
@@ -210,6 +214,7 @@ var dico_field_ui = {
         },
         {
             type: "panel",
+            id: 'p-help',
             label: "Field Help",
             width: 38,
             elements: [
@@ -220,7 +225,7 @@ var dico_field_ui = {
                     type: "textmultiline",
                     maxlength: 500,
                     width: 100,
-                    height: 6
+                    height: 4
                 }
             ]
         }

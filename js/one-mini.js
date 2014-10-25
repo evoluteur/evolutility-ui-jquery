@@ -11,9 +11,10 @@
 
 Evol.ViewOne.Mini = Evol.ViewOne.Edit.extend({
 
-    events: {
+    events: { // TODO same as ViewOne ?
         'click > .evol-buttons > button': 'click_button',
         'click .evol-title-toggle': 'click_toggle',
+        //'click .glyphicon-wrench': 'click_customize',
         'click label > .glyphicon-question-sign': 'click_help'
         // extra evt for $(window) resize
     },

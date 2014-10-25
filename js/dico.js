@@ -184,7 +184,13 @@ Evol.Dico = {
 
         return ls;
     },
-
+/*
+    compactUI: function(uiModel){
+        var uiM = _.extend({}, uiModel);
+        // TODO makes panels 100% + create tabs
+        return uiM;
+    },
+*/
     // get field value (not id but text) for a field of type lov
     lovText:function(f, v, hash, iconsPath){
         if(f.list && f.list.length>0 && hash){
@@ -227,33 +233,35 @@ Evol.Dico = {
     },
 /*
     showDesigner: function(id, type, $el, context){
-        var $elDes=$('<div class="evodico-'+type+'"></div>'),
+        var css='evodico-'+type,
+        //$('<div class="evodico-'+type+'"></div>'),
             model,
-            uiModel=context.uiModel;
-
-        //TODO set record
-        context.getFields(dico_field_ui);
+            uiModel=context.uiModel,
+            f;
+        //context.getFields(dico_field_ui);
         switch(type){
             case 'object':
                 //TODO
-
                 break;
             case 'field':
-                uiModel = dico_field_ui;
-                model = context.model;
+                uiModel = uiModels.field;
+                f=context.getFieldsHash(uiModel)[id];
+                model = new Backbone.Model(f);
                 break;
-            case 'list':
-            case 'tab':
+            //case 'list':
+            //case 'tab':
             case 'panel':
-            case 'panel-list':
-                //TODO
-
+            //case 'panel-list':
+                uiModel = uiModels.panel;
+                f=context.uiModel.elements[0]; //TODO
+                model = new Backbone.Model(f);
                 break;
         }    
-        $el.closest('.evol-fld').after($elDes);
-
+        //$el.closest('.evol-fld').after($elDesModal);
+        $('body').append($elDesModal);
+        var $elDesModal=$(Evol.UI.modal.HTMLModal('m'+id, 'Edit '+type+' '+ f.label, '<div class="'+css+'"></div>')),
+            $elDes=$elDesModal.find('.'+css);
         var vw = new Evol.ViewOne.Edit({
-            model: null,
             uiModel: uiModel,
             model: model,
             defaultView: 'edit',
@@ -265,9 +273,10 @@ Evol.Dico = {
 
         $elDes.on('click', 'button#save,button#cancel', function(evt){
             //TODO save field => dependency: uiModel persistence...
-            $elDes.remove();
+            $elDesModal.modal('hide').remove();
         });
-        Evol.UI.HTMLModal();
+
+        $elDesModal.modal('show');
 
         return this;
     },

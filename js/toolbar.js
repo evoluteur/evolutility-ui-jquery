@@ -115,8 +115,9 @@ Evol.ViewToolbar = Backbone.View.extend({
             linkOpt2h('badges','Badges','th-large','x');
             linkOpt2h('charts','Charts','stats','x');
             h.push(eui.hEnd('li'));
-            /*
+
             //linkOpt2h('customize','','wrench', '1', 'Customize');
+            /*
             if(this.buttons.customize){
                 h.push(beginMenu('cust','wrench'));
                 link2h('customize','Customize this view','wrench');
@@ -124,7 +125,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 link2h('new-field','New Field','plus');
                 link2h('new-panel','New Panel','plus');
                 h.push(endMenu);
-            }*/
+            } */
         }
         h.push('</ul>',Evol.UI.html.clearer,'</div>');
         return h.join('');
@@ -826,11 +827,11 @@ Evol.ViewToolbar = Backbone.View.extend({
                     this.paginate(toolId);
                 }
                 break;/*
-            case 'group':
-                this.showGroup();
-                break;
             case 'customize':
                 this.curView.customize();
+                break;
+            case 'group':
+                this.showGroup();
                 break;
             case 'new-field':
             case 'new-panel':

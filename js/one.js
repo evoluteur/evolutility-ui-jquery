@@ -22,7 +22,7 @@ Evol.ViewOne = Backbone.View.extend({
         'click .evol-title-toggle': 'click_toggle',
         'click ul.evol-tabs>li>a': 'click_tab',
         'click label>.glyphicon-question-sign': 'click_help',
-        //'click .evol-field-label .glyphicon-wrench': 'click_customize',
+        //'click .glyphicon-wrench': 'click_customize',
         'click [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel',
         'keyup [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel'
     },
@@ -82,6 +82,13 @@ Evol.ViewOne = Backbone.View.extend({
             });
         }
         return this._fields;
+    },
+
+    getFieldsHash: function (){
+        if(!this._fields){
+            this.getFields();
+        }
+        return this._fieldHash;
     },
 
     getSubCollecs: function (){
@@ -239,7 +246,7 @@ Evol.ViewOne = Backbone.View.extend({
             if(subCollecs){
                 _.each(subCollecs, function (sc) {
                     var h=[];
-                    that._renderPanelListBody(h, sc, fv, 'edit');
+                    that._renderPanelListBody(h, sc, fv, sc.readonly?'view':'edit');
                     that.$('[data-pid="'+sc.id+'"] tbody')
                         .html(h.join(''));
                 });
@@ -679,7 +686,7 @@ Evol.ViewOne = Backbone.View.extend({
                 return;
             }
         }
-        h.push(this._TRnodata(fs.length, mode));
+        h.push(this._TRnodata(fs.length||1, mode));
     },
 
     _TRnodata: function(colspan, mode){
@@ -944,7 +951,6 @@ Evol.ViewOne = Backbone.View.extend({
         return this;
     },
 */
-
     // - Show help below field(s)
     showHelp: function(id, type, $el, forceOn){
         var fs=this.getFields(),
