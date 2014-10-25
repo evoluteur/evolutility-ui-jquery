@@ -20,11 +20,11 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
         style: 'panel-info',
         autoUpdate: false
     },
-
+/*
     events: {
         'click .evol-field-label .glyphicon-wrench': 'click_customize'
     },
-
+*/
     render: function () {
         var h = [];
         if(this.collection && this.collection.length>0){
@@ -47,7 +47,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             models = this.collection.models,
             iconsPath = this.iconsPath || '',
             chartFields = EvoDico.getFields(uiModel, function(f){
-                return f.viewcharts || f.type==fTypes.lov || f.type==fTypes.bool || f.type==fTypes.int;
+                return f.viewcharts || f.type===fTypes.lov || f.type===fTypes.bool || f.type===fTypes.int || f.type===fTypes.money;
             });
 
         if(chartFields && chartFields.length){
@@ -80,10 +80,11 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                     labels.push(lb+' ('+nb+')');
                 }
                 var entityName=EvoUI.capitalize(uiModel.entities);
+
                 if(f.type===fTypes.lov){
-                    h.push(EvoUI.Charts.Pie(i18n.getLabel('charts.aByB', entityName, f.labelcharts || f.label), data, labels, style, sizes));
+                    h.push(EvoUI.Charts.Pie(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aByB', entityName, f.label), data, labels, style, sizes));
                 }else{
-                    h.push(EvoUI.Charts.Bars(i18n.getLabel('charts.aB', entityName, f.labelcharts || f.label), data, labels, style, sizes));
+                    h.push(EvoUI.Charts.Bars(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aB', entityName, f.label), data, labels, style, sizes));
                 }
             });
         }else{

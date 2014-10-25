@@ -12,16 +12,16 @@ uiModels.todo = {
             type: 'panel', label: 'Task', width: 62,
             elements: [
                 {
-                    id: 'title', type: 'text', label: 'Title', required: true,
+                    id: 'title', attribute: 'title', type: 'text', label: 'Title', required: true,
                     placeholder: 'Call John',
                     maxlength: 255,
                     width: 100, viewmany: true
                 },
                 {
-                    id: 'duedate', type: 'date', label: 'Due Date', width: 62, viewmany: true
+                    id: 'duedate', attribute: 'duedate', type: 'date', label: 'Due Date', width: 62, viewmany: true
                 },
                 {
-                    id: 'category', type: 'lov', label: 'Category', width: 38, viewmany: true,
+                    id: 'category', attribute: 'category', type: 'lov', label: 'Category', width: 38, viewmany: true,
                     list: [
                         {id: 'home', text: 'Home'},
                         {id: 'work', text: 'Work'},
@@ -36,7 +36,7 @@ uiModels.todo = {
             type: 'panel', label: 'Status', width: 38,
             elements: [
                 {
-                    id: 'priority', type: 'lov', label: 'Priority', required: true,
+                    id: 'priority', attribute: 'priority', type: 'lov', label: 'Priority', required: true,
                     width: 100,  viewmany: true,
                     list: [
                         {id: '1', text: '1 - ASAP'},
@@ -47,14 +47,15 @@ uiModels.todo = {
                     ]
                 },
                 {
-                    id: 'complete', type: 'boolean', label: 'Complete', width: 100, viewmany: true
+                    id: 'complete', attribute: 'complete', type: 'boolean', width: 100, viewmany: true,
+                    label: 'Complete', labelcharts:'Tasks completion'
                 }
             ]
         },
         {
             type: 'panel', label: 'Notes', width: 100,
             elements: [
-                {id: 'notes', type: 'textmultiline', label: 'Notes', maxlength: 1000,
+                {id: 'notes', attribute: 'notes', type: 'textmultiline', label: 'Notes', maxlength: 1000,
                     width: 100, height: 6, viewmany: false }
             ]
         }
