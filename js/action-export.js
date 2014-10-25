@@ -155,17 +155,27 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
     _preview: function (format) {
         var h=[],
-            $e = this.$('.evol-xpt-val'),
-            fTypes = Evol.Dico.fieldTypes,
+            $e = this.$('.evol-xpt-val');
+
+        this._exportContent(h, format);
+        if(this.many && format==='JSON'){
+            $e.html('['+h.join(',\n')+']');
+        }else{
+            $e.html(h.join(''));
+        }
+    },
+
+    _exportContent: function(h, format){
+        var fTypes = Evol.Dico.fieldTypes,
             maxItem = this.sampleMaxSize-1;
 
         if(this.model && this.model.collection){
             var data = this.model.collection.models,
                 flds = this.getFields(),
-                fldsDom = this.$('.evol-xpt-flds > fieldset input:checked'),
+                fldsDom = this.$('.evol-xpt-flds > fieldset input:checked'), //_valFields
                 fldsDomHash = {},
                 useHeader = this.$('#xptFLH').prop('checked');
-                //showID=this.$('#showID').prop('checked');
+            //showID=this.$('#showID').prop('checked');
 
             //if(showID){
             //    flds.unshift({id: 'id', type: 'text', label: 'Id'});
@@ -204,7 +214,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                             if (mv) {
                                 if(f.type===fTypes.bool){
                                     h.push(mv);
-                                //}else if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
+                                    //}else if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
                                 }else if((f.type==fTypes.text || f.type==fTypes.textml) && (mv.indexOf(',')>-1)){ // || f.type==fTypes.list
                                     h.push('"', mv.replace('"', '\\"'), '"');
                                 }else{
@@ -359,10 +369,15 @@ Evol.ViewAction.Export = Backbone.View.extend({
         }else{
             h.push(Evol.i18n.nodata);
         }
+    },
+
+    exportContent: function(format){
+        var h=[];
+        this._exportContent(h, format);
         if(this.many && format==='JSON'){
-            $e.html('['+h.join(',\n')+']');
+            return '['+h.join(',\n')+']';
         }else{
-            $e.html(h.join(''));
+            return h.join('');
         }
     },
 
@@ -379,7 +394,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
             for(var i=0,iMax=fvs.length;i<iMax;i++){
                 var $f=fvs.eq(i),
                     fv;
-                if($f.attr('type')=='checkbox'){
+                if($f.attr('type')==='checkbox'){
                     fv = $f.prop('checked');
                 }else{
                     fv = $f.val();
