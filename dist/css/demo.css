@@ -215,6 +215,22 @@ code {
   background-color: #f7f7f7;
   border-radius: 3px;
 }
+.list-views {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.list-views > div {
+  color: white;
+  padding: 0 4px;
+}
+.list-views > div a {
+  color: white;
+  padding: 0 4px;
+}
+.list-views i {
+  margin-right: 4px;
+}
 body {
   font-size: 15px !important;
   font-weight: 300;

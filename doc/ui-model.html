@@ -28,6 +28,17 @@
 
 <div class="evo-title2">
     <h1>UI Model</h1>
+    <div class="list-views">
+        <div>
+            <a href="#object">object</a>
+            <a href="#field">field</a>
+        </div>
+        <div>
+            <a href="#panel">panel</a>
+            <a href="#panel-list">panel-list</a>
+            <a href="#tab">tab</a>
+        </div>
+    </div>
 </div>
 
 
@@ -36,7 +47,7 @@
 <p>With Evolutility views are fully defined by UI models (rather than hand coded templates and custom Javascript code).</p>
 
 <p>For each Backbone model and collection, a single UI model defines all information necessary to render all views associated to that entity.
-    The UI model maps attributes in the Backbone model to <a href="#fields">fields</a> on the screen. It also groups fields into <a href="#panels">panels</a> and panels into <a href="#tabs">tabs</a>.
+    The UI model maps attributes in the Backbone model to <a href="#field">fields</a> on the screen. It also groups fields into <a href="#panel">panels</a> and panels into <a href="#tab">tabs</a>.
     Nested collections can also be included as <a href="#panel-list">panel-list</a> to provide master-details capability.
 </p>
 
@@ -47,7 +58,7 @@
 <span class="evol-asterix">*</span>: partially or not implemented yet.
 
 
-<a name="objects" class="evo-anchor">&nbsp;</a>
+<a name="object" class="evo-anchor">&nbsp;</a>
 <section>
 <h1>object</h1>
 
@@ -112,7 +123,7 @@
 
 </section>
 
-<a name="fields" class="evo-anchor">&nbsp;</a>
+<a name="field" class="evo-anchor">&nbsp;</a>
 <section>
     <h1>field</h1>
     <p>Attributes in your Backbone model are mapped to fields in the UI.</p>
@@ -354,7 +365,7 @@
         </tbody></table>
 </section>
 
-<a name="panels" class="evo-anchor">&nbsp;</a>
+<a name="panel" class="evo-anchor">&nbsp;</a>
 <section>
     <h1>panel</h1>
 
@@ -483,7 +494,7 @@
         </tbody></table>
     </section>
 
-<a name="tabs" class="evo-anchor">&nbsp;</a>
+<a name="tab" class="evo-anchor">&nbsp;</a>
 <section>
     <h1>tab</h1>
     <p>The <code>tab</code> element can be used to group panels and panel-lists.</p>
