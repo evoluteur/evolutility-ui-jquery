@@ -144,6 +144,13 @@ Evol.ViewOne = Backbone.View.extend({
             vs = {},
             subCollecs=this.getSubCollecs();
 
+        if(skipReadOnlyFields){
+            var fnNotReadOnly=function(f){
+                return f.readonly!==true;
+            };
+            fs = _.filter(fs, fnNotReadOnly);
+            subCollecs = _.filter(subCollecs, fnNotReadOnly);
+        }
         _.each(fs, function(f){
             vs[f.id]=that.getFieldValue(f);
         });
@@ -165,13 +172,6 @@ Evol.ViewOne = Backbone.View.extend({
                     vs2.push(v);
                 });
                 vs[sc.attr||sc.id]=vs2;
-            });
-        }
-        if(skipReadOnlyFields){
-            _.each(fs, function(f){
-                if(f.readonly){
-                    delete vs[f.id];
-                }
             });
         }
         return vs;
@@ -596,7 +596,7 @@ Evol.ViewOne = Backbone.View.extend({
                 h.push(' pull-left" style="width:', p.width, '%">');
             }
         }
-        h.push(Evol.UI.HTMLPanelBegin(p, this.style),
+        h.push(Evol.UI.HTMLPanelBegin(p, this.style||'panel-default'),
             '<fieldset data-pid="', p.id, p.readonly?'" disabled>':'">');
         if(mode==='mini'){
             _.each(p.elements, function (elem) {
@@ -616,7 +616,7 @@ Evol.ViewOne = Backbone.View.extend({
                     if(elem.type==fTypes.hidden){
                         h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
                     }else{
-                        h.push('<div style="width:', parseInt(elem.width, 10), '%" class="pull-left evol-fld">');
+                        h.push('<div style="width:', parseInt(elem.width||100, 10), '%" class="pull-left evol-fld">');
                         that.renderField(h, elem, mode, iconsPath);
                         h.push("</div>");
                     }
@@ -670,10 +670,10 @@ Evol.ViewOne = Backbone.View.extend({
                             h.push('<td>');
                             if(row[f.id]){
                                 //form-control
-                                if(f.type!==ft.bool){
-                                    h.push(_.escape(eDico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath)));
-                                }else{
+                                if(f.type===ft.bool || f.type===ft.lov){
                                     h.push(eDico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath));
+                                }else{
+                                    h.push(_.escape(eDico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath)));
                                 }
                             }else{
                                 h.push(eDico.HTMLField4Many(f, '', Evol.hashLov, iconsPath));

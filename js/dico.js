@@ -32,6 +32,7 @@ Evol.Dico = {
         email: 'email',
         color: 'color',
         hidden: 'hidden',
+        //json: 'json',
         //rating: 'rating',
         //widget: 'widget',
         url: 'url'
@@ -205,7 +206,7 @@ Evol.Dico = {
                     return item.id==v;
                 });
                 if(listItem){
-                    var txt=listItem.text;
+                    var txt= _.escape(listItem.text);
                     if(listItem.icon!='' && !_.isUndefined(listItem.icon)){
                         txt='<img src="'+iconsPath+listItem.icon+'"> '+txt;
                     }
@@ -450,7 +451,7 @@ Evol.Dico = {
                         '</div>');
                     break;
                 case fTypes.url:
-                    h.push(uiInput.text(fid, fv, fld));
+                    h.push(uiInput.text(fid, fv, fld));//fv!==''?EvoUI.link(fid,'',fv):''
                     break;
                 //case fTypes.doc:
                 case fTypes.pix:

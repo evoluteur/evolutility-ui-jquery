@@ -24,10 +24,11 @@
     <ul class="evo-head-links">
         <li><a href="demo/index.html">demo</a></li>
         <li><a href="doc/index.html">doc</a></li>
+        <li><a href="https://github.com/evoluteur/evolutility" target="_new">GitHub</a></li>
     </ul>
     <div class="clearfix"></div>
 </div>
-<a href="https://github.com/evoluteur/evolutility" class="forkMe" target="forkMe"><img alt="Fork me on GitHub" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+
 <div class="evo-title" >
     <h1 class="title1" style="color: white">UI models for your Backbone models</h1>
     <h1 class="title1"><span class="title2" >+ a set of Backbone views which can change form, volume and structure based on a UI-model.</span></h1>
@@ -144,18 +145,6 @@
 <script>
 
     var curView=null;
-
-    function showUIdef2(entityName){
-        var $ui=$('#uimodel');
-        $ui.html(Evol.UI.input.textMJSON('uimodel2', uiModels[entityName], 10))
-                .slideDown();
-        $('#hide_def').show();
-    }
-
-    function showUIdef2no(){
-        $('#uimodel').slideUp();
-        $('#hide_def').hide();
-    }
 
     function showView(){
         var modelName=$('#evolModel').val(),

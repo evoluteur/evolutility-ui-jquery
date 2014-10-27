@@ -94,7 +94,12 @@ Evol.Shell = Backbone.View.extend({
             };
 
         if(this._curEntity){
-            tb.proceedIfReady(cbOK, cbCancel);
+            if(tb){
+                tb.proceedIfReady(cbOK, cbCancel);
+            }else{
+                alert('Error calling proceedIfReady');
+                cbCancel();
+            }
         }else{
             cbOK();
         }
@@ -164,7 +169,8 @@ Evol.Shell = Backbone.View.extend({
                         collectionClass: Ms,
                         uiModel: uiModel,
                         pageSize: 20,
-                        titleSelector: '#title'
+                        titleSelector: '#title',
+                        style: that.style
                     };
 
                 if(defaultView){

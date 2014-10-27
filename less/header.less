@@ -10,7 +10,7 @@
 @import "less/variables";
 
 @width-toolbar-left:190px;
-@width-toolbar-top:600px;
+@width-toolbar-top:620px;
 
 // --- top navbar ---
 .evo-logo{
@@ -97,7 +97,8 @@
   font-size: 1.5em;
   margin-left:30px;
   margin-top:5px;
-  >li:nth-child(3){
+  >li:last-child{
+    //float:right;
     margin-left:70px;
   }
   @media only screen and (min-width: @screen2) {
@@ -106,9 +107,9 @@
     left:-58px;
     >li{
       display:block;
-      &:nth-child(3){
+      &:last-child{
         margin-left:0;
-        margin-top: 83px;
+        margin-top: 21px;
       }
     }
   }

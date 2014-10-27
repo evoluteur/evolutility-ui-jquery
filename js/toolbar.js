@@ -568,6 +568,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         function fnSuccess(m){
             if(saveAndAdd) {
                 that.newItem();
+                this._trigger('item.added');
             }else{
                 m.unset(''); // TODO why is there a "" prop?
                 that.model=m;
@@ -576,6 +577,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 }
                 that.setIcons('edit');
                 vw.setModel(m);
+                that._trigger('item.saved', {model:m});
             }
             vw.setTitle();
         }
@@ -676,6 +678,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                                     }
                                     var eName=Evol.UI.capitalize(entityName);
                                     that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('status.deleted', eName, entityValue), 'success');
+                                    that._trigger('item.deleted');
                                 },
                                 error:function(m, err){
                                     alert('error in "deleteItem"');
@@ -778,7 +781,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     updateNav: function(){
         var cl=this.curView.collection.length,
             cssDisabled='nav-disabled',
-            pIdx=this.pageIndex,
+            pIdx=this.pageIndex||0,
             $item=this.$('[data-id="prev"]');
 
         if(pIdx===0){
@@ -869,7 +872,11 @@ Evol.ViewToolbar = Backbone.View.extend({
                     this.setView(toolId, true);
                 }
         }
-        this.$el.trigger('toolbar.'+toolId); // toolId+'.toolbar' ?
+        this._trigger('toolbar.'+toolId);
+    },
+
+    _trigger: function(name, ui){
+        this.$el.trigger(name, ui);
     },
 
     click_navigate: function(evt, ui){
@@ -903,6 +910,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         this.curView.setCollection(collec)
             .render();
         this.updateNav();
+        this._trigger('filter.change');
     }
     /*
     click_selection: function(evt, ui){
