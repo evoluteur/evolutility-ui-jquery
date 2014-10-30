@@ -11,50 +11,93 @@
 
 var Evol = Evol || {};
 
-Evol.Dico = {
+Evol.Dico = function(){
+
+    var eUI = Evol.UI,
+        uiInput = eUI.input,
+        i18n = Evol.i18n;
+
+return {
 
     // enum of supported field types
-    fieldTypes: {
-        text: 'text',
-        textml: 'textmultiline',
-        bool: 'boolean',
-        int: 'integer',
-        dec: 'decimal',
-        money: 'money',
-        date: 'date',
-        time: 'time',
-        datetime: 'datetime',
-        pix: 'image',
-        doc:'document',
-        lov: 'lov',
-        list: 'list', // many values for one field (behave like tags - return an array of strings)
-        //html:'html',
-        email: 'email',
-        color: 'color',
-        hidden: 'hidden',
-        //json: 'json',
-        //rating: 'rating',
-        //widget: 'widget',
-        url: 'url'
+    fieldTypes: fts,
+
+    fieldOneEdit: {// h, f, fid, fv, iconsPath
+        text: function (h, f, fid, fv) {
+            h.push(uiInput.text(fid, fv, f, null));
+        },
+        textmultiline: function (h, f, fid, fv) {
+            // fv = _.escape(fv);
+            if (f.height === null) {
+                f.height = 5;
+            } else {
+                var fHeight = parseInt(f.height, 10);
+                if (fHeight < 1) {
+                    f.height = 5;
+                }
+            }
+            h.push(uiInput.textM(fid, fv, f.maxlength, f.height));
+        },
+        // html:
+        boolean: function (h, f, fid, fv) {
+            h.push(uiInput.checkbox(fid, fv));
+        },
+        integer: function (h, f, fid, fv) {
+            h.push(uiInput.textInt(fid, fv, f.max, f.min));
+        },
+        decimal: function (h, f, fid, fv) {
+            //todo
+            h.push(uiInput.textInt(fid, fv, f.max, f.min));
+        },
+        money: function (h, f, fid, fv) {
+            h.push('<div class="input-group">', uiInput.typeFlag('$'),
+                uiInput.textInt(fid, fv),
+                '</div>');
+        },
+        date: function (h, f, fid, fv) {
+            h.push(uiInput.date(fid, fv));
+        },
+        datetime: function (h, f, fid, fv) {
+            h.push(uiInput.dateTime(fid, fv));
+        },
+        time: function (h, f, fid, fv) {
+            h.push(uiInput.time(fid, fv));
+        },
+        lov: function (h, f, fid, fv) {
+            h.push(uiInput.select(fid, fv, '', true, f.list));
+        },
+        list: function (h, f, fid, fv) { // fv is an array. will use select2
+            h.push('<div id="', fid, '" class="w-100 form-control"></div>');
+        },
+        email: function (h, f, fid, fv) {
+            h.push('<div class="input-group">', uiInput.typeFlag(i18n.sgn_email),
+                uiInput.text(fid, fv, f),
+                '</div>');
+        },
+        url: function (h, f, fid, fv) {
+            h.push(uiInput.text(fid, fv, f));
+            //fv!==''?EvoUI.link(fid,'',fv):''
+        },
+        //doc: function(h, f, fid, fv, iconsPath){
+        //},
+        image: function(h, f, fid, fv, iconsPath){
+            if(fv!==''){
+                h.push('<img src="',(fv.substr(0, 2)==='..')?fv:iconsPath + fv,'" class="img-thumbnail">');
+            }else{
+                h.push('<p class="">',i18n.nopix,'</p>');
+            }
+            h.push(uiInput.text(fid, fv, f, null));
+        },
+        color: function(h, f, fid, fv){
+            //h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
+            h.push(uiInput.color(fid, fv));
+        },
+        hidden: function(h, f, fid, fv){
+            h.push(uiInput.hidden(fid, fv));
+        }
     },
 
-    viewTypes: {
-        // --- One ---
-        'view': Evol.ViewOne.View,
-        'edit': Evol.ViewOne.Edit,
-        'mini': Evol.ViewOne.Mini,
-        'json': Evol.ViewOne.JSON,
-        // --- Many ---
-        'list': Evol.ViewMany.List,
-        'badges': Evol.ViewMany.Badges,
-        'charts': Evol.ViewMany.Charts,
-        // --- Action ---
-        'filter': Evol.ViewAction.Filter,
-        'export': Evol.ViewAction.Export
-        //'uimodel': Evol.ViewAction.UI_Model,
-        //'doc': Evol.ViewAction.Doc
-    },
-
+    // -- list of operator and function for filters
     fieldConditions: {
         // filter functions take parameters fv=fieldValue, cv=condition value, cv2
         // equals
@@ -118,9 +161,12 @@ Evol.Dico = {
     },
 
     isNumberType: function(fType){
-        var ft=Evol.Dico.fieldTypes;
-        return fType===ft.int || fType===ft.dec || fType===ft.money;
+        return fType===fts.int || fType===fts.dec || fType===fts.money;
     },
+    isDateOrTimeType: function(fType){
+        return fType === fts.date || fType === fts.datetime || fType === fts.time;
+    },
+
     // get all "shallow" fields (no sub collections) from a UI model
     getFields: function (uiModel, fnFilter) {
         var fs = [];
@@ -145,16 +191,15 @@ Evol.Dico = {
     },
 
     getFieldTypedValue:function(f, $f){
-        var ft=Evol.Dico.fieldTypes;
         switch(f.type) {
-            case ft.bool:
+            case fts.bool:
                 return $f.prop('checked');
-            case ft.int:
-                return parseInt($f.val(),10);
-            case ft.dec:
-            case ft.money:
+            case fts.int:
+                return parseInt($f.val(), 10);
+            case fts.dec:
+            case fts.money:
                 return parseFloat($f.val());
-            case ft.list:
+            case fts.list:
                 return $f.select2('val');
             default:
                 return $f.val();
@@ -185,13 +230,13 @@ Evol.Dico = {
 
         return ls;
     },
-/*
-    compactUI: function(uiModel){
-        var uiM = _.extend({}, uiModel);
-        // TODO makes panels 100% + create tabs
-        return uiM;
-    },
-*/
+    /*
+     compactUI: function(uiModel){
+         var uiM = _.extend({}, uiModel);
+         // TODO makes panels 100% + create tabs
+         return uiM;
+     },
+     */
     // get field value (not id but text) for a field of type lov
     lovText:function(f, v, hash, iconsPath){
         if(f.list && f.list.length>0 && hash){
@@ -228,65 +273,62 @@ Evol.Dico = {
         return '';
     },
 
-    isTypeDateOrTime: function(fType){
-        var ft=this.fieldTypes;
-        return fType == ft.datetime || ft.date || fType == ft.time;
-    },
-/*
-    showDesigner: function(id, type, $el, context){
-        var css='evodico-'+type,
-        //$('<div class="evodico-'+type+'"></div>'),
-            model,
-            uiModel=context.uiModel,
-            f;
-        //context.getFields(dico_field_ui);
-        switch(type){
-            case 'object':
-                //TODO
-                break;
-            case 'field':
-                uiModel = uiModels.field;
-                f=context.getFieldsHash(uiModel)[id];
-                model = new Backbone.Model(f);
-                break;
-            //case 'list':
-            //case 'tab':
-            case 'panel':
-            //case 'panel-list':
-                uiModel = uiModels.panel;
-                f=context.uiModel.elements[0]; //TODO
-                model = new Backbone.Model(f);
-                break;
-        }    
-        //$el.closest('.evol-fld').after($elDesModal);
-        $('body').append($elDesModal);
-        var $elDesModal=$(Evol.UI.modal.HTMLModal('m'+id, 'Edit '+type+' '+ f.label, '<div class="'+css+'"></div>')),
-            $elDes=$elDesModal.find('.'+css);
-        var vw = new Evol.ViewOne.Edit({
-            uiModel: uiModel,
-            model: model,
-            defaultView: 'edit',
-            el: $elDes,
-            style:'panel-primary',
-            size:'S',
-            button_addAnother: false
-        }).render();
+    /*
+     showDesigner: function(id, type, $el, context){
+         var css='evodico-'+type,
+             //$('<div class="evodico-'+type+'"></div>'),
+             model,
+             uiModel=context.uiModel,
+             f;
+         //context.getFields(dico_field_ui);
+         switch(type){
+             case 'object':
+                 //TODO
+                 break;
+             case 'field':
+                 uiModel = uiModels.field;
+                 f=context.getFieldsHash(uiModel)[id];
+                 model = new Backbone.Model(f);
+                 break;
+             //case 'list':
+             //case 'tab':
+             case 'panel':
+             //case 'panel-list':
+                 uiModel = uiModels.panel;
+                 f=context.uiModel.elements[0]; //TODO
+                 model = new Backbone.Model(f);
+                 break;
+         }
+         //$el.closest('.evol-fld').after($elDesModal);
+         $('body').append($elDesModal);
+         var $elDesModal=$(eUI.modal.HTMLModal('m'+id, 'Edit '+type+' '+ f.label, '<div class="'+css+'"></div>')),
+         $elDes=$elDesModal.find('.'+css);
+         var vw = new Evol.ViewOne.Edit({
+             uiModel: uiModel,
+             model: model,
+             defaultView: 'edit',
+             el: $elDes,
+             style:'panel-primary',
+             size:'S',
+             button_addAnother: false
+         }).render();
 
-        $elDes.on('click', 'button#save,button#cancel', function(evt){
-            //TODO save field => dependency: uiModel persistence...
-            $elDesModal.modal('hide').remove();
-        });
+         $elDes.on('click', 'button#save,button#cancel', function(evt){
+             //TODO save field => dependency: uiModel persistence...
+             $elDesModal.modal('hide').remove();
+         });
 
-        $elDesModal.modal('show');
+         $elDesModal.modal('show');
 
-        return this;
-    },
-*/
+         return this;
+     },*/
+
     filterModels: function(models, filters){
         if(filters.length){
             // TODO pre-build function to avoid repeating loop
             return models.filter(function(model){
-                var want=true;
+                var want=true,
+                    fConds=Evol.Dico.fieldConditions;
                 for(var i= 0, iMax=filters.length;i<iMax && want;i++){
                     if(want===false){
                         break;
@@ -297,7 +339,7 @@ Evol.Dico = {
                     if(_.isUndefined(vm)){
                         vm='';
                     }
-                    want=Evol.Dico.fieldConditions[filter.operator.value](vm, filter.value.value, filter.value.value2); // vf2 is only used in "between" conditions
+                    want=fConds[filter.operator.value](vm, filter.value.value, filter.value.value2); // vf2 is only used in "between" conditions
                 }
                 return want;
             });
@@ -306,14 +348,13 @@ Evol.Dico = {
     },
 
     HTMLField4Many: function(f, v, hashLov, iconsPath){
-        var fTypes = Evol.Dico.fieldTypes;
         switch(f.type){
-            case fTypes.bool:
+            case fts.bool:
                 if (v==='true' || v=='1') {
-                    return Evol.UI.icon('ok');
+                    return eUI.icon('ok');
                 }
                 break;
-            case fTypes.lov:
+            case fts.lov:
                 if (v !== '') {
                     //if(f.icon && f.list & f.list[0].icon){
                     //    return 'f.icon' + this._lovText(f,v);
@@ -323,7 +364,7 @@ Evol.Dico = {
                     //}
                 }
                 break;
-            case fTypes.list:
+            case fts.list:
                 if(_.isString(v)){
                     v= v.split(',');
                 }
@@ -335,29 +376,30 @@ Evol.Dico = {
                     return vs.join(', ');
                 }
                 return v;
-            case fTypes.date:
-                return Evol.UI.formatDate(v);
-            case fTypes.time:
-                return Evol.UI.formatTime(v);
-            case fTypes.datetime:
-                return Evol.UI.formatDateTime(v);
-            case fTypes.pix:
+            case fts.date:
+                return eUI.formatDate(v);
+            case fts.time:
+                return eUI.formatTime(v);
+            case fts.datetime:
+                return eUI.formatDateTime(v);
+            case fts.pix:
                 if (v && v.length) {
-                    return Evol.UI.input.img(f.id, iconsPath + v, 'img-thumbnail');
+                    //return uiInput.img(f.id, (v.substr(0, 2)==='..')?v:iconsPath + v, 'img-thumbnail');
+                    return uiInput.img(f.id, iconsPath + v, 'img-thumbnail');
                 }
                 break;
-            case fTypes.money:
+            case fts.money:
                 var nv=parseFloat(v);
                 if (!isNaN(nv)) {
                     return '$'+nv.toFixed(2);
                 }
                 break;
-            case fTypes.email:
-                return Evol.UI.linkEmail(f.id, v);
-            case fTypes.url:
-                return Evol.UI.link(f.id, v, v, f.id);
-            //case fTypes.color:
-            //    return Evol.UI.input.colorBox(f.id, v, v);
+            case fts.email:
+                return eUI.linkEmail(f.id, v);
+            case fts.url:
+                return eUI.link(f.id, v, v, f.id);
+            //case fts.color:
+            //    return uiInput.colorBox(f.id, v, v);
             default:
                 return v;
         }
@@ -365,10 +407,7 @@ Evol.Dico = {
     },
 
     HTMLField4One: function(fld, fid, fv, mode, iconsPath, skipLabel){
-        var h=[],
-            EvoUI=Evol.UI,
-            uiInput=EvoUI.input,
-            fTypes=Evol.Dico.fieldTypes;
+        var h=[];
         // --- field label ---
         if(mode==='mini'){
             var fwidth=fld.width;
@@ -381,95 +420,27 @@ Evol.Dico = {
         // --- field value ---
         if(fld.readonly || mode==='view'){
             h.push('<div class="disabled evo-rdonly" id="',fid);
-            if(fld.type===fTypes.textml && fld.height>1){
+            if(fld.type===fts.textml && fld.height>1){
                 h.push('" style="height:', fld.height, 'em;overflow-y: auto;');
             }
             h.push('">');
             switch (fld.type) {
-                case fTypes.color: // TODO is the color switch necessary?
-                    //h.push(Evol.UI.input.colorBox(fid, fv), fv);
+                case fts.color: // TODO is the color switch necessary?
+                    //h.push(uiInput.colorBox(fid, fv), fv);
                     h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
                     break;
-                case fTypes.email:
-                    h.push(EvoUI.linkEmail(fid, fv));
+                case fts.email:
+                    h.push(eUI.linkEmail(fid, fv));
                     break;
-                case fTypes.url:
-                    h.push(EvoUI.link(fid, fv, fv, fid));
+                case fts.url:
+                    h.push(eUI.link(fid, fv, fv, fid));
                     break;
                 default:
                     h.push(this.HTMLField4Many(fld, fv, {}, iconsPath));
             }
             h.push('&nbsp;</div>');
         }else{
-            switch (fld.type) {
-                case fTypes.text:
-                    h.push(uiInput.text(fid, fv, fld, null));
-                    break;
-                case fTypes.int:
-                case fTypes.dec:
-                    h.push(uiInput.textInt(fid, fv, fld.max, fld.min));
-                    break;
-                case fTypes.money:
-                    h.push('<div class="input-group">', EvoUI.input.typeFlag('$'),
-                        uiInput.textInt(fid, fv),
-                        '</div>');
-                    break;
-                case fTypes.bool:
-                    h.push(uiInput.checkbox(fid, fv));
-                    break;
-                case fTypes.textml:
-                case fTypes.html:
-                    // fv = _.escape(fv);
-                    if (fld.height === null) {
-                        fld.height = 5;
-                    } else {
-                        var fHeight = parseInt(fld.height,10);
-                        if (fHeight < 1) {
-                            fld.height = 5;
-                        }
-                    }
-                    h.push(uiInput.textM(fid, fv, fld.maxlength, fld.height));
-                    break;
-                case fTypes.date:
-                    h.push(uiInput.date(fid, fv));
-                    break;
-                case fTypes.datetime:
-                    h.push(uiInput.dateTime(fid, fv));
-                    break;
-                case fTypes.time:
-                    h.push(uiInput.time(fid, fv));
-                    break;
-                case fTypes.lov:
-                    h.push(uiInput.select(fid, fv, '', true, fld.list));
-                    break;
-                case fTypes.list: // fv is an array. will use select2
-                    h.push('<div id="',fid, '" class="w-100 form-control"></div>');
-                    break;
-                case fTypes.email:
-                    h.push('<div class="input-group">', uiInput.typeFlag(Evol.i18n.sgn_email),
-                        uiInput.text(fid, fv, fld),
-                        '</div>');
-                    break;
-                case fTypes.url:
-                    h.push(uiInput.text(fid, fv, fld));//fv!==''?EvoUI.link(fid,'',fv):''
-                    break;
-                //case fTypes.doc:
-                case fTypes.pix:
-                    if(fv!==''){
-                        h.push('<img src="',iconsPath+fv,'" class="img-thumbnail">');
-                    }else{
-                        h.push('<p class="">',Evol.i18n.nopix,'</p>');
-                    }
-                    h.push(uiInput.text(fid, fv, fld, null));
-                    break;
-                case fTypes.color:
-                    //h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
-                    h.push(uiInput.color(fid, fv));
-                    break;
-                case fTypes.hidden:
-                    h.push(uiInput.hidden(fid, fv));
-                    break;
-            }
+            Evol.Dico.fieldOneEdit[fld.type](h, fld, fid, fv, iconsPath);
         }
         if(mode==='mini'){
             h.push('</div>');
@@ -483,10 +454,10 @@ Evol.Dico = {
         h.push('<div class="evol-field-label" id="', fld.id, '-lbl"><label class="control-label ',fld.csslabel?fld.csslabel:'','" for="', fld.id, '">',
             fld.label);
         if (mode != 'view' && fld.required){
-            h.push(Evol.UI.html.required);
+            h.push(eUI.html.required);
         }
         if (fld.help && fld.help!==''){
-            h.push(Evol.UI.icon('question-sign', ''));
+            h.push(eUI.icon('question-sign', ''));
         }
         h.push('</label></div>');
         return h.join('');
@@ -500,22 +471,15 @@ Evol.Dico = {
         if (icon) {
             h.push('<img class="evol-many-icon" src="', icon, '">');
         }/*
-        if(_.isUndefined(value) || value===''){
-            value='('+model.id+')';
-        }*/
+         if(_.isUndefined(value) || value===''){
+         value='('+model.id+')';
+         }*/
         h.push(value);
         if(!noLink){
             h.push('</a>');
         }
         return h.join('');
     },
-    /*
-    copyOptions:  function(context, options, optList){
-        _.each(optList, function(opt){
-            context[opt]=options[opt];
-        });
-        return this;
-    },*/
 
     bbComparator:  function(fid){
         return function(modelA) {
@@ -554,3 +518,4 @@ Evol.Dico = {
     }
 
 };
+}();

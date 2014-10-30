@@ -18,8 +18,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             that = this,
             fields = this.getFields(),
             pSize = this.pageSize || 50,
-            link = (this.links!==false),
-            hover;
+            link = (this.links!==false);
 
         h.push('<div class="evol-many-list">',
             '<table class="table table-bordered', link?' table-hover':'', '"><thead><tr>');
@@ -47,6 +46,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             v,
             link = (this.links!==false),
             ft = Evol.Dico.fieldTypes;
+
         h.push('<tr data-mid="', model.id, '">');
         if(selectable){
             h.push('<td class="list-td-sel">', this._HTMLCheckbox(model.id), '</td>');

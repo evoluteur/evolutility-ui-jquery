@@ -55,8 +55,10 @@ uiModels.todo = {
         {
             type: 'panel', label: 'Notes', width: 100,
             elements: [
-                {id: 'notes', attribute: 'notes', type: 'textmultiline', label: 'Notes', maxlength: 1000,
-                    width: 100, height: 6, viewmany: false }
+                {
+                    id: 'notes', attribute: 'notes', type: 'textmultiline', label: 'Notes', maxlength: 1000,
+                    width: 100, height: 6, viewmany: false
+                }
             ]
         }
     ]

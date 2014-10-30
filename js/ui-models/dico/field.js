@@ -137,9 +137,9 @@ uiModels.field = {
                     id:'minvalue',
                     label: "Min. value",
                     help: "Minimum value allowed for the field",
-                    conditions: [{
+                    /*conditions: [{
                         'visible': showIfNumber
-                    }],
+                     }],*/
                     labellist: "Min.",
                     type: "integer",
                     maxlength: 4,
@@ -149,9 +149,9 @@ uiModels.field = {
                     id:'maxvalue',
                     label: "Max. value",
                     help: "Maximum value allowed for the field",
-                    conditions: [{
+                    /*conditions: [{
                         'visible': showIfNumber
-                    }],
+                    }],*/
                     labellist: "Max.",
                     type: "integer",
                     maxlength: 4,
@@ -192,6 +192,7 @@ uiModels.field = {
                 },
                 {
                     id:'height',
+                    attribute:'height',
                     label: "Height",
                     help: "Height in number of lines (for ''Textmultiline'' fields)",
                     type: "integer",

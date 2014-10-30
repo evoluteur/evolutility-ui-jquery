@@ -53,6 +53,7 @@ module.exports = function (grunt) {
                     'js/ui.js',
                     'js/ui-*.js',
                     'js/i18n/EN.js',
+                    'js/dico.js',
 
                     'js/many.js',
                     'js/many-*.js',
@@ -61,8 +62,6 @@ module.exports = function (grunt) {
                     '!js/one-wizard.js', // NOT ! here
                     'js/action.js',
                     'js/action-*.js',
-
-                    'js/dico.js',
 
                     //'js/navbar.js',
                     'js/toolbar.js',

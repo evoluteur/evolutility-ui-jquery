@@ -2,7 +2,7 @@
 var uiModels=uiModels||{};
 uiModels.panel = {
     id:'panel',
-    icon: "edi_fld.png",
+    icon: "edi_pnl.png",
     entity: "panel",
     entities: "panels",
     leadfield: 'label',
@@ -58,10 +58,7 @@ uiModels.panel = {
                     help: "Type of field: UI type rather than data type.",
                     type: "lov",
                     list:uiFieldTypes,
-                    maxlength: 100,
-                    required: true,
-                    viewmany: true,
-                    width: 38
+                    required: true
                 },
                 {id:'width', type: "integer", attribute:'width', label:'Width'}
             ]

@@ -1,16 +1,18 @@
 // TODO cleanup
+// this is a port of XML from the ASP.net version
+
 var uiModels=uiModels||{};
 uiModels.object = {
     id: 'object',
     icon: "edi_frm.png",
-    entity: "component",
-    entities: "components",
+    entity: "object",
+    entities: "objects",
     leadfield: "Title",
     elements: [
         {
             type: 'panel',
             id: 'pform',
-            label: "Form",
+            label: "Object",
             width: 100,
             elements: [
                 {
@@ -20,32 +22,28 @@ uiModels.object = {
                     id: "Title",
                     attribute: "Title",
                     maxlength: 100,
-                    "viewlist": true,
-                    width: 62,
-                    required: true
-                },
-                {
-                    label: "ID",
-                    help: "Primary Key in table 'EvoDico_Form'.",
-                    type: "text",
-                    id: "ID",
-                    attribute: "ID",
-                    maxlength: "100",
                     viewmany: true,
-                    width: "18",
-                    readonly: true
+                    width: 80,
+                    required: true
                 },
                 {
                     label: "Active",
                     type: "boolean",
                     id: "PUBLISH",
                     attribute: "PUBLISH",
-                    maxlength: "1",
-                    "search": "1",
-                    "searchlist": "1",
-                    "searchadv": "1",
-                    width: "20",
-                    "height": "1"
+                    viewmany: true,
+                    width: 20
+                },
+                {
+                    label: "ID",
+                    help: "Primary Key in table 'EvoDico_Form'.",
+                    type: "text",
+                    id: "id",
+                    attribute: "id",
+                    maxlength: 100,
+                    viewmany: true,
+                    width: 100,
+                    readonly: true
                 }
             ]
         },
@@ -65,6 +63,7 @@ uiModels.object = {
                             type: "text",
                             id: "entity",
                             attribute: "entity",
+                            required: true,
                             maxlength: 50,
                             viewmany: true,
                             width: 62
@@ -75,34 +74,26 @@ uiModels.object = {
                             type: "text",
                             id: "entities",
                             attribute: "entities",
+                            required: true,
                             maxlength: 50,
                             width: 38
                         },
                         {
                             label: "Icon name",
-                            help: "example='contact.gif'",
                             type: "text",
                             id: "icon",
                             attribute: "icon",
                             maxlength: "50",
-                            "search": "0",
-                            "searchlist": "0",
-                            "searchadv": "0",
                             width: 62,
-                            "height": "1"
+                            help: "example='contact.gif'"
                         },
                         {
                             label: "Icon",
                             type: "image",
-                            readonly: true,
                             id: "icon",
                             attribute: "icon",
-                            maxlength: 50,
-                            "search": "1",
-                            "searchlist": "0",
-                            "searchadv": "1",
                             width: 38,
-                            height: 1
+                            readonly:true
                         },
                         {
                             label: "Description",
@@ -110,9 +101,6 @@ uiModels.object = {
                             id: "Description",
                             attribute: "Description",
                             maxlength: 250,
-                            "search": "0",
-                            "searchlist": "0",
-                            "searchadv": "1",
                             width: 100,
                             height: 7
                         }
@@ -167,7 +155,8 @@ uiModels.object = {
                             "search": "1",
                             "searchlist": "1",
                             "searchadv": "1",
-                            width: "60"
+                            width: "60",
+                            list:uiFieldTypes
                         },
                         {
                             "panelid": "14",
@@ -177,7 +166,6 @@ uiModels.object = {
                             type: "boolean",
                             id: "searchlist",
                             attribute: "searchlist",
-                            "required": "0",
                             "search": "1",
                             "searchlist": "1",
                             "searchadv": "1",
@@ -190,7 +178,6 @@ uiModels.object = {
                             type: "boolean",
                             id: "search",
                             attribute: "search",
-                            "required": "0",
                             "search": "1",
                             "searchlist": "1",
                             "searchadv": "1",
@@ -204,7 +191,6 @@ uiModels.object = {
                             id: "fpos",
                             attribute: "fpos",
                             maxlength: "3",
-                            "required": "0",
                             "search": "0",
                             "searchlist": "1",
                             width: 38
@@ -218,7 +204,6 @@ uiModels.object = {
                             id: "Width",
                             attribute: "Width",
                             maxlength: "3",
-                            "required": "0",
                             "search": "0",
                             "searchlist": "1",
                             "searchadv": "1",
@@ -232,7 +217,6 @@ uiModels.object = {
                             id: "Height",
                             attribute: "Height",
                             maxlength: "3",
-                            "required": "0",
                             "search": "0",
                             "searchlist": "1",
                             "searchadv": "1",
@@ -265,7 +249,6 @@ uiModels.object = {
                             attribute: "Label",
                             maxlength: "100",
                             "link": "EvoDicoPanel.aspx?ID=@itemid",
-                            "required": "0",
                             "search": "1",
                             "searchlist": "1",
                             "searchadv": "1",
@@ -279,7 +262,6 @@ uiModels.object = {
                             id: "ppos",
                             attribute: "ppos",
                             maxlength: "3",
-                            "required": "0",
                             "search": "0",
                             "searchlist": "1",
                             "searchadv": "1",
@@ -292,7 +274,6 @@ uiModels.object = {
                             id: "Width",
                             attribute: "Width",
                             maxlength: "3",
-                            "required": "0",
                             "search": "0",
                             "searchlist": "1",
                             "searchadv": "1",
@@ -306,9 +287,6 @@ uiModels.object = {
                             id: "cssclass",
                             attribute: "cssclass",
                             maxlength: "100",
-                            "required": "0",
-                            "search": "0",
-                            "searchlist": "1",
                             "searchadv": "1",
                             width: 38
                         }

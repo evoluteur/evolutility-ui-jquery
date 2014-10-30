@@ -44,8 +44,8 @@
     <div id="evol" class="">
 
         <p><br/>These sample applications are not anything you haven't seen before.
-            The interesting thing is that these different apps are in fact the same code with different UI-models
-            and it did not require any hand coded Javascript or CSS to build them.
+            The interesting thing is this Single Page App (SPA)
+            is a set of generic views configured with different UI-models.
         </p>
 
         <ul class="">
@@ -55,10 +55,10 @@
         </ul>
 
         <p>For each Backbone model, a single UI-model defines all views.
-            See the UI model for the sample apps: <a href="javascript:showUIdef2(todo_ui)">To Do</a>,
-            <a href="javascript:showUIdef2(contacts_ui)">Addressbook</a>,
-            <a href="javascript:showUIdef2(winecellar_ui)">Wine Cellar</a>.
-            <small id="hide_def" style="display:none;"><a href="javascript:showUIdef2no(winecellar_ui)">[Hide]</a></small></p>
+            See the UI model for the sample apps: <a href="javascript:showUIdef2('todo')">To Do</a>,
+            <a href="javascript:showUIdef2('contact')">Addressbook</a>,
+            <a href="javascript:showUIdef2('winecellar')">Wine Cellar</a>.
+            <small id="hide_def" style="display:none;"><a href="javascript:showUIdef2no('winecellar')">[Hide]</a></small></p>
         </p>
         <div style="display:none;" id="uimodel"></div>
 
@@ -90,20 +90,10 @@
                 todo: uiModels.todo,
                 contact: uiModels.contact,
                 winecellar: uiModels.winecellar
-            }
+            },
+            style: 'panel-info'
         }).render();
     });
-
-    function showUIdef2(uiModel){
-        $('#uimodel').html(Evol.UI.input.textMJSON('uimodel2', uiModel, 10))
-            .slideDown();
-        $('#hide_def').show();
-    }
-
-    function showUIdef2no(){
-        $('#uimodel').slideUp();
-        $('#hide_def').hide();
-    }
 
 </script>
 <div class="footer">&#169; 2014 Olivier Giulieri</div>

@@ -22,8 +22,8 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
         this._HTMLbody(h, this.getFields(), pSize, this.uiModel.icon, 0, this.selectable);
         h.push('</div>', Evol.UI.html.clearer);
         this._HTMLpagination(h, 0, pSize, models.length);
-        h.push('<div class="evo-many-summary">', pSummary, '</div>');
-        h.push('</div>');
+        h.push('<div class="evo-many-summary">', pSummary, '</div>',
+            '</div>');
         this.$el.html(h.join(''));
         return this;
     },

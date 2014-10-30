@@ -167,7 +167,7 @@
         if(curView){
             curView.remove();
         }
-        curView=new Evol.Dico.viewTypes[viewName](config)
+        curView=new Evol.viewClasses[viewName](config)
                 .render();
     }
 

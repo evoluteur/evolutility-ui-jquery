@@ -10,14 +10,30 @@
 var Evol = Evol || {};
 Evol.hashLov = {};
 Evol.ViewAction = {};
-/*
-Evol.CSS = {
-    field: 'evo-field form-control ',
-    fieldLabel: 'evol-field-label',
-    panel: '',
-    tab: '',
-    tabHeader: ''
-};*/
+
+var fts = {
+    text: 'text',
+    textml: 'textmultiline',
+    bool: 'boolean',
+    int: 'integer',
+    dec: 'decimal',
+    money: 'money',
+    date: 'date',
+    datetime: 'datetime',
+    time: 'time',
+    lov: 'lov',
+    list: 'list', // many values for one field (behave like tags - return an array of strings)
+    //html:'html',
+    email: 'email',
+    pix: 'image',
+    doc:'document',
+    url: 'url',
+    color: 'color',
+    hidden: 'hidden'
+    //json: 'json',
+    //rating: 'rating',
+    //widget: 'widget'
+};
 
 Evol.UI = {
 
@@ -61,7 +77,7 @@ Evol.UI = {
                 });
                 //other fields attributes
                 if(fd.readonly){
-                    h.push('" ', item, '="', item);
+                    h.push('" disabled="disabled');
                 }
                 if(fCss){
                     h.push('" class="', fCss);
@@ -134,8 +150,8 @@ Evol.UI = {
         },
         checkbox2: function (id, value, css) {
             return ['<input type="checkbox" data-id="', id, '" class="',css,'"',
-            value?' checked="checked"':'',
-            ' value="1">'].join('');
+                value?' checked="checked"':'',
+                ' value="1">'].join('');
         },
         checkboxLOV:function(fLOV){
             var h=[];
@@ -198,15 +214,15 @@ Evol.UI = {
                 }
             });
             return opts.join('');
-        },
-        /*
+        }/*,
+
          toggle: function  (items) {
-             var h=['<div class="btn-group" data-toggle="buttons">'];
-             _.each(items, function(item){
-                h.push('<label class="btn btn-info"><input type="radio" name="options" id="',item.id,'">',item.text,'</label>');
-             });
-             h.push('</div>');
-             return h.join('');
+         var h=['<div class="btn-group" data-toggle="buttons">'];
+         _.each(items, function(item){
+         h.push('<label class="btn btn-info"><input type="radio" name="options" id="',item.id,'">',item.text,'</label>');
+         });
+         h.push('</div>');
+         return h.join('');
          },*/
     },
 
@@ -240,7 +256,7 @@ Evol.UI = {
             h.push('" id="', id);
         }
         if(target){
-            h.push('" target="',target);
+            h.push('" target="', target);
         }
         h.push('">', _.escape(label), '</a>');
         return h.join('');
@@ -272,28 +288,22 @@ Evol.UI = {
     // --- menu ---
     menu: {
         hBegin: function (id, tag, icon){
-            return ['<', tag,' class="dropdown" data-id="',id,'">',
-                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">',Evol.UI.icon(icon),' <b class="caret"></b></a>',
+            return ['<', tag, ' class="dropdown" data-id="', id, '">',
+                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">', Evol.UI.icon(icon), ' <b class="caret"></b></a>',
                 '<ul class="dropdown-menu evo-dropdown-icons">'].join('');
         },
         hEnd: function(tag){
             return '</ul></' + tag + '>';
         },
         hItem: function(id, label, icon, cardi, style){
-            var h=[];
-            h.push('<li data-id="',id,'"');
-            if(cardi){
-                h.push(' data-cardi="'+cardi,'"');
-            }
-            if(style!=='label'){
-                h.push(' data-toggle="tooltip" data-placement="bottom" title="" data-original-title="',label,'"');
-            }
-            h.push('><a href="javascript:void(0);" data-id="',id,'">',Evol.UI.icon(icon));
-            if(style!=='tooltip'){
-                h.push('&nbsp;',label);
-            }
-            h.push('</a></li>');
-            return h.join('');
+            return [
+                '<li data-id="', id,
+                cardi?'" data-cardi="'+cardi:'',
+                (style!=='label')?'" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="'+label:'',
+                '"><a href="javascript:void(0);" data-id="', id, '">', Evol.UI.icon(icon),
+                (style!=='tooltip')?'&nbsp;'+label:'',
+                '</a></li>'
+            ].join('');
         }
     },
 
@@ -302,10 +312,10 @@ Evol.UI = {
 
         alert: function(title, msg){
             var $m=$(this.HTMLModal('alert', title, msg, [{
-                    id:'ok',
-                    text: Evol.i18n.bOK,
-                    class: 'btn-primary'
-                }]))
+                id:'ok',
+                text: Evol.i18n.bOK,
+                class: 'btn-primary'
+            }]))
                 .on('click', 'button', function(evt){
                     $m.remove();
                 })
@@ -314,26 +324,29 @@ Evol.UI = {
 
         confirm: function(id, title, msg, callbacks, buttons){
             var $m=$(this.HTMLModal(id, title, msg, buttons))
-                    .on('click', 'button', function(evt){
-                        var bId=$(evt.currentTarget).data('id');
-                        if(callbacks && callbacks[bId]){
-                            callbacks[bId]();
-                        }
-                        $m.remove();
-                    })
-                    .modal('show');
+                .on('click', 'button', function(evt){
+                    var bId=$(evt.currentTarget).data('id');
+                    if(callbacks && callbacks[bId]){
+                        callbacks[bId]();
+                    }
+                    $m.remove();
+                })
+                .modal('show');
         },
 
         HTMLModal: function(id, title, msg, buttons) {
-            var that=this,
+            var hButton = function(id, label, css){
+                    return ['<button data-id="', id, '" type="button" class="btn ', css, '" data-dismiss="modal">', label, '</button>'].join('');
+                },
                 h = [
-                '<div class="modal fade" id="', id, '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">',
-                '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">',
-                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>',
-                '<h4 class="modal-title">', title, '</h4>',
-                '</div>',
-                '<div class="modal-body">', msg, '</div>',
-                '<div class="modal-footer">'];
+                    '<div class="modal fade" id="', id, '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">',
+                    '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">',
+                    '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>',
+                    '<h4 class="modal-title">', title, '</h4>',
+                    '</div>',
+                    '<div class="modal-body">', msg, '</div>',
+                    '<div class="modal-footer">'
+                ];
 
             if(!buttons){
                 buttons=[
@@ -342,15 +355,12 @@ Evol.UI = {
                 ];
             }
             _.each(buttons, function(b){
-                h.push(that._HTMLButton(b.id, b.text, b.class));
+                h.push(hButton(b.id, b.text, b.class));
             });
             h.push('</div></div></div></div>');
             return h.join('');
-        },
-
-        _HTMLButton: function(id, label, css){
-            return ['<button data-id="', id, '" type="button" class="btn ', css, '" data-dismiss="modal">', label, '</button>'].join('');
         }
+
     },
 
     // --- panels ---
@@ -363,6 +373,7 @@ Evol.UI = {
             '</div>'
         ].join('');
     },
+
     HTMLPanelEnd: function () {
         return '</div>';
     },
@@ -416,17 +427,17 @@ Evol.UI = {
     },
 
     // ---  Misc. ---
-/*
-    // get w/ automatic create if not in DOM
-    getOrCreate: function (fID,$holder) {
-        var e = $holder.find('#' + fID);
-        if (e.length===0) {
-            $('<div id="' + fID + '"></div>');
-            ($holder || $(body)).append(e);
-            e = $holder.find('#' + fID);
-        }
-        return e;
-    },*/
+    /*
+     // get w/ automatic create if not in DOM
+     getOrCreate: function (fID,$holder) {
+         var e = $holder.find('#' + fID);
+         if (e.length===0) {
+             $('<div id="' + fID + '"></div>');
+             ($holder || $(body)).append(e);
+             e = $holder.find('#' + fID);
+         }
+         return e;
+     },*/
 
     // insert a dataSet into a Backbone collection
     insertCollection: function (collection, dataSet){

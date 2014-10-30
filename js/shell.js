@@ -90,14 +90,16 @@ Evol.Shell = Backbone.View.extend({
             },
             cbCancel=function(){
                 //TODO case w/ no/new model
-                that.setRoute(tb.curView.model.id, false);
+                if(tb && tb.curView){ // TODO this "if" should not be necessary
+                    that.setRoute(tb.curView.model.id, false);
+                }
             };
 
         if(this._curEntity){
             if(tb){
                 tb.proceedIfReady(cbOK, cbCancel);
             }else{
-                alert('Error calling proceedIfReady');
+                //alert('Error calling proceedIfReady');
                 cbCancel();
             }
         }else{
@@ -180,10 +182,8 @@ Evol.Shell = Backbone.View.extend({
                     config.router = that.router;
                 }
                 var tb = new Evol.ViewToolbar(config).render();//.setTitle();
-                if(options){
-                    if(tb.cardinality==='1'){
-                        tb.setModelById(options);
-                    }
+                if(options && tb.cardinality==='1'){
+                    tb.setModelById(options);
                 }
                 that._tbs[uiModel.id] = tb;
                 if(cb){

@@ -322,7 +322,8 @@ uiModels.contact = {
         return model.get('firstname')+' '+model.get('lastname');
     },
     elements: [
-        {type: 'panel', label: 'Identity', width: 62,
+        {
+            type: 'panel', label: 'Identity', width: 62,
             elements: [
                 {
                     type: 'text', id: 'lastname', label: 'Lastname', maxlength: 50,
@@ -366,7 +367,8 @@ uiModels.contact = {
                 }
             ]
         },
-        {type: 'panel', label: 'Address', width: 62,
+        {
+            type: 'panel', label: 'Address', width: 62,
             elements: [
                 {
                     type: 'text', id: 'address1', label: 'Address', maxlength: 150, width: 100
@@ -390,7 +392,8 @@ uiModels.contact = {
                 }
             ]
         },
-        {type: 'panel', label: 'Misc.', width: 38,
+        {
+            type: 'panel', label: 'Misc.', width: 38,
             elements: [
                 {
                     type: 'lov', id: 'category', label: 'Category', width: 100,

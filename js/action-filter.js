@@ -7,23 +7,28 @@
  *
  *************************************************************************** */
 
-var evoLang=Evol.i18n.filters;
 
-var fOps={
-    sEqual:'eq',
-    sNotEqual:'ne',
-    sStart:'sw',
-    sContain:'ct',
-    sFinish:'fw',
-    sInList:'in',
-    sIsNull:'null',
-    sIsNotNull:'nn',
-    sGreater:'gt',
-    sSmaller:'lt',
-    sBetween:'bw'
-};
+Evol.ViewAction.Filter = function(){
 
-Evol.ViewAction.Filter = Backbone.View.extend({
+    var eUI = Evol.UI,
+        uiInput = eUI.input,
+        fts = Evol.Dico.fieldTypes,
+        evoLang = Evol.i18n.filters,
+        fOps = {
+            sEqual:'eq',
+            sNotEqual:'ne',
+            sStart:'sw',
+            sContain:'ct',
+            sFinish:'fw',
+            sInList:'in',
+            sIsNull:'null',
+            sIsNotNull:'nn',
+            sGreater:'gt',
+            sSmaller:'lt',
+            sBetween:'bw'
+        };
+
+return Backbone.View.extend({
 
     viewName: 'filter',
 
@@ -48,15 +53,15 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         // - if no fields are provided, then get them from the uiModel
         if(this.fields.length<1 && this.uiModel){
             this.fields = _.map(Evol.Dico.getFields(this.uiModel, function(f){
-                    return f.type!==Evol.Dico.fieldTypes.hidden;
+                    return f.type!==fts.hidden;
                 }),
                 function(f){
-                    if(f.type!==Evol.Dico.fieldTypes.list){
+                    if(f.type!==fts.list){
                         return f;
                     }else{
                         return _.extend({}, f, {
-                            type: Evol.Dico.fieldTypes.lov,
-                            trueType: Evol.Dico.fieldTypes.list
+                            type: fts.lov,
+                            trueType: fts.list
                         });
                     }
                 });
@@ -123,7 +128,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                     that._field=that._getFieldById(fieldID);
                     var fType=that._type=that._field.type;
                     that._setEditorOperator();
-                    if(fType==Evol.Dico.fieldTypes.lov || fType==Evol.Dico.fieldTypes.bool){
+                    if(fType===fts.lov || fType===fts.bool){
                         that._setEditorValue();
                     }
                 }else{
@@ -142,15 +147,15 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                 evt.stopPropagation();
                 var type=that._type,
                     value=$(this).val(),
-                    valid=(value!=='') || type==Evol.Dico.fieldTypes.lov || type==Evol.Dico.fieldTypes.bool;
-                if(type==Evol.Dico.fieldTypes.number){
+                    valid=(value!=='') || type===fts.lov || type===fts.bool;
+                if(type=='number'){ // extra type for compatibility w/ another component
                     valid=valid && !isNaN(value);
                 }else if(that._operator==fOps.sBetween){
                     valid=that._editor.find('#value').val()!=='' && that._editor.find('#value2').val()!=='';
                 }
                 if(valid){
                     that._bAdd.button('enable');
-                    if(evt.which==13){
+                    if(evt.which===13){
                         that._bAdd.trigger('click');
                     }
                 }else{
@@ -158,34 +163,34 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                 }
             }).on('click', '#checkAll', function(){
                 var $this=$(this);
-                Evol.UI.toggleCheckbox($this.siblings(), $this.prop('checked'));
+                eUI.toggleCheckbox($this.siblings(), $this.prop('checked'));
             });
         this._filters=e.find('.evo-zfilters').on('click', 'a', function(){
             that._editCond($(this));
-        //}).on('click', 'a .ui-button-icon-secondary', function(evt){
+            //}).on('click', 'a .ui-button-icon-secondary', function(evt){
         }).on('click', 'a>button', function(evt){
-                evt.stopPropagation();
-                var filter=$(this).parent();
-                if(!filter.hasClass('ui-state-disabled')){
-                    filter.fadeOut('slow',function(){
-                        filter.remove();
-                        that._triggerChange();
-                    });
-                }
-            });
+            evt.stopPropagation();
+            var filter=$(this).parent();
+            if(!filter.hasClass('ui-state-disabled')){
+                filter.fadeOut('slow',function(){
+                    filter.remove();
+                    that._triggerChange();
+                });
+            }
+        });
         return this;
     },
-/*
-    _renderMenu: function(h){
-        var eui=Evol.UI.menu;
+    /*
+     _renderMenu: function(h){
+         var mn=eUI.menu;
 
-        h.push(
-            eui.hBegin('file', 'div', 'cog'),
-            eui.hItem('save', 'Save', '', 1),
-            eui.hItem('open', 'Open', '', 1),
-            eui.hEnd('div')
-        );
-    },*/
+         h.push(
+             mn.hBegin('file', 'div', 'cog'),
+             mn.hItem('save', 'Save', '', 1),
+             mn.hItem('open', 'Open', '', 1),
+             mn.hEnd('div')
+         );
+     },*/
 
     _getFieldById: function(fId){
         if(!this._hash){
@@ -213,9 +218,9 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     addCondition: function(filter){
         var f=$(['<a href="javascript:void(0)">',this._htmlCond(filter),'</a>'].join(''))
             .prependTo(this._filters)/*
-            .button({
-                icons: {secondary:'ui-icon-close'}
-            })*/
+         .button({
+         icons: {secondary:'ui-icon-close'}
+         })*/
             .data('filter', filter)
             .fadeIn();
         //if(this.highlight){
@@ -241,7 +246,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
             h.push('<span class="evo-lLight"> ', evoLang.opAnd, ' </span>',
                 '<span class="evo-lBold">', filter.value.label2, '</span>');
         }
-        h.push(Evol.UI.html.buttonClose);
+        h.push(eUI.html.buttonClose);
         return h.join('');
     },
 
@@ -249,8 +254,8 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         if(this._cFilter){
             this._cFilter.removeClass('disabled');
             /*if(anim){
-                this._cFilter.effect('highlight');
-            }*/
+             this._cFilter.effect('highlight');
+             }*/
             if(filter){
                 this._cFilter.data('filter', filter)//.find(':first-child')
                     .html(this._htmlCond(filter));
@@ -293,7 +298,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                     h=['<select id="field" class="form-control"><option value=""></option>'];
                 for (var i=0,iMax=fields.length;i<iMax;i++){
                     var f=fields[i];
-                    h.push(Evol.UI.input.option(f.id,f.label || f.labellist));
+                    h.push(uiInput.option(f.id,f.label || f.labellist));
                 }
                 h.push('</select>');
                 this._fList=h.join('');
@@ -309,30 +314,28 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     },
 
     _setEditorOperator: function(cond){
-        var EvoUI=Evol.UI,
-            fOption=EvoUI.input.option,
-            fTypes=Evol.Dico.fieldTypes,
+        var fOption=uiInput.option,
             fType=this._type;
         if(this._step<2){
             var h=[];
             switch (fType){
-                case fTypes.lov:
+                case fts.lov:
                     //h.push(evoLang.sInList);
-                    h.push(EvoUI.input.hidden('operator',fOps.sInList));
+                    h.push(uiInput.hidden('operator',fOps.sInList));
                     this._operator=fOps.sInList;
                     break;
-                case fTypes.bool:
+                case fts.bool:
                     //h.push(evoLang.sEqual);
-                    h.push(EvoUI.input.hidden('operator', fOps.sEqual));
+                    h.push(uiInput.hidden('operator', fOps.sEqual));
                     this._operator=fOps.sEqual;
                     break;
                 default:
-                    h.push(EvoUI.input.selectBegin('operator', '', true));
+                    h.push(uiInput.selectBegin('operator', '', true));
                     switch (fType){
-                        case fTypes.date:
-                        case fTypes.datetime:
-                        case fTypes.time:
-                            if (fType==fTypes.time){
+                        case fts.date:
+                        case fts.datetime:
+                        case fts.time:
+                            if (fType==fts.time){
                                 h.push(fOption(fOps.sEqual, evoLang.sAt),
                                     fOption(fOps.sNotEqual, evoLang.sNotAt));
                             }else{
@@ -343,9 +346,9 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                                 fOption(fOps.sSmaller, evoLang.sBefore),
                                 fOption(fOps.sBetween, evoLang.sBetween));
                             break;
-                        case fTypes.int:
-                        case fTypes.dec:
-                        case fTypes.money:
+                        case fts.int:
+                        case fts.dec:
+                        case fts.money:
                             h.push(fOption(fOps.sEqual, evoLang.sNumEqual),
                                 fOption(fOps.sNotEqual, evoLang.sNumNotEqual),
                                 fOption(fOps.sGreater, evoLang.sGreater),
@@ -364,7 +367,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
             }
             this._editor.append(h.join(''));
         }
-        if(cond && fType!=fTypes.lov){
+        if(cond && fType!=fts.lov){
             this._editor.find('#operator').val(cond);
             this._operator=cond;
         }
@@ -373,41 +376,38 @@ Evol.ViewAction.Filter = Backbone.View.extend({
 
     _setEditorValue: function( v, v2){
         var editor=this._editor,
-            fTypes=Evol.Dico.fieldTypes,
             fType=this._type,
             opVal=editor.find('#operator').val(),
             opBetween=false,
             addOK=true;
         if(opVal!==''){
-            if(fType!=fTypes.lov && (opVal==fOps.sIsNull || opVal==fOps.sIsNotNull)){
-                editor.append(Evol.UI.input.hidden('value',''));
+            if(fType!=fts.lov && (opVal==fOps.sIsNull || opVal==fOps.sIsNotNull)){
+                editor.append(uiInput.hidden('value',''));
             }else{
                 if(this._step<3){
                     var h=[];
                     opBetween=opVal==fOps.sBetween;
                     switch (fType){
-                        case fTypes.lov:
-                            // TODO use "section" ?
-                            h.push('<section id="value">');
-                            if(this._field.list.length>7){
-                                h.push('(<input type="checkbox" id="checkAll" value="1"/><label for="checkAll">All</label>) ');
-                            }
-                            h.push(Evol.UI.input.checkboxLOV(this._field.list));
-                            h.push('</section>');
+                        case fts.lov:// TODO use "section"?
+                            h.push(
+                                '<section id="value">',
+                                (this._field.list.length>7)?'(<input type="checkbox" id="checkAll" value="1"/><label for="checkAll">All</label>) ':'',
+                                uiInput.checkboxLOV(this._field.list),
+                                '</section>');
                             break;
-                        case fTypes.bool:
+                        case fts.bool:
                             h.push('<span id="value">',
-                                Evol.UI.input.radio('value', '1', evoLang.yes, v!='0', 'value1'),
-                                Evol.UI.input.radio('value', '0', evoLang.no, v=='0', 'value0'),
+                                uiInput.radio('value', '1', evoLang.yes, v!='0', 'value1'),
+                                uiInput.radio('value', '0', evoLang.no, v=='0', 'value0'),
                                 '</span>');
                             break;
-                        case fTypes.date:
-                        case fTypes.datetime:
-                        case fTypes.time:
-                        case fTypes.int:
-                        case fTypes.dec:
-                        case fTypes.money:
-                            var iType=(fType==fTypes.date)?'text':fType;
+                        case fts.date:
+                        case fts.datetime:
+                        case fts.time:
+                        case fts.int:
+                        case fts.dec:
+                        case fts.money:
+                            var iType=(fType==fts.date)?'text':fType;
                             h.push('<input id="value" type="',iType,'" class="form-control"/>');
                             if(opBetween){
                                 h.push('<span class="as-Txt">',evoLang.opAnd,' </span>',
@@ -420,17 +420,17 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                             addOK=false;
                     }
                     editor.append(h.join(''));
-                    if(fType==fTypes.date){// TODO add datepicker widget to build and uncomment this
+                    if(fType==fts.date){// TODO add datepicker widget to build and uncomment this
                         editor.find('#value,#value2').datepicker({dateFormat:this.dateFormat});
                     }
                 }
                 if(v){
                     var $value=editor.find('#value');
                     switch (fType){
-                        case fTypes.lov:
+                        case fts.lov:
                             $value.find('#'+v.split(',').join(',#')).prop('checked', 'checked');
                             break;
-                        case fTypes.bool:
+                        case fts.bool:
                             $value.find('#value'+v).prop('checked', 'checked');
                             break;
                         default:
@@ -442,7 +442,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                             }
                     }
                 }else{
-                    addOK=(fType==fTypes.lov || fType==fTypes.bool);
+                    addOK=(fType==fts.lov || fType==fts.bool);
                 }
             }
             this._bAdd.button(addOK?'enable':'disable').show();
@@ -471,7 +471,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
             },
             op=filter.operator,
             fv=filter.value;
-        if(this._type==Evol.Dico.fieldTypes.lov){
+        if(this._type==fts.lov){
             var vs=[], ls=[];
             v.find('input:checked').not('#checkAll').each(function(){
                 vs.push(this.value);
@@ -492,7 +492,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                 fv.label='('+ls.join(', ')+')';
                 fv.value=vs.join(',');
             }
-        }else if(this._type==Evol.Dico.fieldTypes.bool){
+        }else if(this._type==fts.bool){
             op.label=evoLang.sEqual;
             op.value=fOps.sEqual;
             var val=(v.find('#value1').prop('checked'))?1:0;
@@ -506,26 +506,23 @@ Evol.ViewAction.Filter = Backbone.View.extend({
             if(opVal==fOps.sIsNull || opVal==fOps.sIsNotNull){
                 fv.label=fv.value='';
             }else{
-                var ft = Evol.Dico.fieldTypes,
-                    vval = v.val();
+                var vval = v.val();
+                fv.label=vval;
                 switch(this._type){
-                    case ft.text:
-                        fv.label=vval;
+                    case fts.text:
                         fv.value=vval.toLocaleLowerCase();
                         break;
-                    case ft.date:
-                    case ft.datetime:
+                    case fts.date:
+                    case fts.datetime:
                         fv.value=formattedDate(vval);
-                        fv.label=vval;
                         break;
                     default:
-                        fv.label=vval;
                         fv.value=vval;
                 }
                 if(opVal==fOps.sBetween){
                     vval = v.next().next().val();
                     fv.label2=vval;
-                    if(this._type===ft.date || this._type===ft.datetime){
+                    if(this._type===fts.date || this._type===fts.datetime){
                         fv.value2=formattedDate(vval);
                         fv.label2=vval;
                     }else{
@@ -538,7 +535,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     },
 
     _hiddenValue: function(h, filter, idx){
-        var fHidden=Evol.UI.hidden,
+        var fHidden=uiInput.hidden,
             v2=filter.value.value2;
         h.push(fHidden('fld-'+idx, filter.field.value),
             fHidden('op-'+idx, filter.operator.value),
@@ -551,7 +548,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     _setHiddenValues: function(){
         var vs=this.val(),
             iMax=vs.length,
-            h=[Evol.UI.hidden('elem', iMax)];
+            h=[uiInput.hidden('elem', iMax)];
         for(var i=0;i<iMax;i++){
             this._hiddenValue(h, vs[i], i+1);
         }
@@ -574,7 +571,7 @@ Evol.ViewAction.Filter = Backbone.View.extend({
                 v.push($(this).data('filter'));
             });
             return v;
-        // --- set value
+            // --- set value
         }else{
             this._filters.empty();
             for(var i=0,iMax=value.length;i<iMax;i++){
@@ -593,26 +590,27 @@ Evol.ViewAction.Filter = Backbone.View.extend({
         return v.join(' '+evoLang.opAnd+' ');
     },
     /*
-    valUrl: function(){
-        var vs=this.val(),
-            iMax=vs.length,
-            url=['filters=',iMax];
-        if(iMax<1)
+     valUrl: function(){
+         var vs=this.val(),
+             iMax=vs.length,
+             url=['filters=',iMax];
+         if(iMax<1){
             return '';
-        for(var i=0;i<iMax;i++){
-            var v=vs[i];
-            url.push(
-                '&field-',i,'=',v.field.value,
-                '&operator-',i,'=',v.operator.value,
-                '&value-',i,'=',encodeURIComponent(v.value.value)
-            );
-            if(v.operator==fOps.sBetween){
+         }
+         for(var i=0;i<iMax;i++){
+             var v=vs[i];
+             url.push(
+                 '&field-',i,'=',v.field.value,
+                 '&operator-',i,'=',v.operator.value,
+                 '&value-',i,'=',encodeURIComponent(v.value.value)
+             );
+             if(v.operator==fOps.sBetween){
                 url.push('&value2-',i,'=',encodeURIComponent(v.value.value2));
-            }
-        }
-        url.push('&label=',encodeURIComponent(this.valText()));
-        return url.join('');
-    },*/
+             }
+         }
+         url.push('&label=',encodeURIComponent(this.valText()));
+         return url.join('');
+     },*/
 
     clear: function(){
         this._cFilter=null;
@@ -625,14 +623,6 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     length: function(){
         return this._filters.children().length;
     },
-    /*
-    destroy: function(){
-        var e=this.$el.off();
-        e.find('.evo-bNew,.evo-bAdd,.evo-bDel,.evo-zfilters').off();
-        this._editor.off();
-        e.clear();
-        $.Widget.prototype.destroy.call(this);
-    },*/
 
     click_new: function(evt){
         if(this._step<1){
@@ -664,3 +654,5 @@ Evol.ViewAction.Filter = Backbone.View.extend({
     }
 
 });
+
+}();

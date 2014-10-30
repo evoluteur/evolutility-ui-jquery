@@ -7,8 +7,30 @@
  *
  *************************************************************************** */
 
+Evol.viewClasses = {
+    // --- One ---
+    'view': Evol.ViewOne.View,
+    'edit': Evol.ViewOne.Edit,
+    'mini': Evol.ViewOne.Mini,
+    'json': Evol.ViewOne.JSON,
+    // --- Many ---
+    'list': Evol.ViewMany.List,
+    'badges': Evol.ViewMany.Badges,
+    'charts': Evol.ViewMany.Charts,
+    // --- Action ---
+    'filter': Evol.ViewAction.Filter,
+    'export': Evol.ViewAction.Export
+    //'uimodel': Evol.ViewAction.UI_Model,
+    //'doc': Evol.ViewAction.Doc
+};
+
 // toolbar widget which also acts as a controller for all views "one" and "many" as well as actions
-Evol.ViewToolbar = Backbone.View.extend({
+Evol.ViewToolbar = function() {
+
+    var eUI = Evol.UI,
+        i18n = Evol.i18n;
+
+return Backbone.View.extend({
 
     events: {
         'click .nav a': 'click_toolbar',
@@ -60,34 +82,31 @@ Evol.ViewToolbar = Backbone.View.extend({
         //this._group=false;
     },
 
-	render: function() {
-		this.$el.html(this._toolbarHTML());
-		this.setView(this.defaultView || 'list', false);
+    render: function() {
+        this.$el.html(this._toolbarHTML());
+        this.setView(this.defaultView || 'list', false);
         //this.$('[data-toggle="tooltip"]').tooltip();
         this.$('.dropdown-toggle').dropdown();
-        // TODO remove test below
-        //this.mId=this.uiModel.id;
         return this;
-	},
+    },
 
     _toolbarHTML: function(){
         var h=[],
             that=this,
-            i18n=Evol.i18n,
-            eui=Evol.UI.menu,
+            eUIm=eUI.menu,
             endMenu='</ul></li>',
             menuDevider='<li class="divider" data-cardi="1"></li>',
             menuDeviderH='<li class="divider-h"></li>';
 
         function linkOpt2h (id, label, icon, cardi){
             if(that.buttons[id]){
-                h.push(eui.hItem(id, label, icon, cardi));
+                h.push(eUIm.hItem(id, label, icon, cardi));
             }
         }
 
         h.push('<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-id="main">');
-        linkOpt2h('list','','th-list'); // linkOpt2h('list',Evol.i18n.bAll,'th-list');
-        linkOpt2h('new','','plus'); // linkOpt2h('new',Evol.i18n.bNew,'plus');
+        linkOpt2h('list','','th-list','x'); // linkOpt2h('list',i18n.bAll,'th-list');
+        linkOpt2h('new','','plus'); // linkOpt2h('new',i18n.bNew,'plus');
         h.push(menuDeviderH);
         linkOpt2h('edit',i18n.bEdit,'pencil','1');
         linkOpt2h('save',i18n.bSave,'floppy-disk','1');
@@ -100,11 +119,11 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(this.toolbar){
             h.push('</ul><ul class="nav nav-pills pull-right" data-id="views">',
                 '<li class="evo-tb-status" data-cardi="n"></li>',
-                eui.hItem('prev','','chevron-left','x'),
-                eui.hItem('next','','chevron-right','x')
+                eUIm.hItem('prev','','chevron-left','x'),
+                eUIm.hItem('next','','chevron-right','x')
             );
 
-            h.push(eui.hBegin('views','li','eye-open'));
+            h.push(eUIm.hBegin('views','li','eye-open'));
             linkOpt2h('view','View','file','1');
             linkOpt2h('edit','Edit','th','1'); // All Fields
             linkOpt2h('mini','Mini','th-large','1'); // Important Fields only
@@ -114,29 +133,29 @@ Evol.ViewToolbar = Backbone.View.extend({
             linkOpt2h('list','List','th-list','x');
             linkOpt2h('badges','Badges','th-large','x');
             linkOpt2h('charts','Charts','stats','x');
-            h.push(eui.hEnd('li'));
+            h.push(eUIm.hEnd('li'));
 
             //linkOpt2h('customize','','wrench', '1', 'Customize');
             /*
-            if(this.buttons.customize){
-                h.push(beginMenu('cust','wrench'));
-                link2h('customize','Customize this view','wrench');
-                h.push(menuDevider);
-                link2h('new-field','New Field','plus');
-                link2h('new-panel','New Panel','plus');
-                h.push(endMenu);
-            } */
+             if(this.buttons.customize){
+                 h.push(beginMenu('cust','wrench'));
+                 link2h('customize','Customize this view','wrench');
+                 h.push(menuDevider);
+                 link2h('new-field','New Field','plus');
+                 link2h('new-panel','New Panel','plus');
+                 h.push(endMenu);
+             } */
         }
-        h.push('</ul>',Evol.UI.html.clearer,'</div>');
+        h.push('</ul>',eUI.html.clearer,'</div>');
         return h.join('');
     },
 
-	refresh:function(){
+    refresh:function(){
         if(this.curView && this.curView.cardinality && this.curView.cardinality==='n'){
             this.curView.render();
         }
         return this;
-	},
+    },
 
     isDirty:function(){
         // -- true if current view had unsaved values
@@ -222,7 +241,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     case 'charts':
                     case 'badges':
                     case 'list':
-                        vw = new Evol.Dico.viewTypes[viewName](config)
+                        vw = new Evol.viewClasses[viewName](config)
                             .render();
                         this._prevViewMany=viewName;
                         vw.setTitle();
@@ -246,7 +265,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                             vwPrev = vw;
                             cData=vw.getData();
                         }
-                        vw = new Evol.Dico.viewTypes[viewName](config).render();
+                        vw = new Evol.viewClasses[viewName](config).render();
                         this._prevViewOne=viewName;
                         //this._keepTab(viewName);
                         break;
@@ -287,7 +306,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         }
     },
 
-	setView:function(viewName, updateRoute, skipIcons){
+    setView:function(viewName, updateRoute, skipIcons){
         var that=this;
         this.proceedIfReady(function(){
             that._setView(viewName, updateRoute, skipIcons);
@@ -311,9 +330,9 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     proceedIfReady:function(cbOK, cbCancel){
-    // -- execute callback if not dirty or after prompt...
+        // -- execute callback if not dirty or after prompt...
         var that=this,
-            i18n=Evol.i18n,
+            i18n=i18n,
             msg,
             cbs;
         if(this.isDirty()){
@@ -331,15 +350,15 @@ Evol.ViewToolbar = Backbone.View.extend({
             if(cbCancel){
                 cbs.cancel = cbCancel;
             }
-            Evol.UI.modal.confirm(
+            eUI.modal.confirm(
                 'isDirty',
                 i18n.unSavedTitle,
                 msg,
                 cbs,
                 [
-                    {id:'nosave', text:Evol.i18n.bNoSave, class:'btn-default'},
-                    {id:'cancel', text:Evol.i18n.bCancel, class:'btn-default'},
-                    {id:'ok', text:Evol.i18n.bSave, class:'btn-primary'}
+                    {id:'nosave', text:i18n.bNoSave, class:'btn-default'},
+                    {id:'cancel', text:i18n.bCancel, class:'btn-default'},
+                    {id:'ok', text:i18n.bSave, class:'btn-primary'}
                 ]
             );
         }else{
@@ -349,11 +368,11 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     /*
-    _keepTab: function(viewName){
-        if(this.tabId && (viewName=='view'||viewName=='edit')){
-            this.curView.setTab(this.tabId);
-        }
-    },*/
+     _keepTab: function(viewName){
+     if(this.tabId && (viewName=='view'||viewName=='edit')){
+     this.curView.setTab(this.tabId);
+     }
+     },*/
 
     getToolbarButtons: function(){
         if(!this._toolbarButtons){
@@ -376,7 +395,7 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     setIcons: function(mode){
-        var setVisible=Evol.UI.setVisible;
+        var setVisible=eUI.setVisible;
 
         function oneMany(mode, showOne, showMany){
             setVisible(tbBs.ones, showOne);
@@ -385,8 +404,8 @@ Evol.ViewToolbar = Backbone.View.extend({
             tbBs.views.find('[data-id="'+mode+'"]>a').css('color', '#428bca');
         }
 
-		if(this.$el){
-			var tbBs=this.getToolbarButtons();
+        if(this.$el){
+            var tbBs=this.getToolbarButtons();
             //setVisible(tbBs.customize, mode!='json');
             tbBs.prevNext.hide();//.removeClass('nav-disabled');
             setVisible(tbBs.views, !(mode==='export' || mode=='new'));
@@ -408,17 +427,17 @@ Evol.ViewToolbar = Backbone.View.extend({
                         pSize=this.curView.pageSize;
                     if(cSize > pSize){
                         tbBs.prevNext.show();/*
-                        // TODO finish disabling of paging buttons
-                        if(this.curView.pageIndex===0){
-                            tbBs.prevNext.eq(0).addClass('nav-disabled');
-                        }else{
-                            tbBs.prevNext.eq(0).removeClass('nav-disabled');
-                        }
-                        if(this.collection.length/this.pageSize){
-                            tbBs.prevNext.eq(1).addClass('nav-disabled');
-                        }else{
-                            tbBs.prevNext.eq(1).removeClass('nav-disabled');
-                        }*/
+                         // TODO finish disabling of paging buttons
+                         if(this.curView.pageIndex===0){
+                         tbBs.prevNext.eq(0).addClass('nav-disabled');
+                         }else{
+                         tbBs.prevNext.eq(0).removeClass('nav-disabled');
+                         }
+                         if(this.collection.length/this.pageSize){
+                         tbBs.prevNext.eq(1).addClass('nav-disabled');
+                         }else{
+                         tbBs.prevNext.eq(1).removeClass('nav-disabled');
+                         }*/
                     }
                 }
             }else if((this.model && this.model.isNew()) || mode==='new' || mode==='export'){
@@ -426,7 +445,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 tbBs.del.hide();
                 tbBs.views.hide();
                 setVisible(tbBs.save, mode!=='export');
-			}else{
+            }else{
                 this._prevViewOne=mode;
                 oneMany(mode, true, false);
                 tbBs.prevNext.show();
@@ -434,14 +453,14 @@ Evol.ViewToolbar = Backbone.View.extend({
                 setVisible(tbBs.edit, mode==='view');
             }
             setVisible(tbBs.manys.filter('[data-id="group"]'), mode==='badges');
-		}
-	},
+        }
+    },
 
     showFilter: function( orCreate){
         if(!this._filters){
             if(orCreate){
                 var that=this,
-                    $ff=$(Evol.UI.HTMLEmptyPanel('filters', 'evo-filters', 'info'));
+                    $ff=$(eUI.HTMLEmptyPanel('filters', 'evo-filters', 'info'));
                 this.$('.evo-toolbar').after($ff);
                 this._filters = new Evol.ViewAction.Filter({
                     el: $ff,
@@ -486,30 +505,30 @@ Evol.ViewToolbar = Backbone.View.extend({
     },
 
     /*
-    showGroup: function(){
-        this._group = true;
-        this.curView.showGroup();
-        return this;
-    },*/
+     showGroup: function(){
+         this._group = true;
+         this.curView.showGroup();
+         return this;
+     },*/
 
     setStatus: function(msg){
         var $e=this.$('.evo-toolbar .evo-tb-status');
         $e.html(msg);
     },
 
-	setData: function(data){
-		if(this.curView){
-			this.curView.setData(data);
-		}
-		return this;
-	},
+    setData: function(data){
+        if(this.curView){
+            this.curView.setData(data);
+        }
+        return this;
+    },
 
-	getData: function(skipReadOnlyFields){
-		if(this.curView){
-			return this.curView.getData(skipReadOnlyFields);
-		}
-		return null;
-	},
+    getData: function(skipReadOnlyFields){
+        if(this.curView){
+            return this.curView.getData(skipReadOnlyFields);
+        }
+        return null;
+    },
 
     setModelById: function(id){
         var m=this.collection.get(id);
@@ -548,8 +567,8 @@ Evol.ViewToolbar = Backbone.View.extend({
         if(cModel){
             this.setRoute(cModel?cModel.id:null, false);
         }else{
-            //Evol.UI.modal.alert(Evol.i18n.notFound, Evol.i18n.getLabel('notFoundMsg', this.uiModel.entity));
-            this.setMessage(Evol.i18n.notFound, Evol.i18n.getLabel('notFoundMsg', this.uiModel.entity));
+            //eUI.modal.alert(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity));
+            this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity));
         }
         return this
             .clearMessage();
@@ -577,7 +596,10 @@ Evol.ViewToolbar = Backbone.View.extend({
                 }
                 that.setIcons('edit');
                 vw.setModel(m);
-                that._trigger('item.saved', {model:m});
+                that._trigger('item.saved', {
+                    model:m,
+                    uiModel:that.uiModel
+                });
             }
             vw.setTitle();
         }
@@ -590,7 +612,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                     collec.create(this.getData(true), {
                         success: function(m){
                             fnSuccess(m);
-                            that.setMessage(Evol.i18n.getLabel('saved', Evol.UI.capitalize(entityName)), Evol.i18n.getLabel('status.added', entityName, _.escape(vw.getTitle())), 'success');
+                            that.setMessage(i18n.getLabel('saved', eUI.capitalize(entityName)), i18n.getLabel('status.added', entityName, _.escape(vw.getTitle())), 'success');
                         },
                         error:function(m, err){
                             alert('error in "saveItem"');
@@ -606,7 +628,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.model.save('','',{
                     success: function(m){
                         fnSuccess(m);
-                        that.setMessage(Evol.i18n.getLabel('saved', Evol.UI.capitalize(entityName)), Evol.i18n.getLabel('status.updated', Evol.UI.capitalize(entityName), _.escape(vw.getTitle())), 'success');
+                        that.setMessage(i18n.getLabel('saved', eUI.capitalize(entityName)), i18n.getLabel('status.updated', eUI.capitalize(entityName), _.escape(vw.getTitle())), 'success');
                     },
                     error:function(m, err){
                         alert('error in "saveItem"');
@@ -616,7 +638,7 @@ Evol.ViewToolbar = Backbone.View.extend({
         }else{
             if (msgs.length > 0) {
                 var msg = ['<ul><li>', msgs.join('</li><li>'), '</li></ul>'].join(''); // i18nVal.intro,
-                this.setMessage(Evol.i18n.validation.incomplete, msg, 'warning');
+                this.setMessage(i18n.validation.incomplete, msg, 'warning');
             }
         }
         return this;
@@ -632,19 +654,18 @@ Evol.ViewToolbar = Backbone.View.extend({
             }
         }
         return this.curView.setDefaults() //.clear()
-            .setTitle(Evol.i18n.getLabel('NewEntity', this.uiModel.entity, vw.getTitle()));
+            .setTitle(i18n.getLabel('NewEntity', this.uiModel.entity, vw.getTitle()));
     },
 
     deleteItem: function(){
         var that=this,
-            i18n=Evol.i18n,
             entityName=this.uiModel.entity,
             entityValue=this.curView.getTitle();
 
         if(this.curView.cardinality==='1'){
             var delModel=this.curView.model;
             if(delModel){
-                Evol.UI.modal.confirm(
+                eUI.modal.confirm(
                     'delete',
                     i18n.getLabel('deleteX', entityName),
                     i18n.getLabel('delete1', entityName, _.escape(entityValue)),
@@ -676,7 +697,7 @@ Evol.ViewToolbar = Backbone.View.extend({
                                         that.model = newModel;
                                         that.curView.setModel(newModel);
                                     }
-                                    var eName=Evol.UI.capitalize(entityName);
+                                    var eName=eUI.capitalize(entityName);
                                     that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('status.deleted', eName, entityValue), 'success');
                                     that._trigger('item.deleted');
                                 },
@@ -709,7 +730,7 @@ Evol.ViewToolbar = Backbone.View.extend({
             $msg.find('>span').eq(0).html(content); //TODO text ?
             $msg.show();
         }else{
-            $(Evol.UI.HTMLMsg(title, ' '+content, style)).insertAfter(this.$el.children()[0]);
+            $(eUI.HTMLMsg(title, ' '+content, style)).insertAfter(this.$el.children()[0]);
         }
         return this;
     },
@@ -740,10 +761,10 @@ Evol.ViewToolbar = Backbone.View.extend({
                 this.setView(actionId, true);
                 break;
             case 'export':
-                Evol.UI.modal.alert(
+                eUI.modal.alert(
                     'This feature must be implemented server side.',
                     JSON.stringify(this.curView.val(), null, 2)
-                    //Evol.UI.cr2br(JSON.stringify(this.curView.val(), null, 2))
+                    //eUI.cr2br(JSON.stringify(this.curView.val(), null, 2))
                 );
                 break;
             case 'save':
@@ -817,16 +838,16 @@ Evol.ViewToolbar = Backbone.View.extend({
             }
         }
     },
-/*
-    _ok2go: function(){
-        if(this.curView && this.curView.editable && this.curView.isDirty && this.curView.isDirty()){
-            if(confirm(Evol.i18n.unSavedChanges)){
-                return true;
-            }
-            return false;
-        }
-        return true;
-    },*/
+    /*
+     _ok2go: function(){
+     if(this.curView && this.curView.editable && this.curView.isDirty && this.curView.isDirty()){
+     if(confirm(i18n.unSavedChanges)){
+     return true;
+     }
+     return false;
+     }
+     return true;
+     },*/
 
     click_toolbar: function(evt, ui){
         var $e=$(evt.currentTarget);
@@ -857,16 +878,16 @@ Evol.ViewToolbar = Backbone.View.extend({
                     this.paginate(toolId);
                 }
                 break;/*
-            case 'customize':
-                this.curView.customize();
-                break;
-            case 'group':
-                this.showGroup();
-                break;
-            case 'new-field':
-            case 'new-panel':
-                Evol.Dico.showDesigner('', toolId.substr(4), $e);
-                break;*/
+             case 'customize':
+                 this.curView.customize();
+                 break;
+             case 'group':
+                 this.showGroup();
+                 break;
+             case 'new-field':
+             case 'new-panel':
+                 Evol.Dico.showDesigner('', toolId.substr(4), $e);
+                 break;*/
             default:// 'edit', 'mini', 'list', 'badges', 'export', 'json', 'new'
                 if(toolId && toolId!==''){
                     this.setView(toolId, true);
@@ -915,17 +936,16 @@ Evol.ViewToolbar = Backbone.View.extend({
     /*
     click_selection: function(evt, ui){
         var status=this.$('.evo-toolbar .evo-tb-status'),
-            cbxs=this.$('.list-sel:checked').not('[data-id="cbxAll"]'),
-            l=cbxs.length,
+            len=this.$('.list-sel:checked').not('[data-id="cbxAll"]').length,
             tbBs=this.getToolbarButtons();
-        if(l>0){
-            this.setStatus(Evol.i18n.getLabel('selected', l));
+        if(len>0){
+            this.setStatus(i18n.getLabel('selected', len));
             tbBs.del.show();
         }else{
             this.setStatus('');
             tbBs.del.hide();
         }
-    }
-*/
+    } */
 });
 
+}();

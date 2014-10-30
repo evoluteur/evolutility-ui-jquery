@@ -24,8 +24,8 @@ var uiFieldTypes=[
 ];
 
 var uiModels=uiModels||{};
-uiModels.field = {
-    id:'field',
+uiModels.fieldmini = {
+    id:'fieldmini',
     icon: "edi_fld.png",
     entity: "field",
     entities: "fields",
@@ -215,6 +215,7 @@ uiModels.field = {
                         },
                         {
                             id:'height',
+                            attribute:'height',
                             label: "Height",
                             help: "Height in number of lines (for ''Textmultiline'' fields)",
                             type: "integer",

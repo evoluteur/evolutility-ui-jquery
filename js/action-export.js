@@ -7,9 +7,56 @@
  *
  *************************************************************************** */
 
-var i18nXpt = Evol.i18n.export;
+Evol.ViewAction.Export = function(){
 
-Evol.ViewAction.Export = Backbone.View.extend({
+    var eUI = Evol.UI,
+        eDico = Evol.Dico,
+        uiInput = eUI.input,
+        i18n = Evol.i18n,
+        i18nXpt = i18n.export;
+
+    var EvoExport = {
+
+        optEntityName: function(id,label,entity){
+            return [
+                eUI.fieldLabel(id, label),
+                uiInput.text(id, entity.replace(/ /g, '_'), 30),'<br>'
+            ].join('');
+        },
+
+        optsXML: function(entity){
+            return [
+                this.html_more2(i18nXpt.options),
+                this.optEntityName('elementName', i18nXpt.XMLroot, entity),
+                '</div>'
+            ].join('');
+        },
+
+        optsSQL: function(entity){
+            return [
+                this.html_more2(i18nXpt.options),
+                this.optEntityName('table', i18nXpt.SQLTable, entity),
+                '<div>', uiInput.checkbox('insertId', '0'), eUI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert), '</div>',
+                '<div>', uiInput.checkbox('transaction', '0'), eUI.fieldLabelSpan('transaction', i18nXpt.SQLTrans), '</div>',
+                '</div>'
+            ].join('');
+        },
+
+        optsHTML: function(){
+            return '';
+        },
+
+        optsJSON: function(){
+            return '';
+        },
+
+        html_more2: function (label) {
+            return '<a href="javascript:void(0)" class="evol-xpt-more">' + label + '</a><div style="display:none;">';
+        }
+
+    };
+
+return Backbone.View.extend({
 
     viewName: 'export',
     cardinality: 'n',
@@ -43,7 +90,6 @@ Evol.ViewAction.Export = Backbone.View.extend({
     _renderHTML: function () {
         var h = [],
             formats = this.formats,
-            EvoUI = Evol.UI,
             fields = this.getFields(),
             iMax = fields.length,
             useMore = iMax > 14;
@@ -79,19 +125,19 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     };
                 });
         h.push('<label for="', fId, '">', i18nXpt.format, '</label>');
-        h.push(EvoUI.input.select(fId, '', 'evol-xpt-format', false, formatsList));
+        h.push(uiInput.select(fId, '', 'evol-xpt-format', false, formatsList));
         fId = 'xptFLH';
         h.push('<div class="evol-xpt-opts">',
             //# field (shared b/w formats - header #######
             '<div class="evol-FLH clearfix">',
-            '<label>', EvoUI.input.checkbox(fId, true), i18nXpt.firstLine, '</label>',
+            '<label>', uiInput.checkbox(fId, true), i18nXpt.firstLine, '</label>',
             //##### CSV, TAB - First line for field names #######
             '</div><div id="xptCSV">',
             //# field - separator
             //# - csv - any separator #######
             '<div data-id="csv2" class="evol-w120">',
-            EvoUI.fieldLabel('separator', i18nXpt.separator),
-            EvoUI.input.text('separator', ',', '0'),
+            eUI.fieldLabel('separator', i18nXpt.separator),
+            uiInput.text('separator', ',', '0'),
             '</div>', // </div>
         '</div>');
         _.each(formats, function(f){
@@ -105,8 +151,8 @@ Evol.ViewAction.Export = Backbone.View.extend({
             '</div></div></div></div>',
             // ## Download button
             '<div class="evol-buttons form-actions">',
-                EvoUI.button('cancel', Evol.i18n.bCancel, 'btn-default'),
-                EvoUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary'),
+                eUI.button('cancel', i18n.bCancel, 'btn-default'),
+                eUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary'),
             '</div>'
         );
         return h.join('');
@@ -143,14 +189,14 @@ Evol.ViewAction.Export = Backbone.View.extend({
 
     getFields: function (){
         if(!this.fields){
-            this.fields=Evol.Dico.getFields(this.uiModel);
+            this.fields=eDico.getFields(this.uiModel);
         }
         return this.fields;
     },
 
     getTitle: function(){
         var keyEnd=this.many?'ies':'y';
-        return Evol.i18n.getLabel('export.ExportEntit'+keyEnd, this.uiModel['entit'+keyEnd]);
+        return i18n.getLabel('export.ExportEntit'+keyEnd, this.uiModel['entit'+keyEnd]);
     },
 
     _preview: function (format) {
@@ -166,7 +212,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
     },
 
     _exportContent: function(h, format){
-        var fTypes = Evol.Dico.fieldTypes,
+        var fTypes = eDico.fieldTypes,
             maxItem = this.sampleMaxSize-1;
 
         if(this.model && this.model.collection){
@@ -197,7 +243,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     if(format=='TAB'){
                         sep='&#09;';
                     }
-                    //header
+                    // -- header
                     if (useHeader) {
                         _.each(flds, function(f, idx){
                             h.push(f.label);
@@ -207,7 +253,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                         });
                         h.push('\n');
                     }
-                    //data
+                    // -- data
                     _.every(data, function(m, idx){
                         _.each(flds, function(f, idx){
                             var mv = m.get(f.id);
@@ -231,7 +277,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     h.push('\n');
                     break;
                 case 'HTML':
-                    //header
+                    // -- header
                     h.push('<table>\n');
                     if (useHeader) {
                         h.push('<tr>\n');
@@ -240,7 +286,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                         });
                         h.push('</tr>\n');
                     }
-                    //data
+                    // -- data
                     _.every(data, function(d, idx){
                         h.push('<tr>');
                         _.each(flds, function(f){
@@ -282,14 +328,14 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     });
                     sql.push(')\n VALUES (');
                     sql = sql.join('');
-                    //options
+                    // -- options
                     if(optTransaction){
                         h.push('BEGIN TRANSACTION\n');
                     }
                     if(optIdInsert){
                         h.push('SET IDENTITY_INSERT ', sqlTable, ' ON;\n');
                     }
-                    //data
+                    // -- data
                     var fValue;
                     _.every(data, function(m, idx){
                         h.push(sql);
@@ -317,7 +363,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                                     if(_.isUndefined(fValue) || fValue===''|| (_.isArray(fValue) && fValue.length===0)){
                                         h.push('NULL');
                                     }else{
-                                        h.push('"', Evol.Dico.HTMLField4Many(f, fValue, Evol.hashLov, '').replace(/"/g, '""'), '"');
+                                        h.push('"', eDico.HTMLField4Many(f, fValue, Evol.hashLov, '').replace(/"/g, '""'), '"');
                                     }
                                     break;
                                 default:
@@ -334,7 +380,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                         h.push(');\n');
                         return idx<maxItem;
                     });
-                    //options
+                    // -- options
                     if(optIdInsert){
                         h.push('SET IDENTITY_INSERT ', sqlTable, ' OFF;\n');
                     }
@@ -367,7 +413,7 @@ Evol.ViewAction.Export = Backbone.View.extend({
                     break;
             }
         }else{
-            h.push(Evol.i18n.nodata);
+            h.push(i18n.nodata);
         }
     },
 
@@ -454,44 +500,4 @@ Evol.ViewAction.Export = Backbone.View.extend({
     }
 });
 
-
-var EvoExport = {
-
-    optEntityName: function(id,label,entity){
-        return [
-            Evol.UI.fieldLabel(id, label),
-            Evol.UI.input.text(id, entity.replace(/ /g, '_'), 30),'<br>'
-        ].join('');
-    },
-
-    optsXML: function(entity){
-        return [
-            this.html_more2(i18nXpt.options),
-            this.optEntityName('elementName', i18nXpt.XMLroot, entity),
-            '</div>'
-        ].join('');
-    },
-
-    optsSQL: function(entity){
-        return [
-            this.html_more2(i18nXpt.options),
-            this.optEntityName('table', i18nXpt.SQLTable, entity),
-            '<div>', Evol.UI.input.checkbox('insertId', '0'), Evol.UI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert), '</div>',
-            '<div>', Evol.UI.input.checkbox('transaction', '0'), Evol.UI.fieldLabelSpan('transaction', i18nXpt.SQLTrans), '</div>',
-            '</div>'
-           ].join('');
-    },
-
-    optsHTML: function(){
-        return '';
-    },
-
-    optsJSON: function(){
-        return '';
-    },
-
-    html_more2: function (label) {
-        return '<a href="javascript:void(0)" class="evol-xpt-more">' + label + '</a><div style="display:none;">';
-    }
-
-};
+}();
