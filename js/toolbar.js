@@ -489,14 +489,7 @@ return Backbone.View.extend({
     },
 
     _flagFilterIcon: function(fOn){
-        var css = 'evo-filter-on', //'active',
-            $fIco=this.$('a[data-id="filter"]');
-
-        if(fOn){
-            $fIco.addClass(css);
-        }else{
-            $fIco.removeClass(css);
-        }
+        eUI.addRemClass(this.$('a[data-id="filter"]'), fOn, 'evo-filter-on');
     },
 
     toggleFilter: function(){
@@ -805,17 +798,8 @@ return Backbone.View.extend({
             pIdx=this.pageIndex||0,
             $item=this.$('[data-id="prev"]');
 
-        if(pIdx===0){
-            $item.addClass(cssDisabled);
-        }else{
-            $item.removeClass(cssDisabled);
-        }
-        $item=$item.next();
-        if((pIdx+1)*this.pageSize<cl){
-            $item.removeClass(cssDisabled);
-        }else{
-            $item.addClass(cssDisabled);
-        }
+        eUI.addRemClass($item, pIdx===0, cssDisabled);
+        eUI.addRemClass($item.next(), (pIdx+1)*this.pageSize<cl, cssDisabled);
     },
 
     _enableNav: function(){

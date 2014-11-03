@@ -9,7 +9,12 @@
  *
  *************************************************************************** */
 
-Evol.ViewOne.Wizard = Evol.ViewOne.extend({
+Evol.ViewOne.Wizard = function(){
+
+    var eUI = Evol.UI,
+        i18n = Evol.i18n;
+
+return Evol.ViewOne.extend({
 
     viewName: 'wizard',
     prefix: 'wiz',
@@ -45,11 +50,7 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
             }
         }
         var bs=this._getButtons();
-        if(this._stepIdx===0){
-            bs.prev.addClass('disabled');
-        }else{
-            bs.prev.removeClass('disabled');
-        }
+        eUI.addRemClass(bs.prev, this._stepIdx===0, 'disabled');
         if(this._stepIdx===this._nbStep-1){
             bs.next.hide();
             bs.finish.show();
@@ -109,12 +110,12 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
     },
 
     _renderButtons: function (h) {
-        var b=Evol.UI.button;
-        h.push(Evol.UI.html.clearer,
+        var b=eUI.button;
+        h.push(eUI.html.clearer,
             '<div class="evo-wiz-buttons">',
-            b('prev', Evol.i18n.prev, 'btn-default disabled'),
-            b('next', Evol.i18n.next, 'btn-primary'),
-            b('finish', Evol.i18n.finish, 'btn-default'),
+            b('prev', i18n.prev, 'btn-default disabled'),
+            b('next', i18n.next, 'btn-primary'),
+            b('finish', i18n.finish, 'btn-default'),
             '</div>');
         return this;
     },
@@ -128,7 +129,7 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
                 //TODO what? got ot OneView.View
                 this.$el.trigger('action', 'save');
             }else{
-                this.sendMessage(Evol.i18n.validation.incomplete, v, 'warning');
+                this.sendMessage(i18n.validation.incomplete, v, 'warning');
             }
         }else{
             var stepIdx=parseInt(bId,10);
@@ -165,3 +166,5 @@ Evol.ViewOne.Wizard = Evol.ViewOne.extend({
     }
 
 });
+
+}();

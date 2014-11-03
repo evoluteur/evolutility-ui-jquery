@@ -473,6 +473,14 @@ Evol.UI = {
 
     cr2br: function(v){
         return v.replace(/[\r\n]/g, '<br>');
-    }
+    },
 
+    addRemClass: function ($e, doAdd, css) {
+        if(doAdd){
+            $e.addClass(css);
+        }else{
+            $e.removeClass(css);
+        }
+        return doAdd;
+    }
 };

@@ -42,12 +42,7 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
             $fp=this._getDOMField().parent();
 
         //this.clearMessages();
-        if(data===null){
-            isValid=false;
-            $fp.addClass('has-error');
-        }else{
-            $fp.removeClass('has-error');
-        }
+        isValid=!Evol.UI.addRemClass($fp, data===null, 'has-error');
         this.$el.trigger('action', 'validate', {valid:isValid});
         return isValid?[]:[Evol.i18n.validation.invalid];
     },

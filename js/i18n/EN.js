@@ -31,7 +31,7 @@ Evol.i18n = {
     // Login:'Login',
     bNew:'New',
     NewEntity:'New {0}', //'New Item',
-    NewUpload:'New Upload',
+    //NewUpload:'New Upload',
     //Search:'Search',
     //AdvSearch:'Advanced Search',
     //NewSearch:'New Search',
