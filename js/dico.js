@@ -51,8 +51,7 @@ return {
         },
         money: function (h, f, fid, fv) {
             h.push('<div class="input-group">', uiInput.typeFlag('$'),
-                uiInput.textInt(fid, fv),
-                '</div>');
+                uiInput.textInt(fid, fv), '</div>');
         },
         date: function (h, f, fid, fv) {
             h.push(uiInput.date(fid, fv));
@@ -100,35 +99,35 @@ return {
     // -- list of operator and function for filters
     fieldConditions: {
         // filter functions take parameters fv=fieldValue, cv=condition value, cv2
-        // equals
+        // -- equals
         'eq': function(fv, cv){
             return cv==fv;
         },
-        // not equal
+        // -- not equal
         'ne': function(fv, cv){
             return cv!=fv;
         },
-        // > or after
+        // -- > or after
         'gt': function(fv, cv){
             return fv>cv;
         },
-        // < or before
+        // -- < or before
         'lt': function(fv, cv){
             return fv<cv;
         },
-        // between
+        // -- between
         'bw': function(fv, cv, cv2){
             return !(cv>fv || fv>cv2);
         },
-        // start w/
+        // -- start w/
         'sw': function(fv, cv){
             return fv.toLocaleLowerCase().indexOf(cv)===0;
         },
-        // contains
+        // -- contains
         'ct': function(fv, cv){
             return fv.toLocaleLowerCase().indexOf(cv)>-1;
         },
-        // finish w/
+        // -- finish w/
         'fw': function(fv, cv){
             var l1=fv.length,
                 l2=cv.length;
@@ -138,23 +137,23 @@ return {
                 return fv.toLocaleLowerCase().substring(l1-l2)===cv;
             }
         },
-        // empty
+        // -- empty
         'null': function(fv, cv){
             return  fv=='' || _.isUndefined(fv);
         },
-        // not null
+        // -- not null
         'nn': function(fv, cv){
             return !(_.isUndefined(fv) || fv=='');
         },
-        // in []
+        // -- in []
         'in': function(fv, cv){
             return  _.contains(cv.split(','),fv);
         },
-        // true
+        // -- true
         '1': function(fv, cv){
             return fv;
         },
-        // false
+        // -- false
         '0': function(fv, cv){
             return !fv;
         }
@@ -468,7 +467,7 @@ return {
         if(!noLink){
             h.push('<a href="', route?route:'javascript:void(0);', '" id="', id, '" class="evol-nav-id">');
         }
-        if (icon) {
+        if(icon){
             h.push('<img class="evol-many-icon" src="', icon, '">');
         }/*
          if(_.isUndefined(value) || value===''){
@@ -481,14 +480,14 @@ return {
         return h.join('');
     },
 
-    bbComparator:  function(fid){
+    bbComparator: function(fid){
         return function(modelA) {
             return modelA.get(fid);
         };
     },
 
     bbComparatorText: function(fid){
-        return function(modelA,modelB) {
+        return function(modelA, modelB) {
             return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
         };
     },

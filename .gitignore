@@ -3,7 +3,7 @@ bower_components
 js/vendors.js
 dist/vendors.js
 js/models
-js/widgets
+js/ui-models/chinook
 *.xml
 *-nogit
 *-nogit.*

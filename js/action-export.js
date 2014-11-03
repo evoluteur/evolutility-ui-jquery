@@ -11,6 +11,7 @@ Evol.ViewAction.Export = function(){
 
     var eUI = Evol.UI,
         eDico = Evol.Dico,
+        fts = eDico.fieldTypes,
         uiInput = eUI.input,
         i18n = Evol.i18n,
         i18nXpt = i18n.export;
@@ -18,10 +19,9 @@ Evol.ViewAction.Export = function(){
     var EvoExport = {
 
         optEntityName: function(id,label,entity){
-            return [
-                eUI.fieldLabel(id, label),
-                uiInput.text(id, entity.replace(/ /g, '_'), 30),'<br>'
-            ].join('');
+            return eUI.fieldLabel(id, label) +
+                uiInput.text(id, entity.replace(/ /g, '_'), 30) +
+                '<br>';
         },
 
         optsXML: function(entity){
@@ -147,7 +147,7 @@ return Backbone.View.extend({
             //# Preview #######
             '<label>',i18nXpt.preview,'</label><div class="evol-xpt-preview">',
             // ## Samples
-            '<textarea class="Field evol-xpt-val form-control"></textarea>',
+            '<textarea class="evol-xpt-val form-control"></textarea>',
             '</div></div></div></div>',
             // ## Download button
             '<div class="evol-buttons form-actions">',
@@ -159,7 +159,7 @@ return Backbone.View.extend({
     },
 
     setModel: function(model){
-        this.model=model;
+        this.model = model;
     },
 
     showFormatOpts: function (xFormat) {
@@ -181,10 +181,10 @@ return Backbone.View.extend({
                 }
                 break;
         }
-        var divOpts=this.$('#xpt' + xFormat).show()
+        var divOpts = this.$('#xpt' + xFormat).show()
             .siblings().hide();
-        var $e1=divOpts.filter('.evol-FLH');
-        Evol.UI.setVisible($e1, xFormat==='TAB' || xFormat==='CSV' || xFormat==='HTML');
+        var $e1 = divOpts.filter('.evol-FLH');
+        eUI.setVisible($e1, xFormat==='TAB' || xFormat==='CSV' || xFormat==='HTML');
     },
 
     getFields: function (){
@@ -212,8 +212,7 @@ return Backbone.View.extend({
     },
 
     _exportContent: function(h, format){
-        var fTypes = eDico.fieldTypes,
-            maxItem = this.sampleMaxSize-1;
+        var maxItem = this.sampleMaxSize-1;
 
         if(this.model && this.model.collection){
             var data = this.model.collection.models,
@@ -239,7 +238,7 @@ return Backbone.View.extend({
                 case 'CSV':
                 case 'TAB':
                 case 'TXT':
-                    var sep = Evol.UI.trim(this.$('#separator').val());
+                    var sep = eUI.trim(this.$('#separator').val());
                     if(format=='TAB'){
                         sep='&#09;';
                     }
@@ -258,10 +257,10 @@ return Backbone.View.extend({
                         _.each(flds, function(f, idx){
                             var mv = m.get(f.id);
                             if (mv) {
-                                if(f.type===fTypes.bool){
+                                if(f.type===fts.bool){
                                     h.push(mv);
                                     //}else if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
-                                }else if((f.type==fTypes.text || f.type==fTypes.textml) && (mv.indexOf(',')>-1)){ // || f.type==fTypes.list
+                                }else if((f.type==fts.text || f.type==fts.textml) && (mv.indexOf(',')>-1)){ // || f.type==fts.list
                                     h.push('"', mv.replace('"', '\\"'), '"');
                                 }else{
                                     h.push(mv);
@@ -315,7 +314,7 @@ return Backbone.View.extend({
                     var optTransaction = this.$('#transaction').prop('checked'),
                         optIdInsert = this.$('#insertId').prop('checked'),
                         sqlTable = this.$('#table').val().replace(/ /g,'_'),
-                        sql = ['INSERT INTO ',sqlTable,' ('];
+                        sql = ['INSERT INTO ', sqlTable, ' ('];
 
                     if(sqlTable===''){
                         sqlTable = this.uiModel.entity.replace(/ /g,'_');
@@ -342,24 +341,24 @@ return Backbone.View.extend({
                         _.each(flds, function(f, idx){
                             fValue=m.get(f.id);
                             switch(f.type){
-                                case fTypes.int:
-                                case fTypes.dec:
-                                case fTypes.money:
+                                case fts.int:
+                                case fts.dec:
+                                case fts.money:
                                     h.push(fValue?fValue:'NULL');
                                     break;
-                                case fTypes.bool:
+                                case fts.bool:
                                     h.push((typeof fValue === 'boolean')?fValue:'NULL');
                                     break;
-                                case fTypes.date:
-                                case fTypes.datetime:
-                                case fTypes.time:
+                                case fts.date:
+                                case fts.datetime:
+                                case fts.time:
                                     if(_.isUndefined(fValue)||fValue===''){
                                         h.push('NULL');
                                     }else{
                                         h.push('"', fValue.replace(/"/g, '""'), '"');
                                     }
                                     break;
-                                case fTypes.list:
+                                case fts.list:
                                     if(_.isUndefined(fValue) || fValue===''|| (_.isArray(fValue) && fValue.length===0)){
                                         h.push('NULL');
                                     }else{
@@ -396,7 +395,7 @@ return Backbone.View.extend({
                         h.push('<', elemName, ' ');
                         _.each(flds, function(f){
                             h.push(f.id, '="');
-                            if(f.type===fTypes.text || f.type===fTypes.textml){
+                            if(f.type===fts.text || f.type===fts.textml){
                                 fv=m.get(f.id);
                                 if(!_.isUndefined(fv)){
                                     h.push(fv.replace(/"/g, '\\"'));

@@ -339,7 +339,6 @@ return Backbone.View.extend({
         _.each(this.getFields(), function (f) {
             $f = that.$field(f.id);
             defaultVal = f.defaultvalue || '';
-
             if(f.readonly){
                 $f.html(defaultVal);
             }else{
@@ -625,12 +624,14 @@ return Backbone.View.extend({
     },
 
     _renderPanelList: function (h, p, mode) {
-        var vMode=p.readonly?'view':mode;
-        h.push('<div style="width:', p.width, '%" class="evol-pnl pull-left" data-pid="', p.id,'">',
+        var isEditable = p.readonly?false:(mode!=='view'),
+            vMode=isEditable?mode:'view';
+
+        h.push('<div style="width:', p.width, '%" class="evol-pnl pull-left" data-pid="', p.id, '">',
             eUI.HTMLPanelBegin(p, this.style),
-            '<table class="table" data-mid="', (p.attribute || p.id),'"><thead><tr>');
+            '<table class="table" data-mid="', (p.attribute || p.id), '"><thead><tr>');
         _.each(p.elements, function (elem) {
-            h.push('<th>', elem.label, elem.required?eUI.html.required:'', '</th>');
+            h.push('<th>', elem.label, (isEditable && elem.required)?eUI.html.required:'', '</th>');
         });
         if(vMode==='edit'){
             h.push('<th></th>');
@@ -647,7 +648,7 @@ return Backbone.View.extend({
         var that=this,
             fs = uiPnl.elements,
             iconsPath=this.iconsPath || '',
-            editable=mode==='edit';
+            editable=mode==='edit' && !uiPnl.readonly;
 
         if(this.model){
             var vs = this.model.get(uiPnl.attribute);

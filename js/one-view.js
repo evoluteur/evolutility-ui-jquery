@@ -23,7 +23,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
     setData: function (model) {
         if(!_.isUndefined(model) && model!==null){
             var that=this,
-                fTypes = Evol.Dico.fieldTypes,
+                fts = Evol.Dico.fieldTypes,
                 HTMLField4Many = Evol.Dico.HTMLField4Many,
                 $f, fv,
                 prefix='#'+ that.prefix + '-',
@@ -38,17 +38,17 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                 }
                 if(model){
                     switch(f.type){
-                        case fTypes.lov:
-                        case fTypes.bool:
-                        case fTypes.email:
-                        case fTypes.url:
-                        case fTypes.html:
+                        case fts.lov:
+                        case fts.bool:
+                        case fts.email:
+                        case fts.url:
+                        case fts.html:
                             $f.html(HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
                             break;
-                        case fTypes.pix:
+                        case fts.pix:
                             $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
                             break;
-                        case fTypes.textml:
+                        case fts.textml:
                             if(fv){
                                 $f.html(_.escape(fv).replace(/[\r\n]/g, '<br>'));
                             }else{
@@ -75,7 +75,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
     clear: function () {
         var that=this,
             $f,
-            fTypes = Evol.Dico.fieldTypes,
+            fts = Evol.Dico.fieldTypes,
             prefix='#'+ that.prefix + '-',
             subCollecs=this.getSubCollecs();
 
@@ -83,10 +83,10 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
         _.each(this.getFields(), function (f) {
             $f=that.$(prefix + f.id);
             switch(f.type) {
-                case fTypes.bool:
+                case fts.bool:
                     $f.prop('checked', f.defaultvalue?'checked':false);
                     break;
-                case fTypes.pix:
+                case fts.pix:
                     // TODO
 
                     break;

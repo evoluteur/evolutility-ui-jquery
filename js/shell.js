@@ -21,7 +21,8 @@ Evol.Shell = Backbone.View.extend({
             content: '#evol'
         },
         useRouter: true,
-        pageSize:20
+        pageSize:20,
+        prefix: 'evol-'
     },
 
     initialize: function (opts) {
@@ -149,7 +150,7 @@ Evol.Shell = Backbone.View.extend({
 
     createEntity: function($v, uiModel, data, defaultView, options, cb){
         var that=this,
-            lc = new Backbone.LocalStorage('evol-'+uiModel.id),
+            lc = new Backbone.LocalStorage(this.prefix+uiModel.id),
             M = Backbone.Model.extend({
                 localStorage: lc
             }),

@@ -30,7 +30,6 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
         }else{
             h.push(eUI.HTMLMsg(Evol.i18n.nodata, '', 'info'));
         }
-        //this._renderButtons(h, 'json');
         this.$el.html(h.join(''));
         this.setData(this.model);
         //this.custOn=false;
