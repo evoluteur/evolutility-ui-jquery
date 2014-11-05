@@ -341,6 +341,9 @@ label {
   border-right: 0 !important;
   width: 38%;
 }
+.evol-xpt-flds > fieldset {
+  margin-left: 20px;
+}
 .evol-xpt-flds input[type="checkbox"] {
   clear: left;
   float: left;
