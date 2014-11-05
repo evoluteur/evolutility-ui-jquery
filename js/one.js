@@ -467,19 +467,20 @@ return Backbone.View.extend({
         return false;
     },*/
 
-    showTab: function (tabId) {
+    _showTab: function (tabId) {
         var tab = this.$(tabId);
         if (tab.length > 0) {
-            tab.siblings('.tab-pane').hide();
-            tab.show();
+            tab.siblings('.tab-pane').removeClass('active').hide();
+            tab.addClass('active').show();
         }
-        tab = this.$('.evol-tabs > li a[href="' + tabId + '"]').parent();
+        tab = this.$('.evol-tabs > li > a[href="' + tabId + '"]').parent();
         if (tab.length > 0) {
             tab.siblings('li').removeClass('active');
-            tab.addClass('active');
+            tab.addClass('active')
+                .show();
         }
         this._tabId = tabId;
-        this.$el.trigger('show.tab', {id:tabId});
+        this.$el.trigger('change.tab', {id:tabId});
         return this;
     },
 
@@ -1003,8 +1004,7 @@ return Backbone.View.extend({
     },
 
     setTab: function(tabId){
-        this._tabId = tabId;
-        this.showTab(tabId);
+        this._showTab(tabId);
     },
     getTab: function(){
         return this._tabId;
@@ -1054,7 +1054,7 @@ return Backbone.View.extend({
         if(evt.shiftKey){
             this.$('.tab-content > div').show();
         }else{
-            this.showTab(id);
+            this._showTab(id);
         }
         this._tabId = id;
     },

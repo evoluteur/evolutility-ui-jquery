@@ -2362,19 +2362,20 @@ return Backbone.View.extend({
         return false;
     },*/
 
-    showTab: function (tabId) {
+    _showTab: function (tabId) {
         var tab = this.$(tabId);
         if (tab.length > 0) {
-            tab.siblings('.tab-pane').hide();
-            tab.show();
+            tab.siblings('.tab-pane').removeClass('active').hide();
+            tab.addClass('active').show();
         }
-        tab = this.$('.evol-tabs > li a[href="' + tabId + '"]').parent();
+        tab = this.$('.evol-tabs > li > a[href="' + tabId + '"]').parent();
         if (tab.length > 0) {
             tab.siblings('li').removeClass('active');
-            tab.addClass('active');
+            tab.addClass('active')
+                .show();
         }
         this._tabId = tabId;
-        this.$el.trigger('show.tab', {id:tabId});
+        this.$el.trigger('change.tab', {id:tabId});
         return this;
     },
 
@@ -2898,8 +2899,7 @@ return Backbone.View.extend({
     },
 
     setTab: function(tabId){
-        this._tabId = tabId;
-        this.showTab(tabId);
+        this._showTab(tabId);
     },
     getTab: function(){
         return this._tabId;
@@ -2949,7 +2949,7 @@ return Backbone.View.extend({
         if(evt.shiftKey){
             this.$('.tab-content > div').show();
         }else{
-            this.showTab(id);
+            this._showTab(id);
         }
         this._tabId = id;
     },
@@ -4507,6 +4507,7 @@ return Backbone.View.extend({
         'navigate.many >div': 'click_navigate',
         'paginate.many >div': 'paginate',
         //'selection.many >div': 'click_select',
+        'change.tab >div': 'change_tab',
         'action >div': 'action_view',
         'status >div': 'status_update',
         'change.filter >div': 'change_filter',
@@ -4548,7 +4549,6 @@ return Backbone.View.extend({
         _.extend(this, this.options, opts);
         this.views=[];
         this.viewsHash={};
-        //this.tabId=false;
         //this._group=false;
     },
 
@@ -4674,6 +4674,9 @@ return Backbone.View.extend({
                     if(vw.setTitle){
                         vw.setTitle();
                     }
+                    if(this._tabId && vw.getTab && (this._tabId != vw.getTab())){
+                        vw.setTab(this._tabId);
+                    }
                     if(vw.cardinality==='n' && vw.setPage && this.pageIndex){
                         vw.setPage(this.pageIndex);
                     }
@@ -4683,7 +4686,7 @@ return Backbone.View.extend({
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
                 this.curView=vw;
-                //this._keepTab(viewName);
+                this._keepTab(viewName);
                 $v.show()
                     .siblings().not('.evo-toolbar,.evo-filters,.clearfix').hide();
             }else{
@@ -4737,7 +4740,7 @@ return Backbone.View.extend({
                         }
                         vw = new Evol.viewClasses[viewName](config).render();
                         this._prevViewOne=viewName;
-                        //this._keepTab(viewName);
+                        this._keepTab(viewName);
                         break;
                 }
                 if(_.isUndefined(vw)){
@@ -4837,12 +4840,11 @@ return Backbone.View.extend({
         return this;
     },
 
-    /*
      _keepTab: function(viewName){
-     if(this.tabId && (viewName=='view'||viewName=='edit')){
-     this.curView.setTab(this.tabId);
-     }
-     },*/
+         if(this.tabId && (viewName=='view'||viewName=='edit')){
+            this.curView.setTab(this.tabId);
+         }
+     },
 
     getToolbarButtons: function(){
         if(!this._toolbarButtons){
@@ -5358,6 +5360,10 @@ return Backbone.View.extend({
         evt.stopImmediatePropagation();
         this.setModelById(ui.id);
         this.setRoute(ui.id, false);
+    },
+
+    change_tab: function(evt, ui){
+        this._tabId=ui.id;
     },
 
     change_filter: function(evt){

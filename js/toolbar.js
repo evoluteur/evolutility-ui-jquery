@@ -37,6 +37,7 @@ return Backbone.View.extend({
         'navigate.many >div': 'click_navigate',
         'paginate.many >div': 'paginate',
         //'selection.many >div': 'click_select',
+        'change.tab >div': 'change_tab',
         'action >div': 'action_view',
         'status >div': 'status_update',
         'change.filter >div': 'change_filter',
@@ -78,7 +79,6 @@ return Backbone.View.extend({
         _.extend(this, this.options, opts);
         this.views=[];
         this.viewsHash={};
-        //this.tabId=false;
         //this._group=false;
     },
 
@@ -204,6 +204,9 @@ return Backbone.View.extend({
                     if(vw.setTitle){
                         vw.setTitle();
                     }
+                    if(this._tabId && vw.getTab && (this._tabId != vw.getTab())){
+                        vw.setTab(this._tabId);
+                    }
                     if(vw.cardinality==='n' && vw.setPage && this.pageIndex){
                         vw.setPage(this.pageIndex);
                     }
@@ -213,7 +216,7 @@ return Backbone.View.extend({
                 this.$('[data-id="views"] > li').removeClass('evo-sel') // TODO optimize
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
                 this.curView=vw;
-                //this._keepTab(viewName);
+                this._keepTab(viewName);
                 $v.show()
                     .siblings().not('.evo-toolbar,.evo-filters,.clearfix').hide();
             }else{
@@ -267,7 +270,7 @@ return Backbone.View.extend({
                         }
                         vw = new Evol.viewClasses[viewName](config).render();
                         this._prevViewOne=viewName;
-                        //this._keepTab(viewName);
+                        this._keepTab(viewName);
                         break;
                 }
                 if(_.isUndefined(vw)){
@@ -367,12 +370,11 @@ return Backbone.View.extend({
         return this;
     },
 
-    /*
      _keepTab: function(viewName){
-     if(this.tabId && (viewName=='view'||viewName=='edit')){
-     this.curView.setTab(this.tabId);
-     }
-     },*/
+         if(this.tabId && (viewName=='view'||viewName=='edit')){
+            this.curView.setTab(this.tabId);
+         }
+     },
 
     getToolbarButtons: function(){
         if(!this._toolbarButtons){
@@ -888,6 +890,10 @@ return Backbone.View.extend({
         evt.stopImmediatePropagation();
         this.setModelById(ui.id);
         this.setRoute(ui.id, false);
+    },
+
+    change_tab: function(evt, ui){
+        this._tabId=ui.id;
     },
 
     change_filter: function(evt){
