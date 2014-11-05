@@ -801,7 +801,7 @@ return Backbone.View.extend({
             $item=this.$('[data-id="prev"]');
 
         eUI.addRemClass($item, pIdx===0, cssDisabled);
-        eUI.addRemClass($item.next(), (pIdx+1)*this.pageSize<cl, cssDisabled);
+        eUI.addRemClass($item.next(), (pIdx+1)*this.pageSize>cl, cssDisabled);
     },
 
     _enableNav: function(){
