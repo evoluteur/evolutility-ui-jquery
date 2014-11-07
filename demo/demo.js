@@ -32,21 +32,7 @@ function createSampleDataIfEmpty(entityName){
     });
 }
 
-function showUIdef(uiModel){
-    if(uidef){
-        $('#uimodel').slideUp();
-        uidef=false;
-    }else{
-        var $ui=$('#uimodel');
-        if($ui.html()==''){
-            $ui.html(Evol.UI.input.textMJSON('uimodel2', uiModel, 12));
-        }
-        $ui.slideDown();
-        uidef=true;
-    }
-}
-
-function showUIdef2(uiModel){
+function showUIModel(uiModel){
     if(_.isString(uiModel)){
         uiModel=uiModels[uiModel];
     }
@@ -54,7 +40,7 @@ function showUIdef2(uiModel){
         .slideDown();
     $('#hide_def').show();
 }
-function showUIdef2no(){
+function hideUIModel(){
     $('#uimodel').slideUp();
     $('#hide_def').hide();
 }
