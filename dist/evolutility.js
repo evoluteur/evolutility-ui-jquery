@@ -5271,7 +5271,7 @@ return Backbone.View.extend({
             $item=this.$('[data-id="prev"]');
 
         eUI.addRemClass($item, pIdx===0, cssDisabled);
-        eUI.addRemClass($item.next(), (pIdx+1)*this.pageSize<cl, cssDisabled);
+        eUI.addRemClass($item.next(), (pIdx+1)*this.pageSize>cl, cssDisabled);
     },
 
     _enableNav: function(){
@@ -5530,8 +5530,10 @@ Evol.Shell = Backbone.View.extend({
             var tb=that._tbs[eName];
             if(tb){
                 that._curEntity = eName;
-                tb.setView(view, false, false) //tb.setView(view, true, false)
-                    .setTitle();
+                if(tb.curView.viewName !== view){
+                    tb.setView(view, false, false) //tb.setView(view, true, false)
+                        .setTitle();
+                }
                 if(options){
                     if(tb.curView.cardinality==='1'){
                         tb.setModelById(options);
