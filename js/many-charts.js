@@ -47,15 +47,15 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             models = this.collection.models,
             iconsPath = this.iconsPath || '',
             chartFields = EvoDico.getFields(uiModel, function(f){
-                return f.viewcharts || f.type===fTypes.lov || f.type===fTypes.bool || f.type===fTypes.int || f.type===fTypes.money;
+                return (_.isUndefined(f.viewcharts) || f.viewcharts) && (f.type===fTypes.lov || f.type===fTypes.bool || f.type===fTypes.int || f.type===fTypes.money);
             });
 
         if(chartFields && chartFields.length){
             _.each(chartFields, function(f){
                 var groups = _.countBy(models, function(m) {
                     return m.get(f.id);
-                });
-                var groupData = groups,
+                }),
+                    groupData = groups,
                     data=[],
                     lb,
                     labels=[];

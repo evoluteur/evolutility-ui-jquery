@@ -1518,26 +1518,42 @@ return Backbone.View.extend({
         if (cSize > pSize) {
             var nbPages = Math.ceil(cSize / pSize),
                 pId = pIdx + 1,
-                iMin,
-                iMax;
+                maxRange,
+                bPage = function(id){
+                    h.push('<li', pId===id?' class="active"':'',
+                        ' data-id="', id, '"><a href="javascript:void(0)">', id, '</a></li>');
+                },
+                bPageRange = function(pStart, pEnd){
+                    for (var i=pStart; i<=pEnd; i++) {
+                        bPage(i);
+                    }
+                },
+                bGap = function(){
+                    h.push('<li class="disabled"><a href="javascript:void(0)">...</a></li>');
+                };
 
-            if (nbPages < 6) {
-                iMin = 1;
-                iMax = nbPages;
-            } else {
-                iMin = pIdx + 1;
-                iMax = iMin + 5;
-            }
             h.push('<li data-id="prev"',
-                (pId === 1) ? ' class="disabled"' : '',
+                (pId===1)?' class="disabled"':'',
                 '><a href="javascript:void(0)">&laquo;</a></li>');
-            for (var i = iMin; i < iMax + 1; i++) {
-                h.push('<li',
-                    (pId === i) ? ' class="active"' : '',
-                    ' data-id="', i, '"><a href="javascript:void(0)">', i, '</a></li>');
+            bPage(1);
+            if(pId>4 && nbPages>6){
+                if(pId===5){
+                    bPage(2);
+                }else{
+                    bGap();
+                }
+                maxRange=_.min([pId+2, nbPages]);
+                bPageRange(_.max([2, pId-2]), maxRange);
+            }else{
+                maxRange=_.min([_.max([5, pId+2]), nbPages]);
+                bPageRange(2, maxRange);
+            }
+            if(maxRange<nbPages && pId+2<nbPages){
+                bGap();
+                bPage(nbPages);
             }
             h.push('<li data-id="next"',
-                (cSize > pId * pSize) ? '' : ' class="disabled"',
+                (nbPages > pId) ? '' : ' class="disabled"',
                 '><a href="javascript:void(0)">&raquo;</a></li>');
         }
     },
@@ -1752,15 +1768,15 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             models = this.collection.models,
             iconsPath = this.iconsPath || '',
             chartFields = EvoDico.getFields(uiModel, function(f){
-                return f.viewcharts || f.type===fTypes.lov || f.type===fTypes.bool || f.type===fTypes.int || f.type===fTypes.money;
+                return (_.isUndefined(f.viewcharts) || f.viewcharts) && (f.type===fTypes.lov || f.type===fTypes.bool || f.type===fTypes.int || f.type===fTypes.money);
             });
 
         if(chartFields && chartFields.length){
             _.each(chartFields, function(f){
                 var groups = _.countBy(models, function(m) {
                     return m.get(f.id);
-                });
-                var groupData = groups,
+                }),
+                    groupData = groups,
                     data=[],
                     lb,
                     labels=[];
