@@ -214,6 +214,9 @@ label {
   float: left;
   width: 75%;
 }
+.evol-mini-content > [type="checkbox"] {
+  margin-top: 10px;
+}
 .evol-mini-content > .help-block {
   min-width: 50px;
   clear: left;
