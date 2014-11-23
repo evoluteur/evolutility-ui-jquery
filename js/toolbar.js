@@ -893,7 +893,9 @@ return Backbone.View.extend({
     },
 
     change_tab: function(evt, ui){
-        this._tabId=ui.id;
+        if(ui){
+            this._tabId=ui.id;
+        }
     },
 
     change_filter: function(evt){

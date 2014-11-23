@@ -32,7 +32,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             this._HTMLcharts(h, this.style, this.sizes);
             h.push('</div>');
         }else{
-            h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata,'','info'));
+            h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata, '', 'info'));
         }
         this.$el.html(h.join(''));
         return this.setTitle();
@@ -53,14 +53,15 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
         if(chartFields && chartFields.length){
             _.each(chartFields, function(f){
                 var groups = _.countBy(models, function(m) {
-                    return m.get(f.id);
-                }),
-                    groupData = groups,
+                        return m.get(f.id);
+                    }),
                     data=[],
                     lb,
-                    labels=[];
-                for(var dataSetName in groupData) {
-                    var nb=groupData[dataSetName];
+                    labels=[],
+                    entityName=EvoUI.capitalize(uiModel.entities);
+
+                for(var dataSetName in groups) {
+                    var nb=groups[dataSetName];
                     if(_.isUndefined(dataSetName)){
                         lb = i18n.na;
                     }else if(dataSetName==='' || dataSetName==='null'){
@@ -79,8 +80,6 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                     data.push(nb);
                     labels.push(lb+' ('+nb+')');
                 }
-                var entityName=EvoUI.capitalize(uiModel.entities);
-
                 if(f.type===fTypes.lov){
                     h.push(EvoUI.Charts.Pie(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aByB', entityName, f.label), data, labels, style, sizes));
                 }else{
