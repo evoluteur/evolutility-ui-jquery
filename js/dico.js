@@ -463,21 +463,21 @@ return {
     },
 
     HTMLFieldLink: function (id, fld, value, icon, noLink, route) {
-        var h=[];
+        var h='';
         if(!noLink){
-            h.push('<a href="', route?route:'javascript:void(0);', '" id="', id, '" class="evol-nav-id">');
+            h+='<a href="'+(route?route:'javascript:void(0);')+'" id="'+id+'" class="evol-nav-id">';
         }
         if(icon){
-            h.push('<img class="evol-many-icon" src="', icon, '">');
+            h+='<img class="evol-many-icon" src="'+icon+'">';
         }/*
          if(_.isUndefined(value) || value===''){
          value='('+model.id+')';
          }*/
-        h.push(value);
+        h+=value;
         if(!noLink){
-            h.push('</a>');
+            h+='</a>';
         }
-        return h.join('');
+        return h;
     },
 
     bbComparator: function(fid){

@@ -91,7 +91,7 @@ return Backbone.View.extend({
     },
 
     _toolbarHTML: function(){
-        var h=[],
+        var h='',
             that=this,
             eUIm=eUI.menu,
             endMenu='</ul></li>',
@@ -100,14 +100,14 @@ return Backbone.View.extend({
 
         function linkOpt2h (id, label, icon, cardi){
             if(that.buttons[id]){
-                h.push(eUIm.hItem(id, label, icon, cardi));
+                h+=eUIm.hItem(id, label, icon, cardi);
             }
         }
 
-        h.push('<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-id="main">');
+        h+='<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-id="main">';
         linkOpt2h('list','','th-list','x'); // linkOpt2h('list',i18n.bAll,'th-list');
         linkOpt2h('new','','plus'); // linkOpt2h('new',i18n.bNew,'plus');
-        h.push(menuDeviderH);
+        h+=menuDeviderH;
         linkOpt2h('edit',i18n.bEdit,'pencil','1');
         linkOpt2h('save',i18n.bSave,'floppy-disk','1');
         linkOpt2h('del',i18n.bDelete,'trash','1');
@@ -117,37 +117,36 @@ return Backbone.View.extend({
         linkOpt2h('export',i18n.bExport,'cloud-download','n');
         //linkOpt2h('selections','','star');
         if(this.toolbar){
-            h.push('</ul><ul class="nav nav-pills pull-right" data-id="views">',
-                '<li class="evo-tb-status" data-cardi="n"></li>',
-                eUIm.hItem('prev','','chevron-left','x'),
-                eUIm.hItem('next','','chevron-right','x')
-            );
+            h+='</ul><ul class="nav nav-pills pull-right" data-id="views">'+
+                '<li class="evo-tb-status" data-cardi="n"></li>'+
+                eUIm.hItem('prev','','chevron-left','x')+
+                eUIm.hItem('next','','chevron-right','x');
 
-            h.push(eUIm.hBegin('views','li','eye-open'));
+            h+=eUIm.hBegin('views','li','eye-open');
             linkOpt2h('view','View','file','1');
             linkOpt2h('edit','Edit','th','1'); // All Fields
             linkOpt2h('mini','Mini','th-large','1'); // Important Fields only
             linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
-            h.push(menuDevider);
+            h+=menuDevider;
             linkOpt2h('list','List','th-list','x');
             linkOpt2h('badges','Badges','th-large','x');
             linkOpt2h('charts','Charts','stats','x');
-            h.push(eUIm.hEnd('li'));
+            h+=eUIm.hEnd('li');
 
             //linkOpt2h('customize','','wrench', '1', 'Customize');
             /*
              if(this.buttons.customize){
-                 h.push(beginMenu('cust','wrench'));
+                 h+=beginMenu('cust','wrench');
                  link2h('customize','Customize this view','wrench');
                  h.push(menuDevider);
                  link2h('new-field','New Field','plus');
                  link2h('new-panel','New Panel','plus');
-                 h.push(endMenu);
+                 h+=endMenu;
              } */
         }
-        h.push('</ul>',eUI.html.clearer,'</div>');
-        return h.join('');
+        h+='</ul>'+eUI.html.clearer+'</div>';
+        return h;
     },
 
     refresh:function(){
@@ -632,7 +631,7 @@ return Backbone.View.extend({
             }
         }else{
             if (msgs.length > 0) {
-                var msg = ['<ul><li>', msgs.join('</li><li>'), '</li></ul>'].join(''); // i18nVal.intro,
+                var msg = '<ul><li>'+msgs.join('</li><li>')+'</li></ul>'; // i18nVal.intro,
                 this.setMessage(i18n.validation.incomplete, msg, 'warning');
             }
         }

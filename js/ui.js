@@ -50,13 +50,13 @@ Evol.UI = {
 
     // --- field labels ---
     label: function (id, label) {
-        return ['<label for="', id, '">', label, '</label>'].join('');
+        return '<label for="'+id+'">'+label+'</label>';
     },
     fieldLabel: function (id, label) {
-        return ['<div class="evol-field-label">', this.label(id, label), '</div>'].join('');
+        return '<div class="evol-field-label">'+this.label(id, label)+'</div>';
     },
     fieldLabelSpan: function (id, label) {
-        return ['<span class="evol-field-label">', this.label(id, label), '</span>'].join('');
+        return '<span class="evol-field-label">'+this.label(id, label)+'</span>';
     },
 
     // --- input fields ---
@@ -64,7 +64,7 @@ Evol.UI = {
 
         text: function (id, value, fd, css) {
             var fCss= 'evo-field form-control ' + (css || ''),
-                h = ['<input type="text" id="', id, '" value="', value];
+                h = '<input type="text" id="'+id+'" value="'+value;
             if(value.indexOf('"')>-1){
                 value=value.replace(/"/g,'\"');
             }
@@ -72,50 +72,44 @@ Evol.UI = {
                 // properties mapping to html attributes
                 _.each(['id', 'min', 'max', 'maxlength', 'placeholder'], function (item) { // 'max-width', 'min-width',
                     if (!_.isUndefined(fd[item])) {
-                        h.push('" ', item, '="', fd[item]);
+                        h+='" '+item+'="'+fd[item];
                     }
                 });
                 //other fields attributes
                 if(fd.readonly){
-                    h.push('" disabled="disabled');
+                    h+='" disabled="disabled';
                 }
                 if(fCss){
-                    h.push('" class="', fCss);
+                    h+='" class="'+fCss;
                 }
             }
-            h.push('">');
-            return h.join('');
+            h+='">';
+            return h;
         },
         textInt: function (id, value, min, max) {
             // TODO validation on leave field
             // TODO textDec
-            var h=['<input class="evo-field form-control" type="number" id="', id,
-                '" value="', value];
+            var h='<input class="evo-field form-control" type="number" id="'+id+'" value="'+value;
             if(!_.isUndefined(min)){
-                h.push('" min="', min);
+                h+='" min="'+min;
             }
             if(!_.isUndefined(max)){
-                h.push('" max="', max);
+                h+='" max="'+max;
             }
-            h.push('" maxlength="12">');
-            return h.join('');
+            h+='" maxlength="12">';
+            return h;
         },
         textM: function (id, value, maxLen, height) {
-            return ['<textarea id="', id, '" class="evo-field form-control" rows="', height,
+            return '<textarea id="'+id+'" class="evo-field form-control" rows="'+height+'">'+value+'</textarea>';
                 //(maxLen > 0) ? ('" onKeyUp="Evol.UI.Validation.fixLength(this,' + maxLen + ')') : '',
-                '">', value, '</textarea>'
-            ].join('');
         },
         textMJSON: function (id, fVobj, height) {
-            return ['<textarea id="', id, '" rows="',height,'" class="evol-json evo-field form-control">',
-                _.escape(JSON.stringify(fVobj, null, '\t')),
-                '</textarea>'].join('');
+            return '<textarea id="'+id+'" rows="'+height+'" class="evol-json evo-field form-control">'+
+                _.escape(JSON.stringify(fVobj, null, '\t'))+'</textarea>';
         },
         myType: function (type, id, value) {
-            return [
-                '<input type="', type, '" id="', id, '" value="', value,
-                '" class="evo-field form-control" size="15">'
-            ].join('');
+            return '<input type="'+type+'" id="'+id+'" value="'+value+
+                '" class="evo-field form-control" size="15">';
         },
         date: function (id, value) {
             return this.myType('date', id, value);
@@ -131,89 +125,73 @@ Evol.UI = {
             return '<span class="input-group-addon">'+id+'</span>';
         },
         color: function (id, value) {
-            return [
-                '<input type="color" id="', id, '" value="', value, '" size="15">'
-            ].join('');
+            return '<input type="color" id="'+id+'" value="'+value+'" size="15">';
         },
         colorBox: function (id, value, text) {
-            return [
-                '<div class="evo-color-box" id="', id,
-                '" style="background-color:', value,
-                '" title="', value, '">', text?'<span>'+text+'</span>':'', '</div>'
-            ].join('');
+            return '<div class="evo-color-box" id="'+id+
+                '" style="background-color:'+value+'" title="'+value+'">'+
+                (text?'<span>'+text+'</span>':'')+'</div>';
         },
 
         checkbox: function (id, value) {
-            return ['<input type="checkbox" id="', id,
-                value?'" checked="checked':'',
-                '" value="1">'].join('');
+            return '<input type="checkbox" id="'+id+
+                (value?'" checked="checked':'')+'" value="1">';
         },
         checkbox2: function (id, value, css) {
-            return ['<input type="checkbox" data-id="', id, '" class="',css,'"',
-                value?' checked="checked"':'',
-                ' value="1">'].join('');
+            return '<input type="checkbox" data-id="'+id+'" class="'+css+'"'+
+                (value?' checked="checked"':'')+' value="1">';
         },
         checkboxLOV:function(fLOV){
-            var h=[];
+            var h='';
             for(var i in fLOV){
                 var lv=fLOV[i];
-                h.push('<input type="checkbox" id="',lv.id,'" value="',lv.id,'"/>',
-                    '<label for="',lv.id,'">',lv.text,'</label> ');
+                h+='<input type="checkbox" id="'+lv.id+'" value="'+lv.id+'"/>'+
+                    '<label for="'+lv.id+'">'+lv.text+'</label> ';
             }
-            return h.join('');
+            return h;
         },
 
         radio: function (fN, value, label, sel, id) {
-            return ['<label for="', id, '"><input id="', id, '" name="', fN,
-                '" type="radio" value="', value,
-                (sel) ? '" checked="checked' : '',
-                '">', label, '</label>&nbsp;'
-            ].join('');
+            return '<label for="'+id+'"><input id="'+id+'" name="'+fN+'" type="radio" value="'+value+
+                (sel?'" checked="checked':'')+'">'+label+'</label>&nbsp;';
         },
         lov: function (id, value, label, fLOV) {
-            var h = ['<select class="evo-field form-control" id="', id, '"><option value="', value, '" selected>', label, '</option>'];
+            var h = '<select class="evo-field form-control" id="'+id+'"><option value="'+value+'" selected>'+label+'</option>';
             _.each(fLOV, function (f) {
-                h.push(this.option(f.id, f.text));
+                h+=this.option(f.id, f.text);
             });
-            h.push('</select>');
-            return h.join('');
+            h+='</select>';
+            return h;
         },
 
         img: function (id, value, css) {
-            return ['<img id="', id, '" src="', value.replace(/"/g,'\"'), css?'" class="'+css:'', '">'].join('');
+            return '<img id="'+id+'" src="'+value.replace(/"/g,'\"')+(css?'" class="'+css:'')+'">';
         },
 
         hidden: function (id, value) {
-            return ['<input type="hidden" name="', id, '" id="', id, '" value="', value.replace(/"/g,'\"'), '"/>'].join('');
+            return '<input type="hidden" name="'+id+'" id="'+id+'" value="'+value.replace(/"/g,'\"')+'"/>';
         },
         selectBegin: function (id, css, emptyOption) {
-            return [
-                '<select id="', id, '" class="form-control ',css,'">',
-                emptyOption?Evol.UI.html.emptyOption:''
-            ].join('');
+            return '<select id="'+id+'" class="form-control '+css+'">'+(emptyOption?Evol.UI.html.emptyOption:'');
         },
         select:function (id, value, css, emptyOption, list) {
-            return [
-                this.selectBegin(id, css, emptyOption),
-                this.options(list, value),
-                '</select>'
-            ].join('');
+            return  this.selectBegin(id, css, emptyOption)+this.options(list, value)+'</select>';
         },
 
         option: function (id, text) {
-            return ['<option value="', id, '">', text, '</option>'].join('');
+            return '<option value="'+id+'">'+text+'</option>';
         },
         options: function (fields, value) {
             var fnOpt = Evol.UI.input.option,
-                opts=[];
+                opts='';
             _.each(fields,function(f){
                 if(f.id===value){
-                    opts.push('<option value="', f.id, '" selected="selected">', f.text, '</option>');
+                    opts+='<option value="'+f.id+'" selected="selected">'+f.text+'</option>';
                 }else{
-                    opts.push(fnOpt(f.id, f.text));
+                    opts+=fnOpt(f.id, f.text);
                 }
             });
-            return opts.join('');
+            return opts;
         }/*,
 
          toggle: function  (items) {
@@ -237,7 +215,7 @@ Evol.UI = {
 
     // --- buttons ---
     button: function (id, label, css) {
-        return '<button type="button" data-id="' + id + '" class="btn' + (css ? ' ' + css : '') + '">' + label + '</button>';
+        return '<button type="button" data-id="'+id+'" class="btn'+(css?' '+css:'')+'">'+label+'</button>';
     },
     buttonsPlus: function(){
         return '<div data-id="bPlus" class="glyphicon glyphicon-plus-sign" tabindex="0"></div>';
@@ -251,15 +229,15 @@ Evol.UI = {
 
     // --- links ---
     link: function (id, label, url, target) {
-        var h=['<a class="evo-field" href="', encodeURI(url)];
+        var h='<a class="evo-field" href="'+encodeURI(url);
         if(id){
-            h.push('" id="', id);
+            h+='" id="'+id;
         }
         if(target){
-            h.push('" target="', target);
+            h+='" target="'+target;
         }
-        h.push('">', _.escape(label), '</a>');
-        return h.join('');
+        h+='">'+_.escape(label)+'</a>';
+        return h;
     },
     linkEmail: function (id, email) {
         if(email){
@@ -274,7 +252,7 @@ Evol.UI = {
 
     // --- icons ---
     icon: function (icon, css) {
-        return ['<i class="', css? css+' ':'', Evol.UI.html.glyphicon, icon, '"></i>'].join('');
+        return '<i class="'+(css?css+' ':'')+Evol.UI.html.glyphicon+icon+'"></i>';
     },
 
     iconCustomize: function (id, type) {
@@ -282,28 +260,33 @@ Evol.UI = {
     },
 
     iconId: function (id, type, icon) {
-        return ['<i class="',Evol.UI.html.glyphicon, icon, '" data-id="', id, '" data-type="', type, '"></i>'].join('');
+        return '<i class="'+Evol.UI.html.glyphicon+icon+'" data-id="'+id+'" data-type="'+type+'"></i>';
     },
 
     // --- menu ---
     menu: {
         hBegin: function (id, tag, icon){
-            return ['<', tag, ' class="dropdown" data-id="', id, '">',
-                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">', Evol.UI.icon(icon), ' <b class="caret"></b></a>',
-                '<ul class="dropdown-menu evo-dropdown-icons">'].join('');
+            return '<'+tag+' class="dropdown" data-id="'+id+'">'+
+                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'+Evol.UI.icon(icon)+' <b class="caret"></b></a>'+
+                '<ul class="dropdown-menu evo-dropdown-icons">';
         },
         hEnd: function(tag){
-            return '</ul></' + tag + '>';
+            return '</ul></'+tag+'>';
         },
         hItem: function(id, label, icon, cardi, style){
-            return [
-                '<li data-id="', id,
-                cardi?'" data-cardi="'+cardi:'',
-                (style!=='label')?'" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="'+label:'',
-                '"><a href="javascript:void(0);" data-id="', id, '">', Evol.UI.icon(icon),
-                (style!=='tooltip')?'&nbsp;'+label:'',
-                '</a></li>'
-            ].join('');
+            var h='<li data-id="'+id;
+            if(cardi){
+                h+='" data-cardi="'+cardi;
+            }
+            if(style!=='label'){
+                h+='" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="'+label;
+            }
+            h+='"><a href="javascript:void(0);" data-id="'+id+'">'+Evol.UI.icon(icon);
+            if(style!=='tooltip'){
+                h+='&nbsp;'+label;
+            }
+            h+='</a></li>';
+            return h;
         }
     },
 
@@ -312,10 +295,10 @@ Evol.UI = {
 
         alert: function(title, msg){
             var $m=$(this.HTMLModal('alert', title, msg, [{
-                id:'ok',
-                text: Evol.i18n.bOK,
-                class: 'btn-primary'
-            }]))
+                    id:'ok',
+                    text: Evol.i18n.bOK,
+                    class: 'btn-primary'
+                }]))
                 .on('click', 'button', function(evt){
                     $m.remove();
                 })
@@ -336,17 +319,15 @@ Evol.UI = {
 
         HTMLModal: function(id, title, msg, buttons) {
             var hButton = function(id, label, css){
-                    return ['<button data-id="', id, '" type="button" class="btn ', css, '" data-dismiss="modal">', label, '</button>'].join('');
+                    return '<button data-id="'+id+'" type="button" class="btn '+css+'" data-dismiss="modal">'+label+'</button>';
                 },
-                h = [
-                    '<div class="modal fade" id="', id, '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">',
-                    '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">',
-                    '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>',
-                    '<h4 class="modal-title">', title, '</h4>',
-                    '</div>',
-                    '<div class="modal-body">', msg, '</div>',
-                    '<div class="modal-footer">'
-                ];
+                h = '<div class="modal fade" id="'+id+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
+                    '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">'+
+                    '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'+
+                    '<h4 class="modal-title">'+title+'</h4>'+
+                    '</div>'+
+                    '<div class="modal-body">'+msg+'</div>'+
+                    '<div class="modal-footer">';
 
             if(!buttons){
                 buttons=[
@@ -355,23 +336,22 @@ Evol.UI = {
                 ];
             }
             _.each(buttons, function(b){
-                h.push(hButton(b.id, b.text, b.class));
+                h+=hButton(b.id, b.text, b.class);
             });
-            h.push('</div></div></div></div>');
-            return h.join('');
+            h+='</div></div></div></div>';
+            return h;
         }
 
     },
 
     // --- panels ---
     HTMLPanelBegin: function (p, css) {
-        return [
-            '<div data-pid="', p.id, '" class="panel ', p.css?p.css:css, '">',
-            '<div class="panel-heading ', p.csslabel? p.csslabel:'','">', Evol.UI.icon('chevron-up', 'evol-title-toggle'),
-            '<h3 class="panel-title">', p.label, '</h3>',
-            p.help?'<p class="evo-panel-help">'+p.help+'</p>':'',
-            '</div>'
-        ].join('');
+        return '<div data-pid="'+p.id+'" class="panel '+(p.css?p.css:css)+'">'+
+            '<div class="panel-heading '+(p.csslabel? p.csslabel:'')+'">'+
+            Evol.UI.icon('chevron-up', 'evol-title-toggle')+
+            '<h3 class="panel-title">'+p.label+'</h3>'+
+            (p.help?'<p class="evo-panel-help">'+p.help+'</p>':'')+
+            '</div>';
     },
 
     HTMLPanelEnd: function () {
@@ -379,17 +359,14 @@ Evol.UI = {
     },
 
     HTMLEmptyPanel: function(id, css, style){
-        return ['<div class="', css, ' panel panel-', style, '" data-id="', id, '"></div>'].join('');
+        return '<div class="'+css+' panel panel-'+style+'" data-id="'+id+'"></div>';
     },
 
     // --- status ---
     HTMLMsg: function (title, msg, style) {
-        return [
-            '<div data-id="msg" class="evo-msg alert alert-',style || 'info',
-            ' alert-dismissable">', this.html.buttonClose,
-            '<strong>', title, '</strong> <span>',
-            msg, '</span></div>'
-        ].join('');
+        return '<div data-id="msg" class="evo-msg alert alert-'+(style || 'info')+
+            ' alert-dismissable">'+this.html.buttonClose+
+            '<strong>'+title+'</strong> <span>'+msg+'</span></div>';
     },
 
     // --- date formats ---

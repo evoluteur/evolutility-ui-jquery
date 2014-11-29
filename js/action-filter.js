@@ -216,7 +216,7 @@ return Backbone.View.extend({
     },
 
     addCondition: function(filter){
-        var f=$(['<a href="javascript:void(0)">',this._htmlCond(filter),'</a>'].join(''))
+        var f=$('<a href="javascript:void(0)">'+this._htmlCond(filter)+'</a>')
             .prependTo(this._filters)/*
          .button({
          icons: {secondary:'ui-icon-close'}
@@ -237,17 +237,16 @@ return Backbone.View.extend({
     },
 
     _htmlCond: function(filter){
-        var h=[
-            '<span class="evo-lBold">', filter.field.label,'</span> ',
-            '<span class="evo-lLight">', filter.operator.label,'</span> ',
-            '<span class="evo-lBold">', filter.value.label, '</span>'
-        ];
+        var h='<span class="evo-lBold">'+filter.field.label+'</span> '+
+            '<span class="evo-lLight">'+filter.operator.label+'</span> '+
+            '<span class="evo-lBold">'+filter.value.label+'</span>';
+
         if(filter.operator.value==fOps.sBetween){
-            h.push('<span class="evo-lLight"> ', evoLang.opAnd, ' </span>',
-                '<span class="evo-lBold">', filter.value.label2, '</span>');
+            h+='<span class="evo-lLight"> '+evoLang.opAnd+' </span>'+
+                '<span class="evo-lBold">'+filter.value.label2+'</span>';
         }
-        h.push(eUI.html.buttonClose);
-        return h.join('');
+        h+=eUI.html.buttonClose;
+        return h;
     },
 
     _enableCond: function(filter, anim){

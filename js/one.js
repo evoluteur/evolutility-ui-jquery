@@ -685,10 +685,10 @@ return Backbone.View.extend({
     },
 
     _TRnodata: function(colspan, mode){
-        return ['<tr data-id="nodata"><td colspan="', mode==='edit'?(colspan+1):colspan, '" class="evol-pl-nodata">',
-            i18n.nodata,
-            mode==='edit'?eUI.buttonsPlus():'',
-            '</td></tr>'].join('');
+        return '<tr data-id="nodata"><td colspan="'+(mode==='edit'?(colspan+1):colspan)+'" class="evol-pl-nodata">'+
+            i18n.nodata+
+            (mode==='edit'?eUI.buttonsPlus():'')+
+            '</td></tr>';
     },
 
     _TDsFieldsEdit: function(h, fs, m){
