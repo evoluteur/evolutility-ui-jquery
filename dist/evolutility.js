@@ -1,4 +1,4 @@
-/*   evolutility v0.3.3   */
+/*   evolutility v0.3.5   */
 /*   (c) 2014 Olivier Giulieri   */
 /*   https://github.com/evoluteur/evolutility   */
 /*! ***************************************************************************
