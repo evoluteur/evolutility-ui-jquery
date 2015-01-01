@@ -26,7 +26,7 @@
 }
 .evo-toolbar [data-id="prev"].nav-disabled a,
 .evo-toolbar [data-id="next"].nav-disabled a {
-  color: #c0c0c0;
+  color: silver;
 }
 .evo-toolbar [data-id="prev"].nav-disabled a:hover,
 .evo-toolbar [data-id="next"].nav-disabled a:hover {

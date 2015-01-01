@@ -37,6 +37,7 @@ module.exports = function (grunt) {
                     //'bower_components/bootstrap/js/tooltip.js',
                     'bower_components/bootstrap/js/button.js',
                     'bower_components/bootstrap/js/dropdown.js',
+                    //'bower_components/bootstrap/js/carousel.js',
 
                     // Widgets
                     'bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js',

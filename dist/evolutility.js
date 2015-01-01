@@ -220,15 +220,24 @@ Evol.UI = {
     button: function (id, label, css) {
         return '<button type="button" data-id="'+id+'" class="btn'+(css?' '+css:'')+'">'+label+'</button>';
     },
+    buttonsIcon: function(id, cssGlyphIcon){
+        return '<div data-id="'+id+'" class="glyphicon glyphicon-'+cssGlyphIcon+'" tabindex="0"></div>';
+    },
     buttonsPlus: function(){
-        return '<div data-id="bPlus" class="glyphicon glyphicon-plus-sign" tabindex="0"></div>';
+        return this.buttonsIcon('bPlus', 'plus-sign');
     },
     buttonsMinus: function(){
-        return '<div data-id="bMinus" class="glyphicon glyphicon-minus-sign" tabindex="0"></div>';
+        return this.buttonsIcon('bMinus', 'minus-sign');
     },
     buttonsPlusMinus: function(){
         return this.buttonsPlus()+this.buttonsMinus();
+    },/*
+    buttonsPrev: function(){
+        return this.buttonsIcon('bPrev', 'chevron-left');
     },
+    buttonsNext: function(){
+        return this.buttonsIcon('bNext', 'chevron-right');
+    },*/
 
     // --- links ---
     link: function (id, label, url, target) {
@@ -421,11 +430,11 @@ Evol.UI = {
 
     // insert a dataSet into a Backbone collection
     insertCollection: function (collection, dataSet){
-        if(collection.length===0){
+        //if(collection.length===0){
             _.each(dataSet,function(d){
                 collection.create(d);
             });
-        }
+        //}
     },
 
     capitalize: function(word){ // TODO use _.str.capitalize(word);
@@ -1670,7 +1679,13 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
             if (idx === 0) {
-                h.push('<div data-mid="', model.id, '"><h4>',
+                h.push('<div data-mid="', model.id, '">');
+                // Item badge
+                if(that.uiModel.badgefield){
+                    h.push('<span class="badge pull-right">'+model.escape(that.uiModel.badgefield)+'</span>');
+                }
+                // Item title
+                h.push('<h4>',
                     selectable?that._HTMLCheckbox(model.id):'',
                     Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link, route?route+model.id:null),
                     '</h4></div>');
