@@ -1681,8 +1681,15 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
             if (idx === 0) {
                 h.push('<div data-mid="', model.id, '">');
                 // Item badge
-                if(that.uiModel.badgefield){
-                    h.push('<span class="badge pull-right">'+model.escape(that.uiModel.badgefield)+'</span>');
+                var bf=that.uiModel.badgefield;
+                if(bf){
+                    h.push('<span class="badge pull-right">');
+                    if(_.isFunction(bf)){
+                        h.push(bf(model));
+                    }else if(_.isString(bf)){
+                        h.push(model.escape(bf));
+                    }
+                    h.push('</span>');
                 }
                 // Item title
                 h.push('<h4>',
