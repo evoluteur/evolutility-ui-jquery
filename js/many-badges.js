@@ -49,7 +49,13 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
             if (idx === 0) {
-                h.push('<div data-mid="', model.id, '"><h4>',
+                h.push('<div data-mid="', model.id, '">');
+                // Item badge
+                if(that.uiModel.badgefield){
+                    h.push('<span class="badge pull-right">'+model.escape(that.uiModel.badgefield)+'</span>');
+                }
+                // Item title
+                h.push('<h4>',
                     selectable?that._HTMLCheckbox(model.id):'',
                     Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link, route?route+model.id:null),
                     '</h4></div>');

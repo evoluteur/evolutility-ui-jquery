@@ -100,8 +100,13 @@
         </td>
     </tr>
     <tr>
+        <td>badgefield</td>
+        <td>id of the field to display as a badge near the items' title. Can also be a function taking model as a parameter.
+            <br/>Example: badgefield = &quot;price&quot;</td>
+    </tr>
+    <tr>
         <td>leadfield</td>
-        <td>id of the field which value is the page title (when using option "$title"). Can also be a function taking model as a parameter.
+        <td>id of the field to use for the page title (when using option "$title"). Can also be a function taking model as a parameter.
             <br/>Example 1: leadfield = &quot;firstname&quot;<br/>
             Exemple2: leadfield = function(model){ return model.get('firstname')+' '+model.get('lastname')}</td>
     </tr>
