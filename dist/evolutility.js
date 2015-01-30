@@ -5623,7 +5623,7 @@ Evol.Shell = Backbone.View.extend({
                         collection: ms,
                         collectionClass: Ms,
                         uiModel: uiModel,
-                        pageSize: 20,
+                        pageSize: that.pageSize,
                         titleSelector: '#title',
                         style: that.style
                     };
