@@ -255,6 +255,7 @@ return Backbone.View.extend({
                         break;
                     // --- actions ---
                     case 'export':
+                        config.sampleMaxSize = config.pageSize;
                         vw = new Evol.ViewAction.Export(config).render();
                         $v.addClass('panel panel-info')
                             .slideDown();
