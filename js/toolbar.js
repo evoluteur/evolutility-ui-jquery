@@ -524,6 +524,10 @@ return Backbone.View.extend({
         return null;
     },
 
+    getCollection:function(){
+        return this._curCollec();
+    },
+
     setModelById: function(id){
         var m=this.collection.get(id);
         if(_.isUndefined(m)){

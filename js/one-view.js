@@ -45,6 +45,9 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                         case fts.html:
                             $f.html(HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
                             break;
+                        case fts.formula:
+                            $f.html(f.formula(model));
+                            break;
                         case fts.pix:
                             $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
                             break;

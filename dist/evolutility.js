@@ -27,6 +27,7 @@ var fts = {
     lov: 'lov',
     list: 'list', // many values for one field (behave like tags - return an array of strings)
     //html:'html',
+    formula:'formula',
     email: 'email',
     pix: 'image',
     doc:'document',
@@ -817,6 +818,9 @@ return {
         },
         hidden: function(h, f, fid, fv){
             h.push(uiInput.hidden(fid, fv));
+        },
+        formula: function(h, f, fid, fv){
+            h.push(uiInput.text(fid, fv, f, null));
         }
     },
 
@@ -1148,6 +1152,9 @@ return {
             }
             h.push('">');
             switch (fld.type) {
+                case fts.formula:
+                    h.push('<div id="',fid, '" class="form-control">',fld.formula(),'</div>');
+                    break;
                 case fts.color: // TODO is the color switch necessary?
                     //h.push(uiInput.colorBox(fid, fv), fv);
                     h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
@@ -2121,6 +2128,9 @@ return Backbone.View.extend({
                         case fts.email:
                             $f.html(eDico.HTMLField4Many(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                             break;*/
+                        case fts.formula:
+                            $f.html(f.formula(model));
+                            break;
                         default:
                             $f.text(eDico.HTMLField4Many(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                     }
@@ -2144,6 +2154,9 @@ return Backbone.View.extend({
                             break;
                         case fts.list:
                             $f.select2('val', fv);
+                            break;
+                        case fts.formula:
+                            $f.html(f.formula(model));
                             break;
                         default:
                             $f.val(fv);
@@ -2617,7 +2630,11 @@ return Backbone.View.extend({
         if(this.model && this.model.has(f.id)){
             fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultvalue || '';
         }
-        h.push(eDico.HTMLField4One(f, this.fieldViewId(f.id), fv, mode, iconsPath));
+        if(f.type==='formula'){
+            h.push(f.formula(this.model));
+        }else{
+            h.push(eDico.HTMLField4One(f, this.fieldViewId(f.id), fv, mode, iconsPath));
+        }
         return this;
     },
 
@@ -3251,6 +3268,9 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
                         case fts.url:
                         case fts.html:
                             $f.html(HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
+                            break;
+                        case fts.formula:
+                            $f.html(f.formula(model));
                             break;
                         case fts.pix:
                             $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
@@ -5005,6 +5025,10 @@ return Backbone.View.extend({
             return this.curView.getData(skipReadOnlyFields);
         }
         return null;
+    },
+
+    getCollection:function(){
+        return this._curCollec();
     },
 
     setModelById: function(id){

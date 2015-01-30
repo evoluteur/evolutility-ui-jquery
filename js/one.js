@@ -212,6 +212,9 @@ return Backbone.View.extend({
                         case fts.email:
                             $f.html(eDico.HTMLField4Many(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                             break;*/
+                        case fts.formula:
+                            $f.html(f.formula(model));
+                            break;
                         default:
                             $f.text(eDico.HTMLField4Many(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                     }
@@ -235,6 +238,9 @@ return Backbone.View.extend({
                             break;
                         case fts.list:
                             $f.select2('val', fv);
+                            break;
+                        case fts.formula:
+                            $f.html(f.formula(model));
                             break;
                         default:
                             $f.val(fv);
@@ -708,7 +714,11 @@ return Backbone.View.extend({
         if(this.model && this.model.has(f.id)){
             fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultvalue || '';
         }
-        h.push(eDico.HTMLField4One(f, this.fieldViewId(f.id), fv, mode, iconsPath));
+        if(f.type==='formula'){
+            h.push(f.formula(this.model));
+        }else{
+            h.push(eDico.HTMLField4One(f, this.fieldViewId(f.id), fv, mode, iconsPath));
+        }
         return this;
     },
 

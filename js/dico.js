@@ -93,6 +93,9 @@ return {
         },
         hidden: function(h, f, fid, fv){
             h.push(uiInput.hidden(fid, fv));
+        },
+        formula: function(h, f, fid, fv){
+            h.push(uiInput.text(fid, fv, f, null));
         }
     },
 
@@ -424,6 +427,9 @@ return {
             }
             h.push('">');
             switch (fld.type) {
+                case fts.formula:
+                    h.push('<div id="',fid, '" class="form-control">',fld.formula(),'</div>');
+                    break;
                 case fts.color: // TODO is the color switch necessary?
                     //h.push(uiInput.colorBox(fid, fv), fv);
                     h.push('<div id="',fid, '" class="form-control">',fv,'</div>');

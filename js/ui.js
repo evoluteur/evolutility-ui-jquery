@@ -24,6 +24,7 @@ var fts = {
     lov: 'lov',
     list: 'list', // many values for one field (behave like tags - return an array of strings)
     //html:'html',
+    formula:'formula',
     email: 'email',
     pix: 'image',
     doc:'document',
