@@ -9,6 +9,18 @@ With it you configure views with metadata instead of hand-coding templates, Java
 [AddressBook](http://evoluteur.github.io/evolutility/demo/index.html#contact/list),
 [Wine Cellar](http://evoluteur.github.io/evolutility/demo/index.html#winecellar/list).
 
+## Installation
+
+You can use Bower to install Evolutility.
+
+```bash
+# To get the latest stable version, use Bower from the command line.
+bower install evolutility
+
+# To get the most recent, latest committed-to-master version use:
+bower install evolutility#master
+```
+
 ## Views
 
 Evolutility's views have a Backbone model (to define the data) and also a UI-model (to define the UI for this model).
