@@ -1,12 +1,12 @@
 /*   evolutility v0.3.5   */
-/*   (c) 2014 Olivier Giulieri   */
+/*   (c) 2015 Olivier Giulieri   */
 /*   https://github.com/evoluteur/evolutility   */
 /*! ***************************************************************************
  *
  * evolutility :: ui.js
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -480,7 +480,7 @@ Evol.UI = {
  * evolutility :: ui-charts.js
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -523,7 +523,7 @@ Evol.UI.Charts = {
 ;
 //   Evolutility Localization Library ENGLISH
 //   https://github.com/evoluteur/evolutility
-//   (c) 2014 Olivier Giulieri
+//   (c) 2015 Olivier Giulieri
 
 var Evol = Evol || {};
 
@@ -625,8 +625,8 @@ Evol.i18n = {
         integer:'"{0}" must only use numbers.',
         decimal:'"{0}" must be a valid decimal numbers.',
         money:'"{0}" must be a valid number.',
-        date:'"{0}" must be a valid date, format must be "MM/DD/YYYY" like "12/24/2014".',
-        datetime:'"{0}" must be a valid date/time, format must be "MM/DD/YYYY hh:mm AM/PM" like "12/24/2014 10:30 AM".',
+        date:'"{0}" must be a valid date, format must be "MM/DD/YYYY" like "12/24/2015".',
+        datetime:'"{0}" must be a valid date/time, format must be "MM/DD/YYYY hh:mm AM/PM" like "12/24/2015 10:30 AM".',
         time:'"{0}" must be a valid date/time, format must be "hh:mm AM/PM" like "10:30 AM".',
         max:'"{0}" must be smaller or equal to {1}.',
         min:'"{0}" must be greater or equal to {1}.',
@@ -730,7 +730,7 @@ Evol.i18n = {
  * Library of helpers for dictionary
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -1257,7 +1257,7 @@ return {
  * View many
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -1642,7 +1642,7 @@ return Backbone.View.extend({
  * View many badges
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -1732,7 +1732,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
  * View many charts
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -1833,7 +1833,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
  * View many list
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -1921,7 +1921,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
  * View one
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -3072,7 +3072,7 @@ return Backbone.View.extend({
  * View one edit
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -3104,7 +3104,7 @@ Evol.ViewOne.Edit = Evol.ViewOne.extend({
  * View one json
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -3186,7 +3186,7 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
  * View one mini
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -3229,7 +3229,7 @@ Evol.ViewOne.Mini = Evol.ViewOne.Edit.extend({
  * View one view (readonly)
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -3345,7 +3345,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
  * evolutility :: action-export.js
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -3848,7 +3848,7 @@ return Backbone.View.extend({
  * evolutility :: action-filter.js
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -4506,7 +4506,7 @@ return Backbone.View.extend({
  * evolutility :: toolbar.js
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -5454,7 +5454,7 @@ return Backbone.View.extend({
  * evolutility :: shell.js
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2014, Olivier Giulieri
+ * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 

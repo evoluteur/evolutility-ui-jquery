@@ -1,6 +1,6 @@
 ﻿//   Evolutility Localization Library ENGLISH
 //   https://github.com/evoluteur/evolutility
-//   (c) 2014 Olivier Giulieri
+//   (c) 2015 Olivier Giulieri
 
 var Evol = Evol || {};
 
@@ -102,8 +102,8 @@ Evol.i18n = {
         integer:'"{0}" must only use numbers.',
         decimal:'"{0}" must be a valid decimal numbers.',
         money:'"{0}" must be a valid number.',
-        date:'"{0}" must be a valid date, format must be "MM/DD/YYYY" like "12/24/2014".',
-        datetime:'"{0}" must be a valid date/time, format must be "MM/DD/YYYY hh:mm AM/PM" like "12/24/2014 10:30 AM".',
+        date:'"{0}" must be a valid date, format must be "MM/DD/YYYY" like "12/24/2015".',
+        datetime:'"{0}" must be a valid date/time, format must be "MM/DD/YYYY hh:mm AM/PM" like "12/24/2015 10:30 AM".',
         time:'"{0}" must be a valid date/time, format must be "hh:mm AM/PM" like "10:30 AM".',
         max:'"{0}" must be smaller or equal to {1}.',
         min:'"{0}" must be greater or equal to {1}.',
