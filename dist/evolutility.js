@@ -3438,7 +3438,7 @@ return Backbone.View.extend({
 
         h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds">',
             '<div><label>', i18nXpt.xpFields, '</label></div>',
-            '<fieldset>'
+            '<fieldset class="checkbox">'
         );
 
         //### list of columns to export #########################################
@@ -3449,7 +3449,7 @@ return Backbone.View.extend({
             if (fLabel === null || fLabel === '') {
                 fLabel = '(' + fID + ')';
             }
-            h.push('<div><label class="checkbox"><input type="checkbox" value="1" id="', fID, '" checked="checked">', fLabel, '</label></div>');
+            h.push('<div><label><input type="checkbox" value="1" id="', fID, '" checked="checked">', fLabel, '</label></div>');
             if (idx === 10 && useMore){
                 h.push(EvoExport.html_more2(i18nXpt.allFields));
             }

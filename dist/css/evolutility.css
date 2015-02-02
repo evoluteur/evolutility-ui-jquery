@@ -108,7 +108,7 @@
   background-color: #fbfbfb;
 }
 label {
-  font-weight: 500 !important;
+  font-weight: 500;
   margin-bottom: 2px;
 }
 .help-block {
@@ -379,6 +379,10 @@ label {
 }
 .evol-xpt-preview textarea {
   min-height: 200px;
+}
+.evol-xpt-more {
+  display: block;
+  margin-top: 10px;
 }
 .evol-xpt-more-fields {
   clear: both;
