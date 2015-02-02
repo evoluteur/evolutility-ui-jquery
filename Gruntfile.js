@@ -92,6 +92,17 @@ module.exports = function (grunt) {
         },
 
         // *************************************************************************************
+        //      COPY
+        // *************************************************************************************
+        copy: {
+          main: {
+            files: [
+              {expand: true, flatten: true, src: ['bower_components/bootstrap/dist/fonts/*'], dest: '<%= pkg.target %>/fonts/'}
+            ]
+          }
+        },
+
+        // *************************************************************************************
         //      JSHINT
         // *************************************************************************************
         jshint: {
@@ -194,6 +205,7 @@ module.exports = function (grunt) {
     //      GRUNT PLUGIN : tasks
     // *************************************************************************************
     grunt.loadNpmTasks('grunt-bower-task');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -210,7 +222,7 @@ module.exports = function (grunt) {
     grunt.registerTask('dev', ['concat:js', 'less:dev', 'less:demo']);
 
     // Prod task(s).
-    grunt.registerTask('prod', ['jshint', 'dev', 'concat:demo', 'concat:vendors', 'less:prod', 'uglify']);
+    grunt.registerTask('prod', ['jshint', 'copy', 'dev', 'concat:demo', 'concat:vendors', 'less:prod', 'uglify']);
 
 };
 
