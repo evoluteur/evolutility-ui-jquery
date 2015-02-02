@@ -428,6 +428,7 @@ return {
             h.push('">');
             switch (fld.type) {
                 case fts.formula:
+                    // TODO: in one.js or here?
                     h.push('<div id="',fid, '" class="form-control">',fld.formula(),'</div>');
                     break;
                 case fts.color: // TODO is the color switch necessary?

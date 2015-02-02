@@ -1153,6 +1153,7 @@ return {
             h.push('">');
             switch (fld.type) {
                 case fts.formula:
+                    // TODO: in one.js or here?
                     h.push('<div id="',fid, '" class="form-control">',fld.formula(),'</div>');
                     break;
                 case fts.color: // TODO is the color switch necessary?
@@ -2642,7 +2643,7 @@ return Backbone.View.extend({
             fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultvalue || '';
         }
         if(f.type==='formula'){
-            h.push(f.formula(this.model));
+            h.push('<div id="',this.fieldViewId(f.id), '" class="disabled evo-rdonly">', f.formula(this.model), '</div>');
         }else{
             h.push(eDico.HTMLField4One(f, this.fieldViewId(f.id), fv, mode, iconsPath));
         }
