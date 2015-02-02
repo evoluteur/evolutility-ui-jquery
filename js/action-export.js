@@ -100,7 +100,7 @@ return Backbone.View.extend({
         );
 
         //### list of columns to export #########################################
-        //'<div><label class="checkbox"><input type="checkbox" value="1" id="showID" checked="checked">', i18nXpt.IDkey, '</label></div>'
+        h.push('<div><label><input type="checkbox" value="1" id="showID">', i18nXpt.IDkey, '</label></div>');
         _.each(fields, function(f, idx){
             var fLabel = f.labelexport || f.label || f.labellist,
                 fID = 'fx-' + f.id;
@@ -219,8 +219,8 @@ return Backbone.View.extend({
                 flds = this.getFields(),
                 fldsDom = this.$('.evol-xpt-flds > fieldset input:checked'), //_valFields
                 fldsDomHash = {},
-                useHeader = this.$('#xptFLH').prop('checked');
-            //showID=this.$('#showID').prop('checked');
+                useHeader = this.$('#xptFLH').prop('checked'),
+                showID=this.$('#showID').prop('checked');
 
             //if(showID){
             //    flds.unshift({id: 'id', type: 'text', label: 'Id'});
@@ -244,6 +244,9 @@ return Backbone.View.extend({
                     }
                     // -- header
                     if (useHeader) {
+                        if(showID){
+                            h.push('ID', sep);
+                        }
                         _.each(flds, function(f, idx){
                             h.push(f.label);
                             if(idx<fMax){
@@ -254,6 +257,9 @@ return Backbone.View.extend({
                     }
                     // -- data
                     _.every(data, function(m, idx){
+                        if(showID){
+                            h.push(m.id, sep);
+                        }
                         _.each(flds, function(f, idx){
                             var mv = m.get(f.id);
                             if (mv) {
@@ -280,16 +286,22 @@ return Backbone.View.extend({
                     h.push('<table>\n');
                     if (useHeader) {
                         h.push('<tr>\n');
+                        if(showID){
+                            h.push('<th>ID</th>');
+                        }
                         _.each(flds, function(f){
-                            h.push('<th>', f.id, '</th>');
+                            h.push('<th>', f.label, '</th>');
                         });
                         h.push('</tr>\n');
                     }
                     // -- data
-                    _.every(data, function(d, idx){
+                    _.every(data, function(m, idx){
                         h.push('<tr>');
+                        if(showID){
+                            h.push('<td>', m.id, '</td>');
+                        }
                         _.each(flds, function(f){
-                            var mj = d.get(f.id);
+                            var mj = m.get(f.id);
                             if (!_.isUndefined(mj) && mj!=='') {
                                 h.push('<td>', mj, '</td>');
                             } else {
@@ -305,6 +317,9 @@ return Backbone.View.extend({
                     var propList= _.map(flds, function(f){
                         return f.id;
                     });
+                    if(showID){
+                        propList.unshift('id');
+                    }
                     _.every(data, function(m, idx){
                         h.push(JSON.stringify(_.pick(m.toJSON(), propList), null, 2));
                         return idx<maxItem;
@@ -318,6 +333,9 @@ return Backbone.View.extend({
 
                     if(sqlTable===''){
                         sqlTable = this.uiModel.entity.replace(/ /g,'_');
+                    }
+                    if(showID){
+                        sql.push('ID, ');
                     }
                     _.each(flds, function(f,idx){
                         sql.push(f.id);
@@ -338,6 +356,9 @@ return Backbone.View.extend({
                     var fValue;
                     _.every(data, function(m, idx){
                         h.push(sql);
+                        if(showID){
+                            h.push('"', m.id, '", ');
+                        }
                         _.each(flds, function(f, idx){
                             fValue=m.get(f.id);
                             switch(f.type){
@@ -393,6 +414,9 @@ return Backbone.View.extend({
                     h.push('<xml>\n');
                     _.every(data, function(m, idx){
                         h.push('<', elemName, ' ');
+                        if(showID){
+                            h.push('ID="', m.id, '" ');
+                        }
                         _.each(flds, function(f){
                             h.push(f.id, '="');
                             if(f.type===fts.text || f.type===fts.textml){
