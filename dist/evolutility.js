@@ -1872,6 +1872,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
     HTMLItem: function(h, fields, model, icon, selectable, route){
         var that = this,
             v,
+            bf = that.uiModel.badgefield,
             link = (this.links!==false),
             ft = Evol.Dico.fieldTypes;
 
@@ -1889,6 +1890,16 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             }
             if(idx===0){
                 v = Evol.Dico.HTMLFieldLink('fv-'+f.id, f, v, icon, !link, route?route+model.id:null);
+                // Item badge
+                if(bf){
+                    v+='<span class="badge badge-list">';
+                    if(_.isFunction(bf)){
+                        v+=bf(model);
+                    }else if(_.isString(bf)){
+                        v+=model.escape(bf);
+                    }
+                    v+='</span>';
+                }
             }
             if(f.type===ft.textml){
                 h.push('<td class="evol-ellipsis">', v, '</td>');

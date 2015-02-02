@@ -267,6 +267,11 @@ label {
   display: none;
   position: absolute;
 }
+.badge-list {
+  position: relative;
+  top: -2px;
+  margin-left: 5px;
+}
 /* --- list > sort icons --- */
 .evol-sort-icons {
   position: relative;
