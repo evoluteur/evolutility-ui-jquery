@@ -144,7 +144,7 @@ uiModels.winecellar = {
         return model.get('name')+' '+model.get('vintage');
     },
     badgefield:function(model){
-        return model.get('remaining');
+        return model.get('remaining') || 0;
     },
     elements: [
         {
@@ -258,7 +258,7 @@ uiModels.winecellar = {
                         {
                             id:'label_img',
                             type: 'image',
-                            label: 'Label',  
+                            label: 'Label',
                             maxlength: 200,
                             width: 100,
                             viewmany: true
