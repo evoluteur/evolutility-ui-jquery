@@ -15,7 +15,7 @@ Evol.viewClasses = {
     'json': Evol.ViewOne.JSON,
     // --- Many ---
     'list': Evol.ViewMany.List,
-    'badges': Evol.ViewMany.Badges,
+    'cards': Evol.ViewMany.Cards,
     'charts': Evol.ViewMany.Charts,
     // --- Action ---
     'filter': Evol.ViewAction.Filter,
@@ -61,7 +61,7 @@ return Backbone.View.extend({
             json: true,
             // --- views for many ---
             list: true,
-            badges: true,
+            cards: true,
             charts: true,
             // --- actions ---
             'new': true,
@@ -130,7 +130,7 @@ return Backbone.View.extend({
             linkOpt2h('json','JSON','barcode','1');
             h+=menuDevider;
             linkOpt2h('list','List','th-list','x');
-            linkOpt2h('badges','Badges','th-large','x');
+            linkOpt2h('cards','Cards','th-large','x');
             linkOpt2h('charts','Charts','stats','x');
             h+=eUIm.hEnd('li');
 
@@ -241,7 +241,7 @@ return Backbone.View.extend({
                 switch(viewName){
                     // --- many ---
                     case 'charts':
-                    case 'badges':
+                    case 'cards':
                     case 'list':
                         vw = new Evol.viewClasses[viewName](config)
                             .render();
@@ -419,7 +419,7 @@ return Backbone.View.extend({
             }else{
                 tbBs.viewsIcon.removeClass(cssClose).addClass(cssOpen);
             }
-            if(mode==='badges' || mode==='list' || mode==='charts'){
+            if(mode==='cards' || mode==='list' || mode==='charts'){
                 this._prevViewMany=mode;
                 oneMany(mode, false, true);
                 if(mode==='charts'){
@@ -454,7 +454,7 @@ return Backbone.View.extend({
                 setVisible(tbBs.save, mode!=='view');
                 setVisible(tbBs.edit, mode==='view');
             }
-            setVisible(tbBs.manys.filter('[data-id="group"]'), mode==='badges');
+            setVisible(tbBs.manys.filter('[data-id="group"]'), mode==='cards');
         }
     },
 
@@ -878,7 +878,7 @@ return Backbone.View.extend({
              case 'new-panel':
                  Evol.Dico.showDesigner('', toolId.substr(4), $e);
                  break;*/
-            default:// 'edit', 'mini', 'list', 'badges', 'export', 'json', 'new'
+            default:// 'edit', 'mini', 'list', 'cards', 'export', 'json', 'new'
                 if(toolId && toolId!==''){
                     this.setView(toolId, true);
                 }

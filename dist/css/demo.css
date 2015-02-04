@@ -293,23 +293,23 @@ body {
   font-weight: normal;
   color: #b3e5fc;
 }
-/* demo badge view*/
-[data-eid="todo"] .evol-badges-body > .panel,
-[data-eid="contact"] .evol-badges-body > .panel {
+/* demo card view*/
+[data-eid="todo"] .evol-cards-body > .panel,
+[data-eid="contact"] .evol-cards-body > .panel {
   height: 160px !important;
 }
-[data-eid="winecellar"] .evol-badges-body {
+[data-eid="winecellar"] .evol-cards-body {
   /*label {
     text-align:right;
     min-width: 80px;
   }*/
 }
-[data-eid="winecellar"] .evol-badges-body > div.panel {
+[data-eid="winecellar"] .evol-cards-body > div.panel {
   height: 272px !important;
 }
-[data-eid="winecellar"] .evol-badges-body p {
+[data-eid="winecellar"] .evol-cards-body p {
   clear: left;
 }
-[data-eid="test"] .evol-badges-body > div.panel {
+[data-eid="test"] .evol-cards-body > div.panel {
   height: 182px !important;
 }

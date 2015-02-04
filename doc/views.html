@@ -39,7 +39,7 @@
 
         <div>
             <a href="#many-list"><i class="glyphicon glyphicon-th-list"></i>List</a>
-            <a href="#many-badges"><i class="glyphicon glyphicon-th-large"></i>Badges</a>
+            <a href="#many-cards"><i class="glyphicon glyphicon-th-large"></i>Cards</a>
             <a href="#many-charts"><i class="glyphicon glyphicon-stats"></i>Charts</a>
         </div>
 
@@ -73,7 +73,7 @@
     <li>Views for a collection of <strong>many</strong> models: <a href="#many">Evol.ViewMany</a>
         <br/>
         <a href="#many-list"><i class="glyphicon glyphicon-th-list"></i>List</a>,
-        <a href="#many-badges"><i class="glyphicon glyphicon-th-large"></i>Badges</a>,
+        <a href="#many-cards"><i class="glyphicon glyphicon-th-large"></i>Cards</a>,
         <a href="#many-charts"><i class="glyphicon glyphicon-stats"></i>Charts</a>...
     </li>
 
@@ -183,7 +183,7 @@ Views API: <a href="#methods">Methods</a>,
 
     <p class="evo-links-views">
         <a href="#many-list"><i class="glyphicon glyphicon-th-list"></i>List</a>,
-        <a href="#many-badges"><i class="glyphicon glyphicon-th-large"></i>Badges</a>,
+        <a href="#many-cards"><i class="glyphicon glyphicon-th-large"></i>Cards</a>,
         <a href="#many-charts"><i class="glyphicon glyphicon-stats"></i>Charts</a>...</li>
     </p>
     <a name="many-list" class="evo-anchor">&nbsp;</a>
@@ -198,17 +198,17 @@ Views API: <a href="#methods">Methods</a>,
     <p><code>
         var vw = new Evol.ViewMany.List(myConfig);</code></p>
 
-    <a name="many-badges" class="evo-anchor">&nbsp;</a>
+    <a name="many-cards" class="evo-anchor">&nbsp;</a>
 
-    <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Badges</h3>
+    <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Cards</h3>
 
-    <p>Shows records side by side as badges.</p>
+    <p>Shows records side by side as cards.</p>
 
     <div class="evol-doc-views">
-        <img class="pixEvoMode shadow" src="screenshots/many-badges.png"/><br/>&nbsp;
+        <img class="pixEvoMode shadow" src="screenshots/many-cards.png"/><br/>&nbsp;
     </div>
     <p><code>
-        var vw = new Evol.ViewMany.Badges(myConfig);</code></p>
+        var vw = new Evol.ViewMany.Cards(myConfig);</code></p>
 
 
     <a name="many-charts" class="evo-anchor">&nbsp;</a>
@@ -277,7 +277,7 @@ Views API: <a href="#methods">Methods</a>,
 <section>
     <h2>Methods</h2>
 
-    <p><br>Methods common to Evol.ViewOne (Edit, View, Mini, JSON) and Evol.ViewMany (List, Badges, Charts):</p>
+    <p><br>Methods common to Evol.ViewOne (Edit, View, Mini, JSON) and Evol.ViewMany (List, Cards, Charts):</p>
     <p><strong>render()</strong>: Renders the view in the DOM.</p>
     <p><strong>getFields()</strong>: Returns an array of the UI-model fields present in the view.</p>
     <p><strong>getModel(), setModel(model)</strong>: Gets or sets the Backbone model.</p>
@@ -296,7 +296,7 @@ Views API: <a href="#methods">Methods</a>,
     <p><strong>validate()</strong>: Validates all fields and shows warnings if necessary.</p>
 
 
-    <p><br>Methods specific to Evol.ViewMany (List, Badges, Charts):</p>
+    <p><br>Methods specific to Evol.ViewMany (List, Cards, Charts):</p>
     <p><strong>getCollection(), setCollection(collec)</strong>: Gets or sets the collection.</p>
     <p><strong>getFilter(), setFilter(filter)</strong>: Gets or sets the collection filter (from Evol.ViewAction.Filter).</p>
     <p><strong>getPage(), setPage(pageIndex)</strong>: Gets or sets the page index for pagination.</p>
@@ -319,13 +319,13 @@ Views API: <a href="#methods">Methods</a>,
 <section>
     <h2>Options</h2>
 
-    <p><br>Options common to Evol.ViewOne (Edit, View, Mini, JSON) and Evol.ViewMany (List, Badges, Charts):</p>
+    <p><br>Options common to Evol.ViewOne (Edit, View, Mini, JSON) and Evol.ViewMany (List, Cards, Charts):</p>
     <p><strong>iconsPath</strong>: Path to icons for model and list of values.</p>
 
     <p><br>Options specific to Evol.ViewOne (Edit, View, Mini, JSON):</p>
     <p><strong>button_addAnother</strong>: Show a "Save and Add Another" button next to "Save". Default value = false.</p>
 
-    <p><br>Options specific to Evol.ViewMany.List and Evol.ViewMany.Badges:</p>
+    <p><br>Options specific to Evol.ViewMany.List and Evol.ViewMany.Cards:</p>
     <p><strong>pageSize</strong>: Maximum number of models per page. Default value = 20.</p>
     <p><strong>pageIndex</strong>: Index of the current page. Default value = 0.</p>
     <p><strong>selectable</strong>: Specify if a checkbox will be displayed for each model. Default value = false.</p>
@@ -346,7 +346,7 @@ Views API: <a href="#methods">Methods</a>,
     </div>
 
 
-    <p><br>Events for Evol.ViewMany.List and Evol.ViewMany.Badges:</p>
+    <p><br>Events for Evol.ViewMany.List and Evol.ViewMany.Cards:</p>
     <div id="evt-many">
         <p><strong>selection.many</strong>: Triggered when the selection changes.</p>
         <p><strong>navigate.many</strong>: Triggered when a link to a model is clicked.</p>

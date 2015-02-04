@@ -1638,25 +1638,25 @@ return Backbone.View.extend({
 ;
 /*! ***************************************************************************
  *
- * evolutility :: many-badges.js
+ * evolutility :: many-cards.js
  *
- * View many badges
+ * View many cards
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
-Evol.ViewMany.Badges = Evol.ViewMany.extend({
+Evol.ViewMany.Cards = Evol.ViewMany.extend({
 
-    viewName: 'badges',
+    viewName: 'cards',
 
     _render: function (models) {
         var h = [],
             pSize = this.pageSize || 50,
             pSummary = this.pageSummary(0, pSize, models.length);
 
-        h.push('<div class="evol-many-badges"><div class="evol-badges-body">');
+        h.push('<div class="evol-many-cards"><div class="evol-cards-body">');
         this._HTMLbody(h, this.getFields(), pSize, this.uiModel.icon, 0, this.selectable);
         h.push('</div>', Evol.UI.html.clearer);
         this._HTMLpagination(h, 0, pSize, models.length);
@@ -1667,7 +1667,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
     },
 
     _$body: function(){
-        return this.$('.evol-badges-body');
+        return this.$('.evol-cards-body');
     },
 
     HTMLItem: function(h, fields, model, icon, selectable, route){
@@ -1705,7 +1705,7 @@ Evol.ViewMany.Badges = Evol.ViewMany.extend({
                     Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link, route?route+model.id:null),
                     '</h4></div>');
             }else{
-                h.push('<div><label>', f.labelbadges?f.labelbadges:f.label,':</label> ', v, '</div>');
+                h.push('<div><label>', f.labelcards?f.labelcards:f.label,':</label> ', v, '</div>');
             }
         });
         h.push('</div>');
@@ -3379,21 +3379,17 @@ Evol.ViewAction.Export = function(){
         },
 
         optsXML: function(entity){
-            return [
-                this.html_more2(i18nXpt.options),
-                this.optEntityName('elementName', i18nXpt.XMLroot, entity),
-                '</div>'
-            ].join('');
+            return this.html_more2(i18nXpt.options)+
+                this.optEntityName('elementName', i18nXpt.XMLroot, entity)+
+                '</div>';
         },
 
         optsSQL: function(entity){
-            return [
-                this.html_more2(i18nXpt.options),
-                this.optEntityName('table', i18nXpt.SQLTable, entity),
-                '<div>', uiInput.checkbox('insertId', '0'), eUI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert), '</div>',
-                '<div>', uiInput.checkbox('transaction', '0'), eUI.fieldLabelSpan('transaction', i18nXpt.SQLTrans), '</div>',
-                '</div>'
-            ].join('');
+            return this.html_more2(i18nXpt.options)+
+                this.optEntityName('table', i18nXpt.SQLTable, entity)+
+                '<div>'+uiInput.checkbox('insertId', '0')+eUI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert)+'</div>'+
+                '<div>'+uiInput.checkbox('transaction', '0')+eUI.fieldLabelSpan('transaction', i18nXpt.SQLTrans)+'</div>'+
+                '</div>';
         },
 
         optsHTML: function(){
@@ -3554,19 +3550,12 @@ return Backbone.View.extend({
     },
 
     _preview: function (format) {
-        var h=[],
-            $e = this.$('.evol-xpt-val');
-
-        this._exportContent(h, format);
-        if(this.many && format==='JSON'){
-            $e.html('['+h.join(',\n')+']');
-        }else{
-            $e.html(h.join(''));
-        }
+        this.$('.evol-xpt-val').html(this.exportContent(format));
     },
 
-    _exportContent: function(h, format){
-        var maxItem = this.sampleMaxSize-1;
+    exportContent: function(format){
+        var h=[],
+            maxItem = this.sampleMaxSize-1;
 
         if(this.model && this.model.collection){
             var data = this.model.collection.models,
@@ -3574,11 +3563,8 @@ return Backbone.View.extend({
                 fldsDom = this.$('.evol-xpt-flds > fieldset input:checked'), //_valFields
                 fldsDomHash = {},
                 useHeader = this.$('#xptFLH').prop('checked'),
-                showID=this.$('#showID').prop('checked');
+                showID = this.$('#showID').prop('checked');
 
-            //if(showID){
-            //    flds.unshift({id: 'id', type: 'text', label: 'Id'});
-            //}
             _.each(fldsDom, function(f){
                 fldsDomHash[f.id.substring(3)]='';
             });
@@ -3674,10 +3660,16 @@ return Backbone.View.extend({
                     if(showID){
                         propList.unshift('id');
                     }
+                    if(this.many){
+                        h.push('[');
+                    }
                     _.every(data, function(m, idx){
                         h.push(JSON.stringify(_.pick(m.toJSON(), propList), null, 2));
                         return idx<maxItem;
                     });
+                    if(this.many){
+                        h.push(']');
+                    }
                     break;
                 case 'SQL':
                     var optTransaction = this.$('#transaction').prop('checked'),
@@ -3792,16 +3784,7 @@ return Backbone.View.extend({
         }else{
             h.push(i18n.nodata);
         }
-    },
-
-    exportContent: function(format){
-        var h=[];
-        this._exportContent(h, format);
-        if(this.many && format==='JSON'){
-            return '['+h.join(',\n')+']';
-        }else{
-            return h.join('');
-        }
+        return h.join('');
     },
 
     val: function (value) {
@@ -4554,7 +4537,7 @@ Evol.viewClasses = {
     'json': Evol.ViewOne.JSON,
     // --- Many ---
     'list': Evol.ViewMany.List,
-    'badges': Evol.ViewMany.Badges,
+    'cards': Evol.ViewMany.Cards,
     'charts': Evol.ViewMany.Charts,
     // --- Action ---
     'filter': Evol.ViewAction.Filter,
@@ -4600,7 +4583,7 @@ return Backbone.View.extend({
             json: true,
             // --- views for many ---
             list: true,
-            badges: true,
+            cards: true,
             charts: true,
             // --- actions ---
             'new': true,
@@ -4669,7 +4652,7 @@ return Backbone.View.extend({
             linkOpt2h('json','JSON','barcode','1');
             h+=menuDevider;
             linkOpt2h('list','List','th-list','x');
-            linkOpt2h('badges','Badges','th-large','x');
+            linkOpt2h('cards','Cards','th-large','x');
             linkOpt2h('charts','Charts','stats','x');
             h+=eUIm.hEnd('li');
 
@@ -4780,7 +4763,7 @@ return Backbone.View.extend({
                 switch(viewName){
                     // --- many ---
                     case 'charts':
-                    case 'badges':
+                    case 'cards':
                     case 'list':
                         vw = new Evol.viewClasses[viewName](config)
                             .render();
@@ -4958,7 +4941,7 @@ return Backbone.View.extend({
             }else{
                 tbBs.viewsIcon.removeClass(cssClose).addClass(cssOpen);
             }
-            if(mode==='badges' || mode==='list' || mode==='charts'){
+            if(mode==='cards' || mode==='list' || mode==='charts'){
                 this._prevViewMany=mode;
                 oneMany(mode, false, true);
                 if(mode==='charts'){
@@ -4993,7 +4976,7 @@ return Backbone.View.extend({
                 setVisible(tbBs.save, mode!=='view');
                 setVisible(tbBs.edit, mode==='view');
             }
-            setVisible(tbBs.manys.filter('[data-id="group"]'), mode==='badges');
+            setVisible(tbBs.manys.filter('[data-id="group"]'), mode==='cards');
         }
     },
 
@@ -5417,7 +5400,7 @@ return Backbone.View.extend({
              case 'new-panel':
                  Evol.Dico.showDesigner('', toolId.substr(4), $e);
                  break;*/
-            default:// 'edit', 'mini', 'list', 'badges', 'export', 'json', 'new'
+            default:// 'edit', 'mini', 'list', 'cards', 'export', 'json', 'new'
                 if(toolId && toolId!==''){
                     this.setView(toolId, true);
                 }

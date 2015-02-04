@@ -29,7 +29,7 @@ All views for a Backbone model and collection are defined by only one UI-Model a
 
 Evolutility provides 3 types of view
 * Views for a model: View, Edit, Mini (quick edit), JSON.
-* Views for a collection: List, Badges, Charts.
+* Views for a collection: List, Cards, Charts.
 * Views for actions on a model or collection: Export, Filter.
 
 A large part of the API (methods, options and events) is common to all views. Some views have additional API.
@@ -69,11 +69,11 @@ Gives a tabular view of a collection with paging.
 ```javascript
 var vw = new Evol.ViewMany.List(myConfig);
 ```
-### Badges
-Shows records side by side as badges.
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-badges.png)
+### Cards
+Shows records side by side as cards.
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-cards.png)
 ```javascript
-var vw = new Evol.ViewMany.Badges(myConfig);
+var vw = new Evol.ViewMany.Cards(myConfig);
 ```
 ### Charts
 Draws charts about the collection.

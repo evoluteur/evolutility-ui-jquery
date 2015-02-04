@@ -302,8 +302,8 @@ label {
 .list-td-sel {
   width: 30px;
 }
-/* --- badges --- */
-.evol-badges-body > div.panel {
+/* --- cards --- */
+.evol-cards-body > div.panel {
   float: left;
   width: 240px;
   min-width: 140px;
@@ -315,7 +315,7 @@ label {
   -webkit-border-radius: 10px;
   overflow: auto;
 }
-.evol-badges-body > div.panel > div > label {
+.evol-cards-body > div.panel > div > label {
   vertical-align: top;
 }
 /* --- charts --- */
