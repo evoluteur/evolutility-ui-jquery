@@ -25,21 +25,17 @@ Evol.ViewAction.Export = function(){
         },
 
         optsXML: function(entity){
-            return [
-                this.html_more2(i18nXpt.options),
-                this.optEntityName('elementName', i18nXpt.XMLroot, entity),
-                '</div>'
-            ].join('');
+            return this.html_more2(i18nXpt.options)+
+                this.optEntityName('elementName', i18nXpt.XMLroot, entity)+
+                '</div>';
         },
 
         optsSQL: function(entity){
-            return [
-                this.html_more2(i18nXpt.options),
-                this.optEntityName('table', i18nXpt.SQLTable, entity),
-                '<div>', uiInput.checkbox('insertId', '0'), eUI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert), '</div>',
-                '<div>', uiInput.checkbox('transaction', '0'), eUI.fieldLabelSpan('transaction', i18nXpt.SQLTrans), '</div>',
-                '</div>'
-            ].join('');
+            return this.html_more2(i18nXpt.options)+
+                this.optEntityName('table', i18nXpt.SQLTable, entity)+
+                '<div>'+uiInput.checkbox('insertId', '0')+eUI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert)+'</div>'+
+                '<div>'+uiInput.checkbox('transaction', '0')+eUI.fieldLabelSpan('transaction', i18nXpt.SQLTrans)+'</div>'+
+                '</div>';
         },
 
         optsHTML: function(){
@@ -200,19 +196,12 @@ return Backbone.View.extend({
     },
 
     _preview: function (format) {
-        var h=[],
-            $e = this.$('.evol-xpt-val');
-
-        this._exportContent(h, format);
-        if(this.many && format==='JSON'){
-            $e.html('['+h.join(',\n')+']');
-        }else{
-            $e.html(h.join(''));
-        }
+        this.$('.evol-xpt-val').html(this.exportContent(format));
     },
 
-    _exportContent: function(h, format){
-        var maxItem = this.sampleMaxSize-1;
+    exportContent: function(format){
+        var h=[],
+            maxItem = this.sampleMaxSize-1;
 
         if(this.model && this.model.collection){
             var data = this.model.collection.models,
@@ -220,11 +209,8 @@ return Backbone.View.extend({
                 fldsDom = this.$('.evol-xpt-flds > fieldset input:checked'), //_valFields
                 fldsDomHash = {},
                 useHeader = this.$('#xptFLH').prop('checked'),
-                showID=this.$('#showID').prop('checked');
+                showID = this.$('#showID').prop('checked');
 
-            //if(showID){
-            //    flds.unshift({id: 'id', type: 'text', label: 'Id'});
-            //}
             _.each(fldsDom, function(f){
                 fldsDomHash[f.id.substring(3)]='';
             });
@@ -320,10 +306,16 @@ return Backbone.View.extend({
                     if(showID){
                         propList.unshift('id');
                     }
+                    if(this.many){
+                        h.push('[');
+                    }
                     _.every(data, function(m, idx){
                         h.push(JSON.stringify(_.pick(m.toJSON(), propList), null, 2));
                         return idx<maxItem;
                     });
+                    if(this.many){
+                        h.push(']');
+                    }
                     break;
                 case 'SQL':
                     var optTransaction = this.$('#transaction').prop('checked'),
@@ -438,16 +430,7 @@ return Backbone.View.extend({
         }else{
             h.push(i18n.nodata);
         }
-    },
-
-    exportContent: function(format){
-        var h=[];
-        this._exportContent(h, format);
-        if(this.many && format==='JSON'){
-            return '['+h.join(',\n')+']';
-        }else{
-            return h.join('');
-        }
+        return h.join('');
     },
 
     val: function (value) {
