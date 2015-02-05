@@ -489,32 +489,24 @@ Evol.UI.Charts = {
     URL: 'http://chart.apis.google.com/chart',
 
     _HTML: function(title, urlPix, style){
-        return [ //class="panel ', this.style, '
-            '<div class="evol-chart-holder panel ',style,'"><label class="evol-chart-title">',
-            title,'</label><img src="',urlPix,'"><br></div>'
-        ].join('');
+        return '<div class="evol-chart-holder panel '+style+'"><label class="evol-chart-title">'+
+            title+'</label><img src="'+urlPix+'"><br></div>';
     },
 
     Pie: function (label, data, labels, style, sizes){
         var size=sizes?sizes:'390x200';
-        var urlGoogleChart = [this.URL,'?chd=t:',
-            data.join(','),
-            '&amp;chl=',
-            labels.join('|'),
-            '&amp;cht=p&amp;chds=0,20&amp;chs=',size].join('');
+        var urlGoogleChart = this.URL+'?chd=t:'+data.join(',')+
+            '&amp;chl='+labels.join('|')+
+            '&amp;cht=p&amp;chds=0,20&amp;chs='+size;
         return this._HTML(label, urlGoogleChart, style || 'panel-default');
     },
 
     Bars: function (label, data, labels, style, sizes){
         var size=sizes?sizes:'360x200';
         var maxCount = _.max(data),
-            urlGoogleChart = [this.URL,'?chbh=a&amp;chs=',size,'&cht=bvg&chco=3a87ad,d9edf7&chds=0,',
-                maxCount,
-                '&amp;chd=t:',
-                data.join('|'),
-                '&amp;chp=0.05&amp;chts=676767,10.5&amp;chdl=',
-                labels.join('|')
-            ].join('');
+            urlGoogleChart = this.URL+'?chbh=a&amp;chs='+size+'&cht=bvg&chco=3a87ad,d9edf7&chds=0,'+maxCount+
+                '&amp;chd=t:'+data.join('|')+
+                '&amp;chp=0.05&amp;chts=676767,10.5&amp;chdl='+labels.join('|');
         return this._HTML(label, urlGoogleChart, style);
     }
 
@@ -1779,34 +1771,47 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             });
 
         if(chartFields && chartFields.length){
+            var groups,
+                lb,
+                entityName=EvoUI.capitalize(uiModel.entities);
             _.each(chartFields, function(f){
-                var groups = _.countBy(models, function(m) {
-                        return m.get(f.id);
-                    }),
-                    data=[],
-                    lb,
+                var data=[],
                     labels=[],
-                    entityName=EvoUI.capitalize(uiModel.entities);
+                    nb, dataSetName,
+                    isList=f.type===fTypes.lov || f.type===fTypes.list;
 
-                for(var dataSetName in groups) {
-                    var nb=groups[dataSetName];
-                    if(_.isUndefined(dataSetName)){
-                        lb = i18n.na;
-                    }else if(dataSetName==='' || dataSetName==='null'){
-                        lb = i18n.none;
-                    }else if(f.type===fTypes.lov || f.type===fTypes.list){
-                        if(f.list && f.list.length && f.list[0].icon){
-                            lb = EvoDico.lovTextNoPix(f, dataSetName);
-                        }else{
-                            lb = EvoDico.lovText(f, dataSetName, Evol.hashLov, iconsPath);
-                        }
-                    }else if(f.type===fTypes.bool){
+                if(f.type===fTypes.bool){
+                    groups = _.countBy(models, function(m) {
+                        return m.get(f.id)===true;
+                    });
+                    for(dataSetName in groups) {
+                        nb=groups[dataSetName];
                         lb = (dataSetName==='true')?i18n.yes:i18n.no;
-                    }else{
-                        lb = dataSetName;
+                        data.push(nb);
+                        labels.push(lb+' ('+nb+')');
                     }
-                    data.push(nb);
-                    labels.push(lb+' ('+nb+')');
+                }else{
+                    groups = _.countBy(models, function(m) {
+                        return m.get(f.id);
+                    });
+                    for(dataSetName in groups) {
+                        nb=groups[dataSetName];
+                        if(dataSetName==='undefined'){
+                            lb = i18n.na;
+                        }else if(dataSetName==='' || dataSetName==='null'){
+                            lb = i18n.none;
+                        }else if(isList){
+                            if(f.list && f.list.length && f.list[0].icon){
+                                lb = EvoDico.lovTextNoPix(f, dataSetName);
+                            }else{
+                                lb = EvoDico.lovText(f, dataSetName, Evol.hashLov, iconsPath);
+                            }
+                        }else{
+                            lb = dataSetName;
+                        }
+                        data.push(nb);
+                        labels.push(lb+' ('+nb+')');
+                    }
                 }
                 if(f.type===fTypes.lov){
                     h.push(EvoUI.Charts.Pie(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aByB', entityName, f.label), data, labels, style, sizes));
