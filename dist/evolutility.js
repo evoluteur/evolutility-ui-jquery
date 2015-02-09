@@ -3665,16 +3665,10 @@ return Backbone.View.extend({
                     if(showID){
                         propList.unshift('id');
                     }
-                    if(this.many){
-                        h.push('[');
-                    }
                     _.every(data, function(m, idx){
                         h.push(JSON.stringify(_.pick(m.toJSON(), propList), null, 2));
                         return idx<maxItem;
                     });
-                    if(this.many){
-                        h.push(']');
-                    }
                     break;
                 case 'SQL':
                     var optTransaction = this.$('#transaction').prop('checked'),
@@ -3788,6 +3782,9 @@ return Backbone.View.extend({
             }
         }else{
             h.push(i18n.nodata);
+        }
+        if(format==='JSON' && this.many){
+            return '['+h.join(',\n')+']';
         }
         return h.join('');
     },
