@@ -204,7 +204,6 @@ module.exports = function (grunt) {
     // *************************************************************************************
     //      GRUNT PLUGIN : tasks
     // *************************************************************************************
-    grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
