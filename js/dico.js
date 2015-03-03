@@ -15,12 +15,55 @@ Evol.Dico = function(){
 
     var eUI = Evol.UI,
         uiInput = eUI.input,
-        i18n = Evol.i18n;
+        i18n = Evol.i18n,
+        fts={
+            text: 'text',
+            textml: 'textmultiline',
+            bool: 'boolean',
+            int: 'integer',
+            dec: 'decimal',
+            money: 'money',
+            date: 'date',
+            datetime: 'datetime',
+            time: 'time',
+            lov: 'lov',
+            list: 'list', // many values for one field (behave like tags - return an array of strings)
+            //html:'html',
+            formula:'formula',
+            email: 'email',
+            pix: 'image',
+            doc:'document',
+            url: 'url',
+            color: 'color',
+            hidden: 'hidden'
+            //json: 'json',
+            //rating: 'rating',
+            //widget: 'widget'
+        };
 
 return {
 
-    // enum of supported field types
     fieldTypes: fts,
+/*
+    viewClasses: {
+        // --- One ---
+        'view': Evol.ViewOne.View,
+        'edit': Evol.ViewOne.Edit,
+        'mini': Evol.ViewOne.Mini,
+        'json': Evol.ViewOne.JSON,
+        // --- Many ---
+        'list': Evol.ViewMany.List,
+        'cards': Evol.ViewMany.Cards,
+        'clusters': Evol.ViewMany.Clusters,
+        'scatter': Evol.ViewMany.Scatter,
+        'charts': Evol.ViewMany.Charts,
+        // --- Action ---
+        'filter': Evol.ViewAction.Filter,
+        'export': Evol.ViewAction.Export
+        //'uimodel': Evol.ViewAction.UI_Model,
+        //'doc': Evol.ViewAction.Doc
+    },*/
+    // enum of supported field types
 
     fieldOneEdit: {// h, f, fid, fv, iconsPath
         text: function (h, f, fid, fv) {
@@ -128,7 +171,10 @@ return {
         },
         // -- contains
         'ct': function(fv, cv){
-            return fv.toLocaleLowerCase().indexOf(cv)>-1;
+            if(fv){
+                return fv.toLocaleLowerCase().indexOf(cv)>-1;
+            }
+            return false;
         },
         // -- finish w/
         'fw': function(fv, cv){
@@ -160,6 +206,18 @@ return {
         '0': function(fv, cv){
             return !fv;
         }
+    },
+
+    viewIsOne: function(viewName){
+        return viewName==='new' || viewName==='edit' || viewName==='view' || viewName==='json';
+    },
+    viewIsMany: function(viewName){
+        return viewName==='list' || viewName==='cards' || viewName==='charts' || viewName==='clusters';
+    },
+
+    fieldInCharts: function (f) {
+        return (_.isUndefined(f.viewcharts) || f.viewcharts) && 
+            (f.type===fts.lov || f.type===fts.bool || f.type===fts.int || f.type===fts.money);
     },
 
     isNumberType: function(fType){

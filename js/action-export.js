@@ -69,7 +69,7 @@ return Backbone.View.extend({
         uiModel: null,
         many: true,
         sampleMaxSize: 20,
-        formats: ['CSV', 'TAB', 'HTML', 'XML', 'SQL', 'JSON']
+        formats: ['CSV', 'TAB', 'HTML', 'JSON', 'XML', 'SQL']
     },
 
     initialize: function (opts) {
@@ -278,11 +278,11 @@ return Backbone.View.extend({
                         _.each(flds, function(f){
                             h.push('<th>', f.label, '</th>');
                         });
-                        h.push('</tr>\n');
+                        h.push('\n</tr>\n');
                     }
                     // -- data
                     _.every(data, function(m, idx){
-                        h.push('<tr>');
+                        h.push('<tr>\n');
                         if(showID){
                             h.push('<td>', m.id, '</td>');
                         }
@@ -294,10 +294,10 @@ return Backbone.View.extend({
                                 h.push('<td></td>');
                             }
                         });
-                        h.push('</tr>\n');
+                        h.push('\n</tr>\n');
                         return idx<maxItem;
                     });
-                    h.push('</table>');
+                    h.push('</table>\n');
                     break;
                 case 'JSON':
                     var propList= _.map(flds, function(f){
@@ -407,7 +407,7 @@ return Backbone.View.extend({
                             h.push(f.id, '="');
                             if(f.type===fts.text || f.type===fts.textml){
                                 fv=m.get(f.id);
-                                if(!_.isUndefined(fv)){
+                                if(!_.isArray(fv) && !_.isUndefined(fv)){
                                     h.push(fv.replace(/"/g, '\\"'));
                                 }
                             }else{

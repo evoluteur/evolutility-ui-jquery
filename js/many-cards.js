@@ -71,6 +71,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
             }
         });
         h.push('</div>');
+        return this;
     }/*,
 
     customize: function () {

@@ -22,19 +22,20 @@ Evol.ViewOne.Mini = Evol.ViewOne.Edit.extend({
     viewName: 'mini',
     prefix: 'om',
 
-    getFieldsCondition: function(m){
+    fieldsetFilter: function(m){
         return m.required || m.viewmany || m.viewmini;
     },
 
     _render: function (h, mode) {
         // EDIT and VIEW forms
         var miniUIModel= {
-                type: 'panel',
-                class:'evol-mini-holder',
-                label: Evol.UI.capitalize(this.uiModel.entity),
-                width: 100,
-                elements: this.getFields()
-            };
+            type: 'panel',
+            class:'evol-mini-holder',
+            label: Evol.UI.capitalize(this.uiModel.entity),
+            width: 100,
+            elements: this.getFields()
+        };
+        
         this._renderPanel(h, miniUIModel, mode);
         this._renderButtons(h, mode);
     }

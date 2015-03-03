@@ -21,6 +21,7 @@ Evol.ViewOne = function(){
 
 return Backbone.View.extend({
 
+    viewName: 'One',
     viewType:'one',
     cardinality: '1',
     editable: true,
@@ -73,7 +74,7 @@ return Backbone.View.extend({
 
     getFields: function (){
         if(!this._fields){
-            this._fields=eDico.getFields(this.uiModel, this.getFieldsCondition);
+            this._fields=eDico.getFields(this.uiModel, this.fieldsetFilter);
             this._fieldHash={};
             var that=this;
             _.each(this._fields, function(f){

@@ -11,31 +11,6 @@ var Evol = Evol || {};
 Evol.hashLov = {};
 Evol.ViewAction = {};
 
-var fts = {
-    text: 'text',
-    textml: 'textmultiline',
-    bool: 'boolean',
-    int: 'integer',
-    dec: 'decimal',
-    money: 'money',
-    date: 'date',
-    datetime: 'datetime',
-    time: 'time',
-    lov: 'lov',
-    list: 'list', // many values for one field (behave like tags - return an array of strings)
-    //html:'html',
-    formula:'formula',
-    email: 'email',
-    pix: 'image',
-    doc:'document',
-    url: 'url',
-    color: 'color',
-    hidden: 'hidden'
-    //json: 'json',
-    //rating: 'rating',
-    //widget: 'widget'
-};
-
 Evol.UI = {
 
     // --- static html fragments ---

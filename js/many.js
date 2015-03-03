@@ -19,6 +19,7 @@ Evol.ViewMany = function() {
 
 return Backbone.View.extend({
 
+    viewName: 'Many',
     viewType: 'many',
     editable: false,
     cardinality: 'n',
@@ -33,7 +34,10 @@ return Backbone.View.extend({
         selectable: false,
         links: true,
         noDataString: i18n.nodata, //'No data to display.',
-        iconsPath: 'pix/'
+        iconsPath: 'pix/',
+        fieldsetFilter: function (f) {
+            return f.viewmany;
+        }
     },
 
     events: {
@@ -156,9 +160,7 @@ return Backbone.View.extend({
 
     getFields: function () {
         if (!this._fields) {
-            this._fields = eDico.getFields(this.uiModel, function (f) {
-                return f.viewmany;
-            });
+            this._fields = eDico.getFields(this.uiModel, this.fieldsetFilter);
             this._fieldHash = {};
             var fh = this._fieldHash;
             _.each(this._fields, function (f) {

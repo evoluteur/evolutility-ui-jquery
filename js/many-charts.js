@@ -11,13 +11,19 @@
 
 // Quick and easy implementation w/ the old version of google charts
 // must be re-written to use D3.js or other cool stuff
+
 Evol.ViewMany.Charts = Evol.ViewMany.extend({
 
     viewName: 'charts',
 
+    fieldsetFilter: function (f) {
+        return f.viewmany || f.viewcharts;
+    },
+
     options: {
         //sizes: '600x300',
         style: 'panel-info',
+        fieldsetFilter: Evol.Dico.fieldInCharts,
         autoUpdate: false
     },
 /*
@@ -46,9 +52,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             uiModel = this.uiModel,
             models = this.collection.models,
             iconsPath = this.iconsPath || '',
-            chartFields = EvoDico.getFields(uiModel, function(f){
-                return (_.isUndefined(f.viewcharts) || f.viewcharts) && (f.type===fTypes.lov || f.type===fTypes.bool || f.type===fTypes.int || f.type===fTypes.money);
-            });
+            chartFields = this.getFields();
 
         if(chartFields && chartFields.length){
             var groups,
