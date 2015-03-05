@@ -2,6 +2,8 @@
  *
  * evolutility :: shell.js
  *
+ * View "shell" to hold the single page app for all objects/ui-models.
+ *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
  *

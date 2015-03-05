@@ -2,7 +2,7 @@
  *
  * evolutility :: one-mini.js
  *
- * View one mini
+ * View "one mini" to "quick edit" one backbone model (only showing important or required fields).
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri

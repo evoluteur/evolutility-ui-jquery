@@ -2,7 +2,7 @@
  *
  * evolutility :: many-cards.js
  *
- * View many cards
+ * View "many cards" to show a collection as many cards.
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
