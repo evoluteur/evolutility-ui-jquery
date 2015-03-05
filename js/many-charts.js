@@ -2,7 +2,7 @@
  *
  * evolutility :: many-charts.js
  *
- * View many charts
+ * View "many charts" to display a collection as a set of charts.
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
@@ -15,10 +15,6 @@
 Evol.ViewMany.Charts = Evol.ViewMany.extend({
 
     viewName: 'charts',
-
-    fieldsetFilter: function (f) {
-        return f.viewmany || f.viewcharts;
-    },
 
     options: {
         //sizes: '600x300',

@@ -2,7 +2,7 @@
  *
  * evolutility :: many.js
  *
- * View many
+ * View "many" for other ViewMany views to inherit from.
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
@@ -133,7 +133,8 @@ return Backbone.View.extend({
 
     setCollection: function (collection) {
         this.collection = collection;
-        return this;//.render();
+        return this.render();
+        //return this;//.render();
     },
 
     getCollection: function () {
