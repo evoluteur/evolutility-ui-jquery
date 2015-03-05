@@ -2,7 +2,7 @@
  *
  * evolutility :: one-view.js
  *
- * View one view (readonly)
+ * View "one view" to browse one model in readonly mode.
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
@@ -108,7 +108,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
 
     _renderButtons: function (h) {
         h.push(Evol.UI.html.clearer,
-            '<div class="evol-buttons">',
+            '<div class="evol-buttons panel panel-info">',
             Evol.UI.button('cancel', Evol.i18n.bCancel, 'btn-default'),
             Evol.UI.button('edit', Evol.i18n.bEdit, 'btn-primary'),
             '</div>');

@@ -2,7 +2,7 @@
  *
  * evolutility :: one.js
  *
- * View one
+ * View "one" for other ViewOne views to inherit from.
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
@@ -493,7 +493,7 @@ return Backbone.View.extend({
 
     _renderButtons: function (h, mode) {
         h.push(eUI.html.clearer,
-            '<div class="evol-buttons">',
+            '<div class="evol-buttons panel panel-info">',
             eUI.button('cancel', i18n.bCancel, 'btn-default'),
             eUI.button('save', i18n.bSave, 'btn-primary'));
         if (this.model && this.model.isNew() && this.button_addAnother && mode!=='json') {
