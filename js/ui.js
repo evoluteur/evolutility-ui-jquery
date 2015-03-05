@@ -18,7 +18,7 @@ Evol.UI = {
         trTableEnd: '</tr></table>',
         TdTrTableEnd: '</td></tr></table>',
         clearer: '<div class="clearfix"></div>',
-        emptyOption: '<option value=""></option>',
+        emptyOption: '<option value=""> - </option>',
         glyphicon: 'glyphicon glyphicon-',
         required: '<span class="evol-required">*</span>', // TODO replace by div w/ ":after" css for icon
         buttonClose: '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'
