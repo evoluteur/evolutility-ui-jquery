@@ -2,7 +2,7 @@
  *
  * evolutility :: one-json.js
  *
- * View one json
+ * View "one json" to edit one backbone model in JSON.
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
@@ -25,7 +25,7 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
 
             h.push(
                 eUI.label('uimjson', 'JSON'),
-                eUI.input.textMJSON('uimjson', jsonStr, 10));
+                eUI.input.textMJSON('uimjson', jsonStr, 16));
             this._renderButtons(h, 'json');
         }else{
             h.push(eUI.HTMLMsg(Evol.i18n.nodata, '', 'info'));
