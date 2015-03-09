@@ -157,10 +157,10 @@ Evol.UI = {
         option: function (id, text) {
             return '<option value="'+id+'">'+text+'</option>';
         },
-        options: function (fields, value) {
+        options: function (lovList, value) {
             var fnOpt = Evol.UI.input.option,
                 opts='';
-            _.each(fields,function(f){
+            _.each(lovList,function(f){
                 if(f.id===value){
                     opts+='<option value="'+f.id+'" selected="selected">'+f.text+'</option>';
                 }else{
