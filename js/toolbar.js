@@ -2,6 +2,8 @@
  *
  * evolutility :: toolbar.js
  *
+ * View "toolbar" (one toolbar instance manages all views for a UI model).
+ *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
  *
@@ -113,26 +115,26 @@ return Backbone.View.extend({
         linkOpt2h('del',i18n.bDelete,'trash','1');
         linkOpt2h('filter',i18n.bFilter,'filter','n');
         //linkOpt2h('group','Group','resize-horizontal','n');
-        linkOpt2h('charts',i18n.bCharts,'stats','n');
+        //linkOpt2h('charts',i18n.bCharts,'stats','n');
         linkOpt2h('export',i18n.bExport,'cloud-download','n');
         //linkOpt2h('selections','','star');
         if(this.toolbar){
             h+='</ul><ul class="nav nav-pills pull-right" data-id="views">'+
-                '<li class="evo-tb-status" data-cardi="n"></li>'+
-                eUIm.hItem('prev','','chevron-left','x')+
-                eUIm.hItem('next','','chevron-right','x');
-
-            h+=eUIm.hBegin('views','li','eye-open');
+                '<li class="evo-tb-status" data-cardi="n"></li>';//+
+            //h+=eUIm.hBegin('views','li','eye-open');
             linkOpt2h('view','View','file','1');
             linkOpt2h('edit','Edit','th','1'); // All Fields
             linkOpt2h('mini','Mini','th-large','1'); // Important Fields only
             linkOpt2h('wiz','Wizard','arrow-right','1');
             linkOpt2h('json','JSON','barcode','1');
-            h+=menuDevider;
-            linkOpt2h('list','List','th-list','x');
-            linkOpt2h('cards','Cards','th-large','x');
-            linkOpt2h('charts','Charts','stats','x');
-            h+=eUIm.hEnd('li');
+            //h+=menuDevider;
+            h+=eUIm.hItem('prev','','chevron-left','x');
+            h+=eUIm.hItem('next','','chevron-right','x');
+            //h+=menuDeviderH;
+            linkOpt2h('list','List','th-list','n');
+            linkOpt2h('cards','Cards','th-large','n');
+            linkOpt2h('charts','Charts','stats','n');
+
 
             //linkOpt2h('customize','','wrench', '1', 'Customize');
             /*
@@ -238,40 +240,38 @@ return Backbone.View.extend({
                 this.$('[data-id="new"]').show();
                 this.$('[data-id="views"] > li').removeClass('evo-sel')
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
-                switch(viewName){
-                    // --- many ---
-                    case 'charts':
-                    case 'cards':
-                    case 'list':
-                        vw = new Evol.viewClasses[viewName](config)
-                            .render();
-                        this._prevViewMany=viewName;
-                        vw.setTitle();
-                        if(viewName!='charts' && this.pageIndex > 0){
-                            //var pIdx=this.curView.getPage();
-                            vw.setPage(this.pageIndex || 0);
-                        }
-                        //this.$el.trigger('status', this.pageSummary(pageIdx, pSize, this.collection.length));
-                        break;
-                    // --- actions ---
-                    case 'export':
-                        config.sampleMaxSize = config.pageSize;
-                        vw = new Evol.ViewAction.Export(config).render();
-                        $v.addClass('panel panel-info')
-                            .slideDown();
-                        break;
-                    // --- one --- view, edit, mini, json, wiz
-                    default :
-                        var vwPrev = null,
-                            cData;
-                        if(vw && vw.editable){
-                            vwPrev = vw;
-                            cData=vw.getData();
-                        }
-                        vw = new Evol.viewClasses[viewName](config).render();
-                        this._prevViewOne=viewName;
-                        this._keepTab(viewName);
-                        break;
+                if(Evol.Dico.viewIsMany(viewName)){
+                    //fieldsetFilter
+                    vw = new Evol.viewClasses[viewName](config)
+                        .render();
+                    this._prevViewMany=viewName;
+                    vw.setTitle();
+                    if(viewName!='charts' && this.pageIndex > 0){
+                        //var pIdx=this.curView.getPage();
+                        vw.setPage(this.pageIndex || 0);
+                    }
+                }else{
+                    switch(viewName){
+                        // --- actions ---
+                        case 'export':
+                            config.sampleMaxSize = config.pageSize;
+                            vw = new Evol.ViewAction.Export(config).render();
+                            $v.addClass('panel panel-info')
+                                .slideDown();
+                            break;
+                        // --- one --- view, edit, mini, json, wiz
+                        default :
+                            var vwPrev = null,
+                                cData;
+                            if(vw && vw.editable){
+                                vwPrev = vw;
+                                cData=vw.getData();
+                            }
+                            vw = new Evol.viewClasses[viewName](config).render();
+                            this._prevViewOne=viewName;
+                            this._keepTab(viewName);
+                            break;
+                    }
                 }
                 if(_.isUndefined(vw)){
                     //TODO error tracking (in other places too)
@@ -412,14 +412,14 @@ return Backbone.View.extend({
             tbBs.prevNext.hide();//.removeClass('nav-disabled');
             setVisible(tbBs.views, !(mode==='export' || mode=='new'));
             tbBs.del.hide();
-            var cssOpen='glyphicon-eye-open',
+            /*var cssOpen='glyphicon-eye-open',
                 cssClose='glyphicon-eye-close';
             if(mode==='mini' || mode==='json'){
                 tbBs.viewsIcon.removeClass(cssOpen).addClass(cssClose);
             }else{
                 tbBs.viewsIcon.removeClass(cssClose).addClass(cssOpen);
-            }
-            if(mode==='cards' || mode==='list' || mode==='charts'){
+            }*/
+            if(Evol.Dico.viewIsMany(mode)){
                 this._prevViewMany=mode;
                 oneMany(mode, false, true);
                 if(mode==='charts'){
