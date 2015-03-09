@@ -48,7 +48,8 @@ uiModels.todo = {
                 },
                 {
                     id: 'complete', attribute: 'complete', type: 'boolean', width: 100, viewmany: true,
-                    label: 'Complete', labelcharts:'Tasks completion'
+                    label: 'Complete', 
+                    labelcharts:'Tasks completion', labeltrue: 'Complete', labelfalse:'Incomplete'
                 }
             ]
         },

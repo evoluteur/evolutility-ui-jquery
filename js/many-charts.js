@@ -66,7 +66,11 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                     });
                     for(dataSetName in groups) {
                         nb=groups[dataSetName];
-                        lb = (dataSetName==='true')?i18n.yes:i18n.no;
+                        if(dataSetName==='true'){
+                            lb = f.labeltrue || i18n.yes;
+                        }else{
+                            lb = f.labelfalse || i18n.no;
+                        }
                         data.push(nb);
                         labels.push(lb+' ('+nb+')');
                     }
