@@ -48,7 +48,8 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             uiModel = this.uiModel,
             models = this.collection.models,
             iconsPath = this.iconsPath || '',
-            chartFields = this.getFields();
+            chartFields = this.getFields(),
+            chartType;
 
         if(chartFields && chartFields.length){
             var groups,
@@ -97,9 +98,10 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                         labels.push(lb+' ('+nb+')');
                     }
                 }
-                if(f.type===fTypes.lov){
+                chartType = f.typechart || (f.type===fTypes.lov ? 'pie':'bars');
+                if(chartType==='pie'){
                     h.push(EvoUI.Charts.Pie(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aByB', entityName, f.label), data, labels, style, sizes));
-                }else{
+                }else if(chartType==='bars'){
                     h.push(EvoUI.Charts.Bars(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aB', entityName, f.label), data, labels, style, sizes));
                 }
             });

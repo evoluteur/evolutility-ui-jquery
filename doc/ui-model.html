@@ -218,6 +218,13 @@
             <th colspan="2">Layout</th>
         </tr>
         <tr>
+            <td>typechart<span class="evol-asterix">*</span>
+            </td>
+            <td>Type of chart used for this fields (in Charts view). Possible values: Pie, vBar, hBar (more later).
+                <br>Note: Only applies for fields which supports charts (fields of type boolean, integer, money, lov).
+            </td>
+        </tr>
+        <tr>
             <td >css<span class="evol-asterix">*</span>
             </td>
             <td>CSS class name for the specific field.
@@ -450,7 +457,7 @@
 <section>
         <h1>panel-list</h1>
 
-    <p>Similar to a panel but used to display a sub-collection (an array of objects).</p>
+    <p>Similar to a panel but used to display a sub-collection (an array of objects). It is the "details" part in a "master-details" (and can have multiple details).</p>
 
     <table class="table table-bordered">
         <tbody>
