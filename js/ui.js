@@ -134,7 +134,7 @@ Evol.UI = {
         lov: function (id, value, label, fLOV) {
             var h = '<select class="evo-field form-control" id="'+id+'"><option value="'+value+'" selected>'+label+'</option>';
             _.each(fLOV, function (f) {
-                h+=this.option(f.id, f.text);
+                h+=this.option(f.id, f.text);//, f.id===value);
             });
             h+='</select>';
             return h;
@@ -154,8 +154,8 @@ Evol.UI = {
             return  this.selectBegin(id, css, emptyOption)+this.options(list, value)+'</select>';
         },
 
-        option: function (id, text) {
-            return '<option value="'+id+'">'+text+'</option>';
+        option: function (id, text, selected) {
+            return '<option value="'+id+(selected?'" selected':'"')+'>'+text+'</option>';
         },
         options: function (lovList, value) {
             var fnOpt = Evol.UI.input.option,

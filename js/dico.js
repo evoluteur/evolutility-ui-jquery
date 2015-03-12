@@ -11,6 +11,7 @@
 
 var Evol = Evol || {};
 
+// not a "virtual DOM" but an "abstract DOM"
 Evol.Dico = function(){
 
     var eUI = Evol.UI,
@@ -44,28 +45,11 @@ Evol.Dico = function(){
 return {
 
     fieldTypes: fts,
-/*
-    viewClasses: {
-        // --- One ---
-        'view': Evol.ViewOne.View,
-        'edit': Evol.ViewOne.Edit,
-        'mini': Evol.ViewOne.Mini,
-        'json': Evol.ViewOne.JSON,
-        // --- Many ---
-        'list': Evol.ViewMany.List,
-        'cards': Evol.ViewMany.Cards,
-        'clusters': Evol.ViewMany.Clusters,
-        'scatter': Evol.ViewMany.Scatter,
-        'charts': Evol.ViewMany.Charts,
-        // --- Action ---
-        'filter': Evol.ViewAction.Filter,
-        'export': Evol.ViewAction.Export
-        //'uimodel': Evol.ViewAction.UI_Model,
-        //'doc': Evol.ViewAction.Doc
-    },*/
-    // enum of supported field types
 
     fieldOneEdit: {// h, f, fid, fv, iconsPath
+        field: function (h, f, fType, fid, fv) {
+            h.push(uiInput[fType](fid, fv, f, null));
+        },
         text: function (h, f, fid, fv) {
             h.push(uiInput.text(fid, fv, f, null));
         },
@@ -212,7 +196,7 @@ return {
         return viewName==='new' || viewName==='edit' || viewName==='view' || viewName==='json';
     },
     viewIsMany: function(viewName){
-        return viewName==='list' || viewName==='cards' || viewName==='charts' || viewName==='clusters';
+        return viewName==='list' || viewName==='cards' || viewName==='charts' || viewName==='bubbles';
     },
 
     fieldInCharts: function (f) {
@@ -332,8 +316,7 @@ return {
         }
         return '';
     },
-
-    /*
+/*
      showDesigner: function(id, type, $el, context){
          var css='evodico-'+type,
              //$('<div class="evodico-'+type+'"></div>'),
@@ -381,8 +364,8 @@ return {
          $elDesModal.modal('show');
 
          return this;
-     },*/
-
+     },
+*/
     filterModels: function(models, filters){
         if(filters.length){
             // TODO pre-build function to avoid repeating loop
@@ -554,6 +537,19 @@ return {
     bbComparatorText: function(fid){
         return function(modelA, modelB) {
             return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
+        };
+    },
+
+    sortingText: function(fid){
+            //return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
+        return function(modelA, modelB) {
+            if(modelA[fid]<modelB[fid]){
+                return 1;
+            }
+            if(modelB[fid]<modelA[fid]){
+                return -1;
+            }
+            return 0;
         };
     },
 

@@ -41,6 +41,7 @@
   min-height: 35px;
   line-height: 35px;
   margin-top: 2px;
+  margin-right: 5px;
 }
 .evo-toolbar .evo-filter-on {
   background-color: #e0f2f1;
@@ -95,7 +96,6 @@
 }
 .evol-json {
   width: 100%;
-  height: 350px;
   margin: 0 0 10px;
 }
 .glyphicon-wrench {

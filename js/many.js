@@ -134,7 +134,6 @@ return Backbone.View.extend({
     setCollection: function (collection) {
         this.collection = collection;
         return this.render();
-        //return this;//.render();
     },
 
     getCollection: function () {
@@ -275,7 +274,6 @@ return Backbone.View.extend({
                 bGap = function(){
                     h.push('<li class="disabled"><a href="javascript:void(0)">...</a></li>');
                 };
-
             h.push('<li data-id="prev"',
                 (pId===1)?' class="disabled"':'',
                 '><a href="javascript:void(0)">&laquo;</a></li>');
