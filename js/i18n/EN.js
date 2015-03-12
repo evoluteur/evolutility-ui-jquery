@@ -27,7 +27,9 @@ Evol.i18n = {
 
     // --- toolbar & buttons ---
     View:'View',
+    bView:'View',
     bEdit:'Edit',
+    bMini: 'Mini', // 'Quick Edit'
     // Login:'Login',
     bNew:'New',
     NewEntity:'New {0}', //'New Item',
@@ -43,7 +45,11 @@ Evol.i18n = {
     //MassUpdate:'Mass Update',
     bDelete:'Delete',
     bAll:'All',
+    bList:'List',
     bFilter: 'Filter',
+    //bBubbles: 'Bubbles',
+    bCards: 'Cards',
+    bJSON: 'JSON',
     //bRefresh: 'Refresh',
     //bPrint:'Print',
     bSave:'Save',
