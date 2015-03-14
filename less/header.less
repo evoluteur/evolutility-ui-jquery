@@ -78,9 +78,16 @@
 .evo-head-links,
 .evo-head-links2{
   display: block;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  @media only screen and (max-width: @screen2) {
+    flex-direction: row;
+  }
   >li{
     display: inline;
     padding:0 10px;
+    text-align: left;
     >a{
       text-decoration: none;
       &:hover{
@@ -93,36 +100,34 @@
     }
   }
 }
+.evo-link2{
+  @media only screen and (max-width: @screen2) {
+    order: 100;
+    width:100%;
+  }
+}
+.evo-head-links2 {
+  .sel{
+    color: #ffc107;
+  }
+}
 .evo-head-links{
   font-size: 1.5em;
-  margin-left:30px;
   margin-top:5px;
-  >li:last-child{
-    //float:right;
-    margin-left:70px;
-  }
-  @media only screen and (min-width: @screen2) {
-    position:absolute;
-    top:64px;
-    left:-58px;
-    >li{
-      display:block;
-      &:last-child{
-        margin-left:0;
-        margin-top: 21px;
-      }
+  margin-left:-30px;
+  >li.spaced{
+    margin-top:50px;
+    @media only screen and (max-width: @screen2) {
+      margin-top:0;
+      margin-left:30px;
     }
   }
 }
 
 .evo-head-links2{
-  font-size: 1.2em;
+  font-size: .7em;
   @media only screen and (min-width: @screen2) {
-    font-size: 1em;
-    position: absolute;
     padding:0;
-    top: 75px;
-    left: 80px;
     >li{
       display:block;
     }
@@ -156,7 +161,7 @@
   min-height: 120px;
 }
 .evo-title2{
-  top: 80px;
+  top: 70px;
   padding:5px 10px;
 }
 

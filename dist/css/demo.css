@@ -56,11 +56,21 @@
 .evo-head-links,
 .evo-head-links2 {
   display: block;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+@media only screen and (max-width: 900px) {
+  .evo-head-links,
+  .evo-head-links2 {
+    flex-direction: row;
+  }
 }
 .evo-head-links > li,
 .evo-head-links2 > li {
   display: inline;
   padding: 0 10px;
+  text-align: left;
 }
 .evo-head-links > li > a,
 .evo-head-links2 > li > a {
@@ -75,38 +85,35 @@
 .evo-head-links2 > li > a.sel {
   color: white;
 }
+@media only screen and (max-width: 900px) {
+  .evo-link2 {
+    order: 100;
+    width: 100%;
+  }
+}
+.evo-head-links2 .sel {
+  color: #ffc107;
+}
 .evo-head-links {
   font-size: 1.5em;
-  margin-left: 30px;
   margin-top: 5px;
+  margin-left: -30px;
 }
-.evo-head-links > li:last-child {
-  margin-left: 70px;
+.evo-head-links > li.spaced {
+  margin-top: 50px;
 }
-@media only screen and (min-width: 900px) {
-  .evo-head-links {
-    position: absolute;
-    top: 64px;
-    left: -58px;
-  }
-  .evo-head-links > li {
-    display: block;
-  }
-  .evo-head-links > li:last-child {
-    margin-left: 0;
-    margin-top: 21px;
+@media only screen and (max-width: 900px) {
+  .evo-head-links > li.spaced {
+    margin-top: 0;
+    margin-left: 30px;
   }
 }
 .evo-head-links2 {
-  font-size: 1.2em;
+  font-size: .7em;
 }
 @media only screen and (min-width: 900px) {
   .evo-head-links2 {
-    font-size: 1em;
-    position: absolute;
     padding: 0;
-    top: 75px;
-    left: 80px;
   }
   .evo-head-links2 > li {
     display: block;
@@ -137,7 +144,7 @@
   min-height: 120px;
 }
 .evo-title2 {
-  top: 80px;
+  top: 70px;
   padding: 5px 10px;
 }
 .evo-content {
