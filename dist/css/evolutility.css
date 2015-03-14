@@ -439,6 +439,9 @@ label {
   margin: 1px 6px 6px 1px;
   padding-right: 6px;
 }
+.evo-filters > .close {
+  margin-right: 4px;
+}
 .evo-editFilter {
   vertical-align: middle;
 }

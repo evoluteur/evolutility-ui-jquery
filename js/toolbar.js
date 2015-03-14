@@ -44,6 +44,7 @@ return Backbone.View.extend({
         'action >div': 'action_view',
         'status >div': 'status_update',
         'change.filter >div': 'change_filter',
+        'close.filter >div': 'hideFilter',
         'click .alert-dismissable>button': 'clearMessage',
         'message >div':'showMessage'
     },
@@ -473,21 +474,19 @@ return Backbone.View.extend({
                         that.curView.render();
                     }
                 });
-                this._filterOn=true;
-            }else{
-                return this;
             }
         }else{
             this._filters.$el.show(); //.slideDown();
         }
+        this._filterOn=true;
         return this;
     },
 
-    hideFilter: function(){
+    hideFilter: function(evt){
         if(this._filters){
             this._filters.$el.hide(); //.fadeOut(300);
-            this._filterOn=false;
         }
+        this._filterOn=false;
         return this;
     },
 
@@ -496,8 +495,8 @@ return Backbone.View.extend({
     },
 
     toggleFilter: function(){
-        this._filtersOn=!this._filtersOn;
-        return this._filtersOn?this.showFilter(true):this.hideFilter();
+        this._filterOn=!this._filterOn;
+        return this._filterOn?this.showFilter(true):this.hideFilter();
     },
 
     /*

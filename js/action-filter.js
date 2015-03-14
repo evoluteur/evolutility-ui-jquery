@@ -36,7 +36,8 @@ return Backbone.View.extend({
         'click .evo-bNew': 'click_new',
         'click .evo-bAdd':'click_add',
         'click .evo-bSubmit':'click_submit',
-        'click .evo-zfilters>a>button':'click_remove'
+        'click .evo-zfilters>a>button':'click_remove',
+        'click .close': 'click_close'
     },
 
     options: {
@@ -75,7 +76,7 @@ return Backbone.View.extend({
             e=this.$el,
             h=[];
 
-        h.push('<div class="evo-zfilters"></div>',
+        h.push(Evol.UI.html.buttonClose+'<div class="evo-zfilters"></div>',
             '<a class="evo-bNew btn btn-primary" href="javascript:void(0)">',evoLang.bNewCond,'</a>');
         if(this.submitButton){
             h.push('<a class="evo-bSubmit btn btn-primary" href="javascript:void(0)">',evoLang.bSubmit,'</a>');
@@ -650,6 +651,10 @@ return Backbone.View.extend({
 
     click_submit: function(e){
         this.$el.trigger('submit.filter');
+    },
+
+    click_close: function(e){
+        this.$el.trigger('close.filter');
     }
 
 });
