@@ -51,7 +51,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
             if (idx === 0) {
                 h.push('<div data-mid="', model.id, '">');
                 // Item badge
-                var bf=that.uiModel.badgefield;
+                var bf=that.uiModel.badge;
                 if(bf){
                     h.push('<span class="badge pull-right">');
                     if(_.isFunction(bf)){

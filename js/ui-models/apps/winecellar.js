@@ -143,7 +143,7 @@ uiModels.winecellar = {
     leadfield: function(model){
         return model.get('name')+' '+model.get('vintage');
     },
-    badgefield:function(model){
+    badge:function(model){
         return model.get('remaining') || 0;
     },
     elements: [
