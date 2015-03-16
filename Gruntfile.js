@@ -21,6 +21,10 @@ module.exports = function (grunt) {
                     separator: ';\n'
                 },
                 src: [
+
+                    // D3.js
+                    //'bower_components/d3/d3.js',
+
                     // jQuery & jQuery UI
                     'bower_components/jquery/dist/jquery.js',
                     //'bower_components/jquery-ui/ui/jquery.ui.widget.js',
@@ -34,9 +38,10 @@ module.exports = function (grunt) {
 
                     // Twitter Bootstrap
                     'bower_components/bootstrap/js/modal.js',
-                    //'bower_components/bootstrap/js/tooltip.js',
                     'bower_components/bootstrap/js/button.js',
                     'bower_components/bootstrap/js/dropdown.js',
+                    //'bower_components/bootstrap/js/tooltip.js',
+                    //'bower_components/bootstrap/js/popover.js',
                     //'bower_components/bootstrap/js/carousel.js',
 
                     // Widgets
@@ -79,15 +84,17 @@ module.exports = function (grunt) {
                     separator: ';\n'
                     },
                 src: [
-                    "demo/demo.js",
-                    "js/ui-models/apps/todo.js",
+                    //"demo/demo.js",
+                    //"js/ui-models/apps/todo.js",
                     "js/ui-models/apps/todo.data.js",
-                    "js/ui-models/apps/contacts.js",
+                    //"js/ui-models/apps/contacts.js",
                     "js/ui-models/apps/contacts.data.js",
-                    "js/ui-models/apps/winecellar.js",
-                    "js/ui-models/apps/winecellar.data.js"
+                    //"js/ui-models/apps/winecellar.js",
+                    "js/ui-models/apps/winecellar.data.js",
+                    //"js/ui-models/apps/comics.js",
+                    "js/ui-models/apps/comics.data.js"
                 ],
-                dest: 'demo/demo-ui.js'
+                dest: 'demo/demo-data.js'
             }
         },
 
@@ -154,8 +161,8 @@ module.exports = function (grunt) {
                 },
                 files: [
                     {
-                        src: 'demo/demo-ui.js',
-                        dest: 'demo/demo-ui.min.js'
+                        src: 'demo/demo-data.js',
+                        dest: 'demo/demo-data.min.js'
                     }
                 ]
             },

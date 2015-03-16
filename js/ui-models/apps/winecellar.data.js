@@ -1,3 +1,4 @@
+var uiModels = uiModels || {};
 uiModels.winecellar_data = [
     {
         "name": "Macrostie",

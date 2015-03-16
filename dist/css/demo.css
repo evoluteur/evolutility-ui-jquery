@@ -323,6 +323,9 @@ body {
 [data-eid="winecellar"] .evol-cards-body p {
   clear: left;
 }
+[data-eid="comics"] .evol-cards-body > .panel {
+  height: 500px !important;
+}
 [data-eid="test"] .evol-cards-body > div.panel {
   height: 182px !important;
 }

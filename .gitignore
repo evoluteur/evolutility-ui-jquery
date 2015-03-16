@@ -8,11 +8,11 @@ js/ui-models/chinook
 *-nogit
 *-nogit.*
 
-demo-bds/
+demo-*/
 dico/pix/
 doc/pix/
 doc/Doc_*
-demo/demo-ui.js
+demo/demo-data.js
 
 # Windows stuff
 Thumbs.db

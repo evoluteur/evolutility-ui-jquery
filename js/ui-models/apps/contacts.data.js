@@ -1,3 +1,4 @@
+var uiModels = uiModels || {};
 uiModels.contact_data = [{
     id: '1',
     lastname: 'Smallwood',

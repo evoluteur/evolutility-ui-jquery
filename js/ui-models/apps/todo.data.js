@@ -1,3 +1,4 @@
+var uiModels = uiModels || {};
 uiModels.todo_data = [
     {id: '1', title: 'Add routing to Evolutility', priority: '2', category: 'others', complete: false, notes: 'Use Backbone router.'},
     {id: '2', title: 'Fix open bugs', duedate: '2014-07-25', priority: '3', category: 'work', complete: false, notes: 'bla bla'},

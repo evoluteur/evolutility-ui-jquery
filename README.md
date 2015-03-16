@@ -7,7 +7,8 @@ With it you configure views with metadata instead of hand-coding templates, Java
 
 [To Do list](http://evoluteur.github.io/evolutility/demo/index.html#todo/list),
 [AddressBook](http://evoluteur.github.io/evolutility/demo/index.html#contact/list),
-[Wine Cellar](http://evoluteur.github.io/evolutility/demo/index.html#winecellar/list).
+[Wine Cellar](http://evoluteur.github.io/evolutility/demo/index.html#winecellar/list),
+[Graphic Novels](http://evoluteur.github.io/evolutility/demo/index.html#comics/cards).
 
 ## Installation
 

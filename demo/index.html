@@ -11,9 +11,14 @@
     <link href="../dist/css/demo.css" rel="stylesheet" />
     <link href="../dist/css/evolutility.min.css" rel="stylesheet" />
 
-    <script src="demo-ui.min.js" type="text/javascript"></script>
+    <script src="demo.js" type="text/javascript"></script>
+    <script src="demo-data.min.js" type="text/javascript"></script>
+    <script src="../js/ui-models/apps/contacts.js" type="text/javascript"></script>
+    <script src="../js/ui-models/apps/todo.js" type="text/javascript"></script>
+    <script src="../js/ui-models/apps/winecellar.js" type="text/javascript"></script>
+    <script src="../js/ui-models/apps/comics.js" type="text/javascript"></script>
     <script src="../dist/vendors.min.js" type="text/javascript"></script>
-    <script src="../dist/evolutility.min.js" type="text/javascript"></script>
+    <script src="../dist/evolutility.js" type="text/javascript"></script>
 
     <title id="headTitle">Evolutility Demo</title>
 </head>
@@ -29,6 +34,7 @@
                 <li><a href="#todo" data-id="todo">todo</a></li>
                 <li><a href="#contact" data-id="contact">addressbook</a></li>
                 <li><a href="#winecellar" data-id="winecellar">wine cellar</a></li>
+                <li><a href="#comics/cards" data-id="comics">graphic novels</a></li>
             </ul>
         </li>
         <li><a href="../doc/index.html">doc</a></li>
@@ -46,29 +52,29 @@
     <div id="evol" class="">
 
         <p><br/>These sample applications are not anything you haven't seen before.
-            The interesting thing is this Single Page App (SPA)
-            is a set of generic views configured with different UI-models.
+            The interesting thing is that these demos are not done with templates, CSS and custom Javascript but
+            are only configured with UI-models.
         </p>
 
-        <ul class="">
-            <li><a href="#todo" data-id="todo"><img src="pix/todo.gif" class="evo-icon-16">To Do</a></li>
-            <li><a href="#contact" data-id="contact"><img src="pix/contact.gif" class="evo-icon-16">AddressBook</a></li>
-            <li><a href="#winecellar" data-id="wine"><img src="pix/wine.gif" class="evo-icon-16">Wine cellar</a></li>
-        </ul>
+        <div class="demo-links">
+            <div><a href="#todo" data-id="todo"><img src="pix/todo.gif" class="evo-icon-16">To Do</a></div>
+            <div><a href="#contact" data-id="contact"><img src="pix/contact.gif" class="evo-icon-16">AddressBook</a></div>
+            <div><a href="#winecellar" data-id="wine"><img src="pix/wine.gif" class="evo-icon-16">Wine cellar</a></div>
+            <div><a href="#comics/cards" data-id="comics"><img src="pix/comics.png" class="evo-icon-16">Graphic novels</a></div>
+        </div>
 
         <p>For each Backbone model, a single UI-model defines all views.
             See the UI model for the sample apps: <a href="javascript:showUIModel('todo')">To Do</a>,
             <a href="javascript:showUIModel('contact')">Addressbook</a>,
-            <a href="javascript:showUIModel('winecellar')">Wine Cellar</a>.
+            <a href="javascript:showUIModel('winecellar')">Wine Cellar</a>,
+            <a href="javascript:showUIModel('comics')">Graphic novels</a>.
             <small id="hide_def" style="display:none;"><a href="javascript:hideUIModel('winecellar')">[Hide]</a></small></p>
         </p>
         <div style="display:none;" id="uimodel"></div>
 
-        <p>The data for these demos is stored in your browser local storage
-            (using <a href="https://github.com/jeromegn/Backbone.localStorage" target="bbls">Backbone.localStorage</a>).</p>
-
-        <p>Evolutility.js is still a work in progress.</p>
-
+        <p>For these demos, the data is stored in your browser's local storage
+            (using <a href="https://github.com/jeromegn/Backbone.localStorage" target="bbls">Backbone.localStorage</a>).
+          </p>
 
     </div>
 
@@ -80,10 +86,12 @@
 <script>
 
     $(document).ready(function(){
+        
         // - create sample data if none is there
         createSampleDataIfEmpty('todo');
         createSampleDataIfEmpty('contact');
         createSampleDataIfEmpty('winecellar');
+        createSampleDataIfEmpty('comics');
 
         // - run shell which set demo
         new Evol.Shell({
@@ -91,10 +99,19 @@
             uiModelsObj: {
                 todo: uiModels.todo,
                 contact: uiModels.contact,
-                winecellar: uiModels.winecellar
+                winecellar: uiModels.winecellar,
+                comics: uiModels.comics
             },
-            style: 'panel-info'
+            style: 'panel-info',
+            pageSize:20
         }).render();
+
+        $('.evo-head-links2 a').on('click', function(evt){
+            var el=$(evt.currentTarget)
+            el.parent().parent().find('a')
+                .removeClass('sel');
+            el.addClass('sel');
+        });
     });
 
 </script>

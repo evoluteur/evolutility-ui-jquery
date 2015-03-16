@@ -12,9 +12,13 @@
     <link href="dist/css/demo.css" rel="stylesheet" />
     <link href="dist/css/evolutility.min.css" rel="stylesheet" />
 
+    <script src="demo/demo-data.min.js" type="text/javascript"></script>
+    <script src="js/ui-models/apps/contacts.js" type="text/javascript"></script>
+    <script src="js/ui-models/apps/todo.js" type="text/javascript"></script>
+    <script src="js/ui-models/apps/winecellar.js" type="text/javascript"></script>
+    <script src="js/ui-models/apps/comics.js" type="text/javascript"></script>
     <script src="dist/vendors.min.js" type="text/javascript"></script>
     <script src="dist/evolutility.min.js" type="text/javascript"></script>
-    <script src="demo/demo-ui.min.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -49,6 +53,7 @@
     <p>&nbsp;</p>
 
     <h4 class="mt20">A few examples</h4>
+    <p>See how Evolutility views adapt to different UI-models.</p>
 
     <div id="evol-views-params" >
 
@@ -57,6 +62,7 @@
                 <option value="todo">To Do</option>
                 <option value="contact">AddressBook</option>
                 <option value="winecellar">Wine Cellar</option>
+                <option value="comics">Graphic Novels</option>
             </select>
         </div>
 
@@ -92,7 +98,7 @@
 
     <h4 class="mt20">UI models rather than templates</h4>
 
-    <p>In the former examples all views are configured with metadata in UI-models.</p>
+    <p>In the former examples all views are configured with metadata in UI-models. No templates, custom CSS or Javascript is necessary.</p>
 
     <p>For each Backbone model and collection, a single UI model contains all the metadata necessary
         to configure its views (list, view, edit, filter, export...).
@@ -102,7 +108,8 @@
     <p>Here are the sample UI models used in the examples above:
         <a href="javascript:showUIModel('todo')">To Do</a>,
         <a href="javascript:showUIModel('contact')">Addressbook</a>,
-        <a href="javascript:showUIModel('winecellar')">Wine Cellar</a>.
+        <a href="javascript:showUIModel('winecellar')">Wine Cellar</a>,
+        <a href="javascript:showUIModel('comics')">Graphic Novels</a>.
         <small id="hide_def" style="display:none;"><a href="javascript:hideUIModel()">[Hide]</a></small>
     </p>
 
@@ -121,7 +128,8 @@
     <p>Demo apps:
         <a href="demo/index.html#todo/badges">To Do</a>,
         <a href="demo/index.html#contact">Addressbook</a>,
-        <a href="demo/index.html#winecellar">Wine Cellar</a>.
+        <a href="demo/index.html#winecellar">Wine Cellar</a>,
+        <a href="demo/index.html#comics/cards">Graphic Novels</a>.
     </p>
 
     <p>&nbsp;</p>
