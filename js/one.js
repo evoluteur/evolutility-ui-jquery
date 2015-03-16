@@ -716,7 +716,7 @@ return Backbone.View.extend({
             fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultvalue || '';
         }
         if(f.type==='formula'){
-            h.push('<div id="',this.fieldViewId(f.id), '" class="disabled evo-rdonly">', 
+            h.push('<div id="',this.fieldViewId(f.id), '" class="disabled evo-rdonly evol-truncate">', 
                 (this.model?f.formula(this.model):''), 
                 '</div>');
         }else{

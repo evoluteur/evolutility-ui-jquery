@@ -122,7 +122,7 @@ return {
             h.push(uiInput.hidden(fid, fv));
         },
         formula: function(h, f, fid, fv){
-            h.push(uiInput.text(fid, fv, f, null));
+            h.push('<div class="evol-truncate">'+uiInput.text(fid, fv, f, null)+'</div>');
         }
     },
 
@@ -470,7 +470,7 @@ return {
             switch (fld.type) {
                 case fts.formula:
                     // TODO: in one.js or here?
-                    h.push('<div id="',fid, '" class="form-control">',fld.formula(),'</div>');
+                    h.push('<div id="',fid, '" class="form-control evol-truncate">',fld.formula(),'</div>');
                     break;
                 case fts.color: // TODO is the color switch necessary?
                     //h.push(uiInput.colorBox(fid, fv), fv);

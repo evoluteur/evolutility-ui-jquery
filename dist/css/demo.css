@@ -104,15 +104,17 @@
 }
 @media only screen and (max-width: 900px) {
   .evo-head-links > li.spaced {
-    margin-top: 0;
+    margin-top: 5px;
     margin-left: 30px;
   }
 }
 .evo-head-links2 {
   font-size: .7em;
+  margin: 0 5px 0 -40px;
 }
 @media only screen and (min-width: 900px) {
   .evo-head-links2 {
+    margin: 0 0 10px;
     padding: 0;
   }
   .evo-head-links2 > li {
@@ -241,6 +243,10 @@ code {
 body {
   font-size: 15px !important;
   font-weight: 300;
+}
+.demo-links > div {
+  display: inline-block;
+  margin: 10px 0 20px 30px;
 }
 .mt20 {
   margin-top: 20px;

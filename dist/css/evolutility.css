@@ -90,6 +90,11 @@
 .evol-buttons > button {
   margin: 1em;
 }
+.evol-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .evol-title-toggle {
   cursor: pointer;
   float: right;
@@ -221,6 +226,9 @@ label {
   min-width: 50px;
   clear: left;
 }
+.evol-mini-content .img-thumbnail {
+  max-height: 150px;
+}
 .evol-p-mini {
   width: 100%;
   padding-left: 0 !important;
@@ -238,6 +246,10 @@ label {
 /* --- list --- */
 .evol-many-icon {
   margin-right: 6px !important;
+}
+.evol-many-list > .table img {
+  max-height: 60px;
+  padding: 0;
 }
 .evol-many-list > .table th {
   font-weight: 500 !important;
@@ -331,6 +343,14 @@ label {
 .evol-chart-title {
   text-align: center;
   padding: 10px 20px 30px;
+}
+.evo-chart-config {
+  margin: 5px;
+  cursor: pointer;
+  color: silver;
+}
+.evo-chart-config:hover {
+  color: #428bca;
 }
 .evol-xpt-form {
   border-collapse: collapse;
