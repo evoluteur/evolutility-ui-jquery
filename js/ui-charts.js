@@ -28,7 +28,7 @@ Evol.UI.Charts = {
         var urlGoogleChart = this.URL+'?chd=t:'+data.join(',')+
         '&chco='+this._colorsList(data.length)+
             '&amp;chl='+labels.join('|')+
-            '&amp;cht=p&amp;chds=0,20&amp;chs='+size;
+            '&amp;cht=p&amp;chs='+size;
         return this._HTML(label, urlGoogleChart, style || 'panel-default');
     },
 
