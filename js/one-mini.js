@@ -22,8 +22,8 @@ Evol.ViewOne.Mini = Evol.ViewOne.Edit.extend({
     viewName: 'mini',
     prefix: 'om',
 
-    fieldsetFilter: function(m){
-        return m.required || m.viewmany || m.viewmini;
+    fieldsetFilter: function(f){
+        return (f.required || f.viewmany || f.viewmini) && f.type!='formula';
     },
 
     _render: function (h, mode) {

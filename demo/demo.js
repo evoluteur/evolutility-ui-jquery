@@ -36,51 +36,11 @@ function showUIModel(uiModel){
     if(_.isString(uiModel)){
         uiModel=uiModels[uiModel];
     }
-    $('#uimodel').html(Evol.UI.input.textMJSON('uimodel2', uiModel, 10))
+    $('#uimodel').html(Evol.UI.input.textMJSON('uimodel2', uiModel, 10, true))
         .slideDown();
     $('#hide_def').show();
 }
 function hideUIModel(){
     $('#uimodel').slideUp();
     $('#hide_def').hide();
-}
-function setDemo(uiModel, localStorage, data, style){
-    var M = Backbone.Model.extend({
-            localStorage: new Backbone.LocalStorage(localStorage)
-        }),
-        Ms = Backbone.Collection.extend({
-            model: M,
-            localStorage: new Backbone.LocalStorage(localStorage)
-        });
-
-    var ms = new Ms();
-    ms.fetch({
-        success: function(collection){
-            // TODO remove sample data
-            if(collection.length===0){
-                Evol.UI.insertCollection(collection, data);
-            }
-            var m = ms.at(0),
-                el =$('#evol'),
-                vw = new Evol.ViewToolbar({
-                    el: el,
-                    mode: 'one',
-                    style: style,// || 'panel-primary',
-                    customize:false,
-                    model: m,
-                    modelClass: M,
-                    collection: ms,
-                    collectionClass: Ms,
-                    uiModel: uiModel,
-                    pageSize: 20,
-                    titleSelector: '#title'
-                }).render();
-
-            $('#recs > a').on('click', function(evt){
-                var id=$(evt.currentTarget).index();
-                vw.setModel(ms.get(id));
-            })
-        }
-    });
-
 }

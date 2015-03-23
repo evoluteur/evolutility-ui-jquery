@@ -109,9 +109,17 @@ return Backbone.View.extend({
     },
 
     _HTMLField: function (f, v) {
-        var fv = eDico.HTMLField4Many(f, v, Evol.hashLov, this.iconsPath || '');
-        if (f.type === 'list') {
-            return _.escape(fv);
+        var that=this,
+            fv;
+        if(f.type==='formula'){
+            fv = '<div class="disabled evo-rdonly evol-ellipsis">' +
+                (this.model?f.formula(this.model):'') +
+                '</div>';
+        }else{
+            fv = eDico.HTMLField4Many(f, v, Evol.hashLov, this.iconsPath || '');
+            if (f.type === 'list') {
+                return _.escape(fv);
+            }
         }
         return fv;
     },

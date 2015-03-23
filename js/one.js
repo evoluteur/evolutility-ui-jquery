@@ -716,8 +716,9 @@ return Backbone.View.extend({
             fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultvalue || '';
         }
         if(f.type==='formula'){
-            h.push('<div id="',this.fieldViewId(f.id), '" class="disabled evo-rdonly evol-truncate">', 
-                (this.model?f.formula(this.model):''), 
+            h.push(Evol.Dico.HTMLFieldLabel(f, mode || 'edit'));
+            h.push('<div id="'+this.fieldViewId(f.id)+'" class="disabled evo-rdonly evol-ellipsis">'+
+                (this.model?f.formula(this.model):'')+
                 '</div>');
         }else{
             h.push(eDico.HTMLField4One(f, this.fieldViewId(f.id), fv, mode, iconsPath));

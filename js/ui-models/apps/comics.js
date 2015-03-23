@@ -52,7 +52,7 @@ uiModels.comics = {
                     ]
                 },
                 {
-                    id:'amazon', label:'Amazon', type:'formula', width:100, css:'evol-truncate',
+                    id:'amazon', label:'Amazon', type:'formula', width:100, css:'evol-ellipsis',
                     formula:function(m){
                         var link=m.get('language')=='FR' ?
                             'http://www.amazon.fr/s/ref=sr_nr_n_1?keywords='

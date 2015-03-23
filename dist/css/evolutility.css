@@ -64,6 +64,16 @@
 .evol-pnl-lst {
   padding-left: 10px !important;
 }
+.panel-heading > .panel-title {
+  display: inline-block;
+}
+.panel-heading > .evol-subtitle {
+  display: inline-block;
+  margin-left: 10px;
+}
+.evo-panel-help {
+  margin-top: 5px;
+}
 .evol-tabs {
   margin: 0 10px 10px !important;
 }
@@ -90,7 +100,7 @@
 .evol-buttons > button {
   margin: 1em;
 }
-.evol-truncate {
+.evol-ellipsis {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -194,9 +204,6 @@ label {
 }
 .evo-color-box span {
   margin-left: 24px;
-}
-.evo-panel-help {
-  margin-top: 5px;
 }
 /* --- mini --- */
 .evol-mini-label {

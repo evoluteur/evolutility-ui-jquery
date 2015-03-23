@@ -82,8 +82,8 @@ Evol.UI = {
             return '<textarea id="'+id+'" class="evo-field form-control" rows="'+height+'">'+value+'</textarea>';
                 //(maxLen > 0) ? ('" onKeyUp="Evol.UI.Validation.fixLength(this,' + maxLen + ')') : '',
         },
-        textMJSON: function (id, fVobj, height) {
-            return '<textarea id="'+id+'" rows="'+height+'" class="evol-json evo-field form-control">'+
+        textMJSON: function (id, fVobj, height, disabled) {
+            return '<textarea id="'+id+'" rows="'+height+'" class="evol-json evo-field form-control"'+(disabled?' disabled':'')+'>'+
                 _.escape(JSON.stringify(fVobj, null, '\t'))+'</textarea>';
         },
         myType: function (type, id, value) {
@@ -338,6 +338,7 @@ Evol.UI = {
             '<div class="panel-heading '+(p.csslabel? p.csslabel:'')+'">'+
             Evol.UI.icon('chevron-up', 'evol-title-toggle')+
             '<h3 class="panel-title">'+p.label+'</h3>'+
+            (p.label2?'<div class="evol-subtitle">'+p.label2+'</div>' : '')+
             (p.help?'<p class="evo-panel-help">'+p.help+'</p>':'')+
             '</div>';
     },
@@ -736,7 +737,7 @@ Evol.Dico = function(){
             lov: 'lov',
             list: 'list', // many values for one field (behave like tags - return an array of strings)
             //html:'html',
-            formula:'formula',
+            formula:'formula', // soon to be a field attribute rather than a field type
             email: 'email',
             pix: 'image',
             doc:'document',
@@ -828,7 +829,7 @@ return {
             h.push(uiInput.hidden(fid, fv));
         },
         formula: function(h, f, fid, fv){
-            h.push('<div class="evol-truncate">'+uiInput.text(fid, fv, f, null)+'</div>');
+            h.push('<div class="evol-ellipsis">'+uiInput.text(fid, fv, f, null)+'</div>');
         }
     },
 
@@ -1159,8 +1160,6 @@ return {
         var h=[];
         // --- field label ---
         if(mode==='mini'){
-            var fwidth=fld.width;
-            fld.width=100;
             h.push('<div class="evol-mini-label">', this.HTMLFieldLabel(fld, mode),
                 '</div><div class="evol-mini-content">');
         }else if(!skipLabel){
@@ -1176,7 +1175,7 @@ return {
             switch (fld.type) {
                 case fts.formula:
                     // TODO: in one.js or here?
-                    h.push('<div id="',fid, '" class="form-control evol-truncate">',fld.formula(),'</div>');
+                    h.push('<div id="',fid, '" class="form-control evol-ellipsis">',fld.formula(),'</div>');
                     break;
                 case fts.color: // TODO is the color switch necessary?
                     //h.push(uiInput.colorBox(fid, fv), fv);
@@ -1197,7 +1196,6 @@ return {
         }
         if(mode==='mini'){
             h.push('</div>');
-            fld.width=fwidth;
         }
         return h.join('');
     },
@@ -1397,9 +1395,17 @@ return Backbone.View.extend({
     },
 
     _HTMLField: function (f, v) {
-        var fv = eDico.HTMLField4Many(f, v, Evol.hashLov, this.iconsPath || '');
-        if (f.type === 'list') {
-            return _.escape(fv);
+        var that=this,
+            fv;
+        if(f.type==='formula'){
+            fv = '<div class="disabled evo-rdonly evol-ellipsis">' +
+                (this.model?f.formula(this.model):'') +
+                '</div>';
+        }else{
+            fv = eDico.HTMLField4Many(f, v, Evol.hashLov, this.iconsPath || '');
+            if (f.type === 'list') {
+                return _.escape(fv);
+            }
         }
         return fv;
     },
@@ -2737,8 +2743,9 @@ return Backbone.View.extend({
             fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultvalue || '';
         }
         if(f.type==='formula'){
-            h.push('<div id="',this.fieldViewId(f.id), '" class="disabled evo-rdonly evol-truncate">', 
-                (this.model?f.formula(this.model):''), 
+            h.push(Evol.Dico.HTMLFieldLabel(f, mode || 'edit'));
+            h.push('<div id="'+this.fieldViewId(f.id)+'" class="disabled evo-rdonly evol-ellipsis">'+
+                (this.model?f.formula(this.model):'')+
                 '</div>');
         }else{
             h.push(eDico.HTMLField4One(f, this.fieldViewId(f.id), fv, mode, iconsPath));
@@ -3311,8 +3318,8 @@ Evol.ViewOne.Mini = Evol.ViewOne.Edit.extend({
     viewName: 'mini',
     prefix: 'om',
 
-    fieldsetFilter: function(m){
-        return m.required || m.viewmany || m.viewmini;
+    fieldsetFilter: function(f){
+        return (f.required || f.viewmany || f.viewmini) && f.type!='formula';
     },
 
     _render: function (h, mode) {
