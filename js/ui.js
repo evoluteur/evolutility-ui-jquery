@@ -335,6 +335,7 @@ Evol.UI = {
             '<div class="panel-heading '+(p.csslabel? p.csslabel:'')+'">'+
             Evol.UI.icon('chevron-up', 'evol-title-toggle')+
             '<h3 class="panel-title">'+p.label+'</h3>'+
+            (p.label2?'<div class="evol-subtitle">'+p.label2+'</div>' : '')+
             (p.help?'<p class="evo-panel-help">'+p.help+'</p>':'')+
             '</div>';
     },
