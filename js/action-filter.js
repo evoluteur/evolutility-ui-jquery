@@ -655,6 +655,7 @@ return Backbone.View.extend({
 
     click_close: function(e){
         this.$el.trigger('close.filter');
+        this.clear();
     }
 
 });
