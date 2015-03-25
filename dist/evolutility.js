@@ -4707,8 +4707,8 @@ return Backbone.View.extend({
             ],
             views: [
                 // -- views ONE ---
-                {id:'view', label: i18n.bView, icon:'file',n:'1'},// // ReadOnly
-                {id:'edit', label: i18n.bEdit, icon:'th',n:'1'},// // All Fields
+                {id:'view', label: i18n.bView, icon:'eye-open',n:'1'},// // ReadOnly
+                {id:'edit', label: i18n.bEdit, icon:'edit',n:'1'},// // All Fields for editing
                 {id:'mini', label: i18n.bMini, icon:'th-large',n:'1'},// // Important Fields only
                 //{id:'wiz',label: i18n.bWizard, icon:'arrow-right',n:'1'},
                 {id:'json', label: i18n.bJSON, icon:'barcode',n:'1'},

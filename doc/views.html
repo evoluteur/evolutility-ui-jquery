@@ -32,20 +32,20 @@
     <h1>Views</h1>
 
     <div class="list-views">
-        <div>
-            <a href="#one-view"><i class="glyphicon glyphicon-file"></i>View</a>
-            <a href="#one-edit"><i class="glyphicon glyphicon-th"></i>Edit</a>
+        <div><div class="docViewType">Views for <a href="#one"><strong>One</strong></a> model :</div>
+            <a href="#one-view"><i class="glyphicon glyphicon-eye-open"></i>View</a>
+            <a href="#one-edit"><i class="glyphicon glyphicon-edit"></i>Edit</a>
             <a href="#one-mini"><i class="glyphicon glyphicon-th-large"></i>Mini</a>
             <a href="#one-json"><i class="glyphicon glyphicon-barcode"></i>JSON</a>
         </div>
 
-        <div>
+        <div><div class="docViewType">Views for <a href="#many"><strong>Many</strong></a> models :</div>
             <a href="#many-list"><i class="glyphicon glyphicon-th-list"></i>List</a>
             <a href="#many-cards"><i class="glyphicon glyphicon-th-large"></i>Cards</a>
             <a href="#many-charts"><i class="glyphicon glyphicon-stats"></i>Charts</a>
         </div>
 
-        <div>
+        <div><div class="docViewType">Views for <a href="#action"><strong>Actions</strong></a> :</div>
             <a href="#action-filter"><i class="glyphicon glyphicon-filter"></i>Filter</a>
             <a href="#action-export"><i class="glyphicon glyphicon-cloud-download"></i>Export</a>
         </div>
@@ -66,8 +66,8 @@
 <ul class="evo-links-views">
     <li>Views for <strong>one</strong> model: <a href="#one">Evol.ViewOne</a>
         <br/>
-        <a href="#one-view"><i class="glyphicon glyphicon-file"></i>View</a>,
-        <a href="#one-edit"><i class="glyphicon glyphicon-th"></i>Edit</a>,
+        <a href="#one-view"><i class="glyphicon glyphicon-eye-open"></i>View</a>,
+        <a href="#one-edit"><i class="glyphicon glyphicon-edit"></i>Edit</a>,
         <a href="#one-mini"><i class="glyphicon glyphicon-th-large"></i>Mini</a> (quick-edit),
         <a href="#one-json"><i class="glyphicon glyphicon-barcode"></i>JSON</a>...
     </li>
@@ -111,15 +111,15 @@ Views API: <a href="#methods">Methods</a>,
     <p>Backbone views for <strong>one</strong> model.</p>
 
     <p class="evo-links-views">
-        <a href="#one-view"><i class="glyphicon glyphicon-file"></i>View</a>,
-        <a href="#one-edit"><i class="glyphicon glyphicon-th"></i>Edit</a>,
+        <a href="#one-view"><i class="glyphicon glyphicon-eye-open"></i>View</a>,
+        <a href="#one-edit"><i class="glyphicon glyphicon-edit"></i>Edit</a>,
         <a href="#one-mini"><i class="glyphicon glyphicon-th-large"></i>Mini</a> (quick-edit),
         <a href="#one-json"><i class="glyphicon glyphicon-barcode"></i>JSON</a>...
     </p>
 
     <a name="one-view" class="evo-anchor">&nbsp;</a>
 
-    <h3><i class="glyphicon glyphicon-file"></i>&nbsp;View</h3>
+    <h3><i class="glyphicon glyphicon-eye-open"></i>&nbsp;View</h3>
 
     <p>Shows all fields for viewing (read only). Fields are grouped in panels and tabs.</p>
 
@@ -132,7 +132,7 @@ Views API: <a href="#methods">Methods</a>,
 
     <a name="one-edit" class="evo-anchor">&nbsp;</a>
 
-    <h3><i class="glyphicon glyphicon-th"></i>&nbsp;Edit</h3>
+    <h3><i class="glyphicon glyphicon-edit"></i>&nbsp;Edit</h3>
 
     <p>This view shows all fields for edition to create or update models.
         It automatically performs validation based on the UI-model and supports

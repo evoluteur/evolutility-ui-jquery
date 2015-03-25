@@ -227,7 +227,7 @@ code {
 .list-views {
   position: absolute;
   top: 10px;
-  left: 245px;
+  left: 205px;
 }
 .list-views > div {
   color: white;
@@ -239,6 +239,11 @@ code {
 }
 .list-views i {
   margin-right: 4px;
+}
+.docViewType {
+  display: inline-block;
+  width: 170px;
+  text-align: right;
 }
 body {
   font-size: 15px !important;
