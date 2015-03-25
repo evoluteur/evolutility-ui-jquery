@@ -1,15 +1,15 @@
 /*! ***************************************************************************
  *
- * evolutility :: shell.js
+ * evolutility :: app.js
  *
- * View "shell" to hold the single page app for all objects/ui-models.
+ * View "app" to manage the single page app for all objects/ui-models.
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
-Evol.Shell = Backbone.View.extend({
+Evol.App = Backbone.View.extend({
 
     events: {
         //'click .evo-head-links2>li': 'click_entity'

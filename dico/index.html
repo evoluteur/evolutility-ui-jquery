@@ -58,10 +58,10 @@
 <script>
 
     $(document).ready(function(){
-        // - run shell which set demo
+        // - run App
         var $e=$('#evol'),
             myapp=JSON.parse(localStorage.getItem('evodico-myapp'));
-        new Evol.Shell({
+        new Evol.App({
             el:$e,
             uiModelsObj: {
                 entity: uiModels.entity,
