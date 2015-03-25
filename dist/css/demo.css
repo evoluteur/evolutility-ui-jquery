@@ -31,7 +31,6 @@
   position: fixed;
   top: 0;
   left: 0;
-  opacity: .9;
   overflow: none;
   background-color: #0099cc;
   width: 100%;
@@ -104,7 +103,7 @@
 }
 @media only screen and (max-width: 900px) {
   .evo-head-links > li.spaced {
-    margin-top: 5px;
+    margin-top: 0;
     margin-left: 30px;
   }
 }
