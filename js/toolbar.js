@@ -108,7 +108,7 @@ return Backbone.View.extend({
     },
 
     _toolbarHTML: function(){
-        var h='',
+        var h,
             that=this,
             eUIm=eUI.menu,
             tb=this.buttons,
@@ -116,26 +116,26 @@ return Backbone.View.extend({
             menuDevider='<li class="divider" data-cardi="1"></li>',
             menuDeviderH='<li class="divider-h"></li>';
 
-        function menuItem (m){
-            h+=eUIm.hItem(m.id, m.label, m.icon, m.n);
+        function menuItem (m, noLabel){
+            return eUIm.hItem(m.id, noLabel?'':m.label, m.icon, m.n);
         }
-        function menuItems (ms){
-            _.forEach(ms, function(m){
-                menuItem(m);
-            });
+        function menuItems (ms, noLabel){
+            return _.map(ms, function(m){
+                return menuItem(m, noLabel);
+            }).join('');
         }
 
-        h+='<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-id="main">';
-        menuItems(tb.always);
-        h+=menuDeviderH;
-        menuItems(tb.actions);
+        h='<div class="evo-toolbar"><ul class="nav nav-pills pull-left" data-id="main">'+
+            menuItems(tb.always)+
+            menuDeviderH+
+            menuItems(tb.actions);
         if(this.toolbar){
             h+='</ul><ul class="nav nav-pills pull-right" data-id="views">'+
                 '<li class="evo-tb-status" data-cardi="n"></li>';
             //h+=eUIm.hBegin('views','li','eye-open');
-            menuItems(tb.prevNext);
+            h+=menuItems(tb.prevNext);
             h+=menuDeviderH;
-            menuItems(tb.views);
+            h+=menuItems(tb.views, true);
             //h+=menuDeviderH;
             //h+=eUIm.hItem('customize','','wrench', 'x', 'Customize');
             /*
