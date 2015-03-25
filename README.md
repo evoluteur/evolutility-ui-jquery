@@ -196,7 +196,7 @@ Note: For convenience, all dependencies are minified together in a single file "
 
 ## Documentation
 
-Some documentation is in progress at [this page] (http://evoluteur.github.io/evolutility/doc/index.html).
+The (beginning of a) [documentation](http://evoluteur.github.io/evolutility/doc/index.html) is in progress: [ui-models](http://evoluteur.github.io/evolutility/doc/ui-model.html) and [views](http://evoluteur.github.io/evolutility/doc/views.html).
 
 ## Previous incarnation
 
