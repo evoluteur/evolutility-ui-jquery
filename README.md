@@ -175,7 +175,8 @@ See [UI-Model documentation](http://evoluteur.github.io/evolutility/doc/ui-model
 UI Models for the demo apps:
 [To Do list](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/todo.js),
 [AddressBook](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/contacts.js),
-[Wine Cellar](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/winecellar.js).
+[Wine Cellar](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/winecellar.js),
+[Graphic Novels](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/comics.js).
 
 With Evolutility, a single UI-model defines a full single page applications (SPA) to view, edit, filter and export a Backbone model or collection.
 
