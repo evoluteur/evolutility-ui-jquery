@@ -95,30 +95,46 @@ For each entity it creates a toolbar which manages the views for that entity.
 
 
         <p>toolbar: true,
-        <p>defaultView: 'list',
+        <p>readonly: false,
+        <p>defaultViewOne: 'view',
+        <p>defaultViewMany: 'list',
         <p>style: 'panel-info',
         <p>display: 'label', // tooltip, text, icon, none
         <p>titleSelector: '#title',
-        <p>buttons: {<br/>
-        // --- views for one ---<br/>
-        view: true,<br/>
-        edit: true,<br/>
-        mini: true,<br/>
-        wiz: false,<br/>
-        json: true,<br/>
-        // --- views for many ---<br/>
-        list: true,<br/>
-        cards: true,<br/>
-        charts: true,<br/>
-        // --- actions ---<br/>
-        'new': true,<br/>
-        'save':true,<br/>
-        del: true,<br/>
-        filter: true,<br/>
-        'export': true,<br/>
-        group: false,<br/>
-        customize:false<br/>
-        },<br/>
+        <p>buttons: <pre>
+        {
+            always:[
+                {id: 'list', label: i18n.bList, icon:'th-list', n:'x'},
+                {id: 'new', label: i18n.bNew, icon:'plus', n:'x', readonly:false}
+            ],
+            actions:[
+                {id:'edit', label: i18n.bEdit, icon:'edit', n:'1', readonly:false},
+                {id:'save', label: i18n.bSave, icon:'floppy-disk', n:'1', readonly:false},
+                {id:'del', label: i18n.bDelete, icon:'trash', n:'1', readonly:false},
+                {id:'filter', label: i18n.bFilter, icon:'filter',n:'n'},
+                //{id:'group',label: i18n.bGroup, icon:'resize-horizontal',n:'n'},
+                {id:'export', label: i18n.bExport, icon:'cloud-download',n:'n'}
+                //{id:'cog',label: i18n.bSettings, icon:'cog',n:'n'}
+            ],
+            prevNext:[
+                {id:'prev', label: '', icon:'chevron-left', n:'x'},
+                {id:'next', label: '', icon:'chevron-right', n:'x'}
+            ],
+            views: [
+                // -- views ONE ---
+                {id:'view', label: i18n.bView, icon:'eye-open',n:'1'},// // ReadOnly
+                {id:'edit', label: i18n.bEdit, icon:'edit',n:'1', readonly:false},// // All Fields for editing
+                {id:'mini', label: i18n.bMini, icon:'th-large',n:'1', readonly:false},// // Important Fields only
+                //{id:'wiz',label: i18n.bWizard, icon:'arrow-right',n:'1'},
+                {id:'json', label: i18n.bJSON, icon:'barcode',n:'1', readonly:false},
+                // -- views MANY ---
+                {id:'list', label: i18n.bList, icon:'th-list',n:'n'},
+                {id:'cards', label: i18n.bCards, icon:'th-large',n:'n'},
+                //{id:'bubbles', label: i18n.bBubbles, icon:'adjust',n:'n'},
+                {id:'charts', label: i18n.bCharts, icon:'stats',n:'n'}
+            ]
+        }
+        </pre>,<br/>
         <p>pageSize:20
     </section>
 

@@ -51,22 +51,25 @@ return Backbone.View.extend({
 
     options: {
         toolbar: true,
+        readonly: false,
         //router:...,
         defaultView: 'list',
         style: 'panel-info',
         display: 'label', // tooltip, text, icon, none
         titleSelector: '#title',
         pageSize:20,
+        defaultViewOne: 'view',
+        defaultViewMany: 'list',
         buttons: {
             always:[
                 {id: 'list', label: i18n.bList, icon:'th-list', n:'x'},
-                {id: 'new', label: i18n.bNew, icon:'plus', n:'x'}
+                {id: 'new', label: i18n.bNew, icon:'plus', n:'x', readonly:false}
             ],
                 //linkOpt2h('selections','','star');
             actions:[
-                {id:'edit', label: i18n.bEdit, icon:'edit', n:'1'},
-                {id:'save', label: i18n.bSave, icon:'floppy-disk', n:'1'},
-                {id:'del', label: i18n.bDelete, icon:'trash', n:'1'},
+                {id:'edit', label: i18n.bEdit, icon:'edit', n:'1', readonly:false},
+                {id:'save', label: i18n.bSave, icon:'floppy-disk', n:'1', readonly:false},
+                {id:'del', label: i18n.bDelete, icon:'trash', n:'1', readonly:false},
                 {id:'filter', label: i18n.bFilter, icon:'filter',n:'n'},
                 //{id:'group',label: i18n.bGroup, icon:'resize-horizontal',n:'n'},
                 {id:'export', label: i18n.bExport, icon:'cloud-download',n:'n'}
@@ -79,10 +82,10 @@ return Backbone.View.extend({
             views: [
                 // -- views ONE ---
                 {id:'view', label: i18n.bView, icon:'eye-open',n:'1'},// // ReadOnly
-                {id:'edit', label: i18n.bEdit, icon:'edit',n:'1'},// // All Fields for editing
-                {id:'mini', label: i18n.bMini, icon:'th-large',n:'1'},// // Important Fields only
+                {id:'edit', label: i18n.bEdit, icon:'edit',n:'1', readonly:false},// // All Fields for editing
+                {id:'mini', label: i18n.bMini, icon:'th-large',n:'1', readonly:false},// // Important Fields only
                 //{id:'wiz',label: i18n.bWizard, icon:'arrow-right',n:'1'},
-                {id:'json', label: i18n.bJSON, icon:'barcode',n:'1'},
+                {id:'json', label: i18n.bJSON, icon:'barcode',n:'1', readonly:false},
                 // -- views MANY ---
                 {id:'list', label: i18n.bList, icon:'th-list',n:'n'},
                 {id:'cards', label: i18n.bCards, icon:'th-large',n:'n'},
@@ -101,7 +104,7 @@ return Backbone.View.extend({
 
     render: function() {
         this.$el.html(this._toolbarHTML());
-        this.setView(this.defaultView || 'list', false);
+        this.setView(this.defaultViewMany, false);
         //this.$('[data-toggle="tooltip"]').tooltip();
         this.$('.dropdown-toggle').dropdown();
         return this;
@@ -109,6 +112,7 @@ return Backbone.View.extend({
 
     _toolbarHTML: function(){
         var h,
+            isReadOnly=this.readonly!==false,
             that=this,
             eUIm=eUI.menu,
             tb=this.buttons,
@@ -121,6 +125,9 @@ return Backbone.View.extend({
         }
         function menuItems (ms, noLabel){
             return _.map(ms, function(m){
+                if(isReadOnly && m.readonly===false){
+                    return null;
+                }
                 return menuItem(m, noLabel);
             }).join('');
         }
