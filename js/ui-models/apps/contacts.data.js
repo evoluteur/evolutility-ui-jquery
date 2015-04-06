@@ -84,7 +84,7 @@ uiModels.contact_data = [{
     country: 'FR',
     category: '1'
 }, {
-    id: '12',
+    id: '7',
     lastname: 'Giulieri',
     firstname: 'Olivier',
     company: 'Evolutility',
@@ -92,7 +92,7 @@ uiModels.contact_data = [{
     email: 'olivier@evolutility.org',
     url: 'http://www.evol-utility.org'
 }, {
-    id: '14',
+    id: '8',
     lastname: 'Martin',
     firstname: 'Mary',
     jobtitle: 'President',
@@ -107,7 +107,7 @@ uiModels.contact_data = [{
     zip: '03434',
     category: '1'
 }, {
-    id: '15',
+    id: '9',
     lastname: 'Munar',
     firstname: 'Roman',
     jobtitle: 'Mr',
@@ -126,7 +126,7 @@ uiModels.contact_data = [{
     country: 'PH',
     category: '3'
 }, {
-    id: '16',
+    id: '10',
     lastname: 'Smith',
     firstname: 'George',
     company: 'Blabla',
@@ -141,7 +141,7 @@ uiModels.contact_data = [{
     country: 'US',
     category: '1'
 }, {
-    id: '17',
+    id: '11',
     lastname: 'Kumar',
     firstname: 'Madhukar',
     jobtitle: 'CEO',
@@ -153,5 +153,16 @@ uiModels.contact_data = [{
     address1: '434 Cool Place',
     city: 'Bengaluru',
     country: 'IN',
+    category: '4'
+}, {
+    id: '12',
+    lastname: 'Cheng',
+    firstname: 'Chris',
+    jobtitle: 'CTO',
+    company: 'MyGreatCorporation',
+    email: 'ccheng@MyGreatCorporation.com',
+    phonecell: '650 234 8245',
+    city: 'Sunnyvalle',
+    country: 'CA',
     category: '4'
 }];

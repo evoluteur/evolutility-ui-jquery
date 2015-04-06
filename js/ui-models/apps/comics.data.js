@@ -275,7 +275,7 @@ uiModels.comics_data = [{
 {
   "title": "The Shaolin Cowboy",
   "genre": "fantasy",
-  "authors": "",
+  "authors": "Geof Darrow and Lana and Andy Wachowski",
   "complete": true,
   "finished": true,
   "have": "1",

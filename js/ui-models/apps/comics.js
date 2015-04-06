@@ -56,7 +56,7 @@ uiModels.comics = {
                     formula:function(m){
                         var link=m.get('language')=='FR' ?
                             'http://www.amazon.fr/s/ref=sr_nr_n_1?keywords='
-                            :'http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Dstripbooks&field-keywords=';
+                            :'http://www.amazon.com/s/ref=nb_sb_noss?field-keywords=';
                         link+=encodeURI(m.get('title')+' '+m.get('authors'));
                         return '<a target="a" href="'+link+'">'+link+'</a>';
                     }

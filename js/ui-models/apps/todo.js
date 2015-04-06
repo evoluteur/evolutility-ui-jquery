@@ -56,11 +56,17 @@ uiModels.todo = {
             ]
         },
         {
-            type: 'panel', label: 'Notes', width: 100,
+            type: 'panel', label: 'Task Description', label2:'and Notes', width: 100,
             elements: [
                 {
+                    id: 'description', attribute: 'description', type: 'textmultiline', 
+                    label: 'Description', 
+                    maxlength: 1000,
+                    width: 62, height: 5, viewmany: false
+                },
+                {
                     id: 'notes', attribute: 'notes', type: 'textmultiline', label: 'Notes', maxlength: 1000,
-                    width: 100, height: 6, viewmany: false
+                    width: 38, height: 5, viewmany: false
                 }
             ]
         }
