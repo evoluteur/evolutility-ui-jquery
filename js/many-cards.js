@@ -67,7 +67,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
                     Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link, route?route+model.id:null),
                     '</h4></div>');
             }else{
-                h.push('<div><label>', f.labelcards?f.labelcards:f.label,':</label> ', v, '</div>');
+                h.push('<div '+ (f.type=='email'?'class="evol-ellipsis"':'') +'><label>', f.labelcards?f.labelcards:f.label,':</label> ', v, '</div>');
             }
         });
         h.push('</div>');
