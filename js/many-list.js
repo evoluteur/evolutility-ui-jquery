@@ -79,6 +79,8 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             }
             if(f.type===ft.textml){
                 h.push('<td class="evol-ellipsis">', v, '</td>');
+            }else if(Evol.Dico.isNumberType(f.type)){
+                h.push('<td class="evol-r-align">', v, '</td>');
             }else{
                 h.push('<td>', v, '</td>');
             }
