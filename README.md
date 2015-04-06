@@ -46,19 +46,19 @@ var vw = new Evol.ViewOne.View(myConfig);
 This view shows all fields for edition to create or update models.
 It automatically performs validation based on the UI-model and supports the Master-Details pattern (nested collections).
 Fields are grouped in panels and tabs.
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-edit.png)
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-edit.gif)
 ```javascript
 var vw = new Evol.ViewOne.Edit(myConfig);
 ```
 ### Mini (Quick Edit)
 Only shows important fields (required or showing as a column in grids). Fields are grouped in a single panel.
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-mini.png)
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-mini.gif)
 ```javascript
 var vw = new Evol.ViewOne.Mini(myConfig);
 ```
 ### JSON
 JSON representation of the data.
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-json.png)
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-json.gif)
 ```javascript
 var vw = new Evol.ViewOne.JSON(myConfig);
 ```
@@ -66,19 +66,19 @@ var vw = new Evol.ViewOne.JSON(myConfig);
 ## Views for a collection of Many models
 ### List
 Gives a tabular view of a collection with paging.
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-list.png)
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-list.gif)
 ```javascript
 var vw = new Evol.ViewMany.List(myConfig);
 ```
 ### Cards
 Shows records side by side as cards.
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-cards.png)
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-cards.gif)
 ```javascript
 var vw = new Evol.ViewMany.Cards(myConfig);
 ```
 ### Charts
 Draws charts about the collection.
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-charts.png)
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-charts.gif)
 ```javascript
 var vw = new Evol.ViewMany.Charts(myConfig);
 ```
@@ -87,13 +87,13 @@ var vw = new Evol.ViewMany.Charts(myConfig);
 Backbone Views for actions on a collection or a model.
 ### Export
 View to define export options and preview the collection export in different data formats (CSV, TAB, HTML, XML, SQL and JSON).
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/action-export.png)
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/action-export.gif)
 ```javascript
 var vw = new Evol.ViewAction.Export(myConfig);
 ```
 ### Filter
 View used to build a structured query to filter a collection.
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/action-filter.png)
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/action-filter.gif)
 ```javascript
 var vw = new Evol.ViewAction.Filter(myConfig);
 ```
@@ -122,14 +122,17 @@ var UIModel_todo = {
             type: 'panel', label: 'Task', width: 62,
             elements: [
                 {
-                    id: 'title', type: 'text', label: 'Title', required: true,
-                    maxlength: 255, width: 100, viewmany: true
+                    id: 'title', type: 'text', label: 'Title', 
+                    required: true, maxlength: 255, 
+                    width: 100, viewmany: true
                 },
                 {
-                    id: 'duedate', type: 'date', label: 'Due Date', width: 62, viewmany: true
+                    id: 'duedate', type: 'date', label: 'Due Date', 
+                    width: 62, viewmany: true
                 },
                 {
-                    id: 'category', type: 'lov', label: 'Category', width: 38, viewmany: true,
+                    id: 'category', type: 'lov', label: 'Category', 
+                    width: 38, viewmany: true,
                     list: [
                         {id: 'home', text: 'Home'},
                         {id: 'work', text: 'Work'},
@@ -155,15 +158,19 @@ var UIModel_todo = {
                     ]
                 },
                 {
-                    id: 'complete', type: 'boolean', label: 'Complete', width: 100, viewmany: true
+                    id: 'complete', type: 'boolean', label: 'Complete', 
+                    width: 100, viewmany: true
                 }
             ]
         },
         {
             type: 'panel', label: 'Notes', width: 100,
             elements: [
-                {id: 'notes', type: 'textmultiline', label: 'Notes', maxlength: 1000,
-                    width: 100, height: 6, viewmany: false }
+                {
+                    id: 'notes', type: 'textmultiline', label: 'Notes', 
+                    maxlength: 1000,
+                    width: 100, height: 6, viewmany: false 
+                }
             ]
         }
     ]

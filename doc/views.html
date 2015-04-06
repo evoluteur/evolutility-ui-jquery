@@ -7,6 +7,8 @@
     <link href="../dist/css/vendors.min.css" rel="stylesheet"/>
     <link href="../dist/css/demo.css" rel="stylesheet"/>
     <link href="../dist/css/evolutility.css" rel="stylesheet"/>
+    <script src="../dist/vendors.min.js" type="text/javascript"></script>
+    <script src="../js/doc.js" type="text/javascript"></script>
     <title>Evolutility Views</title>
 </head>
 <body>
@@ -31,21 +33,23 @@
 <div class="evo-title2">
     <h1>Views</h1>
 
-    <div class="list-views">
-        <div><div class="docViewType">Views for <a href="#one"><strong>One</strong></a> model :</div>
+    <div class="list-views" style="left:120px;">
+        <div><div class="docViewType"><a href="#one"><strong>One</strong></a> model :</div>
             <a href="#one-view"><i class="glyphicon glyphicon-eye-open"></i>View</a>
             <a href="#one-edit"><i class="glyphicon glyphicon-edit"></i>Edit</a>
             <a href="#one-mini"><i class="glyphicon glyphicon-th-large"></i>Mini</a>
-            <a href="#one-json"><i class="glyphicon glyphicon-barcode"></i>JSON</a>
+            <a href="#one-json"><i class="glyphicon glyphicon-barcode"></i>JSON</a> 
+            - <a href="#one-api">API</a>
         </div>
 
-        <div><div class="docViewType">Views for <a href="#many"><strong>Many</strong></a> models :</div>
+        <div><div class="docViewType"><a href="#many"><strong>Many</strong></a> models :</div>
             <a href="#many-list"><i class="glyphicon glyphicon-th-list"></i>List</a>
             <a href="#many-cards"><i class="glyphicon glyphicon-th-large"></i>Cards</a>
             <a href="#many-charts"><i class="glyphicon glyphicon-stats"></i>Charts</a>
+            - <a href="#many-api">API</a>
         </div>
 
-        <div><div class="docViewType">Views for <a href="#action"><strong>Actions</strong></a> :</div>
+        <div><div class="docViewType"><a href="#action"><strong>Actions</strong></a> :</div>
             <a href="#action-filter"><i class="glyphicon glyphicon-filter"></i>Filter</a>
             <a href="#action-export"><i class="glyphicon glyphicon-cloud-download"></i>Export</a>
         </div>
@@ -87,51 +91,51 @@
 
 </ul>
 
-Views API: <a href="#methods">Methods</a>,
-<a href="#options">Options</a>,
-<a href="#events">Events</a>.
-
-</p>
-
-<p>A large part of the API (<a href="#methods">methods</a>, <a href="#options">options</a> and <a
-        href="#events">events</a>) is common to all views.
-    Some views have additional API.
 </p>
 
 <p>More Views will be added in the future (thinking of Summary, Import, Mass update, Group, Dashboard, Report, PDF,
-    Auto-documentation and specs...).
+    Auto-documentation and specs...).</p>
 
+<div class="v-sep"></div>
 
 <div class="evol-doc-views">
 
 <a name="one" class="evo-anchor">&nbsp;</a>
 <section id="views-one">
+
     <h2>Evol.ViewOne</h2>
 
-    <p>Backbone views for <strong>one</strong> model.</p>
+    <p>Views for <strong>one</strong> model:
 
-    <p class="evo-links-views">
+    <span class="evo-links-views">
         <a href="#one-view"><i class="glyphicon glyphicon-eye-open"></i>View</a>,
         <a href="#one-edit"><i class="glyphicon glyphicon-edit"></i>Edit</a>,
         <a href="#one-mini"><i class="glyphicon glyphicon-th-large"></i>Mini</a> (quick-edit),
         <a href="#one-json"><i class="glyphicon glyphicon-barcode"></i>JSON</a>...
+    </span>
+ </p>
+
+    <p>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a>
     </p>
 
     <a name="one-view" class="evo-anchor">&nbsp;</a>
+    <div id="doc-view">
+        <h3><i class="glyphicon glyphicon-eye-open"></i>&nbsp;View</h3>
 
-    <h3><i class="glyphicon glyphicon-eye-open"></i>&nbsp;View</h3>
+        <p>Shows all fields for viewing (read only). Fields are grouped in panels and tabs.</p>
 
-    <p>Shows all fields for viewing (read only). Fields are grouped in panels and tabs.</p>
+        <div class="evol-doc-views">
+            <img class="pixEvoMode shadow" src="screenshots/one-view.gif"/> <br/>&nbsp;
+        </div>
+        <p><code>var vw = new Evol.ViewOne.View(myConfig);</code></p>
+        <div id="v-view"></div>
 
-    <div class="evol-doc-views">
-        <img class="pixEvoMode shadow" src="screenshots/one-view.png"/> <br/>&nbsp;
+    <p><br>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a></p>
+
     </div>
-    <p><code>var vw = new Evol.ViewOne.View(myConfig);</code></p>
-    <div id="v-view"></div>
-
-
+ 
     <a name="one-edit" class="evo-anchor">&nbsp;</a>
-
+    <div id="doc-edit">
     <h3><i class="glyphicon glyphicon-edit"></i>&nbsp;Edit</h3>
 
     <p>This view shows all fields for edition to create or update models.
@@ -141,38 +145,55 @@ Views API: <a href="#methods">Methods</a>,
     </p>
 
     <div class="evol-doc-views">
-        <img class="pixEvoMode shadow" src="screenshots/one-edit.png"/> <br/>&nbsp;
+        <img class="pixEvoMode shadow" src="screenshots/one-edit.gif"/> <br/>&nbsp;
     </div>
     <p><code>
         var vw = new Evol.ViewOne.Edit(myConfig);
     </code></p>
 
+    <p><br>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a></p>
+
+
+    </div>
 
     <a name="one-mini" class="evo-anchor">&nbsp;</a>
-
+    <div id="doc-mini">
     <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Mini (quick-edit)</h3>
 
     <p>Only shows important fields (required or showing as a column in grids). Fields are grouped in a single panel.</p>
 
     <div class="evol-doc-views">
-        <img class="pixEvoMode shadow" src="screenshots/one-mini.png"/> <br/>&nbsp;
+        <img class="pixEvoMode shadow" src="screenshots/one-mini.gif"/> <br/>&nbsp;
     </div>
     <p><code>
         var vw = new Evol.ViewOne.Mini(myConfig);</code></p>
 
-    <a name="one-json" class="evo-anchor">&nbsp;</a>
+    <p><br>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a></p>
 
+
+    </div>
+
+    <a name="one-json" class="evo-anchor">&nbsp;</a>
+    <div id="doc-json">
     <h3><i class="glyphicon glyphicon-barcode"></i>&nbsp;JSON</h3>
 
     <p>JSON representation of the data.</p>
 
     <div class="evol-doc-views">
-        <img class="pixEvoMode shadow" src="screenshots/one-json.png"/> <br/>&nbsp;
+        <img class="pixEvoMode shadow" src="screenshots/one-json.gif"/> <br/>&nbsp;
     </div>
     <p><code>
         var vw = new Evol.ViewOne.JSON(myConfig);</code></p>
 
-    <p>Other possible views: Wizard...</p>
+
+    <p><br>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a></p>
+
+
+    </div>
+
+
+    <div id="vw-one"></div>
+
 </section>
 
 <a name="many" class="evo-anchor">&nbsp;</a>
@@ -181,50 +202,79 @@ Views API: <a href="#methods">Methods</a>,
 
     <h2>Evol.ViewMany</h2>
 
-    <p>Backbone views for a collection containing <strong>many</strong> models.</p>
+    <p>Views for a collection of <strong>many</strong> models:
 
-    <p class="evo-links-views">
+    <span class="evo-links-views">
         <a href="#many-list"><i class="glyphicon glyphicon-th-list"></i>List</a>,
         <a href="#many-cards"><i class="glyphicon glyphicon-th-large"></i>Cards</a>,
         <a href="#many-charts"><i class="glyphicon glyphicon-stats"></i>Charts</a>...</li>
+    </span>
     </p>
-    <a name="many-list" class="evo-anchor">&nbsp;</a>
 
+
+    <div>
+    API: <a href="#many-api-options">Options</a> - <a href="#many-api-methods">Methods</a> - <a href="#many-api-events">Events</a>
+    </div>
+
+    <a name="many-list" class="evo-anchor">&nbsp;</a>
+    <div id="doc-list">
     <h3><i class="glyphicon glyphicon-th-list"></i>&nbsp;List</h3>
 
     <p>Gives a tabular view of a collection with paging.</p>
 
     <div class="evol-doc-views">
-        <img class="pixEvoMode shadow" src="screenshots/many-list.png"/><br/>&nbsp;
+        <img class="pixEvoMode shadow" src="screenshots/many-list.gif"/><br/>&nbsp;
     </div>
     <p><code>
         var vw = new Evol.ViewMany.List(myConfig);</code></p>
 
-    <a name="many-cards" class="evo-anchor">&nbsp;</a>
+    <div><br>
+    API: <a href="#many-api-options">Options</a> - <a href="#many-api-methods">Methods</a> - <a href="#many-api-events">Events</a>
+    </div>
 
+
+    </div>
+
+    <a name="many-cards" class="evo-anchor">&nbsp;</a>
+    <div id="doc-cards">
     <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Cards</h3>
 
     <p>Shows records side by side as cards.</p>
 
     <div class="evol-doc-views">
-        <img class="pixEvoMode shadow" src="screenshots/many-cards.png"/><br/>&nbsp;
+        <img class="pixEvoMode shadow" src="screenshots/many-cards.gif"/><br/>&nbsp;
     </div>
     <p><code>
         var vw = new Evol.ViewMany.Cards(myConfig);</code></p>
 
+    <div><br>
+    API: <a href="#many-api-options">Options</a> - <a href="#many-api-methods">Methods</a> - <a href="#many-api-events">Events</a>
+    </div>
+
+
+    </div>
 
     <a name="many-charts" class="evo-anchor">&nbsp;</a>
-
+    <div id="doc-charts">
     <h3><i class="glyphicon glyphicon-stats"></i>&nbsp;Charts</h3>
 
     <p>Draws charts about the collection.</p>
 
     <div class="evol-doc-views">
-        <img class="pixEvoMode shadow" src="screenshots/many-charts.png"/><br/>&nbsp;
+        <img class="pixEvoMode shadow" src="screenshots/many-charts.gif"/><br/>&nbsp;
     </div>
     <p><code>
         var vw = new Evol.ViewMany.Charts(myConfig);</code></p>
 
+    <div><br>
+    API: <a href="#many-api-options">Options</a> - <a href="#many-api-methods">Methods</a> - <a href="#many-api-events">Events</a>
+    </div>
+
+
+    </div>
+
+
+    <div id="vw-many"></div>
 
 </section>
 
@@ -240,25 +290,27 @@ Views API: <a href="#methods">Methods</a>,
         <a href="#action-export"><i class="glyphicon glyphicon-cloud-download"></i>Export</a>...
     </p>
 
-
     <a name="action-filter" class="evo-anchor">&nbsp;</a>
+    <div id="doc-filter">
 
     <h3><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter</h3>
 
     <p>View used to build a structured query to filter a collection.</p>
 
     <div class="evol-doc-views">
-        <img class="pixEvoMode shadow" src="screenshots/action-filter.png"/><br/>&nbsp;
+        <img class="pixEvoMode shadow" src="screenshots/action-filter.gif"/><br/>&nbsp;
     </div>
     <p>Filter example: "phone number start by 415" or "for
         categories Finances and Business"...&nbsp;</p>
 
     <p><code>
         var vw = new Evol.ViewAction.Filter(myConfig);</code></p>
+    <div id="vw-filter"></div>
+    </div>
 
 
     <a name="action-export" class="evo-anchor">&nbsp;</a>
-
+    <div id="doc-export">
     <h3><i class="glyphicon glyphicon-cloud-download"></i>&nbsp;Export</h3>
 
     <p>View to define export options and preview the collection export in different data formats (CSV, TAB, HTML, XML,
@@ -266,118 +318,50 @@ Views API: <a href="#methods">Methods</a>,
     </p>
 
     <div class="evol-doc-views">
-        <img class="pixEvoMode shadow" src="screenshots/action-export.png"/><br/>&nbsp;
+        <img class="pixEvoMode shadow" src="screenshots/action-export.gif"/><br/>&nbsp;
     </div>
     <p><code>
         var vw = new Evol.ViewAction.Export(myConfig);</code></p>
+    <div id="vw-export"></div>
+    </div>
 
 
 </section>
 
-
-<a name="methods" class="evo-anchor">&nbsp;</a>
-<section>
-    <h2>Methods</h2>
-
-    <p><br>Methods common to Evol.ViewOne (Edit, View, Mini, JSON) and Evol.ViewMany (List, Cards, Charts):</p>
-    <p><strong>render()</strong>: Renders the view in the DOM.</p>
-    <p><strong>getFields()</strong>: Returns an array of the UI-model fields present in the view.</p>
-    <p><strong>getModel(), setModel(model)</strong>: Gets or sets the Backbone model.</p>
-    <p><strong>getUIModel(), setUIModel(uiModel)</strong>: Gets or sets the UI model.</p>
-    <p><strong>getTitle(), setTitle(title)</strong>: Gets or sets the view title.</p>
-    <p><strong>setDefaults</strong>: Sets all fields to their default value.</p>
-
-
-    <p><br>Methods specific to Evol.ViewOne (Edit, View, Mini, JSON):</p>
-    <p><strong>clear()</strong>: Clears the content of all fields.</p>
-    <p><strong>clearErrors()</strong>: Remove previous validation warnings.</p>
-    <p><strong>getData(), setData(data)</strong>: Gets or sets all fields values at the same time (similar but different than getModel and setModel).</p>
-    <p><strong>getFieldValue(fid), setFieldValue(fid, value)</strong>: Gets or sets the value of a specific field.</p>
-    <p><strong>getFieldProp(fid, property), setFieldProp(fid, property, value)</strong>: Gets or sets a field property for a specific field. Supported properties: "value", "enabled", "visible".</p>
-    <p><strong>getSubCollecs()</strong>: Returns an array of sub-collections definitions from the UI-model.</p>
-    <p><strong>validate()</strong>: Validates all fields and shows warnings if necessary.</p>
-
-
-    <p><br>Methods specific to Evol.ViewMany (List, Cards, Charts):</p>
-    <p><strong>getCollection(), setCollection(collec)</strong>: Gets or sets the collection.</p>
-    <p><strong>getFilter(), setFilter(filter)</strong>: Gets or sets the collection filter (from Evol.ViewAction.Filter).</p>
-    <p><strong>getPage(), setPage(pageIndex)</strong>: Gets or sets the page index for pagination.</p>
-    <p><strong>sortList(field, upOrDown, [noRemember], [noTrigger])</strong>: Sorts the list by a specific field.</p>
-    <p><strong>getSelection(), setSelection([fieldId])</strong>: Gets or sets rows selection.</p>
-
-
-    <p><br>Methods specific to Evol.ViewAction.Filter:</p>
-    <p><strong>val</strong>: Returns the filter value.</p>
-    <p><strong>valText</strong>: Default value = false.</p>
-    <p><strong>clear</strong>: Default value = false.</p>
-    <p><strong>addCondition(condition), removeCondition(index)</strong>: Default value = false.</p>
-
-    <p><br>Methods specific to Evol.ViewAction.Export:</p>
-    <p><strong>val</strong>: Returns the selected export settings.</p>
-
-</section>
-
-<a name="options" class="evo-anchor">&nbsp;</a>
-<section>
-    <h2>Options</h2>
-
-    <p><br>Options common to Evol.ViewOne (Edit, View, Mini, JSON) and Evol.ViewMany (List, Cards, Charts):</p>
-    <p><strong>iconsPath</strong>: Path to icons for model and list of values.</p>
-
-    <p><br>Options specific to Evol.ViewOne (Edit, View, Mini, JSON):</p>
-    <p><strong>button_addAnother</strong>: Show a "Save and Add Another" button next to "Save". Default value = false.</p>
-
-    <p><br>Options specific to Evol.ViewMany.List and Evol.ViewMany.Cards:</p>
-    <p><strong>pageSize</strong>: Maximum number of models per page. Default value = 20.</p>
-    <p><strong>pageIndex</strong>: Index of the current page. Default value = 0.</p>
-    <p><strong>selectable</strong>: Specify if a checkbox will be displayed for each model. Default value = false.</p>
-
-</section>
-
-
-<a name="events" class="evo-anchor">&nbsp;</a>
-<section>
-
-    <h2>Events</h2>
-
-    <p>Events for Evol.ViewOne (Edit, View, Mini, JSON):</p>
-    <div id="evt-one">
-        <p><strong>action</strong>: Triggered when buttons are clicked. data = 'add', 'add-new', 'cancel', 'validate'.</p>
-        <p><strong>toggle.panel</strong>: Triggered when a panel is expended or collapsed.</p>
-        <p><strong>change.tab</strong>: Triggered when the active tab changes.</p>
-    </div>
-
-
-    <p><br>Events for Evol.ViewMany.List and Evol.ViewMany.Cards:</p>
-    <div id="evt-many">
-        <p><strong>selection.many</strong>: Triggered when the selection changes.</p>
-        <p><strong>navigate.many</strong>: Triggered when a link to a model is clicked.</p>
-        <p><strong>sort.many</strong>: Triggered on sort.</p>
-        <p><strong>paginate.many</strong>: Triggered on pagination.</p>
-    </div>
-
-    <p><br>Events for Evol.ViewAction.Filter:</p>
-    <div id="evt-filter">
-        <p><strong>change.filter</strong>: Triggered when a filter condition changes.</p>
-        <p><strong>close.filter</strong>: Triggered when the filter close button is clicked.</p>
-        <p><strong>submit.filter</strong>: Triggered on submit (if options allow the submit button).</p>
-    </div>
-
-    <p><br>Events for Evol.ViewAction.Export:</p>
-    <div id="evt-export">
-        <p><strong>action</strong>: Triggered when the "Download" button is clicked. data = format.</p>
-        <p><strong>change.export</strong>: Triggered when any export setting changes.</p>
-    </div>
-
-</section>
 
 </div>
 <p></p>
 
-<p><br/>evolutility.js at <a href="https://github.com/evoluteur/evolutility" target="download">GitHub</a></p>
-
 </div>
 
+<script>
+
+    $(document).ready(function(){
+        var itemHtml = function(m){
+                return '<p><strong>'+m.name+'</strong>:&nbsp;'+m.description+'</p>';
+            },
+            viewsHtml = function (selector, opts){//<a name="one" class="evo-anchor">&nbsp;</a>
+                var h='<a name="'+selector+'-api" class="evo-anchor">&nbsp;</a><h3>API for "'+selector+'"</h3>';
+                opts.type='option';
+                h += '<a name="'+selector+'-api-options" class="evo-anchor">&nbsp;</a><h4><i class="glyphicon glyphicon-list-alt"></i>&nbsp;Options</h4>';
+                h += _.map(_.where(EvoDoc, opts), itemHtml).join('');
+                opts.type='method';
+                h += '<br><a name="'+selector+'-api-methods" class="evo-anchor">&nbsp;</a><h4><i class="glyphicon glyphicon-console"></i>&nbsp;Methods</h4>';
+                h += _.map(_.where(EvoDoc, opts), itemHtml).join('');
+                opts.type='event';
+                h += '<br><a name="'+selector+'-api-events" class="evo-anchor">&nbsp;</a><h4><i class="glyphicon glyphicon-flash"></i>&nbsp;Events</h4>';
+                h += _.map(_.where(EvoDoc, opts), itemHtml).join('');
+
+                $('#vw-'+selector).append(h);
+            };
+
+        viewsHtml('one', {one:true});
+        viewsHtml('many', {many:true});
+        viewsHtml('filter', {view:'filter'});
+        viewsHtml('export', {view:'export'});
+    });
+
+</script>
 <div class="footer">&#169; 2015 Olivier Giulieri</div>
 </body>
 
