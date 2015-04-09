@@ -462,17 +462,17 @@ return {
         if(fld.readonly || mode==='view'){
             h.push('<div class="disabled evo-rdonly" id="',fid);
             if(fld.type===fts.textml && fld.height>1){
-                h.push('" style="height:', fld.height, 'em;overflow-y: auto;');
+                h.push('" style="height:'+fld.height+'em;overflow-y: auto;');
             }
             h.push('">');
             switch (fld.type) {
                 case fts.formula:
                     // TODO: in one.js or here?
-                    h.push('<div id="',fid, '" class="form-control evol-ellipsis">',fld.formula(),'</div>');
+                    h.push('<div id="'+fid+'" class="form-control evol-ellipsis">'+fld.formula()+'</div>');
                     break;
                 case fts.color: // TODO is the color switch necessary?
                     //h.push(uiInput.colorBox(fid, fv), fv);
-                    h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
+                    h.push('<div id="'+fid+'" class="form-control">'+fv+'</div>');
                     break;
                 case fts.email:
                     h.push(eUI.linkEmail(fid, fv));

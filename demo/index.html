@@ -56,12 +56,14 @@
             are only configured with UI-models.
         </p>
 
+        <p>By changing the ui-model, Evolutility set of views can behave as any of the following:
         <div class="demo-links">
             <div><a href="#todo" data-id="todo"><img src="pix/todo.gif" class="evo-icon-16">To Do</a></div>
             <div><a href="#contact" data-id="contact"><img src="pix/contact.gif" class="evo-icon-16">AddressBook</a></div>
             <div><a href="#winecellar" data-id="wine"><img src="pix/wine.gif" class="evo-icon-16">Wine cellar</a></div>
             <div><a href="#comics/cards" data-id="comics"><img src="pix/comics.png" class="evo-icon-16">Graphic novels</a></div>
         </div>
+        <p>... or anything you can imagine by making new ui-models.</p>
 
          <p>The demo apps are configured with these UI models: <a href="javascript:showUIModel('todo')">To Do</a>,
             <a href="javascript:showUIModel('contact')">Addressbook</a>,
@@ -70,10 +72,6 @@
             <small id="hide_def" style="display:none;"><a href="javascript:hideUIModel('winecellar')">[Hide]</a></small></p>
         </p>
         <div style="display:none;" id="uimodel"></div>
-
-<p>
-
-
 
         <p>Note: The data for these demos is stored in your browser's local storage
             (using <a href="https://github.com/jeromegn/Backbone.localStorage" target="bbls">Backbone.localStorage</a>) but Evolutility can be configured for a REST API.
@@ -88,7 +86,7 @@
 <script>
 
     $(document).ready(function(){
-        
+
         // - create sample data if none is there
         createSampleDataIfEmpty('todo');
         createSampleDataIfEmpty('contact');
@@ -105,7 +103,7 @@
                 comics: uiModels.comics
             },
             style: 'panel-info',
-            pageSize:20
+            pageSize: 20
         }).render();
 
         $('.evo-head-links2 a').on('click', function(evt){
@@ -114,6 +112,7 @@
                 .removeClass('sel');
             el.addClass('sel');
         });
+
     });
 
 </script>

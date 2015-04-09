@@ -199,15 +199,13 @@ Evol.App = Backbone.View.extend({
                 alert('Error: invalid route.');
             }
         });
-    }/*,
+    },
 
     _HTMLentities: function (es) {
-        var h=[];
-        _.each(es, function(e){
-            h.push('<li><a href="#', e.id, '/list" data-id="', e.id, '">', e.entities, '</a></li>');
-        });
-        return h.join('');
-    }*/
+        return _.map(es, function(e){
+            return '<li><a href="#' + e.id + '/list" data-id="' + e.id + '">' + e.entities + '</a></li>';
+        }).join('');
+    }
 
 });
 
