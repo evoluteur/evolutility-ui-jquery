@@ -1,33 +1,25 @@
 var uiModels = uiModels || {};
 uiModels.winecellar_data = [
     {
-        "name": "Macrostie",
-        "label_img": "wine/macrostie.gif",
-        "vintage": 2008,
-        "winery": "Mc Williams",
-        "bsize": "750",
-        "type": "red",
-        "price": 20,
-        "grape": "chard",
-        "appellation": "",
-        "country": "US",
-        "region": "Sonoma",
-        "area": "",
-        "buying_date": "2008-05-12",
-        "value": 24,
-        "purchased": 24,
-        "remaining": 16,
-        "notes": "",
-        "drink_from": 2009,
-        "drink_to": 2020,
-        "peak_from": 2014,
-        "peak_to": 2017,
-        "meal": "",
-        "score": "",
-        "score_parker": null,
-        "score_winespectator": null,
-        "comments": "",
-        "degustations": [
+        name: "Macrostie",
+        label_img: "wine/macrostie.gif",
+        vintage: 2008,
+        winery: "Mc Williams",
+        bsize: "750",
+        type: "red",
+        price: 20,
+        grape: "chard",
+        country: "US",
+        region: "Sonoma",
+        buying_date: "2008-05-12",
+        value: 24,
+        purchased: 24,
+        remaining: 16,
+        drink_from: 2009,
+        drink_to: 2020,
+        peak_from: 2014,
+        peak_to: 2017,
+        degustations: [
             {
                 "ddate": "2008-05-08",
                 "robe": "light",
@@ -59,6 +51,7 @@ uiModels.winecellar_data = [
         bsize: '750',
         type: 'white',
         grape: "sem",
+        buying_date: "2012-12-12",
         price: 399,
         value: 460,
         drink_from: 2012,
@@ -72,13 +65,13 @@ uiModels.winecellar_data = [
         score_winespectator: 94,
         degustations: [
             {
-                ddate: '2012-04-23',
+                ddate: '2013-04-23',
                 robe: 'golden',
                 nose: 'fruity',
                 taste: 'incredible'
             },
             {
-                ddate: '2013-24-12',
+                ddate: '2013-05-12',
                 robe: 'clear',
                 nose: 'strong and sweet',
                 taste: 'outstanding'
@@ -118,6 +111,7 @@ uiModels.winecellar_data = [
         winery:'Vine Cliff',
         bsize: '750',
         type: 'red',
+        buying_date: "2013-05-05",
         price: 28,
         drink_from: 2014,
         grape: 'merlo',
@@ -169,7 +163,7 @@ uiModels.winecellar_data = [
                 taste: 'excellent'
             },
             {
-                ddate: '2013-05-05',
+                ddate: '2013-10-22',
                 robe: 'rich',
                 nose: 'strong',
                 taste: 'very good'

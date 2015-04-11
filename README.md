@@ -26,7 +26,7 @@ bower install evolutility#master
 
 Evolutility's views have a Backbone model (to define the data) and also a UI-model (to define the UI for this model).
 
-All views for a Backbone model and collection are defined by only one UI-Model acting as a single source of truth for the definition of all UI elements across views.
+All views for a Backbone model and collection share a single UI-Model which defines of all UI elements across views in a simple declarative way.
 
 Evolutility provides 3 types of view
 * Views for a model: View, Edit, Mini (quick edit), JSON.
@@ -41,7 +41,11 @@ Shows all fields for viewing (read only). Fields are grouped in panels and tabs.
 
 ![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-view.gif)
 ```javascript
-var vw = new Evol.ViewOne.View(myConfig);
+var vw = new Evol.ViewOne.View({
+            el: myElement,
+            uiModel: myUIModel,
+            model: myModel
+        });
 ```
 ### Edit
 This view shows all fields for edition to create or update models.
@@ -50,21 +54,33 @@ Fields are grouped in panels and tabs.
 
 ![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-edit.gif)
 ```javascript
-var vw = new Evol.ViewOne.Edit(myConfig);
+var vw = new Evol.ViewOne.Edit({
+            el: myElement,
+            uiModel: myUIModel,
+            model: myModel
+        });
 ```
 ### Mini (Quick Edit)
 Only shows important fields (required or showing as a column in grids). Fields are grouped in a single panel.
 
 ![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-mini.gif)
 ```javascript
-var vw = new Evol.ViewOne.Mini(myConfig);
+var vw = new Evol.ViewOne.Mini({
+            el: myElement,
+            uiModel: myUIModel,
+            model: myModel
+        });
 ```
 ### JSON
 JSON representation of the data.
 
 ![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-json.gif)
 ```javascript
-var vw = new Evol.ViewOne.JSON(myConfig);
+var vw = new Evol.ViewOne.JSON({
+            el: myElement,
+            uiModel: myUIModel,
+            model: myModel
+        });
 ```
 
 ## Views for a collection of Many models
@@ -73,21 +89,33 @@ Gives a tabular view of a collection with paging.
 
 ![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-list.gif)
 ```javascript
-var vw = new Evol.ViewMany.List(myConfig);
+var vw = new Evol.ViewMany.List({
+            el: myElement,
+            uiModel: myUIModel,
+            colllection: myCollection
+        });
 ```
 ### Cards
 Shows records side by side as cards.
 
 ![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-cards.gif)
 ```javascript
-var vw = new Evol.ViewMany.Cards(myConfig);
+var vw = new Evol.ViewMany.Cards({
+            el: myElement,
+            uiModel: myUIModel,
+            colllection: myCollection
+        });
 ```
 ### Charts
 Draws charts about the collection.
 
 ![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-charts.gif)
 ```javascript
-var vw = new Evol.ViewMany.Charts(myConfig);
+var vw = new Evol.ViewMany.Charts({
+            el: myElement,
+            uiModel: myUIModel,
+            colllection: myCollection
+        });
 ```
 
 ## Views for Actions
@@ -97,14 +125,21 @@ View to define export options and preview the collection export in different dat
 
 ![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/action-export.gif)
 ```javascript
-var vw = new Evol.ViewAction.Export(myConfig);
+var vw = new Evol.ViewAction.Export({
+            el: myElement,
+            uiModel: myUIModel,
+            colllection: myCollection
+        });
 ```
 ### Filter
 View used to build a structured query to filter a collection.
 
 ![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/action-filter.gif)
 ```javascript
-var vw = new Evol.ViewAction.Filter(myConfig);
+var vw = new Evol.ViewAction.Filter({
+            el: myElement,
+            uiModel: myUIModel
+        });
 ```
 
 [Live demo](http://evoluteur.github.io/evolutility/index.html) of these views.

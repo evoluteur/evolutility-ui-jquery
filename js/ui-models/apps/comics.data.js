@@ -239,9 +239,9 @@ uiModels.comics_data = [{
   "authors": "Franck Miller",
   "complete": true,
   "finished": true,
-  "have": "",
-  "haveNb": null,
-  "serieNb": null,
+  "have": "1",
+  "haveNb": 1,
+  "serieNb": 1,
   "language": "EN",
   "notes": "",
   "pix": "comics/ronin.jpeg"
