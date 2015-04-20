@@ -190,7 +190,9 @@ Evol.App = Backbone.View.extend({
                 if(options && tb.cardinality==='1'){
                     tb.setModelById(options);
                 }
-                that._tbs[uiModel.id] = tb;
+                if(that._tbs){
+                    that._tbs[uiModel.id] = tb;
+                }
                 if(cb){
                     cb(tb);
                 }

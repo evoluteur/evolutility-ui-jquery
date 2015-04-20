@@ -47,7 +47,7 @@ function showUIModel(uiModel){
     if(_.isString(uiModel)){
         uiModel=uiModels[uiModel];
     }
-    $('#uimodel').html(Evol.UI.input.textMJSON('uimodel2', uiModel, 10, true))
+    $('#uimodel').html(Evol.UI.input.textMJSON('uimodel2', uiModel, 12))
         .slideDown();
     $('#hide_def').show();
 }

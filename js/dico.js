@@ -192,6 +192,10 @@ return {
         }
     },
 
+    clearCacheLOV: function(){
+        Evol.hashLov={};
+    },
+
     viewIsOne: function(viewName){
         return viewName==='new' || viewName==='edit' || viewName==='view' || viewName==='json';
     },
@@ -200,8 +204,10 @@ return {
     },
 
     fieldInCharts: function (f) {
-        return (_.isUndefined(f.viewcharts) || f.viewcharts) && 
-            (f.type===fts.lov || f.type===fts.bool || f.type===fts.int || f.type===fts.money);
+        return (_.isUndefined(f.viewcharts) || f.viewcharts) && Evol.Dico.fieldChartable(f);
+    },
+    fieldChartable: function (f) {
+        return  f.type===fts.lov || f.type===fts.bool || f.type===fts.int || f.type===fts.money;
     },
 
     isNumberType: function(fType){
@@ -537,8 +543,7 @@ return {
         };
     },
 
-    sortingText: function(fid){
-            //return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
+    sortingNumber: function(fid){
         return function(modelA, modelB) {
             if(modelA[fid]<modelB[fid]){
                 return 1;
@@ -548,6 +553,22 @@ return {
             }
             return 0;
         };
+    },
+    sortingNumberDesc: function(fid){
+        return function(modelA, modelB) {
+            if(modelA[fid]>modelB[fid]){
+                return 1;
+            }
+            if(modelB[fid]>modelA[fid]){
+                return -1;
+            }
+            return 0;
+        };
+    },
+
+    sortingText: function(fid){
+        //return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
+        return this.sortingNumber(fid);
     },
 
     getRoute: function(){

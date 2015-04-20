@@ -128,7 +128,7 @@ return Backbone.View.extend({
 
     getTitle: function(){
         if(this.model){
-            if(this.model.isNew()){
+            if(this.model.isNew && this.model.isNew()){
                 return i18n.getLabel('NewEntity', this.uiModel.entity);
             }
             var lf=this.uiModel.leadfield;

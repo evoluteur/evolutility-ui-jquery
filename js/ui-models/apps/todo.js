@@ -13,7 +13,7 @@ uiModels.todo = {
             elements: [
                 {
                     id: 'title', attribute: 'title', type: 'text', label: 'Title', required: true,
-                    placeholder: 'Call John',
+                    //placeholder: 'Call John',
                     maxlength: 255,
                     width: 100, viewmany: true
                 },

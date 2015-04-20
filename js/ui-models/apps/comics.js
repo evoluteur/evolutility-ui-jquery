@@ -3,8 +3,8 @@ var uiModels = uiModels || {};
 uiModels.comics = {
     id: 'comics',
     label: 'Graphic Novels',
-    entity: 'graphic novel',
-    entities: 'graphic novels',
+    entity: 'graphic novel serie',
+    entities: 'graphic novel series',
     //icon: 'serie.gif',
     leadfield:'title',
     badge:function(m){
@@ -24,19 +24,18 @@ uiModels.comics = {
                 {
                     id: 'genre', attribute: 'genre', type: 'lov', label: 'Genre', width: 38, viewmany: true,
                     list: [
-                        {id: 'adv', text: 'Aventure'},
-                        {id: 'conte', text: 'Conte'},
-                        {id: 'eros', text: 'Erotique'},
-                        {id: 'fantasy', text: 'Fantastique'},
+                        {id: 'adv', text: 'Adventure'},
+                        {id: 'conte', text: 'Fairy tale'},
+                        {id: 'eros', text: 'Erotic'},
+                        {id: 'fantasy', text: 'Fantastic'},
                         {id: 'hf', text: 'Heroic Fantasy'},
-                        {id: 'hist', text: 'Historique'},
-                        {id: 'humor', text: 'Humour'},
-                        {id: 'nocat', text: 'Inclassable'},
-                        {id: 'youth', text: 'Jeunesse'},
-                        {id: 'pol', text: 'Policier / Thriller'},
-                        {id: 'rg', text: 'Roman graphique'},
+                        {id: 'hist', text: 'Historic'},
+                        {id: 'humor', text: 'Humor'},
+                        {id: 'nocat', text: 'One of a kind'},
+                        {id: 'youth', text: 'Youth'},
+                        {id: 'pol', text: 'Thriller'},
                         {id: 'sf', text: 'Science-fiction'},
-                        {id: 'sh', text: 'Super Héros'},
+                        {id: 'sh', text: 'Super Heros'},
                         {id: 'wwest', text: 'Western'} 
                     ]
                 },
@@ -50,16 +49,6 @@ uiModels.comics = {
                         {id: 'FR', text: 'French'},
                         {id: 'EN', text: 'English'}
                     ]
-                },
-                {
-                    id:'amazon', label:'Amazon', type:'formula', width:100, css:'evol-ellipsis',
-                    formula:function(m){
-                        var link=m.get('language')=='FR' ?
-                            'http://www.amazon.fr/s/ref=sr_nr_n_1?keywords='
-                            :'http://www.amazon.com/s/ref=nb_sb_noss?field-keywords=';
-                        link+=encodeURI(m.get('title')+' '+m.get('authors'));
-                        return '<a target="a" href="'+link+'">'+link+'</a>';
-                    }
                 },
                 {
                     id: 'serieNb', attribute: 'serieNb', type: 'integer', width: 15, viewmany: false,
@@ -80,6 +69,16 @@ uiModels.comics = {
                 {
                     id: 'finished', attribute: 'finished', type: 'boolean', width: 19, viewmany: true,
                     label: 'Finished', labeltrue:'Finished', labelfalse:'Unfinished'
+                },
+                {
+                    id:'amazon', label:'Amazon', type:'formula', width:100, css:'evol-ellipsis',
+                    formula:function(m){
+                        var link=m.get('language')=='FR' ?
+                            'http://www.amazon.fr/s/ref=sr_nr_n_1?keywords='
+                            :'http://www.amazon.com/s/ref=nb_sb_noss?field-keywords=';
+                        link+=encodeURI(m.get('title')+' '+m.get('authors'));
+                        return '<a target="a" href="'+link+'">'+link+'</a>';
+                    }
                 },
                 {
                     id: 'notes', attribute: 'notes', type: 'textmultiline', label: 'Notes', maxlength: 1000,

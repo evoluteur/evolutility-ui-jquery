@@ -1,6 +1,7 @@
 node_modules
 bower_components
 js/vendors.js
+js/ui-models/doc/
 dist/vendors.js
 js/models
 js/ui-models/chinook

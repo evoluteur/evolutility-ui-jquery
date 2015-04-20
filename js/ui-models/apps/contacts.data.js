@@ -81,6 +81,7 @@ uiModels.contact_data = [{
     phone: '45 456 414 45',
     url: 'http://aubonpain.fr',
     city: 'Paris',
+    state: '',
     country: 'FR',
     category: '1'
 }, {
@@ -89,6 +90,7 @@ uiModels.contact_data = [{
     firstname: 'Olivier',
     company: 'Evolutility',
     city: 'San Mateo',
+    state: '',
     email: 'olivier@evolutility.org',
     url: 'http://www.evol-utility.org'
 }, {
@@ -152,6 +154,7 @@ uiModels.contact_data = [{
     phonecell: '7325 8245',
     address1: '434 Cool Place',
     city: 'Bengaluru',
+    state: '',
     country: 'IN',
     category: '4'
 }, {
@@ -163,6 +166,7 @@ uiModels.contact_data = [{
     email: 'ccheng@MyGreatCorporation.com',
     phonecell: '650 234 8245',
     city: 'Sunnyvalle',
-    country: 'CA',
+    state: 'CA',
+    country: 'US',
     category: '4'
 }];
