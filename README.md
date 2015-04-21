@@ -30,7 +30,7 @@ All views for a Backbone model and collection share a single UI-Model which defi
 
 Evolutility provides 3 types of view
 * Views for a model: View, Edit, Mini (quick edit), JSON.
-* Views for a collection: List, Cards, Charts.
+* Views for a collection: List, Cards, Bubbles, Charts.
 * Views for actions on a model or collection: Export, Filter.
 
 A large part of the API (methods, options and events) is common to all views. Some views have additional API.
@@ -101,6 +101,18 @@ Shows records side by side as cards.
 ![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-cards.gif)
 ```javascript
 var vw = new Evol.ViewMany.Cards({
+            el: myElement,
+            uiModel: myUIModel,
+            colllection: myCollection
+        });
+```
+### Bubbles
+The "Bubbles" view displays the data as bubbles with controls to group them and set their color and size (this view uses D3.js). 
+    A tooltip with the Card view of the item show on mouse over.
+
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-bubbles.gif)
+```javascript
+var vw = new Evol.ViewMany.Bubbles({
             el: myElement,
             uiModel: myUIModel,
             colllection: myCollection
