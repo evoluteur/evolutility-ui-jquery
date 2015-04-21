@@ -139,8 +139,10 @@
 // --- page title ---
 .evo-title,.evo-title2{
   background-color: @color-header2;
-  position: relative;
-
+  position: fixed;
+  z-index: 500;
+  width: 100%;
+  overflow: hidden;
   >h1{
     margin-left: 20px;
     color:white;
@@ -163,40 +165,43 @@
   min-height: 120px;
 }
 .evo-title2{
-  top: 70px;
+  top: 65px;
   padding:5px 10px;
 }
 
 // --- content ---
 .evo-content{
-  padding: 80px 30px 30px;
+  padding: 85px 30px 30px;
+  margin-top: 10px;
+  @media only screen and (min-width: @screen2) {
+    margin-left: @width-toolbar-left;
+    padding-top: 10px;
+  }
 }
-.evo-content2{
-  padding: 90px 30px 30px;
-}
+.evo-content2,
 .evo-content3{
-  padding: 96px 30px 30px;
+  padding: 150px 30px 30px;
+  margin-top: 10px;
 }
 
 @media only screen and (min-width: @screen2) {
-  .evo-content,
   .evo-content2,
   .evo-content3{
     margin-left: @width-toolbar-left;
-    margin-top: 20px;
-    padding-top:10px;
+    padding-top: 85px;
   }
   .evo-anchor{
-    top:-5px !important;
+    top:-65px !important;
   }
 }
 .evo-anchor{
   position:relative;
-  top:-70px;
+  top:-140px;
 }
 
 // --- footer ---
 .footer{
+  margin-top: 40px;
 	text-align: center;
 	font-size:smaller;
 	color:@color-text-footer;

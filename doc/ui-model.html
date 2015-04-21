@@ -44,7 +44,7 @@
 </div>
 
 
-<div class="evo-content3">
+<div class="evo-content2">
 
 <p>With Evolutility views are fully defined by UI models (rather than hand coded templates and custom Javascript code).</p>
 
@@ -55,6 +55,14 @@
 
 <p>It is a first draft and it is nor fully implemented yet. It is still a work in progress based on
     <a href="http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications" target="evomm">Evolutility minimalist meta-model</a>.</p>
+ 
+        <p>Elements: 
+            <a href="#object">object</a> - 
+            <a href="#field">field</a> - 
+            <a href="#panel">panel</a> - 
+            <a href="#panel-list">panel-list</a> - 
+            <a href="#tab">tab</a>
+        </p> 
 
 <span class="evol-required">*</span>: required attribute.
 <span class="evol-asterix">*</span>: partially or not implemented yet.
@@ -119,6 +127,16 @@
             <br />
             Example: <code>icon</code> =&quot;todo.png&quot;
         </td>
+    </tr>
+    <tr>
+        <td>summary <span class="evol-asterix">*</span></td>
+        <td>Summary row of data with aggregations like 
+            <br />
+            Example: 
+            <code>summary</code>=[
+                    {id:'count_completed', label:'# Completed', fieldId: 'complete', formula: 'count'},
+                    {id:'count_have', label:'# Have', fieldId: 'haveNb', formula: 'sum'}
+                ]</td>
     </tr>
     <tr>
         <td>$title</td>
@@ -585,9 +603,9 @@
 
 <p><br/>evolutility.js at <a href="https://github.com/evoluteur/evolutility" target="download">GitHub</a></p>
 
+<div class="footer">&#169; 2015 Olivier Giulieri</div>
 </div>
 
-<div class="footer">&#169; 2015 Olivier Giulieri</div>
 </body>
 
 </html>

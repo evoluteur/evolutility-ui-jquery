@@ -27,24 +27,35 @@
 <div class="evo-header">
     <div class="evo-logo"><a href="index.html"><span>evol</span>utility<span>.js</span></a></div>
     <ul class="evo-head-links">
-        <li><a href="demo/index.html">demos</a></li>
-        <li><a href="doc/index.html">doc</a></li>
+        <li><a href="demo/index.html" class="sel">demos</a></li>
+        <li class="evo-link2">
+            <ul class="evo-head-links2">
+                <li><a href="demo/index.html#todo" data-id="todo">todo</a></li>
+                <li><a href="demo/index.html#contact" data-id="contact">addressbook</a></li>
+                <li><a href="demo/index.html#winecellar" data-id="winecellar">wine cellar</a></li>
+                <li><a href="demo/index.html#comics/cards" data-id="comics">graphic novels</a></li>
+            </ul>
+        </li>
+        <li><a href="doc/index.html" class="sel">doc</a></li>
+        <li class="evo-link2">
+            <ul class="evo-head-links2">
+                <li><a href="doc/views.html">views</a></li>
+                <li><a href="doc/ui-model.html">ui-model</a></li>
+                <li><a href="doc/controller.html">controller</a></li>
+            </ul>
+        </li>
         <li class="spaced"><a href="https://github.com/evoluteur/evolutility" target="_new">GitHub</a></li>
     </ul>
     <div class="clearfix"></div>
 </div>
 
-<div class="evo-title" >
-    <h1 class="title1" style="color: white">Evolutility <span class="title2" >: Views which adapt to your data by changing form, volume and structure.</span></h1>
-</div>
-
 <div class="evo-content">
-
+<h1 class="title1" style="color: navy">Evolutility:<span style="color:#0099cc;"> Views which adapt to your data by changing form, volume and structure.</span></h1>
+<br>
 
 <h4 class="mt20">
     Evolutility is currently v0.4 and a work in progress on <a href="https://github.com/evoluteur/evolutility" target="ghe">GitHub</a>.
 </h4>
-
     <p>Evolutility provides a set of generic Views ("V" as in "MVC") to
         browse, edit, filter, export and chart
         data of different volumes and structures.
@@ -56,7 +67,8 @@
     <p>&nbsp;</p>
     <h4 class="mt20">A few examples</h4>
 
-    <p>See how Evolutility views adapt to different UI-models. Below, you can see the 9 views for 4 different ui-models.</p>
+    <p>See how Evolutility views adapt to different data structures to behave like a todo list, and addressbook, a wine cellar or a list of graphic novels... 
+    </p>
 
 
     <div id="evol-views-params" >
@@ -72,6 +84,7 @@
                 <optgroup label="Many = collection">
                     <option value="list">List</option>
                     <option value="cards">Cards</option>
+                    <option value="bubbles">Bubbles</option>
                     <option value="charts">Charts</option>
                 </optgroup>
                 <optgroup label="Action">
@@ -110,7 +123,7 @@
 
     <p>Demo apps:
     <div class="demo-links">
-        <div><a href="demo/index.html#todo/badges" data-id="todo"><img src="demo/pix/todo.gif" class="evo-icon-16">To Do</a></div>
+        <div><a href="demo/index.html#todo" data-id="todo"><img src="demo/pix/todo.gif" class="evo-icon-16">To Do</a></div>
         <div><a href="demo/index.html#contact" data-id="contact"><img src="demo/pix/contact.gif" class="evo-icon-16">AddressBook</a></div>
         <div><a href="demo/index.html#winecellar" data-id="wine"><img src="demo/pix/wine.gif" class="evo-icon-16">Wine cellar</a></div>
         <div><a href="demo/index.html#comics/cards" data-id="comics"><img src="demo/pix/comics.png" class="evo-icon-16">Graphic novels</a></div>
@@ -122,8 +135,17 @@
 
     <h4 class="mt20">UI model to configure the views</h4>
 
+<p>Views are configured with a UI-model. It is the single source of truth for all UI elements in all views. 
+It contains a DRY (Don't Repeat Yourself) description of the UI and its mapping to the model.
+From a single UI-model, many views of an entity can be generated at run-time to browse, edit, filter, export, chart the data (for CRUD and more).</p>
 
-<p>To customizing these apps all it takes is to edit their ui-models:
+<p>The "vocabulary" of UI-models is abstracted from the DOM and uses words like 
+            "<a href="doc/ui-model.html#tab">tab</a>", "<a href="doc/ui-model.html#panel">panel</a>" or 
+            "<a href="doc/ui-model.html#field">field</a>"
+             rather than "input", "div", "span"...
+        </p>
+
+    <p>Example of UI-Models used in the demos:
         <a href="javascript:showUIModel('todo')">To Do</a>,
         <a href="javascript:showUIModel('contact')">Addressbook</a>,
         <a href="javascript:showUIModel('winecellar')">Wine Cellar</a>,
@@ -132,14 +154,6 @@
     </p>
 
     <div style="display:none;" id="uimodel"></div>
-
-
-<p>This UI-model is a single source of truth for all UI elements in all views. It contains a DRY description of the UI from which all views can be generated at run-time.</p>
-
-    <p>For each Backbone model and collection, a single UI model contains all the metadata necessary
-        to configure its views (list, view, edit, filter, export...).
-        UI models map model attributes to form fields and organize fields into lists, panels and tabs.
-    </p>
 
 
     <p>&nbsp;</p>
@@ -153,11 +167,9 @@
        under the GNU AGPLv3 license.</p>
 
     <div class="clearfix"></div>
+    <div class="footer">&#169; 2015 Olivier Giulieri</div>
 
 </div>
-
-<div class="footer">&#169; 2015 Olivier Giulieri</div>
-
 
 <script>
 

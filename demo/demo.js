@@ -18,6 +18,7 @@ var ViewDescriptions = {
  'json': {name: 'JSON', desc: 'The "JSON" view shows the JSON representation of the data.'},
  'list': {name: 'List', desc: 'The "List" view gives a tabular view of a collection with paging.'},
  'cards': {name: 'Cards', desc: 'The "Cards" Shows records side by side as cards.'},
+ 'bubbles': {name: 'Bubbles', desc: 'The "Bubbles" view displays the data as bubbles with controls to group them and set their color and size (this view uses D3.js).'},
  'charts': {name: 'Charts', desc: 'The "Charts" view draws charts about the collection.'},
  'filter': {name: 'Filter', desc: 'The "Filter" view is used to build a structured query to filter a collection.'},
  'export': {name: 'Export', desc: 'The "Export" view let\'s you define export options and preview the collection export in different data formats (CSV, TAB, HTML, XML, SQL and JSON).'}

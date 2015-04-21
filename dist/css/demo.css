@@ -123,7 +123,10 @@
 .evo-title,
 .evo-title2 {
   background-color: #0099cc;
-  position: relative;
+  position: fixed;
+  z-index: 500;
+  width: 100%;
+  overflow: hidden;
 }
 .evo-title > h1,
 .evo-title2 > h1 {
@@ -145,44 +148,48 @@
   min-height: 120px;
 }
 .evo-title2 {
-  top: 70px;
+  top: 65px;
   padding: 5px 10px;
 }
 .evo-content {
-  padding: 80px 30px 30px;
-}
-.evo-content2 {
-  padding: 90px 30px 30px;
-}
-.evo-content3 {
-  padding: 96px 30px 30px;
+  padding: 85px 30px 30px;
+  margin-top: 10px;
 }
 @media only screen and (min-width: 900px) {
-  .evo-content,
+  .evo-content {
+    margin-left: 190px;
+    padding-top: 10px;
+  }
+}
+.evo-content2,
+.evo-content3 {
+  padding: 150px 30px 30px;
+  margin-top: 10px;
+}
+@media only screen and (min-width: 900px) {
   .evo-content2,
   .evo-content3 {
     margin-left: 190px;
-    margin-top: 20px;
-    padding-top: 10px;
+    padding-top: 85px;
   }
   .evo-anchor {
-    top: -5px !important;
+    top: -65px !important;
   }
 }
 .evo-anchor {
   position: relative;
-  top: -70px;
+  top: -140px;
 }
 .footer {
+  margin-top: 40px;
   text-align: center;
   font-size: smaller;
   color: silver;
 }
-.evol-doc-views > section > div {
-  width: 500px;
+.evol-doc-views > section {
   margin: 10px;
 }
-.evol-doc-views > section > div > img {
+.evol-doc-views > section img {
   width: 500px;
 }
 .evol-doc-views img.shadow {
@@ -199,8 +206,8 @@
   margin-top: 200px;
   content: " ";
 }
-.evo-links-views > li {
-  margin: 4px 0 10px;
+.evo-links-views > div {
+  margin: 4px 0 10px 20px;
 }
 .evo-links-views a > i {
   margin: 5px;
@@ -226,7 +233,7 @@ code {
 .list-views {
   position: absolute;
   top: 10px;
-  left: 205px;
+  left: 225px;
 }
 .list-views > div {
   color: white;
@@ -247,6 +254,9 @@ code {
 body {
   font-size: 15px !important;
   font-weight: 300;
+}
+a {
+  color: #0099cc;
 }
 .demo-links > div {
   display: inline-block;
@@ -273,7 +283,7 @@ body {
 .blueBox > ul > li {
   margin-left: -20px;
 }
-.biglinks a {
+.biglinks > a {
   font-size: 2em;
 }
 .indent {
