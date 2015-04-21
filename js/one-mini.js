@@ -9,7 +9,12 @@
  *
  *************************************************************************** */
 
-Evol.ViewOne.Mini = Evol.ViewOne.Edit.extend({
+Evol.ViewOne.Mini = function(){
+
+    var eUI = Evol.UI,
+        fts = Evol.Dico.fieldTypes;
+
+return Evol.ViewOne.Edit.extend({
 
     events: { // TODO same as ViewOne ?
         'click > .evol-buttons > button': 'click_button',
@@ -38,6 +43,30 @@ Evol.ViewOne.Mini = Evol.ViewOne.Edit.extend({
         
         this._renderPanel(h, miniUIModel, mode);
         this._renderButtons(h, mode);
+    },
+
+    _renderPanel: function (h, p, mode, visible) {
+        var that = this,
+            iconsPath = this.iconsPath;
+            
+        h.push('<div data-p-width="100%" class="evol-pnl evol-p-mini">');
+        h.push(eUI.HTMLPanelBegin(p, this.style||'panel-default'),
+            '<fieldset data-pid="', p.id, p.readonly?'" disabled>':'">');
+        _.each(p.elements, function (elem) {
+            if(elem.type==fts.hidden){
+                h.push(eUI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
+            }else{
+                h.push('<div class="pull-left evol-fld w-100">');
+                that.renderField(h, elem, mode, iconsPath);
+                h.push("</div>");
+            }
+        });
+        h.push('</fieldset>',
+            eUI.HTMLPanelEnd(),
+            '</div>');
+        return this;
     }
 
 });
+
+}();

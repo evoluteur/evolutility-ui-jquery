@@ -381,6 +381,7 @@ return Backbone.View.extend({
         this._fieldHash = null;
         this._fields = null;
         this._subCollecs = this._subCollecsOK = false;
+        //Evol.Dico.clearCacheLOV();
         return this;
     },
 
@@ -587,44 +588,28 @@ return Backbone.View.extend({
     _renderPanel: function (h, p, mode, visible) {
         var that = this,
             iconsPath = this.iconsPath;
+
         if(mode==='wiz'){
             var hidden= _.isUndefined(visible)?false:!visible;
             h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%;',hidden?'display:none;':'','">');
         }else{
-            h.push('<div data-p-width="', p.width, '" class="evol-pnl');
-            if(mode==='mini'){
-                h.push(' evol-p-mini">');
-            }else{
-                h.push(' pull-left" style="width:', p.width, '%">');
-            }
+            h.push('<div data-p-width="', p.width, '" class="evol-pnl pull-left" style="width:', p.width, '%">');
         }
         h.push(eUI.HTMLPanelBegin(p, this.style||'panel-default'),
             '<fieldset data-pid="', p.id, p.readonly?'" disabled>':'">');
-        if(mode==='mini'){
-            _.each(p.elements, function (elem) {
+        _.each(p.elements, function (elem) {
+            if(elem.type=='panel-list'){
+                that._renderPanelList(h, elem, elem.readonly?'view':mode);
+            }else{
                 if(elem.type==fts.hidden){
                     h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
                 }else{
-                    h.push('<div class="pull-left evol-fld w-100">');
+                    h.push('<div style="width:', parseInt(elem.width||100, 10), '%" class="pull-left evol-fld">');
                     that.renderField(h, elem, mode, iconsPath);
                     h.push("</div>");
                 }
-            });
-        }else{
-            _.each(p.elements, function (elem) {
-                if(elem.type=='panel-list'){
-                    that._renderPanelList(h, elem, elem.readonly?'view':mode);
-                }else{
-                    if(elem.type==fts.hidden){
-                        h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
-                    }else{
-                        h.push('<div style="width:', parseInt(elem.width||100, 10), '%" class="pull-left evol-fld">');
-                        that.renderField(h, elem, mode, iconsPath);
-                        h.push("</div>");
-                    }
-                }
-            });
-        }
+            }
+        });
         h.push('</fieldset>',
             eUI.HTMLPanelEnd(),
             '</div>');
