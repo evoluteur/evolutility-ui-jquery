@@ -23,8 +23,7 @@ module.exports = function (grunt) {
                 src: [
 
                     // D3.js
-                    //'bower_components/d3/d3.js',
-
+                    'bower_components/d3/d3.js',
                     // jQuery & jQuery UI
                     'bower_components/jquery/dist/jquery.js',
                     //'bower_components/jquery-ui/ui/jquery.ui.widget.js',
@@ -40,8 +39,8 @@ module.exports = function (grunt) {
                     'bower_components/bootstrap/js/modal.js',
                     'bower_components/bootstrap/js/button.js',
                     'bower_components/bootstrap/js/dropdown.js',
-                    //'bower_components/bootstrap/js/tooltip.js',
-                    //'bower_components/bootstrap/js/popover.js',
+                    'bower_components/bootstrap/js/tooltip.js',
+                    'bower_components/bootstrap/js/popover.js',
                     //'bower_components/bootstrap/js/carousel.js',
 
                     // Widgets
@@ -60,6 +59,7 @@ module.exports = function (grunt) {
                     'js/ui-*.js',
                     'js/i18n/EN.js',
                     'js/dico.js',
+                    'js/d3-*.js',
 
                     'js/many.js',
                     'js/many-*.js',
@@ -114,6 +114,7 @@ module.exports = function (grunt) {
         // *************************************************************************************
         jshint: {
             dev: [
+
                 // --- tools ---
                 'Gruntfile.js',
                 'package.json',

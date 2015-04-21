@@ -10,6 +10,14 @@
  *************************************************************************** */
 
 Evol.viewClasses = {
+    getClass: function(className){
+        var cn=Evol.viewClasses;
+        if(cn[className]){
+            return cn[className];
+        }else{
+            return cn.list;
+        }
+    },
     // --- One ---
     'view': Evol.ViewOne.View,
     'edit': Evol.ViewOne.Edit,
@@ -18,7 +26,7 @@ Evol.viewClasses = {
     // --- Many ---
     'list': Evol.ViewMany.List,
     'cards': Evol.ViewMany.Cards,
-    //'bubbles': Evol.ViewMany.Bubbles,
+    'bubbles': Evol.ViewMany.Bubbles,
     'charts': Evol.ViewMany.Charts,
     // --- Action ---
     'filter': Evol.ViewAction.Filter,
@@ -40,6 +48,8 @@ return Backbone.View.extend({
         'navigate.many >div': 'click_navigate',
         'paginate.many >div': 'paginate',
         //'selection.many >div': 'click_select',
+        //'click .evo-search>.btn': 'click_search',
+        //'keyup .evo-search>input': 'key_search',
         'change.tab >div': 'change_tab',
         'action >div': 'action_view',
         'status >div': 'status_update',
@@ -54,12 +64,12 @@ return Backbone.View.extend({
         readonly: false,
         //router:...,
         defaultView: 'list',
+        defaultViewOne: 'view',
+        defaultViewMany: 'list',
         style: 'panel-info',
         display: 'label', // tooltip, text, icon, none
         titleSelector: '#title',
         pageSize:20,
-        defaultViewOne: 'view',
-        defaultViewMany: 'list',
         buttons: {
             always:[
                 {id: 'list', label: i18n.bList, icon:'th-list', n:'x'},
@@ -89,7 +99,7 @@ return Backbone.View.extend({
                 // -- views MANY ---
                 {id:'list', label: i18n.bList, icon:'th-list',n:'n'},
                 {id:'cards', label: i18n.bCards, icon:'th-large',n:'n'},
-                //{id:'bubbles', label: i18n.bBubbles, icon:'adjust',n:'n'},
+                {id:'bubbles', label: i18n.bBubbles, icon:'adjust',n:'n'},
                 {id:'charts', label: i18n.bCharts, icon:'stats',n:'n'}
             ]
         }
@@ -138,7 +148,11 @@ return Backbone.View.extend({
             menuItems(tb.actions);
         if(this.toolbar){
             h+='</ul><ul class="nav nav-pills pull-right" data-id="views">'+
-                '<li class="evo-tb-status" data-cardi="n"></li>';
+                '<li class="evo-tb-status" data-cardi="n"></li>';//+
+                //'<li><div class="input-group evo-search">'+
+                //    '<input class="evo-field form-control" type="text" maxlength="100">'+
+                //    '<span class="btn input-group-addon glyphicon glyphicon-search"></span>'+
+                //'</div></li>';
             //h+=eUIm.hBegin('views','li','eye-open');
             h+=menuItems(tb.prevNext);
             h+=menuDeviderH;
@@ -154,6 +168,7 @@ return Backbone.View.extend({
                  link2h('new-panel','New Panel','plus');
                  h+=endMenu;
              } */
+
         }
         h+='</ul>'+eUI.html.clearer+'</div>';
         return h;
@@ -164,6 +179,11 @@ return Backbone.View.extend({
             this.curView.render();
         }
         return this;
+    },
+
+    clearViews: function(keep){
+        //div data-vid="evolw-edit"
+        $('[data-vid=evolw-*]').remove();
     },
 
     isDirty:function(){
@@ -189,6 +209,7 @@ return Backbone.View.extend({
             this.setIcons('new');
             vw.mode='new';
         }else{
+            var ViewClass = Evol.viewClasses.getClass(viewName);
             if($v.length){
                 // -- view already exists and was rendered
                 this.model=vw.model;
@@ -242,15 +263,16 @@ return Backbone.View.extend({
                     pageSize: this.pageSize || 20,
                     pageIndex: this.pageIndex || 0,
                     titleSelector: this.titleSelector,
-                    router: this.router
+                    router: this.router//,
+                    //iconsPath: this.iconsPath || ''
                 };
                 this.$('[data-id="new"]').show();
                 this.$('[data-id="views"] > li').removeClass('evo-sel')
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
                 if(Evol.Dico.viewIsMany(viewName)){
                     //fieldsetFilter
-                    vw = new Evol.viewClasses[viewName](config)
-                        .render();
+                    vw = new ViewClass(config)
+                                .render();
                     this._prevViewMany=viewName;
                     vw.setTitle();
                     if(viewName!='charts' && viewName!='bubbles' && this.pageIndex > 0){
@@ -262,7 +284,7 @@ return Backbone.View.extend({
                         // --- actions ---
                         case 'export':
                             config.sampleMaxSize = config.pageSize;
-                            vw = new Evol.ViewAction.Export(config).render();
+                            vw = new ViewClass(config).render();
                             $v.addClass('panel panel-info')
                                 .slideDown();
                             break;
@@ -274,7 +296,7 @@ return Backbone.View.extend({
                                 vwPrev = vw;
                                 cData=vw.getData();
                             }
-                            vw = new Evol.viewClasses[viewName](config).render();
+                            vw = new ViewClass(config).render();
                             this._prevViewOne=viewName;
                             this._keepTab(viewName);
                             break;
@@ -902,7 +924,50 @@ return Backbone.View.extend({
         this.setModelById(ui.id);
         this.setRoute(ui.id, false);
     },
+/*
+    click_search: function(evt){
+        var that=this,
+            searchString=$('.evo-search>input').val().toLowerCase(), 
+            searchFunction = function(sString){
+                return function(model){
+                    return that.uiModel.searchfn(model, sString);
+                };
+            },
+            collec;
 
+        if(searchString){
+            var models=(this.collection||this.model.collection).models
+                    .filter(searchFunction(searchString));
+                    //return that.uiModel.searchin(searchString);
+            if(this.collectionClass){
+                collec=new this.collectionClass(models);
+            }else{
+                collec=new Backbone.Collection(models);
+            }
+            this._filteredCollection=collec;
+            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.entities);
+        }else{
+            collec=this.collection;
+            this._filteredCollection=null;
+            this.setStatus(collec.length+' '+this.uiModel.entities);
+        }
+        this.pageIndex=0;
+        if(this.curView.setCollection){
+            this.curView.setCollection(collec);
+        }else{
+            this.curView.setModel(collec).get(0);
+        }
+        
+        this.updateNav();
+        this._trigger('search');
+    },
+
+    key_search: function(evt){
+        if(evt.keyCode===13){
+            this.click_search(evt);
+        }
+    },
+*/
     change_tab: function(evt, ui){
         if(ui){
             this._tabId=ui.id;

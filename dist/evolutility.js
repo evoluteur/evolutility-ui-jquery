@@ -546,7 +546,7 @@ Evol.i18n = {
     bAll:'All',
     bList:'List',
     bFilter: 'Filter',
-    //bBubbles: 'Bubbles',
+    bBubbles: 'Bubbles',
     bCards: 'Cards',
     bJSON: 'JSON',
     //bRefresh: 'Refresh',
@@ -588,6 +588,11 @@ Evol.i18n = {
     'sgn_money': '$', // indicator for money
     'sgn_email': '@', // indicator for email
 
+    // --- data visualization ---
+    vizGroupBy: 'Group by:',
+    vizColorBy: 'Color by:',
+    vizSizeBy: 'Size by:',
+    
     // --- status ---
     status:{
         added:'New {0} "{1}" added.',
@@ -899,6 +904,10 @@ return {
         }
     },
 
+    clearCacheLOV: function(){
+        Evol.hashLov={};
+    },
+
     viewIsOne: function(viewName){
         return viewName==='new' || viewName==='edit' || viewName==='view' || viewName==='json';
     },
@@ -907,8 +916,10 @@ return {
     },
 
     fieldInCharts: function (f) {
-        return (_.isUndefined(f.viewcharts) || f.viewcharts) && 
-            (f.type===fts.lov || f.type===fts.bool || f.type===fts.int || f.type===fts.money);
+        return (_.isUndefined(f.viewcharts) || f.viewcharts) && Evol.Dico.fieldChartable(f);
+    },
+    fieldChartable: function (f) {
+        return  f.type===fts.lov || f.type===fts.bool || f.type===fts.int || f.type===fts.money;
     },
 
     isNumberType: function(fType){
@@ -1169,17 +1180,17 @@ return {
         if(fld.readonly || mode==='view'){
             h.push('<div class="disabled evo-rdonly" id="',fid);
             if(fld.type===fts.textml && fld.height>1){
-                h.push('" style="height:', fld.height, 'em;overflow-y: auto;');
+                h.push('" style="height:'+fld.height+'em;overflow-y: auto;');
             }
             h.push('">');
             switch (fld.type) {
                 case fts.formula:
                     // TODO: in one.js or here?
-                    h.push('<div id="',fid, '" class="form-control evol-ellipsis">',fld.formula(),'</div>');
+                    h.push('<div id="'+fid+'" class="form-control evol-ellipsis">'+fld.formula()+'</div>');
                     break;
                 case fts.color: // TODO is the color switch necessary?
                     //h.push(uiInput.colorBox(fid, fv), fv);
-                    h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
+                    h.push('<div id="'+fid+'" class="form-control">'+fv+'</div>');
                     break;
                 case fts.email:
                     h.push(eUI.linkEmail(fid, fv));
@@ -1244,8 +1255,7 @@ return {
         };
     },
 
-    sortingText: function(fid){
-            //return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
+    sortingNumber: function(fid){
         return function(modelA, modelB) {
             if(modelA[fid]<modelB[fid]){
                 return 1;
@@ -1255,6 +1265,22 @@ return {
             }
             return 0;
         };
+    },
+    sortingNumberDesc: function(fid){
+        return function(modelA, modelB) {
+            if(modelA[fid]>modelB[fid]){
+                return 1;
+            }
+            if(modelB[fid]>modelA[fid]){
+                return -1;
+            }
+            return 0;
+        };
+    },
+
+    sortingText: function(fid){
+        //return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
+        return this.sortingNumber(fid);
     },
 
     getRoute: function(){
@@ -1282,6 +1308,283 @@ return {
     }
 
 };
+}();
+;
+// Original code from blog post http://www.delimited.io/blog/2013/12/19/force-bubble-charts-in-d3 by Steve Hall.
+// Modified for Evolutility
+
+var Evol=Evol||{};
+
+Evol.Bubbles = function(){
+
+var Bubbles = function(opts){
+    _.extend(this, opts);
+    this.fieldsH={};
+    for(var i in this.fields){
+      var f=this.fields[i];
+        this.fieldsH[f.id]=f;
+    }
+    return this;
+};
+
+Bubbles.prototype._initialize = function(){
+  if(!this.graphInitialized){
+  //var fill = d3.scale.ordinal().range(['#827d92','#827354','#523536','#72856a','#2a3285','#383435'])
+    this.svg = d3.select(this.elem).append("svg")
+      .attr("width", this.width)
+      .attr("height", this.height);
+
+    this.force = d3.layout.force();
+    this.graphInitialized=true;
+  }
+};
+
+Bubbles.prototype.fixData = function(data){
+  return _.map(data, function(d){
+    return d;
+  })
+}
+
+Bubbles.prototype.setData = function(data){
+  var that=this,
+      len=data.length,
+      defaultSize=len<17 ? 20 : (len<100 ? 16 : 10);
+
+  this.defaultSize=defaultSize;
+
+  if(this.sizeFieldId){
+    var sizes = _.map(data, function(d){
+        var v= d[that.sizeFieldId];
+        if(v===null || _.isNaN(v)){
+          v=0;
+        }
+        return v;
+      });
+    this.plotScale = d3.scale.log().domain([ _.min(sizes), _.max(sizes)]).range([defaultSize, defaultSize+20]);
+  }else{
+    this.plotScale = function(d){ return defaultSize;};
+  }
+
+  this.fill = len<11?d3.scale.category10():d3.scale.category20();
+
+  this.data = data;
+  for (var j = 0; j < data.length; j++) {
+    data[j].radius = defaultSize;
+    data[j].x = Math.random() * this.width;
+    data[j].y = Math.random() * this.height;
+  }
+
+  this._initialize();
+
+  this.maxRadius = d3.max(_.pluck(data, 'radius'));
+
+  this.nodes = this.svg.selectAll("circle")
+    .data(data);
+
+  this.nodes.enter().append("circle")
+    .attr("class", "node")
+    .attr("cx", function (d) { 
+      return d.x;
+    })
+    .attr('data-mid', function (d) { return d.id;})
+    .attr("cy", function (d) { return d.y; })
+    .attr("r", function (d) { return d.radius; })
+    .style("fill", function (d) { return that.fill(d[that.colorFieldId]); })
+    .on("mouseover", showPopover)
+    .on("mouseout", removePopovers);
+
+  this.nodes
+    .attr('data-mid', function (d) { return d.id;});
+
+
+  this.nodes.exit().remove();
+
+  this.changeBubblesGroup(this.groupFieldId);
+
+  function removePopovers () {
+    $('.popover').each(function() {
+      $(this).remove();
+    }); 
+  }
+
+  function showPopover (d) {
+    $(this).popover({
+      animation: true,
+      placement: 'auto top',
+      container: 'body',
+      trigger: 'manual',
+      html : true,
+      content: that.tooltip(d)
+    });
+    $(this).popover('show', 500);
+    if(d3){
+      d3.select('.popover').style('opacity', 0)
+        .transition().duration(500)
+        .style('opacity', 1);
+    }
+  }
+
+};
+
+Bubbles.prototype.getCenters = function (fId, size, data) {
+  var f=this.fieldsH[fId],
+      centers, 
+      map,
+      na='N/A';
+
+  centers = _.uniq(_.pluck(data, fId)).map(function (d) {
+    return {name: d, value: 1};
+  });
+
+  if(f){
+    if(f.type==='lov'){
+      var lovH={};
+      _.forEach(f.list, function(c){
+        lovH[c.id]=c.text;
+      });
+      _.forEach(centers, function(c){
+        c.label=lovH[c.name]||na;
+      });
+      centers=centers.sort(Evol.Dico.sortingText('label'));
+    }else if(f.type==='boolean'){
+      _.forEach(centers, function(c){
+        if(c.name===true){
+          c.label = f.labeltrue || Evol.i18n.yes;
+        }else if(c.name===false){
+          c.label = f.labelfalse || Evol.i18n.no;
+        }else{
+          c.label=na;
+        }
+      });
+    }else if(Evol.Dico.isNumberType(f.type)){
+      centers = centers.sort(Evol.Dico.sortingNumber('name'));
+      var c=_.findWhere(centers, {'name': null});
+      if(c){
+        c.label = na;
+      }
+    }/*else{
+      centers = _.sortBy(centers, 'name');
+    }*/
+  }
+  map = d3.layout.treemap().size(size).ratio(1/1);
+  map.nodes({children: centers});
+
+  return centers;
+};
+
+Bubbles.prototype.changeBubblesGroup = function(groupFieldId){
+  var centers = this.getCenters(groupFieldId, [800, 600], this.data);
+
+  this.groupFieldId = groupFieldId;
+  this.force.on("tick", this.tick(centers, groupFieldId, this.data));
+  this.labels(centers);
+  this.force.start();
+};
+
+Bubbles.prototype.changeBubblesColor = function (colorFieldId){
+  var that=this;
+  this.colorFieldId=colorFieldId;
+  this.fill = d3.scale.category10();
+  this.svg.selectAll('circle')
+    .transition().duration(500)
+    .style('fill', function(d){
+      return colorFieldId?that.fill(d[colorFieldId]):'rgb(31, 119, 180)';
+    });
+};
+
+Bubbles.prototype.changeBubblesSize = function (sizeFieldId){
+  var that=this;
+
+  this.sizeFieldId=sizeFieldId;
+  var cs=this.svg.selectAll('circle');
+  if(sizeFieldId){
+    var sizes = _.map(this.data, function(d){
+      var v=d[sizeFieldId];
+      return (v==null || v==isNaN)?0:v;
+    });
+    this.plotScale = d3.scale.log().domain([ _.min(sizes), _.max(sizes)]).range([10, 25]);
+    cs.transition().duration(500)
+      .attr('r', function(d){
+        var v=sizeFieldId?that.plotScale(d[sizeFieldId]||0):10;
+        if(v===null || _.isNaN(v)){
+          v=that.defaultSize;
+        }
+        return v;
+      });
+      //.ease("elastic");
+  }else{
+    cs.transition().duration(500)
+      .attr('r', that.defaultSize);
+      //.ease("elastic");
+  }
+  //this.force.start();
+};
+
+Bubbles.prototype.tick = function (centers, varname) {
+  var that=this,
+      foci = {};
+
+  for (var i = 0; i < centers.length; i++) {
+    foci[centers[i].name] = centers[i];
+  }
+  return function (e) {
+    for (var i = 0; i < that.data.length; i++) {
+      var o = that.data[i];
+      var f = foci[o[varname]];
+      o.y += ((f.y + (f.dy / 2)) - o.y) * e.alpha;
+      o.x += ((f.x + (f.dx / 2)) - o.x) * e.alpha;
+    }
+    that.nodes.each(that.collide(0.12, that.data))
+      .attr("cx", function (d) { return d.x; })
+      .attr("cy", function (d) { return d.y; });
+  };
+};
+
+Bubbles.prototype.labels = function(centers) {
+  this.svg.selectAll(".label").remove();
+  this.svg.selectAll(".label")
+    .data(centers)
+    .enter().append("text")
+      .attr("class", "label")
+      .text(function (d) { 
+        return d.label || d.name ;
+      })
+      .attr("transform", function (d) {
+        return "translate(" + (d.x + (d.dx / 2)) + ", " + (d.y + 20) + ")";
+      });
+};
+
+Bubbles.prototype.collide = function(alpha, data) {
+  var quadtree = d3.geom.quadtree(data),
+      maxRadius=this.maxRadius,
+      padding=2;
+  return function (d) {
+    var r = d.radius + maxRadius + padding,
+        nx1 = d.x - r,
+        nx2 = d.x + r,
+        ny1 = d.y - r,
+        ny2 = d.y + r;
+    quadtree.visit(function(quad, x1, y1, x2, y2) {
+      if (quad.point && (quad.point !== d)) {
+        var x = d.x - quad.point.x,
+            y = d.y - quad.point.y,
+            l = Math.sqrt(x * x + y * y),
+            r = d.radius + quad.point.radius + padding;
+        if (l < r) {
+          l = (l - r) / l * alpha;
+          d.x -= x *= l;
+          d.y -= y *= l;
+          quad.point.x += x;
+          quad.point.y += y;
+        }
+      }
+      return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+    });
+  };
+};
+
+return Bubbles;
+
 }();
 ;
 /*! ***************************************************************************
@@ -1680,6 +1983,158 @@ return Backbone.View.extend({
 ;
 /*! ***************************************************************************
  *
+ * evolutility :: many-bubbles.js
+ *
+ * View "many bubbles" to show a Bubble Chart of a collection of many models.
+ *
+ * https://github.com/evoluteur/evolutility
+ * Copyright (c) 2015, Olivier Giulieri
+ *
+ *************************************************************************** */
+
+Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
+
+    viewName: 'bubbles',
+
+    events: {
+        //'click .evol-buttons>button': 'click_button',
+        //'click .evol-title-toggle': 'click_toggle',
+        //'click .glyphicon-wrench': 'click_customize',
+        'click .btn': 'changeGroup',
+        'change .bubble-color': 'changeColor',
+        'change .bubble-size': 'changeSize',
+        'click svg>circle': 'clickCircle'
+    },
+
+    fieldsetFilter: Evol.Dico.fieldChartable,
+
+    setupBubbles: function() {
+        var that=this,
+            ui=this.uiModel,
+            eDico=Evol.Dico,
+            models = this.collection.models;
+
+        if(!this._bubblesInitialized){
+            var flds = eDico.getFields(this.uiModel, eDico.fieldChartable);
+            this.bubbles = new Evol.Bubbles({
+                //selector:'.evol-bubbles-body',
+                elem: this.$('.evol-bubbles-body').get(0),
+                width:1200, 
+                height:700, 
+                fields: flds,
+                colorFieldId: flds[0].id,
+                groupFieldId: flds[0].id,
+                sizeFieldId: null,
+                uiModel: this.uiModel,
+                tooltip: function(d){
+                    var h=[],
+                    flds=that.getFields();//(h, fields, model, icon, selectable, route, isTooltip)
+                    Evol.ViewMany.Cards.prototype.HTMLItem.call(that, h, flds, new Backbone.Model(d), null, null, null, true);
+                    return h.join('');
+                },
+                click: function(d){
+                    this.$el.trigger('click.bubble', {id:d.id}); 
+                }
+            });
+            this.bubbles.setData(_.map(models, function(m){
+                return _.extend({
+                    id: m.id
+                }, m.attributes);
+            }));
+
+            this._bubblesInitialized=true;
+        }
+    },
+
+    _render: function (models) {
+        var eUI = Evol.UI,
+            hOpt = eUI.input.option,
+            hOptNull = eUI.html.emptyOption,
+            fs2 = Evol.Dico.getFields(this.uiModel, Evol.Dico.fieldChartable),
+            h = '<div class="evol-many-bubbles panel panel-info"><div class="evol-bubbles-body">'+
+                '<div class="d3-tooltip" style="opacity:0;"></div>';
+        //this._HTMLbody(h, this.getFields(), pSize, this.uiModel.icon, 0, this.selectable);
+
+        h+='<div class="bubbles-opts">';
+        // --- Group ---
+        h+='<label>'+Evol.i18n.vizGroupBy+'</label>'+
+            '<div class="btn-group" data-toggle="buttons">'+
+            _.map(fs2, function(f, idx){
+                return '<label class="btn btn-default'+(idx===0?' active':'')+'" id="'+f.id+'">'+
+                      '<input type="radio" name="options"'+(idx===0?' checked':'')+'> '+f.label+'</label>';
+                }).join('')+
+            '</div>';
+        // --- Color ---
+        var fo=_.map(fs2, function(f, idx){
+                return hOpt(f.id, f.label, idx===0);
+            });
+        h+='<label>'+Evol.i18n.vizColorBy+'</label><select class="form-control bubble-color">'+hOptNull + fo.join('')+'</select>';
+        // --- Size ---
+        fs2=_.filter(fs2, function(f){
+            return Evol.Dico.isNumberType(f.type);
+        });
+        fo=_.map(fs2, function(f, idx){
+            return hOpt(f.id, f.label);
+        });
+        if(fo.length){
+            h+='<label>'+Evol.i18n.vizSizeBy+'</label><select class="form-control bubble-size">'+hOptNull+fo.join('')+'</select>';
+        }
+        //h+=Evol.UI.html.clearer;
+        h+='</div></div></div>';
+        this.$el.html(h);
+        this.setupBubbles();
+        return this;
+    },
+
+    _HTMLbody: function (h, fields, pSize, icon, pageIdx, selectable) {/*
+        var models = this.collection.models,
+            model,
+            r,
+            rMin = (pageIdx > 0) ? pageIdx * pSize : 0,
+            rMax = _.min([models.length, rMin + pSize]),
+            ico = icon ? (this.iconsPath || '') + icon : null;
+
+
+        h.push('<div id="svg-cluster"></div>');
+        */
+    },
+
+    _$body: function(){
+        return this.$('.evol-bubbles-body');
+    },
+
+    setCollection: function(collec){
+        this.collection = collec;
+        this.bubbles.setData(_.map(collec.models, function(m){
+            return _.extend({
+                id: m.id
+            }, m.attributes);
+        }));
+        return this;
+    },
+
+    changeGroup: function(evt){
+        this.bubbles.changeBubblesGroup(evt.currentTarget.id);
+    },
+
+    changeColor: function(evt){
+        this.bubbles.changeBubblesColor(evt.target.value);
+    },
+
+    changeSize: function(evt){
+        this.bubbles.changeBubblesSize(evt.target.value);
+    },
+
+    clickCircle: function(evt){
+        var id=$(evt.currentTarget).data('mid');
+        window.location.href = '#'+ this.uiModel.id + '/view/'+id;
+    }
+
+});
+
+;
+/*! ***************************************************************************
+ *
  * evolutility :: many-cards.js
  *
  * View "many cards" to show a collection as many cards.
@@ -1712,13 +2167,17 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
         return this.$('.evol-cards-body');
     },
 
-    HTMLItem: function(h, fields, model, icon, selectable, route){
+    HTMLItem: function(h, fields, model, icon, selectable, route, isTooltip){
         var that = this,
             v,
             fts = Evol.Dico.fieldTypes,
             link = (this.links!==false);
 
-        h.push('<div class="panel ',this.style,'">');
+        if(isTooltip){
+            h.push('<div class="evol-bubble-tooltip">');
+        }else{
+            h.push('<div class="panel ',this.style,'">');
+        }
         _.each(fields, function(f, idx){
             if(f.value){
                 v = f.value(model);
@@ -1747,7 +2206,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
                     Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link, route?route+model.id:null),
                     '</h4></div>');
             }else{
-                h.push('<div><label>', f.labelcards?f.labelcards:f.label,':</label> ', v, '</div>');
+                h.push('<div '+ (f.type=='email'?'class="evol-ellipsis"':'') +'><label>', f.labelcards?f.labelcards:f.label,':</label> ', v, '</div>');
             }
         });
         h.push('</div>');
@@ -2003,6 +2462,8 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             }
             if(f.type===ft.textml){
                 h.push('<td class="evol-ellipsis">', v, '</td>');
+            }else if(Evol.Dico.isNumberType(f.type)){
+                h.push('<td class="evol-r-align">', v, '</td>');
             }else{
                 h.push('<td>', v, '</td>');
             }
@@ -2155,7 +2616,7 @@ return Backbone.View.extend({
 
     getTitle: function(){
         if(this.model){
-            if(this.model.isNew()){
+            if(this.model.isNew && this.model.isNew()){
                 return i18n.getLabel('NewEntity', this.uiModel.entity);
             }
             var lf=this.uiModel.leadfield;
@@ -2408,6 +2869,7 @@ return Backbone.View.extend({
         this._fieldHash = null;
         this._fields = null;
         this._subCollecs = this._subCollecsOK = false;
+        //Evol.Dico.clearCacheLOV();
         return this;
     },
 
@@ -2614,44 +3076,28 @@ return Backbone.View.extend({
     _renderPanel: function (h, p, mode, visible) {
         var that = this,
             iconsPath = this.iconsPath;
+
         if(mode==='wiz'){
             var hidden= _.isUndefined(visible)?false:!visible;
             h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%;',hidden?'display:none;':'','">');
         }else{
-            h.push('<div data-p-width="', p.width, '" class="evol-pnl');
-            if(mode==='mini'){
-                h.push(' evol-p-mini">');
-            }else{
-                h.push(' pull-left" style="width:', p.width, '%">');
-            }
+            h.push('<div data-p-width="', p.width, '" class="evol-pnl pull-left" style="width:', p.width, '%">');
         }
         h.push(eUI.HTMLPanelBegin(p, this.style||'panel-default'),
             '<fieldset data-pid="', p.id, p.readonly?'" disabled>':'">');
-        if(mode==='mini'){
-            _.each(p.elements, function (elem) {
+        _.each(p.elements, function (elem) {
+            if(elem.type=='panel-list'){
+                that._renderPanelList(h, elem, elem.readonly?'view':mode);
+            }else{
                 if(elem.type==fts.hidden){
                     h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
                 }else{
-                    h.push('<div class="pull-left evol-fld w-100">');
+                    h.push('<div style="width:', parseInt(elem.width||100, 10), '%" class="pull-left evol-fld">');
                     that.renderField(h, elem, mode, iconsPath);
                     h.push("</div>");
                 }
-            });
-        }else{
-            _.each(p.elements, function (elem) {
-                if(elem.type=='panel-list'){
-                    that._renderPanelList(h, elem, elem.readonly?'view':mode);
-                }else{
-                    if(elem.type==fts.hidden){
-                        h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
-                    }else{
-                        h.push('<div style="width:', parseInt(elem.width||100, 10), '%" class="pull-left evol-fld">');
-                        that.renderField(h, elem, mode, iconsPath);
-                        h.push("</div>");
-                    }
-                }
-            });
-        }
+            }
+        });
         h.push('</fieldset>',
             eUI.HTMLPanelEnd(),
             '</div>');
@@ -3305,7 +3751,12 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
  *
  *************************************************************************** */
 
-Evol.ViewOne.Mini = Evol.ViewOne.Edit.extend({
+Evol.ViewOne.Mini = function(){
+
+    var eUI = Evol.UI,
+        fts = Evol.Dico.fieldTypes;
+
+return Evol.ViewOne.Edit.extend({
 
     events: { // TODO same as ViewOne ?
         'click > .evol-buttons > button': 'click_button',
@@ -3334,9 +3785,33 @@ Evol.ViewOne.Mini = Evol.ViewOne.Edit.extend({
         
         this._renderPanel(h, miniUIModel, mode);
         this._renderButtons(h, mode);
+    },
+
+    _renderPanel: function (h, p, mode, visible) {
+        var that = this,
+            iconsPath = this.iconsPath;
+            
+        h.push('<div data-p-width="100%" class="evol-pnl evol-p-mini">');
+        h.push(eUI.HTMLPanelBegin(p, this.style||'panel-default'),
+            '<fieldset data-pid="', p.id, p.readonly?'" disabled>':'">');
+        _.each(p.elements, function (elem) {
+            if(elem.type==fts.hidden){
+                h.push(eUI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
+            }else{
+                h.push('<div class="pull-left evol-fld w-100">');
+                that.renderField(h, elem, mode, iconsPath);
+                h.push("</div>");
+            }
+        });
+        h.push('</fieldset>',
+            eUI.HTMLPanelEnd(),
+            '</div>');
+        return this;
     }
 
 });
+
+}();
 ;
 /*! ***************************************************************************
  *
@@ -4639,6 +5114,14 @@ return Backbone.View.extend({
  *************************************************************************** */
 
 Evol.viewClasses = {
+    getClass: function(className){
+        var cn=Evol.viewClasses;
+        if(cn[className]){
+            return cn[className];
+        }else{
+            return cn.list;
+        }
+    },
     // --- One ---
     'view': Evol.ViewOne.View,
     'edit': Evol.ViewOne.Edit,
@@ -4647,7 +5130,7 @@ Evol.viewClasses = {
     // --- Many ---
     'list': Evol.ViewMany.List,
     'cards': Evol.ViewMany.Cards,
-    //'bubbles': Evol.ViewMany.Bubbles,
+    'bubbles': Evol.ViewMany.Bubbles,
     'charts': Evol.ViewMany.Charts,
     // --- Action ---
     'filter': Evol.ViewAction.Filter,
@@ -4669,6 +5152,8 @@ return Backbone.View.extend({
         'navigate.many >div': 'click_navigate',
         'paginate.many >div': 'paginate',
         //'selection.many >div': 'click_select',
+        //'click .evo-search>.btn': 'click_search',
+        //'keyup .evo-search>input': 'key_search',
         'change.tab >div': 'change_tab',
         'action >div': 'action_view',
         'status >div': 'status_update',
@@ -4680,8 +5165,11 @@ return Backbone.View.extend({
 
     options: {
         toolbar: true,
+        readonly: false,
         //router:...,
         defaultView: 'list',
+        defaultViewOne: 'view',
+        defaultViewMany: 'list',
         style: 'panel-info',
         display: 'label', // tooltip, text, icon, none
         titleSelector: '#title',
@@ -4689,13 +5177,13 @@ return Backbone.View.extend({
         buttons: {
             always:[
                 {id: 'list', label: i18n.bList, icon:'th-list', n:'x'},
-                {id: 'new', label: i18n.bNew, icon:'plus', n:'x'}
+                {id: 'new', label: i18n.bNew, icon:'plus', n:'x', readonly:false}
             ],
                 //linkOpt2h('selections','','star');
             actions:[
-                {id:'edit', label: i18n.bEdit, icon:'edit', n:'1'},
-                {id:'save', label: i18n.bSave, icon:'floppy-disk', n:'1'},
-                {id:'del', label: i18n.bDelete, icon:'trash', n:'1'},
+                {id:'edit', label: i18n.bEdit, icon:'edit', n:'1', readonly:false},
+                {id:'save', label: i18n.bSave, icon:'floppy-disk', n:'1', readonly:false},
+                {id:'del', label: i18n.bDelete, icon:'trash', n:'1', readonly:false},
                 {id:'filter', label: i18n.bFilter, icon:'filter',n:'n'},
                 //{id:'group',label: i18n.bGroup, icon:'resize-horizontal',n:'n'},
                 {id:'export', label: i18n.bExport, icon:'cloud-download',n:'n'}
@@ -4708,14 +5196,14 @@ return Backbone.View.extend({
             views: [
                 // -- views ONE ---
                 {id:'view', label: i18n.bView, icon:'eye-open',n:'1'},// // ReadOnly
-                {id:'edit', label: i18n.bEdit, icon:'edit',n:'1'},// // All Fields for editing
-                {id:'mini', label: i18n.bMini, icon:'th-large',n:'1'},// // Important Fields only
+                {id:'edit', label: i18n.bEdit, icon:'edit',n:'1', readonly:false},// // All Fields for editing
+                {id:'mini', label: i18n.bMini, icon:'th-large',n:'1', readonly:false},// // Important Fields only
                 //{id:'wiz',label: i18n.bWizard, icon:'arrow-right',n:'1'},
-                {id:'json', label: i18n.bJSON, icon:'barcode',n:'1'},
+                {id:'json', label: i18n.bJSON, icon:'barcode',n:'1', readonly:false},
                 // -- views MANY ---
                 {id:'list', label: i18n.bList, icon:'th-list',n:'n'},
                 {id:'cards', label: i18n.bCards, icon:'th-large',n:'n'},
-                //{id:'bubbles', label: i18n.bBubbles, icon:'adjust',n:'n'},
+                {id:'bubbles', label: i18n.bBubbles, icon:'adjust',n:'n'},
                 {id:'charts', label: i18n.bCharts, icon:'stats',n:'n'}
             ]
         }
@@ -4730,7 +5218,7 @@ return Backbone.View.extend({
 
     render: function() {
         this.$el.html(this._toolbarHTML());
-        this.setView(this.defaultView || 'list', false);
+        this.setView(this.defaultViewMany, false);
         //this.$('[data-toggle="tooltip"]').tooltip();
         this.$('.dropdown-toggle').dropdown();
         return this;
@@ -4738,6 +5226,7 @@ return Backbone.View.extend({
 
     _toolbarHTML: function(){
         var h,
+            isReadOnly=this.readonly!==false,
             that=this,
             eUIm=eUI.menu,
             tb=this.buttons,
@@ -4750,6 +5239,9 @@ return Backbone.View.extend({
         }
         function menuItems (ms, noLabel){
             return _.map(ms, function(m){
+                if(isReadOnly && m.readonly===false){
+                    return null;
+                }
                 return menuItem(m, noLabel);
             }).join('');
         }
@@ -4760,7 +5252,11 @@ return Backbone.View.extend({
             menuItems(tb.actions);
         if(this.toolbar){
             h+='</ul><ul class="nav nav-pills pull-right" data-id="views">'+
-                '<li class="evo-tb-status" data-cardi="n"></li>';
+                '<li class="evo-tb-status" data-cardi="n"></li>';//+
+                //'<li><div class="input-group evo-search">'+
+                //    '<input class="evo-field form-control" type="text" maxlength="100">'+
+                //    '<span class="btn input-group-addon glyphicon glyphicon-search"></span>'+
+                //'</div></li>';
             //h+=eUIm.hBegin('views','li','eye-open');
             h+=menuItems(tb.prevNext);
             h+=menuDeviderH;
@@ -4776,6 +5272,7 @@ return Backbone.View.extend({
                  link2h('new-panel','New Panel','plus');
                  h+=endMenu;
              } */
+
         }
         h+='</ul>'+eUI.html.clearer+'</div>';
         return h;
@@ -4786,6 +5283,11 @@ return Backbone.View.extend({
             this.curView.render();
         }
         return this;
+    },
+
+    clearViews: function(keep){
+        //div data-vid="evolw-edit"
+        $('[data-vid=evolw-*]').remove();
     },
 
     isDirty:function(){
@@ -4811,6 +5313,7 @@ return Backbone.View.extend({
             this.setIcons('new');
             vw.mode='new';
         }else{
+            var ViewClass = Evol.viewClasses.getClass(viewName);
             if($v.length){
                 // -- view already exists and was rendered
                 this.model=vw.model;
@@ -4864,15 +5367,16 @@ return Backbone.View.extend({
                     pageSize: this.pageSize || 20,
                     pageIndex: this.pageIndex || 0,
                     titleSelector: this.titleSelector,
-                    router: this.router
+                    router: this.router//,
+                    //iconsPath: this.iconsPath || ''
                 };
                 this.$('[data-id="new"]').show();
                 this.$('[data-id="views"] > li').removeClass('evo-sel')
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
                 if(Evol.Dico.viewIsMany(viewName)){
                     //fieldsetFilter
-                    vw = new Evol.viewClasses[viewName](config)
-                        .render();
+                    vw = new ViewClass(config)
+                                .render();
                     this._prevViewMany=viewName;
                     vw.setTitle();
                     if(viewName!='charts' && viewName!='bubbles' && this.pageIndex > 0){
@@ -4884,7 +5388,7 @@ return Backbone.View.extend({
                         // --- actions ---
                         case 'export':
                             config.sampleMaxSize = config.pageSize;
-                            vw = new Evol.ViewAction.Export(config).render();
+                            vw = new ViewClass(config).render();
                             $v.addClass('panel panel-info')
                                 .slideDown();
                             break;
@@ -4896,7 +5400,7 @@ return Backbone.View.extend({
                                 vwPrev = vw;
                                 cData=vw.getData();
                             }
-                            vw = new Evol.viewClasses[viewName](config).render();
+                            vw = new ViewClass(config).render();
                             this._prevViewOne=viewName;
                             this._keepTab(viewName);
                             break;
@@ -5524,7 +6028,50 @@ return Backbone.View.extend({
         this.setModelById(ui.id);
         this.setRoute(ui.id, false);
     },
+/*
+    click_search: function(evt){
+        var that=this,
+            searchString=$('.evo-search>input').val().toLowerCase(), 
+            searchFunction = function(sString){
+                return function(model){
+                    return that.uiModel.searchfn(model, sString);
+                };
+            },
+            collec;
 
+        if(searchString){
+            var models=(this.collection||this.model.collection).models
+                    .filter(searchFunction(searchString));
+                    //return that.uiModel.searchin(searchString);
+            if(this.collectionClass){
+                collec=new this.collectionClass(models);
+            }else{
+                collec=new Backbone.Collection(models);
+            }
+            this._filteredCollection=collec;
+            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.entities);
+        }else{
+            collec=this.collection;
+            this._filteredCollection=null;
+            this.setStatus(collec.length+' '+this.uiModel.entities);
+        }
+        this.pageIndex=0;
+        if(this.curView.setCollection){
+            this.curView.setCollection(collec);
+        }else{
+            this.curView.setModel(collec).get(0);
+        }
+        
+        this.updateNav();
+        this._trigger('search');
+    },
+
+    key_search: function(evt){
+        if(evt.keyCode===13){
+            this.click_search(evt);
+        }
+    },
+*/
     change_tab: function(evt, ui){
         if(ui){
             this._tabId=ui.id;
@@ -5766,7 +6313,9 @@ Evol.App = Backbone.View.extend({
                 if(options && tb.cardinality==='1'){
                     tb.setModelById(options);
                 }
-                that._tbs[uiModel.id] = tb;
+                if(that._tbs){
+                    that._tbs[uiModel.id] = tb;
+                }
                 if(cb){
                     cb(tb);
                 }
@@ -5775,15 +6324,13 @@ Evol.App = Backbone.View.extend({
                 alert('Error: invalid route.');
             }
         });
-    }/*,
+    },
 
     _HTMLentities: function (es) {
-        var h=[];
-        _.each(es, function(e){
-            h.push('<li><a href="#', e.id, '/list" data-id="', e.id, '">', e.entities, '</a></li>');
-        });
-        return h.join('');
-    }*/
+        return _.map(es, function(e){
+            return '<li><a href="#' + e.id + '/list" data-id="' + e.id + '">' + e.entities + '</a></li>';
+        }).join('');
+    }
 
 });
 

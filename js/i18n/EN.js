@@ -47,7 +47,7 @@ Evol.i18n = {
     bAll:'All',
     bList:'List',
     bFilter: 'Filter',
-    //bBubbles: 'Bubbles',
+    bBubbles: 'Bubbles',
     bCards: 'Cards',
     bJSON: 'JSON',
     //bRefresh: 'Refresh',
@@ -89,6 +89,11 @@ Evol.i18n = {
     'sgn_money': '$', // indicator for money
     'sgn_email': '@', // indicator for email
 
+    // --- data visualization ---
+    vizGroupBy: 'Group by:',
+    vizColorBy: 'Color by:',
+    vizSizeBy: 'Size by:',
+    
     // --- status ---
     status:{
         added:'New {0} "{1}" added.',

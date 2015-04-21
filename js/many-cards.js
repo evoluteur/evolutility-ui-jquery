@@ -32,13 +32,17 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
         return this.$('.evol-cards-body');
     },
 
-    HTMLItem: function(h, fields, model, icon, selectable, route){
+    HTMLItem: function(h, fields, model, icon, selectable, route, isTooltip){
         var that = this,
             v,
             fts = Evol.Dico.fieldTypes,
             link = (this.links!==false);
 
-        h.push('<div class="panel ',this.style,'">');
+        if(isTooltip){
+            h.push('<div class="evol-bubble-tooltip">');
+        }else{
+            h.push('<div class="panel ',this.style,'">');
+        }
         _.each(fields, function(f, idx){
             if(f.value){
                 v = f.value(model);

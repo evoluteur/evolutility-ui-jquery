@@ -12,6 +12,15 @@
   margin-bottom: 10px;
   padding: 3px;
   background-color: #fbfbfb;
+  /*
+  .evo-search{
+    width:200px;
+    padding: 3px 4px 2px 2px;
+    >.btn{
+      position: relative;
+      top:0;
+    }
+  }*/
 }
 .evo-toolbar > [data-cid="views"] {
   color: black;
@@ -69,7 +78,7 @@
 }
 .panel-heading > .evol-subtitle {
   display: inline-block;
-  margin-left: 10px;
+  margin-left: .4em;
 }
 .evo-panel-help {
   margin-top: 5px;
@@ -286,6 +295,9 @@ label {
   display: none;
   position: absolute;
 }
+.evol-r-align {
+  text-align: right;
+}
 .badge-list {
   position: relative;
   top: -2px;
@@ -321,6 +333,19 @@ label {
 .list-td-sel {
   width: 30px;
 }
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
 /* --- cards --- */
 .evol-cards-body > div.panel {
   float: left;
@@ -337,15 +362,59 @@ label {
 .evol-cards-body > div.panel > div > label {
   vertical-align: top;
 }
+.evol-bubble-tooltip > .panel {
+  padding: 0 10px;
+}
+.evol-bubbles-body {
+  overflow: hidden;
+  width: 100%;
+  height: 800px;
+}
+.evol-bubbles-body svg {
+  margin-top: 10px;
+}
+.bubbles-opts {
+  width: 100%;
+  padding: 8px;
+  border-bottom: solid 1px #bce8f1;
+}
+.bubbles-opts > select {
+  display: inline-block;
+  width: auto;
+}
+.bubbles-opts > label {
+  margin: 2px 10px;
+}
+.bubbles-opts > label:first-child {
+  margin-left: 0;
+}
+.popover-content {
+  padding: 4px 10px 10px 10px;
+}
+.a {
+  min-height: 50px;
+  padding: 0 1px 1px 6px;
+}
+circle {
+  stroke: white;
+  stroke-width: 2px;
+  opacity: .7;
+}
+circle:hover {
+  stroke: grey;
+}
+text.label {
+  font-size: 100%;
+  text-shadow: 0px 0px 3px #ffffff;
+}
 /* --- charts --- */
 .evol-chart-holder {
   float: left;
   text-align: center;
   background-color: #FFFFFF;
-  margin: 10px 10px 5px 5px;
-  margin-bottom: 5px !important;
+  margin: 10px 10px 10px 5px;
   width: 400px;
-  min-height: 280px;
+  min-height: 286px;
 }
 .evol-chart-title {
   text-align: center;
