@@ -144,7 +144,7 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
 
     clickCircle: function(evt){
         var id=$(evt.currentTarget).data('mid');
-        window.location.href = '#'+ this.uiModel.id + '/view/'+id;
+        window.location.href = '#'+ this.uiModel.id + '/browse/'+id;
     }
 
 });

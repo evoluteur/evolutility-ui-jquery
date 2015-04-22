@@ -12,15 +12,6 @@
   margin-bottom: 10px;
   padding: 3px;
   background-color: #fbfbfb;
-  /*
-  .evo-search{
-    width:200px;
-    padding: 3px 4px 2px 2px;
-    >.btn{
-      position: relative;
-      top:0;
-    }
-  }*/
 }
 .evo-toolbar > [data-cid="views"] {
   color: black;
@@ -45,18 +36,26 @@
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
 }
-.evo-toolbar .evo-tb-status {
+.evo-filter-on {
+  background-color: #e0f2f1;
+}
+.evo-view-on {
+  color: #428bca;
+}
+.evo-tb-status {
   color: #0f0f0f !important;
   min-height: 35px;
   line-height: 35px;
   margin-top: 2px;
   margin-right: 5px;
 }
-.evo-toolbar .evo-filter-on {
-  background-color: #e0f2f1;
+.evo-search {
+  width: 200px;
+  padding: 3px 4px 2px 2px;
 }
-.evo-toolbar .evo-view-on {
-  color: #428bca;
+.evo-search > .btn {
+  position: relative;
+  top: 0;
 }
 /* --- panels & tabs --- */
 .evol-pnl > div > fieldset {
@@ -166,7 +165,7 @@ label {
   width: 100%;
 }
 .evo-one-edit,
-.evo-one-view,
+.evo-one-browse,
 .evo-one-wiz {
   margin-left: -10px;
 }

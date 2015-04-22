@@ -27,7 +27,7 @@ Evol.i18n = {
 
     // --- toolbar & buttons ---
     View:'View',
-    bView:'View',
+    bBrowse:'Browse',
     bEdit:'Edit',
     bMini: 'Mini', // 'Quick Edit'
     // Login:'Login',

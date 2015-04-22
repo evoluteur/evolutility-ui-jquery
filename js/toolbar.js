@@ -19,7 +19,7 @@ Evol.viewClasses = {
         }
     },
     // --- One ---
-    'view': Evol.ViewOne.View,
+    'browse': Evol.ViewOne.Browse,
     'edit': Evol.ViewOne.Edit,
     'mini': Evol.ViewOne.Mini,
     'json': Evol.ViewOne.JSON,
@@ -48,10 +48,10 @@ return Backbone.View.extend({
         'navigate.many >div': 'click_navigate',
         'paginate.many >div': 'paginate',
         //'selection.many >div': 'click_select',
-        //'click .evo-search>.btn': 'click_search',
-        //'keyup .evo-search>input': 'key_search',
+        'click .evo-search>.btn': 'click_search',
+        'keyup .evo-search>input': 'key_search',
         'change.tab >div': 'change_tab',
-        'action >div': 'action_view',
+        'action >div': 'click_action',
         'status >div': 'status_update',
         'change.filter >div': 'change_filter',
         'close.filter >div': 'hideFilter',
@@ -64,7 +64,7 @@ return Backbone.View.extend({
         readonly: false,
         //router:...,
         defaultView: 'list',
-        defaultViewOne: 'view',
+        defaultViewOne: 'browse',
         defaultViewMany: 'list',
         style: 'panel-info',
         display: 'label', // tooltip, text, icon, none
@@ -77,6 +77,7 @@ return Backbone.View.extend({
             ],
                 //linkOpt2h('selections','','star');
             actions:[
+                //{id:'browse', label: i18n.bBrowse, icon:'eye', n:'1', readonly:false},
                 {id:'edit', label: i18n.bEdit, icon:'edit', n:'1', readonly:false},
                 {id:'save', label: i18n.bSave, icon:'floppy-disk', n:'1', readonly:false},
                 {id:'del', label: i18n.bDelete, icon:'trash', n:'1', readonly:false},
@@ -91,7 +92,7 @@ return Backbone.View.extend({
             ],
             views: [
                 // -- views ONE ---
-                {id:'view', label: i18n.bView, icon:'eye-open',n:'1'},// // ReadOnly
+                {id:'browse', label: i18n.bBrowse, icon:'eye-open',n:'1'},// // ReadOnly
                 {id:'edit', label: i18n.bEdit, icon:'edit',n:'1', readonly:false},// // All Fields for editing
                 {id:'mini', label: i18n.bMini, icon:'th-large',n:'1', readonly:false},// // Important Fields only
                 //{id:'wiz',label: i18n.bWizard, icon:'arrow-right',n:'1'},
@@ -101,7 +102,8 @@ return Backbone.View.extend({
                 {id:'cards', label: i18n.bCards, icon:'th-large',n:'n'},
                 {id:'bubbles', label: i18n.bBubbles, icon:'adjust',n:'n'},
                 {id:'charts', label: i18n.bCharts, icon:'stats',n:'n'}
-            ]
+            ],
+            search: false
         }
     },
 
@@ -148,11 +150,13 @@ return Backbone.View.extend({
             menuItems(tb.actions);
         if(this.toolbar){
             h+='</ul><ul class="nav nav-pills pull-right" data-id="views">'+
-                '<li class="evo-tb-status" data-cardi="n"></li>';//+
-                //'<li><div class="input-group evo-search">'+
-                //    '<input class="evo-field form-control" type="text" maxlength="100">'+
-                //    '<span class="btn input-group-addon glyphicon glyphicon-search"></span>'+
-                //'</div></li>';
+                '<li class="evo-tb-status" data-cardi="n"></li>';
+                if(tb.search){
+                    h+='<li><div class="input-group evo-search">'+
+                        '<input class="evo-field form-control" type="text" maxlength="100">'+
+                        '<span class="btn input-group-addon glyphicon glyphicon-search"></span>'+
+                    '</div></li>';
+                }
             //h+=eUIm.hBegin('views','li','eye-open');
             h+=menuItems(tb.prevNext);
             h+=menuDeviderH;
@@ -200,7 +204,7 @@ return Backbone.View.extend({
             collec=this._curCollec();
 
         if(viewName==='new'){
-            viewName=(this._prevViewOne && this._prevViewOne!='view' && this._prevViewOne!='json')?this._prevViewOne:'edit';
+            viewName=(this._prevViewOne && this._prevViewOne!='browse' && this._prevViewOne!='json')?this._prevViewOne:'edit';
             this.setView(viewName, false, true);
             this.model=new this.modelClass();
             this.model.collection=collec;
@@ -288,7 +292,7 @@ return Backbone.View.extend({
                             $v.addClass('panel panel-info')
                                 .slideDown();
                             break;
-                        // --- one --- view, edit, mini, json, wiz
+                        // --- one --- browse, edit, mini, json, wiz
                         default :
                             var vwPrev = null,
                                 cData;
@@ -400,7 +404,7 @@ return Backbone.View.extend({
     },
 
      _keepTab: function(viewName){
-         if(this.tabId && (viewName=='view'||viewName=='edit')){
+         if(this.tabId && (viewName=='browse'||viewName=='edit')){
             this.curView.setTab(this.tabId);
          }
      },
@@ -480,8 +484,8 @@ return Backbone.View.extend({
                 this._prevViewOne=mode;
                 oneMany(mode, true, false);
                 tbBs.prevNext.show();
-                setVisible(tbBs.save, mode!=='view');
-                setVisible(tbBs.edit, mode==='view');
+                setVisible(tbBs.save, mode!=='browse');
+                setVisible(tbBs.edit, mode==='browse');
             }
             setVisible(tbBs.manys.filter('[data-id="group"]'), mode==='cards');
         }
@@ -566,7 +570,7 @@ return Backbone.View.extend({
         }else{
             this.model=m;
             if(this.curView.cardinality!='1'){
-                this.setView('view');//(this._prevViewOne || 'edit');
+                this.setView('browse');//(this._prevViewOne || 'edit');
             }
             this.curView.setModel(m);
             // todo: decide change model for all views or model event
@@ -674,8 +678,8 @@ return Backbone.View.extend({
 
     newItem: function(){
         var vw=this.curView;
-        if(vw.viewName=='view'){
-            if(this._prevViewOne!=='view' && this._prevViewOne!=='json'){
+        if(vw.viewName=='browse'){
+            if(this._prevViewOne!=='browse' && this._prevViewOne!=='json'){
                 this.setView(this._prevViewOne);
             }else{
                 this.setView('edit', false, true);
@@ -776,11 +780,11 @@ return Backbone.View.extend({
         }
     },
 
-    action_view: function(evt, actionId){
+    click_action: function(evt, actionId){
         switch(actionId){
             case 'cancel':
                 if(this.curView.cardinality==='1' && !this.model.isNew){
-                    this.setView(this._prevViewOne || 'view');
+                    this.setView(this._prevViewOne || 'browse');
                 }else{
                     this.setView(this._prevViewMany || 'list');
                 }
@@ -924,7 +928,7 @@ return Backbone.View.extend({
         this.setModelById(ui.id);
         this.setRoute(ui.id, false);
     },
-/*
+
     click_search: function(evt){
         var that=this,
             searchString=$('.evo-search>input').val().toLowerCase(), 
@@ -935,6 +939,7 @@ return Backbone.View.extend({
             },
             collec;
 
+        this._searchString = searchString;
         if(searchString){
             var models=(this.collection||this.model.collection).models
                     .filter(searchFunction(searchString));
@@ -967,7 +972,7 @@ return Backbone.View.extend({
             this.click_search(evt);
         }
     },
-*/
+
     change_tab: function(evt, ui){
         if(ui){
             this._tabId=ui.id;

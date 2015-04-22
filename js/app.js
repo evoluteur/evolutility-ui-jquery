@@ -169,7 +169,7 @@ Evol.App = Backbone.View.extend({
                 var m = ms.at(0),
                     config = {
                         el: $v,
-                        mode: 'one',
+                        mode: 'list',
                         model: m,
                         modelClass: M,
                         collection: ms,

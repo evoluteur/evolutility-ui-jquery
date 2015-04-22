@@ -99,6 +99,19 @@ return Backbone.View.extend({
         return this._subCollecs;
     },
 
+    setMode: function(mode) {
+        var pMode=this.mode;
+        if(mode!=pMode){
+            this.mode = mode;
+            return this
+                .render();
+        }
+    },
+
+    getMode:function() {
+        return this.mode;
+    },
+
     setModel: function(model) {
         this.model = model;
         return this
@@ -251,7 +264,7 @@ return Backbone.View.extend({
             if(subCollecs){
                 _.each(subCollecs, function (sc) {
                     var h=[];
-                    that._renderPanelListBody(h, sc, fv, sc.readonly?'view':'edit');
+                    that._renderPanelListBody(h, sc, fv, sc.readonly?'browse':'edit');
                     that.$('[data-pid="'+sc.id+'"] tbody')
                         .html(h.join(''));
                 });
@@ -504,7 +517,7 @@ return Backbone.View.extend({
     },
 
     _render: function (h, mode) {
-        // EDIT and VIEW forms
+        // forms to EDIT and BROWSE
         var that=this,
             iTab = -1,
             iPanel = -1,
@@ -599,7 +612,7 @@ return Backbone.View.extend({
             '<fieldset data-pid="', p.id, p.readonly?'" disabled>':'">');
         _.each(p.elements, function (elem) {
             if(elem.type=='panel-list'){
-                that._renderPanelList(h, elem, elem.readonly?'view':mode);
+                that._renderPanelList(h, elem, elem.readonly?'browse':mode);
             }else{
                 if(elem.type==fts.hidden){
                     h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
@@ -617,8 +630,8 @@ return Backbone.View.extend({
     },
 
     _renderPanelList: function (h, p, mode) {
-        var isEditable = p.readonly?false:(mode!=='view'),
-            vMode=isEditable?mode:'view';
+        var isEditable = p.readonly?false:(mode!=='browse'),
+            vMode=isEditable?mode:'browse';
 
         h.push('<div style="width:', p.width, '%" class="evol-pnl pull-left" data-pid="', p.id, '">',
             eUI.HTMLPanelBegin(p, this.style),
@@ -695,7 +708,7 @@ return Backbone.View.extend({
         });
     },
 
-    renderField: function (h, f, mode, iconsPath) {
+    renderField: function (h, f, mode, iconsPath, skipLabel) {
         var fv='';
         if(this.model && this.model.has(f.id)){
             fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultvalue || '';
@@ -706,7 +719,7 @@ return Backbone.View.extend({
                 (this.model?f.formula(this.model):'')+
                 '</div>');
         }else{
-            h.push(eDico.HTMLField4One(f, this.fieldViewId(f.id), fv, mode, iconsPath));
+            h.push(eDico.HTMLField4One(f, this.fieldViewId(f.id), fv, mode, iconsPath, skipLabel));
         }
         return this;
     },

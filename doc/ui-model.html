@@ -104,7 +104,7 @@
         </td>
     </tr>
     <tr>
-        <td>help<span class="evol-required">*</span>
+        <td>help<span class="evol-asterix">*</span>
         </td>
         <td>Introduction text about for the entity.
         </td>
@@ -118,7 +118,7 @@
         <td>leadfield</td>
         <td>id of the field to use for the page title (when using option "$title"). Can also be a function taking model as a parameter.
             <br/>Example 1: leadfield = &quot;firstname&quot;<br/>
-            Exemple2: leadfield = function(model){ return model.get('firstname')+' '+model.get('lastname')}</td>
+            Exemple 2: leadfield = function(model){ return model.get('firstname')+' '+model.get('lastname')}</td>
     </tr>
     <tr>
         <td>icon
@@ -253,7 +253,7 @@
         <tr>
             <td>csslabel
             </td>
-            <td>CSS class name for the specific field label (in views Edit, View and Mini).
+            <td>CSS class name for the specific field label (in views Edit, Browse and Mini).
             </td>
         </tr>
         <tr>
@@ -274,7 +274,7 @@
         <tr>
             <td>img
             </td>
-            <td>Image to display (for fields of type &quot;boolean&quot; or &quot;url&quot;) in Edit or View modes.
+            <td>Image to display (for fields of type &quot;boolean&quot; or &quot;url&quot;) in Edit or Browse modes.
             </td>
         </tr>
         <tr>
@@ -337,7 +337,7 @@
         <tr>
             <td>help
             </td>
-            <td>Help tip for the field (only used in Edit, View, and Mini views).
+            <td>Help tip for the field (only used in Edit, Browse, and Mini views).
             </td>
         </tr>
         <tr>
@@ -459,7 +459,7 @@
             </td>
             <td>
                 Skips the panel from displaying, if every field contained is empty and
-                optional (in View mode only).
+                optional (only applies to the view Browse).
             </td>
         </tr>
         <tr>

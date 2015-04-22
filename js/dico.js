@@ -29,7 +29,7 @@ Evol.Dico = function(){
             time: 'time',
             lov: 'lov',
             list: 'list', // many values for one field (behave like tags - return an array of strings)
-            //html:'html',
+            html: 'html',
             formula:'formula', // soon to be a field attribute rather than a field type
             email: 'email',
             pix: 'image',
@@ -65,7 +65,10 @@ return {
             }
             h.push(uiInput.textM(fid, fv, f.maxlength, f.height));
         },
-        // html:
+        html: function (h, f, fid, fv) {
+            // TODO
+            this.textmultiline(h, f, fid, fv);
+        },
         boolean: function (h, f, fid, fv) {
             h.push(uiInput.checkbox(fid, fv));
         },
@@ -197,7 +200,7 @@ return {
     },
 
     viewIsOne: function(viewName){
-        return viewName==='new' || viewName==='edit' || viewName==='view' || viewName==='json';
+        return viewName==='new' || viewName==='edit' || viewName==='browse' || viewName==='json';
     },
     viewIsMany: function(viewName){
         return viewName==='list' || viewName==='cards' || viewName==='charts' || viewName==='bubbles';
@@ -456,61 +459,55 @@ return {
     },
 
     HTMLField4One: function(fld, fid, fv, mode, iconsPath, skipLabel){
-        var h=[];
+        var h='';
         // --- field label ---
-        if(mode==='mini'){
-            h.push('<div class="evol-mini-label">', this.HTMLFieldLabel(fld, mode),
-                '</div><div class="evol-mini-content">');
-        }else if(!skipLabel){
-            h.push(this.HTMLFieldLabel(fld, mode || 'edit'));
+        if(!skipLabel){
+            h+=this.HTMLFieldLabel(fld, mode || 'edit');
         }
         // --- field value ---
-        if(fld.readonly || mode==='view'){
-            h.push('<div class="disabled evo-rdonly" id="',fid);
+        if(fld.readonly || mode==='browse'){
+            h+='<div class="disabled evo-rdonly" id="'+fid;
             if(fld.type===fts.textml && fld.height>1){
-                h.push('" style="height:'+fld.height+'em;overflow-y: auto;');
+                h+='" style="height:'+fld.height+'em;overflow-y: auto;';
             }
-            h.push('">');
+            h+='">';
             switch (fld.type) {
                 case fts.formula:
                     // TODO: in one.js or here?
-                    h.push('<div id="'+fid+'" class="form-control evol-ellipsis">'+fld.formula()+'</div>');
+                    h+='<div id="'+fid+'" class="form-control evol-ellipsis">'+fld.formula()+'</div>';
                     break;
                 case fts.color: // TODO is the color switch necessary?
                     //h.push(uiInput.colorBox(fid, fv), fv);
-                    h.push('<div id="'+fid+'" class="form-control">'+fv+'</div>');
+                    h+='<div id="'+fid+'" class="form-control">'+fv+'</div>';
                     break;
                 case fts.email:
-                    h.push(eUI.linkEmail(fid, fv));
+                    h+=eUI.linkEmail(fid, fv);
                     break;
                 case fts.url:
-                    h.push(eUI.link(fid, fv, fv, fid));
+                    h+=eUI.link(fid, fv, fv, fid);
                     break;
                 default:
-                    h.push(this.HTMLField4Many(fld, fv, {}, iconsPath));
+                    h+=this.HTMLField4Many(fld, fv, {}, iconsPath);
             }
-            h.push('&nbsp;</div>');
+            h+='&nbsp;</div>';
         }else{
-            Evol.Dico.fieldOneEdit[fld.type](h, fld, fid, fv, iconsPath);
+            var h2=[];
+            Evol.Dico.fieldOneEdit[fld.type](h2, fld, fid, fv, iconsPath);
+            h+=h2.join('');
         }
-        if(mode==='mini'){
-            h.push('</div>');
-        }
-        return h.join('');
+        return h;
     },
 
     HTMLFieldLabel: function (fld, mode) {
-        var h=[];
-        h.push('<div class="evol-field-label" id="', fld.id, '-lbl"><label class="control-label ',fld.csslabel?fld.csslabel:'','" for="', fld.id, '">',
-            fld.label);
-        if (mode != 'view' && fld.required){
-            h.push(eUI.html.required);
+        var h='<div class="evol-field-label" id="'+fld.id+'-lbl"><label class="control-label '+(fld.csslabel?fld.csslabel:'')+'" for="'+fld.id+'">'+fld.label;
+        if (mode != 'browse' && fld.required){
+            h+=eUI.html.required;
         }
         if (fld.help && fld.help!==''){
-            h.push(eUI.icon('question-sign', ''));
+            h+=eUI.icon('question-sign', '');
         }
-        h.push('</label></div>');
-        return h.join('');
+        h+='</label></div>';
+        return h;
     },
 
     HTMLFieldLink: function (id, fld, value, icon, noLink, route) {

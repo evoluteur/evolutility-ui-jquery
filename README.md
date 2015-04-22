@@ -29,19 +29,19 @@ Evolutility's views have a Backbone model (to define the data) and also a UI-mod
 All views for a Backbone model and collection share a single UI-Model which defines of all UI elements across views in a simple declarative way.
 
 Evolutility provides 3 types of view
-* Views for a model: View, Edit, Mini (quick edit), JSON.
+* Views for a model: Browse, Edit, Mini (quick edit), JSON.
 * Views for a collection: List, Cards, Bubbles, Charts.
 * Views for actions on a model or collection: Export, Filter.
 
 A large part of the API (methods, options and events) is common to all views. Some views have additional API.
 
 ## Views for One model
-### View
+### Browse
 Shows all fields for viewing (read only). Fields are grouped in panels and tabs.
 
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-view.gif)
+![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-browse.gif)
 ```javascript
-var vw = new Evol.ViewOne.View({
+var vw = new Evol.ViewOne.Browse({
             el: myElement,
             uiModel: myUIModel,
             model: myModel

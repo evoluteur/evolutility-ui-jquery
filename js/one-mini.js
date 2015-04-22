@@ -32,7 +32,8 @@ return Evol.ViewOne.Edit.extend({
     },
 
     _render: function (h, mode) {
-        // EDIT and VIEW forms
+        // TODO browse mode
+        // in EDIT and BROWSE modes
         var miniUIModel= {
             type: 'panel',
             class:'evol-mini-holder',
@@ -57,8 +58,10 @@ return Evol.ViewOne.Edit.extend({
                 h.push(eUI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
             }else{
                 h.push('<div class="pull-left evol-fld w-100">');
-                that.renderField(h, elem, mode, iconsPath);
-                h.push("</div>");
+                h.push('<div class="evol-mini-label">', Evol.Dico.HTMLFieldLabel(elem, mode),
+                    '</div><div class="evol-mini-content">');
+                that.renderField(h, elem, mode, iconsPath, true);
+                h.push("</div></div>");
             }
         });
         h.push('</fieldset>',

@@ -96,7 +96,7 @@ For each entity it creates a toolbar which manages the views for that entity.
 
         <p>toolbar: true,
         <p>readonly: false,
-        <p>defaultViewOne: 'view',
+        <p>defaultViewOne: 'browse',
         <p>defaultViewMany: 'list',
         <p>style: 'panel-info',
         <p>display: 'label', // tooltip, text, icon, none
@@ -108,6 +108,7 @@ For each entity it creates a toolbar which manages the views for that entity.
                 {id: 'new', label: i18n.bNew, icon:'plus', n:'x', readonly:false}
             ],
             actions:[
+                {id:'browse', label: i18n.bBrowse, icon:'eye-open', n:'1', readonly:false},
                 {id:'edit', label: i18n.bEdit, icon:'edit', n:'1', readonly:false},
                 {id:'save', label: i18n.bSave, icon:'floppy-disk', n:'1', readonly:false},
                 {id:'del', label: i18n.bDelete, icon:'trash', n:'1', readonly:false},
@@ -122,7 +123,7 @@ For each entity it creates a toolbar which manages the views for that entity.
             ],
             views: [
                 // -- views ONE ---
-                {id:'view', label: i18n.bView, icon:'eye-open',n:'1'},// // ReadOnly
+                {id:'browse', label: i18n.bBrowse, icon:'eye-open',n:'1'},// // ReadOnly
                 {id:'edit', label: i18n.bEdit, icon:'edit',n:'1', readonly:false},// // All Fields for editing
                 {id:'mini', label: i18n.bMini, icon:'th-large',n:'1', readonly:false},// // Important Fields only
                 //{id:'wiz',label: i18n.bWizard, icon:'arrow-right',n:'1'},

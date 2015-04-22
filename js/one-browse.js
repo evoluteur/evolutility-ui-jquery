@@ -1,17 +1,17 @@
 /*! ***************************************************************************
  *
- * evolutility :: one-view.js
+ * evolutility :: one-browse.js
  *
- * View "one view" to browse one model in readonly mode.
+ * View "one browse" to browse one model in readonly mode.
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
-Evol.ViewOne.View = Evol.ViewOne.extend({
+Evol.ViewOne.Browse = Evol.ViewOne.extend({
 
-    viewName: 'view',
+    viewName: 'browse',
     editable: false,
     prefix: 'ovw',
 
@@ -66,7 +66,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
             if(subCollecs){
                 _.each(subCollecs, function (sc) {
                     var h=[];
-                    that._renderPanelListBody(h, sc, fv, 'view');
+                    that._renderPanelListBody(h, sc, fv, 'browse');
                     that.$('[data-pid="'+sc.id+'"] tbody')
                         .html(h.join(''));
                 });
@@ -100,7 +100,7 @@ Evol.ViewOne.View = Evol.ViewOne.extend({
         if(subCollecs){
             _.each(subCollecs, function (sc) {
                 that.$('[data-pid="'+sc.id+'"] tbody')
-                    .html(that._TRnodata(sc.elements.length, 'view'));
+                    .html(that._TRnodata(sc.elements.length, 'browse'));
             });
         }
         return this;

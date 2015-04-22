@@ -342,7 +342,7 @@ return Backbone.View.extend({
             route = null;
 
         if (router) {
-            route = '#' + this.uiModel.id + '/view/';
+            route = '#' + this.uiModel.id + '/browse/';
         }
         return route;
     },
