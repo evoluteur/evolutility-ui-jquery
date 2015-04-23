@@ -93,7 +93,6 @@ For each entity it creates a toolbar which manages the views for that entity.
     <section>
         <h2>Options</h2>
 
-
         <p>toolbar: true,
         <p>readonly: false,
         <p>defaultViewOne: 'browse',
@@ -101,48 +100,24 @@ For each entity it creates a toolbar which manages the views for that entity.
         <p>style: 'panel-info',
         <p>display: 'label', // tooltip, text, icon, none
         <p>titleSelector: '#title',
-        <p>buttons: <pre>
-        {
-            always:[
-                {id: 'list', label: i18n.bList, icon:'th-list', n:'x'},
-                {id: 'new', label: i18n.bNew, icon:'plus', n:'x', readonly:false}
-            ],
-            actions:[
-                {id:'browse', label: i18n.bBrowse, icon:'eye-open', n:'1', readonly:false},
-                {id:'edit', label: i18n.bEdit, icon:'edit', n:'1', readonly:false},
-                {id:'save', label: i18n.bSave, icon:'floppy-disk', n:'1', readonly:false},
-                {id:'del', label: i18n.bDelete, icon:'trash', n:'1', readonly:false},
-                {id:'filter', label: i18n.bFilter, icon:'filter',n:'n'},
-                //{id:'group',label: i18n.bGroup, icon:'resize-horizontal',n:'n'},
-                {id:'export', label: i18n.bExport, icon:'cloud-download',n:'n'}
-                //{id:'cog',label: i18n.bSettings, icon:'cog',n:'n'}
-            ],
-            prevNext:[
-                {id:'prev', label: '', icon:'chevron-left', n:'x'},
-                {id:'next', label: '', icon:'chevron-right', n:'x'}
-            ],
-            views: [
-                // -- views ONE ---
-                {id:'browse', label: i18n.bBrowse, icon:'eye-open',n:'1'},// // ReadOnly
-                {id:'edit', label: i18n.bEdit, icon:'edit',n:'1', readonly:false},// // All Fields for editing
-                {id:'mini', label: i18n.bMini, icon:'th-large',n:'1', readonly:false},// // Important Fields only
-                //{id:'wiz',label: i18n.bWizard, icon:'arrow-right',n:'1'},
-                {id:'json', label: i18n.bJSON, icon:'barcode',n:'1', readonly:false},
-                // -- views MANY ---
-                {id:'list', label: i18n.bList, icon:'th-list',n:'n'},
-                {id:'cards', label: i18n.bCards, icon:'th-large',n:'n'},
-                //{id:'bubbles', label: i18n.bBubbles, icon:'adjust',n:'n'},
-                {id:'charts', label: i18n.bCharts, icon:'stats',n:'n'}
-            ]
-        }
-        </pre>,<br/>
+        <p>buttons: object,
         <p>pageSize:20
     </section>
 
     <section>
         <h2>Events</h2>
 
-
+        <p>item.added</p>
+        <p>item.saved</p>
+        <p>item.deleted</p>
+        <p>search</p>
+        <p>filter.change</p> 
+        <p>toolbar.X (X = toolbar button Ids in [
+            'new', 'del', 'filter', 'export',
+            'browse', 'edit', 'mini', 'json',
+            'list', 'cards', 'bubbles', 'charts', 
+            'prev', 'next'
+            ])</p>
     </section>
 
 <p><br/>evolutility.js at <a href="https://github.com/evoluteur/evolutility" target="download">GitHub</a></p>
