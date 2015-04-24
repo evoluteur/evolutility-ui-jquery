@@ -90,20 +90,19 @@ return Backbone.View.extend({
             iMax = fields.length,
             useMore = iMax > 14;
 
-        h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds">',
-            '<div><label>', i18nXpt.xpFields, '</label></div>',
-            '<fieldset class="checkbox">'
-        );
+        h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds">'+
+            '<div><label>'+i18nXpt.xpFields+'</label></div>'+
+            '<fieldset class="checkbox">');
 
         //### list of columns to export #########################################
-        h.push('<div><label><input type="checkbox" value="1" id="showID">', i18nXpt.IDkey, '</label></div>');
+        h.push('<div><label><input type="checkbox" value="1" id="showID">'+i18nXpt.IDkey+'</label></div>');
         _.each(fields, function(f, idx){
             var fLabel = f.labelexport || f.label || f.labellist,
                 fID = 'fx-' + f.id;
             if (fLabel === null || fLabel === '') {
                 fLabel = '(' + fID + ')';
             }
-            h.push('<div><label><input type="checkbox" value="1" id="', fID, '" checked="checked">', fLabel, '</label></div>');
+            h.push('<div><label><input type="checkbox" value="1" id="'+fID+'" checked="checked">'+fLabel+'</label></div>');
             if (idx === 10 && useMore){
                 h.push(EvoExport.html_more2(i18nXpt.allFields));
             }
@@ -120,35 +119,35 @@ return Backbone.View.extend({
                         text: i18nXpt['format'+format]
                     };
                 });
-        h.push('<label for="', fId, '">', i18nXpt.format, '</label>');
+        h.push('<label for="'+fId+'">'+i18nXpt.format+'</label>');
         h.push(uiInput.select(fId, '', 'evol-xpt-format', false, formatsList));
         fId = 'xptFLH';
-        h.push('<div class="evol-xpt-opts">',
+        h.push('<div class="evol-xpt-opts">'+
             //# field (shared b/w formats - header #######
-            '<div class="evol-FLH clearfix">',
-            '<label>', uiInput.checkbox(fId, true), i18nXpt.firstLine, '</label>',
+            '<div class="evol-FLH clearfix">'+
+            '<label>'+uiInput.checkbox(fId, true)+i18nXpt.firstLine+'</label>'+
             //##### CSV, TAB - First line for field names #######
-            '</div><div id="xptCSV">',
+            '</div><div id="xptCSV">'+
             //# field - separator
             //# - csv - any separator #######
-            '<div data-id="csv2" class="evol-w120">',
-            eUI.fieldLabel('separator', i18nXpt.separator),
-            uiInput.text('separator', ',', '0'),
-            '</div>', // </div>
+            '<div data-id="csv2" class="evol-w120">'+
+            eUI.fieldLabel('separator', i18nXpt.separator)+
+            uiInput.text('separator', ',', '0')+
+            '</div>'+ // </div>
         '</div>');
         _.each(formats, function(f){
-            h.push('<div id="xpt', f, '" style="display:none;"></div>');
+            h.push('<div id="xpt'+f+'" style="display:none;"></div>');
         });
-        h.push('</div>',
+        h.push('</div>'+
             //# Preview #######
-            '<label>',i18nXpt.preview,'</label><div class="evol-xpt-preview">',
+            '<label>'+i18nXpt.preview+'</label><div class="evol-xpt-preview">'+
             // ## Samples
-            '<textarea class="evol-xpt-val form-control"></textarea>',
-            '</div></div></div></div>',
+            '<textarea class="evol-xpt-val form-control"></textarea>'+
+            '</div></div></div></div>'+
             // ## Download button
-            '<div class="evol-buttons form-actions">',
-                eUI.button('cancel', i18n.bCancel, 'btn-default'),
-                eUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary'),
+            '<div class="evol-buttons form-actions">'+
+                eUI.button('cancel', i18n.bCancel, 'btn-default')+
+                eUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary')+
             '</div>'
         );
         return h.join('');
@@ -231,7 +230,7 @@ return Backbone.View.extend({
                     // -- header
                     if (useHeader) {
                         if(showID){
-                            h.push('ID', sep);
+                            h.push('ID'+sep);
                         }
                         _.each(flds, function(f, idx){
                             h.push(f.label);
@@ -244,7 +243,7 @@ return Backbone.View.extend({
                     // -- data
                     _.every(data, function(m, idx){
                         if(showID){
-                            h.push(m.id, sep);
+                            h.push(m.id+sep);
                         }
                         _.each(flds, function(f, idx){
                             var mv = m.get(f.id);
@@ -253,7 +252,7 @@ return Backbone.View.extend({
                                     h.push(mv);
                                     //}else if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
                                 }else if((f.type==fts.text || f.type==fts.textml) && (mv.indexOf(',')>-1)){ // || f.type==fts.list
-                                    h.push('"', mv.replace('"', '\\"'), '"');
+                                    h.push('"'+mv.replace('"', '\\"')+'"');
                                 }else{
                                     h.push(mv);
                                 }
@@ -276,7 +275,7 @@ return Backbone.View.extend({
                             h.push('<th>ID</th>');
                         }
                         _.each(flds, function(f){
-                            h.push('<th>', f.label, '</th>');
+                            h.push('<th>'+f.label+'</th>');
                         });
                         h.push('\n</tr>\n');
                     }
@@ -284,12 +283,12 @@ return Backbone.View.extend({
                     _.every(data, function(m, idx){
                         h.push('<tr>\n');
                         if(showID){
-                            h.push('<td>', m.id, '</td>');
+                            h.push('<td>'+m.id+'</td>');
                         }
                         _.each(flds, function(f){
                             var mj = m.get(f.id);
                             if (!_.isUndefined(mj) && mj!=='') {
-                                h.push('<td>', mj, '</td>');
+                                h.push('<td>'+mj+'</td>');
                             } else {
                                 h.push('<td></td>');
                             }
@@ -315,7 +314,7 @@ return Backbone.View.extend({
                     var optTransaction = this.$('#transaction').prop('checked'),
                         optIdInsert = this.$('#insertId').prop('checked'),
                         sqlTable = this.$('#table').val().replace(/ /g,'_'),
-                        sql = ['INSERT INTO ', sqlTable, ' ('];
+                        sql = ['INSERT INTO '+sqlTable+' ('];
 
                     if(sqlTable===''){
                         sqlTable = this.uiModel.entity.replace(/ /g,'_');
@@ -336,7 +335,7 @@ return Backbone.View.extend({
                         h.push('BEGIN TRANSACTION\n');
                     }
                     if(optIdInsert){
-                        h.push('SET IDENTITY_INSERT ', sqlTable, ' ON;\n');
+                        h.push('SET IDENTITY_INSERT '+sqlTable+' ON;\n');
                     }
                     // -- data
                     var fValue;
@@ -369,14 +368,14 @@ return Backbone.View.extend({
                                     if(_.isUndefined(fValue) || fValue===''|| (_.isArray(fValue) && fValue.length===0)){
                                         h.push('NULL');
                                     }else{
-                                        h.push('"', eDico.HTMLField4Many(f, fValue, Evol.hashLov, '').replace(/"/g, '""'), '"');
+                                        h.push('"'+eDico.HTMLField4Many(f, fValue, Evol.hashLov, '').replace(/"/g, '""')+'"');
                                     }
                                     break;
                                 default:
                                     if(_.isUndefined(fValue)){
                                         h.push('""');
                                     }else{
-                                        h.push('"', fValue.replace(/"/g, '""'), '"');
+                                        h.push('"'+fValue.replace(/"/g, '""')+'"');
                                     }
                             }
                             if(idx<fMax){
@@ -388,7 +387,7 @@ return Backbone.View.extend({
                     });
                     // -- options
                     if(optIdInsert){
-                        h.push('SET IDENTITY_INSERT ', sqlTable, ' OFF;\n');
+                        h.push('SET IDENTITY_INSERT '+sqlTable+' OFF;\n');
                     }
                     if(optTransaction){
                         h.push('COMMIT TRANSACTION\n');
@@ -399,9 +398,9 @@ return Backbone.View.extend({
                         fv;
                     h.push('<xml>\n');
                     _.every(data, function(m, idx){
-                        h.push('<', elemName, ' ');
+                        h.push('<'+elemName+' ');
                         if(showID){
-                            h.push('ID="', m.id, '" ');
+                            h.push('ID="'+m.id+'" ');
                         }
                         _.each(flds, function(f){
                             h.push(f.id, '="');
@@ -415,7 +414,7 @@ return Backbone.View.extend({
                             }
                             h.push('" ');
                         });
-                        h.push('></', elemName, '>\n');
+                        h.push('></'+elemName+'>\n');
                         return idx<maxItem;
                     });
                     h.push('</xml>');

@@ -506,9 +506,9 @@ return Backbone.View.extend({
     },
 
     _renderButtons: function (h, mode) {
-        h.push(eUI.html.clearer,
-            '<div class="evol-buttons panel panel-info">',
-            eUI.button('cancel', i18n.bCancel, 'btn-default'),
+        h.push(eUI.html.clearer+
+            '<div class="evol-buttons panel panel-info">'+
+            eUI.button('cancel', i18n.bCancel, 'btn-default')+
             eUI.button('save', i18n.bSave, 'btn-primary'));
         if (this.model && this.model.isNew() && this.button_addAnother && mode!=='json') {
             h.push(eUI.button('save-add', i18n.bSaveAdd, 'btn-default'));
@@ -524,7 +524,7 @@ return Backbone.View.extend({
             elems = this.uiModel.elements,
             iMax1 = elems.length - 1;
 
-        h.push('<div class="evo-one-',mode,'">');
+        h.push('<div class="evo-one-'+mode+'">');
         _.each(elems, function(p, idx){
             if(p.type==='tab'){
                 if (iPanel > 0) {
@@ -537,7 +537,7 @@ return Backbone.View.extend({
                     h.push('<div class="tab-content">');
                 }
                 iTab++;
-                h.push('<div id="evol-tab-', idx, '" class="tab-pane', (iTab === 0 ? ' active">' : '">'));
+                h.push('<div id="evol-tab-'+idx+'" class="tab-pane'+(iTab === 0 ? ' active">' : '">'));
                 that._renderTab(h, p, mode);
                 if (iTab == iMax1) {
                     h.push('</div>');
@@ -570,16 +570,16 @@ return Backbone.View.extend({
         _.each(tabs, function (tab, idx) {
             if (tab.type === 'tab') {
                 if (isFirst) {
-                    h.push('<li class="active ', tab.csslabel||'', '">');
+                    h.push('<li class="active '+(tab.csslabel||'')+'">');
                     isFirst = false;
                 } else {
                     if(tab.csslabel){
-                        h.push('<li class="', tab.csslabel, '">');
+                        h.push('<li class="'+tab.csslabel+'">');
                     }else{
                         h.push('<li>');
                     }
                 }
-                h.push('<a href="#evol-tab-', idx, '">', tab.label, '</a></li>');
+                h.push('<a href="#evol-tab-'+idx+'">'+tab.label+'</a></li>');
             }
         });
         h.push('</ul>');
@@ -587,7 +587,7 @@ return Backbone.View.extend({
 
     _renderTab: function (h, tab, mode) {
         var that = this;
-        h.push('<div class="evol-pnls ',tab.css||'','">');
+        h.push('<div class="evol-pnls '+(tab.css||'')+'">');
         _.each(tab.elements, function (uip) {
             if (uip.type === 'panel-list') {
                 that._renderPanelList(h, uip, mode);
@@ -595,7 +595,7 @@ return Backbone.View.extend({
                 that._renderPanel(h, uip, mode);
             }
         });
-        h.push(eUI.html.clearer, '</div></div>'); // TODO 2 div?
+        h.push(eUI.html.clearer+'</div></div>'); // TODO 2 div?
     },
 
     _renderPanel: function (h, p, mode, visible) {
@@ -604,12 +604,12 @@ return Backbone.View.extend({
 
         if(mode==='wiz'){
             var hidden= _.isUndefined(visible)?false:!visible;
-            h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%;',hidden?'display:none;':'','">');
+            h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%;'+(hidden?'display:none;':'')+'">');
         }else{
-            h.push('<div data-p-width="', p.width, '" class="evol-pnl pull-left" style="width:', p.width, '%">');
+            h.push('<div data-p-width="'+p.width+'" class="evol-pnl pull-left" style="width:'+p.width+'%">');
         }
         h.push(eUI.HTMLPanelBegin(p, this.style||'panel-default'),
-            '<fieldset data-pid="', p.id, p.readonly?'" disabled>':'">');
+            '<fieldset data-pid="'+p.id+(p.readonly?'" disabled>':'">'));
         _.each(p.elements, function (elem) {
             if(elem.type=='panel-list'){
                 that._renderPanelList(h, elem, elem.readonly?'browse':mode);
@@ -617,14 +617,14 @@ return Backbone.View.extend({
                 if(elem.type==fts.hidden){
                     h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
                 }else{
-                    h.push('<div style="width:', parseInt(elem.width||100, 10), '%" class="pull-left evol-fld">');
+                    h.push('<div style="width:'+parseInt(elem.width||100, 10)+'%" class="pull-left evol-fld">');
                     that.renderField(h, elem, mode, iconsPath);
                     h.push("</div>");
                 }
             }
         });
-        h.push('</fieldset>',
-            eUI.HTMLPanelEnd(),
+        h.push('</fieldset>'+
+            eUI.HTMLPanelEnd()+
             '</div>');
         return this;
     },
@@ -633,11 +633,11 @@ return Backbone.View.extend({
         var isEditable = p.readonly?false:(mode!=='browse'),
             vMode=isEditable?mode:'browse';
 
-        h.push('<div style="width:', p.width, '%" class="evol-pnl pull-left" data-pid="', p.id, '">',
+        h.push('<div style="width:'+p.width+'%" class="evol-pnl pull-left" data-pid="'+p.id+'">',
             eUI.HTMLPanelBegin(p, this.style),
-            '<table class="table" data-mid="', (p.attribute || p.id), '"><thead><tr>');
+            '<table class="table" data-mid="'+(p.attribute || p.id)+'"><thead><tr>');
         _.each(p.elements, function (elem) {
-            h.push('<th>', elem.label, (isEditable && elem.required)?eUI.html.required:'', '</th>');
+            h.push('<th>'+elem.label+((isEditable && elem.required)?eUI.html.required:'')+'</th>');
         });
         if(vMode==='edit'){
             h.push('<th></th>');
@@ -661,7 +661,7 @@ return Backbone.View.extend({
             if(vs && vs.length>0){
                 var TDbPM='<td class="evo-td-plusminus">'+eUI.buttonsPlusMinus()+'</td>';
                 _.each(vs, function(row, idx){
-                    h.push('<tr data-idx="', idx, '">');
+                    h.push('<tr data-idx="'+idx+'">');
                     if(editable){
                         that._TDsFieldsEdit(h, uiPnl.elements, row);
                         h.push(TDbPM);
@@ -704,7 +704,9 @@ return Backbone.View.extend({
             if(_.isUndefined(fv)){
                 fv='';
             }
-            h.push('<td>', eDico.HTMLField4One(f, f.id, fv, 'edit-details', iconPath, true), '</td>');
+            h.push('<td>'+
+                eDico.HTMLField4One(f, f.id, fv, 'edit-details', iconPath, true)+
+                '</td>');
         });
     },
 
@@ -1025,7 +1027,13 @@ return Backbone.View.extend({
     click_button: function (evt) {
         var bId = $(evt.currentTarget).data('id');
         evt.stopImmediatePropagation();
-        this.$el.trigger('action', bId);
+        if(bId==='save'){
+            if(this.validate()){
+                this.$el.trigger('action', bId);
+            }
+        }else{
+            this.$el.trigger('action', bId);
+        }
     },
 
     click_toggle: function (evt) {
@@ -1130,8 +1138,8 @@ return Backbone.View.extend({
                 elems=(subCollecs[mid])?subCollecs[mid].elements:null;
             h.push('<tr>');
             this._TDsFieldsEdit(h, elems, {});
-            h.push('<td class="evo-td-plusminus">',
-                eUI.buttonsPlusMinus(),
+            h.push('<td class="evo-td-plusminus">'+
+                eUI.buttonsPlusMinus()+
                 '</td></tr>');
             $(h.join('')).insertAfter(tr);
             if(tr.data('id')==='nodata'){

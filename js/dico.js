@@ -96,11 +96,11 @@ return {
             h.push(uiInput.select(fid, fv, '', true, f.list));
         },
         list: function (h, f, fid, fv) { // fv is an array. will use select2
-            h.push('<div id="', fid, '" class="w-100 form-control"></div>');
+            h.push('<div id="'+fid+'" class="w-100 form-control"></div>');
         },
         email: function (h, f, fid, fv) {
-            h.push('<div class="input-group">', uiInput.typeFlag(i18n.sgn_email),
-                uiInput.text(fid, fv, f),
+            h.push('<div class="input-group">'+uiInput.typeFlag(i18n.sgn_email)+
+                uiInput.text(fid, fv, f)+
                 '</div>');
         },
         url: function (h, f, fid, fv) {
@@ -111,9 +111,9 @@ return {
         //},
         image: function(h, f, fid, fv, iconsPath){
             if(fv!==''){
-                h.push('<img src="',(fv.substr(0, 2)==='..')?fv:iconsPath + fv,'" class="img-thumbnail">');
+                h.push('<img src="'+((fv.substr(0, 2)==='..')?fv:iconsPath + fv)+'" class="img-thumbnail">');
             }else{
-                h.push('<p class="">',i18n.nopix,'</p>');
+                h.push('<p class="">'+i18n.nopix+'</p>');
             }
             h.push(uiInput.text(fid, fv, f, null));
         },
@@ -477,7 +477,7 @@ return {
                     h+='<div id="'+fid+'" class="form-control evol-ellipsis">'+fld.formula()+'</div>';
                     break;
                 case fts.color: // TODO is the color switch necessary?
-                    //h.push(uiInput.colorBox(fid, fv), fv);
+                    //h+=uiInput.colorBox(fid, fv)+fv;
                     h+='<div id="'+fid+'" class="form-control">'+fv+'</div>';
                     break;
                 case fts.email:

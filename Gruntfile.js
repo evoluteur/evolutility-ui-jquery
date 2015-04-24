@@ -66,7 +66,8 @@ module.exports = function (grunt) {
                     'js/one.js',
                     'js/one-*.js',
                     '!js/one-wizard.js', // NOT ! here
-                    'js/action.js',
+
+                    //'js/action.js',
                     'js/action-*.js',
 
                     //'js/navbar.js',
