@@ -20,9 +20,9 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
 
         h.push('<div class="evol-many-cards"><div class="evol-cards-body">');
         this._HTMLbody(h, this.getFields(), pSize, this.uiModel.icon, 0, this.selectable);
-        h.push('</div>', Evol.UI.html.clearer);
-        this._HTMLpagination(h, 0, pSize, models.length);
-        h.push('<div class="evo-many-summary">', pSummary, '</div>',
+        h.push('</div>', Evol.UI.html.clearer+
+        this._HTMLpagination(0, pSize, models.length)+
+        '<div class="evo-many-summary">'+pSummary+'</div>'+
             '</div>');
         this.$el.html(h.join(''));
         return this;
@@ -41,7 +41,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
         if(isTooltip){
             h.push('<div class="evol-bubble-tooltip">');
         }else{
-            h.push('<div class="panel ',this.style,'">');
+            h.push('<div class="panel '+this.style+'">');
         }
         _.each(fields, function(f, idx){
             if(f.value){
@@ -53,7 +53,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
             if (idx === 0) {
-                h.push('<div data-mid="', model.id, '">');
+                h.push('<div data-mid="'+model.id+'">');
                 // Item badge
                 var bf=that.uiModel.badge;
                 if(bf){
@@ -66,12 +66,13 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
                     h.push('</span>');
                 }
                 // Item title
-                h.push('<h4>',
-                    selectable?that._HTMLCheckbox(model.id):'',
-                    Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link, route?route+model.id:null),
+                h.push('<h4>'+
+                    (selectable?that._HTMLCheckbox(model.id):'')+
+                    Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link, route?route+model.id:null)+
                     '</h4></div>');
             }else{
-                h.push('<div '+ (f.type=='email'?'class="evol-ellipsis"':'') +'><label>', f.labelcards?f.labelcards:f.label,':</label> ', v, '</div>');
+                h.push('<div '+ (f.type=='email'?'class="evol-ellipsis"':'') +'><label>'+
+                    (f.labelcards?f.labelcards:f.label)+':</label> '+v+'</div>');
             }
         });
         h.push('</div>');

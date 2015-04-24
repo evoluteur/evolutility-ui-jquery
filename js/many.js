@@ -194,9 +194,7 @@ return Backbone.View.extend({
 
         this._HTMLbody(h, fields, pSize, this.uiModel.icon, pageIdx, this.selectable);
         this._$body().html(h.join(''));
-        h = [];
-        this._HTMLpaginationBody(h, pageIdx, pSize, collecLength);
-        this.$('.evo-pagination').html(h.join(''));
+        this.$('.evo-pagination').html(this._HTMLpaginationBody(pageIdx, pSize, collecLength));
         this.$('.evo-many-summary').html(pSummary);
         this.pageIndex = pageIdx;
         this.$el.trigger('status', pSummary);
@@ -257,22 +255,24 @@ return Backbone.View.extend({
         }
     },
 
-    _HTMLpagination: function (h, pIdx, pSize, cSize) {
+    _HTMLpagination: function (pIdx, pSize, cSize) {
         if (cSize > pSize) {
-            h.push('<ul class="evo-pagination pagination pagination-sm">');
-            this._HTMLpaginationBody(h, pIdx, pSize, cSize);
-            h.push('</ul>');
+            return '<ul class="evo-pagination pagination pagination-sm">'+
+                this._HTMLpaginationBody(pIdx, pSize, cSize)+
+                '</ul>';
         }
+        return '';
     },
 
-    _HTMLpaginationBody: function (h, pIdx, pSize, cSize) {
+    _HTMLpaginationBody: function (pIdx, pSize, cSize) {
+        var h='';
         if (cSize > pSize) {
             var nbPages = Math.ceil(cSize / pSize),
                 pId = pIdx + 1,
                 maxRange,
                 bPage = function(id){
-                    h.push('<li', pId===id?' class="active"':'',
-                        ' data-id="', id, '"><a href="javascript:void(0)">', id, '</a></li>');
+                    h+='<li'+(pId===id?' class="active"':'')+
+                        ' data-id="'+id+'"><a href="javascript:void(0)">'+id+'</a></li>';
                 },
                 bPageRange = function(pStart, pEnd){
                     for (var i=pStart; i<=pEnd; i++) {
@@ -280,11 +280,11 @@ return Backbone.View.extend({
                     }
                 },
                 bGap = function(){
-                    h.push('<li class="disabled"><a href="javascript:void(0)">...</a></li>');
+                    h+='<li class="disabled"><a href="javascript:void(0)">...</a></li>';
                 };
-            h.push('<li data-id="prev"',
-                (pId===1)?' class="disabled"':'',
-                '><a href="javascript:void(0)">&laquo;</a></li>');
+            h+='<li data-id="prev"'+
+                ((pId===1)?' class="disabled"':'')+
+                '><a href="javascript:void(0)">&laquo;</a></li>';
             bPage(1);
             if(pId>4 && nbPages>6){
                 if(pId===5){
@@ -302,10 +302,11 @@ return Backbone.View.extend({
                 bGap();
                 bPage(nbPages);
             }
-            h.push('<li data-id="next"',
-                (nbPages > pId) ? '' : ' class="disabled"',
-                '><a href="javascript:void(0)">&raquo;</a></li>');
+            h+='<li data-id="next"'+
+                ((nbPages > pId) ? '' : ' class="disabled"')+
+                '><a href="javascript:void(0)">&raquo;</a></li>';
         }
+        return h;
     },
 
     sortList: function (f, down, noRemember, noTrigger) {

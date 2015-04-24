@@ -280,7 +280,6 @@ return {
         }
 
         collectCollecs(uiModel);
-
         return ls;
     },
     /*
@@ -593,4 +592,5 @@ return {
     }
 
 };
+
 }();

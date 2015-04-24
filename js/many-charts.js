@@ -29,21 +29,20 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
     },
 
     render: function () {
-        var h = [];
         this.entityName=Evol.UI.capitalize(this.uiModel.entities);
         if(this.collection && this.collection.length>0){
-            h.push('<div class="evol-many-', this.viewName, '">');
-            this._HTMLcharts(h, this.style, this.sizes);
-            h.push('</div>');
+            this.$el.html('<div class="evol-many-'+this.viewName+'">'+
+                this._HTMLcharts(this.style, this.sizes)+
+                '</div>');
         }else{
-            h.push(Evol.UI.HTMLMsg(Evol.i18n.nodata, '', 'info'));
+            this.$el.html(Evol.UI.HTMLMsg(Evol.i18n.nodata, '', 'info'));
         }
-        this.$el.html(h.join(''));
         return this.setTitle();
     },
 
-    _HTMLcharts: function (h, style, sizes) {
-        var EvoUI = Evol.UI,
+    _HTMLcharts: function (style, sizes) {
+        var h='',
+            EvoUI = Evol.UI,
             EvoDico = Evol.Dico,
             i18n = Evol.i18n,
             fTypes = EvoDico.fieldTypes,
@@ -102,9 +101,9 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                     }
                 }
                 chartType = f.typechart || (f.type===fTypes.lov ? 'pie':'bars');
-                h.push('<div class="evol-chart-holder panel '+style+'">');
-                h.push('<div class="glyphicon glyphicon-cog evo-chart-config pull-right" data-id="'+f.id+'" data-ctype="'+chartType+'"></div>');
-                h.push('<div class="chart-holder">');
+                h+='<div class="evol-chart-holder panel '+style+'">'+
+                    '<div class="glyphicon glyphicon-cog evo-chart-config pull-right" data-id="'+f.id+'" data-ctype="'+chartType+'"></div>'+
+                    '<div class="chart-holder">';
                 cData[f.id] = {
                     field: f,
                     data: data,
@@ -113,17 +112,18 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                     sizes: sizes
                 };
                 if(chartType==='pie'){
-                    h.push(EvoUI.Charts.Pie(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aByB', entityName, f.label), data, labels, style, sizes));
+                    h+=EvoUI.Charts.Pie(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aByB', entityName, f.label), data, labels, style, sizes);
                 }else if(chartType==='bars'){
-                    h.push(EvoUI.Charts.Bars(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aB', entityName, f.label), data, labels, style, sizes));
+                    h+=EvoUI.Charts.Bars(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aB', entityName, f.label), data, labels, style, sizes);
                 }
-                h.push('</div><br></div>');
+                h+='</div><br></div>';
             });
             this._cData=cData;
         }else{
-            h.push(EvoUI.HTMLMsg(i18n.nochart, i18n.badchart));
+            h+=EvoUI.HTMLMsg(i18n.nochart, i18n.badchart);
         }
-        h.push(EvoUI.html.clearer);
+        h+=EvoUI.html.clearer;
+        return h;
     },
 
     setPage: function(){
