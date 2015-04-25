@@ -34,8 +34,8 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         });
         h.push('</tr></thead><tbody>');
         this._HTMLbody(h, fields, pSize, this.uiModel.icon, 0, this.selectable);
-        h.push('</tbody></table>');
-        h.push(this._HTMLpagination(0, pSize, models.length)+
+        h.push('</tbody></table>'+
+            this._HTMLpagination(0, pSize, models.length)+
             '<div class="evo-many-summary">'+this.pageSummary(this.pageIndex, pSize, models.length)+'</div>'+
             '</div>');
         this.$el.html(h.join(''));

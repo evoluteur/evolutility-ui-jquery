@@ -21,8 +21,8 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
         h.push('<div class="evol-many-cards"><div class="evol-cards-body">');
         this._HTMLbody(h, this.getFields(), pSize, this.uiModel.icon, 0, this.selectable);
         h.push('</div>', Evol.UI.html.clearer+
-        this._HTMLpagination(0, pSize, models.length)+
-        '<div class="evo-many-summary">'+pSummary+'</div>'+
+            this._HTMLpagination(0, pSize, models.length)+
+            '<div class="evo-many-summary">'+pSummary+'</div>'+
             '</div>');
         this.$el.html(h.join(''));
         return this;

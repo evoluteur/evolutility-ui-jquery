@@ -18,19 +18,17 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
     viewName: 'json',
 
     render: function () {
-        var h = [],
-            eUI=Evol.UI;
+        var eUI=Evol.UI;
         if(this.model){
-            var jsonStr=JSON.stringify(this.model, null, 2);
+            var h = [],
+                jsonStr=JSON.stringify(this.model, null, 2);
 
-            h.push(
-                eUI.label('uimjson', 'JSON'),
-                eUI.input.textMJSON('uimjson', jsonStr, 16));
+            h.push(eUI.label('uimjson', 'JSON')+eUI.input.textMJSON('uimjson', jsonStr, 16));
             this._renderButtons(h, 'json');
+            this.$el.html(h.join(''));
         }else{
-            h.push(eUI.HTMLMsg(Evol.i18n.nodata, '', 'info'));
+            this.$el.html(eUI.HTMLMsg(Evol.i18n.nodata, '', 'info'));
         }
-        this.$el.html(h.join(''));
         this.setData(this.model);
         //this.custOn=false;
         return this;

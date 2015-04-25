@@ -50,22 +50,22 @@ return Evol.ViewOne.Edit.extend({
         var that = this,
             iconsPath = this.iconsPath;
             
-        h.push('<div data-p-width="100%" class="evol-pnl evol-p-mini">');
-        h.push(eUI.HTMLPanelBegin(p, this.style||'panel-default'),
-            '<fieldset data-pid="', p.id, p.readonly?'" disabled>':'">');
+        h.push('<div data-p-width="100%" class="evol-pnl evol-p-mini">'+
+            eUI.HTMLPanelBegin(p, this.style||'panel-default')+
+            '<fieldset data-pid="'+p.id+(p.readonly?'" disabled>':'">'));
         _.each(p.elements, function (elem) {
             if(elem.type==fts.hidden){
                 h.push(eUI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
             }else{
-                h.push('<div class="pull-left evol-fld w-100">');
-                h.push('<div class="evol-mini-label">', Evol.Dico.HTMLFieldLabel(elem, mode),
+                h.push('<div class="pull-left evol-fld w-100">'+
+                    '<div class="evol-mini-label">'+Evol.Dico.HTMLFieldLabel(elem, mode)+
                     '</div><div class="evol-mini-content">');
                 that.renderField(h, elem, mode, iconsPath, true);
                 h.push("</div></div>");
             }
         });
-        h.push('</fieldset>',
-            eUI.HTMLPanelEnd(),
+        h.push('</fieldset>'+
+            eUI.HTMLPanelEnd()+
             '</div>');
         return this;
     }

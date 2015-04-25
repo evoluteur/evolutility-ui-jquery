@@ -74,19 +74,18 @@ return Backbone.View.extend({
         var bLabels=this.buttonLabels,
             that=this,
             e=this.$el,
-            h=[];
+            h='';
 
-        h.push(Evol.UI.html.buttonClose+'<div class="evo-zfilters"></div>',
-            '<a class="evo-bNew btn btn-primary" href="javascript:void(0)">',evoLang.bNewCond,'</a>');
+        h+=Evol.UI.html.buttonClose+'<div class="evo-zfilters"></div>'+
+            '<a class="evo-bNew btn btn-primary" href="javascript:void(0)">'+evoLang.bNewCond+'</a>';
         if(this.submitButton){
-            h.push('<a class="evo-bSubmit btn btn-primary" href="javascript:void(0)">',evoLang.bSubmit,'</a>');
+            h+='<a class="evo-bSubmit btn btn-primary" href="javascript:void(0)">'+evoLang.bSubmit+'</a>';
         }
-        h.push('<div class="evo-editFilter"></div>',
-            '<a class="evo-bAdd btn btn-primary" style="display:none;" href="javascript:void(0)">',evoLang.bAddCond,'</a>',
-            '<a class="evo-bDel btn btn-default" style="display:none;" href="javascript:void(0)">',evoLang.bCancel,'</a>');
+        h+='<div class="evo-editFilter"></div>'+
+            '<a class="evo-bAdd btn btn-primary" style="display:none;" href="javascript:void(0)">'+evoLang.bAddCond+'</a>'+
+            '<a class="evo-bDel btn btn-default" style="display:none;" href="javascript:void(0)">'+evoLang.bCancel+'</a>';
+        e.html(h);
         this._step=0;
-        //this._renderMenu(h);
-        e.html(h.join(''));
         if(this.submitReady){
             this._hValues=$('<span></span>').appendTo(e);
         }
@@ -295,13 +294,14 @@ return Backbone.View.extend({
             this._bDel.show();
             if(!this._fList){
                 var fields=this.fields,
-                    h=['<select id="field" class="form-control"><option value=""></option>'];
+                    f,
+                    h='<select id="field" class="form-control"><option value=""></option>';
                 for (var i=0,iMax=fields.length;i<iMax;i++){
-                    var f=fields[i];
-                    h.push(uiInput.option(f.id,f.label || f.labellist));
+                    f=fields[i];
+                    h+=uiInput.option(f.id,f.label || f.labellist);
                 }
-                h.push('</select>');
-                this._fList=h.join('');
+                h+='</select>';
+                this._fList=h;
             }
             $(this._fList).appendTo(this._editor).focus();
         }
@@ -317,55 +317,55 @@ return Backbone.View.extend({
         var fOption=uiInput.option,
             fType=this._type;
         if(this._step<2){
-            var h=[];
+            var h='';
             switch (fType){
                 case fts.lov:
-                    //h.push(evoLang.sInList);
-                    h.push(uiInput.hidden('operator',fOps.sInList));
+                    //h+=evoLang.sInList;
+                    h+=uiInput.hidden('operator',fOps.sInList);
                     this._operator=fOps.sInList;
                     break;
                 case fts.bool:
-                    //h.push(evoLang.sEqual);
-                    h.push(uiInput.hidden('operator', fOps.sEqual));
+                    //h+=evoLang.sEqual;
+                    h+=uiInput.hidden('operator', fOps.sEqual);
                     this._operator=fOps.sEqual;
                     break;
                 default:
-                    h.push(uiInput.selectBegin('operator', '', true));
+                    h+=uiInput.selectBegin('operator', '', true);
                     switch (fType){
                         case fts.date:
                         case fts.datetime:
                         case fts.time:
                             if (fType==fts.time){
-                                h.push(fOption(fOps.sEqual, evoLang.sAt),
-                                    fOption(fOps.sNotEqual, evoLang.sNotAt));
+                                h+=fOption(fOps.sEqual, evoLang.sAt)+
+                                    fOption(fOps.sNotEqual, evoLang.sNotAt);
                             }else{
-                                h.push(fOption(fOps.sEqual, evoLang.sOn),
-                                    fOption(fOps.sNotEqual, evoLang.sNotOn));
+                                h+=fOption(fOps.sEqual, evoLang.sOn)+
+                                    fOption(fOps.sNotEqual, evoLang.sNotOn);
                             }
-                            h.push(fOption(fOps.sGreater, evoLang.sAfter),
-                                fOption(fOps.sSmaller, evoLang.sBefore),
-                                fOption(fOps.sBetween, evoLang.sBetween));
+                            h+=fOption(fOps.sGreater, evoLang.sAfter)+
+                                fOption(fOps.sSmaller, evoLang.sBefore)+
+                                fOption(fOps.sBetween, evoLang.sBetween);
                             break;
                         case fts.int:
                         case fts.dec:
                         case fts.money:
-                            h.push(fOption(fOps.sEqual, evoLang.sNumEqual),
-                                fOption(fOps.sNotEqual, evoLang.sNumNotEqual),
-                                fOption(fOps.sGreater, evoLang.sGreater),
-                                fOption(fOps.sSmaller, evoLang.sSmaller));
+                            h+=fOption(fOps.sEqual, evoLang.sNumEqual)+
+                                fOption(fOps.sNotEqual, evoLang.sNumNotEqual)+
+                                fOption(fOps.sGreater, evoLang.sGreater)+
+                                fOption(fOps.sSmaller, evoLang.sSmaller);
                             break;
                         default:
-                            h.push(fOption(fOps.sEqual, evoLang.sEqual),
-                                fOption(fOps.sNotEqual, evoLang.sNotEqual),
-                                fOption(fOps.sStart, evoLang.sStart),
-                                fOption(fOps.sContain, evoLang.sContain),
-                                fOption(fOps.sFinish, evoLang.sFinish));
+                            h+=fOption(fOps.sEqual, evoLang.sEqual)+
+                                fOption(fOps.sNotEqual, evoLang.sNotEqual)+
+                                fOption(fOps.sStart, evoLang.sStart)+
+                                fOption(fOps.sContain, evoLang.sContain)+
+                                fOption(fOps.sFinish, evoLang.sFinish);
                     }
-                    h.push(fOption(fOps.sIsNull, evoLang.sIsNull),
-                        fOption(fOps.sIsNotNull, evoLang.sIsNotNull));
-                    h.push('</select>');
+                    h+=fOption(fOps.sIsNull, evoLang.sIsNull)+
+                        fOption(fOps.sIsNotNull, evoLang.sIsNotNull)+
+                        '</select>';
             }
-            this._editor.append(h.join(''));
+            this._editor.append(h);
         }
         if(cond && fType!=fts.lov){
             this._editor.find('#operator').val(cond);
@@ -385,21 +385,20 @@ return Backbone.View.extend({
                 editor.append(uiInput.hidden('value',''));
             }else{
                 if(this._step<3){
-                    var h=[];
+                    var h='';
                     opBetween=opVal==fOps.sBetween;
                     switch (fType){
                         case fts.lov:// TODO use "section"?
-                            h.push(
-                                '<section id="value">',
-                                (this._field.list.length>7)?'(<input type="checkbox" id="checkAll" value="1"/><label for="checkAll">All</label>) ':'',
-                                uiInput.checkboxLOV(this._field.list),
-                                '</section>');
+                            h+='<section id="value">'+
+                                ((this._field.list.length>7)?'(<input type="checkbox" id="checkAll" value="1"/><label for="checkAll">All</label>) ':'')+
+                                uiInput.checkboxLOV(this._field.list)+
+                                '</section>';
                             break;
                         case fts.bool:
-                            h.push('<span id="value">',
-                                uiInput.radio('value', '1', evoLang.yes, v!='0', 'value1'),
-                                uiInput.radio('value', '0', evoLang.no, v=='0', 'value0'),
-                                '</span>');
+                            h+='<span id="value">'+
+                                uiInput.radio('value', '1', evoLang.yes, v!='0', 'value1')+
+                                uiInput.radio('value', '0', evoLang.no, v=='0', 'value0')+
+                                '</span>';
                             break;
                         case fts.date:
                         case fts.datetime:
@@ -408,18 +407,18 @@ return Backbone.View.extend({
                         case fts.dec:
                         case fts.money:
                             var iType=(fType==fts.date)?'text':fType;
-                            h.push('<input id="value" type="',iType,'" class="form-control"/>');
+                            h+='<input id="value" type="'+iType+'" class="form-control"/>';
                             if(opBetween){
-                                h.push('<span class="as-Txt">',evoLang.opAnd,' </span>',
-                                    '<input id="value2" type="',iType,'" class="form-control"/>');
+                                h+='<span class="as-Txt">'+evoLang.opAnd+' </span>'+
+                                    '<input id="value2" type="'+iType+'" class="form-control"/>';
                             }
                             addOK=false;
                             break;
                         default:
-                            h.push('<input id="value" type="text" class="form-control"/>');
+                            h+='<input id="value" type="text" class="form-control"/>';
                             addOK=false;
                     }
-                    editor.append(h.join(''));
+                    editor.append(h);
                     if(fType==fts.date){// TODO add datepicker widget to build and uncomment this
                         editor.find('#value,#value2').datepicker({dateFormat:this.dateFormat});
                     }
@@ -534,26 +533,27 @@ return Backbone.View.extend({
         return filter;
     },
 
-    _hiddenValue: function(h, filter, idx){
+    _hiddenValue: function(filter, idx){
         var fHidden=uiInput.hidden,
-            v2=filter.value.value2;
-        h.push(fHidden('fld-'+idx, filter.field.value),
-            fHidden('op-'+idx, filter.operator.value),
-            fHidden('val-'+idx, filter.value.value));
+            v2=filter.value.value2,
+            h=fHidden('fld-'+idx, filter.field.value)+
+                fHidden('op-'+idx, filter.operator.value)+
+                fHidden('val-'+idx, filter.value.value);
         if(v2){
-            h.push(fHidden('val2-'+idx, v2));
+            h+=fHidden('val2-'+idx, v2);
         }
+        return h;
     },
 
     _setHiddenValues: function(){
         var vs=this.val(),
             iMax=vs.length,
-            h=[uiInput.hidden('elem', iMax)];
+            h=uiInput.hidden('elem', iMax);
         for(var i=0;i<iMax;i++){
-            this._hiddenValue(h, vs[i], i+1);
+            h+=this._hiddenValue(vs[i], i+1);
         }
         //h.push('&label=',encodeURIComponent(this.valText()));
-        this._hValues.html(h.join(''));
+        this._hValues.html(h);
     },
 
     _triggerChange: function(){

@@ -46,14 +46,14 @@ return {
 
     fieldTypes: fts,
 
-    fieldOneEdit: {// h, f, fid, fv, iconsPath
-        field: function (h, f, fType, fid, fv) {
-            h.push(uiInput[fType](fid, fv, f, null));
+    fieldOneEdit: {// f, fid, fv, iconsPath
+        field: function (f, fType, fid, fv) {
+            return uiInput[fType](fid, fv, f, null);
         },
-        text: function (h, f, fid, fv) {
-            h.push(uiInput.text(fid, fv, f, null));
+        text: function (f, fid, fv) {
+            return uiInput.text(fid, fv, f, null);
         },
-        textmultiline: function (h, f, fid, fv) {
+        textmultiline: function (f, fid, fv) {
             // fv = _.escape(fv);
             if (f.height === null) {
                 f.height = 5;
@@ -63,69 +63,71 @@ return {
                     f.height = 5;
                 }
             }
-            h.push(uiInput.textM(fid, fv, f.maxlength, f.height));
+            return uiInput.textM(fid, fv, f.maxlength, f.height);
         },
-        html: function (h, f, fid, fv) {
+        html: function (f, fid, fv) {
             // TODO
-            this.textmultiline(h, f, fid, fv);
+            this.textmultiline(f, fid, fv);
         },
-        boolean: function (h, f, fid, fv) {
-            h.push(uiInput.checkbox(fid, fv));
+        boolean: function (f, fid, fv) {
+            return uiInput.checkbox(fid, fv);
         },
-        integer: function (h, f, fid, fv) {
-            h.push(uiInput.textInt(fid, fv, f.max, f.min));
+        integer: function (f, fid, fv) {
+            return uiInput.textInt(fid, fv, f.max, f.min);
         },
-        decimal: function (h, f, fid, fv) {
+        decimal: function (f, fid, fv) {
             //todo
-            h.push(uiInput.textInt(fid, fv, f.max, f.min));
+            return uiInput.textInt(fid, fv, f.max, f.min);
         },
-        money: function (h, f, fid, fv) {
-            h.push('<div class="input-group">', uiInput.typeFlag('$'),
-                uiInput.textInt(fid, fv), '</div>');
+        money: function (f, fid, fv) {
+            return '<div class="input-group">'+uiInput.typeFlag('$')+
+                uiInput.textInt(fid, fv), '</div>';
         },
-        date: function (h, f, fid, fv) {
-            h.push(uiInput.date(fid, fv));
+        date: function (f, fid, fv) {
+            return uiInput.date(fid, fv);
         },
-        datetime: function (h, f, fid, fv) {
-            h.push(uiInput.dateTime(fid, fv));
+        datetime: function (f, fid, fv) {
+            return uiInput.dateTime(fid, fv);
         },
-        time: function (h, f, fid, fv) {
-            h.push(uiInput.time(fid, fv));
+        time: function (f, fid, fv) {
+            return uiInput.time(fid, fv);
         },
-        lov: function (h, f, fid, fv) {
-            h.push(uiInput.select(fid, fv, '', true, f.list));
+        lov: function (f, fid, fv) {
+            return uiInput.select(fid, fv, '', true, f.list);
         },
-        list: function (h, f, fid, fv) { // fv is an array. will use select2
-            h.push('<div id="'+fid+'" class="w-100 form-control"></div>');
+        list: function (f, fid, fv) { // fv is an array. will use select2
+            return '<div id="'+fid+'" class="w-100 form-control"></div>';
         },
-        email: function (h, f, fid, fv) {
-            h.push('<div class="input-group">'+uiInput.typeFlag(i18n.sgn_email)+
+        email: function (f, fid, fv) {
+            return '<div class="input-group">'+uiInput.typeFlag(i18n.sgn_email)+
                 uiInput.text(fid, fv, f)+
-                '</div>');
+                '</div>';
         },
-        url: function (h, f, fid, fv) {
-            h.push(uiInput.text(fid, fv, f));
+        url: function (f, fid, fv) {
+            return uiInput.text(fid, fv, f);
             //fv!==''?EvoUI.link(fid,'',fv):''
         },
-        //doc: function(h, f, fid, fv, iconsPath){
+        //doc: function(f, fid, fv, iconsPath){
         //},
-        image: function(h, f, fid, fv, iconsPath){
+        image: function(f, fid, fv, iconsPath){
+            var h='';
             if(fv!==''){
-                h.push('<img src="'+((fv.substr(0, 2)==='..')?fv:iconsPath + fv)+'" class="img-thumbnail">');
+                h+='<img src="'+((fv.substr(0, 2)==='..')?fv:iconsPath + fv)+'" class="img-thumbnail">';
             }else{
-                h.push('<p class="">'+i18n.nopix+'</p>');
+                h+='<p class="">'+i18n.nopix+'</p>';
             }
-            h.push(uiInput.text(fid, fv, f, null));
+            h+=uiInput.text(fid, fv, f, null);
+            return h;
         },
-        color: function(h, f, fid, fv){
-            //h.push('<div id="',fid, '" class="form-control">',fv,'</div>');
-            h.push(uiInput.color(fid, fv));
+        color: function(f, fid, fv){
+            //return '<div id="',fid, '" class="form-control">',fv,'</div>');
+            return uiInput.color(fid, fv);
         },
-        hidden: function(h, f, fid, fv){
-            h.push(uiInput.hidden(fid, fv));
+        hidden: function(f, fid, fv){
+            return uiInput.hidden(fid, fv);
         },
-        formula: function(h, f, fid, fv){
-            h.push('<div class="evol-ellipsis">'+uiInput.text(fid, fv, f, null)+'</div>');
+        formula: function(f, fid, fv){
+            return '<div class="evol-ellipsis">'+uiInput.text(fid, fv, f, null)+'</div>';
         }
     },
 
@@ -490,9 +492,7 @@ return {
             }
             h+='&nbsp;</div>';
         }else{
-            var h2=[];
-            Evol.Dico.fieldOneEdit[fld.type](h2, fld, fid, fv, iconsPath);
-            h+=h2.join('');
+            h+=Evol.Dico.fieldOneEdit[fld.type](fld, fid, fv, iconsPath);
         }
         return h;
     },
