@@ -27,101 +27,83 @@
 <div class="evo-header">
     <div class="evo-logo"><a href="index.html"><span>evol</span>utility<span>.js</span></a></div>
     <ul class="evo-head-links">
-        <li><a href="demo/index.html" class="sel">demos</a></li>
-        <li class="evo-link2">
-            <ul class="evo-head-links2">
-                <li><a href="demo/index.html#todo" data-id="todo">todo</a></li>
-                <li><a href="demo/index.html#contact" data-id="contact">addressbook</a></li>
-                <li><a href="demo/index.html#winecellar" data-id="winecellar">wine cellar</a></li>
-                <li><a href="demo/index.html#comics/cards" data-id="comics">graphic novels</a></li>
-            </ul>
-        </li>
-        <li><a href="doc/index.html" class="sel">doc</a></li>
-        <li class="evo-link2">
-            <ul class="evo-head-links2">
-                <li><a href="doc/views.html">views</a></li>
-                <li><a href="doc/ui-model.html">ui-model</a></li>
-                <li><a href="doc/controller.html">controller</a></li>
-            </ul>
-        </li>
+        <li><a href="demo/index.html">demos</a></li>
+        <li><a href="doc/index.html">doc</a></li>
         <li class="spaced"><a href="https://github.com/evoluteur/evolutility" target="_new">GitHub</a></li>
     </ul>
     <div class="clearfix"></div>
 </div>
 
-<div class="evo-content">
-<h1 class="title1" style="color: navy">Evolutility:<span style="color:#0099cc;"> Views which adapt to your data by changing form, volume and structure.</span></h1>
-<br>
+<div class="evo-content page-index">
 
-<h4 class="mt20">
-    Evolutility is currently v0.4 and a work in progress on <a href="https://github.com/evoluteur/evolutility" target="ghe">GitHub</a>.
-</h4>
+<section id="s-splash">
+    <h1 class="titleindex">Evolutility</h1>
+    <h1 style="color:#E1F5FE;">Views which change form, volume and structure to adapt to your data.</h1>
+</section>
+
+<section id="s-intro">
     <p>Evolutility provides a set of generic Views ("V" as in "MVC") to
         browse, edit, filter, export and chart
-        data of different volumes and structures.
+        data of different structures and volumes.
     </p>
 
-    <p></p>
-    <p>With Evolutility, views are not hand-coded  with Javascript, templates and CSS but configured with ui-models (metadata about the UI).</p>
+    <p>With Evolutility, views are not defined in Javascript, templates and CSS but configured with ui-models (metadata about the UI).</p>
 
+    <p>
+        Evolutility is currently v0.4 and a work in progress on <a href="https://github.com/evoluteur/evolutility" target="ghe">GitHub</a>.
+    </p>
     <p>&nbsp;</p>
-    <h4 class="mt20">A few examples</h4>
-
-    <p>See how Evolutility views adapt to different data structures to behave like a todo list, and addressbook, a wine cellar or a list of graphic novels... 
-    </p>
-
+    <h3 class="mt20">Sample views</h3>
 
     <div id="evol-views-params" >
-
-
-        <div>UI Model:
-            <select id="evolModel" class="form-control" style="width:auto">
-                <option value="todo">To Do</option>
-                <option value="contact">AddressBook</option>
-                <option value="winecellar">Wine Cellar</option>
-                <option value="comics">Graphic Novels</option>
-            </select>
-        </div>
-        <div style="margin-left:10px;">View:
-            <select id="evolView" class="form-control" style="width:auto">
-                <optgroup label="One = model">
-                    <option value="browse">Browse</option>
-                    <option value="edit" selected="selected">Edit</option>
-                    <option value="mini">Mini</option>
-                    <option value="json">JSON</option>
-                </optgroup>
+ 
+        <div>You can see below the 
+            <select id="evolView" class="form-control" style="width:auto"> 
                 <optgroup label="Many = collection">
-                    <option value="list">List</option>
+                    <option value="list" selected>List</option>
                     <option value="cards">Cards</option>
                     <option value="bubbles">Bubbles</option>
                     <option value="charts">Charts</option>
+                </optgroup>
+                <optgroup label="One = model">
+                    <option value="browse">Browse</option>
+                    <option value="edit">Edit</option>
+                    <option value="mini">Mini</option>
+                    <option value="json">JSON</option>
                 </optgroup>
                 <optgroup label="Action">
                     <option value="export">Export</option>
                     <option value="filter">Filter</option>
                 </optgroup>
             </select>
+        view for a 
+            <select id="evolModel" class="form-control" style="width:auto"> 
+                <option value="todo">To Do</option>
+                <option value="contact">AddressBook</option>
+                <option value="winecellar">Wine Cellar</option>
+                <option value="comics">Graphic Novels</option>
+            </select>
+            app.
         </div>
 
-        <p class="clearfix"></p>
-
         <div id="viewInfo"></div>
-
-        <p class="clearfix"></p>
+        <div style="clear:both;"></div>
     </div>
 
 
-<div id="evol1"></div>
+    <div id="evol1"></div>
 
-    <p>&nbsp;</p>
+    <p><br>If you are wondering, No, I didn't write 40 templates (10 views for 4 entities = 40 views) for the demo above. I only wrote 4 ui-models, Evolutility is doing the rest.</p>
 
+</section>
 
+<section>
+    <h3 class="mt20">From a set of views to a single page app</h3>
 
-    <h4 class="mt20">From a set of views to a single page app</h4>
+    <p>Together the views "browse", "edit", "list" and "filter" provide CRUD (Create, Read, Update, Delete) functionality. 
+    The other views "cards", "bubbles", "charts" and "mini" make the app more user-friendly and powerful.</p>
 
-    <p>Evolutility also provides a toolbar to make all its views act together as a single page app (SPA).</p>
-
-    <p>Demo apps:
+    <p>Demo applications:
     <div class="demo-links">
         <div><a href="demo/index.html#todo" data-id="todo"><img src="demo/pix/todo.gif" class="evo-icon-16">To Do</a></div>
         <div><a href="demo/index.html#contact" data-id="contact"><img src="demo/pix/contact.gif" class="evo-icon-16">AddressBook</a></div>
@@ -130,13 +112,13 @@
     </div>
     </p>
 
-    <p>&nbsp;</p>
+</section>
+<section>
 
+    <h3 class="mt20">UI model to configure the views</h3>
 
-    <h4 class="mt20">UI model to configure the views</h4>
-
-<p>Views are configured with a UI-model. It is the single source of truth for all UI elements in all views. 
-It contains a DRY (Don't Repeat Yourself) description of the UI and its mapping to the model.
+<p>Views are configured with a UI-model. Each UI-model is the single source of truth for all UI elements in all views of a specific entity. 
+It contains a DRY (Don't Repeat Yourself) description of the UI elements on screen and how they map to the model.
 From a single UI-model, many views of an entity can be generated at run-time to browse, edit, filter, export, chart the data (for CRUD and more).</p>
 
 <p>The "vocabulary" of UI-models is abstracted from the DOM and uses words like 
@@ -156,15 +138,22 @@ From a single UI-model, many views of an entity can be generated at run-time to 
     <div style="display:none;" id="uimodel"></div>
 
 
-    <p>&nbsp;</p>
-    <h4 class="mt20">Documentation</h4>
+</section>
+<section>
+
+    <h3 class="mt20">Documentation</h3>
     <p>Learn more about <a href="doc/ui-model.html">Evolutility UI-models</a> and <a href="doc/views.html">generic Views</a>.</p>
 
 
-    <p>&nbsp;</p>
-    <h4 class="mt20">Download & Code</h4>
+
+</section>
+<section>
+
+    <h3 class="mt20">Download & Code</h3>
     <p>Evolutility.js source code is available at <a href="https://github.com/evoluteur/evolutility" target="gh">GitHub</a>
        under the GNU AGPLv3 license.</p>
+
+</section> 
 
     <div class="clearfix"></div>
     <div class="footer">&#169; 2015 Olivier Giulieri</div>
@@ -201,7 +190,6 @@ From a single UI-model, many views of an entity can be generated at run-time to 
 
         var vwInfo = ViewDescriptions[viewName];
         $('#viewInfo').html(vwInfo.desc);
-
     }
 
     $(document).ready(function(){

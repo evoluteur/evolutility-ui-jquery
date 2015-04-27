@@ -251,6 +251,7 @@ Javascript, HTML5, CSS3,
 [Backbone] (http://backbonejs.org),
 [Underscore] (http://underscorejs.org/),
 [jQuery] (http://jquery.com),
+[D3.js] (http://d3js.org),
 [Bootstrap] (http://getbootstrap.com/),
 [Bootstrap-datepicker] (http://eternicode.github.io/bootstrap-datepicker/),
 [Select2] (http://ivaynberg.github.io/select2/).
