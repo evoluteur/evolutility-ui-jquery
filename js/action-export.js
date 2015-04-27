@@ -368,7 +368,7 @@ return Backbone.View.extend({
                                     if(_.isUndefined(fValue) || fValue===''|| (_.isArray(fValue) && fValue.length===0)){
                                         h.push('NULL');
                                     }else{
-                                        h.push('"'+eDico.HTMLField4Many(f, fValue, Evol.hashLov, '').replace(/"/g, '""')+'"');
+                                        h.push('"'+eDico.fieldHTML_ReadOny(f, fValue, Evol.hashLov, '').replace(/"/g, '""')+'"');
                                     }
                                     break;
                                 default:

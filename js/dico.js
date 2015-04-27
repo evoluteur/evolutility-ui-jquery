@@ -400,7 +400,7 @@ return {
         return models;
     },
 
-    HTMLField4Many: function(f, v, hashLov, iconsPath){
+    fieldHTML_ReadOny: function(f, v, hashLov, iconsPath){
         switch(f.type){
             case fts.bool:
                 if (v==='true' || v=='1') {
@@ -459,7 +459,7 @@ return {
         return '';
     },
 
-    HTMLField4One: function(fld, fid, fv, mode, iconsPath, skipLabel){
+    fieldHTML: function(fld, fid, fv, mode, iconsPath, skipLabel){
         var h='';
         // --- field label ---
         if(!skipLabel){
@@ -488,7 +488,7 @@ return {
                     h+=eUI.link(fid, fv, fv, fid);
                     break;
                 default:
-                    h+=this.HTMLField4Many(fld, fv, {}, iconsPath);
+                    h+=this.fieldHTML_ReadOny(fld, fv, {}, iconsPath);
             }
             h+='&nbsp;</div>';
         }else{

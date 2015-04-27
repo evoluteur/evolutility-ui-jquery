@@ -224,13 +224,13 @@ return Backbone.View.extend({
                         case fts.bool:
                         case fts.url:
                         case fts.email:
-                            $f.html(eDico.HTMLField4Many(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
+                            $f.html(eDico.fieldHTML_ReadOny(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                             break;*/
                         case fts.formula:
                             $f.html(f.formula(model));
                             break;
                         default:
-                            $f.text(eDico.HTMLField4Many(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
+                            $f.text(eDico.fieldHTML_ReadOny(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                     }
                 }else{
                     switch(f.type) {
@@ -670,12 +670,12 @@ return Backbone.View.extend({
                             if(row[f.id]){
                                 //form-control
                                 if(f.type===fts.bool || f.type===fts.lov){
-                                    h.push(eDico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath));
+                                    h.push(eDico.fieldHTML_ReadOny(f, row[f.id], Evol.hashLov, iconsPath));
                                 }else{
-                                    h.push(_.escape(eDico.HTMLField4Many(f, row[f.id], Evol.hashLov, iconsPath)));
+                                    h.push(_.escape(eDico.fieldHTML_ReadOny(f, row[f.id], Evol.hashLov, iconsPath)));
                                 }
                             }else{
-                                h.push(_.escape(eDico.HTMLField4Many(f, '', Evol.hashLov, iconsPath)));
+                                h.push(_.escape(eDico.fieldHTML_ReadOny(f, '', Evol.hashLov, iconsPath)));
                             }
                             h.push('</td>');
                         });
@@ -704,7 +704,7 @@ return Backbone.View.extend({
                 fv='';
             }
             h.push('<td>'+
-                eDico.HTMLField4One(f, f.id, fv, 'edit-details', iconPath, true)+
+                eDico.fieldHTML(f, f.id, fv, 'edit-details', iconPath, true)+
                 '</td>');
         });
     },
@@ -720,7 +720,7 @@ return Backbone.View.extend({
                 (this.model?f.formula(this.model):'')+
                 '</div>');
         }else{
-            h.push(eDico.HTMLField4One(f, this.fieldViewId(f.id), fv, mode, iconsPath, skipLabel));
+            h.push(eDico.fieldHTML(f, this.fieldViewId(f.id), fv, mode, iconsPath, skipLabel));
         }
         return this;
     },

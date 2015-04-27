@@ -14,17 +14,15 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
     viewName: 'cards',
 
     _render: function (models) {
-        var h = [],
-            pSize = this.pageSize || 50,
+        var pSize = this.pageSize || 50,
             pSummary = this.pageSummary(0, pSize, models.length);
 
-        h.push('<div class="evol-many-cards"><div class="evol-cards-body">');
-        this._HTMLbody(h, this.getFields(), pSize, this.uiModel.icon, 0, this.selectable);
-        h.push('</div>', Evol.UI.html.clearer+
+        this.$el.html('<div class="evol-many-cards"><div class="evol-cards-body">'+
+            this._HTMLbody(this.getFields(), pSize, this.uiModel.icon, 0, this.selectable)+
+            '</div>'+Evol.UI.html.clearer+
             this._HTMLpagination(0, pSize, models.length)+
             '<div class="evo-many-summary">'+pSummary+'</div>'+
             '</div>');
-        this.$el.html(h.join(''));
         return this;
     },
 

@@ -87,8 +87,9 @@ return Backbone.View.extend({
         return this.setTitle();
     },
 
-    _HTMLbody: function (h, fields, pSize, icon, pageIdx, selectable) {
-        var models = this.collection.models,
+    _HTMLbody: function (fields, pSize, icon, pageIdx, selectable) {
+        var h =[],
+            models = this.collection.models,
             model,
             r,
             rMin = (pageIdx > 0) ? pageIdx * pSize : 0,
@@ -102,6 +103,7 @@ return Backbone.View.extend({
                 this.HTMLItem(h, fields, model, ico, selectable, route);
             }
         }
+        return h.join('');
     },
 
     _render: function (models) {
@@ -116,7 +118,7 @@ return Backbone.View.extend({
                 (this.model?f.formula(this.model):'') +
                 '</div>';
         }else{
-            fv = eDico.HTMLField4Many(f, v, Evol.hashLov, this.iconsPath || '');
+            fv = eDico.fieldHTML_ReadOny(f, v, Evol.hashLov, this.iconsPath || '');
             if (f.type === 'list') {
                 return _.escape(fv);
             }
@@ -192,8 +194,7 @@ return Backbone.View.extend({
             collecLength = this.collection.length,
             pSummary = this.pageSummary(pageIdx, pSize, collecLength);
 
-        this._HTMLbody(h, fields, pSize, this.uiModel.icon, pageIdx, this.selectable);
-        this._$body().html(h.join(''));
+        this._$body().html(this._HTMLbody(fields, pSize, this.uiModel.icon, pageIdx, this.selectable));
         this.$('.evo-pagination').html(this._HTMLpaginationBody(pageIdx, pSize, collecLength));
         this.$('.evo-many-summary').html(pSummary);
         this.pageIndex = pageIdx;

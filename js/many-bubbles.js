@@ -70,7 +70,7 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
             fs2 = Evol.Dico.getFields(this.uiModel, Evol.Dico.fieldChartable),
             h = '<div class="evol-many-bubbles panel panel-info"><div class="evol-bubbles-body">'+
                 '<div class="d3-tooltip" style="opacity:0;"></div>';
-        //this._HTMLbody(h, this.getFields(), pSize, this.uiModel.icon, 0, this.selectable);
+        //h+=this._HTMLbody(this.getFields(), pSize, this.uiModel.icon, 0, this.selectable);
 
         h+='<div class="bubbles-opts">';
         // --- Group ---
@@ -103,17 +103,8 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
         return this;
     },
 
-    _HTMLbody: function (h, fields, pSize, icon, pageIdx, selectable) {/*
-        var models = this.collection.models,
-            model,
-            r,
-            rMin = (pageIdx > 0) ? pageIdx * pSize : 0,
-            rMax = _.min([models.length, rMin + pSize]),
-            ico = icon ? (this.iconsPath || '') + icon : null;
+    _HTMLbody: function(){
 
-
-        h.push('<div id="svg-cluster"></div>');
-        */
     },
 
     _$body: function(){

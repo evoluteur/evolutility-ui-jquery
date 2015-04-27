@@ -18,27 +18,27 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
     },
 
     _render: function (models) {
-        var h = [],
+        var h = '',
             that = this,
             fields = this.getFields(),
             pSize = this.pageSize || 50,
             link = (this.links!==false);
 
-        h.push('<div class="evol-many-list">'+
-            '<table class="table table-bordered'+(link?' table-hover':'')+'"><thead><tr>');
+        h+='<div class="evol-many-list">'+
+            '<table class="table table-bordered'+(link?' table-hover':'')+'"><thead><tr>';
         if(this.selectable){
-            h.push('<th class="list-td-sel">'+this._HTMLCheckbox('cbxAll')+'</th>');
+            h+='<th class="list-td-sel">'+this._HTMLCheckbox('cbxAll')+'</th>';
         }
         _.each(fields, function(field){
-            that._HTMLlistHeader(h, field);
+            h+=that._HTMLlistHeader(field);
         });
-        h.push('</tr></thead><tbody>');
-        this._HTMLbody(h, fields, pSize, this.uiModel.icon, 0, this.selectable);
-        h.push('</tbody></table>'+
+        h+='</tr></thead><tbody>'+
+            this._HTMLbody(fields, pSize, this.uiModel.icon, 0, this.selectable)+
+            '</tbody></table>'+
             this._HTMLpagination(0, pSize, models.length)+
             '<div class="evo-many-summary">'+this.pageSummary(this.pageIndex, pSize, models.length)+'</div>'+
-            '</div>');
-        this.$el.html(h.join(''));
+            '</div>';
+        this.$el.html(h);
     },
 
     _$body: function(){
@@ -88,16 +88,17 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         h.push('</tr>');
     },
 
-    _HTMLlistHeader: function (h, f) {
-        h.push('<th><span id="'+f.id+'-lbl">'+
-            (f.labellist || f.labelmany || f.label));
+    _HTMLlistHeader: function (f) {
+        var h='<th><span id="'+f.id+'-lbl">'+
+            (f.labellist || f.labelmany || f.label);
         if(f.sortable!==false){
-            h.push('<span class="evol-sort-icons" data-fid="'+f.id+'">'+
+            h+='<span class="evol-sort-icons" data-fid="'+f.id+'">'+
                 Evol.UI.icon('chevron-up')+//'sort-by-alphabet'
                 Evol.UI.icon('chevron-down')+//'sort-by-alphabet-alt'
-                '</span>');
+                '</span>';
         }
-        h.push('</span></th>');
+        h+='</span></th>';
+        return h;
     }
 
 });

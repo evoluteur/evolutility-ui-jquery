@@ -24,7 +24,7 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
         if(!_.isUndefined(model) && model!==null){
             var that=this,
                 fts = Evol.Dico.fieldTypes,
-                HTMLField4Many = Evol.Dico.HTMLField4Many,
+                fieldHTML_ReadOny = Evol.Dico.fieldHTML_ReadOny,
                 $f, fv,
                 prefix='#'+ that.prefix + '-',
                 subCollecs=this.getSubCollecs(),
@@ -43,7 +43,7 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
                         case fts.email:
                         case fts.url:
                         case fts.html:
-                            $f.html(HTMLField4Many(f, fv, Evol.hashLov, iconsPath));
+                            $f.html(fieldHTML_ReadOny(f, fv, Evol.hashLov, iconsPath));
                             break;
                         case fts.formula:
                             $f.html(f.formula(model));
@@ -59,7 +59,7 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
                             }
                             break;
                         default:
-                            $f.text(HTMLField4Many(f, fv, Evol.hashLov, iconsPath) || ' ');
+                            $f.text(fieldHTML_ReadOny(f, fv, Evol.hashLov, iconsPath) || ' ');
                     }
                 }
             });
