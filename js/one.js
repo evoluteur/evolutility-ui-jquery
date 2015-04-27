@@ -507,7 +507,7 @@ return Backbone.View.extend({
 
     _renderButtons: function (h, mode) {
         h.push(eUI.html.clearer+
-            '<div class="evol-buttons panel panel-info">'+
+            '<div class="evol-buttons panel '+this.options.style+'">'+
             eUI.button('cancel', i18n.bCancel, 'btn-default')+
             eUI.button('save', i18n.bSave, 'btn-primary'));
         if (this.model && this.model.isNew() && this.button_addAnother && mode!=='json') {
@@ -521,8 +521,7 @@ return Backbone.View.extend({
         var that=this,
             iTab = -1,
             iPanel = -1,
-            elems = this.uiModel.elements,
-            iMax1 = elems.length - 1;
+            elems = this.uiModel.elements;
 
         h.push('<div class="evo-one-'+mode+'">');
         _.each(elems, function(p, idx){
@@ -533,15 +532,12 @@ return Backbone.View.extend({
                 }
                 if (iTab < 0) {
                     h.push(eUI.html.clearer);
-                    that._renderTabs(h, elems);
+                    that._renderTabTitles(h, elems);
                     h.push('<div class="tab-content">');
                 }
                 iTab++;
-                h.push('<div id="evol-tab-'+idx+'" class="tab-pane'+(iTab === 0 ? ' active">' : '">'));
+                h.push('<div id="evol-tab-'+idx+'" class="tab-pane'+(iTab === 0 ? ' active">' : '" style="display:none;">'));
                 that._renderTab(h, p, mode);
-                if (iTab == iMax1) {
-                    h.push('</div>');
-                }
             }else{
                 if (iPanel < 0) {
                     h.push('<div class="evol-pnls">');
@@ -557,6 +553,9 @@ return Backbone.View.extend({
                 }
             }
         });
+        if (iTab > 0) {
+            h.push('</div>');
+        }
         if (iPanel > 0) {
             h.push('</div>');
         }
@@ -564,7 +563,7 @@ return Backbone.View.extend({
         this._renderButtons(h, mode);
     },
 
-    _renderTabs: function (h, tabs) {
+    _renderTabTitles: function (h, tabs) {
         var isFirst = true;
         h.push('<ul class="nav nav-tabs evol-tabs">');
         _.each(tabs, function (tab, idx) {
