@@ -67,7 +67,7 @@ return {
         },
         html: function (f, fid, fv) {
             // TODO
-            this.textmultiline(f, fid, fv);
+            return this.textmultiline(f, fid, fv);
         },
         boolean: function (f, fid, fv) {
             return uiInput.checkbox(fid, fv);
@@ -81,7 +81,7 @@ return {
         },
         money: function (f, fid, fv) {
             return '<div class="input-group">'+uiInput.typeFlag('$')+
-                uiInput.textInt(fid, fv), '</div>';
+                uiInput.textInt(fid, fv)+'</div>';
         },
         date: function (f, fid, fv) {
             return uiInput.date(fid, fv);
