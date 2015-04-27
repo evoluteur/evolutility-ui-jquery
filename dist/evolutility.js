@@ -1,4 +1,4 @@
-/*   evolutility v0.4   */
+/*   evolutility v0.5   */
 /*   (c) 2015 Olivier Giulieri   */
 /*   https://github.com/evoluteur/evolutility   */
 /*! ***************************************************************************
@@ -13,6 +13,7 @@
 var Evol = Evol || {};
 Evol.hashLov = {};
 Evol.ViewAction = {};
+Evol.Version = '0.5';
 
 Evol.UI = {
 

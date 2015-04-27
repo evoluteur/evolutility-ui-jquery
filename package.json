@@ -1,6 +1,6 @@
 {
   "name": "evolutility",
-  "version": "0.4",
+  "version": "0.5",
   "copyright": "(c) 2015 Olivier Giulieri",
   "license": "AGPL-3.0",
   "target": "dist",
@@ -27,14 +27,17 @@
     "backbone": "1.1.2",
     "backbone.localStorage": "v1.1.7",
     "underscore": "1.6.0",
+    "d3": "3.5.5",
     "bootstrap": "3.1.1"
   },
     "keywords": [
+        "MDA",
         "MDDA",
         "metadata",
         "form",
         "CRUD",
         "UI",
+        "D3",
         "Backbone"
     ]
 }

@@ -10,6 +10,7 @@
 var Evol = Evol || {};
 Evol.hashLov = {};
 Evol.ViewAction = {};
+Evol.Version = '0.5';
 
 Evol.UI = {
 
