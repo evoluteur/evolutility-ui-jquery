@@ -58,18 +58,18 @@
     <div id="evol-views-params" >
  
         <div>You can see below the 
-            <select id="evolView" class="form-control" style="width:auto"> 
-                <optgroup label="Many = collection">
-                    <option value="list" selected>List</option>
-                    <option value="cards">Cards</option>
-                    <option value="bubbles">Bubbles</option>
-                    <option value="charts">Charts</option>
-                </optgroup>
+            <select id="evolView" class="form-control" style="width:auto">
                 <optgroup label="One = model">
-                    <option value="browse">Browse</option>
+                    <option value="browse" selected>Browse</option>
                     <option value="edit">Edit</option>
                     <option value="mini">Mini</option>
                     <option value="json">JSON</option>
+                </optgroup>
+                <optgroup label="Many = collection">
+                    <option value="list">List</option>
+                    <option value="cards">Cards</option>
+                    <option value="bubbles">Bubbles</option>
+                    <option value="charts">Charts</option>
                 </optgroup>
                 <optgroup label="Action">
                     <option value="export">Export</option>
@@ -77,7 +77,7 @@
                 </optgroup>
             </select>
         view for a 
-            <select id="evolModel" class="form-control" style="width:auto"> 
+            <select id="evolModel" class="form-control" style="width:auto">
                 <option value="todo">To Do</option>
                 <option value="contact">AddressBook</option>
                 <option value="winecellar">Wine Cellar</option>

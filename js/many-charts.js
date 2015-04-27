@@ -32,7 +32,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
         this.entityName=Evol.UI.capitalize(this.uiModel.entities);
         if(this.collection && this.collection.length>0){
             this.$el.html('<div class="evol-many-'+this.viewName+'">'+
-                this._HTMLcharts(this.style, this.sizes)+
+                this._HTMLcharts(this.style || 'panel-info', this.sizes)+
                 '</div>');
         }else{
             this.$el.html(Evol.UI.HTMLMsg(Evol.i18n.nodata, '', 'info'));
