@@ -929,6 +929,39 @@ return Backbone.View.extend({
         this.setRoute(ui.id, false);
     },
 
+    change_tab: function(evt, ui){
+        if(ui){
+            this._tabId=ui.id;
+        }
+    },
+
+    change_filter: function(evt){
+        if(evt.namespace!=='filter'){
+            return;
+        }
+        var fvs=this._filters.val(),
+            collec;
+        if(fvs.length){
+            var models=Evol.Dico.filterModels(this.model.collection.models, fvs);
+            if(this.collectionClass){
+                collec=new this.collectionClass(models);
+            }else{
+                collec=new Backbone.Collection(models);
+            }
+            this._filteredCollection=collec;
+            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.entities);
+        }else{
+            collec=this.collection;
+            this._filteredCollection=null;
+            this.setStatus(collec.length+' '+this.uiModel.entities);
+        }
+        this._flagFilterIcon(fvs.length);
+        this.pageIndex=0;
+        this.curView.setCollection(collec);
+        this.updateNav();
+        this._trigger('filter.change');
+    }/*
+    
     click_search: function(evt){
         var that=this,
             searchString=$('.evo-search>input').val().toLowerCase(), 
@@ -973,39 +1006,6 @@ return Backbone.View.extend({
         }
     },
 
-    change_tab: function(evt, ui){
-        if(ui){
-            this._tabId=ui.id;
-        }
-    },
-
-    change_filter: function(evt){
-        if(evt.namespace!=='filter'){
-            return;
-        }
-        var fvs=this._filters.val(),
-            collec;
-        if(fvs.length){
-            var models=Evol.Dico.filterModels(this.model.collection.models, fvs);
-            if(this.collectionClass){
-                collec=new this.collectionClass(models);
-            }else{
-                collec=new Backbone.Collection(models);
-            }
-            this._filteredCollection=collec;
-            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.entities);
-        }else{
-            collec=this.collection;
-            this._filteredCollection=null;
-            this.setStatus(collec.length+' '+this.uiModel.entities);
-        }
-        this._flagFilterIcon(fvs.length);
-        this.pageIndex=0;
-        this.curView.setCollection(collec);
-        this.updateNav();
-        this._trigger('filter.change');
-    }
-    /*
     click_selection: function(evt, ui){
         var status=this.$('.evo-toolbar .evo-tb-status'),
             len=this.$('.list-sel:checked').not('[data-id="cbxAll"]').length,
