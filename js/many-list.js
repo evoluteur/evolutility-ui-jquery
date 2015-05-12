@@ -65,7 +65,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
             if(idx===0){
-                v = Evol.Dico.HTMLFieldLink('fv-'+f.id, f, v, icon, !link, route?route+model.id:null);
+                v = Evol.Dico.HTMLFieldLink(null, f, v, icon, !link, route?route+model.id:null);
                 // Item badge
                 if(bf){
                     v+='<span class="badge badge-list">';

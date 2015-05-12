@@ -400,7 +400,7 @@ return {
         return models;
     },
 
-    fieldHTML_ReadOny: function(f, v, hashLov, iconsPath){
+    fieldHTML_ReadOny: function(f, v, hashLov, iconsPath, wId){
         switch(f.type){
             case fts.bool:
                 if (v==='true' || v=='1') {
@@ -448,7 +448,7 @@ return {
                 }
                 break;
             case fts.email:
-                return eUI.linkEmail(f.id, v);
+                return eUI.linkEmail(wId?f.id:null, v);
             case fts.url:
                 return eUI.link(f.id, v, v, f.id);
             //case fts.color:
@@ -512,7 +512,11 @@ return {
     HTMLFieldLink: function (id, fld, value, icon, noLink, route) {
         var h='';
         if(!noLink){
-            h+='<a href="'+(route?route:'javascript:void(0);')+'" id="'+id+'" class="evol-nav-id">';
+            h+='<a href="'+(route?route:'javascript:void(0);');
+            if(id){
+                h+='" id="'+id;
+            }
+            h+='" class="evol-nav-id">';
         }
         if(icon){
             h+='<img class="evol-many-icon" src="'+icon+'">';

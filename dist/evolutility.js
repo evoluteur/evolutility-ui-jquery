@@ -1111,7 +1111,7 @@ return {
         return models;
     },
 
-    fieldHTML_ReadOny: function(f, v, hashLov, iconsPath){
+    fieldHTML_ReadOny: function(f, v, hashLov, iconsPath, wId){
         switch(f.type){
             case fts.bool:
                 if (v==='true' || v=='1') {
@@ -1159,7 +1159,7 @@ return {
                 }
                 break;
             case fts.email:
-                return eUI.linkEmail(f.id, v);
+                return eUI.linkEmail(wId?f.id:null, v);
             case fts.url:
                 return eUI.link(f.id, v, v, f.id);
             //case fts.color:
@@ -1223,7 +1223,11 @@ return {
     HTMLFieldLink: function (id, fld, value, icon, noLink, route) {
         var h='';
         if(!noLink){
-            h+='<a href="'+(route?route:'javascript:void(0);')+'" id="'+id+'" class="evol-nav-id">';
+            h+='<a href="'+(route?route:'javascript:void(0);');
+            if(id){
+                h+='" id="'+id;
+            }
+            h+='" class="evol-nav-id">';
         }
         if(icon){
             h+='<img class="evol-many-icon" src="'+icon+'">';
@@ -2190,7 +2194,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
                 // Item title
                 h.push('<h4>'+
                     (selectable?that._HTMLCheckbox(model.id):'')+
-                    Evol.Dico.HTMLFieldLink('fg-'+f.id, f, v, icon, !link, route?route+model.id:null)+
+                    Evol.Dico.HTMLFieldLink(null, f, v, icon, !link, route?route+model.id:null)+
                     '</h4></div>');
             }else{
                 h.push('<div '+ (f.type=='email'?'class="evol-ellipsis"':'') +'><label>'+
@@ -2436,7 +2440,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
             if(idx===0){
-                v = Evol.Dico.HTMLFieldLink('fv-'+f.id, f, v, icon, !link, route?route+model.id:null);
+                v = Evol.Dico.HTMLFieldLink(null, f, v, icon, !link, route?route+model.id:null);
                 // Item badge
                 if(bf){
                     v+='<span class="badge badge-list">';
@@ -2448,13 +2452,13 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
                     v+='</span>';
                 }
             }
+            var css=f.css || '';
             if(f.type===ft.textml){
-                h.push('<td class="evol-ellipsis">'+v+'</td>');
+                css+=' evol-ellipsis';
             }else if(Evol.Dico.isNumberType(f.type)){
-                h.push('<td class="evol-r-align">'+v+'</td>');
-            }else{
-                h.push('<td>'+v+'</td>');
+                css+=' evol-r-align';
             }
+            h.push('<td class="'+css+'">'+v+'</td>');
         });
         h.push('</tr>');
     },
