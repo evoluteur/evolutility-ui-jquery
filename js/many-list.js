@@ -77,13 +77,13 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
                     v+='</span>';
                 }
             }
+            var css=f.css || '';
             if(f.type===ft.textml){
-                h.push('<td class="evol-ellipsis">'+v+'</td>');
+                css+=' evol-ellipsis';
             }else if(Evol.Dico.isNumberType(f.type)){
-                h.push('<td class="evol-r-align">'+v+'</td>');
-            }else{
-                h.push('<td>'+v+'</td>');
+                css+=' evol-r-align';
             }
+            h.push('<td class="'+css+'">'+v+'</td>');
         });
         h.push('</tr>');
     },
