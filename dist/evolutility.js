@@ -1310,8 +1310,8 @@ return {
 
 }();
 ;
-// Original code from blog post http://www.delimited.io/blog/2013/12/19/force-bubble-charts-in-d3 by Steve Hall.
-// Modified for Evolutility
+// Original code and blog post by Steve Hall http://www.delimited.io/blog/2013/12/19/force-bubble-charts-in-d3
+// Modified for Evolutility by Olivier Giulieri http://evoluteur.github.io/evolutility/
 
 var Evol=Evol||{};
 
@@ -1342,8 +1342,8 @@ Bubbles.prototype._initialize = function(){
 Bubbles.prototype.fixData = function(data){
   return _.map(data, function(d){
     return d;
-  })
-}
+  });
+};
 
 Bubbles.prototype.setData = function(data){
   var that=this,
@@ -1500,7 +1500,7 @@ Bubbles.prototype.changeBubblesSize = function (sizeFieldId){
   if(sizeFieldId){
     var sizes = _.map(this.data, function(d){
       var v=d[sizeFieldId];
-      return (v==null || v==isNaN)?0:v;
+      return (v===null || v===isNaN)?0:v;
     });
     this.plotScale = d3.scale.log().domain([ _.min(sizes), _.max(sizes)]).range([10, 25]);
     cs.transition().duration(500)

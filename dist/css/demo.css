@@ -43,7 +43,7 @@
   color: #c6d9f0;
   text-decoration: none;
 }
-.evo-header a :hover {
+.evo-header a:hover {
   color: #c6d9f0;
 }
 @media only screen and (min-width: 900px) {
@@ -389,4 +389,12 @@ a {
 }
 [data-eid="test"] .evol-cards-body > div.panel {
   height: 182px !important;
+}
+.cBlue {
+  color: blue;
+}
+@media only screen and (max-width: 590px) {
+  .hideIfSmall {
+    display: none;
+  }
 }
