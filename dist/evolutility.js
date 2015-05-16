@@ -791,7 +791,7 @@ return {
             return uiInput.textInt(fid, fv, f.max, f.min);
         },
         money: function (f, fid, fv) {
-            return '<div class="input-group">'+uiInput.typeFlag('$')+
+            return '<div class="input-group evol-money">'+uiInput.typeFlag('$')+
                 uiInput.textInt(fid, fv)+'</div>';
         },
         date: function (f, fid, fv) {
@@ -840,6 +840,131 @@ return {
         formula: function(f, fid, fv){
             return '<div class="evol-ellipsis">'+uiInput.text(fid, fv, f, null)+'</div>';
         }
+    },
+
+    fieldHTML: function(fld, fid, fv, mode, iconsPath, skipLabel){
+        var h='';
+        // --- field label ---
+        if(!skipLabel){
+            h+=this.HTMLFieldLabel(fld, mode || 'edit');
+        }
+        // --- field value ---
+        if(fld.readonly || mode==='browse'){
+            h+='<div class="disabled evo-rdonly'+(fld.type===fts.email || fld.type===fts.url?' evol-ellipsis':'')+'" id="'+fid;
+            if(fld.type===fts.textml && fld.height>1){
+                h+='" style="height:'+fld.height+'em;overflow-y: auto;';
+            }
+            h+='">';
+            switch (fld.type) {
+                case fts.formula:
+                    // TODO: in one.js or here?
+                    h+='<div id="'+fid+'" class="form-control evol-ellipsis">'+fld.formula()+'</div>';
+                    break;
+                case fts.color: // TODO is the color switch necessary?
+                    //h+=uiInput.colorBox(fid, fv)+fv;
+                    h+='<div id="'+fid+'" class="form-control">'+fv+'</div>';
+                    break;
+                default:
+                    h+=this.fieldHTML_ReadOny(fld, fv, {}, iconsPath);
+            }
+            h+='&nbsp;</div>';
+        }else{
+            h+=Evol.Dico.fieldOneEdit[fld.type](fld, fid, fv, iconsPath);
+        }
+        return h;
+    },
+
+    fieldHTML_ReadOny: function(f, v, hashLov, iconsPath, wId){
+        switch(f.type){
+            case fts.bool:
+                if (v==='true' || v=='1') {
+                    return eUI.icon('ok');
+                }
+                break;
+            case fts.lov:
+                if (v !== '') {
+                    //if(f.icon && f.list & f.list[0].icon){
+                    //    return 'f.icon' + this._lovText(f,v);
+                    //}else{
+                    //return Evol.Dico.lovText(f, iconPath+v, hashLov);
+                    return Evol.Dico.lovText(f, v, hashLov, iconsPath);
+                    //}
+                }
+                break;
+            case fts.list:
+                if(_.isString(v)){
+                    v= v.split(',');
+                }
+                if(v && v.length){
+                    var vs=[];
+                    _.each(v, function(vi){
+                        vs.push(Evol.Dico.lovText(f, vi, hashLov, iconsPath));
+                    });
+                    return vs.join(', ');
+                }
+                return v;
+            case fts.date:
+                return eUI.formatDate(v);
+            case fts.time:
+                return eUI.formatTime(v);
+            case fts.datetime:
+                return eUI.formatDateTime(v);
+            case fts.pix:
+                if (v && v.length) {
+                    //return uiInput.img(f.id, (v.substr(0, 2)==='..')?v:iconsPath + v, 'img-thumbnail');
+                    return uiInput.img(f.id, iconsPath + v, 'img-thumbnail');
+                }
+                break;
+            case fts.money:
+                var nv=parseFloat(v);
+                if (!isNaN(nv)) {
+                    return '$'+nv.toFixed(2);
+                }
+                break;
+            case fts.email:
+                return eUI.linkEmail(wId?f.id:null, v);
+            case fts.url:
+                return eUI.link(f.id, v, v, f.id);
+            //case fts.color:
+            //    return uiInput.colorBox(f.id, v, v);
+            default:
+                return v;
+        }
+        return '';
+    },
+
+    HTMLFieldLabel: function (fld, mode) {
+        var h='<div class="evol-field-label" id="'+fld.id+'-lbl"><label class="control-label '+(fld.csslabel?fld.csslabel:'')+'" for="'+fld.id+'">'+fld.label;
+        if (mode != 'browse' && fld.required){
+            h+=eUI.html.required;
+        }
+        if (fld.help && fld.help!==''){
+            h+=eUI.icon('question-sign', '');
+        }
+        h+='</label></div>';
+        return h;
+    },
+
+    HTMLFieldLink: function (id, fld, value, icon, noLink, route) {
+        var h='';
+        if(!noLink){
+            h+='<a href="'+(route?route:'javascript:void(0);');
+            if(id){
+                h+='" id="'+id;
+            }
+            h+='" class="evol-nav-id">';
+        }
+        if(icon){
+            h+='<img class="evol-many-icon" src="'+icon+'">';
+        }/*
+         if(_.isUndefined(value) || value===''){
+         value='('+model.id+')';
+         }*/
+        h+=value;
+        if(!noLink){
+            h+='</a>';
+        }
+        return h;
     },
 
     // -- list of operator and function for filters
@@ -1018,7 +1143,7 @@ return {
                 if(listItem){
                     var txt= _.escape(listItem.text);
                     if(listItem.icon!='' && !_.isUndefined(listItem.icon)){
-                        txt='<img src="'+iconsPath+listItem.icon+'"> '+txt;
+                        txt='<img src="'+((listItem.icon && listItem.icon.substring(0,1)!=='.')?iconsPath:'')+listItem.icon+'"> '+txt;
                     }
                     hashLov[v]=txt;
                     return txt;
@@ -1109,137 +1234,6 @@ return {
             });
         }
         return models;
-    },
-
-    fieldHTML_ReadOny: function(f, v, hashLov, iconsPath, wId){
-        switch(f.type){
-            case fts.bool:
-                if (v==='true' || v=='1') {
-                    return eUI.icon('ok');
-                }
-                break;
-            case fts.lov:
-                if (v !== '') {
-                    //if(f.icon && f.list & f.list[0].icon){
-                    //    return 'f.icon' + this._lovText(f,v);
-                    //}else{
-                    //return Evol.Dico.lovText(f, iconPath+v, hashLov);
-                    return Evol.Dico.lovText(f, v, hashLov, iconsPath);
-                    //}
-                }
-                break;
-            case fts.list:
-                if(_.isString(v)){
-                    v= v.split(',');
-                }
-                if(v && v.length){
-                    var vs=[];
-                    _.each(v, function(vi){
-                        vs.push(Evol.Dico.lovText(f, vi, hashLov, iconsPath));
-                    });
-                    return vs.join(', ');
-                }
-                return v;
-            case fts.date:
-                return eUI.formatDate(v);
-            case fts.time:
-                return eUI.formatTime(v);
-            case fts.datetime:
-                return eUI.formatDateTime(v);
-            case fts.pix:
-                if (v && v.length) {
-                    //return uiInput.img(f.id, (v.substr(0, 2)==='..')?v:iconsPath + v, 'img-thumbnail');
-                    return uiInput.img(f.id, iconsPath + v, 'img-thumbnail');
-                }
-                break;
-            case fts.money:
-                var nv=parseFloat(v);
-                if (!isNaN(nv)) {
-                    return '$'+nv.toFixed(2);
-                }
-                break;
-            case fts.email:
-                return eUI.linkEmail(wId?f.id:null, v);
-            case fts.url:
-                return eUI.link(f.id, v, v, f.id);
-            //case fts.color:
-            //    return uiInput.colorBox(f.id, v, v);
-            default:
-                return v;
-        }
-        return '';
-    },
-
-    fieldHTML: function(fld, fid, fv, mode, iconsPath, skipLabel){
-        var h='';
-        // --- field label ---
-        if(!skipLabel){
-            h+=this.HTMLFieldLabel(fld, mode || 'edit');
-        }
-        // --- field value ---
-        if(fld.readonly || mode==='browse'){
-            h+='<div class="disabled evo-rdonly" id="'+fid;
-            if(fld.type===fts.textml && fld.height>1){
-                h+='" style="height:'+fld.height+'em;overflow-y: auto;';
-            }
-            h+='">';
-            switch (fld.type) {
-                case fts.formula:
-                    // TODO: in one.js or here?
-                    h+='<div id="'+fid+'" class="form-control evol-ellipsis">'+fld.formula()+'</div>';
-                    break;
-                case fts.color: // TODO is the color switch necessary?
-                    //h+=uiInput.colorBox(fid, fv)+fv;
-                    h+='<div id="'+fid+'" class="form-control">'+fv+'</div>';
-                    break;
-                case fts.email:
-                    h+=eUI.linkEmail(fid, fv);
-                    break;
-                case fts.url:
-                    h+=eUI.link(fid, fv, fv, fid);
-                    break;
-                default:
-                    h+=this.fieldHTML_ReadOny(fld, fv, {}, iconsPath);
-            }
-            h+='&nbsp;</div>';
-        }else{
-            h+=Evol.Dico.fieldOneEdit[fld.type](fld, fid, fv, iconsPath);
-        }
-        return h;
-    },
-
-    HTMLFieldLabel: function (fld, mode) {
-        var h='<div class="evol-field-label" id="'+fld.id+'-lbl"><label class="control-label '+(fld.csslabel?fld.csslabel:'')+'" for="'+fld.id+'">'+fld.label;
-        if (mode != 'browse' && fld.required){
-            h+=eUI.html.required;
-        }
-        if (fld.help && fld.help!==''){
-            h+=eUI.icon('question-sign', '');
-        }
-        h+='</label></div>';
-        return h;
-    },
-
-    HTMLFieldLink: function (id, fld, value, icon, noLink, route) {
-        var h='';
-        if(!noLink){
-            h+='<a href="'+(route?route:'javascript:void(0);');
-            if(id){
-                h+='" id="'+id;
-            }
-            h+='" class="evol-nav-id">';
-        }
-        if(icon){
-            h+='<img class="evol-many-icon" src="'+icon+'">';
-        }/*
-         if(_.isUndefined(value) || value===''){
-         value='('+model.id+')';
-         }*/
-        h+=value;
-        if(!noLink){
-            h+='</a>';
-        }
-        return h;
     },
 
     bbComparator: function(fid){
@@ -2197,7 +2191,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
                     Evol.Dico.HTMLFieldLink(null, f, v, icon, !link, route?route+model.id:null)+
                     '</h4></div>');
             }else{
-                h.push('<div '+ (f.type=='email'?'class="evol-ellipsis"':'') +'><label>'+
+                h.push('<div'+ (f.type==fts.email || f.type==fts.url?' class="evol-ellipsis"':'') +'><label>'+
                     (f.labelcards?f.labelcards:f.label)+':</label> '+v+'</div>');
             }
         });
@@ -2453,7 +2447,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
                 }
             }
             var css=f.css || '';
-            if(f.type===ft.textml){
+            if(f.type===ft.textml || f.type===ft.email || f.type===ft.url){
                 css+=' evol-ellipsis';
             }else if(Evol.Dico.isNumberType(f.type)){
                 css+=' evol-r-align';
@@ -2700,15 +2694,18 @@ return Backbone.View.extend({
                             //$f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+i18n.nopix+'</p>'));
                             break;
                         case fts.textml:
-                            $f.html(eUI.cr2br(fv));
-                            break;/*
+                            $f.html(eUI.cr2br(_.escape(fv)));
+                            break;
                         case fts.bool:
                         case fts.url:
                         case fts.email:
                             $f.html(eDico.fieldHTML_ReadOny(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
-                            break;*/
+                            break;
                         case fts.formula:
                             $f.html(f.formula(model));
+                            break;
+                        case fts.color:
+                            $f.html(uiInput.colorBox(f.id, fv, fv));
                             break;
                         default:
                             $f.text(eDico.fieldHTML_ReadOny(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
@@ -4066,8 +4063,8 @@ return Backbone.View.extend({
                         text: i18nXpt['format'+format]
                     };
                 });
-        h.push('<label for="'+fId+'">'+i18nXpt.format+'</label>');
-        h.push(uiInput.select(fId, '', 'evol-xpt-format', false, formatsList));
+        h.push('<label for="'+fId+'">'+i18nXpt.format+'</label>'+
+            uiInput.select(fId, '', 'evol-xpt-format', false, formatsList));
         fId = 'xptFLH';
         h.push('<div class="evol-xpt-opts">'+
             //# field (shared b/w formats - header #######
@@ -4146,7 +4143,7 @@ return Backbone.View.extend({
     },
 
     exportContent: function(format){
-        var h=[],
+        var h='',
             maxItem = this.sampleMaxSize-1;
 
         if(this.model && this.model.collection){
@@ -4177,73 +4174,73 @@ return Backbone.View.extend({
                     // -- header
                     if (useHeader) {
                         if(showID){
-                            h.push('ID'+sep);
+                            h+='ID'+sep;
                         }
                         _.each(flds, function(f, idx){
-                            h.push(f.label);
+                            h+=f.label;
                             if(idx<fMax){
-                                h.push(sep);
+                                h+=sep;
                             }
                         });
-                        h.push('\n');
+                        h+='\n';
                     }
                     // -- data
                     _.every(data, function(m, idx){
                         if(showID){
-                            h.push(m.id+sep);
+                            h+=m.id+sep;
                         }
                         _.each(flds, function(f, idx){
                             var mv = m.get(f.id);
                             if (mv) {
                                 if(f.type===fts.bool){
-                                    h.push(mv);
+                                    h+=mv;
                                     //}else if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
                                 }else if((f.type==fts.text || f.type==fts.textml) && (mv.indexOf(',')>-1)){ // || f.type==fts.list
-                                    h.push('"'+mv.replace('"', '\\"')+'"');
+                                    h+='"'+mv.replace('"', '\\"')+'"';
                                 }else{
-                                    h.push(mv);
+                                    h+=mv;
                                 }
                             }
                             if(idx<fMax){
-                                h.push(sep);
+                                h+=sep;
                             }
                         });
-                        h.push('\n');
+                        h+='\n';
                         return idx<maxItem;
                     });
-                    h.push('\n');
+                    h+='\n';
                     break;
                 case 'HTML':
                     // -- header
-                    h.push('<table>\n');
+                    h='<table>\n';
                     if (useHeader) {
-                        h.push('<tr>\n');
+                        h+='<tr>\n';
                         if(showID){
-                            h.push('<th>ID</th>');
+                            h+='<th>ID</th>';
                         }
                         _.each(flds, function(f){
-                            h.push('<th>'+f.label+'</th>');
+                            h+='<th>'+f.label+'</th>';
                         });
-                        h.push('\n</tr>\n');
+                        h+='\n</tr>\n';
                     }
                     // -- data
                     _.every(data, function(m, idx){
-                        h.push('<tr>\n');
+                        h+='<tr>\n';
                         if(showID){
-                            h.push('<td>'+m.id+'</td>');
+                            h+='<td>'+m.id+'</td>';
                         }
                         _.each(flds, function(f){
                             var mj = m.get(f.id);
                             if (!_.isUndefined(mj) && mj!=='') {
-                                h.push('<td>'+mj+'</td>');
+                                h+='<td>'+mj+'</td>';
                             } else {
-                                h.push('<td></td>');
+                                h+='<td></td>';
                             }
                         });
-                        h.push('\n</tr>\n');
+                        h+='\n</tr>\n';
                         return idx<maxItem;
                     });
-                    h.push('</table>\n');
+                    h+='</table>\n';
                     break;
                 case 'JSON':
                     var propList= _.map(flds, function(f){
@@ -4252,10 +4249,16 @@ return Backbone.View.extend({
                     if(showID){
                         propList.unshift('id');
                     }
+                    h=[];
                     _.every(data, function(m, idx){
                         h.push(JSON.stringify(_.pick(m.toJSON(), propList), null, 2));
                         return idx<maxItem;
                     });
+                    if(format==='JSON' && this.many){
+                        h = '['+h.join(',\n')+']';
+                    }else{
+                        h = h.join('');
+                    }
                     break;
                 case 'SQL':
                     var optTransaction = this.$('#transaction').prop('checked'),
@@ -4279,17 +4282,17 @@ return Backbone.View.extend({
                     sql = sql.join('');
                     // -- options
                     if(optTransaction){
-                        h.push('BEGIN TRANSACTION\n');
+                        h+='BEGIN TRANSACTION\n';
                     }
                     if(optIdInsert){
-                        h.push('SET IDENTITY_INSERT '+sqlTable+' ON;\n');
+                        h+='SET IDENTITY_INSERT '+sqlTable+' ON;\n';
                     }
                     // -- data
                     var fValue;
                     _.every(data, function(m, idx){
-                        h.push(sql);
+                        h+=sql;
                         if(showID){
-                            h.push('"', m.id, '", ');
+                            h+='"'+m.id+'", ';
                         }
                         _.each(flds, function(f, idx){
                             fValue=m.get(f.id);
@@ -4297,83 +4300,81 @@ return Backbone.View.extend({
                                 case fts.int:
                                 case fts.dec:
                                 case fts.money:
-                                    h.push(fValue?fValue:'NULL');
+                                    h+=fValue?fValue:'NULL';
                                     break;
                                 case fts.bool:
-                                    h.push((typeof fValue === 'boolean')?fValue:'NULL');
+                                    h+=(typeof fValue === 'boolean')?fValue:'NULL';
                                     break;
                                 case fts.date:
                                 case fts.datetime:
                                 case fts.time:
                                     if(_.isUndefined(fValue)||fValue===''){
-                                        h.push('NULL');
+                                        h+='NULL';
                                     }else{
-                                        h.push('"', fValue.replace(/"/g, '""'), '"');
+                                        h+='"'+fValue.replace(/"/g, '""')+'"';
                                     }
                                     break;
                                 case fts.list:
                                     if(_.isUndefined(fValue) || fValue===''|| (_.isArray(fValue) && fValue.length===0)){
-                                        h.push('NULL');
+                                        h+='NULL';
                                     }else{
-                                        h.push('"'+eDico.fieldHTML_ReadOny(f, fValue, Evol.hashLov, '').replace(/"/g, '""')+'"');
+                                        h+='"'+eDico.fieldHTML_ReadOny(f, fValue, Evol.hashLov, '').replace(/"/g, '""')+'"';
                                     }
                                     break;
                                 default:
                                     if(_.isUndefined(fValue)){
-                                        h.push('""');
+                                        h+='""';
                                     }else{
-                                        h.push('"'+fValue.replace(/"/g, '""')+'"');
+                                        h+='"'+fValue.replace(/"/g, '""')+'"';
                                     }
                             }
                             if(idx<fMax){
-                                h.push(', ');
+                                h+=', ';
                             }
                         });
-                        h.push(');\n');
+                        h+=');\n';
                         return idx<maxItem;
                     });
                     // -- options
                     if(optIdInsert){
-                        h.push('SET IDENTITY_INSERT '+sqlTable+' OFF;\n');
+                        h+='SET IDENTITY_INSERT '+sqlTable+' OFF;\n';
                     }
                     if(optTransaction){
-                        h.push('COMMIT TRANSACTION\n');
+                        h+='COMMIT TRANSACTION\n';
                     }
                     break;
                 case 'XML':
                     var elemName = this.$('#elementName').val() || this.uiModel.entity.replace(/ /g,'_'),
                         fv;
-                    h.push('<xml>\n');
+
+                    h='<xml>\n';
                     _.every(data, function(m, idx){
-                        h.push('<'+elemName+' ');
+                        h+='<'+elemName+' ';
                         if(showID){
-                            h.push('ID="'+m.id+'" ');
+                            h+='ID="'+m.id+'" ';
                         }
                         _.each(flds, function(f){
-                            h.push(f.id, '="');
+                            h+=f.id+'="';
                             if(f.type===fts.text || f.type===fts.textml){
                                 fv=m.get(f.id);
                                 if(!_.isArray(fv) && !_.isUndefined(fv)){
-                                    h.push(fv.replace(/"/g, '\\"'));
+                                    h+=fv.replace(/"/g, '\\"');
                                 }
                             }else{
-                                h.push(m.get(f.id));
+                                h+=m.get(f.id);
                             }
-                            h.push('" ');
+                            h+='" ';
                         });
-                        h.push('></'+elemName+'>\n');
+                        h+='></'+elemName+'>\n';
                         return idx<maxItem;
                     });
-                    h.push('</xml>');
+                    h+='</xml>';
                     break;
             }
         }else{
-            h.push(i18n.nodata);
+            h+=i18n.nodata;
         }
-        if(format==='JSON' && this.many){
-            return '['+h.join(',\n')+']';
-        }
-        return h.join('');
+        return h;
     },
 
     val: function (value) {
@@ -6163,6 +6164,7 @@ Evol.App = Backbone.View.extend({
             nav2: '.evo-head-links2',
             content: '#evol'
         },
+        style: 'panel-info',
         useRouter: true,
         pageSize:20,
         prefix: 'evol-'

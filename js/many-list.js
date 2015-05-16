@@ -78,7 +78,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
                 }
             }
             var css=f.css || '';
-            if(f.type===ft.textml){
+            if(f.type===ft.textml || f.type===ft.email || f.type===ft.url){
                 css+=' evol-ellipsis';
             }else if(Evol.Dico.isNumberType(f.type)){
                 css+=' evol-r-align';
