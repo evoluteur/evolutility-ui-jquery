@@ -135,7 +135,10 @@ module.exports = function (grunt) {
 
                 // --- ui models ---
                 'js/ui-models/apps/*.js',
-                'js/ui-models/test/*.js'
+                'js/ui-models/test/*.js',
+
+                // --- testing stuff ---
+                '!*-nogit.js'
 
             ]
         },

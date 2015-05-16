@@ -26,10 +26,11 @@ var uiFieldTypes=[ // TODO ../dico/pix/
 var uiModels=uiModels||{};
 uiModels.entity = {
     id: 'entity',
+    label: 'Object',
     icon: "cube.gif",
     entity: "object",
     entities: "objects",
-    leadfield: "Title",
+    leadfield: "title",
     elements: [
         {
             type: 'panel',
@@ -41,8 +42,8 @@ uiModels.entity = {
                     label: "Title",
                     help: "example: 'Address book web application'",
                     type: "text",
-                    id: "Title",
-                    attribute: "Title",
+                    id: "title",
+                    attribute: "title",
                     maxlength: 100,
                     viewmany: true,
                     width: 52,

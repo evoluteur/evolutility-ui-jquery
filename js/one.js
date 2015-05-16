@@ -219,15 +219,18 @@ return Backbone.View.extend({
                             //$f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+i18n.nopix+'</p>'));
                             break;
                         case fts.textml:
-                            $f.html(eUI.cr2br(fv));
-                            break;/*
+                            $f.html(eUI.cr2br(_.escape(fv)));
+                            break;
                         case fts.bool:
                         case fts.url:
                         case fts.email:
                             $f.html(eDico.fieldHTML_ReadOny(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
-                            break;*/
+                            break;
                         case fts.formula:
                             $f.html(f.formula(model));
+                            break;
+                        case fts.color:
+                            $f.html(uiInput.colorBox(f.id, fv, fv));
                             break;
                         default:
                             $f.text(eDico.fieldHTML_ReadOny(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');

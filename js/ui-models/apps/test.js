@@ -14,20 +14,35 @@ var testLOV = [
     {text:'deca', id:'da'}
 ];
 
+var testLOV2 = [
+    {id:'red',text:'Red', icon:'../pix/wine/winered.gif'},
+    {id:'white',text:'White', icon:'../pix/wine/winewhite.gif'},
+    {id:'sweet',text:'Sweet', icon:'../pix/wine/winesweet.gif'},
+    {id:'spark',text:'Sparkling', icon:'../pix/wine/winespark.gif'},
+    {id:'rose',text:'Rose', icon:'../pix/wine/winerose.gif'}
+];
+
 var fieldsPanelList = [
-        {id: 'pl1f1',  type: 'text', label: 'Name', required:true, maxlength: 50, viewmany: true},
-        {id: 'pl1f2',  type: 'text', label: 'Text', required:true, maxlength: 100, viewmany: true},
-        {id: 'pl1f3',  type: 'lov', label: 'Sizes', required:true, list: testLOV, viewmany: true}
+        {id: 'pl1f1',  type: 'text', label: 'Name', required:true, maxlength: 50},
+        {id: 'pl1f2',  type: 'text', label: 'Text', required:true, maxlength: 100},
+        {id: 'pl1f3',  type: 'lov', label: 'Sizes', required:true, list: testLOV}
     ],
     fieldsPanelList2 = [
-        {id: 'pl2f1',  type: 'text', label: 'Name', maxlength: 50, viewmany: true},
+        {id: 'pl2f1',  type: 'text', label: 'Name', maxlength: 50},
         {id: 'pl2f3',  type: 'date', label: 'Date', viewmany: true},
         {id: 'pl2f4',  type: 'boolean', label: 'Bool', viewmany: true},
-        {id: 'pl2f2',  type: 'text', label: 'Text', maxlength: 100, viewmany: true}
+        {id: 'pl2f2',  type: 'text', label: 'Text', maxlength: 100}
+    ],
+    fieldsPanelList3 = [
+        {id: 'pl2f1',  type: 'text', label: 'Name', maxlength: 50},
+        {id: 'pl2f2',  type: 'integer', label: 'Integer'},
+        {id: 'pl2f2',  type: 'money', label: 'Money'},
+        {id: 'pl1f3',  type: 'lov', label: 'Sizes', required:true, list: testLOV}
     ];
 
-function fieldTypePanel(id, label, labelPanel, css){
+function fieldTypePanel(id, label, labelPanel, label2Panel, css){
     var labelP = labelPanel || label || id,
+        label2P = label2Panel,
         fields=[
             {
                 id: id,
@@ -65,7 +80,7 @@ function fieldTypePanel(id, label, labelPanel, css){
     return {
         type: 'panel',
         label: labelP,
-        label2: id==='html'?'not fully implemented yet':'',
+        label2: label2P,
         width: 33,
         elements: fields,
         css: css
@@ -102,22 +117,60 @@ uiModels.test = {
         },
         {
             type: 'tab',
-            label: 'Text & Lists',
+            label: 'Text',
             elements: [
-                fieldTypePanel('text', 'Text', 'Text', 'panel-success'),
-                fieldTypePanel('textmultiline', 'Large Text', '', 'panel-success'),
-                fieldTypePanel('html', 'HTML', '', 'panel-warning'),
-                fieldTypePanel('lov', 'List', 'List (value)'),
-                fieldTypePanel('list', 'List mv', 'List (multiple values)')
+                fieldTypePanel('text', 'Text', 'Text', '', 'panel-success'),
+                fieldTypePanel('textmultiline', 'Large Text', '', 'multilines', 'panel-success'),
+                fieldTypePanel('html', 'HTML', 'HTML', 'not fully implemented yet', 'panel-danger')
             ]
+        },
+        {
+            type: 'tab',
+            label: 'Lists',
+            elements: [
+                fieldTypePanel('lov', 'List', 'List', 'single value'),
+                fieldTypePanel('list', 'List mv', 'List', 'multiple values'),
+                {
+                    type: 'panel',
+                    label: 'List',
+                    label2: 'with icons',
+                    width: 33,
+                    elements: [
+                        {
+                            id: 'lovicon1',
+                            type: 'lov',
+                            label: 'List',
+                            list:testLOV2,
+                            required: true,
+                            viewmany: true,
+                            width: 100
+                        },
+                        {
+                            id: 'lovicon2',
+                            type: 'lov',
+                            label: 'List 2',
+                            readonly: true,
+                            list:testLOV2,
+                            width: 100
+                        },
+                        {
+                            id: 'lovicon3',
+                            type: 'lov',
+                            label: 'List 3',
+                            list: testLOV2,
+                            width: 100
+                        }
+                    ]
+                }
+            ]//id==='html'?'not fully implemented yet':''
         },
         {
             type: 'tab',
             label: 'Date & Time',
             elements: [
-                fieldTypePanel('date', 'Date', '', 'panel-default'),
-                fieldTypePanel('time', 'Time', '', 'panel-info'),
-                fieldTypePanel('datetime', 'Date and Time', '', 'panel-primary')
+                fieldTypePanel('date', 'Date', '', '', 'panel-default'),
+                fieldTypePanel('time', 'Time', '', '', 'panel-info'),
+                fieldTypePanel('datetime', 'Date and Time', '', '', 'panel-primary')
             ]
         },
         {
@@ -126,14 +179,14 @@ uiModels.test = {
             elements: [
                 fieldTypePanel('integer', 'Integer'),
                 fieldTypePanel('decimal', 'Decimal'),
-                fieldTypePanel('money', 'Money', 'Money', 'panel-success')
+                fieldTypePanel('money', 'Money', 'Money', '', 'panel-success')
             ]
         },
         {
             type: 'tab',
             label: 'Checkbox & links',
             elements: [
-                fieldTypePanel('boolean', 'Boolean'),
+                fieldTypePanel('boolean', 'Boolean', 'Boolean', 'checkboxes'),
                 fieldTypePanel('email', 'email'),
                 fieldTypePanel('url', 'url')
             ]
@@ -144,7 +197,7 @@ uiModels.test = {
             elements: [
                 fieldTypePanel('image', 'Image'),
                 fieldTypePanel('color', 'Color'),
-                fieldTypePanel('hidden', 'Hidden')
+                fieldTypePanel('hidden', 'Hidden', '', 'but in the DOM', 'panel-default')
             ]
         },
         {
@@ -153,7 +206,7 @@ uiModels.test = {
             elements: [
                 {
                     type: 'panel-list',
-                    css: 'panel-warning',
+                    css: 'panel-info',
                     id:'subCollec1',
                     attribute:'subCollec1',
                     label: 'Collection 1',
@@ -162,12 +215,21 @@ uiModels.test = {
                 },
                 {
                     type: 'panel-list',
-                    css:'panel-danger',
+                    css:'panel-info',
                     id:'subCollec2',
                     attribute:'subCollec2',
                     label: 'Collection 2',
                     width: 100,
                     elements: fieldsPanelList2
+                },
+                {
+                    type: 'panel-list',
+                    css: 'panel-primary',
+                    id:'subCollec3',
+                    attribute:'subCollec3',
+                    label: 'Collection 3',
+                    width: 100,
+                    elements: fieldsPanelList3
                 }
             ]
         }

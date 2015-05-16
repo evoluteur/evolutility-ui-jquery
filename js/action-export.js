@@ -119,8 +119,8 @@ return Backbone.View.extend({
                         text: i18nXpt['format'+format]
                     };
                 });
-        h.push('<label for="'+fId+'">'+i18nXpt.format+'</label>');
-        h.push(uiInput.select(fId, '', 'evol-xpt-format', false, formatsList));
+        h.push('<label for="'+fId+'">'+i18nXpt.format+'</label>'+
+            uiInput.select(fId, '', 'evol-xpt-format', false, formatsList));
         fId = 'xptFLH';
         h.push('<div class="evol-xpt-opts">'+
             //# field (shared b/w formats - header #######
@@ -199,7 +199,7 @@ return Backbone.View.extend({
     },
 
     exportContent: function(format){
-        var h=[],
+        var h='',
             maxItem = this.sampleMaxSize-1;
 
         if(this.model && this.model.collection){
@@ -230,73 +230,73 @@ return Backbone.View.extend({
                     // -- header
                     if (useHeader) {
                         if(showID){
-                            h.push('ID'+sep);
+                            h+='ID'+sep;
                         }
                         _.each(flds, function(f, idx){
-                            h.push(f.label);
+                            h+=f.label;
                             if(idx<fMax){
-                                h.push(sep);
+                                h+=sep;
                             }
                         });
-                        h.push('\n');
+                        h+='\n';
                     }
                     // -- data
                     _.every(data, function(m, idx){
                         if(showID){
-                            h.push(m.id+sep);
+                            h+=m.id+sep;
                         }
                         _.each(flds, function(f, idx){
                             var mv = m.get(f.id);
                             if (mv) {
                                 if(f.type===fts.bool){
-                                    h.push(mv);
+                                    h+=mv;
                                     //}else if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
                                 }else if((f.type==fts.text || f.type==fts.textml) && (mv.indexOf(',')>-1)){ // || f.type==fts.list
-                                    h.push('"'+mv.replace('"', '\\"')+'"');
+                                    h+='"'+mv.replace('"', '\\"')+'"';
                                 }else{
-                                    h.push(mv);
+                                    h+=mv;
                                 }
                             }
                             if(idx<fMax){
-                                h.push(sep);
+                                h+=sep;
                             }
                         });
-                        h.push('\n');
+                        h+='\n';
                         return idx<maxItem;
                     });
-                    h.push('\n');
+                    h+='\n';
                     break;
                 case 'HTML':
                     // -- header
-                    h.push('<table>\n');
+                    h='<table>\n';
                     if (useHeader) {
-                        h.push('<tr>\n');
+                        h+='<tr>\n';
                         if(showID){
-                            h.push('<th>ID</th>');
+                            h+='<th>ID</th>';
                         }
                         _.each(flds, function(f){
-                            h.push('<th>'+f.label+'</th>');
+                            h+='<th>'+f.label+'</th>';
                         });
-                        h.push('\n</tr>\n');
+                        h+='\n</tr>\n';
                     }
                     // -- data
                     _.every(data, function(m, idx){
-                        h.push('<tr>\n');
+                        h+='<tr>\n';
                         if(showID){
-                            h.push('<td>'+m.id+'</td>');
+                            h+='<td>'+m.id+'</td>';
                         }
                         _.each(flds, function(f){
                             var mj = m.get(f.id);
                             if (!_.isUndefined(mj) && mj!=='') {
-                                h.push('<td>'+mj+'</td>');
+                                h+='<td>'+mj+'</td>';
                             } else {
-                                h.push('<td></td>');
+                                h+='<td></td>';
                             }
                         });
-                        h.push('\n</tr>\n');
+                        h+='\n</tr>\n';
                         return idx<maxItem;
                     });
-                    h.push('</table>\n');
+                    h+='</table>\n';
                     break;
                 case 'JSON':
                     var propList= _.map(flds, function(f){
@@ -305,10 +305,16 @@ return Backbone.View.extend({
                     if(showID){
                         propList.unshift('id');
                     }
+                    h=[];
                     _.every(data, function(m, idx){
                         h.push(JSON.stringify(_.pick(m.toJSON(), propList), null, 2));
                         return idx<maxItem;
                     });
+                    if(format==='JSON' && this.many){
+                        h = '['+h.join(',\n')+']';
+                    }else{
+                        h = h.join('');
+                    }
                     break;
                 case 'SQL':
                     var optTransaction = this.$('#transaction').prop('checked'),
@@ -332,17 +338,17 @@ return Backbone.View.extend({
                     sql = sql.join('');
                     // -- options
                     if(optTransaction){
-                        h.push('BEGIN TRANSACTION\n');
+                        h+='BEGIN TRANSACTION\n';
                     }
                     if(optIdInsert){
-                        h.push('SET IDENTITY_INSERT '+sqlTable+' ON;\n');
+                        h+='SET IDENTITY_INSERT '+sqlTable+' ON;\n';
                     }
                     // -- data
                     var fValue;
                     _.every(data, function(m, idx){
-                        h.push(sql);
+                        h+=sql;
                         if(showID){
-                            h.push('"', m.id, '", ');
+                            h+='"'+m.id+'", ';
                         }
                         _.each(flds, function(f, idx){
                             fValue=m.get(f.id);
@@ -350,83 +356,81 @@ return Backbone.View.extend({
                                 case fts.int:
                                 case fts.dec:
                                 case fts.money:
-                                    h.push(fValue?fValue:'NULL');
+                                    h+=fValue?fValue:'NULL';
                                     break;
                                 case fts.bool:
-                                    h.push((typeof fValue === 'boolean')?fValue:'NULL');
+                                    h+=(typeof fValue === 'boolean')?fValue:'NULL';
                                     break;
                                 case fts.date:
                                 case fts.datetime:
                                 case fts.time:
                                     if(_.isUndefined(fValue)||fValue===''){
-                                        h.push('NULL');
+                                        h+='NULL';
                                     }else{
-                                        h.push('"', fValue.replace(/"/g, '""'), '"');
+                                        h+='"'+fValue.replace(/"/g, '""')+'"';
                                     }
                                     break;
                                 case fts.list:
                                     if(_.isUndefined(fValue) || fValue===''|| (_.isArray(fValue) && fValue.length===0)){
-                                        h.push('NULL');
+                                        h+='NULL';
                                     }else{
-                                        h.push('"'+eDico.fieldHTML_ReadOny(f, fValue, Evol.hashLov, '').replace(/"/g, '""')+'"');
+                                        h+='"'+eDico.fieldHTML_ReadOny(f, fValue, Evol.hashLov, '').replace(/"/g, '""')+'"';
                                     }
                                     break;
                                 default:
                                     if(_.isUndefined(fValue)){
-                                        h.push('""');
+                                        h+='""';
                                     }else{
-                                        h.push('"'+fValue.replace(/"/g, '""')+'"');
+                                        h+='"'+fValue.replace(/"/g, '""')+'"';
                                     }
                             }
                             if(idx<fMax){
-                                h.push(', ');
+                                h+=', ';
                             }
                         });
-                        h.push(');\n');
+                        h+=');\n';
                         return idx<maxItem;
                     });
                     // -- options
                     if(optIdInsert){
-                        h.push('SET IDENTITY_INSERT '+sqlTable+' OFF;\n');
+                        h+='SET IDENTITY_INSERT '+sqlTable+' OFF;\n';
                     }
                     if(optTransaction){
-                        h.push('COMMIT TRANSACTION\n');
+                        h+='COMMIT TRANSACTION\n';
                     }
                     break;
                 case 'XML':
                     var elemName = this.$('#elementName').val() || this.uiModel.entity.replace(/ /g,'_'),
                         fv;
-                    h.push('<xml>\n');
+
+                    h='<xml>\n';
                     _.every(data, function(m, idx){
-                        h.push('<'+elemName+' ');
+                        h+='<'+elemName+' ';
                         if(showID){
-                            h.push('ID="'+m.id+'" ');
+                            h+='ID="'+m.id+'" ';
                         }
                         _.each(flds, function(f){
-                            h.push(f.id, '="');
+                            h+=f.id+'="';
                             if(f.type===fts.text || f.type===fts.textml){
                                 fv=m.get(f.id);
                                 if(!_.isArray(fv) && !_.isUndefined(fv)){
-                                    h.push(fv.replace(/"/g, '\\"'));
+                                    h+=fv.replace(/"/g, '\\"');
                                 }
                             }else{
-                                h.push(m.get(f.id));
+                                h+=m.get(f.id);
                             }
-                            h.push('" ');
+                            h+='" ';
                         });
-                        h.push('></'+elemName+'>\n');
+                        h+='></'+elemName+'>\n';
                         return idx<maxItem;
                     });
-                    h.push('</xml>');
+                    h+='</xml>';
                     break;
             }
         }else{
-            h.push(i18n.nodata);
+            h+=i18n.nodata;
         }
-        if(format==='JSON' && this.many){
-            return '['+h.join(',\n')+']';
-        }
-        return h.join('');
+        return h;
     },
 
     val: function (value) {

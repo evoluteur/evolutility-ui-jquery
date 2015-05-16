@@ -80,7 +80,7 @@ return {
             return uiInput.textInt(fid, fv, f.max, f.min);
         },
         money: function (f, fid, fv) {
-            return '<div class="input-group">'+uiInput.typeFlag('$')+
+            return '<div class="input-group evol-money">'+uiInput.typeFlag('$')+
                 uiInput.textInt(fid, fv)+'</div>';
         },
         date: function (f, fid, fv) {
@@ -129,6 +129,131 @@ return {
         formula: function(f, fid, fv){
             return '<div class="evol-ellipsis">'+uiInput.text(fid, fv, f, null)+'</div>';
         }
+    },
+
+    fieldHTML: function(fld, fid, fv, mode, iconsPath, skipLabel){
+        var h='';
+        // --- field label ---
+        if(!skipLabel){
+            h+=this.HTMLFieldLabel(fld, mode || 'edit');
+        }
+        // --- field value ---
+        if(fld.readonly || mode==='browse'){
+            h+='<div class="disabled evo-rdonly'+(fld.type===fts.email || fld.type===fts.url?' evol-ellipsis':'')+'" id="'+fid;
+            if(fld.type===fts.textml && fld.height>1){
+                h+='" style="height:'+fld.height+'em;overflow-y: auto;';
+            }
+            h+='">';
+            switch (fld.type) {
+                case fts.formula:
+                    // TODO: in one.js or here?
+                    h+='<div id="'+fid+'" class="form-control evol-ellipsis">'+fld.formula()+'</div>';
+                    break;
+                case fts.color: // TODO is the color switch necessary?
+                    //h+=uiInput.colorBox(fid, fv)+fv;
+                    h+='<div id="'+fid+'" class="form-control">'+fv+'</div>';
+                    break;
+                default:
+                    h+=this.fieldHTML_ReadOny(fld, fv, {}, iconsPath);
+            }
+            h+='&nbsp;</div>';
+        }else{
+            h+=Evol.Dico.fieldOneEdit[fld.type](fld, fid, fv, iconsPath);
+        }
+        return h;
+    },
+
+    fieldHTML_ReadOny: function(f, v, hashLov, iconsPath, wId){
+        switch(f.type){
+            case fts.bool:
+                if (v==='true' || v=='1') {
+                    return eUI.icon('ok');
+                }
+                break;
+            case fts.lov:
+                if (v !== '') {
+                    //if(f.icon && f.list & f.list[0].icon){
+                    //    return 'f.icon' + this._lovText(f,v);
+                    //}else{
+                    //return Evol.Dico.lovText(f, iconPath+v, hashLov);
+                    return Evol.Dico.lovText(f, v, hashLov, iconsPath);
+                    //}
+                }
+                break;
+            case fts.list:
+                if(_.isString(v)){
+                    v= v.split(',');
+                }
+                if(v && v.length){
+                    var vs=[];
+                    _.each(v, function(vi){
+                        vs.push(Evol.Dico.lovText(f, vi, hashLov, iconsPath));
+                    });
+                    return vs.join(', ');
+                }
+                return v;
+            case fts.date:
+                return eUI.formatDate(v);
+            case fts.time:
+                return eUI.formatTime(v);
+            case fts.datetime:
+                return eUI.formatDateTime(v);
+            case fts.pix:
+                if (v && v.length) {
+                    //return uiInput.img(f.id, (v.substr(0, 2)==='..')?v:iconsPath + v, 'img-thumbnail');
+                    return uiInput.img(f.id, iconsPath + v, 'img-thumbnail');
+                }
+                break;
+            case fts.money:
+                var nv=parseFloat(v);
+                if (!isNaN(nv)) {
+                    return '$'+nv.toFixed(2);
+                }
+                break;
+            case fts.email:
+                return eUI.linkEmail(wId?f.id:null, v);
+            case fts.url:
+                return eUI.link(f.id, v, v, f.id);
+            //case fts.color:
+            //    return uiInput.colorBox(f.id, v, v);
+            default:
+                return v;
+        }
+        return '';
+    },
+
+    HTMLFieldLabel: function (fld, mode) {
+        var h='<div class="evol-field-label" id="'+fld.id+'-lbl"><label class="control-label '+(fld.csslabel?fld.csslabel:'')+'" for="'+fld.id+'">'+fld.label;
+        if (mode != 'browse' && fld.required){
+            h+=eUI.html.required;
+        }
+        if (fld.help && fld.help!==''){
+            h+=eUI.icon('question-sign', '');
+        }
+        h+='</label></div>';
+        return h;
+    },
+
+    HTMLFieldLink: function (id, fld, value, icon, noLink, route) {
+        var h='';
+        if(!noLink){
+            h+='<a href="'+(route?route:'javascript:void(0);');
+            if(id){
+                h+='" id="'+id;
+            }
+            h+='" class="evol-nav-id">';
+        }
+        if(icon){
+            h+='<img class="evol-many-icon" src="'+icon+'">';
+        }/*
+         if(_.isUndefined(value) || value===''){
+         value='('+model.id+')';
+         }*/
+        h+=value;
+        if(!noLink){
+            h+='</a>';
+        }
+        return h;
     },
 
     // -- list of operator and function for filters
@@ -307,7 +432,7 @@ return {
                 if(listItem){
                     var txt= _.escape(listItem.text);
                     if(listItem.icon!='' && !_.isUndefined(listItem.icon)){
-                        txt='<img src="'+iconsPath+listItem.icon+'"> '+txt;
+                        txt='<img src="'+((listItem.icon && listItem.icon.substring(0,1)!=='.')?iconsPath:'')+listItem.icon+'"> '+txt;
                     }
                     hashLov[v]=txt;
                     return txt;
@@ -398,137 +523,6 @@ return {
             });
         }
         return models;
-    },
-
-    fieldHTML_ReadOny: function(f, v, hashLov, iconsPath, wId){
-        switch(f.type){
-            case fts.bool:
-                if (v==='true' || v=='1') {
-                    return eUI.icon('ok');
-                }
-                break;
-            case fts.lov:
-                if (v !== '') {
-                    //if(f.icon && f.list & f.list[0].icon){
-                    //    return 'f.icon' + this._lovText(f,v);
-                    //}else{
-                    //return Evol.Dico.lovText(f, iconPath+v, hashLov);
-                    return Evol.Dico.lovText(f, v, hashLov, iconsPath);
-                    //}
-                }
-                break;
-            case fts.list:
-                if(_.isString(v)){
-                    v= v.split(',');
-                }
-                if(v && v.length){
-                    var vs=[];
-                    _.each(v, function(vi){
-                        vs.push(Evol.Dico.lovText(f, vi, hashLov, iconsPath));
-                    });
-                    return vs.join(', ');
-                }
-                return v;
-            case fts.date:
-                return eUI.formatDate(v);
-            case fts.time:
-                return eUI.formatTime(v);
-            case fts.datetime:
-                return eUI.formatDateTime(v);
-            case fts.pix:
-                if (v && v.length) {
-                    //return uiInput.img(f.id, (v.substr(0, 2)==='..')?v:iconsPath + v, 'img-thumbnail');
-                    return uiInput.img(f.id, iconsPath + v, 'img-thumbnail');
-                }
-                break;
-            case fts.money:
-                var nv=parseFloat(v);
-                if (!isNaN(nv)) {
-                    return '$'+nv.toFixed(2);
-                }
-                break;
-            case fts.email:
-                return eUI.linkEmail(wId?f.id:null, v);
-            case fts.url:
-                return eUI.link(f.id, v, v, f.id);
-            //case fts.color:
-            //    return uiInput.colorBox(f.id, v, v);
-            default:
-                return v;
-        }
-        return '';
-    },
-
-    fieldHTML: function(fld, fid, fv, mode, iconsPath, skipLabel){
-        var h='';
-        // --- field label ---
-        if(!skipLabel){
-            h+=this.HTMLFieldLabel(fld, mode || 'edit');
-        }
-        // --- field value ---
-        if(fld.readonly || mode==='browse'){
-            h+='<div class="disabled evo-rdonly" id="'+fid;
-            if(fld.type===fts.textml && fld.height>1){
-                h+='" style="height:'+fld.height+'em;overflow-y: auto;';
-            }
-            h+='">';
-            switch (fld.type) {
-                case fts.formula:
-                    // TODO: in one.js or here?
-                    h+='<div id="'+fid+'" class="form-control evol-ellipsis">'+fld.formula()+'</div>';
-                    break;
-                case fts.color: // TODO is the color switch necessary?
-                    //h+=uiInput.colorBox(fid, fv)+fv;
-                    h+='<div id="'+fid+'" class="form-control">'+fv+'</div>';
-                    break;
-                case fts.email:
-                    h+=eUI.linkEmail(fid, fv);
-                    break;
-                case fts.url:
-                    h+=eUI.link(fid, fv, fv, fid);
-                    break;
-                default:
-                    h+=this.fieldHTML_ReadOny(fld, fv, {}, iconsPath);
-            }
-            h+='&nbsp;</div>';
-        }else{
-            h+=Evol.Dico.fieldOneEdit[fld.type](fld, fid, fv, iconsPath);
-        }
-        return h;
-    },
-
-    HTMLFieldLabel: function (fld, mode) {
-        var h='<div class="evol-field-label" id="'+fld.id+'-lbl"><label class="control-label '+(fld.csslabel?fld.csslabel:'')+'" for="'+fld.id+'">'+fld.label;
-        if (mode != 'browse' && fld.required){
-            h+=eUI.html.required;
-        }
-        if (fld.help && fld.help!==''){
-            h+=eUI.icon('question-sign', '');
-        }
-        h+='</label></div>';
-        return h;
-    },
-
-    HTMLFieldLink: function (id, fld, value, icon, noLink, route) {
-        var h='';
-        if(!noLink){
-            h+='<a href="'+(route?route:'javascript:void(0);');
-            if(id){
-                h+='" id="'+id;
-            }
-            h+='" class="evol-nav-id">';
-        }
-        if(icon){
-            h+='<img class="evol-many-icon" src="'+icon+'">';
-        }/*
-         if(_.isUndefined(value) || value===''){
-         value='('+model.id+')';
-         }*/
-        h+=value;
-        if(!noLink){
-            h+='</a>';
-        }
-        return h;
     },
 
     bbComparator: function(fid){
