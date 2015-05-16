@@ -1,3 +1,5 @@
+// Evolutility ui-model for a test object
+// because this ui-model is very repetitive, it is not a JSON but uses functions for repeted patterns ...
 
 var testLOV = [
     {text:'yotta', id:'Y'},
@@ -39,7 +41,7 @@ function fieldTypePanel(id, label, labelPanel, css){
                 id: id+'2',
                 attribute: id,
                 readonly: true,
-                help: 'The field "' + label+' 2" is readonly.',
+                help: 'The field "' + label+' 2" is the read-only version of "' + label+'". It\'s value is updated on save.',
                 type: id,
                 label: label+' 2',
                 width: 100
@@ -63,6 +65,7 @@ function fieldTypePanel(id, label, labelPanel, css){
     return {
         type: 'panel',
         label: labelP,
+        label2: id==='html'?'not fully implemented yet':'',
         width: 33,
         elements: fields,
         css: css
@@ -83,6 +86,7 @@ uiModels.test = {
             type: 'panel',
             css: 'panel-primary',
             label: 'Test object',
+            label2:'with fields of all types.',
             width: 100,
             elements: [
                 {
@@ -101,10 +105,10 @@ uiModels.test = {
             label: 'Text & Lists',
             elements: [
                 fieldTypePanel('text', 'Text', 'Text', 'panel-success'),
-                fieldTypePanel('lov', 'List', 'List (value)', 'panel-warning'),
-                fieldTypePanel('list', 'List mv', 'List (multiple values)', 'panel-warning'),
                 fieldTypePanel('textmultiline', 'Large Text', '', 'panel-success'),
-                fieldTypePanel('html', 'HTML')
+                fieldTypePanel('html', 'HTML', '', 'panel-warning'),
+                fieldTypePanel('lov', 'List', 'List (value)'),
+                fieldTypePanel('list', 'List mv', 'List (multiple values)')
             ]
         },
         {
