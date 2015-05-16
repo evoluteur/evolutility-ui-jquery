@@ -34,10 +34,10 @@ var fieldsPanelList = [
         {id: 'pl2f2',  type: 'text', label: 'Text', maxlength: 100}
     ],
     fieldsPanelList3 = [
-        {id: 'pl2f1',  type: 'text', label: 'Name', maxlength: 50},
-        {id: 'pl2f2',  type: 'integer', label: 'Integer'},
-        {id: 'pl2f2',  type: 'money', label: 'Money'},
-        {id: 'pl1f3',  type: 'lov', label: 'Sizes', required:true, list: testLOV}
+        {id: 'pl3f1',  type: 'text', label: 'Name', maxlength: 50},
+        {id: 'pl3f2',  type: 'integer', label: 'Integer'},
+        {id: 'pl3f3',  type: 'money', label: 'Money'},
+        {id: 'pl3f4',  type: 'lov', label: 'Sizes', required:true, list: testLOV}
     ];
 
 function fieldTypePanel(id, label, labelPanel, label2Panel, css){
