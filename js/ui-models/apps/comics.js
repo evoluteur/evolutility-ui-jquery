@@ -3,10 +3,10 @@ var uiModels = uiModels || {};
 uiModels.comics = {
     id: 'comics',
     label: 'Graphic Novels',
-    entity: 'graphic novel serie',
-    entities: 'graphic novel series',
+    name: 'graphic novel serie',
+    namePlural: 'graphic novel series',
     //icon: 'serie.gif',
-    leadfield:'title',
+    fnTitle:'title',
     badge:function(m){
         var hNb=m.get('haveNb'),
             sNb=m.get('serieNb');
@@ -18,7 +18,7 @@ uiModels.comics = {
             elements: [
                 {
                     id: 'title', attribute: 'title', type: 'text', label: 'Title', required: true, 
-                    maxlength: 255,
+                    maxLength: 255,
                     width: 62, viewmany: true
                 },
                 {
@@ -64,11 +64,11 @@ uiModels.comics = {
                 },
                 {
                     id: 'complete', attribute: 'complete', type: 'boolean', width: 19, viewmany: true,
-                    label: 'Complete', labelfalse:'Incomplete', labeltrue:'Complete'
+                    label: 'Complete', labelFalse:'Incomplete', labelTrue:'Complete'
                 },
                 {
                     id: 'finished', attribute: 'finished', type: 'boolean', width: 19, viewmany: true,
-                    label: 'Finished', labeltrue:'Finished', labelfalse:'Unfinished', css:'cBlue'
+                    label: 'Finished', labelTrue:'Finished', labelFalse:'Unfinished', css:'cBlue'
                 },
                 {
                     id:'amazon', label:'Amazon', type:'formula', width:100, css:'evol-ellipsis',
@@ -81,7 +81,7 @@ uiModels.comics = {
                     }
                 },
                 {
-                    id: 'notes', attribute: 'notes', type: 'textmultiline', label: 'Notes', maxlength: 1000,
+                    id: 'notes', attribute: 'notes', type: 'textmultiline', label: 'Notes', maxLength: 1000,
                     width: 100, height: 6, viewmany: false
                 }
             ]

@@ -48,7 +48,7 @@ Evol.UI = {
             if(fd) {
                 h+='" class="evo-field form-control '+(css || '');
                 // properties mapping to html attributes
-                _.each(['id', 'min', 'max', 'maxlength', 'placeholder'], function (item) { // 'max-width', 'min-width',
+                _.each(['id', 'min', 'max', 'maxLength', 'placeholder'], function (item) { // 'max-width', 'min-width',
                     if (!_.isUndefined(fd[item])) {
                         h+='" '+item+'="'+fd[item];
                     }
@@ -331,7 +331,7 @@ Evol.UI = {
     // --- panels ---
     HTMLPanelBegin: function (p, css) {
         return '<div data-pid="'+p.id+'" class="panel '+(p.css?p.css:css)+'">'+
-            '<div class="panel-heading '+(p.csslabel? p.csslabel:'')+'">'+
+            '<div class="panel-heading '+(p.cssLabel? p.cssLabel:'')+'">'+
             Evol.UI.icon('chevron-up', 'evol-title-toggle')+
             '<h3 class="panel-title">'+p.label+'</h3>'+
             (p.label2?'<div class="evol-subtitle">'+p.label2+'</div>' : '')+

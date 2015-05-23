@@ -223,7 +223,7 @@ return {
     },
 
     HTMLFieldLabel: function (fld, mode) {
-        var h='<div class="evol-field-label" id="'+fld.id+'-lbl"><label class="control-label '+(fld.csslabel?fld.csslabel:'')+'" for="'+fld.id+'">'+fld.label;
+        var h='<div class="evol-field-label" id="'+fld.id+'-lbl"><label class="control-label '+(fld.cssLabel?fld.cssLabel:'')+'" for="'+fld.id+'">'+fld.label;
         if (mode != 'browse' && fld.required){
             h+=eUI.html.required;
         }
@@ -503,7 +503,7 @@ return {
 
     uiModel2tdbTable: function(uiModel){
         // -- generates SQL script to create a Postgress DB table for the object
-        var t=uiModel.id || uiModel.entity;
+        var t=uiModel.id || uiModel.name;
         var fields=this.getFields(uiModel);
         var sql='CREATE TABLE "Evolutility".'+t;
         sql+='\n(\n';

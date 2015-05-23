@@ -599,8 +599,8 @@ return Backbone.View.extend({
         if(cModel){
             this.setRoute(cModel?cModel.id:null, false);
         }else{
-            //eUI.modal.alert(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity));
-            this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity));
+            //eUI.modal.alert(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.name));
+            this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.name));
         }
         return this
             .clearMessage();
@@ -637,7 +637,7 @@ return Backbone.View.extend({
         }
 
         if(msgs.length===0){
-            var entityName=this.uiModel.entity;
+            var entityName=this.uiModel.name;
             if(_.isUndefined(this.model) || (this.model && this.model.isNew())){
                 var collec=this.collection;
                 if(collec){
@@ -686,12 +686,12 @@ return Backbone.View.extend({
             }
         }
         return this.curView.setDefaults() //.clear()
-            .setTitle(i18n.getLabel('NewEntity', this.uiModel.entity, vw.getTitle()));
+            .setTitle(i18n.getLabel('NewEntity', this.uiModel.name, vw.getTitle()));
     },
 
     deleteItem: function(){
         var that=this,
-            entityName=this.uiModel.entity,
+            entityName=this.uiModel.name,
             entityValue=this.curView.getTitle();
 
         if(this.curView.cardinality==='1'){
@@ -745,7 +745,7 @@ return Backbone.View.extend({
             if(that.curView.getSelection){
                 var selection=that.curView.getSelection();
                 if(selection.length>0){
-                    if (confirm(i18n.getLabel('deleteN', selection.length, that.uiModel.entities))) {
+                    if (confirm(i18n.getLabel('deleteN', selection.length, that.uiModel.namePlural))) {
                         //TODO
 
                     }
@@ -949,11 +949,11 @@ return Backbone.View.extend({
                 collec=new Backbone.Collection(models);
             }
             this._filteredCollection=collec;
-            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.entities);
+            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.namePlural);
         }else{
             collec=this.collection;
             this._filteredCollection=null;
-            this.setStatus(collec.length+' '+this.uiModel.entities);
+            this.setStatus(collec.length+' '+this.uiModel.namePlural);
         }
         this._flagFilterIcon(fvs.length);
         this.pageIndex=0;
@@ -983,11 +983,11 @@ return Backbone.View.extend({
                 collec=new Backbone.Collection(models);
             }
             this._filteredCollection=collec;
-            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.entities);
+            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.namePlural);
         }else{
             collec=this.collection;
             this._filteredCollection=null;
-            this.setStatus(collec.length+' '+this.uiModel.entities);
+            this.setStatus(collec.length+' '+this.uiModel.namePlural);
         }
         this.pageIndex=0;
         if(this.curView.setCollection){

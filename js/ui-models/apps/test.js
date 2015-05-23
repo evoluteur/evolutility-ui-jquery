@@ -23,18 +23,18 @@ var testLOV2 = [
 ];
 
 var fieldsPanelList = [
-        {id: 'pl1f1',  type: 'text', label: 'Name', required:true, maxlength: 50},
-        {id: 'pl1f2',  type: 'text', label: 'Text', required:true, maxlength: 100},
+        {id: 'pl1f1',  type: 'text', label: 'Name', required:true, maxLength: 50},
+        {id: 'pl1f2',  type: 'text', label: 'Text', required:true, maxLength: 100},
         {id: 'pl1f3',  type: 'lov', label: 'Sizes', required:true, list: testLOV}
     ],
     fieldsPanelList2 = [
-        {id: 'pl2f1',  type: 'text', label: 'Name', maxlength: 50},
+        {id: 'pl2f1',  type: 'text', label: 'Name', maxLength: 50},
         {id: 'pl2f3',  type: 'date', label: 'Date', viewmany: true},
         {id: 'pl2f4',  type: 'boolean', label: 'Bool', viewmany: true},
-        {id: 'pl2f2',  type: 'text', label: 'Text', maxlength: 100}
+        {id: 'pl2f2',  type: 'text', label: 'Text', maxLength: 100}
     ],
     fieldsPanelList3 = [
-        {id: 'pl3f1',  type: 'text', label: 'Name', maxlength: 50},
+        {id: 'pl3f1',  type: 'text', label: 'Name', maxLength: 50},
         {id: 'pl3f2',  type: 'integer', label: 'Integer'},
         {id: 'pl3f3',  type: 'money', label: 'Money'},
         {id: 'pl3f4',  type: 'lov', label: 'Sizes', required:true, list: testLOV}
@@ -91,10 +91,10 @@ var uiModels = uiModels || {};
 
 uiModels.test = {
     id: 'test',
-    entity: 'test',
-    entities: 'tests',
+    name: 'test',
+    namePlural: 'tests',
     title: 'Test Object',
-    leadfield:'name',
+    fnTitle:'name',
     icon:'color_wheel.png',
     elements: [
         {
@@ -109,7 +109,7 @@ uiModels.test = {
                     type: 'text',
                     label: 'Title',
                     required: true,
-                    maxlength: '150',
+                    maxLength: '150',
                     viewmany: true,
                     width: 100
                 }

@@ -87,14 +87,14 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
             $f=that.$(prefix + f.id);
             switch(f.type) {
                 case fts.bool:
-                    $f.prop('checked', f.defaultvalue?'checked':false);
+                    $f.prop('checked', f.defaultValue?'checked':false);
                     break;
                 case fts.pix:
                     // TODO
 
                     break;
                 default:
-                    $f.html(f.defaultvalue || '');
+                    $f.html(f.defaultValue || '');
             }
         });
         if(subCollecs){

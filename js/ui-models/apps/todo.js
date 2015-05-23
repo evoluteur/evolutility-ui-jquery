@@ -3,10 +3,10 @@ var uiModels = uiModels || {};
 uiModels.todo = {
     id: 'todo',
     label: 'To Do',
-    entity: 'task',
-    entities: 'tasks',
+    name: 'task',
+    namePlural: 'tasks',
     icon: 'todo.gif',
-    leadfield:'title',
+    fnTitle:'title',
     elements: [
         {
             type: 'panel', label: 'Task', width: 62,
@@ -14,7 +14,7 @@ uiModels.todo = {
                 {
                     id: 'title', attribute: 'title', type: 'text', label: 'Title', required: true,
                     //placeholder: 'Call John',
-                    maxlength: 255,
+                    maxLength: 255,
                     width: 100, viewmany: true
                 },
                 {
@@ -29,7 +29,7 @@ uiModels.todo = {
                         {id: 'others', text: 'Others'},
                         {id: 'misc', text: 'Misc.'}
                     ],
-                    typechart:'bars'
+                    typeChart:'bars'
                 }
             ]
         },
@@ -50,8 +50,8 @@ uiModels.todo = {
                 {
                     id: 'complete', attribute: 'complete', type: 'boolean', width: 100, viewmany: true,
                     label: 'Complete', 
-                    labelcharts:'Tasks completion', labeltrue: 'Complete', labelfalse:'Incomplete',
-                    typechart:'pie'
+                    labelCharts:'Tasks completion', labelTrue: 'Complete', labelFalse:'Incomplete',
+                    typeChart:'pie'
                 }
             ]
         },
@@ -61,11 +61,11 @@ uiModels.todo = {
                 {
                     id: 'description', attribute: 'description', type: 'textmultiline', 
                     label: 'Description', 
-                    maxlength: 1000,
+                    maxLength: 1000,
                     width: 62, height: 5, viewmany: false
                 },
                 {
-                    id: 'notes', attribute: 'notes', type: 'textmultiline', label: 'Notes', maxlength: 1000,
+                    id: 'notes', attribute: 'notes', type: 'textmultiline', label: 'Notes', maxLength: 1000,
                     width: 38, height: 5, viewmany: false
                 }
             ]

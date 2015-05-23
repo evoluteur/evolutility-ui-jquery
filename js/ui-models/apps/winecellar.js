@@ -136,11 +136,11 @@ var uiModels = uiModels || {};
 
 uiModels.winecellar = {
     id: 'winecellar',
-    entity: 'wine',
-    entities: 'wines',
+    name: 'wine',
+    namePlural: 'wines',
     label: 'Wine Cellar',
     icon: 'wine.gif',
-    leadfield: function(model){
+    fnTitle: function(model){
         return model.get('name')+' '+model.get('vintage');
     },
     badge:function(model){
@@ -157,7 +157,7 @@ uiModels.winecellar = {
                     type: 'text',
                     label: 'Name',
                     required: true,
-                    maxlength: 150,
+                    maxLength: 150,
                     viewmany: true,
                     width: 62,
                     help: 'Name of the wine as indicated on the label.'
@@ -167,7 +167,7 @@ uiModels.winecellar = {
                     type: 'integer',
                     label: 'Vintage',
                     required: true,
-                    maxlength: 4,
+                    maxLength: 4,
                     viewmany: true,
                     width: 38,
                     min: 1900,
@@ -189,7 +189,7 @@ uiModels.winecellar = {
                             id:'winery',
                             type: 'text',
                             label: 'Winery',
-                            maxlength: 100,
+                            maxLength: 100,
                             required: true,
                             viewmany: true,
                             width: '62',
@@ -237,14 +237,14 @@ uiModels.winecellar = {
                             id:'region',
                             type: 'text',
                             label: 'Region',
-                            maxlength: 100,
+                            maxLength: 100,
                             width: 30
                         },
                         {
                             id:'area',
                             type: 'text',
                             label: 'Area',
-                            maxlength: 100,
+                            maxLength: 100,
                             width: 38
                         }
 
@@ -259,7 +259,7 @@ uiModels.winecellar = {
                             id:'label_img',
                             type: 'image',
                             label: 'Label',
-                            maxlength: 200,
+                            maxLength: 200,
                             width: 100,
                             viewmany: true
                         }
@@ -300,7 +300,7 @@ uiModels.winecellar = {
                             type: 'integer',
                             label: 'Bottles Purchased',
                             labellist: 'Purchased',
-                            maxlength: 10,
+                            maxLength: 10,
                             width: 40
                         },
                         {
@@ -308,7 +308,7 @@ uiModels.winecellar = {
                             type: 'integer',
                             label: 'Remaining',
                             labeledit: 'Bottles Remaining',
-                            maxlength: 10,
+                            maxLength: 10,
                             width: 60,
                             viewcharts:false
                         },
@@ -316,7 +316,7 @@ uiModels.winecellar = {
                             id:'notes',
                             type: 'textmultiline',
                             label: 'Notes',
-                            maxlength: 150,
+                            maxLength: 150,
                             width: 100,
                             height: 2
                         }
@@ -340,9 +340,9 @@ uiModels.winecellar = {
                             type: 'integer',
                             label: 'Drink from (year)',
                             labellist: 'Drink',
-                            labelcharts: 'Wines by Start drinking period',
+                            labelCharts: 'Wines by Start drinking period',
                             placeholder: '2012',
-                            maxlength: 10,
+                            maxLength: 10,
                             width: 50,
                             min: 1900,
                             max: 2100
@@ -351,8 +351,8 @@ uiModels.winecellar = {
                             id:'drink_to',
                             type: 'integer',
                             label: 'to',
-                            labelcharts: 'Wines by End drinking period',
-                            maxlength: 4,
+                            labelCharts: 'Wines by End drinking period',
+                            maxLength: 4,
                             width: 50,
                             min: 1900,
                             max: '2100'
@@ -361,8 +361,8 @@ uiModels.winecellar = {
                             id:'peak_from',
                             type: 'integer',
                             label: 'Peak from',
-                            labelcharts: 'Wines by Start peak period',
-                            maxlength: 4,
+                            labelCharts: 'Wines by Start peak period',
+                            maxLength: 4,
                             width: 50,
                             min: 1900,
                             max: 2100
@@ -371,8 +371,8 @@ uiModels.winecellar = {
                             id:'peak_to',
                             type: 'integer',
                             label: 'to',
-                            labelcharts: 'Wines by End peak period',
-                            maxlength: 4,
+                            labelCharts: 'Wines by End peak period',
+                            maxLength: 4,
                             width: 50,
                             min: 1900,
                             max: 2100
@@ -381,7 +381,7 @@ uiModels.winecellar = {
                             id:'meal',
                             type: 'textmultiline',
                             label: 'Meal',
-                            maxlength: 200,
+                            maxLength: 200,
                             width: 100,
                             height: 2
                         }
@@ -399,27 +399,27 @@ uiModels.winecellar = {
                             label: 'My Score',
                             labellist: 'Score',
                             list: winecellar_lovs.score,
-                            maxlength: 100,
+                            maxLength: 100,
                             width: 100
                         },
                         {
                             id:'score_parker',
                             type: 'integer',
                             label: 'Parker',
-                            labelcharts: 'Parker scores',
+                            labelCharts: 'Parker scores',
                             min: 50,
                             max: 100,
-                            maxlength: 3,
+                            maxLength: 3,
                             width: 100
                         },
                         {
                             id:'score_winespectator',
                             type: 'integer',
                             label: 'Wine Spectator',
-                            labelcharts: 'Wine Spectator scores',
+                            labelCharts: 'Wine Spectator scores',
                             min: 0,
                             max: 100,
-                            maxlength: 3,
+                            maxLength: 3,
                             width: 100
                         }
 
@@ -438,12 +438,12 @@ uiModels.winecellar = {
                     label: 'Degustations',
                     width: 100,
                     elements: [
-                        {id: 'ddate', type: 'date', label: 'Date', maxlength: 20, viewmany: true,
+                        {id: 'ddate', type: 'date', label: 'Date', maxLength: 20, viewmany: true,
                             required:true},
-                        {id: 'robe',  type: 'text', label: 'Robe', maxlength: 100, viewmany: true},
-                        {id: 'nose', type: 'text', label: 'Nose', maxlength: 100, viewmany: true},
-                        {id: 'taste', type: 'text', label: 'Taste', maxlength: 100, viewmany: true},
-                        {id: 'notes', type: 'textmultiline', label: 'Note', maxlength: 300, viewmany: true, width: 100, height: 2}
+                        {id: 'robe',  type: 'text', label: 'Robe', maxLength: 100, viewmany: true},
+                        {id: 'nose', type: 'text', label: 'Nose', maxLength: 100, viewmany: true},
+                        {id: 'taste', type: 'text', label: 'Taste', maxLength: 100, viewmany: true},
+                        {id: 'notes', type: 'textmultiline', label: 'Note', maxLength: 300, viewmany: true, width: 100, height: 2}
                     ]
                 }
             ]
@@ -461,7 +461,7 @@ uiModels.winecellar = {
                             id: 'comments',
                             type: 'textmultiline',
                             label: 'Comments',
-                            maxlength: 500,
+                            maxLength: 500,
                             width: 100,
                             height: 8
                         }

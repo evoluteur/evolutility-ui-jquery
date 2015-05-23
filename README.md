@@ -169,17 +169,17 @@ Here is the UI model used to configure all views for the ["To Do" app demo](http
 var UIModel_todo = {
     id: 'todo',
     label: 'To Do',
-    entity: 'task',
-    entities: 'tasks',
+    name: 'task',
+    namePlural: 'tasks',
     icon: 'todo.gif',
-    leadfield:'title',
+    fnTitle:'title',
     elements: [
         {
             type: 'panel', label: 'Task', width: 62,
             elements: [
                 {
                     id: 'title', type: 'text', label: 'Title', 
-                    required: true, maxlength: 255, 
+                    required: true, maxLength: 255, 
                     width: 100, viewmany: true
                 },
                 {
@@ -224,7 +224,7 @@ var UIModel_todo = {
             elements: [
                 {
                     id: 'notes', type: 'textmultiline', label: 'Notes', 
-                    maxlength: 1000,
+                    maxLength: 1000,
                     width: 100, height: 6, viewmany: false 
                 }
             ]

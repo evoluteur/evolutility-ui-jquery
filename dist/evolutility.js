@@ -51,7 +51,7 @@ Evol.UI = {
             if(fd) {
                 h+='" class="evo-field form-control '+(css || '');
                 // properties mapping to html attributes
-                _.each(['id', 'min', 'max', 'maxlength', 'placeholder'], function (item) { // 'max-width', 'min-width',
+                _.each(['id', 'min', 'max', 'maxLength', 'placeholder'], function (item) { // 'max-width', 'min-width',
                     if (!_.isUndefined(fd[item])) {
                         h+='" '+item+'="'+fd[item];
                     }
@@ -334,7 +334,7 @@ Evol.UI = {
     // --- panels ---
     HTMLPanelBegin: function (p, css) {
         return '<div data-pid="'+p.id+'" class="panel '+(p.css?p.css:css)+'">'+
-            '<div class="panel-heading '+(p.csslabel? p.csslabel:'')+'">'+
+            '<div class="panel-heading '+(p.cssLabel? p.cssLabel:'')+'">'+
             Evol.UI.icon('chevron-up', 'evol-title-toggle')+
             '<h3 class="panel-title">'+p.label+'</h3>'+
             (p.label2?'<div class="evol-subtitle">'+p.label2+'</div>' : '')+
@@ -562,12 +562,12 @@ Evol.i18n = {
     warnNoSave: 'Your changes will be lost if you don\'t save them.',
     bNoSave: 'Don\'t Save',
     deleteX:'Delete {0}',// {0}=entity
-    delete1:'Do you really want to delete the {0} "{1}"?', // {0}=entity {1}=leadfield value,
+    delete1:'Do you really want to delete the {0} "{1}"?', // {0}=entity {1}=titlefield value,
     deleteN: 'Delete {0} {1}?', // delete 5 tasks
     deleted1:'{0} deleted.', // {0}=entity ,
 
     notFound:'Item not found.',
-    //this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity);
+    //this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.name);
     notFoundMsg:'No {0} found.',
     notFoundMsgId:'No {0} found for ID="{1}".',
 
@@ -601,7 +601,7 @@ Evol.i18n = {
 
     // --- validation ---
     validation:{
-        incomplete: 'Incomplete information',
+        incomplete: 'Some information is missing or invalid.',
         invalid: 'Invalid format.',
         invalidList: '{0} values in "{1}" are invalid.',
         invalidList1: '1 value in "{1}" is invalid.',
@@ -616,11 +616,11 @@ Evol.i18n = {
         time:'"{0}" must be a valid date/time, format must be "hh:mm AM/PM" like "10:30 AM".',
         max:'"{0}" must be smaller or equal to {1}.',
         min:'"{0}" must be greater or equal to {1}.',
-        maxlength:'"{0}" must be {1} characters long maximum.',
-        minlength:'"{0}" must be at least {1} characters long.',
-        minmaxlength:'"{0}" must be between {1} and {2} characters long.',
-        regex:'"{0}" is not of the expected format.'
-        //regex:'"{0}" must match the regular expression pattern for "{1}".'
+        maxLength:'"{0}" must be {1} characters long maximum.',
+        minLength:'"{0}" must be at least {1} characters long.',
+        minMaxLength:'"{0}" must be between {1} and {2} characters long.',
+        regExp:'"{0}" is not of the expected format.'
+        //regExp:'"{0}" must match the regular expression pattern for "{1}".'
     },
 
     // --- errors ---
@@ -634,8 +634,8 @@ Evol.i18n = {
 
     // --- export ---
     export:{
-        ExportEntity: 'Export {0}', // {0}=entity
-        ExportEntities: 'Export {0}', // {0}=entities
+        ExportOne: 'Export {0}', // {0}=entity
+        ExportMany: 'Export {0}', // {0}=entities
         preview:'Export preview',
         header: 'Header',
         options: 'options',
@@ -934,7 +934,7 @@ return {
     },
 
     HTMLFieldLabel: function (fld, mode) {
-        var h='<div class="evol-field-label" id="'+fld.id+'-lbl"><label class="control-label '+(fld.csslabel?fld.csslabel:'')+'" for="'+fld.id+'">'+fld.label;
+        var h='<div class="evol-field-label" id="'+fld.id+'-lbl"><label class="control-label '+(fld.cssLabel?fld.cssLabel:'')+'" for="'+fld.id+'">'+fld.label;
         if (mode != 'browse' && fld.required){
             h+=eUI.html.required;
         }
@@ -1211,7 +1211,38 @@ return {
 
          return this;
      },
+
+    uiModel2tdbTable: function(uiModel){
+        // -- generates SQL script to create a Postgress DB table for the object
+        var t=uiModel.id || uiModel.name;
+        var fields=this.getFields(uiModel);
+        var sql='CREATE TABLE "Evolutility".'+t;
+        sql+='\n(\n';
+        sql+=[' id serial NOT NULL,\n'];
+        _.forEach(fields, function(f, idx){
+            sql+=' "'+(f.attribute || f.id)+'" ';
+            switch(f.type){
+                case 'boolean':
+                case 'integer':
+                    sql+=f.type;
+                    break;
+                case 'date':
+                case 'datetime':
+                case 'time': 
+                    sql+='date';
+                    break;
+                default:
+                    sql+='text';
+            }
+            sql+=',\n';
+        });
+        sql+='CONSTRAINT "'+t+'_pkey" PRIMARY KEY (id)';
+        sql+='\n) WITH (OIDS=FALSE);';
+
+        return sql;
+    },
 */
+
     filterModels: function(models, filters){
         if(filters.length){
             // TODO pre-build function to avoid repeating loop
@@ -1443,9 +1474,9 @@ Bubbles.prototype.getCenters = function (fId, size, data) {
     }else if(f.type==='boolean'){
       _.forEach(centers, function(c){
         if(c.name===true){
-          c.label = f.labeltrue || Evol.i18n.yes;
+          c.label = f.labelTrue || Evol.i18n.yes;
         }else if(c.name===false){
-          c.label = f.labelfalse || Evol.i18n.no;
+          c.label = f.labelFalse || Evol.i18n.no;
         }else{
           c.label=na;
         }
@@ -1748,7 +1779,7 @@ return Backbone.View.extend({
     },
 
     getTitle: function () {
-        return eUI.capitalize(this.uiModel.entities) + ' ' + this.viewName;
+        return eUI.capitalize(this.uiModel.namePlural) + ' ' + this.viewName;
     },
 
     getFields: function () {
@@ -1821,9 +1852,9 @@ return Backbone.View.extend({
         if (cSize === 0) {
             return '';
         } else if (cSize === 1) {
-            return cSize + ' ' + this.uiModel.entity;
+            return cSize + ' ' + this.uiModel.name;
         } else if (pSize >= cSize) {
-            return cSize + ' ' + this.uiModel.entities;
+            return cSize + ' ' + this.uiModel.namePlural;
         } else {
             var rangeBegin = (pIdx || 0) * pSize + 1, rangeEnd;
             if (pIdx < 1) {
@@ -1835,7 +1866,7 @@ return Backbone.View.extend({
                 .replace('{0}', rangeBegin)
                 .replace('{1}', rangeEnd)
                 .replace('{2}', cSize)
-                .replace('{3}', this.uiModel.entities);
+                .replace('{3}', this.uiModel.namePlural);
         }
     },
 
@@ -2245,7 +2276,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
     },
 
     render: function () {
-        this.entityName=Evol.UI.capitalize(this.uiModel.entities);
+        this.entityName=Evol.UI.capitalize(this.uiModel.namePlural);
         if(this.collection && this.collection.length>0){
             this.$el.html('<div class="evol-many-'+this.viewName+'">'+
                 this._HTMLcharts(this.style || 'panel-info', this.sizes)+
@@ -2286,9 +2317,9 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                     for(dataSetName in groups) {
                         nb=groups[dataSetName];
                         if(dataSetName==='true'){
-                            lb = f.labeltrue || i18n.yes;
+                            lb = f.labelTrue || i18n.yes;
                         }else{
-                            lb = f.labelfalse || i18n.no;
+                            lb = f.labelFalse || i18n.no;
                         }
                         data.push(nb);
                         labels.push(lb+' ('+nb+')');
@@ -2316,7 +2347,7 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                         labels.push(lb+' ('+nb+')');
                     }
                 }
-                chartType = f.typechart || (f.type===fTypes.lov ? 'pie':'bars');
+                chartType = f.typeChart || (f.type===fTypes.lov ? 'pie':'bars');
                 h+='<div class="evol-chart-holder panel '+style+'">'+
                     '<div class="glyphicon glyphicon-cog evo-chart-config pull-right" data-id="'+f.id+'" data-ctype="'+chartType+'"></div>'+
                     '<div class="chart-holder">';
@@ -2328,9 +2359,9 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
                     sizes: sizes
                 };
                 if(chartType==='pie'){
-                    h+=EvoUI.Charts.Pie(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aByB', entityName, f.label), data, labels, style, sizes);
+                    h+=EvoUI.Charts.Pie(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aByB', entityName, f.label), data, labels, style, sizes);
                 }else if(chartType==='bars'){
-                    h+=EvoUI.Charts.Bars(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aB', entityName, f.label), data, labels, style, sizes);
+                    h+=EvoUI.Charts.Bars(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aB', entityName, f.label), data, labels, style, sizes);
                 }
                 h+='</div><br></div>';
             });
@@ -2357,10 +2388,10 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
             f=oldData.field,
             holder=el.parent().find('.chart-holder');
         if(ctype==='pie'){
-            holder.html(chart.Bars(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aB', this.entityName, f.label), oldData.data, oldData.labels, oldData.style, oldData.sizes));
+            holder.html(chart.Bars(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aB', this.entityName, f.label), oldData.data, oldData.labels, oldData.style, oldData.sizes));
             el.data('ctype', 'bars');
         }else{
-            holder.html(chart.Pie(f.labelcharts?f.labelcharts:i18n.getLabel('charts.aByB', this.entityName, f.label), oldData.data, oldData.labels, oldData.style, oldData.sizes));
+            holder.html(chart.Pie(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aByB', this.entityName, f.label), oldData.data, oldData.labels, oldData.style, oldData.sizes));
             el.data('ctype', 'pie');
         }
     }
@@ -2617,12 +2648,12 @@ return Backbone.View.extend({
     getTitle: function(){
         if(this.model){
             if(this.model.isNew && this.model.isNew()){
-                return i18n.getLabel('NewEntity', this.uiModel.entity);
+                return i18n.getLabel('NewEntity', this.uiModel.name);
             }
-            var lf=this.uiModel.leadfield;
+            var lf=this.uiModel.fnTitle;
             return _.isFunction(lf)?lf(this.model):this.model.get(lf);
         }else{
-            return eUI.capitalize(this.uiModel.entity);
+            return eUI.capitalize(this.uiModel.name);
         }
     },
 
@@ -2759,8 +2790,8 @@ return Backbone.View.extend({
 
         this.clear();
         _.each(this.getFields(), function(f){
-            if(f.hasOwnProperty('defaultvalue')){
-                that.setFieldValue(f.id, f.defaultvalue);
+            if(f.hasOwnProperty('defaultValue')){
+                that.setFieldValue(f.id, f.defaultValue);
             }
         });
         return this;
@@ -2836,7 +2867,7 @@ return Backbone.View.extend({
         this.clearMessages();
         _.each(this.getFields(), function (f) {
             $f = that.$field(f.id);
-            defaultVal = f.defaultvalue || '';
+            defaultVal = f.defaultValue || '';
             if(f.readonly){
                 $f.html(defaultVal);
             }else{
@@ -3047,11 +3078,11 @@ return Backbone.View.extend({
         _.each(tabs, function (tab, idx) {
             if (tab.type === 'tab') {
                 if (isFirst) {
-                    h.push('<li class="active '+(tab.csslabel||'')+'">');
+                    h.push('<li class="active '+(tab.cssLabel||'')+'">');
                     isFirst = false;
                 } else {
-                    if(tab.csslabel){
-                        h.push('<li class="'+tab.csslabel+'">');
+                    if(tab.cssLabel){
+                        h.push('<li class="'+tab.cssLabel+'">');
                     }else{
                         h.push('<li>');
                     }
@@ -3092,7 +3123,7 @@ return Backbone.View.extend({
                 that._renderPanelList(h, elem, elem.readonly?'browse':mode);
             }else{
                 if(elem.type==fts.hidden){
-                    h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
+                    h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultValue, mode)));
                 }else{
                     h.push('<div style="width:'+parseInt(elem.width||100, 10)+'%" class="pull-left evol-fld">');
                     that.renderField(h, elem, mode, iconsPath);
@@ -3190,7 +3221,7 @@ return Backbone.View.extend({
     renderField: function (h, f, mode, iconsPath, skipLabel) {
         var fv='';
         if(this.model && this.model.has(f.id)){
-            fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultvalue || '';
+            fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultValue || '';
         }
         if(f.type==='formula'){
             h.push(Evol.Dico.HTMLFieldLabel(f, mode || 'edit')+
@@ -3208,7 +3239,7 @@ return Backbone.View.extend({
             var selector=this.titleSelector;
             if(selector && selector!==''){
                 var t,
-                    lf=this.uiModel.leadfield;
+                    lf=this.uiModel.fnTitle;
                 if(title){
                     t=title;
                 }else if((!_.isUndefined(lf)) && lf!==''){
@@ -3352,10 +3383,10 @@ return Backbone.View.extend({
                 }
 
                 // Check regexp
-                if (f.regex !== null && !_.isUndefined(f.regex)) {
-                    var rg = new RegExp(f.regex);
+                if (f.regExp !== null && !_.isUndefined(f.regExp)) {
+                    var rg = new RegExp(f.regExp);
                     if (!v.match(rg)) {
-                        return formatMsg(f.label, i18nVal.regex, f.label);
+                        return formatMsg(f.label, i18nVal.regExp, f.label);
                     }
                 }
 
@@ -3373,25 +3404,25 @@ return Backbone.View.extend({
             }
 
             // Check custom validation
-            if (f.customvalidation) {
-                var fValid = f.customvalidation(f, v);
+            if (f.fnValidate) {
+                var fValid = f.fnValidate(f, v);
                 if (fValid !== '') {
                     return formatMsg(f.label, fValid);
                 }
             }
 
-            // Check minlength and maxlength
+            // Check minLength and maxLength
             if (_.isString(v)) {
                 var len = v.length,
-                    badMax = f.maxlength?len > f.maxlength:false,
-                    badMin = f.minlength?len < f.minlength:false;
+                    badMax = f.maxLength?len > f.maxLength:false,
+                    badMin = f.minLength?len < f.minLength:false;
                 if(badMax || badMin){
-                    if(f.maxlength && f.minlength){
-                        return formatMsg(f.label, i18nVal.minmaxlength, f.minlength, f.maxlength);
-                    }else if(f.maxlength){
-                        return formatMsg(f.label, i18nVal.maxlength, f.maxlength);
+                    if(f.maxLength && f.minLength){
+                        return formatMsg(f.label, i18nVal.minMaxLength, f.minLength, f.maxLength);
+                    }else if(f.maxLength){
+                        return formatMsg(f.label, i18nVal.maxLength, f.maxLength);
                     }else{
-                        return formatMsg(f.label, i18nVal.minlength, f.minlength);
+                        return formatMsg(f.label, i18nVal.minLength, f.minLength);
                     }
                 }
             }
@@ -3725,14 +3756,14 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
             $f=that.$(prefix + f.id);
             switch(f.type) {
                 case fts.bool:
-                    $f.prop('checked', f.defaultvalue?'checked':false);
+                    $f.prop('checked', f.defaultValue?'checked':false);
                     break;
                 case fts.pix:
                     // TODO
 
                     break;
                 default:
-                    $f.html(f.defaultvalue || '');
+                    $f.html(f.defaultValue || '');
             }
         });
         if(subCollecs){
@@ -3905,7 +3936,7 @@ return Evol.ViewOne.Edit.extend({
         var miniUIModel= {
             type: 'panel',
             class:'evol-mini-holder',
-            label: Evol.UI.capitalize(this.uiModel.entity),
+            label: Evol.UI.capitalize(this.uiModel.name),
             width: 100,
             elements: this.getFields()
         };
@@ -3923,7 +3954,7 @@ return Evol.ViewOne.Edit.extend({
             '<fieldset data-pid="'+p.id+(p.readonly?'" disabled>':'">'));
         _.each(p.elements, function (elem) {
             if(elem.type==fts.hidden){
-                h.push(eUI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
+                h.push(eUI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultValue, mode)));
             }else{
                 h.push('<div class="pull-left evol-fld w-100">'+
                     '<div class="evol-mini-label">'+Evol.Dico.HTMLFieldLabel(elem, mode)+
@@ -4091,7 +4122,7 @@ return Backbone.View.extend({
             // ## Download button
             '<div class="evol-buttons form-actions">'+
                 eUI.button('cancel', i18n.bCancel, 'btn-default')+
-                eUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary')+
+                eUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
             '</div>'
         );
         return h.join('');
@@ -4116,7 +4147,7 @@ return Backbone.View.extend({
             case 'JSON':
                 var c = this.$('#xpt' + xFormat);
                 if (c.html() === '') {
-                    c.html(EvoExport['opts' + xFormat](this.uiModel.entity));
+                    c.html(EvoExport['opts' + xFormat](this.uiModel.name));
                 }
                 break;
         }
@@ -4134,8 +4165,11 @@ return Backbone.View.extend({
     },
 
     getTitle: function(){
-        var keyEnd=this.many?'ies':'y';
-        return i18n.getLabel('export.ExportEntit'+keyEnd, this.uiModel['entit'+keyEnd]);
+        if(this.many){
+            return i18n.getLabel('export.ExportMany', this.uiModel.namePlural);
+        }else{
+            return i18n.getLabel('export.ExportOne', this.uiModel.name);
+        }
     },
 
     _preview: function (format) {
@@ -4267,7 +4301,7 @@ return Backbone.View.extend({
                         sql = ['INSERT INTO '+sqlTable+' ('];
 
                     if(sqlTable===''){
-                        sqlTable = this.uiModel.entity.replace(/ /g,'_');
+                        sqlTable = this.uiModel.name.replace(/ /g,'_');
                     }
                     if(showID){
                         sql.push('ID, ');
@@ -4344,7 +4378,7 @@ return Backbone.View.extend({
                     }
                     break;
                 case 'XML':
-                    var elemName = this.$('#elementName').val() || this.uiModel.entity.replace(/ /g,'_'),
+                    var elemName = this.$('#elementName').val() || this.uiModel.name.replace(/ /g,'_'),
                         fv;
 
                     h='<xml>\n';
@@ -4425,7 +4459,7 @@ return Backbone.View.extend({
     click_format: function (evt) {
         var format = $(evt.currentTarget).val();
         if (format === 'XML') {
-            this.$('#XML').html(EvoExport.optsXML(this.uiModel.entity))
+            this.$('#XML').html(EvoExport.optsXML(this.uiModel.name))
                 .show()
                 .siblings().not('.evol-FLH').hide();
         }
@@ -5717,8 +5751,8 @@ return Backbone.View.extend({
         if(cModel){
             this.setRoute(cModel?cModel.id:null, false);
         }else{
-            //eUI.modal.alert(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity));
-            this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity));
+            //eUI.modal.alert(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.name));
+            this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.name));
         }
         return this
             .clearMessage();
@@ -5755,7 +5789,7 @@ return Backbone.View.extend({
         }
 
         if(msgs.length===0){
-            var entityName=this.uiModel.entity;
+            var entityName=this.uiModel.name;
             if(_.isUndefined(this.model) || (this.model && this.model.isNew())){
                 var collec=this.collection;
                 if(collec){
@@ -5804,12 +5838,12 @@ return Backbone.View.extend({
             }
         }
         return this.curView.setDefaults() //.clear()
-            .setTitle(i18n.getLabel('NewEntity', this.uiModel.entity, vw.getTitle()));
+            .setTitle(i18n.getLabel('NewEntity', this.uiModel.name, vw.getTitle()));
     },
 
     deleteItem: function(){
         var that=this,
-            entityName=this.uiModel.entity,
+            entityName=this.uiModel.name,
             entityValue=this.curView.getTitle();
 
         if(this.curView.cardinality==='1'){
@@ -5863,7 +5897,7 @@ return Backbone.View.extend({
             if(that.curView.getSelection){
                 var selection=that.curView.getSelection();
                 if(selection.length>0){
-                    if (confirm(i18n.getLabel('deleteN', selection.length, that.uiModel.entities))) {
+                    if (confirm(i18n.getLabel('deleteN', selection.length, that.uiModel.namePlural))) {
                         //TODO
 
                     }
@@ -6067,11 +6101,11 @@ return Backbone.View.extend({
                 collec=new Backbone.Collection(models);
             }
             this._filteredCollection=collec;
-            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.entities);
+            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.namePlural);
         }else{
             collec=this.collection;
             this._filteredCollection=null;
-            this.setStatus(collec.length+' '+this.uiModel.entities);
+            this.setStatus(collec.length+' '+this.uiModel.namePlural);
         }
         this._flagFilterIcon(fvs.length);
         this.pageIndex=0;
@@ -6101,11 +6135,11 @@ return Backbone.View.extend({
                 collec=new Backbone.Collection(models);
             }
             this._filteredCollection=collec;
-            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.entities);
+            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.namePlural);
         }else{
             collec=this.collection;
             this._filteredCollection=null;
-            this.setStatus(collec.length+' '+this.uiModel.entities);
+            this.setStatus(collec.length+' '+this.uiModel.namePlural);
         }
         this.pageIndex=0;
         if(this.curView.setCollection){
@@ -6348,7 +6382,7 @@ Evol.App = Backbone.View.extend({
 
     _HTMLentities: function (es) {
         return _.map(es, function(e){
-            return '<li><a href="#' + e.id + '/list" data-id="' + e.id + '">' + e.entities + '</a></li>';
+            return '<li><a href="#' + e.id + '/list" data-id="' + e.id + '">' + e.namePlural + '</a></li>';
         }).join('');
     }
 

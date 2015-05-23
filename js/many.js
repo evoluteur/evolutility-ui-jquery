@@ -165,7 +165,7 @@ return Backbone.View.extend({
     },
 
     getTitle: function () {
-        return eUI.capitalize(this.uiModel.entities) + ' ' + this.viewName;
+        return eUI.capitalize(this.uiModel.namePlural) + ' ' + this.viewName;
     },
 
     getFields: function () {
@@ -238,9 +238,9 @@ return Backbone.View.extend({
         if (cSize === 0) {
             return '';
         } else if (cSize === 1) {
-            return cSize + ' ' + this.uiModel.entity;
+            return cSize + ' ' + this.uiModel.name;
         } else if (pSize >= cSize) {
-            return cSize + ' ' + this.uiModel.entities;
+            return cSize + ' ' + this.uiModel.namePlural;
         } else {
             var rangeBegin = (pIdx || 0) * pSize + 1, rangeEnd;
             if (pIdx < 1) {
@@ -252,7 +252,7 @@ return Backbone.View.extend({
                 .replace('{0}', rangeBegin)
                 .replace('{1}', rangeEnd)
                 .replace('{2}', cSize)
-                .replace('{3}', this.uiModel.entities);
+                .replace('{3}', this.uiModel.namePlural);
         }
     },
 

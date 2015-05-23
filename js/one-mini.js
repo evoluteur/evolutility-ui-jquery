@@ -37,7 +37,7 @@ return Evol.ViewOne.Edit.extend({
         var miniUIModel= {
             type: 'panel',
             class:'evol-mini-holder',
-            label: Evol.UI.capitalize(this.uiModel.entity),
+            label: Evol.UI.capitalize(this.uiModel.name),
             width: 100,
             elements: this.getFields()
         };
@@ -55,7 +55,7 @@ return Evol.ViewOne.Edit.extend({
             '<fieldset data-pid="'+p.id+(p.readonly?'" disabled>':'">'));
         _.each(p.elements, function (elem) {
             if(elem.type==fts.hidden){
-                h.push(eUI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultvalue, mode)));
+                h.push(eUI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultValue, mode)));
             }else{
                 h.push('<div class="pull-left evol-fld w-100">'+
                     '<div class="evol-mini-label">'+Evol.Dico.HTMLFieldLabel(elem, mode)+

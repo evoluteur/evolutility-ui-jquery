@@ -137,9 +137,9 @@ Bubbles.prototype.getCenters = function (fId, size, data) {
     }else if(f.type==='boolean'){
       _.forEach(centers, function(c){
         if(c.name===true){
-          c.label = f.labeltrue || Evol.i18n.yes;
+          c.label = f.labelTrue || Evol.i18n.yes;
         }else if(c.name===false){
-          c.label = f.labelfalse || Evol.i18n.no;
+          c.label = f.labelFalse || Evol.i18n.no;
         }else{
           c.label=na;
         }

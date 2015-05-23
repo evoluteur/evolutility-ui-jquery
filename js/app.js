@@ -206,7 +206,7 @@ Evol.App = Backbone.View.extend({
 
     _HTMLentities: function (es) {
         return _.map(es, function(e){
-            return '<li><a href="#' + e.id + '/list" data-id="' + e.id + '">' + e.entities + '</a></li>';
+            return '<li><a href="#' + e.id + '/list" data-id="' + e.id + '">' + e.namePlural + '</a></li>';
         }).join('');
     }
 

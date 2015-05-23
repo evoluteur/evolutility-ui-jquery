@@ -147,7 +147,7 @@ return Backbone.View.extend({
             // ## Download button
             '<div class="evol-buttons form-actions">'+
                 eUI.button('cancel', i18n.bCancel, 'btn-default')+
-                eUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.entities), 'btn btn-primary')+
+                eUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
             '</div>'
         );
         return h.join('');
@@ -172,7 +172,7 @@ return Backbone.View.extend({
             case 'JSON':
                 var c = this.$('#xpt' + xFormat);
                 if (c.html() === '') {
-                    c.html(EvoExport['opts' + xFormat](this.uiModel.entity));
+                    c.html(EvoExport['opts' + xFormat](this.uiModel.name));
                 }
                 break;
         }
@@ -190,8 +190,11 @@ return Backbone.View.extend({
     },
 
     getTitle: function(){
-        var keyEnd=this.many?'ies':'y';
-        return i18n.getLabel('export.ExportEntit'+keyEnd, this.uiModel['entit'+keyEnd]);
+        if(this.many){
+            return i18n.getLabel('export.ExportMany', this.uiModel.namePlural);
+        }else{
+            return i18n.getLabel('export.ExportOne', this.uiModel.name);
+        }
     },
 
     _preview: function (format) {
@@ -323,7 +326,7 @@ return Backbone.View.extend({
                         sql = ['INSERT INTO '+sqlTable+' ('];
 
                     if(sqlTable===''){
-                        sqlTable = this.uiModel.entity.replace(/ /g,'_');
+                        sqlTable = this.uiModel.name.replace(/ /g,'_');
                     }
                     if(showID){
                         sql.push('ID, ');
@@ -400,7 +403,7 @@ return Backbone.View.extend({
                     }
                     break;
                 case 'XML':
-                    var elemName = this.$('#elementName').val() || this.uiModel.entity.replace(/ /g,'_'),
+                    var elemName = this.$('#elementName').val() || this.uiModel.name.replace(/ /g,'_'),
                         fv;
 
                     h='<xml>\n';
@@ -481,7 +484,7 @@ return Backbone.View.extend({
     click_format: function (evt) {
         var format = $(evt.currentTarget).val();
         if (format === 'XML') {
-            this.$('#XML').html(EvoExport.optsXML(this.uiModel.entity))
+            this.$('#XML').html(EvoExport.optsXML(this.uiModel.name))
                 .show()
                 .siblings().not('.evol-FLH').hide();
         }

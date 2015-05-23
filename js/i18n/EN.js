@@ -64,12 +64,12 @@ Evol.i18n = {
     warnNoSave: 'Your changes will be lost if you don\'t save them.',
     bNoSave: 'Don\'t Save',
     deleteX:'Delete {0}',// {0}=entity
-    delete1:'Do you really want to delete the {0} "{1}"?', // {0}=entity {1}=leadfield value,
+    delete1:'Do you really want to delete the {0} "{1}"?', // {0}=entity {1}=titlefield value,
     deleteN: 'Delete {0} {1}?', // delete 5 tasks
     deleted1:'{0} deleted.', // {0}=entity ,
 
     notFound:'Item not found.',
-    //this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.entity);
+    //this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.name);
     notFoundMsg:'No {0} found.',
     notFoundMsgId:'No {0} found for ID="{1}".',
 
@@ -103,7 +103,7 @@ Evol.i18n = {
 
     // --- validation ---
     validation:{
-        incomplete: 'Incomplete information',
+        incomplete: 'Some information is missing or invalid.',
         invalid: 'Invalid format.',
         invalidList: '{0} values in "{1}" are invalid.',
         invalidList1: '1 value in "{1}" is invalid.',
@@ -118,11 +118,11 @@ Evol.i18n = {
         time:'"{0}" must be a valid date/time, format must be "hh:mm AM/PM" like "10:30 AM".',
         max:'"{0}" must be smaller or equal to {1}.',
         min:'"{0}" must be greater or equal to {1}.',
-        maxlength:'"{0}" must be {1} characters long maximum.',
-        minlength:'"{0}" must be at least {1} characters long.',
-        minmaxlength:'"{0}" must be between {1} and {2} characters long.',
-        regex:'"{0}" is not of the expected format.'
-        //regex:'"{0}" must match the regular expression pattern for "{1}".'
+        maxLength:'"{0}" must be {1} characters long maximum.',
+        minLength:'"{0}" must be at least {1} characters long.',
+        minMaxLength:'"{0}" must be between {1} and {2} characters long.',
+        regExp:'"{0}" is not of the expected format.'
+        //regExp:'"{0}" must match the regular expression pattern for "{1}".'
     },
 
     // --- errors ---
@@ -136,8 +136,8 @@ Evol.i18n = {
 
     // --- export ---
     export:{
-        ExportEntity: 'Export {0}', // {0}=entity
-        ExportEntities: 'Export {0}', // {0}=entities
+        ExportOne: 'Export {0}', // {0}=entity
+        ExportMany: 'Export {0}', // {0}=entities
         preview:'Export preview',
         header: 'Header',
         options: 'options',

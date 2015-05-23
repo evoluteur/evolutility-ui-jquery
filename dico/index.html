@@ -83,7 +83,7 @@
                     //f.id=f.label.replace(/ /g,'_').toLowerCase();
                     f.id=f.label.replace(/ /g,'_').toLowerCase();
                     f.attribute = f.id;
-                    f.maxlength = f.maxlength||null;
+                    f.maxLength = f.maxLength||null;
                     f.width=f.width || 100;
                     f.height=f.height || 1;
                     if(f.type=='lov'|| f.type=='list'){
@@ -103,7 +103,7 @@
 
                     return f;
                 });
-            uiM.leadfield=fields[0]?fields[0].attribute:null;
+            uiM.fnTitle=fields[0]?fields[0].attribute:null;
             uiM.elements=[
                 {
                     type:'panel',

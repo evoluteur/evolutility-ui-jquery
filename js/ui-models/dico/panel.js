@@ -3,9 +3,9 @@ var uiModels=uiModels||{};
 uiModels.panel = {
     id:'panel',
     icon: "edi_pnl.png",
-    entity: "panel",
-    entities: "panels",
-    leadfield: 'label',
+    name: "panel",
+    namePlural: "panels",
+    fnTitle: 'label',
     elements: [
         {
             type: "panel",
@@ -18,7 +18,7 @@ uiModels.panel = {
                     label: "Label",
                     type: "text",
                     help: "Field title for the user",
-                    maxlength: 100,
+                    maxLength: 100,
                     required: true,
                     viewmany: true,
                     width: 100
@@ -29,15 +29,15 @@ uiModels.panel = {
                     labellist: "CSS Edit",
                     help: "Stylesheet class name for the field for the edit view.",
                     type: "text",
-                    maxlength: 20,
+                    maxLength: 20,
                     width: 62
                 },
                 {
-                    id: 'csslabel',
+                    id: 'cssLabel',
                     label: "CSS label",
                     help: "Stylesheet class name for the field label.",
                     type: "text",
-                    maxlength: 20,
+                    maxLength: 20,
                     width: 38
                 }
             ]
