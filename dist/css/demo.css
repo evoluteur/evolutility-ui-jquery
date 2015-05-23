@@ -302,8 +302,20 @@ code {
   background-color: #E3F2FD;
   text-decoration: none;
 }
+.links-bh a > img,
+.links-bih a > img {
+  position: relative;
+  top: -2px;
+}
 .links-bih a {
   padding: 5px 10px 3px 5px;
+}
+.t-props tr td:first-child {
+  width: 140px;
+  font-weight: 600;
+}
+.t-row {
+  background-color: #E3F2FD;
 }
 body {
   font-size: 15px !important;
