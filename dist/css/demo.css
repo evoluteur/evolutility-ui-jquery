@@ -219,6 +219,9 @@
 .evo-links-views > div {
   margin: 4px 0 10px 20px;
 }
+.evo-links-views > li {
+  margin: 5px 0 10px;
+}
 .evo-links-views a > i {
   margin: 5px;
 }
@@ -287,6 +290,20 @@ code {
 }
 .page-docidx > section {
   margin: 20px 0 30px;
+}
+.links-bh a,
+.links-bih a {
+  margin: 10px 5px;
+  padding: 5px;
+  border-radius: 5px;
+}
+.links-bh a:hover,
+.links-bih a:hover {
+  background-color: #E3F2FD;
+  text-decoration: none;
+}
+.links-bih a {
+  padding: 5px 10px 3px 5px;
 }
 body {
   font-size: 15px !important;

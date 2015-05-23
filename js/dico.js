@@ -500,7 +500,38 @@ return {
 
          return this;
      },
+
+    uiModel2tdbTable: function(uiModel){
+        // -- generates SQL script to create a Postgress DB table for the object
+        var t=uiModel.id || uiModel.entity;
+        var fields=this.getFields(uiModel);
+        var sql='CREATE TABLE "Evolutility".'+t;
+        sql+='\n(\n';
+        sql+=[' id serial NOT NULL,\n'];
+        _.forEach(fields, function(f, idx){
+            sql+=' "'+(f.attribute || f.id)+'" ';
+            switch(f.type){
+                case 'boolean':
+                case 'integer':
+                    sql+=f.type;
+                    break;
+                case 'date':
+                case 'datetime':
+                case 'time': 
+                    sql+='date';
+                    break;
+                default:
+                    sql+='text';
+            }
+            sql+=',\n';
+        });
+        sql+='CONSTRAINT "'+t+'_pkey" PRIMARY KEY (id)';
+        sql+='\n) WITH (OIDS=FALSE);';
+
+        return sql;
+    },
 */
+
     filterModels: function(models, filters){
         if(filters.length){
             // TODO pre-build function to avoid repeating loop

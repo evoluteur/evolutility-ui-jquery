@@ -67,7 +67,7 @@ uiModels.field = {
                     width: 62
                 },
                 {
-                    id: 'colpix',
+                    id: 'eid',
                     label: "ID",
                     labellist: "ID",
                     type: "text",
@@ -81,7 +81,52 @@ uiModels.field = {
                     type: "text",
                     help: "example '$ 0.00'",
                     maxlength: 30,
+                    width: 100
+                }
+            ]
+        },
+        {
+            type: "panel",
+            label: "Layout",
+            width: 38,
+            elements: [
+                {
+                    id:'position',
+                    label: "Position",
+                    help: "Integer (do not have to be consecutive)",
+                    type: "integer",
+                    maxlength: 3,
                     width: 62
+                },
+                {
+                    id:'viewmany',
+                    label: "List",
+                    help: "Field shows in lists",
+                    labellist: "List",
+                    type: "boolean",
+                    viewmany: true,
+                    width: 38
+                },
+                {
+                    id:'width',
+                    label: "Width",
+                    defaultvalue: 100,
+                    help: "Relative width of the field (in percentage)",
+                    type: "integer",
+                    format: "0 '%'",
+                    maxlength: 3,
+                    width: 62
+                },
+                {
+                    id:'height',
+                    attribute:'height',
+                    label: "Height",
+                    help: "Height in number of lines (for ''Textmultiline'' fields)",
+                    type: "integer",
+                    maxlength: 3,
+                    defaultvalue: 1,
+                    max:30,
+                    width: 38
                 },
                 {
                     id: 'css',
@@ -90,14 +135,14 @@ uiModels.field = {
                     help: "Stylesheet class name for the field for the edit view.",
                     type: "text",
                     maxlength: 20,
-                    width: 38
+                    width: 100
                 }
             ]
         },
         {
             type: "panel",
             label: "Validation",
-            width: 38,
+            width: 62,
             elements: [
                 {
                     id:'required',
@@ -156,60 +201,23 @@ uiModels.field = {
                     type: "integer",
                     maxlength: 4,
                     width: 50
-                }/*,
+                },
                 {
                     id:'regex',
                     label: "Regular Expression",
                     labellist: "RegExp",
-                    type: "integer",
+                    type: "text",
                     maxlength: 100,
-                    width: 100,
+                    width: 50,
                     help: 'Regular expression used to validate the field value.'
-                }*/
-            ]
-        },
-        {
-            type: "panel",
-            label: "Layout",
-            width: 62,
-            elements: [
-                {
-                    id:'position',
-                    label: "Position",
-                    help: "Integer (do not have to be consecutive)",
-                    type: "integer",
-                    maxlength: 3,
-                    width: 62
                 },
                 {
-                    id:'viewmany',
-                    label: "List",
-                    help: "Field shows in lists",
-                    labellist: "List",
-                    type: "boolean",
-                    viewmany: true,
-                    width: 38
-                },
-                {
-                    id:'height',
-                    attribute:'height',
-                    label: "Height",
-                    help: "Height in number of lines (for ''Textmultiline'' fields)",
-                    type: "integer",
-                    maxlength: 3,
-                    defaultvalue: 1,
-                    max:30,
-                    width: 62
-                },
-                {
-                    id:'width',
-                    label: "Width",
-                    defaultvalue: 100,
-                    help: "Relative width of the field (in percentage)",
-                    type: "integer",
-                    format: "0 '%'",
-                    maxlength: 3,
-                    width: 38
+                    id:'customvalidation',
+                    label: "Custom Validation Method",
+                    type: "text",
+                    maxlength: 100,
+                    width: 50,
+                    help: 'Name of Javascript function for validating the data.'
                 }
             ]
         },
@@ -226,7 +234,7 @@ uiModels.field = {
                     type: "textmultiline",
                     maxlength: 500,
                     width: 100,
-                    height: 4
+                    height: 8
                 }
             ]
         }

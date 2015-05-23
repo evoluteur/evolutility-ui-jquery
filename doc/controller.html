@@ -32,7 +32,7 @@
 </div>
 
 <div class="evo-title2">
-    <h1>Toolbar & Controller</h1>
+    <h1>Controller</h1>
 </div>
 
 <div class="evo-content2">
@@ -41,15 +41,28 @@
     Very likely you will want to write your own (at least for now).
 </p>
 
+<p>With Evolutility you can decide what to automate and what to code yourself.</p>
+<ul>
+    <li>You can instantiate any Evolutility view directly and write your own controller to manage it.</li>
+    <li>You can instantiate a toolbar which will manage all views for a specific entity (Backbone model and collection).</li>
+    <li>You can instantiate an app which will manage several toolbars which will manage the views.</li>
+</ul>
+<p>All views, toolbar and apps use the same ui-models.</p>
 
-<p>The class "Evol.App" handles routing for all views for several entities.
-For each entity it creates a toolbar which manages the views for that entity.
-</p>
+
+<section>
+<h2>App</h2>
+    <p>The class "Evol.App" handles routing for all views for several entities.
+    For each entity it creates a toolbar which manages the views for that entity.
+    </p>
 
 
-<p>Using Evolutility app, toolbar, views and UI models,
-    you can create a SPA (single page application).
-</p>
+
+
+</section>
+
+<section>
+<h2>Toolbar</h2>
 
     <p>
         <code>new Evol.ViewToolbar(myConfig);</code>
@@ -65,7 +78,7 @@ For each entity it creates a toolbar which manages the views for that entity.
 
 
     <section>
-        <h2>Methods</h2>
+        <h3>Methods</h3>
 
         <p>render()</p>
 
@@ -94,7 +107,7 @@ For each entity it creates a toolbar which manages the views for that entity.
     </section>
 
     <section>
-        <h2>Options</h2>
+        <h3>Options</h3>
 
         <p>toolbar: true,
         <p>readonly: false,
@@ -108,7 +121,7 @@ For each entity it creates a toolbar which manages the views for that entity.
     </section>
 
     <section>
-        <h2>Events</h2>
+        <h3>Events</h3>
 
         <p>item.added</p>
         <p>item.saved</p>
@@ -122,6 +135,8 @@ For each entity it creates a toolbar which manages the views for that entity.
             'prev', 'next'
             ])</p>
     </section>
+    
+</section>
 
 <p><br/>evolutility.js at <a href="https://github.com/evoluteur/evolutility" target="download">GitHub</a></p>
 

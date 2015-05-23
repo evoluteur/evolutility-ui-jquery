@@ -1,6 +1,7 @@
 {
   "name": "evolutility",
   "version": "0.5",
+  "homepage": "https://github.com/evoluteur/evolutility",
   "dependencies": {
     "jquery": "2.1.4",
     "backbone": "1.1.2",

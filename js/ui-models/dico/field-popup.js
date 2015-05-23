@@ -78,7 +78,7 @@ uiModels.fieldmini = {
                             width: 62
                         },
                         {
-                            id: 'colpix',
+                            id: 'eid',
                             label: "ID",
                             labellist: "ID",
                             type: "text",

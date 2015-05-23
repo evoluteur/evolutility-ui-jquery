@@ -26,13 +26,14 @@
     <ul class="evo-head-links">
         <li><a href="../demo/index.html">demo</a></li>
         <li><a href="index.html" class="sel">dico</a></li>
+        <li class="evo-links2">
+            <ul class="evo-head-links2">
+                <li><a href="#entity" data-id="entity">apps</a></li>
+                <li><a href="#field/edit" data-id="field">fields</a></li>
+            </ul>
+        </li>
         <li><a href="../doc/index.html">doc</a></li>
         <li><a href="https://github.com/evoluteur/evolutility" target="_new">GitHub</a></li>
-    </ul>
-    <ul class="evo-head-links2">
-        <li><a href="#entity" data-id="entity">build apps</a></li>
-        <li><a href="#field/edit" data-id="field">field</a></li>
-        <li><a href="#fieldmini/edit" data-id="fieldmini">field2</a></li>
     </ul>
     <div class="clearfix"></div>
 </div>
@@ -45,9 +46,14 @@
 
     <div id="evol" class="">
 
-        <p>This is the begining of an app to build other apps...</p>
-        <p>Still under construction</p>
 
+        <p>This feature is still under construction</p>
+
+        <p>Now that we can make apps easily, let's make an app to modify other apps.</p>
+
+        <p>Same thing as the sample apps but this time we are editing metadata instead of data.</p>
+
+        <p>This app would work like <a href="index.html#field/edit">app</a> or <a href="index.html#field/edit">field</a> (<a href="index.html#fieldmini/edit">with tabs</a>)... to be continued.
 
     </div>
 
@@ -66,8 +72,7 @@
             el:$e,
             uiModelsObj: {
                 entity: uiModels.entity,
-                field: uiModels.field,
-                fieldmini: uiModels.fieldmini
+                field: uiModels.field
             },
             style:'panel-primary'
         }).render();
@@ -98,8 +103,7 @@
 
                     return f;
                 });
-
-            uiM.leadfield=fields[0].attribute;
+            uiM.leadfield=fields[0]?fields[0].attribute:null;
             uiM.elements=[
                 {
                     type:'panel',
