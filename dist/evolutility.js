@@ -744,7 +744,7 @@ Evol.Dico = function(){
             formula:'formula', // soon to be a field attribute rather than a field type
             email: 'email',
             pix: 'image',
-            doc:'document',
+            //doc:'document',
             url: 'url',
             color: 'color',
             hidden: 'hidden'
@@ -862,7 +862,7 @@ return {
                     break;
                 case fts.color: // TODO is the color switch necessary?
                     //h+=uiInput.colorBox(fid, fv)+fv;
-                    h+='<div id="'+fid+'" class="form-control">'+fv+'</div>';
+                    h+='<div id="'+fid+'" class="form-control">'+uiInput.colorBox(fid, fv)+'</div>';
                     break;
                 default:
                     h+=this.fieldHTML_ReadOny(fld, fv, {}, iconsPath);
@@ -1728,9 +1728,11 @@ return Backbone.View.extend({
         var that=this,
             fv;
         if(f.type==='formula'){
-            fv = '<div class="disabled evo-rdonly evol-ellipsis">' +
-                (this.model?f.formula(this.model):'') +
-                '</div>';
+            fv = '<div class="disabled evo-rdonly evol-ellipsis">';
+            if(f.formula && this.model){
+                fv+=f.formula(this.model);
+            }
+            fv+='</div>';
         }else{
             fv = eDico.fieldHTML_ReadOny(f, v, Evol.hashLov, this.iconsPath || '');
             if (f.type === 'list') {
@@ -2733,7 +2735,7 @@ return Backbone.View.extend({
                             $f.html(eDico.fieldHTML_ReadOny(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                             break;
                         case fts.formula:
-                            $f.html(f.formula(model));
+                            $f.html(f.formula?f.formula(model):'');
                             break;
                         case fts.color:
                             $f.html(uiInput.colorBox(f.id, fv, fv));
@@ -2763,7 +2765,7 @@ return Backbone.View.extend({
                             $f.select2('val', fv);
                             break;
                         case fts.formula:
-                            $f.html(f.formula(model));
+                            $f.html(f.formula?f.formula(model):'');
                             break;
                         default:
                             $f.val(fv);
@@ -3225,9 +3227,11 @@ return Backbone.View.extend({
         }
         if(f.type==='formula'){
             h.push(Evol.Dico.HTMLFieldLabel(f, mode || 'edit')+
-                '<div id="'+this.fieldViewId(f.id)+'" class="disabled evo-rdonly evol-ellipsis">'+
-                (this.model?f.formula(this.model):'')+
-                '</div>');
+                '<div id="'+this.fieldViewId(f.id)+'" class="disabled evo-rdonly evol-ellipsis">');
+            if(f.formula && this.model){
+                h.push(f.formula(this.model));
+            }
+            h.push('</div>');
         }else{
             h.push(eDico.fieldHTML(f, this.fieldViewId(f.id), fv, mode, iconsPath, skipLabel));
         }
@@ -3692,6 +3696,7 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
     setData: function (model) {
         if(!_.isUndefined(model) && model!==null){
             var that=this,
+                uii=Evol.UI.input,
                 fts = Evol.Dico.fieldTypes,
                 fieldHTML_ReadOny = Evol.Dico.fieldHTML_ReadOny,
                 $f, fv,
@@ -3715,10 +3720,13 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
                             $f.html(fieldHTML_ReadOny(f, fv, Evol.hashLov, iconsPath));
                             break;
                         case fts.formula:
-                            $f.html(f.formula(model));
+                            $f.html(f.formula?f.formula(model):'');
                             break;
                         case fts.pix:
                             $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
+                            break;
+                        case fts.color:
+                            $f.html(uii.colorBox(f.id, fv, fv));
                             break;
                         case fts.textml:
                             if(fv){

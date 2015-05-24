@@ -23,6 +23,7 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
     setData: function (model) {
         if(!_.isUndefined(model) && model!==null){
             var that=this,
+                uii=Evol.UI.input,
                 fts = Evol.Dico.fieldTypes,
                 fieldHTML_ReadOny = Evol.Dico.fieldHTML_ReadOny,
                 $f, fv,
@@ -46,10 +47,13 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
                             $f.html(fieldHTML_ReadOny(f, fv, Evol.hashLov, iconsPath));
                             break;
                         case fts.formula:
-                            $f.html(f.formula(model));
+                            $f.html(f.formula?f.formula(model):'');
                             break;
                         case fts.pix:
                             $f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+Evol.i18n.nopix+'</p>'));
+                            break;
+                        case fts.color:
+                            $f.html(uii.colorBox(f.id, fv, fv));
                             break;
                         case fts.textml:
                             if(fv){

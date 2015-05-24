@@ -227,7 +227,7 @@ return Backbone.View.extend({
                             $f.html(eDico.fieldHTML_ReadOny(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                             break;
                         case fts.formula:
-                            $f.html(f.formula(model));
+                            $f.html(f.formula?f.formula(model):'');
                             break;
                         case fts.color:
                             $f.html(uiInput.colorBox(f.id, fv, fv));
@@ -257,7 +257,7 @@ return Backbone.View.extend({
                             $f.select2('val', fv);
                             break;
                         case fts.formula:
-                            $f.html(f.formula(model));
+                            $f.html(f.formula?f.formula(model):'');
                             break;
                         default:
                             $f.val(fv);
@@ -719,9 +719,11 @@ return Backbone.View.extend({
         }
         if(f.type==='formula'){
             h.push(Evol.Dico.HTMLFieldLabel(f, mode || 'edit')+
-                '<div id="'+this.fieldViewId(f.id)+'" class="disabled evo-rdonly evol-ellipsis">'+
-                (this.model?f.formula(this.model):'')+
-                '</div>');
+                '<div id="'+this.fieldViewId(f.id)+'" class="disabled evo-rdonly evol-ellipsis">');
+            if(f.formula && this.model){
+                h.push(f.formula(this.model));
+            }
+            h.push('</div>');
         }else{
             h.push(eDico.fieldHTML(f, this.fieldViewId(f.id), fv, mode, iconsPath, skipLabel));
         }

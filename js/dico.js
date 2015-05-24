@@ -33,7 +33,7 @@ Evol.Dico = function(){
             formula:'formula', // soon to be a field attribute rather than a field type
             email: 'email',
             pix: 'image',
-            doc:'document',
+            //doc:'document',
             url: 'url',
             color: 'color',
             hidden: 'hidden'
@@ -151,7 +151,7 @@ return {
                     break;
                 case fts.color: // TODO is the color switch necessary?
                     //h+=uiInput.colorBox(fid, fv)+fv;
-                    h+='<div id="'+fid+'" class="form-control">'+fv+'</div>';
+                    h+='<div id="'+fid+'" class="form-control">'+uiInput.colorBox(fid, fv)+'</div>';
                     break;
                 default:
                     h+=this.fieldHTML_ReadOny(fld, fv, {}, iconsPath);

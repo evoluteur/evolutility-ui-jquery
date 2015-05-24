@@ -114,9 +114,11 @@ return Backbone.View.extend({
         var that=this,
             fv;
         if(f.type==='formula'){
-            fv = '<div class="disabled evo-rdonly evol-ellipsis">' +
-                (this.model?f.formula(this.model):'') +
-                '</div>';
+            fv = '<div class="disabled evo-rdonly evol-ellipsis">';
+            if(f.formula && this.model){
+                fv+=f.formula(this.model);
+            }
+            fv+='</div>';
         }else{
             fv = eDico.fieldHTML_ReadOny(f, v, Evol.hashLov, this.iconsPath || '');
             if (f.type === 'list') {
