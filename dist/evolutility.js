@@ -1045,7 +1045,7 @@ return {
     },
 
     fieldInCharts: function (f) {
-        return (_.isUndefined(f.viewcharts) || f.viewcharts) && Evol.Dico.fieldChartable(f);
+        return (_.isUndefined(f.inCharts) || f.inCharts) && Evol.Dico.fieldChartable(f);
     },
     fieldChartable: function (f) {
         return  f.type===fts.lov || f.type===fts.bool || f.type===fts.int || f.type===fts.money;
@@ -1650,7 +1650,7 @@ return Backbone.View.extend({
         noDataString: i18n.nodata, //'No data to display.',
         iconsPath: 'pix/',
         fieldsetFilter: function (f) {
-            return f.viewmany;
+            return f.inMany;
         }
     },
 
@@ -2416,7 +2416,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
     viewName: 'list',
     
     fieldsetFilter: function (f) {
-        return f.viewmany || f.viewlist;
+        return f.inMany || f.inList;
     },
 
     _render: function (models) {
@@ -3935,7 +3935,7 @@ return Evol.ViewOne.Edit.extend({
     prefix: 'om',
 
     fieldsetFilter: function(f){
-        return (f.required || f.viewmany || f.viewmini) && f.type!='formula';
+        return (f.required || f.inMany || f.inMini) && f.type!='formula';
     },
 
     _render: function (h, mode) {
@@ -4167,7 +4167,9 @@ return Backbone.View.extend({
 
     getFields: function (){
         if(!this.fields){
-            this.fields=eDico.getFields(this.uiModel);
+            this.fields=eDico.getFields(this.uiModel, function(f){
+                return _.isUndefined(f.inExport) || f.inExport;
+            });
         }
         return this.fields;
     },

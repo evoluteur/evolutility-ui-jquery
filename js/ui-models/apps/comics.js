@@ -19,10 +19,10 @@ uiModels.comics = {
                 {
                     id: 'title', attribute: 'title', type: 'text', label: 'Title', required: true, 
                     maxLength: 255,
-                    width: 62, viewmany: true
+                    width: 62, inMany: true
                 },
                 {
-                    id: 'genre', attribute: 'genre', type: 'lov', label: 'Genre', width: 38, viewmany: true,
+                    id: 'genre', attribute: 'genre', type: 'lov', label: 'Genre', width: 38, inMany: true,
                     list: [
                         {id: 'adv', text: 'Adventure'},
                         {id: 'conte', text: 'Fairy tale'},
@@ -40,34 +40,34 @@ uiModels.comics = {
                     ]
                 },
                 {
-                    id: 'authors', attribute: 'authors', type: 'text', width: 62, viewmany: true,
+                    id: 'authors', attribute: 'authors', type: 'text', width: 62, inMany: true,
                     label: 'Authors'
                 },
                 {
-                    id: 'language', attribute: 'language', type: 'lov', label: 'Language', width: 38, viewmany: false,
+                    id: 'language', attribute: 'language', type: 'lov', label: 'Language', width: 38, inMany: false,
                     list: [
                         {id: 'FR', text: 'French'},
                         {id: 'EN', text: 'English'}
                     ]
                 },
                 {
-                    id: 'serieNb', attribute: 'serieNb', type: 'integer', width: 15, viewmany: false,
-                    label: 'Albums', viewcharts:false 
+                    id: 'serieNb', attribute: 'serieNb', type: 'integer', width: 15, inMany: false,
+                    label: 'Albums', inCharts:false 
                 },
                 {
-                    id: 'haveNb', attribute: 'haveNb', type: 'integer', width: 15, viewmany: false,
-                    label: 'Owned', viewcharts:false 
+                    id: 'haveNb', attribute: 'haveNb', type: 'integer', width: 15, inMany: false,
+                    label: 'Owned', inCharts:false 
                 },
                 {
-                    id: 'have', attribute: 'have', type: 'text', width: 32, viewmany: false,
+                    id: 'have', attribute: 'have', type: 'text', width: 32, inMany: false,
                     label: 'have' 
                 },
                 {
-                    id: 'complete', attribute: 'complete', type: 'boolean', width: 19, viewmany: true,
+                    id: 'complete', attribute: 'complete', type: 'boolean', width: 19, inMany: true,
                     label: 'Complete', labelFalse:'Incomplete', labelTrue:'Complete'
                 },
                 {
-                    id: 'finished', attribute: 'finished', type: 'boolean', width: 19, viewmany: true,
+                    id: 'finished', attribute: 'finished', type: 'boolean', width: 19, inMany: true,
                     label: 'Finished', labelTrue:'Finished', labelFalse:'Unfinished', css:'cBlue'
                 },
                 {
@@ -82,7 +82,7 @@ uiModels.comics = {
                 },
                 {
                     id: 'notes', attribute: 'notes', type: 'textmultiline', label: 'Notes', maxLength: 1000,
-                    width: 100, height: 6, viewmany: false
+                    width: 100, height: 6, inMany: false
                 }
             ]
         },
@@ -90,7 +90,7 @@ uiModels.comics = {
             type: 'panel', label: 'Cover', width: 30,
             elements: [
                 {
-                    id: 'pix', attribute: 'pix', type: 'image', width: 100, viewmany: true,
+                    id: 'pix', attribute: 'pix', type: 'image', width: 100, inMany: true,
                     label: 'Cover'
                 }
             ]

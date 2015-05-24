@@ -43,7 +43,7 @@ uiModels.fieldmini = {
                     help: "Field title for the user",
                     maxLength: 100,
                     required: true,
-                    viewmany: true,
+                    inMany: true,
                     width: 100
                 }
             ]
@@ -65,7 +65,7 @@ uiModels.fieldmini = {
                             list:uiFieldTypes,
                             maxLength: 100,
                             required: true,
-                            viewmany: true,
+                            inMany: true,
                             width: 100
                         },
                         {
@@ -122,7 +122,7 @@ uiModels.fieldmini = {
                             //defaultValue: false,
                             help: "Mandatory field",
                             type: "boolean",
-                            viewmany: true,
+                            inMany: true,
                             width: 50,
                             img: "checkr.gif"
                         },
@@ -205,12 +205,12 @@ uiModels.fieldmini = {
                             width: 62
                         },
                         {
-                            id:'viewmany',
+                            id:'inMany',
                             label: "List",
                             help: "Field shows in lists",
                             labellist: "List",
                             type: "boolean",
-                            viewmany: true,
+                            inMany: true,
                             width: 38
                         },
                         {

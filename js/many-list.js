@@ -14,7 +14,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
     viewName: 'list',
     
     fieldsetFilter: function (f) {
-        return f.viewmany || f.viewlist;
+        return f.inMany || f.inList;
     },
 
     _render: function (models) {

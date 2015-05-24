@@ -158,7 +158,7 @@ uiModels.winecellar = {
                     label: 'Name',
                     required: true,
                     maxLength: 150,
-                    viewmany: true,
+                    inMany: true,
                     width: 62,
                     help: 'Name of the wine as indicated on the label.'
                 },
@@ -168,7 +168,7 @@ uiModels.winecellar = {
                     label: 'Vintage',
                     required: true,
                     maxLength: 4,
-                    viewmany: true,
+                    inMany: true,
                     width: 38,
                     min: 1900,
                     max: 2020,
@@ -191,7 +191,7 @@ uiModels.winecellar = {
                             label: 'Winery',
                             maxLength: 100,
                             required: true,
-                            viewmany: true,
+                            inMany: true,
                             width: '62',
                             help: 'The establishment where this wine is made.'
                         },
@@ -207,7 +207,7 @@ uiModels.winecellar = {
                             id:'grape',
                             type: 'lov',
                             label: 'Grape',
-                            viewmany: false,
+                            inMany: false,
                             width: 62,
                             list: winecellar_lovs.grape
                         },
@@ -215,7 +215,7 @@ uiModels.winecellar = {
                             id:'type',
                             type: 'lov',
                             label: 'Type',
-                            viewmany: true,
+                            inMany: true,
                             width: 38,
                             list: winecellar_lovs.type
                         },
@@ -261,7 +261,7 @@ uiModels.winecellar = {
                             label: 'Label',
                             maxLength: 200,
                             width: 100,
-                            viewmany: true
+                            inMany: true
                         }
                     ]
                 }
@@ -286,7 +286,7 @@ uiModels.winecellar = {
                             id:'price',
                             type: 'money',
                             label: 'Price',
-                            viewmany: true,
+                            inMany: true,
                             width: 30
                         },
                         {
@@ -310,7 +310,7 @@ uiModels.winecellar = {
                             labeledit: 'Bottles Remaining',
                             maxLength: 10,
                             width: 60,
-                            viewcharts:false
+                            inCharts:false
                         },
                         {
                             id:'notes',
@@ -438,12 +438,12 @@ uiModels.winecellar = {
                     label: 'Degustations',
                     width: 100,
                     elements: [
-                        {id: 'ddate', type: 'date', label: 'Date', maxLength: 20, viewmany: true,
+                        {id: 'ddate', type: 'date', label: 'Date', maxLength: 20, inMany: true,
                             required:true},
-                        {id: 'robe',  type: 'text', label: 'Robe', maxLength: 100, viewmany: true},
-                        {id: 'nose', type: 'text', label: 'Nose', maxLength: 100, viewmany: true},
-                        {id: 'taste', type: 'text', label: 'Taste', maxLength: 100, viewmany: true},
-                        {id: 'notes', type: 'textmultiline', label: 'Note', maxLength: 300, viewmany: true, width: 100, height: 2}
+                        {id: 'robe',  type: 'text', label: 'Robe', maxLength: 100, inMany: true},
+                        {id: 'nose', type: 'text', label: 'Nose', maxLength: 100, inMany: true},
+                        {id: 'taste', type: 'text', label: 'Taste', maxLength: 100, inMany: true},
+                        {id: 'notes', type: 'textmultiline', label: 'Note', maxLength: 300, inMany: true, width: 100, height: 2}
                     ]
                 }
             ]

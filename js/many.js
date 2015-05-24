@@ -36,7 +36,7 @@ return Backbone.View.extend({
         noDataString: i18n.nodata, //'No data to display.',
         iconsPath: 'pix/',
         fieldsetFilter: function (f) {
-            return f.viewmany;
+            return f.inMany;
         }
     },
 

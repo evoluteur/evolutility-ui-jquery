@@ -45,7 +45,7 @@ uiModels.entity = {
                     id: "title",
                     attribute: "title",
                     maxLength: 100,
-                    viewmany: true,
+                    inMany: true,
                     width: 52,
                     required: true
                 },
@@ -55,7 +55,7 @@ uiModels.entity = {
                     id: "id",
                     attribute: "id",
                     maxLength: 20,
-                    viewmany: true,
+                    inMany: true,
                     width: 18
                 },
                 {
@@ -63,7 +63,7 @@ uiModels.entity = {
                     type: "boolean",
                     id: "PUBLISH",
                     attribute: "PUBLISH",
-                    viewmany: true,
+                    inMany: true,
                     width: 20
                 }
             ]
@@ -86,7 +86,7 @@ uiModels.entity = {
                             attribute: "name",
                             required: true,
                             maxLength: 50,
-                            viewmany: true,
+                            inMany: true,
                             width: 62
                         },
                         {
@@ -147,7 +147,7 @@ uiModels.entity = {
                             id: "attribute",
                             attribute: "attribute",
                             maxLength: 100,
-                            viewmany:true,
+                            inMany:true,
                             //"link": "EvoDicoField.aspx?ID=@itemid",
                             required: true
                         },
@@ -157,7 +157,7 @@ uiModels.entity = {
                             id: "label",
                             attribute: "label",
                             maxLength: 100,
-                            viewmany:true,
+                            inMany:true,
                             required: true
                         },
                         {
@@ -173,8 +173,8 @@ uiModels.entity = {
                             label: "In List",
                             help: "Field shows as header field for lists",
                             type: "boolean",
-                            id: "viewmany",
-                            attribute: "viewmany",
+                            id: "inMany",
+                            attribute: "inMany",
                             width: 50,
                             "img": "checkg.gif"
                         },

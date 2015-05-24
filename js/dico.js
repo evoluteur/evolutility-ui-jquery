@@ -334,7 +334,7 @@ return {
     },
 
     fieldInCharts: function (f) {
-        return (_.isUndefined(f.viewcharts) || f.viewcharts) && Evol.Dico.fieldChartable(f);
+        return (_.isUndefined(f.inCharts) || f.inCharts) && Evol.Dico.fieldChartable(f);
     },
     fieldChartable: function (f) {
         return  f.type===fts.lov || f.type===fts.bool || f.type===fts.int || f.type===fts.money;

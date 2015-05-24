@@ -20,7 +20,7 @@ uiModels.panel = {
                     help: "Field title for the user",
                     maxLength: 100,
                     required: true,
-                    viewmany: true,
+                    inMany: true,
                     width: 100
                 },
                 {

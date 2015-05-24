@@ -180,15 +180,15 @@ var UIModel_todo = {
                 {
                     id: 'title', type: 'text', label: 'Title', 
                     required: true, maxLength: 255, 
-                    width: 100, viewmany: true
+                    width: 100, inMany: true
                 },
                 {
                     id: 'duedate', type: 'date', label: 'Due Date', 
-                    width: 62, viewmany: true
+                    width: 62, inMany: true
                 },
                 {
                     id: 'category', type: 'lov', label: 'Category', 
-                    width: 38, viewmany: true,
+                    width: 38, inMany: true,
                     list: [
                         {id: 'home', text: 'Home'},
                         {id: 'work', text: 'Work'},
@@ -204,7 +204,7 @@ var UIModel_todo = {
             elements: [
                 {
                     id: 'priority', type: 'lov', label: 'Priority', required: true,
-                    width: 100,  viewmany: true,
+                    width: 100,  inMany: true,
                     list: [
                         {id: '1', text: '1 - ASAP'},
                         {id: '2', text: '2 - Urgent'},
@@ -215,7 +215,7 @@ var UIModel_todo = {
                 },
                 {
                     id: 'complete', type: 'boolean', label: 'Complete', 
-                    width: 100, viewmany: true
+                    width: 100, inMany: true
                 }
             ]
         },
@@ -225,7 +225,7 @@ var UIModel_todo = {
                 {
                     id: 'notes', type: 'textmultiline', label: 'Notes', 
                     maxLength: 1000,
-                    width: 100, height: 6, viewmany: false 
+                    width: 100, height: 6, inMany: false 
                 }
             ]
         }

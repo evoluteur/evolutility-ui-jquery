@@ -28,7 +28,7 @@ return Evol.ViewOne.Edit.extend({
     prefix: 'om',
 
     fieldsetFilter: function(f){
-        return (f.required || f.viewmany || f.viewmini) && f.type!='formula';
+        return (f.required || f.inMany || f.inMini) && f.type!='formula';
     },
 
     _render: function (h, mode) {

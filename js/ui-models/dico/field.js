@@ -43,7 +43,7 @@ uiModels.field = {
                     help: "Field title for the user",
                     maxLength: 100,
                     required: true,
-                    viewmany: true,
+                    inMany: true,
                     width: 62
                 },
                 {
@@ -54,7 +54,7 @@ uiModels.field = {
                     list:uiFieldTypes,
                     maxLength: 100,
                     required: true,
-                    viewmany: true,
+                    inMany: true,
                     width: 38
                 },
                 {
@@ -99,12 +99,12 @@ uiModels.field = {
                     width: 62
                 },
                 {
-                    id:'viewmany',
+                    id:'inMany',
                     label: "List",
                     help: "Field shows in lists",
                     labellist: "List",
                     type: "boolean",
-                    viewmany: true,
+                    inMany: true,
                     width: 38
                 },
                 {
@@ -150,7 +150,7 @@ uiModels.field = {
                     //defaultValue: false,
                     help: "Mandatory field",
                     type: "boolean",
-                    viewmany: true,
+                    inMany: true,
                     width: 50,
                     img: "checkr.gif"
                 },

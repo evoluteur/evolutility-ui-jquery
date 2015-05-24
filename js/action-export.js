@@ -184,7 +184,9 @@ return Backbone.View.extend({
 
     getFields: function (){
         if(!this.fields){
-            this.fields=eDico.getFields(this.uiModel);
+            this.fields=eDico.getFields(this.uiModel, function(f){
+                return _.isUndefined(f.inExport) || f.inExport;
+            });
         }
         return this.fields;
     },

@@ -29,8 +29,8 @@ var fieldsPanelList = [
     ],
     fieldsPanelList2 = [
         {id: 'pl2f1',  type: 'text', label: 'Name', maxLength: 50},
-        {id: 'pl2f3',  type: 'date', label: 'Date', viewmany: true},
-        {id: 'pl2f4',  type: 'boolean', label: 'Bool', viewmany: true},
+        {id: 'pl2f3',  type: 'date', label: 'Date', inMany: true},
+        {id: 'pl2f4',  type: 'boolean', label: 'Bool', inMany: true},
         {id: 'pl2f2',  type: 'text', label: 'Text', maxLength: 100}
     ],
     fieldsPanelList3 = [
@@ -49,7 +49,7 @@ function fieldTypePanel(id, label, labelPanel, label2Panel, css){
                 type: id,
                 label: label,
                 required: true,
-                viewmany: true,
+                inMany: true,
                 width: 100
             },
             {
@@ -110,7 +110,7 @@ uiModels.test = {
                     label: 'Title',
                     required: true,
                     maxLength: '150',
-                    viewmany: true,
+                    inMany: true,
                     width: 100
                 }
             ]
@@ -142,7 +142,7 @@ uiModels.test = {
                             label: 'List',
                             list:testLOV2,
                             required: true,
-                            viewmany: true,
+                            inMany: true,
                             width: 100
                         },
                         {

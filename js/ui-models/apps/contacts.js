@@ -327,11 +327,11 @@ uiModels.contact = {
             elements: [
                 {
                     type: 'text', id: 'lastname', label: 'Lastname', maxLength: 50,
-                    required: true, width: '62', viewmany: true
+                    required: true, width: '62', inMany: true
                 },
                 {
                     type: 'text', id: 'firstname', label: 'Firstname', maxLength: 50,
-                    required: true, width: 38, viewmany: true
+                    required: true, width: 38, inMany: true
                 },
                 {
                     type: 'text', id: 'jobtitle', label: 'Title', maxLength: 50,
@@ -339,11 +339,11 @@ uiModels.contact = {
                 },
                 {
                     type: 'text', id: 'company', label: 'Company', maxLength: 50,
-                    width: 38, viewmany: true
+                    width: 38, inMany: true
                 },
                 {
                     type: 'email', id: 'email', label: 'email', maxLength: 255,
-                    width: 100, viewmany: true
+                    width: 100, inMany: true
                 },
                 {
                     type: 'url', id: 'web', label: 'web', maxLength: 255, width: 100
@@ -397,7 +397,7 @@ uiModels.contact = {
             elements: [
                 {
                     type: 'lov', id: 'category', label: 'Category', width: 100,
-                    viewmany: true,
+                    inMany: true,
                     list: contact_LOVs.categories
                 },
                 {

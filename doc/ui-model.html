@@ -108,7 +108,7 @@
         </td>
     </tr>
     <tr>
-        <td>elements[]<span class="evol-required">*</span>
+        <td>elements[ ]<span class="evol-required">*</span>
         </td>
         <td>
             Array of tabs or panels which contains fields.
@@ -150,7 +150,7 @@
                 ]</td>
     </tr>
     <tr>
-        <td>searchFields[] <span class="evol-asterix">*</span>
+        <td>searchFields[ ] <span class="evol-asterix">*</span>
         </td>
         <td>
         List of fields which participate in search (array of field ids).
@@ -412,18 +412,33 @@
             </td>
         </tr>
         <tr>
-            <td>viewcharts
+            <td>inCharts
             </td>
             <td>Determines if a chart is displayed in the Charts view for grouping by this specific field.
             </td>
         </tr>
         <tr>
-            <td>viewmany, viewlist, <br/>
-                viewcards, viewedit, <br/>
-                viewmini, viewexport,
-                viewcharts
+            <td>inMany
             </td>
-            <td>Determines if the field is available in specific views.
+            <td>Determines if the field is shown in views "Many" (List, Card...).
+            </td>
+        </tr>
+        <tr>
+            <td>inExport
+            </td>
+            <td>If set to false, the field will not be available in Export.
+            </td>
+        </tr>
+        <tr>
+            <td>inMini
+            </td>
+            <td>By default fields included in the Mini view are required fields and fields shown in views List and Cards. Setting inMini to true add the field to the Mini view.
+            </td>
+        </tr>
+        <tr>
+            <td>inList, inCards
+            </td>
+            <td>Possibility to override inMany a specific field in view Card or List.
             </td>
         </tr>
         </tbody></table>
@@ -456,7 +471,7 @@
             </td>
         </tr>
         <tr>
-            <td>elements[]<span class="evol-required">*</span>
+            <td>elements[ ]<span class="evol-required">*</span>
             </td>
             <td>
                 Array of fields.
@@ -541,7 +556,7 @@
             </td>
         </tr>
         <tr>
-            <td>elements[]<span class="evol-required">*</span>
+            <td>elements[ ]<span class="evol-required">*</span>
             </td>
             <td>
                 Array of fields in the sub-collection.
@@ -598,7 +613,7 @@
             </td>
         </tr>
         <tr>
-            <td>elements[]<span class="evol-required">*</span>
+            <td>elements[ ]<span class="evol-required">*</span>
             </td>
             <td>
                 Array of panels and panel-lists.

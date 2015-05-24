@@ -22,7 +22,7 @@ uiModels.object = {
                     id: "Title",
                     attribute: "Title",
                     maxLength: 100,
-                    viewmany: true,
+                    inMany: true,
                     width: 80,
                     required: true
                 },
@@ -31,7 +31,7 @@ uiModels.object = {
                     type: "boolean",
                     id: "PUBLISH",
                     attribute: "PUBLISH",
-                    viewmany: true,
+                    inMany: true,
                     width: 20
                 },
                 {
@@ -41,7 +41,7 @@ uiModels.object = {
                     id: "id",
                     attribute: "id",
                     maxLength: 100,
-                    viewmany: true,
+                    inMany: true,
                     width: 100,
                     readonly: true
                 }
@@ -65,7 +65,7 @@ uiModels.object = {
                             attribute: "name",
                             required: true,
                             maxLength: 50,
-                            viewmany: true,
+                            inMany: true,
                             width: 62
                         },
                         {
