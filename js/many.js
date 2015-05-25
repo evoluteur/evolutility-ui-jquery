@@ -107,7 +107,7 @@ return Backbone.View.extend({
     },
 
     _render: function (models) {
-        alert('_render must be overwritten');
+        alert('_render must be overridden');
     },
 
     _HTMLField: function (f, v) {

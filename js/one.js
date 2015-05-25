@@ -665,8 +665,7 @@ return Backbone.View.extend({
                 _.each(vs, function(row, idx){
                     h.push('<tr data-idx="'+idx+'">');
                     if(editable){
-                        that._TDsFieldsEdit(h, uiPnl.elements, row);
-                        h.push(TDbPM);
+                        h.push(that._TDsFieldsEdit(uiPnl.elements, row)+TDbPM);
                     }else{
                         _.each(fs, function (f) {
                             h.push('<td>');
@@ -698,18 +697,18 @@ return Backbone.View.extend({
             '</td></tr>';
     },
 
-    _TDsFieldsEdit: function(h, fs, m){
-        var fv,
+    _TDsFieldsEdit: function(fs, m){
+        var h='',
+            fv,
             iconPath=this.iconPath;
         _.each(fs, function (f) {
             fv=m[f.id];
             if(_.isUndefined(fv)){
                 fv='';
             }
-            h.push('<td>'+
-                eDico.fieldHTML(f, f.id, fv, 'edit-details', iconPath, true)+
-                '</td>');
+            h+='<td>'+eDico.fieldHTML(f, f.id, fv, 'edit-details', iconPath, true)+'</td>';
         });
+        return h;
     },
 
     renderField: function (h, f, mode, iconsPath, skipLabel) {
@@ -1136,16 +1135,16 @@ return Backbone.View.extend({
         evt.stopImmediatePropagation();
         if(bId==='bPlus'){
             // - Add row to details
-            var h=[],
+            var h='',
                 subCollecs=this.getSubCollecs(),
                 mid=tr.closest('table').data('mid'),
                 elems=(subCollecs[mid])?subCollecs[mid].elements:null;
-            h.push('<tr>');
-            this._TDsFieldsEdit(h, elems, {});
-            h.push('<td class="evo-td-plusminus">'+
+            h+='<tr>'+
+                this._TDsFieldsEdit(elems, {})+
+                '<td class="evo-td-plusminus">'+
                 eUI.buttonsPlusMinus()+
-                '</td></tr>');
-            $(h.join('')).insertAfter(tr);
+                '</td></tr>';
+            $(h).insertAfter(tr);
             if(tr.data('id')==='nodata'){
                 tr.remove();
             }
