@@ -967,7 +967,7 @@ return Backbone.View.extend({
             searchString=$('.evo-search>input').val().toLowerCase(), 
             searchFunction = function(sString){
                 return function(model){
-                    return that.uiModel.searchfn(model, sString);
+                    return that.uiModel.fnSearch(model, sString);
                 };
             },
             collec;

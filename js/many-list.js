@@ -48,7 +48,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
     HTMLItem: function(h, fields, model, icon, selectable, route){
         var that = this,
             v,
-            bf = that.uiModel.badge,
+            bf = that.uiModel.fnBadge,
             link = (this.links!==false),
             ft = Evol.Dico.fieldTypes;
 

@@ -143,7 +143,7 @@ uiModels.winecellar = {
     fnTitle: function(model){
         return model.get('name')+' '+model.get('vintage');
     },
-    badge:function(model){
+    fnBadge: function(model){
         return model.get('remaining') || 0;
     },
     elements: [

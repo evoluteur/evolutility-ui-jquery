@@ -121,15 +121,29 @@
         </td>
     </tr>
     <tr>
-        <td>badge</td>
-        <td>id of the field to display as a badge near the items' title. Can also be a function taking model as a parameter.
-            <br/>Example: badgefield = &quot;price&quot;</td>
+        <td>fnBadge</td>
+        <td>id of the field to display the value of as a badge near the items' title. Can also be a function taking the model as a parameter.
+            <br/>Example 1: fnBadge = &quot;price&quot;
+            <br>Example 2: 
+                    fnBadge = function(model){
+                        return model.get('orders').length || 0;
+                    }
+            </td>
     </tr>
     <tr>
         <td>fnTitle</td>
         <td>id of the field to use for the page title (when using option "$title"). Can also be a function taking model as a parameter.
             <br/>Example 1: fnTitle = &quot;firstname&quot;<br/>
             Exemple 2: fnTitle = function(model){ return model.get('firstname')+' '+model.get('lastname')}</td>
+    </tr>
+    <tr>
+        <td>fnSearch <span class="evol-asterix">*</span></td>
+        <td>Function to perform searches on the models. <br>
+            Example: fnSearch = function (){
+                return model.get('firstname').toLowerCase().indexOf(searchString)>-1 ||
+                    model.get('lastname').toLowerCase().indexOf(searchString)>-1;
+            }
+            </td>
     </tr>
     <tr>
         <td>icon
