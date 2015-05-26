@@ -198,6 +198,108 @@
 
 </section>
 
+
+
+
+<a name="validation" class="evo-anchor">&nbsp;</a>
+<section>
+    <h2>Validation</h2>
+    <p>Validation is determined by the field properties. Validation happens when the user click the "Save" button.</p>
+   
+    <ul>
+        <li><span class="xmlAttr">type</span> - Text, Integer, Decimal, Date...</li>
+        <li><span class="xmlAttr">required</span> - Must have a value.</li>
+        <li><span class="xmlAttr">max</span> - Maximum value allowed.</li>
+        <li><span class="xmlAttr">min</span> - Minimum value allowed.</li>
+        <li><span class="xmlAttr">maxLength</span> - Maximum length.</li>
+        <li><span class="xmlAttr">minLength</span> - Minimum length.</li>
+        <li><span class="xmlAttr">regExp</span> - Regular expression to verify.</li>
+        <li><span class="xmlAttr">fnValidate</span> - Custom validation function that the model must pass.</li>
+    </ul>
+
+</section>
+
+
+
+<a name="layout" class="evo-anchor">&nbsp;</a>
+<section class="evol-doc-views">
+    <h2>Layout</h2>
+
+    <p>Evolutility follows the "flow positioning" method. Elements position is entirely determined by their order in the ui-model, which 
+        does not require any description of the positioning, absolute or relative, of 
+        the user interface on the screen. The ordering of the information and the 
+        internal description of each element (such as field type, width, and height) implies 
+        the coordonates of every element on each screen.</p>
+    <p>You can organize fields in panels (sections) on the page. 
+        Panels are placed sequentially, left to right, until a width of 100% is 
+        reached. Once the maximum width is reached, the next panel will appear below 
+        the previous group of panels.</p>
+    <p>In the following screenshot the form is organized into 4 panels for "Identity" 
+        (width=60%), "Contact Info" (width=40%), "Address" (width=60%), and 
+        "Misc." (width=40%). Each of these panels contains one or several fields.</p> 
+        <p><img src="screenshots/position-panels.gif" class="pixEvoPos shadow">
+        </p> 
+    <p>Inside each panel, fields are placed using the same rule: placed sequentially, 
+        left to right, until a width of 100% is reached.</p> 
+
+    <TABLE cellSpacing="0" cellPadding="0" border="0" >
+        <TR>
+            <TD vAlign="top">
+                <p><img src="screenshots/position-100.gif" class="pixEvoPos shadow"><br/>
+                    &nbsp;</p>
+            </TD>
+            <td>&nbsp;&nbsp;</td>
+            <TD vAlign="top"><br>
+                <P>Lastname: width=100%<br/>
+                    Firstname: width=100%<br/>
+                    email: width=100%</p>
+            </TD>
+        </TR>
+        <TR>
+            <TD vAlign="top">
+                <p><img src="screenshots/position-50.gif" class="pixEvoPos shadow">
+                </p>
+            </TD>
+            <td>&nbsp;&nbsp;</td>
+            <TD vAlign="top"><br>
+                <P>Lastname: width=50%<br/>
+                    Firstname: width=50%<br/>
+                    email: width=100%</p>
+            </TD>
+        </TR>
+    </TABLE>
+         
+    <p>The previous 2 screenshots demonstrate how elements are re-positioned simply by 
+        changing their width.
+    </p>
+    
+    <p>The "flow positioning" method is also quite flexible as it allows different numbers of fields on different rows which is quite
+    useful for cases like an address.</p>
+    <TABLE cellSpacing="0" cellPadding="0" border="0" >
+        <TR>
+            <TD vAlign="top"><img src="screenshots/position-address.gif" class="pixEvoPos shadow"> 
+            </TD>
+            <td>&nbsp;&nbsp;</td>
+            <TD vAlign="top"><br>
+                <P >Address: width=100%<br/>
+                    Address 2: width=100%<br/>
+                    City: width=62%<br/>
+                    State: width=15%<br/>
+                    Zip: width=23%<br/>
+                    <br/>
+                </p>
+            </TD>
+        </TR>
+    </TABLE> 
+
+<h3>View layout customization with CSS</h3>
+
+    <p>It is possible to enhance or adapt layout by adding CSS classes. </p>
+    <p>For the demo, in Cards view, cards height is defined in CSS for each entity.</p>
+
+</section>
+
+
 <a name="many" class="evo-anchor">&nbsp;</a>
 <section id="views-many">
 
