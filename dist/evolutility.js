@@ -2585,7 +2585,6 @@ return Backbone.View.extend({
 
     postRender: function (){
         // to overwrite...
-
     },
 
     getFields: function (){
@@ -3106,11 +3105,14 @@ return Backbone.View.extend({
     _renderTab: function (h, tab, mode) {
         var that = this;
         h.push('<div class="evol-pnls '+(tab.css||'')+'">');
-        _.each(tab.elements, function (uip) {
-            if (uip.type === 'panel-list') {
-                that._renderPanelList(h, uip, mode);
+        _.each(tab.elements, function (p, idx) {
+            if(!p.id){
+                p.id='p-'+idx;
+            }
+            if (p.type === 'panel-list') {
+                that._renderPanelList(h, p, mode);
             } else {
-                that._renderPanel(h, uip, mode);
+                that._renderPanel(h, p, mode);
             }
         });
         h.push(eUI.html.clearer+'</div></div>'); // TODO 2 div?
