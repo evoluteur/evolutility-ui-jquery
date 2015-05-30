@@ -4,7 +4,7 @@
   "homepage": "https://github.com/evoluteur/evolutility",
   "dependencies": {
     "jquery": "2.1.4",
-    "backbone": "1.1.2",
+    "backbone": "1.2",
     "backbone.localStorage": "v1.1.16",
     "underscore": "1.8.3",
     "d3": "3.5.5",
