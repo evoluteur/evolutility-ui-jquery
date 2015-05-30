@@ -1,0 +1,163 @@
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" type="image/png" href="../favicon.png">
+
+    <meta name="keywords" content="open source metadata UI SPA Backbone View Model Bootstrap" />
+    <meta name="description" content="Evolutility :: Demo Single Page App" /></head>
+
+    <link href="../dist/css/vendors.min.css" rel="stylesheet" />
+    <link href="../dist/css/demo.css" rel="stylesheet" />
+    <link href="../dist/css/evolutility.min.css" rel="stylesheet" />
+
+    <script src="../dist/vendors.min.js" type="text/javascript"></script>
+    <script src="../dist/evolutility.min.js" type="text/javascript"></script>
+    <script src="demo.js" type="text/javascript"></script>
+    <script src="demo-data.min.js" type="text/javascript"></script>
+    <script src="../js/ui-models/apps/todo.js" type="text/javascript"></script>
+
+    <title id="headTitle">Evolutility Demo</title>
+</head>
+
+<body>
+
+<div class="evo-header">
+    <div class="evo-logo"><a href="../index.html"><span>evol</span>utility<span>.js</span></a></div>
+    <ul class="evo-head-links">
+        <li><a href="index.html" class="sel">demos</a></li>
+        <li class="evo-link2">
+            <ul class="evo-head-links2">
+                <li><a href="index.html#todo" data-id="todo">todo</a></li>
+                <li><a href="index.html#contact" data-id="contact">addressbook</a></li>
+                <li><a href="index.html#winecellar" data-id="winecellar">wine cellar</a></li>
+                <li><a href="index.html#comics/cards" data-id="comics">graphic novels</a></li>
+                <li><a href="custom-app.html" class="sel" data-id="custom">your custom app</a></li>
+            </ul>
+        </li>
+        <li><a href="../doc/index.html">doc</a></li> 
+        <li class="spaced"><a href="https://github.com/evoluteur/evolutility" target="_new">GitHub</a></li>
+    </ul>
+    <div class="clearfix"></div>
+</div>
+
+<div class="evo-content"> 
+ 
+    <h4 class="mt20">See how the different views adapt to changes to the ui-model.</h4>
+ 
+<div>
+<p>
+Make changes to the UI-model below, choose the view to display and click the "Refresh" button.
+</p>
+    <div class="pull-left" style="width:62%;">
+        <label>UI-model</label>
+        <textarea id="uimodel2" rows="12" class="evol-json evo-field form-control"></textarea>
+     </div>
+    <div id="evol-views-params" class="pull-left" style="width:calc(38% - 40px);margin-left:20px;">
+
+        <div> 
+            <select id="evolView" class="form-control pull-left" style="width:auto;margin-right:10px;">
+                <optgroup label="One = model">
+                    <option value="browse">Browse</option>
+                    <option value="edit" selected="selected">Edit</option>
+                    <option value="mini">Mini</option>
+                    <option value="json">JSON</option>
+                </optgroup>
+                <optgroup label="Many = collection">
+                    <option value="list">List</option>
+                    <option value="cards">Cards</option>
+                    <option value="bubbles">Bubbles</option>
+                    <option value="charts">Charts</option>
+                </optgroup>
+                <optgroup label="Action">
+                    <option value="export">Export</option>
+                    <option value="filter">Filter</option>
+                </optgroup>
+            </select>
+            <button class="btn btn-warning pull-left" id="btnRefresh">Refresh</button>
+        </div>
+
+        <p class="clearfix"></p>
+
+        <div id="viewInfo"></div>
+
+        <p class="clearfix"></p>
+     
+</div>
+        <p class="clearfix"></p>
+<div id="evol1"></div>
+
+    <p>&nbsp;</p>
+
+    <div class="clearfix"></div>
+    <div class="footer">&#169; 2015 Olivier Giulieri</div>
+
+</div>
+
+<script>
+
+    var curView=null;
+
+    function showView(){
+        var modelName=$('#evolModel').val(),
+            viewName=$('#evolView').val(),
+            uiModel=getUIM();
+
+        if(uiModel){
+            Evol.Dico.clearCacheLOV();
+            var $e=$('<div data-eid="'+uiModel.id+'"></div>'),
+                collec = new Backbone.Collection(uiModels['todo_data']),
+                config={
+                    style: 'panel-primary',
+                    collection: collec,
+                    model: collec.at(0),
+                    uiModel: uiModel,
+                    title:'',
+                    el: $e,
+                    iconsPath:'pix/'
+                };
+            $('#evol1').html($e);
+            if(curView){
+                curView.remove();
+            }
+            curView = new Evol.viewClasses[viewName](config)
+                            .render();
+        }else{
+            $('#evol1').html('<div class="alert alert-danger">The UI-model is invalid.</div>');
+        }
+
+        var vwInfo = ViewDescriptions[viewName];
+        $('#viewInfo').html(vwInfo.desc);
+
+    }
+
+    function getUIM(){
+        try {
+            return JSON.parse($('#uimodel2').val());
+        }catch(err) {
+            return null;
+        }
+    }
+
+    $(document).ready(function(){
+        var $evol=$('#evol'),
+            entityName='todo';
+
+        $('#uimodel2').html(JSON.stringify(uiModels.todo, null, 2));
+
+        $('#evolModel,#evolView').on('change', function(){
+            showView();
+        });
+        showView();
+
+        $('#btnRefresh').on('click', function(evt){
+            showView();
+        });
+ 
+    });
+
+</script>
+</body>
+
+</html>
