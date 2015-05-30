@@ -202,6 +202,9 @@
   -moz-box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);
 }
+img.pixEvoPos {
+  width: 350px !important;
+}
 .pixEvoView,
 .pixEvoPos {
   margin: 10px 0 10px 20px;
@@ -252,7 +255,7 @@ code {
 }
 .list-views {
   position: absolute;
-  top: 10px;
+  top: 7px;
   left: 225px;
 }
 .list-views > div {
