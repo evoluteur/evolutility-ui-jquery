@@ -744,6 +744,7 @@ Evol.Dico = function(){
             formula:'formula', // soon to be a field attribute rather than a field type
             email: 'email',
             pix: 'image',
+            //geoloc: 'geolocation',
             //doc:'document',
             url: 'url',
             color: 'color',
@@ -861,7 +862,6 @@ return {
                     h+='<div id="'+fid+'" class="form-control evol-ellipsis">'+fld.formula()+'</div>';
                     break;
                 case fts.color: // TODO is the color switch necessary?
-                    //h+=uiInput.colorBox(fid, fv)+fv;
                     h+='<div id="'+fid+'" class="form-control">'+uiInput.colorBox(fid, fv)+'</div>';
                     break;
                 default:
@@ -1721,7 +1721,7 @@ return Backbone.View.extend({
     },
 
     _render: function (models) {
-        alert('_render must be overwritten');
+        alert('_render must be overridden');
     },
 
     _HTMLField: function (f, v) {
@@ -2168,6 +2168,10 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
 
     viewName: 'cards',
 
+    fieldsetFilter: function (f) {
+        return f.inMany || f.inCards;
+    },
+
     _render: function (models) {
         var pSize = this.pageSize || 50,
             pSummary = this.pageSummary(0, pSize, models.length);
@@ -2208,7 +2212,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
             if (idx === 0) {
                 h.push('<div data-mid="'+model.id+'">');
                 // Item badge
-                var bf=that.uiModel.badge;
+                var bf=that.uiModel.fnBadge;
                 if(bf){
                     h.push('<span class="badge pull-right">');
                     if(_.isFunction(bf)){
@@ -2261,14 +2265,20 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
 // Quick and easy implementation w/ the old version of google charts
 // must be re-written to use D3.js or other cool stuff
 
-Evol.ViewMany.Charts = Evol.ViewMany.extend({
+Evol.ViewMany.Charts = function() {
+
+var EvoUI = Evol.UI,
+    EvoDico = Evol.Dico,
+    i18n = Evol.i18n;
+
+return Evol.ViewMany.extend({
 
     viewName: 'charts',
 
     options: {
         //sizes: '600x300',
         style: 'panel-info',
-        fieldsetFilter: Evol.Dico.fieldInCharts,
+        fieldsetFilter: EvoDico.fieldInCharts,
         autoUpdate: false
     },
 
@@ -2278,22 +2288,19 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
     },
 
     render: function () {
-        this.entityName=Evol.UI.capitalize(this.uiModel.namePlural);
+        this.entityName=EvoUI.capitalize(this.uiModel.namePlural);
         if(this.collection && this.collection.length>0){
             this.$el.html('<div class="evol-many-'+this.viewName+'">'+
                 this._HTMLcharts(this.style || 'panel-info', this.sizes)+
                 '</div>');
         }else{
-            this.$el.html(Evol.UI.HTMLMsg(Evol.i18n.nodata, '', 'info'));
+            this.$el.html(EvoUI.HTMLMsg(i18n.nodata, '', 'info'));
         }
         return this.setTitle();
     },
 
     _HTMLcharts: function (style, sizes) {
         var h='',
-            EvoUI = Evol.UI,
-            EvoDico = Evol.Dico,
-            i18n = Evol.i18n,
             fTypes = EvoDico.fieldTypes,
             uiModel = this.uiModel,
             models = this.collection.models,
@@ -2381,11 +2388,10 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
     },
 
     changeChartType: function(evt){
-        var i18n = Evol.i18n,
-            el=$(evt.currentTarget),
+        var el=$(evt.currentTarget),
             id=el.data('id'),
             ctype=el.data('ctype'),
-            chart=Evol.UI.Charts,
+            chart=EvoUI.Charts,
             oldData=this._cData[id],
             f=oldData.field,
             holder=el.parent().find('.chart-holder');
@@ -2399,6 +2405,8 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
     }
 
 });
+
+}();
 ;
 /*! ***************************************************************************
  *
@@ -2450,7 +2458,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
     HTMLItem: function(h, fields, model, icon, selectable, route){
         var that = this,
             v,
-            bf = that.uiModel.badge,
+            bf = that.uiModel.fnBadge,
             link = (this.links!==false),
             ft = Evol.Dico.fieldTypes;
 
@@ -3173,8 +3181,7 @@ return Backbone.View.extend({
                 _.each(vs, function(row, idx){
                     h.push('<tr data-idx="'+idx+'">');
                     if(editable){
-                        that._TDsFieldsEdit(h, uiPnl.elements, row);
-                        h.push(TDbPM);
+                        h.push(that._TDsFieldsEdit(uiPnl.elements, row)+TDbPM);
                     }else{
                         _.each(fs, function (f) {
                             h.push('<td>');
@@ -3206,18 +3213,18 @@ return Backbone.View.extend({
             '</td></tr>';
     },
 
-    _TDsFieldsEdit: function(h, fs, m){
-        var fv,
+    _TDsFieldsEdit: function(fs, m){
+        var h='',
+            fv,
             iconPath=this.iconPath;
         _.each(fs, function (f) {
             fv=m[f.id];
             if(_.isUndefined(fv)){
                 fv='';
             }
-            h.push('<td>'+
-                eDico.fieldHTML(f, f.id, fv, 'edit-details', iconPath, true)+
-                '</td>');
+            h+='<td>'+eDico.fieldHTML(f, f.id, fv, 'edit-details', iconPath, true)+'</td>';
         });
+        return h;
     },
 
     renderField: function (h, f, mode, iconsPath, skipLabel) {
@@ -3644,16 +3651,16 @@ return Backbone.View.extend({
         evt.stopImmediatePropagation();
         if(bId==='bPlus'){
             // - Add row to details
-            var h=[],
+            var h='',
                 subCollecs=this.getSubCollecs(),
                 mid=tr.closest('table').data('mid'),
                 elems=(subCollecs[mid])?subCollecs[mid].elements:null;
-            h.push('<tr>');
-            this._TDsFieldsEdit(h, elems, {});
-            h.push('<td class="evo-td-plusminus">'+
+            h+='<tr>'+
+                this._TDsFieldsEdit(elems, {})+
+                '<td class="evo-td-plusminus">'+
                 eUI.buttonsPlusMinus()+
-                '</td></tr>');
-            $(h.join('')).insertAfter(tr);
+                '</td></tr>';
+            $(h).insertAfter(tr);
             if(tr.data('id')==='nodata'){
                 tr.remove();
             }
@@ -6129,7 +6136,7 @@ return Backbone.View.extend({
             searchString=$('.evo-search>input').val().toLowerCase(), 
             searchFunction = function(sString){
                 return function(model){
-                    return that.uiModel.searchfn(model, sString);
+                    return that.uiModel.fnSearch(model, sString);
                 };
             },
             collec;

@@ -85,6 +85,9 @@
 .evo-head-links2 > li > a.sel {
   color: white;
 }
+.evo-link2 li li {
+  margin-left: -12px;
+}
 @media only screen and (max-width: 900px) {
   .evo-link2 {
     order: 100;
@@ -199,8 +202,12 @@
   -moz-box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);
 }
-.pixEvoView {
-  margin: 20px 0;
+.pixEvoView,
+.pixEvoPos {
+  margin: 10px 0 10px 20px;
+}
+.pixEvoPos img {
+  width: 250px;
 }
 .evo-content3 > p > img {
   width: 500px;

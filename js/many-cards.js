@@ -13,6 +13,10 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
 
     viewName: 'cards',
 
+    fieldsetFilter: function (f) {
+        return f.inMany || f.inCards;
+    },
+
     _render: function (models) {
         var pSize = this.pageSize || 50,
             pSummary = this.pageSummary(0, pSize, models.length);

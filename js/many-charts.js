@@ -12,14 +12,20 @@
 // Quick and easy implementation w/ the old version of google charts
 // must be re-written to use D3.js or other cool stuff
 
-Evol.ViewMany.Charts = Evol.ViewMany.extend({
+Evol.ViewMany.Charts = function() {
+
+var EvoUI = Evol.UI,
+    EvoDico = Evol.Dico,
+    i18n = Evol.i18n;
+
+return Evol.ViewMany.extend({
 
     viewName: 'charts',
 
     options: {
         //sizes: '600x300',
         style: 'panel-info',
-        fieldsetFilter: Evol.Dico.fieldInCharts,
+        fieldsetFilter: EvoDico.fieldInCharts,
         autoUpdate: false
     },
 
@@ -29,22 +35,19 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
     },
 
     render: function () {
-        this.entityName=Evol.UI.capitalize(this.uiModel.namePlural);
+        this.entityName=EvoUI.capitalize(this.uiModel.namePlural);
         if(this.collection && this.collection.length>0){
             this.$el.html('<div class="evol-many-'+this.viewName+'">'+
                 this._HTMLcharts(this.style || 'panel-info', this.sizes)+
                 '</div>');
         }else{
-            this.$el.html(Evol.UI.HTMLMsg(Evol.i18n.nodata, '', 'info'));
+            this.$el.html(EvoUI.HTMLMsg(i18n.nodata, '', 'info'));
         }
         return this.setTitle();
     },
 
     _HTMLcharts: function (style, sizes) {
         var h='',
-            EvoUI = Evol.UI,
-            EvoDico = Evol.Dico,
-            i18n = Evol.i18n,
             fTypes = EvoDico.fieldTypes,
             uiModel = this.uiModel,
             models = this.collection.models,
@@ -132,11 +135,10 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
     },
 
     changeChartType: function(evt){
-        var i18n = Evol.i18n,
-            el=$(evt.currentTarget),
+        var el=$(evt.currentTarget),
             id=el.data('id'),
             ctype=el.data('ctype'),
-            chart=Evol.UI.Charts,
+            chart=EvoUI.Charts,
             oldData=this._cData[id],
             f=oldData.field,
             holder=el.parent().find('.chart-holder');
@@ -150,3 +152,5 @@ Evol.ViewMany.Charts = Evol.ViewMany.extend({
     }
 
 });
+
+}();

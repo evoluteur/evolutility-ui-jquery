@@ -327,7 +327,7 @@ uiModels.contact = {
             elements: [
                 {
                     type: 'text', id: 'lastname', label: 'Lastname', maxLength: 50,
-                    required: true, width: '62', inMany: true
+                    required: true, width: 62, inMany: true
                 },
                 {
                     type: 'text', id: 'firstname', label: 'Firstname', maxLength: 50,
