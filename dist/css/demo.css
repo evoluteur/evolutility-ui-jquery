@@ -93,6 +93,9 @@
     order: 100;
     width: 100%;
   }
+  .evo-link2 li ul {
+    display: none;
+  }
 }
 .evo-head-links2 .sel {
   color: #ffc107;
