@@ -77,18 +77,20 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
         h+='<label>'+Evol.i18n.vizGroupBy+'</label>'+
             '<div class="btn-group" data-toggle="buttons">'+
             _.map(fs2, function(f, idx){
-                return '<label class="btn btn-default'+(idx===0?' active':'')+'" id="'+f.id+'">'+
-                      '<input type="radio" name="options"'+(idx===0?' checked':'')+'> '+f.label+'</label>';
-                }).join('')+
+                if(_.isUndefined(f.groupable) || f.groupable){
+                    return '<label class="btn btn-default'+(idx===0?' active':'')+'" id="'+f.id+'">'+
+                          '<input type="radio" name="options"'+(idx===0?' checked':'')+'>'+f.label+'</label>';
+                }
+            }).join('')+
             '</div>';
         // --- Color ---
         var fo=_.map(fs2, function(f, idx){
-                return hOpt(f.id, f.label, idx===0);
+                return (_.isUndefined(f.colorable) || f.colorable) ? hOpt(f.id, f.label, idx===0) : '';
             });
         h+='<label>'+Evol.i18n.vizColorBy+'</label><select class="form-control bubble-color">'+hOptNull + fo.join('')+'</select>';
         // --- Size ---
         fs2=_.filter(fs2, function(f){
-            return Evol.Dico.isNumberType(f.type);
+            return (_.isUndefined(f.sizable) || f.sizable) ? Evol.Dico.isNumberType(f.type) : '';
         });
         fo=_.map(fs2, function(f, idx){
             return hOpt(f.id, f.label);
