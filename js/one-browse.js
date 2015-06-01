@@ -112,7 +112,7 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
 
     _renderButtons: function (h) {
         h.push(Evol.UI.html.clearer+
-            '<div class="evol-buttons panel panel-info">'+
+            '<div class="evol-buttons panel '+this.style+'">'+
             Evol.UI.button('cancel', Evol.i18n.bCancel, 'btn-default')+
             Evol.UI.button('edit', Evol.i18n.bEdit, 'btn-primary')+
             '</div>');

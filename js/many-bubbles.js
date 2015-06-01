@@ -68,11 +68,11 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
             hOpt = eUI.input.option,
             hOptNull = eUI.html.emptyOption,
             fs2 = Evol.Dico.getFields(this.uiModel, Evol.Dico.fieldChartable),
-            h = '<div class="evol-many-bubbles panel panel-info"><div class="evol-bubbles-body">'+
+            h = '<div class="evol-many-bubbles panel '+this.style+'"><div class="evol-bubbles-body">'+
                 '<div class="d3-tooltip" style="opacity:0;"></div>';
         //h+=this._HTMLbody(this.getFields(), pSize, this.uiModel.icon, 0, this.selectable);
 
-        h+='<div class="bubbles-opts">';
+        h+='<div class="bubbles-opts '+this.style+'">';
         // --- Group ---
         h+='<label>'+Evol.i18n.vizGroupBy+'</label>'+
             '<div class="btn-group" data-toggle="buttons">'+
