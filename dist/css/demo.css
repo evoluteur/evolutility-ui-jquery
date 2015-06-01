@@ -18,6 +18,11 @@
 .evo-logo > a > span {
   color: white;
 }
+@media print {
+  .evo-logo a[href]:after {
+    content: none !important;
+  }
+}
 .logop1,
 .logop3 {
   font-weight: bold;
@@ -84,6 +89,12 @@
 .evo-head-links > li > a.sel,
 .evo-head-links2 > li > a.sel {
   color: white;
+}
+@media print {
+  .evo-head-links,
+  .evo-head-links2 {
+    display: none;
+  }
 }
 .evo-link2 li li {
   margin-left: -12px;
