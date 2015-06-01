@@ -419,7 +419,7 @@ return Backbone.View.extend({
                             addOK=false;
                     }
                     editor.append(h);
-                    if(fType==fts.date){// TODO add datepicker widget to build and uncomment this
+                    if(fType==fts.date){
                         editor.find('#value,#value2').datepicker({dateFormat:this.dateFormat});
                     }
                 }
