@@ -35,8 +35,9 @@ return Evol.ViewOne.Edit.extend({
         // TODO browse mode
         // in EDIT and BROWSE modes
         var miniUIModel= {
+            id: 'p-mini',
             type: 'panel',
-            class:'evol-mini-holder',
+            class: 'evol-mini-holder',
             label: Evol.UI.capitalize(this.uiModel.name),
             width: 100,
             elements: this.getFields()

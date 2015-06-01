@@ -969,6 +969,9 @@ return Backbone.View.extend({
 
         if(fld && fld.help){
             $f=$el.closest('.evol-fld');
+            if(this.viewName==='mini'){
+                $f=$f.find('.evol-mini-content');
+            }
             $fh=forceOn?[]:$f.find('.help-block');
             if($fh.length>0){
                 $fh.slideUp(200, function(){

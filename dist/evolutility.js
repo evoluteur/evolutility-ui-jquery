@@ -2080,11 +2080,11 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
             hOpt = eUI.input.option,
             hOptNull = eUI.html.emptyOption,
             fs2 = Evol.Dico.getFields(this.uiModel, Evol.Dico.fieldChartable),
-            h = '<div class="evol-many-bubbles panel panel-info"><div class="evol-bubbles-body">'+
+            h = '<div class="evol-many-bubbles panel '+this.style+'"><div class="evol-bubbles-body">'+
                 '<div class="d3-tooltip" style="opacity:0;"></div>';
         //h+=this._HTMLbody(this.getFields(), pSize, this.uiModel.icon, 0, this.selectable);
 
-        h+='<div class="bubbles-opts">';
+        h+='<div class="bubbles-opts '+this.style+'">';
         // --- Group ---
         h+='<label>'+Evol.i18n.vizGroupBy+'</label>'+
             '<div class="btn-group" data-toggle="buttons">'+
@@ -2581,7 +2581,7 @@ return Backbone.View.extend({
         this.$el.html(h.join(''));
         this.custOn=false;
         this.postRender();
-        this.setData(this.model, true); // TODO remove it
+        this.setData(this.model, true);
         return this;
     },
 
@@ -3027,7 +3027,7 @@ return Backbone.View.extend({
 
     _renderButtons: function (h, mode) {
         h.push(eUI.html.clearer+
-            '<div class="evol-buttons panel '+this.options.style+'">'+
+            '<div class="evol-buttons panel '+this.style+'">'+
             eUI.button('cancel', i18n.bCancel, 'btn-default')+
             eUI.button('save', i18n.bSave, 'btn-primary'));
         if (this.model && this.model.isNew() && this.button_addAnother && mode!=='json') {
@@ -3487,6 +3487,9 @@ return Backbone.View.extend({
 
         if(fld && fld.help){
             $f=$el.closest('.evol-fld');
+            if(this.viewName==='mini'){
+                $f=$f.find('.evol-mini-content');
+            }
             $fh=forceOn?[]:$f.find('.help-block');
             if($fh.length>0){
                 $fh.slideUp(200, function(){
@@ -3796,7 +3799,7 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
 
     _renderButtons: function (h) {
         h.push(Evol.UI.html.clearer+
-            '<div class="evol-buttons panel panel-info">'+
+            '<div class="evol-buttons panel '+this.style+'">'+
             Evol.UI.button('cancel', Evol.i18n.bCancel, 'btn-default')+
             Evol.UI.button('edit', Evol.i18n.bEdit, 'btn-primary')+
             '</div>');
@@ -3953,8 +3956,9 @@ return Evol.ViewOne.Edit.extend({
         // TODO browse mode
         // in EDIT and BROWSE modes
         var miniUIModel= {
+            id: 'p-mini',
             type: 'panel',
-            class:'evol-mini-holder',
+            class: 'evol-mini-holder',
             label: Evol.UI.capitalize(this.uiModel.name),
             width: 100,
             elements: this.getFields()
