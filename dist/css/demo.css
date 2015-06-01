@@ -348,6 +348,12 @@ body {
 a {
   color: #0099cc;
 }
+h1,
+h2,
+h3,
+h4 {
+  color: #2072a7;
+}
 .demo-links > div {
   display: inline-block;
   margin: 10px 0 20px 30px;
