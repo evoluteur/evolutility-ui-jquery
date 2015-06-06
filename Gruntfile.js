@@ -59,24 +59,24 @@ module.exports = function (grunt) {
                     separator: ';\n'
                 },
                 src: [
-                    'js/ui.js',
-                    'js/ui-*.js',
+                    'js/dico/ui.js',
+                    'js/dico/ui-*.js',
                     'js/i18n/EN.js',
-                    'js/dico.js',
-                    'js/d3-*.js',
+                    'js/dico/dico.js',
+                    'js/dico/d3-*.js',
 
-                    'js/many.js',
-                    'js/many-*.js',
-                    'js/one.js',
-                    'js/one-*.js',
-                    '!js/one-wizard.js', // NOT ! here
+                    'js/view-many/many.js',
+                    'js/view-many/many-*.js',
+                    'js/view-one/one.js',
+                    'js/view-one/one-*.js',
+                    '!js/view-one/one-wizard.js', // NOT ! here
 
-                    //'js/action.js',
-                    'js/action-*.js',
+                    //'js/view-action/action.js',
+                    'js/view-action/action-*.js',
 
                     //'js/navbar.js',
-                    'js/toolbar.js',
-                    'js/app.js'
+                    'js/dico/toolbar.js',
+                    'js/dico/app.js'
                     //'js/ui-models/dico/field.js',
                     //'js/ui-models/dico/field-popup.js',
                     //'js/ui-models/dico/panel.js'
