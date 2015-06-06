@@ -28,7 +28,9 @@
     "backbone.localStorage": "v1.1.7",
     "underscore": "1.8.3",
     "d3": "3.5.5",
-    "bootstrap": "3.3.4"
+    "bootstrap": "3.3.4",
+    "bootstrap-datepicker": "1.4.0",
+    "select2": "3.5.2"
   },
     "keywords": [
         "MDA",

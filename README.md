@@ -256,7 +256,7 @@ Javascript, HTML5, CSS3,
 [Bootstrap-datepicker] (http://eternicode.github.io/bootstrap-datepicker/),
 [Select2] (http://ivaynberg.github.io/select2/).
 
-Note: For convenience, all dependencies are minified together in a single file "vendors.min.js". The dependencies list is specified in "Gruntfile.js".
+Note: For convenience, all dependencies are minified together in a single file "dependencies.min.js". The dependencies list is specified in "Gruntfile.js".
 
 ## Documentation
 

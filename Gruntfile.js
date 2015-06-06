@@ -12,12 +12,16 @@ module.exports = function (grunt) {
             '/*   <%= pkg.copyright %>   */\n' +
             '/*   https://github.com/evoluteur/evolutility   */\n',
 
+        bannerDependencies: '/*\n <%= pkg.name %> v<%= pkg.version %> dependencies: \n' +
+           ' bootstrap 3.3.4, jquery 2.1.4, backbone 1.1.2, backbone.localStorage v1.1.7, underscore 1.8.3, d3 3.5.5, bootstrap-datepicker" 1.4.0, select2 3.5.2.   */\n',
+
         // *************************************************************************************
         //      CONCAT
         // *************************************************************************************
         concat: {
-            vendors:{
+            dependencies:{
                 options: {
+                    banner: '<%= bannerDependencies %>',
                     separator: ';\n'
                 },
                 src: [
@@ -47,7 +51,7 @@ module.exports = function (grunt) {
                     'bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js',
                     'bower_components/select2/select2.js'
                 ],
-                dest: '<%= pkg.target %>/vendors.js'
+                dest: '<%= pkg.target %>/dependencies.js'
             },
             js:{
                 options: {
@@ -171,15 +175,15 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            vendors: {
+            dependencies: {
                 options: {
-                    banner: '/* <%= pkg.name %> v<%= pkg.version %> dependencies: \n jquery + backbone + underscore + backbone.localStorage + bootstrap-datepicker */',
+                    banner: '<%= bannerDependencies %>',
                     mangle: true
                 },
                 files: [
                     {
-                        src: '<%= pkg.target %>/vendors.js',
-                        dest: '<%= pkg.target %>/vendors.min.js'
+                        src: '<%= pkg.target %>/dependencies.js',
+                        dest: '<%= pkg.target %>/dependencies.min.js'
                     }
                 ]
             }
@@ -204,7 +208,7 @@ module.exports = function (grunt) {
                     compress: true
                 },
                 files: {
-                    "dist/css/vendors.min.css": "less/vendors.less",
+                    "dist/css/dependencies.min.css": "less/dependencies.less",
                     "dist/css/evolutility.min.css": "less/evol.less"
                 }
             }
@@ -233,7 +237,7 @@ module.exports = function (grunt) {
     grunt.registerTask('dev', ['concat:js', 'less:dev', 'less:demo']);
 
     // Prod task(s).
-    grunt.registerTask('prod', ['jshint', 'copy', 'dev', 'concat:demo', 'concat:vendors', 'less:prod', 'uglify']);
+    grunt.registerTask('prod', ['jshint', 'copy', 'dev', 'concat:demo', 'concat:dependencies', 'less:prod', 'uglify']);
 
 };
 
