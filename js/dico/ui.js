@@ -40,7 +40,7 @@ Evol.UI = {
     input: {
 
         formula: function (id, f , model) {
-            return '<div type="text" id="'+id+'" class="disabled evo-rdonly evol-ellipsis">'+
+            return '<div class="disabled evo-rdonly evol-ellipsis'+(id?'" id ="'+id:'')+'">'+
                         (f.formula?f.formula(model):'')+
                     '</div>';
         },

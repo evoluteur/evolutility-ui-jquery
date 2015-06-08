@@ -43,7 +43,7 @@ Evol.UI = {
     input: {
 
         formula: function (id, f , model) {
-            return '<div type="text" id="'+id+'" class="disabled evo-rdonly evol-ellipsis">'+
+            return '<div class="disabled evo-rdonly evol-ellipsis'+(id?'" id ="'+id:'')+'">'+
                         (f.formula?f.formula(model):'')+
                     '</div>';
         },
@@ -2477,7 +2477,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             if(f.type===ft.color){
                 v = Evol.UI.input.colorBox(f.id, model.escape(f.attribute || f.id));
             }else if(f.type===ft.formula){
-                v = Evol.UI.input.formula(f.id, f, model);
+                v = Evol.UI.input.formula(null, f, model);
             }else if(f.value){
                 v = f.value(model);
             }else{
