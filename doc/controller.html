@@ -78,16 +78,11 @@
     <section>
         <h3>Options</h3>
 
-        <p>el: DOM element to hold the views.,
-        <p>uiModels: Array of UI-models,
-        <p>elements:{
-            nav: '.evo-head-links',
-            nav2: '.evo-head-links2',
-            content: '#evol'
-        },
-        <p>style: 'panel-info',
-        <p>useRouter: true,
-        <p>pageSize:20,
+        <p><strong>el</strong>: DOM element to hold the views.</p>
+        <p><strong>uiModels</strong>: Array of UI-models.</p>
+        <p><strong>style</strong>: Bootstrap style for panels (possible values: "panel-default" (grey), "panel-primary" (dark blue), "panel-success" (green), "panel-info" (light blue), "panel-warning" (yellow), "panel-danger" (red)).</p>
+        <p><strong>useRouter</strong>: Set to true for Evolutility to automatically handle routing.</p>
+        <p><strong>pageSize</strong>: Page size for list and cards views.</p>
 
     </section>
 
@@ -95,9 +90,9 @@
     <section>
         <h3>Methods</h3>
 
-        <p>setRoute((id, triggerRoute))</p>
+        <p><strong>setRoute(id, triggerRoute)</strong>: Change the route and display the corresponding view.</p>
 
-        <p>setEntity(entityName, view, options)</p>
+        <p><strong>setEntity(entityName, view, options)</strong>: Change the entity and display the corresponding entity in the currently selected view.</p>
 
     </section>
 
@@ -116,7 +111,15 @@
 <a name="toolbar" class="evo-anchor">&nbsp;</a>
 <section>
 <h2>Toolbar</h2>
-    <p>The toolbar manages all views for a specific UI-model.</p>
+    <p>The toolbar manages all views for a specific UI-model. It displays different options based on the context.</p>
+
+    <p>Toolbar for One model:</p>
+    <p><img class="pixEvoView shadow"src="screenshots/toolbar-one.gif"></p>
+
+
+    <p>Toolbar for Many models:</p>
+    <p><img class="pixEvoView shadow" src="screenshots/toolbar-many.gif"></p>
+
 
     <p><pre>
 <code>new Evol.Toolbar(
@@ -128,55 +131,45 @@
 );</code>
     </pre></p>
 
-    <p>For One model</p>
-    <p><img src="screenshots/toolbar-one.gif"></p>
-
-
-    <p>For Many model</p>
-    <p><img src="screenshots/toolbar-many.gif"></p>
-
-
     <section>
         <h3>Options</h3>
 
-        <p>toolbar: true,
-        <p>readonly: false,
-        <p>defaultViewOne: 'browse',
-        <p>defaultViewMany: 'list',
-        <p>style: 'panel-info',
-        <p>display: 'label', // tooltip, text, icon, none
-        <p>titleSelector: '#title',
-        <p>buttons: object,
-        <p>pageSize:20
+        <p><strong>defaultViewOne</strong>: Default view when looking at a single model (possible values "browse", "edit", "mini", json").</p>
+        <p><strong>defaultViewMany</strong>: Default view when looking at a collection (possible values "list", "cards", "bubbles", charts").</p>
+
+        <p><strong>model</strong>: Backbone model for the toolbar to manage.</p>
+        <p><strong>collection</strong>: Backbone collection for the toolbar to manage.</p>
+        <p><strong>readonly</strong>: Provides read-only interaction (no update or delete).</p>
+        <p><strong>style</strong>: Bootstrap style for panels (possible values: "panel-default" (grey), "panel-primary" (dark blue), "panel-success" (green), "panel-info" (light blue), "panel-warning" (yellow), "panel-danger" (red)).</p>
+        <p><strong>titleSelector</strong>: Selector for the title element outside of the view (example: '#title').</p>
+        <p><strong>pageSize</strong>: Page size for list and cards views.</p>
     </section>
 
 
     <section>
         <h3>Methods</h3>
 
-        <p>render()</p>
+        <p><strong>render()</strong>: Render the toolbar and the default view.</p>
 
-        <p>setData()</p>
+        <p><strong>setData(data)</strong>: Set data.</p>
 
-        <p>getData()</p>
+        <p><strong>getData()</strong>: Get data.</p>
 
-        <p>setView(viewName)</p>
+        <p><strong>setView(viewName)</strong>: Set the current view (possible values: "browse", edit", "mini", "list"...).</p>
 
-        <p>setStatus(message)</p>
+        <p><strong>showFilter()</strong>: Expend the filter panel.</p>
 
-        <p>showFilter()</p>
+        <p><strong>browse(direction)</strong>: Moves to the next or previous record.</p>
 
-        <p>browse(direction)</p>
+        <p>s<strong>SaveItem(saveAndAdd)</strong>: Save the currently edited record (if it passes validation).</p>
 
-        <p>saveItem(saveAndAdd)</p>
+        <p><strong>newItem()</strong>: Create a new record.</p>
 
-        <p>newItem()</p>
+        <p><strong>deleteItem()</strong>: Delete the currently edited or browsed record.</p>
 
-        <p>deleteItem()</p>
+        <p><strong>clearMessage()</strong>: Clear the header message.</p>
 
-        <p>clearMessage()</p>
-
-        <p>setMessage()</p>
+        <p><strong>setMessage()</strong>: Set the value of the header message.</p>
 
     </section>
 
@@ -184,17 +177,14 @@
     <section>
         <h3>Events</h3>
 
-        <p>item.added</p>
-        <p>item.saved</p>
-        <p>item.deleted</p>
-        <p>search</p>
-        <p>filter.change</p> 
-        <p>toolbar.X (X = toolbar button Ids in [
+        <p><strong>item.added, item.saved, item.deleted</strong>: Triggered when a record is added/saved or deleted.</p>
+        <p><strong>filter.change</strong>: Triggered when filter conditions are changed.</p> 
+        <p><strong>toolbar.X</strong>: Triggered when a toolbar button is clicked. X = toolbar button Ids in [
             'new', 'del', 'filter', 'export',
             'browse', 'edit', 'mini', 'json',
             'list', 'cards', 'bubbles', 'charts', 
             'prev', 'next'
-            ])</p>
+            ].</p>
     </section>
     
 </section>

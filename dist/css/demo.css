@@ -210,7 +210,7 @@
 .evol-doc-views > section img {
   width: 500px;
 }
-.evol-doc-views img.shadow {
+img.shadow {
   border: 1px solid #e0e0e0;
   box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);

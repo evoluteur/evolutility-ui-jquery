@@ -200,6 +200,13 @@ var EvoDoc = _.sortBy([
     many: true,
     description: 'Path to icons for model and list of values.'
 },
+{
+    name: 'model',
+    type:'option',
+    one: true,
+    many: true,
+    description: 'Backbone model managed by the component.'
+},
 
 /*
     Options for One
@@ -212,6 +219,16 @@ var EvoDoc = _.sortBy([
     description: 'Show a "Save and Add Another" button next to "Save". Default value = false.'
 },
 
+/*
+    Options for Many
+*/
+{
+    name: 'collection',
+    type:'option',
+    one: false,
+    many: true,
+    description: 'Backbone collection managed by the component.'
+},
 
 /*
     Options for List and Cards
@@ -275,6 +292,12 @@ var EvoDoc = _.sortBy([
     type:'option',
     view: 'export',
     description: 'List of possible export formats (in this list: CSV, TAB, HTML, JSON, XML, SQL).'
+},
+{
+    name: 'collection',
+    type:'option',
+    view: 'export',
+    description: 'Backbone collection to use for the export sample.'
 },
 
 
