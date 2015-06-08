@@ -63,15 +63,15 @@
     </p>
 
     <p><pre>
-        <code>new Evol.App({
-            el:$('#evol'),
-            uiModels: [
-                uiModels.todo,
-                uiModels.contact,
-                uiModels.winecellar,
-                uiModels.comics
-            ]
-        });</code>
+<code>new Evol.App({
+    el: $('#evol'),
+    uiModels: [
+        uiModels.todo,
+        uiModels.contact,
+        uiModels.winecellar,
+        uiModels.comics
+    ]
+});</code>
     </pre></p>
 
 
@@ -118,9 +118,15 @@
 <h2>Toolbar</h2>
     <p>The toolbar manages all views for a specific UI-model.</p>
 
-    <p>
-        <code>new Evol.Toolbar(myConfig);</code>
-    </p>
+    <p><pre>
+<code>new Evol.Toolbar(
+    el: $('#Evol'),
+    uiModel: uiModel,
+    model: myModel,
+    collection: myCollection,
+    titleSelector: '#title'
+);</code>
+    </pre></p>
 
     <p>For One model</p>
     <p><img src="screenshots/toolbar-one.gif"></p>
