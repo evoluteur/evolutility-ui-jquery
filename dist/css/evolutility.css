@@ -379,6 +379,7 @@ table {
   padding: 8px;
   border-bottom-style: solid;
   border-bottom-width: 1px;
+  background-color: #fbfbfb;
 }
 .bubbles-opts > select {
   display: inline-block;
