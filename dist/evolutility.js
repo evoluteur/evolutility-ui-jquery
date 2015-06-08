@@ -42,9 +42,14 @@ Evol.UI = {
     // --- input fields ---
     input: {
 
+        formula: function (id, f , model) {
+            return '<div type="text" id="'+id+'" class="disabled evo-rdonly evol-ellipsis">'+
+                        (f.formula?f.formula(model):'')+
+                    '</div>';
+        },
         text: function (id, value, fd, css) {
             var h = '<input type="text" id="'+id;
-            if(value.indexOf('"')>-1){
+            if(value && value.indexOf('"')>-1){
                 value=value.replace(/"/g,'\"');
             }
             h+='" value="'+value;
@@ -2471,6 +2476,8 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         _.each(fields, function(f, idx){
             if(f.type===ft.color){
                 v = Evol.UI.input.colorBox(f.id, model.escape(f.attribute || f.id));
+            }else if(f.type===ft.formula){
+                v = Evol.UI.input.formula(f.id, f, model);
             }else if(f.value){
                 v = f.value(model);
             }else{
@@ -2876,6 +2883,7 @@ return Backbone.View.extend({
             defaultVal;
 
         this.clearMessages();
+        //this.setData(new Backbone.Model());
         _.each(this.getFields(), function (f) {
             $f = that.$field(f.id);
             defaultVal = f.defaultValue || '';
@@ -3238,11 +3246,7 @@ return Backbone.View.extend({
         }
         if(f.type==='formula'){
             h.push(Evol.Dico.HTMLFieldLabel(f, mode || 'edit')+
-                '<div id="'+this.fieldViewId(f.id)+'" class="disabled evo-rdonly evol-ellipsis">');
-            if(f.formula && this.model){
-                h.push(f.formula(this.model));
-            }
-            h.push('</div>');
+                Evol.UI.input.formula(this.fieldViewId(f.id), this.model));
         }else{
             h.push(eDico.fieldHTML(f, this.fieldViewId(f.id), fv, mode, iconsPath, skipLabel));
         }
@@ -6217,7 +6221,7 @@ Evol.App = Backbone.View.extend({
     },
 
     options: {
-        //uiModels: {},
+        //uiModels: [],
         elements:{
             nav: '.evo-head-links',
             nav2: '.evo-head-links2',

@@ -30,14 +30,14 @@ var fieldsPanelList = [
     fieldsPanelList2 = [
         {id: 'pl2f1',  type: 'text', label: 'Name', maxLength: 50},
         {id: 'pl2f3',  type: 'date', label: 'Date', inMany: true},
-        {id: 'pl2f4',  type: 'boolean', label: 'Bool', inMany: true},
+        {id: 'pl2f4',  type: 'boolean', label: 'Bool'},
         {id: 'pl2f2',  type: 'text', label: 'Text', maxLength: 100}
     ],
     fieldsPanelList3 = [
         {id: 'pl3f1',  type: 'text', label: 'Name', maxLength: 50},
         {id: 'pl3f2',  type: 'integer', label: 'Integer'},
         {id: 'pl3f3',  type: 'money', label: 'Money'},
-        {id: 'pl3f4',  type: 'lov', label: 'Sizes', required:true, list: testLOV}
+        {id: 'pl3f4',  type: 'lov', label: 'Sizes', list: testLOV}
     ];
 
 function fieldTypePanel(id, label, labelPanel, label2Panel, css){
@@ -45,9 +45,9 @@ function fieldTypePanel(id, label, labelPanel, label2Panel, css){
         label2P = label2Panel,
         fields=[
             {
-                id: id,
+                id: id+'1',
                 type: id,
-                label: label,
+                label: label+' 1',
                 required: true,
                 inMany: true,
                 width: 100
@@ -104,7 +104,7 @@ uiModels.test = {
             type: 'panel',
             css: 'panel-primary',
             label: 'Test object',
-            label2:'with fields of all types.',
+            label2: 'with fields of all types.',
             width: 100,
             elements: [
                 {
@@ -201,6 +201,94 @@ uiModels.test = {
                 fieldTypePanel('image', 'Image'),
                 fieldTypePanel('color', 'Color'),
                 fieldTypePanel('hidden', 'Hidden', '', 'but in the DOM', 'panel-default')
+            ]
+        },
+        {
+            type: 'tab',
+            label: 'Formula',
+            elements: [
+                {
+                    type: 'panel', label: 'Formula fields', width: 62,
+                    label2: 'Values are updated on save.',
+                    elements: [
+                        {
+                            id: 'ff1', attribute: 'ff1', type: 'formula', 
+                            label: 'Formula Title', 
+                            formula: function(m){
+                                return 'The record name is "'+m.escape('name')+'".';
+                            },
+                            width: 100, inMany: true
+                        },
+                        {
+                            id: 'fftt', attribute: 'fftt', type: 'formula', 
+                            label: 'Formula 2 Titles', 
+                            formula: function(m){
+                                return m.escape('name')+' '+m.escape('text');
+                            },
+                            width: 100, inMany: true
+                        },
+                        {
+                            id: 'fflink', attribute: 'fflink', type: 'formula', 
+                            label: 'Google search for name', 
+                            formula: function(m){
+                                return '<a href="http://www.google.com/search?q='+ encodeURI(m.get('name')) + '" target="google">'+ m.escape('name') + ' on Google</a>';
+                            },
+                            width: 100, inMany: true
+                        }
+                    ]
+                },
+                {
+                    type: 'panel', label: 'Items counts', width: 38,
+                    elements: [
+                        {
+                            id: 'ffc1', attribute: 'ffc1', type: 'formula', 
+                            label: 'Number of items in Collection 1', 
+                            labelmany: '# Coll.1',
+                            formula: function(m){
+                                return (m.get('subCollec1')||[]).length;
+                            },
+                            width: 100, inMany: true
+                        },
+                        {
+                            id: 'ffc2', attribute: 'ffc2', type: 'formula', 
+                            label: 'Number of items in Collection 2', 
+                            labelmany: '# Coll.2',
+                            formula: function(m){
+                                return (m.get('subCollec2')||[]).length;
+                            },
+                            width: 100, inMany: true
+                        },
+                        {
+                            id: 'ffc3', attribute: 'ffc3', type: 'formula', 
+                            label: 'Number of items in Collection 3', 
+                            labelmany: '# Coll.3',
+                            formula: function(m){
+                                return (m.get('subCollec3')||[]).length;
+                            },
+                            width: 100, inMany: true
+                        }
+                    ]
+                },
+                {
+                    type: 'panel', label: 'Forest of Items', width: 100,
+                    label2: 'One tree for each item in the collections.',
+                    elements: [
+                        {
+                            id: 'ffforest', attribute: 'ffforest', type: 'formula', 
+                            label: 'Trees', 
+                            formula: function(m){
+                                return _.map(m.get('subCollec1'), function(c){
+                                    return '<span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>';
+                                }).join('')+_.map(m.get('subCollec2'), function(c){
+                                    return '<span class="glyphicon glyphicon-tree-deciduous" aria-hidden="true"></span>';
+                                }).join('')+_.map(m.get('subCollec3'), function(c){
+                                    return '<span class="glyphicon glyphicon-apple" aria-hidden="true"></span>';
+                                }).join('');
+                            },
+                            width: 100, inMany: true
+                        }
+                    ]
+                }
             ]
         },
         {

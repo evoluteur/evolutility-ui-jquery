@@ -358,6 +358,7 @@ return Backbone.View.extend({
             defaultVal;
 
         this.clearMessages();
+        //this.setData(new Backbone.Model());
         _.each(this.getFields(), function (f) {
             $f = that.$field(f.id);
             defaultVal = f.defaultValue || '';
@@ -720,11 +721,7 @@ return Backbone.View.extend({
         }
         if(f.type==='formula'){
             h.push(Evol.Dico.HTMLFieldLabel(f, mode || 'edit')+
-                '<div id="'+this.fieldViewId(f.id)+'" class="disabled evo-rdonly evol-ellipsis">');
-            if(f.formula && this.model){
-                h.push(f.formula(this.model));
-            }
-            h.push('</div>');
+                Evol.UI.input.formula(this.fieldViewId(f.id), this.model));
         }else{
             h.push(eDico.fieldHTML(f, this.fieldViewId(f.id), fv, mode, iconsPath, skipLabel));
         }

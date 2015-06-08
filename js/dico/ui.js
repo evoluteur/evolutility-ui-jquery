@@ -39,9 +39,14 @@ Evol.UI = {
     // --- input fields ---
     input: {
 
+        formula: function (id, f , model) {
+            return '<div type="text" id="'+id+'" class="disabled evo-rdonly evol-ellipsis">'+
+                        (f.formula?f.formula(model):'')+
+                    '</div>';
+        },
         text: function (id, value, fd, css) {
             var h = '<input type="text" id="'+id;
-            if(value.indexOf('"')>-1){
+            if(value && value.indexOf('"')>-1){
                 value=value.replace(/"/g,'\"');
             }
             h+='" value="'+value;

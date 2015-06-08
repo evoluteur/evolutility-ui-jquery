@@ -59,6 +59,8 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         _.each(fields, function(f, idx){
             if(f.type===ft.color){
                 v = Evol.UI.input.colorBox(f.id, model.escape(f.attribute || f.id));
+            }else if(f.type===ft.formula){
+                v = Evol.UI.input.formula(f.id, f, model);
             }else if(f.value){
                 v = f.value(model);
             }else{
