@@ -62,15 +62,24 @@
     For each entity it creates a toolbar which manages the views for that entity.
     </p>
 
-    <p>
-        <code>new Evol.App(myConfig);</code>
-    </p>
+    <p><pre>
+        <code>new Evol.App({
+            el:$('#evol'),
+            uiModels: [
+                uiModels.todo,
+                uiModels.contact,
+                uiModels.winecellar,
+                uiModels.comics
+            ]
+        });</code>
+    </pre></p>
 
 
     <section>
         <h3>Options</h3>
 
-        <p>uiModelsObj: {},
+        <p>el: DOM element to hold the views.,
+        <p>uiModels: Array of UI-models,
         <p>elements:{
             nav: '.evo-head-links',
             nav2: '.evo-head-links2',

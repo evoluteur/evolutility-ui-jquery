@@ -5213,7 +5213,7 @@ Evol.viewClasses = {
 };
 
 // toolbar widget which also acts as a controller for all views "one" and "many" as well as actions
-Evol.ViewToolbar = function() {
+Evol.Toolbar = function() {
 
     var eUI = Evol.UI,
         i18n = Evol.i18n;
@@ -6217,7 +6217,7 @@ Evol.App = Backbone.View.extend({
     },
 
     options: {
-        //uiModelsObj: {},
+        //uiModels: {},
         elements:{
             nav: '.evo-head-links',
             nav2: '.evo-head-links2',
@@ -6231,7 +6231,11 @@ Evol.App = Backbone.View.extend({
 
     initialize: function (opts) {
         _.extend(this, this.options, opts);
-        this.uiModels = _.flatten(this.uiModelsObj);
+        var uims = {};
+        _.forEach(this.uiModels, function(uim, idx){
+            uims[uim.id||'uim'+idx] = uim;
+        });
+        this.uiModelsObj = uims;
         this._tbs={};
         this._ents={};
         var es = this.elements;
@@ -6250,7 +6254,7 @@ Evol.App = Backbone.View.extend({
 
     setupRouter: function(){
         var that=this,
-            EvolRouter=Backbone.Router.extend ({
+            EvolRouter = Backbone.Router.extend ({
                 routes: {
                     '' : 'nav',
                     //':entity/:view/:id': 'nav',
@@ -6388,7 +6392,7 @@ Evol.App = Backbone.View.extend({
                 if(that.useRouter){
                     config.router = that.router;
                 }
-                var tb = new Evol.ViewToolbar(config).render();//.setTitle();
+                var tb = new Evol.Toolbar(config).render();//.setTitle();
                 if(options && tb.cardinality==='1'){
                     tb.setModelById(options);
                 }

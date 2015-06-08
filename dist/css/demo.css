@@ -259,11 +259,10 @@ img.pixEvoPos {
   margin-right: 4px;
 }
 code {
-  margin: 5px 0;
+  display: block;
   padding: 10px;
   overflow: auto;
   font-size: 85%;
-  line-height: 1.45;
   background-color: #f7f7f7;
   border-radius: 3px;
 }

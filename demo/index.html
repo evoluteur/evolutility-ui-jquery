@@ -103,12 +103,12 @@
         // - run App
         new Evol.App({
             el:$('#evol'),
-            uiModelsObj: {
-                todo: uiModels.todo,
-                contact: uiModels.contact,
-                winecellar: uiModels.winecellar,
-                comics: uiModels.comics
-            },
+            uiModels: [
+                uiModels.todo,
+                uiModels.contact,
+                uiModels.winecellar,
+                uiModels.comics
+            ],
             style: 'panel-info',
             pageSize: 20
         }).render();

@@ -70,10 +70,10 @@
             myapp=JSON.parse(localStorage.getItem('evodico-myapp'));
         new Evol.App({
             el:$e,
-            uiModelsObj: {
-                entity: uiModels.entity,
-                field: uiModels.field
-            },
+            uiModels: [
+                uiModels.entity,
+                uiModels.field
+            ],
             style:'panel-primary'
         }).render();
 

@@ -16,7 +16,7 @@ Evol.App = Backbone.View.extend({
     },
 
     options: {
-        //uiModelsObj: {},
+        //uiModels: [],
         elements:{
             nav: '.evo-head-links',
             nav2: '.evo-head-links2',
@@ -30,7 +30,11 @@ Evol.App = Backbone.View.extend({
 
     initialize: function (opts) {
         _.extend(this, this.options, opts);
-        this.uiModels = _.flatten(this.uiModelsObj);
+        var uims = {};
+        _.forEach(this.uiModels, function(uim, idx){
+            uims[uim.id||'uim'+idx] = uim;
+        });
+        this.uiModelsObj = uims;
         this._tbs={};
         this._ents={};
         var es = this.elements;
@@ -49,7 +53,7 @@ Evol.App = Backbone.View.extend({
 
     setupRouter: function(){
         var that=this,
-            EvolRouter=Backbone.Router.extend ({
+            EvolRouter = Backbone.Router.extend ({
                 routes: {
                     '' : 'nav',
                     //':entity/:view/:id': 'nav',
