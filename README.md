@@ -163,79 +163,112 @@ More Views will be added in the future (thinking of Summary, Import, Mass update
 
 Views are not defined in templates but configured with a UI-model using [vocabulary](http://evoluteur.github.io/evolutility/doc/ui-model.html) with words like "field", "panel" and "tab" rather than "INPUT" and "DIV" to describe UI elements.
 
-Here is the UI model used to configure all views for the ["To Do" app demo](http://evoluteur.github.io/evolutility/demo/index.html#todo/list):
+Here is the UI-model used to configure all views for the ["Graphic Novels" app demo](http://evoluteur.github.io/evolutility/demo/index.html#comics/cards):
 
 ```javascript
-var UIModel_todo = {
-    id: 'todo',
-    label: 'To Do',
-    name: 'task',
-    namePlural: 'tasks',
-    icon: 'todo.gif',
-    fnTitle:'title',
+
+var uiModels_comics = {
+    id: 'comics',
+    label: 'Graphic Novels',
+    name: 'graphic novel serie',
+    namePlural: 'graphic novel series',
+    fnTitle: 'title',
+    fnBadge: function(m){
+        var hNb=m.get('haveNb'),
+            sNb=m.get('serieNb');
+        return (hNb==sNb)?hNb:hNb+'/'+sNb;
+    },
     elements: [
         {
-            type: 'panel', label: 'Task', width: 62,
+            type: 'panel', label: 'Serie', width: 70,
             elements: [
                 {
-                    id: 'title', type: 'text', label: 'Title', 
-                    required: true, maxLength: 255, 
-                    width: 100, inMany: true
-                },
-                {
-                    id: 'duedate', type: 'date', label: 'Due Date', 
+                    id: 'title', attribute: 'title', type: 'text', label: 'Title', required: true, 
+                    maxLength: 255,
                     width: 62, inMany: true
                 },
                 {
-                    id: 'category', type: 'lov', label: 'Category', 
-                    width: 38, inMany: true,
+                    id: 'genre', attribute: 'genre', type: 'lov', label: 'Genre', width: 38, inMany: true,
                     list: [
-                        {id: 'home', text: 'Home'},
-                        {id: 'work', text: 'Work'},
-                        {id: 'fun', text: 'Fun'},
-                        {id: 'others', text: 'Others'},
-                        {id: 'misc', text: 'Misc.'}
-                    ]
-                }
-            ]
-        },
-        {
-            type: 'panel', label: 'Status', width: 38,
-            elements: [
-                {
-                    id: 'priority', type: 'lov', label: 'Priority', required: true,
-                    width: 100,  inMany: true,
-                    list: [
-                        {id: '1', text: '1 - ASAP'},
-                        {id: '2', text: '2 - Urgent'},
-                        {id: '3', text: '3 - Important'},
-                        {id: '4', text: '4 - Medium'},
-                        {id: '5', text: '5 - Low'}
+                        {id: 'adv', text: 'Adventure'},
+                        {id: 'conte', text: 'Fairy tale'},
+                        {id: 'eros', text: 'Erotic'},
+                        {id: 'fantasy', text: 'Fantastic'},
+                        {id: 'hf', text: 'Heroic Fantasy'},
+                        {id: 'hist', text: 'Historic'},
+                        {id: 'humor', text: 'Humor'},
+                        {id: 'nocat', text: 'One of a kind'},
+                        {id: 'youth', text: 'Youth'},
+                        {id: 'pol', text: 'Thriller'},
+                        {id: 'sf', text: 'Science-fiction'},
+                        {id: 'sh', text: 'Super Heros'},
+                        {id: 'wwest', text: 'Western'} 
                     ]
                 },
                 {
-                    id: 'complete', type: 'boolean', label: 'Complete', 
-                    width: 100, inMany: true
+                    id: 'authors', attribute: 'authors', type: 'text', width: 62, inMany: true,
+                    label: 'Authors'
+                },
+                {
+                    id: 'language', attribute: 'language', type: 'lov', label: 'Language', width: 38, inMany: false,
+                    list: [
+                        {id: 'FR', text: 'French'},
+                        {id: 'EN', text: 'English'}
+                    ]
+                },
+                {
+                    id: 'serieNb', attribute: 'serieNb', type: 'integer', width: 15, inMany: false,
+                    label: 'Albums', inCharts:false 
+                },
+                {
+                    id: 'haveNb', attribute: 'haveNb', type: 'integer', width: 15, inMany: false,
+                    label: 'Owned', inCharts:false 
+                },
+                {
+                    id: 'have', attribute: 'have', type: 'text', width: 32, inMany: false,
+                    label: 'have' 
+                },
+                {
+                    id: 'complete', attribute: 'complete', type: 'boolean', width: 19, inMany: true,
+                    label: 'Complete', labelFalse:'Incomplete', labelTrue:'Complete'
+                },
+                {
+                    id: 'finished', attribute: 'finished', type: 'boolean', width: 19, inMany: true,
+                    label: 'Finished', labelTrue:'Finished', labelFalse:'Unfinished', css:'cBlue'
+                },
+                {
+                    id:'amazon', label:'Amazon', type:'formula', width:100, css:'evol-ellipsis',
+                    formula:function(m){
+                        var link=m.get('language')=='FR' ?
+                            'http://www.amazon.fr/s/ref=sr_nr_n_1?keywords='
+                            :'http://www.amazon.com/s/ref=nb_sb_noss?field-keywords=';
+                        link+=encodeURI(m.get('title')+' '+m.get('authors'));
+                        return '<a target="a" href="'+link+'">'+link+'</a>';
+                    }
+                },
+                {
+                    id: 'notes', attribute: 'notes', type: 'textmultiline', label: 'Notes', maxLength: 1000,
+                    width: 100, height: 6, inMany: false
                 }
             ]
         },
         {
-            type: 'panel', label: 'Notes', width: 100,
+            type: 'panel', label: 'Cover', width: 30,
             elements: [
                 {
-                    id: 'notes', type: 'textmultiline', label: 'Notes', 
-                    maxLength: 1000,
-                    width: 100, height: 6, inMany: false 
+                    id: 'pix', attribute: 'pix', type: 'image', width: 100, inMany: true,
+                    label: 'Cover'
                 }
             ]
         }
     ]
 };
+
 ```
 
 See [UI-Model documentation](http://evoluteur.github.io/evolutility/doc/ui-model.html) for the UI vocabulary available (structure of UI-models or metamodel).
 
-UI Models for the demo apps:
+UI-Models for the demo apps:
 [To Do list](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/todo.js),
 [AddressBook](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/contacts.js),
 [Wine Cellar](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/winecellar.js),
