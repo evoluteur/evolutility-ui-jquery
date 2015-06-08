@@ -36,7 +36,7 @@ Evol.viewClasses = {
 };
 
 // toolbar widget which also acts as a controller for all views "one" and "many" as well as actions
-Evol.ViewToolbar = function() {
+Evol.Toolbar = function() {
 
     var eUI = Evol.UI,
         i18n = Evol.i18n;

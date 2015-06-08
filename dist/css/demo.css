@@ -334,6 +334,9 @@ code {
 .links-bih a {
   padding: 5px 10px 3px 5px;
 }
+.mt10 {
+  margin-top: 10px;
+}
 .t-props tr td:first-child {
   width: 140px;
   font-weight: 600;

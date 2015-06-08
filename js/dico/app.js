@@ -187,7 +187,7 @@ Evol.App = Backbone.View.extend({
                 if(that.useRouter){
                     config.router = that.router;
                 }
-                var tb = new Evol.ViewToolbar(config).render();//.setTitle();
+                var tb = new Evol.Toolbar(config).render();//.setTitle();
                 if(options && tb.cardinality==='1'){
                     tb.setModelById(options);
                 }

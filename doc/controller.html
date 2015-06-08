@@ -48,11 +48,11 @@
 
 <p>With Evolutility you can decide what to automate and what to code yourself.</p>
 <ul>
-    <li>You can instantiate any Evolutility view directly and write your own controller to manage it.</li>
+    <li>You can instantiate any view directly and write your own controller to manage it.</li>
     <li>You can instantiate a toolbar which will manage all views for a specific entity (Backbone model and collection).</li>
-    <li>You can instantiate an app which will manage several toolbars which will manage the views.</li>
+    <li>You can instantiate an app which will manage several toolbars which will each manage a set of views.</li>
 </ul>
-<p>All views, toolbar and apps use the same ui-models.</p>
+<p><a href="#app">App</a> and <a href="#toolbar">Toolbar</a> use the same UI-models as the views.</p>
 
 
 <a name="app" class="evo-anchor">&nbsp;</a>
@@ -62,16 +62,10 @@
     For each entity it creates a toolbar which manages the views for that entity.
     </p>
 
+    <p>
+        <code>new Evol.App(myConfig);</code>
+    </p>
 
-
-    <section>
-        <h3>Methods</h3>
-
-        <p>setRoute((id, triggerRoute))</p>
-
-        <p>setEntity(entityName, view, options)</p>
-
-    </section>
 
     <section>
         <h3>Options</h3>
@@ -88,6 +82,17 @@
 
     </section>
 
+
+    <section>
+        <h3>Methods</h3>
+
+        <p>setRoute((id, triggerRoute))</p>
+
+        <p>setEntity(entityName, view, options)</p>
+
+    </section>
+
+
     <section>
         <h3>Events</h3>
 
@@ -102,9 +107,10 @@
 <a name="toolbar" class="evo-anchor">&nbsp;</a>
 <section>
 <h2>Toolbar</h2>
+    <p>The toolbar manages all views for a specific UI-model.</p>
 
     <p>
-        <code>new Evol.ViewToolbar(myConfig);</code>
+        <code>new Evol.Toolbar(myConfig);</code>
     </p>
 
     <p>For One model</p>
@@ -114,6 +120,20 @@
     <p>For Many model</p>
     <p><img src="screenshots/toolbar-many.gif"></p>
 
+
+    <section>
+        <h3>Options</h3>
+
+        <p>toolbar: true,
+        <p>readonly: false,
+        <p>defaultViewOne: 'browse',
+        <p>defaultViewMany: 'list',
+        <p>style: 'panel-info',
+        <p>display: 'label', // tooltip, text, icon, none
+        <p>titleSelector: '#title',
+        <p>buttons: object,
+        <p>pageSize:20
+    </section>
 
 
     <section>
@@ -145,19 +165,6 @@
 
     </section>
 
-    <section>
-        <h3>Options</h3>
-
-        <p>toolbar: true,
-        <p>readonly: false,
-        <p>defaultViewOne: 'browse',
-        <p>defaultViewMany: 'list',
-        <p>style: 'panel-info',
-        <p>display: 'label', // tooltip, text, icon, none
-        <p>titleSelector: '#title',
-        <p>buttons: object,
-        <p>pageSize:20
-    </section>
 
     <section>
         <h3>Events</h3>
