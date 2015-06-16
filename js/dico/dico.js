@@ -326,6 +326,13 @@ return {
         Evol.hashLov={};
     },
 
+    setViewTitle: function(that, title){
+        if(that.titleSelector){
+            $(that.titleSelector).html(title?title:that.getTitle());
+        }
+        return that;
+    },
+
     viewIsOne: function(viewName){
         return viewName==='new' || viewName==='edit' || viewName==='browse' || viewName==='json';
     },

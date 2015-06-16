@@ -356,6 +356,7 @@ return Backbone.View.extend({
         if(this.curView){
             this.curView.setTitle();
         }
+        return this;
     },
 
     proceedIfReady:function(cbOK, cbCancel){

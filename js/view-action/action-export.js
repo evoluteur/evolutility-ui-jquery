@@ -201,10 +201,7 @@ return Backbone.View.extend({
     },
 
     setTitle: function(){
-        if(this.titleSelector){
-            $(this.titleSelector)
-                .html(this.getTitle());
-        }
+        eDico.setViewTitle(this);
     },
 
     _preview: function (format) {

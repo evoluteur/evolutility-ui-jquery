@@ -25,7 +25,7 @@ return Backbone.View.extend({
     cardinality: 'n',
 
     options: {
-        style: 'panel-info',
+        style: 'panel-default',
         pageSize: 20,
         pageIndex: 0,
         autoUpdate: false,
@@ -162,11 +162,11 @@ return Backbone.View.extend({
     },
 
     setTitle: function () {
-        $(this.titleSelector).html(this.getTitle());
-        return this;
+        return eDico.setViewTitle(this);
     },
 
     getTitle: function () {
+        // -- returns a string like "Contacts list"
         return eUI.capitalize(this.uiModel.namePlural) + ' ' + this.viewName;
     },
 

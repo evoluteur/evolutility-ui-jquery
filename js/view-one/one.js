@@ -37,7 +37,7 @@ return Backbone.View.extend({
     },
 
     options: {
-        style: 'panel-info',
+        style: 'panel-default',
         button_addAnother: false,
         titleSelector: '#title',
         iconsPath: 'pix/'
@@ -47,7 +47,6 @@ return Backbone.View.extend({
         _.extend(this, this.options, opts);
         this.mode = this.mode || this.viewName;
         this._tabId = false;
-        this._uTitle = (!_.isUndefined(this.titleSelector)) && this.titleSelector!=='';
         this._subCollecs = this._subCollecsOK = false;
         /*
          if(this.model){
@@ -137,18 +136,6 @@ return Backbone.View.extend({
             that.setFieldValue(name, value);
          });
      },*/
-
-    getTitle: function(){
-        if(this.model){
-            if(this.model.isNew && this.model.isNew()){
-                return i18n.getLabel('NewEntity', this.uiModel.name);
-            }
-            var lf=this.uiModel.fnTitle;
-            return _.isFunction(lf)?lf(this.model):this.model.get(lf);
-        }else{
-            return eUI.capitalize(this.uiModel.name);
-        }
-    },
 
     getData: function (skipReadOnlyFields) {
         var that = this,
@@ -728,26 +715,20 @@ return Backbone.View.extend({
         return this;
     },
 
-    setTitle: function (title){
-        if(this._uTitle){
-            var selector=this.titleSelector;
-            if(selector && selector!==''){
-                var t,
-                    lf=this.uiModel.fnTitle;
-                if(title){
-                    t=title;
-                }else if((!_.isUndefined(lf)) && lf!==''){
-                    t=this.getTitle();
-                }else{
-                    t=eUI.capitalize(this.uiModel.entities);
-                }
-                $(selector).text(t);
-                this._uTitle=true;
-                return this;
+    getTitle: function(){
+        if(this.model){
+            if(this.model.isNew && this.model.isNew()){
+                return i18n.getLabel('NewEntity', this.uiModel.name);
             }
-            this._uTitle=false;
+            var lf=this.uiModel.fnTitle;
+            return _.isFunction(lf)?lf(this.model):this.model.get(lf);
+        }else{
+            return eUI.capitalize(this.uiModel.name);
         }
-        return this;
+    },
+
+    setTitle: function (title){
+        return eDico.setViewTitle(this, title);
     },
 
     validate: function (fields) {

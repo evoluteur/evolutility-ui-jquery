@@ -22,7 +22,7 @@ Evol.App = Backbone.View.extend({
             nav2: '.evo-head-links2',
             content: '#evol'
         },
-        style: 'panel-info',
+        style: 'panel-default',
         useRouter: true,
         pageSize:20,
         prefix: 'evol-'
