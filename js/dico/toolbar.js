@@ -289,8 +289,6 @@ return Backbone.View.extend({
                         case 'export':
                             config.sampleMaxSize = config.pageSize;
                             vw = new ViewClass(config).render();
-                            $v.addClass('panel panel-info')
-                                .slideDown();
                             break;
                         // --- one --- browse, edit, mini, json, wiz
                         default :
@@ -356,12 +354,7 @@ return Backbone.View.extend({
 
     setTitle: function(){
         if(this.curView){
-            if(this.curView.viewName==='export'){
-                $(this.titleSelector)
-                    .html(this.curView.getTitle());
-            }else{
-                this.curView.setTitle();
-            }
+            this.curView.setTitle();
         }
     },
 
@@ -911,7 +904,7 @@ return Backbone.View.extend({
              case 'new-panel':
                  Evol.Dico.showDesigner('', toolId.substr(4), $e);
                  break;*/
-            default:// 'edit', 'mini', 'list', 'cards', 'export', 'json', 'new'
+            default:// 'browse', edit', 'mini', 'json', 'list', 'cards', 'bubbles', 'export'
                 if(toolId && toolId!==''){
                     this.setView(toolId, true);
                 }

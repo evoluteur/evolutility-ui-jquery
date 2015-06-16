@@ -90,7 +90,7 @@ return Backbone.View.extend({
             iMax = fields.length,
             useMore = iMax > 14;
 
-        h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds">'+
+        h.push('<div class="evol-xpt panel '+this.style+'"><div class="evol-xpt-form clearfix"><div class="evol-xpt-flds">'+
             '<div><label>'+i18nXpt.xpFields+'</label></div>'+
             '<fieldset class="checkbox">');
 
@@ -145,9 +145,10 @@ return Backbone.View.extend({
             '<textarea class="evol-xpt-val form-control"></textarea>'+
             '</div></div></div></div>'+
             // ## Download button
-            '<div class="evol-buttons form-actions">'+
+            '<div class="panel '+this.style +' evol-buttons form-actions">'+
                 eUI.button('cancel', i18n.bCancel, 'btn-default')+
                 eUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
+            '</div>'+
             '</div>'
         );
         return h.join('');
@@ -196,6 +197,13 @@ return Backbone.View.extend({
             return i18n.getLabel('export.ExportMany', this.uiModel.namePlural);
         }else{
             return i18n.getLabel('export.ExportOne', this.uiModel.name);
+        }
+    },
+
+    setTitle: function(){
+        if(this.titleSelector){
+            $(this.titleSelector)
+                .html(this.getTitle());
         }
     },
 
