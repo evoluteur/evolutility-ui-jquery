@@ -776,11 +776,7 @@ return Backbone.View.extend({
     click_action: function(evt, actionId){
         switch(actionId){
             case 'cancel':
-                if(this.curView.cardinality==='1' && !this.model.isNew){
-                    this.setView(this._prevViewOne || 'browse');
-                }else{
-                    this.setView(this._prevViewMany || 'list');
-                }
+                window.history.back();
                 break;
             case 'edit':
                 this.setView(actionId, true);
