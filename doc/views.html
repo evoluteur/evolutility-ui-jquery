@@ -137,7 +137,11 @@
         <div class="evol-doc-views">
             <img class="pixEvoView shadow" src="screenshots/one-browse.gif"/> <br/>&nbsp;
         </div>
-        <p><code>var vw = new Evol.ViewOne.Browse(myConfig);</code></p>
+<pre><code>var vw = new Evol.ViewOne.Browse({
+    el: $('#evol'),
+    uiModel: myUIModel,
+    model: myModel
+});</code></pre>
 
     <p><br>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a></p>
 
@@ -156,9 +160,11 @@
     <div class="evol-doc-views">
         <img class="pixEvoView shadow" src="screenshots/one-edit.gif"/> <br/>&nbsp;
     </div>
-    <p><code>
-        var vw = new Evol.ViewOne.Edit(myConfig);
-    </code></p>
+<pre><code>var vw = new Evol.ViewOne.Edit({
+    el: $('#evol'),
+    uiModel: myUIModel,
+    model: myModel
+});</code></pre>
 
     <p><br>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a></p>
 
@@ -173,8 +179,11 @@
     <div class="evol-doc-views">
         <img class="pixEvoView shadow" src="screenshots/one-mini.gif"/> <br/>&nbsp;
     </div>
-    <p><code>
-        var vw = new Evol.ViewOne.Mini(myConfig);</code></p>
+<pre><code>var vw = new Evol.ViewOne.Mini({
+    el: $('#evol'),
+    uiModel: myUIModel,
+    model: myModel
+});</code></pre>
 
     <p><br>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a></p>
 
@@ -189,8 +198,11 @@
     <div class="evol-doc-views">
         <img class="pixEvoView shadow" src="screenshots/one-json.gif"/> <br/>&nbsp;
     </div>
-    <p><code>
-        var vw = new Evol.ViewOne.JSON(myConfig);</code></p>
+<pre><code>var vw = new Evol.ViewOne.JSON({
+    el: $('#evol'),
+    uiModel: myUIModel,
+    model: myModel
+});</code></pre>
 
 
     <p><br>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a></p>
@@ -335,8 +347,11 @@
     <div class="evol-doc-views">
         <img class="pixEvoView shadow" src="screenshots/many-list.gif"/><br/>&nbsp;
     </div>
-    <p><code>
-        var vw = new Evol.ViewMany.List(myConfig);</code></p>
+<pre><code>var vw = new Evol.ViewMany.List({
+    el: $('#evol'),
+    uiModel: myUIModel,
+    collection: myCollection
+});</code></pre>
 
     <div><br>
     API: <a href="#many-api-options">Options</a> - <a href="#many-api-methods">Methods</a> - <a href="#many-api-events">Events</a>
@@ -354,8 +369,11 @@
     <div class="evol-doc-views">
         <img class="pixEvoView shadow" src="screenshots/many-cards.gif"/><br/>&nbsp;
     </div>
-    <p><code>
-        var vw = new Evol.ViewMany.Cards(myConfig);</code></p>
+<pre><code>var vw = new Evol.ViewMany.Cards({
+    el: $('#evol'),
+    uiModel: myUIModel,
+    collection: myCollection
+});</code></pre>
 
     <div><br>
     API: <a href="#many-api-options">Options</a> - <a href="#many-api-methods">Methods</a> - <a href="#many-api-events">Events</a>
@@ -373,8 +391,11 @@
     <div class="evol-doc-views">
         <img class="pixEvoView shadow" src="screenshots/many-bubbles.gif"/><br/>&nbsp;
     </div>
-    <p><code>
-        var vw = new Evol.ViewMany.Bubbles(myConfig);</code></p>
+<pre><code>var vw = new Evol.ViewMany.Bubbles({
+    el: $('#evol'),
+    uiModel: myUIModel,
+    collection: myCollection
+});</code></pre>
 
     <div><br>
     API: <a href="#many-api-options">Options</a> - <a href="#many-api-methods">Methods</a> - <a href="#many-api-events">Events</a>
@@ -392,8 +413,11 @@
     <div class="evol-doc-views">
         <img class="pixEvoView shadow" src="screenshots/many-charts.gif"/><br/>&nbsp;
     </div>
-    <p><code>
-        var vw = new Evol.ViewMany.Charts(myConfig);</code></p>
+<pre><code>var vw = new Evol.ViewMany.Charts({
+    el: $('#evol'),
+    uiModel: myUIModel,
+    collection: myCollection
+});</code></pre>
 
     <div><br>
     API: <a href="#many-api-options">Options</a> - <a href="#many-api-methods">Methods</a> - <a href="#many-api-events">Events</a>
@@ -432,8 +456,11 @@
     <p>Filter example: "phone number start by 415" or "for
         categories Finances and Business"...&nbsp;</p>
 
-    <p><code>
-        var vw = new Evol.ViewAction.Filter(myConfig);</code></p>
+<pre><code>var vw = new Evol.ViewAction.Filter({
+    el: $('#evol'),
+    uiModel: myUIModel
+});</code></pre>
+
     <div id="vw-filter"></div>
     </div>
 
@@ -449,8 +476,12 @@
     <div class="evol-doc-views">
         <img class="pixEvoView shadow" src="screenshots/action-export.gif"/><br/>&nbsp;
     </div>
-    <p><code>
-        var vw = new Evol.ViewAction.Export(myConfig);</code></p>
+<pre><code>var vw = new Evol.ViewAction.Export({
+    el: $('#evol'),
+    uiModel: myUIModel,
+    colllection: myCollection
+});</code></pre>
+
     <div id="vw-export"></div>
     </div>
 
@@ -458,7 +489,7 @@
 </section>
 
 
-<p><br><br>More Views will be added in the future (thinking of Summary, Import, Mass update, Group, Dashboard, Report, PDF,
+<p><br><br>More Views will be added in the future (thinking of Summary, Import, Mass update, Group, Dashboard, Report, Print, PDF,
     Auto-documentation and specs...).</p>
 
 

@@ -112,7 +112,7 @@
     <tr>
         <td>namePlural<span class="evol-required">*</span>
         </td>
-        <td>Plural for <code>name</code>.<br>Example: { name: 'task', namePlural: 'tasks'}
+        <td>Plural for the entity name.<br>Example: <code>{name: 'task', namePlural: 'tasks'}</code>
         </td>
     </tr>
     <tr>
@@ -158,7 +158,7 @@
         </td>
         <td>Filename of the records icon (same one for all records).
             <br />
-            Example: <code>icon</code> =&quot;todo.png&quot;
+            Example: <code>icon =&quot;todo.png&quot;</code>
         </td>
     </tr>
     <tr>
@@ -166,7 +166,10 @@
         </td>
         <td>Function which returns an icon path. Useful when you want different icons for different records based on some field value or calculation.
             <br />
-            Example: <code>icon</code> =&quot;todo.png&quot;
+            Example: 
+<pre><code>fnIcon = function(model){ 
+    return model.get('type')=='bug'?'todo.png':'enhancement.png';
+}</code></pre>
         </td>
     </tr>
     <tr>
@@ -174,10 +177,22 @@
         <td>Summary row of data with aggregations like 
             <br />
             Example: 
-            <code>summary</code>=[
-                    {id:'count_completed', label:'# Completed', fieldId: 'complete', formula: 'count'},
-                    {id:'count_have', label:'# Have', fieldId: 'haveNb', formula: 'sum'}
-                ]</td>
+<pre><code>summary=[
+    {
+        id:'count_completed', 
+        label:'# Completed', 
+        fieldId: 'complete', 
+        formula: 'count'
+    },
+    {
+        id:'count_have', 
+        label:'# Have', 
+        fieldId: 'haveNb', 
+        formula: 'sum'
+    }
+]
+</code></pre>
+        </td>
     </tr>
     <tr>
         <td>searchFields[ ] <span class="evol-asterix">*</span>
@@ -190,7 +205,7 @@
         <td>$title</td>
         <td>jQuery selector for an element outside of the View to show item main field as a title on navigation.
             <br />
-            Example: <code>$title</code>=&quot;#title&quot; </td>
+            Example: <code>$title=&quot;#title&quot;</code> </td>
     </tr>
     </tbody></table>
 
@@ -292,7 +307,7 @@
             </td>
             <td>Field format (for fields of type boolean, date, decimal, or integer).
                 <br />
-                Example: <code>format</code>=&quot;'$'#,##0.00&quot;
+                Example: <code>format=&quot;'$'#,##0.00&quot;</code>
             </td>
         </tr>
         <tr>
@@ -484,7 +499,7 @@
 <section>
     <h1>panel</h1>
 
-    <p>The <code>panel</code> element is used to group fields together in the forms.
+    <p>The "panel" element is used to group fields together in the forms.
         Fields are grouped in panels and panels can be grouped in tabs. </p>
 
     <table class="table table-bordered t-props">
@@ -550,7 +565,7 @@
             <td>width
             </td>
             <td>Width of the panel in percentage of the total width of the form.<br />
-                Example: <code>width</code>=&quot;100&quot; for the full width.
+                Example: <code>width=&quot;100&quot;</code> for the full width.
             </td>
         </tr>
         </tbody></table>
@@ -621,7 +636,7 @@
             <td>width
             </td>
             <td>Width of the panel in percentage of the total width of the form.<br />
-                Example: <code>width</code>=&quot;100&quot; for the full width.
+                Example: <code>width=&quot;100&quot;</code> for the full width.
             </td>
         </tr>
         </tbody></table>
@@ -630,7 +645,7 @@
 <a name="tab" class="evo-anchor">&nbsp;</a>
 <section>
     <h1>tab</h1>
-    <p>The <code>tab</code> element can be used to group panels and panel-lists.</p>
+    <p>The "tab" element can be used to group panels and panel-lists.</p>
     <table class="table table-bordered t-props">
         <tbody><tr>
             <td style="width: 120px; ">

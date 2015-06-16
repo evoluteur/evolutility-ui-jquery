@@ -92,7 +92,7 @@ Gives a tabular view of a collection with paging.
 var vw = new Evol.ViewMany.List({
             el: myElement,
             uiModel: myUIModel,
-            colllection: myCollection
+            collection: myCollection
         });
 ```
 ### Cards
@@ -103,7 +103,7 @@ Shows records side by side as cards.
 var vw = new Evol.ViewMany.Cards({
             el: myElement,
             uiModel: myUIModel,
-            colllection: myCollection
+            collection: myCollection
         });
 ```
 ### Bubbles
@@ -115,7 +115,7 @@ The "Bubbles" view displays the data as bubbles with controls to group them and 
 var vw = new Evol.ViewMany.Bubbles({
             el: myElement,
             uiModel: myUIModel,
-            colllection: myCollection
+            collection: myCollection
         });
 ```
 ### Charts
@@ -126,7 +126,7 @@ Draws charts about the collection.
 var vw = new Evol.ViewMany.Charts({
             el: myElement,
             uiModel: myUIModel,
-            colllection: myCollection
+            collection: myCollection
         });
 ```
 
@@ -140,7 +140,7 @@ View to define export options and preview the collection export in different dat
 var vw = new Evol.ViewAction.Export({
             el: myElement,
             uiModel: myUIModel,
-            colllection: myCollection
+            collection: myCollection
         });
 ```
 ### Filter
