@@ -23,7 +23,17 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
             var h = [],
                 jsonStr=JSON.stringify(this.model, null, 2);
 
-            h.push(eUI.label('uimjson', 'JSON')+eUI.input.textMJSON('uimjson', jsonStr, 16));
+            h.push(
+                eUI.HTMLPanelBegin({
+                    id: 'p-json',
+                    label:Evol.UI.capitalize(this.uiModel.name), 
+                    label2: 'JSON'
+                }, this.style+' evo-p-json', true)+
+                '<fieldset>'+
+                eUI.label('uimjson', 'JSON')+
+                eUI.input.textMJSON('uimjson', jsonStr, 16)+
+                '</fieldset>'+
+                eUI.HTMLPanelEnd());
             this._renderButtons(h, 'json');
             this.$el.html(h.join(''));
         }else{
@@ -73,7 +83,7 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
     },
 
     _getDOMField: function(){
-        return this.$el.children('textarea');
+        return this.$('textarea');
     }
 
 });
