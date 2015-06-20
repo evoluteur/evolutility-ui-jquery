@@ -265,6 +265,8 @@ code {
   font-size: 85%;
   background-color: #f7f7f7;
   border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
 }
 .list-views {
   position: absolute;
@@ -319,6 +321,8 @@ code {
   margin: 10px 5px;
   padding: 5px;
   border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
 }
 .links-bh a:hover,
 .links-bih a:hover {
@@ -388,6 +392,8 @@ h4 {
   padding: 10px;
   border: 2px solid #FFECB3;
   border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
   background-color: #FFF8E1;
 }
 #viewInfo {
