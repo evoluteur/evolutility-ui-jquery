@@ -39,7 +39,8 @@ Evol.viewClasses = {
 Evol.Toolbar = function() {
 
     var eUI = Evol.UI,
-        i18n = Evol.i18n;
+        i18n = Evol.i18n,
+        i18nTool = i18n.tools;
 
 return Backbone.View.extend({
 
@@ -72,19 +73,19 @@ return Backbone.View.extend({
         pageSize:20,
         buttons: {
             always:[
-                {id: 'list', label: i18n.bList, icon:'th-list', n:'x'},
-                {id: 'new', label: i18n.bNew, icon:'plus', n:'x', readonly:false}
+                {id: 'list', label: i18nTool.bList, icon:'th-list', n:'x'},
+                {id: 'new', label: i18nTool.bNew, icon:'plus', n:'x', readonly:false}
             ],
                 //linkOpt2h('selections','','star');
             actions:[
-                //{id:'browse', label: i18n.bBrowse, icon:'eye', n:'1', readonly:false},
-                {id:'edit', label: i18n.bEdit, icon:'edit', n:'1', readonly:false},
-                {id:'save', label: i18n.bSave, icon:'floppy-disk', n:'1', readonly:false},
-                {id:'del', label: i18n.bDelete, icon:'trash', n:'1', readonly:false},
-                {id:'filter', label: i18n.bFilter, icon:'filter',n:'n'},
-                //{id:'group',label: i18n.bGroup, icon:'resize-horizontal',n:'n'},
-                {id:'export', label: i18n.bExport, icon:'cloud-download',n:'n'}
-                //{id:'cog',label: i18n.bSettings, icon:'cog',n:'n'}
+                //{id:'browse', label: i18nTool.bBrowse, icon:'eye', n:'1', readonly:false},
+                {id:'edit', label: i18nTool.bEdit, icon:'edit', n:'1', readonly:false},
+                {id:'save', label: i18nTool.bSave, icon:'floppy-disk', n:'1', readonly:false},
+                {id:'del', label: i18nTool.bDelete, icon:'trash', n:'1', readonly:false},
+                {id:'filter', label: i18nTool.bFilter, icon:'filter',n:'n'},
+                //{id:'group',label: i18nTool.bGroup, icon:'resize-horizontal',n:'n'},
+                {id:'export', label: i18nTool.bExport, icon:'cloud-download',n:'n'}
+                //{id:'cog',label: i18nTool.bSettings, icon:'cog',n:'n'}
             ],
             prevNext:[
                 {id:'prev', label: '', icon:'chevron-left', n:'x'},
@@ -92,16 +93,16 @@ return Backbone.View.extend({
             ],
             views: [
                 // -- views ONE ---
-                {id:'browse', label: i18n.bBrowse, icon:'eye-open',n:'1'},// // ReadOnly
-                {id:'edit', label: i18n.bEdit, icon:'edit',n:'1', readonly:false},// // All Fields for editing
-                {id:'mini', label: i18n.bMini, icon:'th-large',n:'1', readonly:false},// // Important Fields only
-                //{id:'wiz',label: i18n.bWizard, icon:'arrow-right',n:'1'},
-                {id:'json', label: i18n.bJSON, icon:'barcode',n:'1', readonly:false},
+                {id:'browse', label: i18nTool.bBrowse, icon:'eye-open',n:'1'},// // ReadOnly
+                {id:'edit', label: i18nTool.bEdit, icon:'edit',n:'1', readonly:false},// // All Fields for editing
+                {id:'mini', label: i18nTool.bMini, icon:'th-large',n:'1', readonly:false},// // Important Fields only
+                //{id:'wiz',label: i18nTool.bWizard, icon:'arrow-right',n:'1'},
+                {id:'json', label: i18nTool.bJSON, icon:'barcode',n:'1', readonly:false},
                 // -- views MANY ---
-                {id:'list', label: i18n.bList, icon:'th-list',n:'n'},
-                {id:'cards', label: i18n.bCards, icon:'th-large',n:'n'},
-                {id:'bubbles', label: i18n.bBubbles, icon:'adjust',n:'n'},
-                {id:'charts', label: i18n.bCharts, icon:'stats',n:'n'}
+                {id:'list', label: i18nTool.bList, icon:'th-list',n:'n'},
+                {id:'cards', label: i18nTool.bCards, icon:'th-large',n:'n'},
+                {id:'bubbles', label: i18nTool.bBubbles, icon:'adjust',n:'n'},
+                {id:'charts', label: i18nTool.bCharts, icon:'stats',n:'n'}
             ],
             search: false
         }
@@ -386,9 +387,9 @@ return Backbone.View.extend({
                 msg,
                 cbs,
                 [
-                    {id:'nosave', text:i18n.bNoSave, class:'btn-default'},
-                    {id:'cancel', text:i18n.bCancel, class:'btn-default'},
-                    {id:'ok', text:i18n.bSave, class:'btn-primary'}
+                    {id:'nosave', text:i18nTool.bNoSave, class:'btn-default'},
+                    {id:'cancel', text:i18nTool.bCancel, class:'btn-default'},
+                    {id:'ok', text:i18nTool.bSave, class:'btn-primary'}
                 ]
             );
         }else{
@@ -680,7 +681,7 @@ return Backbone.View.extend({
             }
         }
         return this.curView.setDefaults() //.clear()
-            .setTitle(i18n.getLabel('NewEntity', this.uiModel.name, vw.getTitle()));
+            .setTitle(i18n.getLabel('tools.NewEntity', this.uiModel.name, vw.getTitle()));
     },
 
     deleteItem: function(){

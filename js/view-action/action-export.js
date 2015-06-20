@@ -146,7 +146,7 @@ return Backbone.View.extend({
             '</div></div></div></div>'+
             // ## Download button
             '<div class="panel '+this.style +' evol-buttons form-actions">'+
-                eUI.button('cancel', i18n.bCancel, 'btn-default')+
+                eUI.button('cancel', i18n.tools.bCancel, 'btn-default')+
                 eUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
             '</div>'+
             '</div>'

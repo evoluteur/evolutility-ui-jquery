@@ -16,6 +16,7 @@ Evol.ViewOne = function(){
     var eUI = Evol.UI,
         uiInput = eUI.input,
         i18n = Evol.i18n,
+        i18nTools = i18n.tools,
         eDico = Evol.Dico,
         fts = eDico.fieldTypes;
 
@@ -498,10 +499,10 @@ return Backbone.View.extend({
     _renderButtons: function (h, mode) {
         h.push(eUI.html.clearer+
             '<div class="evol-buttons panel '+this.style+'">'+
-            eUI.button('cancel', i18n.bCancel, 'btn-default')+
-            eUI.button('save', i18n.bSave, 'btn-primary'));
+            eUI.button('cancel', i18n.tools.bCancel, 'btn-default')+
+            eUI.button('save', i18n.tools.bSave, 'btn-primary'));
         if (this.model && this.model.isNew() && this.button_addAnother && mode!=='json') {
-            h.push(eUI.button('save-add', i18n.bSaveAdd, 'btn-default'));
+            h.push(eUI.button('save-add', i18n.tools.bSaveAdd, 'btn-default'));
         }
         h.push('</div>');
     },
@@ -718,7 +719,7 @@ return Backbone.View.extend({
     getTitle: function(){
         if(this.model){
             if(this.model.isNew && this.model.isNew()){
-                return i18n.getLabel('NewEntity', this.uiModel.name);
+                return i18n.getLabel('tools.NewEntity', this.uiModel.name);
             }
             var lf=this.uiModel.fnTitle;
             return _.isFunction(lf)?lf(this.model):this.model.get(lf);

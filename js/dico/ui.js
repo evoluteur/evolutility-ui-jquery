@@ -285,7 +285,7 @@ Evol.UI = {
         alert: function(title, msg){
             var $m=$(this.HTMLModal('alert', title, msg, [{
                     id:'ok',
-                    text: Evol.i18n.bOK,
+                    text: Evol.i18n.tools.bOK,
                     class: 'btn-primary'
                 }]))
                 .on('click', 'button', function(evt){
@@ -320,8 +320,8 @@ Evol.UI = {
 
             if(!buttons){
                 buttons=[
-                    {id:'cancel', text:Evol.i18n.bCancel, class:'btn-default'},
-                    {id:'ok', text:Evol.i18n.bOK, class:'btn-primary'}
+                    {id:'cancel', text:Evol.i18n.tools.bCancel, class:'btn-default'},
+                    {id:'ok', text:Evol.i18n.tools.bOK, class:'btn-primary'}
                 ];
             }
             _.each(buttons, function(b){

@@ -65,6 +65,7 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
 
     _render: function (models) {
         var eUI = Evol.UI,
+            i18nTools = Evol.i18n.tools,
             hOpt = eUI.input.option,
             hOptNull = eUI.html.emptyOption,
             fs2 = Evol.Dico.getFields(this.uiModel, Evol.Dico.fieldChartable),
@@ -74,7 +75,7 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
 
         h+='<div class="bubbles-opts '+this.style+'">';
         // --- Group ---
-        h+='<label>'+Evol.i18n.vizGroupBy+'</label>'+
+        h+='<label>'+i18nTools.vizGroupBy+': </label>'+
             '<div class="btn-group" data-toggle="buttons">'+
             _.map(fs2, function(f, idx){
                 if(_.isUndefined(f.groupable) || f.groupable){
@@ -87,7 +88,7 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
         var fo=_.map(fs2, function(f, idx){
                 return (_.isUndefined(f.colorable) || f.colorable) ? hOpt(f.id, f.label, idx===0) : '';
             });
-        h+='<label>'+Evol.i18n.vizColorBy+'</label><select class="form-control bubble-color">'+hOptNull + fo.join('')+'</select>';
+        h+='<label>'+i18nTools.vizColorBy+': </label><select class="form-control bubble-color">'+hOptNull + fo.join('')+'</select>';
         // --- Size ---
         fs2=_.filter(fs2, function(f){
             return (_.isUndefined(f.sizable) || f.sizable) ? Evol.Dico.isNumberType(f.type) : '';
@@ -96,7 +97,7 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
             return hOpt(f.id, f.label);
         });
         if(fo.length){
-            h+='<label>'+Evol.i18n.vizSizeBy+'</label><select class="form-control bubble-size">'+hOptNull+fo.join('')+'</select>';
+            h+='<label>'+i18nTools.vizSizeBy+': </label><select class="form-control bubble-size">'+hOptNull+fo.join('')+'</select>';
         }
         //h+=Evol.UI.html.clearer;
         h+='</div></div></div>';
