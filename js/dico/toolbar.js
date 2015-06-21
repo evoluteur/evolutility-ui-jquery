@@ -437,16 +437,9 @@ return Backbone.View.extend({
         if(this.$el){
             var tbBs=this.getToolbarButtons();
             //setVisible(tbBs.customize, mode!='json');
-            tbBs.prevNext.hide();//.removeClass('nav-disabled');
+            tbBs.prevNext.hide();//.removeClass('disabled');
             setVisible(tbBs.views, !(mode==='export' || mode=='new'));
             tbBs.del.hide();
-            /*var cssOpen='glyphicon-eye-open',
-                cssClose='glyphicon-eye-close';
-            if(mode==='mini' || mode==='json'){
-                tbBs.viewsIcon.removeClass(cssOpen).addClass(cssClose);
-            }else{
-                tbBs.viewsIcon.removeClass(cssClose).addClass(cssOpen);
-            }*/
             if(Evol.Dico.viewIsMany(mode)){
                 this._prevViewMany=mode;
                 oneMany(mode, false, true);
@@ -459,14 +452,14 @@ return Backbone.View.extend({
                         tbBs.prevNext.show();/*
                          // TODO finish disabling of paging buttons
                          if(this.curView.pageIndex===0){
-                         tbBs.prevNext.eq(0).addClass('nav-disabled');
+                         tbBs.prevNext.eq(0).addClass('disabled');
                          }else{
-                         tbBs.prevNext.eq(0).removeClass('nav-disabled');
+                         tbBs.prevNext.eq(0).removeClass('disabled');
                          }
                          if(this.collection.length/this.pageSize){
-                         tbBs.prevNext.eq(1).addClass('nav-disabled');
+                         tbBs.prevNext.eq(1).addClass('disabled');
                          }else{
-                         tbBs.prevNext.eq(1).removeClass('nav-disabled');
+                         tbBs.prevNext.eq(1).removeClass('disabled');
                          }*/
                     }
                 }
@@ -736,7 +729,7 @@ return Backbone.View.extend({
                     }
                 );
             }
-        }else{
+        }/*else{
             if(that.curView.getSelection){
                 var selection=that.curView.getSelection();
                 if(selection.length>0){
@@ -746,7 +739,7 @@ return Backbone.View.extend({
                     }
                 }
             }
-        }
+        }*/
     },
 
     setMessage: function(title, content, style){
@@ -824,7 +817,7 @@ return Backbone.View.extend({
 
     updateNav: function(){
         var cl=this.curView.collection.length,
-            cssDisabled='nav-disabled',
+            cssDisabled='disabled',
             pIdx=this.pageIndex||0,
             $item=this.$('[data-id="prev"]');
 
@@ -834,7 +827,7 @@ return Backbone.View.extend({
 
     _enableNav: function(){
         this.$('[data-id="prev"],[data-id="next"]')
-            .removeClass('nav-disabled');
+            .removeClass('disabled');
     },
 
     status_update: function(evt, ui){
