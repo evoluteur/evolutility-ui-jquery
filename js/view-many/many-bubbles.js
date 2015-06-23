@@ -17,7 +17,8 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
         //'click .evol-buttons>button': 'click_button',
         //'click .evol-title-toggle': 'click_toggle',
         //'click .glyphicon-wrench': 'click_customize',
-        'click .btn': 'changeGroup',
+        'click .btn': 'clickGroup',
+        'change .bubble-group': 'changeGroup',
         'change .bubble-color': 'changeColor',
         'change .bubble-size': 'changeSize',
         'click svg>circle': 'clickCircle'
@@ -68,6 +69,7 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
             i18nTools = Evol.i18n.tools,
             hOpt = eUI.input.option,
             hOptNull = eUI.html.emptyOption,
+            fo,
             fs2 = Evol.Dico.getFields(this.uiModel, Evol.Dico.fieldChartable),
             h = '<div class="evol-many-bubbles panel '+this.style+'"><div class="evol-bubbles-body">'+
                 '<div class="d3-tooltip" style="opacity:0;"></div>';
@@ -75,17 +77,26 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
 
         h+='<div class="bubbles-opts '+this.style+'">';
         // --- Group ---
-        h+='<label>'+i18nTools.vizGroupBy+': </label>'+
-            '<div class="btn-group" data-toggle="buttons">'+
+        h+='<label>'+i18nTools.vizGroupBy+': </label>';
+        if(fs2.length>5){
+            fo=_.map(fs2, function(f, idx){
+                    return hOpt(f.id, f.label, idx===0);
+                });
+            h+='<select class="form-control bubble-group">'+hOptNull + fo.join('')+'</select>';
+        }else{
+            h+='<div class="btn-group" data-toggle="buttons">'+
             _.map(fs2, function(f, idx){
                 if(_.isUndefined(f.groupable) || f.groupable){
                     return '<label class="btn btn-default'+(idx===0?' active':'')+'" id="'+f.id+'">'+
                           '<input type="radio" name="options"'+(idx===0?' checked':'')+'>'+f.label+'</label>';
                 }
-            }).join('')+
-            '</div>';
+            }).join('')+'</div>';
+        }
+
+
+
         // --- Color ---
-        var fo=_.map(fs2, function(f, idx){
+        fo=_.map(fs2, function(f, idx){
                 return (_.isUndefined(f.colorable) || f.colorable) ? hOpt(f.id, f.label, idx===0) : '';
             });
         h+='<label>'+i18nTools.vizColorBy+': </label><select class="form-control bubble-color">'+hOptNull + fo.join('')+'</select>';
@@ -124,8 +135,11 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
         return this;
     },
 
-    changeGroup: function(evt){
+    clickGroup: function(evt){
         this.bubbles.changeBubblesGroup(evt.currentTarget.id);
+    },
+    changeGroup: function(evt){
+        this.bubbles.changeBubblesGroup(evt.target.value);
     },
 
     changeColor: function(evt){
