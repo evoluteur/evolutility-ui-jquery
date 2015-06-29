@@ -51,6 +51,8 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
             }else if(f.type===fts.color) {
                 v = model.escape(f.attribute || f.id);
                 v = Evol.UI.input.colorBox(f.id, v, v);
+            }else if(f.type==='formula'){
+                v = Evol.UI.input.formula(null, f, model);
             }else{
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
