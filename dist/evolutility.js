@@ -1,4 +1,4 @@
-/*   evolutility v1.0   */
+/*   evolutility v1.0.1   */
 /*   (c) 2015 Olivier Giulieri   */
 /*   https://github.com/evoluteur/evolutility   */
 /*! ***************************************************************************
@@ -13,7 +13,6 @@
 var Evol = Evol || {};
 Evol.hashLov = {};
 Evol.ViewAction = {};
-Evol.Version = '0.5';
 
 Evol.UI = {
 
@@ -288,7 +287,7 @@ Evol.UI = {
         alert: function(title, msg){
             var $m=$(this.HTMLModal('alert', title, msg, [{
                     id:'ok',
-                    text: Evol.i18n.bOK,
+                    text: Evol.i18n.tools.bOK,
                     class: 'btn-primary'
                 }]))
                 .on('click', 'button', function(evt){
@@ -323,8 +322,8 @@ Evol.UI = {
 
             if(!buttons){
                 buttons=[
-                    {id:'cancel', text:Evol.i18n.bCancel, class:'btn-default'},
-                    {id:'ok', text:Evol.i18n.bOK, class:'btn-primary'}
+                    {id:'cancel', text:Evol.i18n.tools.bCancel, class:'btn-default'},
+                    {id:'ok', text:Evol.i18n.tools.bOK, class:'btn-primary'}
                 ];
             }
             _.each(buttons, function(b){
@@ -337,10 +336,10 @@ Evol.UI = {
     },
 
     // --- panels ---
-    HTMLPanelBegin: function (p, css) {
+    HTMLPanelBegin: function (p, css, noToggle) {
         return '<div data-pid="'+p.id+'" class="panel '+(p.css?p.css:css)+'">'+
             '<div class="panel-heading '+(p.cssLabel? p.cssLabel:'')+'">'+
-            Evol.UI.icon('chevron-up', 'evol-title-toggle')+
+            (!noToggle?Evol.UI.icon('chevron-up', 'evol-title-toggle'):'')+
             '<h3 class="panel-title">'+p.label+'</h3>'+
             (p.label2?'<div class="evol-subtitle">'+p.label2+'</div>' : '')+
             (p.help?'<p class="evo-panel-help">'+p.help+'</p>':'')+
@@ -509,7 +508,7 @@ var Evol = Evol || {};
 
 Evol.i18n = {
 
-	LOCALE:'EN',    // ENGLISH
+	LOCALE: 'EN',    // ENGLISH
 
     getLabel: function(label, string1, string2){
         var l;
@@ -529,36 +528,43 @@ Evol.i18n = {
     },
 
     // --- toolbar & buttons ---
-    View:'View',
-    bBrowse:'Browse',
-    bEdit:'Edit',
-    bMini: 'Mini', // 'Quick Edit'
-    // Login:'Login',
-    bNew:'New',
-    NewEntity:'New {0}', //'New Item',
-    //NewUpload:'New Upload',
-    //Search:'Search',
-    //AdvSearch:'Advanced Search',
-    //NewSearch:'New Search',
-    Selections:'Selections',
-    Selection:'Selection',
-    bExport:'Export',
-    bCharts:'Charts',
-    //SearchRes:'Search Result',
-    //MassUpdate:'Mass Update',
-    bDelete:'Delete',
-    bAll:'All',
-    bList:'List',
-    bFilter: 'Filter',
-    bBubbles: 'Bubbles',
-    bCards: 'Cards',
-    bJSON: 'JSON',
-    //bRefresh: 'Refresh',
-    //bPrint:'Print',
-    bSave:'Save',
-    bSaveAdd:'Save and Add Another',
-    bOK:'OK',
-    bCancel:'Cancel',
+    tools:{
+        View: 'View',
+        bBrowse: 'Browse',
+        bEdit: 'Edit',
+        bMini: 'Mini', // 'Quick Edit'
+        // Login: 'Login',
+        bNew: 'New',
+        NewEntity: 'New {0}', //'New Item',
+        //NewUpload: 'New Upload',
+        //Search: 'Search',
+        //AdvSearch: 'Advanced Search',
+        //NewSearch: 'New Search',
+        //Selections: 'Selections',
+        //Selection: 'Selection',
+        bExport: 'Export',
+        bCharts: 'Charts',
+        //SearchRes: 'Search Result',
+        //MassUpdate: 'Mass Update',
+        bDelete: 'Delete',
+        //bAll: 'All',
+        bList: 'List',
+        bFilter: 'Filter',
+        bBubbles: 'Bubbles',
+        bCards: 'Cards',
+        bJSON: 'JSON',
+        //bRefresh: 'Refresh',
+        //bPrint: 'Print',
+        bSave: 'Save',
+        bSaveAdd: 'Save and Add Another',
+        bOK: 'OK',
+        bCancel: 'Cancel',
+
+        // --- data visualization ---
+        vizGroupBy: 'Group by',
+        vizColorBy: 'Color by',
+        vizSizeBy: 'Size by'
+    },
 
     // --- msg & status ---
     saved: '{0} saved.',
@@ -566,42 +572,37 @@ Evol.i18n = {
     unSavedChanges: 'Do you want to save the changes you made to "{0}"?',
     warnNoSave: 'Your changes will be lost if you don\'t save them.',
     bNoSave: 'Don\'t Save',
-    deleteX:'Delete {0}',// {0}=entity
-    delete1:'Do you really want to delete the {0} "{1}"?', // {0}=entity {1}=titlefield value,
+    deleteX: 'Delete {0}',// {0}=entity
+    delete1: 'Do you really want to delete the {0} "{1}"?', // {0}=entity {1}=titlefield value,
     deleteN: 'Delete {0} {1}?', // delete 5 tasks
-    deleted1:'{0} deleted.', // {0}=entity ,
+    deleted1: '{0} deleted.', // {0}=entity ,
 
-    notFound:'Item not found.',
+    notFound: 'Item not found.',
     //this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.name);
-    notFoundMsg:'No {0} found.',
-    notFoundMsgId:'No {0} found for ID="{1}".',
+    notFoundMsg: 'No {0} found.',
+    notFoundMsgId: 'No {0} found for ID="{1}".',
 
-    NoChange:'No Change',
-    NoX:'No {0}',
-    //Back2SearchResults:'Back to search results',
+    NoChange: 'No Change',
+    NoX: 'No {0}',
+    //Back2SearchResults: 'Back to search results',
     yes: 'Yes',
     no: 'No',
-    none:'None',
-    na:'N/A', // 'not available'
-    nodata:'No data available.',
-    nopix:'No picture.',
-    nochart:'No charts available.',
-    badchart:'Not enough information provided to draw charts.',
+    none: 'None',
+    na: 'N/A', // 'not available'
+    nodata: 'No data available.',
+    nopix: 'No picture.',
+    nochart: 'No charts available.',
+    badchart: 'Not enough information provided to draw charts.',
     range: '{0} - {1} of {2} {3}', //rangeBegin, '-', rangeEnd, ' of ', mSize, ' ', entities'
     selected: '{0} selected',
     'sgn_money': '$', // indicator for money
     'sgn_email': '@', // indicator for email
-
-    // --- data visualization ---
-    vizGroupBy: 'Group by:',
-    vizColorBy: 'Color by:',
-    vizSizeBy: 'Size by:',
     
     // --- status ---
     status:{
-        added:'New {0} "{1}" added.',
-        updated:'{0} "{1}" updated.',
-        deleted:'{0} "{1}" deleted.'
+        added: 'New {0} "{1}" added.',
+        updated: '{0} "{1}" updated.',
+        deleted: '{0} "{1}" deleted.'
     },
 
     // --- validation ---
@@ -610,42 +611,42 @@ Evol.i18n = {
         invalid: 'Invalid format.',
         invalidList: '{0} values in "{1}" are invalid.',
         invalidList1: '1 value in "{1}" is invalid.',
-        //intro:'You are not finished yet:',
-        empty:'"{0}" must have a value.',
-        email:'"{0}" must be a valid email formatted like "name@domain.com".',
-        integer:'"{0}" must only use numbers.',
-        decimal:'"{0}" must be a valid decimal numbers.',
-        money:'"{0}" must be a valid number.',
-        date:'"{0}" must be a valid date, format must be "MM/DD/YYYY" like "12/24/2015".',
-        datetime:'"{0}" must be a valid date/time, format must be "MM/DD/YYYY hh:mm AM/PM" like "12/24/2015 10:30 AM".',
-        time:'"{0}" must be a valid date/time, format must be "hh:mm AM/PM" like "10:30 AM".',
-        max:'"{0}" must be smaller or equal to {1}.',
-        min:'"{0}" must be greater or equal to {1}.',
-        maxLength:'"{0}" must be {1} characters long maximum.',
-        minLength:'"{0}" must be at least {1} characters long.',
-        minMaxLength:'"{0}" must be between {1} and {2} characters long.',
-        regExp:'"{0}" is not of the expected format.'
-        //regExp:'"{0}" must match the regular expression pattern for "{1}".'
+        //intro: 'You are not finished yet: ',
+        empty: '"{0}" must have a value.',
+        email: '"{0}" must be a valid email formatted like "name@domain.com".',
+        integer: '"{0}" must only use numbers.',
+        decimal: '"{0}" must be a valid decimal numbers.',
+        money: '"{0}" must be a valid number.',
+        date: '"{0}" must be a valid date, format must be "MM/DD/YYYY" like "12/24/2015".',
+        datetime: '"{0}" must be a valid date/time, format must be "MM/DD/YYYY hh:mm AM/PM" like "12/24/2015 10:30 AM".',
+        time: '"{0}" must be a valid date/time, format must be "hh:mm AM/PM" like "10:30 AM".',
+        max: '"{0}" must be smaller or equal to {1}.',
+        min: '"{0}" must be greater or equal to {1}.',
+        maxLength: '"{0}" must be {1} characters long maximum.',
+        minLength: '"{0}" must be at least {1} characters long.',
+        minMaxLength: '"{0}" must be between {1} and {2} characters long.',
+        regExp: '"{0}" is not of the expected format.'
+        //regExp: '"{0}" must match the regular expression pattern for "{1}".'
     },
 
     // --- errors ---
-    error:'Error',
+    error: 'Error',
 
     // --- charts ---
     charts:{
-        aByB:'{0} by {1}',
-        aB:'{0}: {1}'
+        aByB: '{0} by {1}',
+        aB: '{0}: {1}'
     },
 
     // --- export ---
     export:{
         ExportOne: 'Export {0}', // {0}=entity
         ExportMany: 'Export {0}', // {0}=entities
-        preview:'Export preview',
+        preview: 'Export preview',
         header: 'Header',
         options: 'options',
         separator: 'Separator',
-        firstLine:'First line for field names',
+        firstLine: 'First line for field names',
         format: 'Export format',
         xpFields: 'Fields to include in the export',
         IDkey: 'ID',
@@ -656,59 +657,59 @@ Evol.i18n = {
         formatTAB: 'Tab separated values (TXT)',
         formatXML: 'XML',
         formatJSON: 'Javascript Object Notation (JSON)',
-        //xpColors:'Header color-Color odd rows-Color even rows',
-        //xpColMap:'Columns map to',
-        XMLroot:'Element name', // 'Root element name'
-        //xpXMLAttr:'Attributes',
-        //xpXMLElem:'Elements',
-        SQL:'SQL Options',
-        SQLTable:'Table name',
-        SQLTrans:'In transaction',
-        SQLIdInsert:'Identity insert',
-        DownloadEntity:'Download {0}'
+        //xpColors: 'Header color-Color odd rows-Color even rows',
+        //xpColMap: 'Columns map to',
+        XMLroot: 'Element name', // 'Root element name'
+        //xpXMLAttr: 'Attributes',
+        //xpXMLElem: 'Elements',
+        SQL: 'SQL Options',
+        SQLTable: 'Table name',
+        SQLTrans: 'In transaction',
+        SQLIdInsert: 'Identity insert',
+        DownloadEntity: 'Download {0}'
     },
 
     // --- filters ---
     filters:{
-        sEqual:'equals',
-        sNotEqual:'not equal',
-        sStart:'starts with',
-        sContain:'contains',
-        sFinish:'finishes with',
-        sInList:'any of',
-        sIsNull:'is empty',
-        sIsNotNull:'is not empty',
-        sBefore:'before',
-        sAfter:'after',
-        sNumEqual:'&#61;',
-        sNumNotEqual:'!&#61;',
-        sGreater:'&#62;',
-        sSmaller:'&#60;',
-        sOn:'on',
-        sNotOn:'not on',
-        sAt:'at',
-        sNotAt:'not at',
-        sBetween:'between',
-        opAnd:'and',
-        //opOr:'or',
-        yes:'Yes',
-        no:'No',
-        bNewCond:'New filter condition',
-        bAddCond:'Add condition',
-        bUpdateFilter:'Update filter',
-        bSubmit:'Submit',
-        bCancel:'Cancel'
+        sEqual: 'equals',
+        sNotEqual: 'not equal',
+        sStart: 'starts with',
+        sContain: 'contains',
+        sFinish: 'finishes with',
+        sInList: 'any of',
+        sIsNull: 'is empty',
+        sIsNotNull: 'is not empty',
+        sBefore: 'before',
+        sAfter: 'after',
+        sNumEqual: '&#61;',
+        sNumNotEqual: '!&#61;',
+        sGreater: '&#62;',
+        sSmaller: '&#60;',
+        sOn: 'on',
+        sNotOn: 'not on',
+        sAt: 'at',
+        sNotAt: 'not at',
+        sBetween: 'between',
+        opAnd: 'and',
+        //opOr: 'or',
+        yes: 'Yes',
+        no: 'No',
+        bNewCond: 'New filter condition',
+        bAddCond: 'Add condition',
+        bUpdateFilter: 'Update filter',
+        bSubmit: 'Submit',
+        bCancel: 'Cancel'
     },
 
     // --- wizard ---
-    prev:'Previous',
-    next:'Next',
-    finish:'Finish !'/*,
+    prev: 'Previous',
+    next: 'Next',
+    finish: 'Finish !'/*,
 
     // --- documentation ---
     doc:{
-        entity:'Entity',
-        fields:'Fields',
+        entity: 'Entity',
+        fields: 'Fields',
         uiModel: 'UI Model'
     }*/
 
@@ -1040,6 +1041,13 @@ return {
 
     clearCacheLOV: function(){
         Evol.hashLov={};
+    },
+
+    setViewTitle: function(that, title){
+        if(that.titleSelector){
+            $(that.titleSelector).html(title?title:that.getTitle());
+        }
+        return that;
     },
 
     viewIsOne: function(viewName){
@@ -1420,8 +1428,8 @@ Bubbles.prototype.setData = function(data){
     .attr("cy", function (d) { return d.y; })
     .attr("r", function (d) { return d.radius; })
     .style("fill", function (d) { return that.fill(d[that.colorFieldId]); })
-    .on("mouseover", showPopover)
-    .on("mouseout", removePopovers);
+    .on("mouseenter", showPopover)
+    .on("mouseleave", removePopovers);
 
   this.nodes
     .attr('data-mid', function (d) { return d.id;});
@@ -1530,7 +1538,7 @@ Bubbles.prototype.changeBubblesSize = function (sizeFieldId){
   if(sizeFieldId){
     var sizes = _.map(this.data, function(d){
       var v=d[sizeFieldId];
-      return (v===null || v===isNaN)?0:v;
+      return (v===null || v===isNaN || _.isUndefined(v))?0:v;
     });
     this.plotScale = d3.scale.log().domain([ _.min(sizes), _.max(sizes)]).range([10, 25]);
     cs.transition().duration(500)
@@ -1644,7 +1652,7 @@ return Backbone.View.extend({
     cardinality: 'n',
 
     options: {
-        style: 'panel-info',
+        style: 'panel-default',
         pageSize: 20,
         pageIndex: 0,
         autoUpdate: false,
@@ -1781,11 +1789,11 @@ return Backbone.View.extend({
     },
 
     setTitle: function () {
-        $(this.titleSelector).html(this.getTitle());
-        return this;
+        return eDico.setViewTitle(this);
     },
 
     getTitle: function () {
+        // -- returns a string like "Contacts list"
         return eUI.capitalize(this.uiModel.namePlural) + ' ' + this.viewName;
     },
 
@@ -2034,7 +2042,8 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
         //'click .evol-buttons>button': 'click_button',
         //'click .evol-title-toggle': 'click_toggle',
         //'click .glyphicon-wrench': 'click_customize',
-        'click .btn': 'changeGroup',
+        'click .btn': 'clickGroup',
+        'change .bubble-group': 'changeGroup',
         'change .bubble-color': 'changeColor',
         'change .bubble-size': 'changeSize',
         'click svg>circle': 'clickCircle'
@@ -2082,8 +2091,10 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
 
     _render: function (models) {
         var eUI = Evol.UI,
+            i18nTools = Evol.i18n.tools,
             hOpt = eUI.input.option,
             hOptNull = eUI.html.emptyOption,
+            fo,
             fs2 = Evol.Dico.getFields(this.uiModel, Evol.Dico.fieldChartable),
             h = '<div class="evol-many-bubbles panel '+this.style+'"><div class="evol-bubbles-body">'+
                 '<div class="d3-tooltip" style="opacity:0;"></div>';
@@ -2091,20 +2102,29 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
 
         h+='<div class="bubbles-opts '+this.style+'">';
         // --- Group ---
-        h+='<label>'+Evol.i18n.vizGroupBy+'</label>'+
-            '<div class="btn-group" data-toggle="buttons">'+
+        h+='<label>'+i18nTools.vizGroupBy+': </label>';
+        if(fs2.length>5){
+            fo=_.map(fs2, function(f, idx){
+                    return hOpt(f.id, f.label, idx===0);
+                });
+            h+='<select class="form-control bubble-group">'+hOptNull + fo.join('')+'</select>';
+        }else{
+            h+='<div class="btn-group" data-toggle="buttons">'+
             _.map(fs2, function(f, idx){
                 if(_.isUndefined(f.groupable) || f.groupable){
                     return '<label class="btn btn-default'+(idx===0?' active':'')+'" id="'+f.id+'">'+
                           '<input type="radio" name="options"'+(idx===0?' checked':'')+'>'+f.label+'</label>';
                 }
-            }).join('')+
-            '</div>';
+            }).join('')+'</div>';
+        }
+
+
+
         // --- Color ---
-        var fo=_.map(fs2, function(f, idx){
+        fo=_.map(fs2, function(f, idx){
                 return (_.isUndefined(f.colorable) || f.colorable) ? hOpt(f.id, f.label, idx===0) : '';
             });
-        h+='<label>'+Evol.i18n.vizColorBy+'</label><select class="form-control bubble-color">'+hOptNull + fo.join('')+'</select>';
+        h+='<label>'+i18nTools.vizColorBy+': </label><select class="form-control bubble-color">'+hOptNull + fo.join('')+'</select>';
         // --- Size ---
         fs2=_.filter(fs2, function(f){
             return (_.isUndefined(f.sizable) || f.sizable) ? Evol.Dico.isNumberType(f.type) : '';
@@ -2113,7 +2133,7 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
             return hOpt(f.id, f.label);
         });
         if(fo.length){
-            h+='<label>'+Evol.i18n.vizSizeBy+'</label><select class="form-control bubble-size">'+hOptNull+fo.join('')+'</select>';
+            h+='<label>'+i18nTools.vizSizeBy+': </label><select class="form-control bubble-size">'+hOptNull+fo.join('')+'</select>';
         }
         //h+=Evol.UI.html.clearer;
         h+='</div></div></div>';
@@ -2140,8 +2160,11 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
         return this;
     },
 
-    changeGroup: function(evt){
+    clickGroup: function(evt){
         this.bubbles.changeBubblesGroup(evt.currentTarget.id);
+    },
+    changeGroup: function(evt){
+        this.bubbles.changeBubblesGroup(evt.target.value);
     },
 
     changeColor: function(evt){
@@ -2213,6 +2236,8 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
             }else if(f.type===fts.color) {
                 v = model.escape(f.attribute || f.id);
                 v = Evol.UI.input.colorBox(f.id, v, v);
+            }else if(f.type==='formula'){
+                v = Evol.UI.input.formula(null, f, model);
             }else{
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
@@ -2541,6 +2566,7 @@ Evol.ViewOne = function(){
     var eUI = Evol.UI,
         uiInput = eUI.input,
         i18n = Evol.i18n,
+        i18nTools = i18n.tools,
         eDico = Evol.Dico,
         fts = eDico.fieldTypes;
 
@@ -2562,7 +2588,7 @@ return Backbone.View.extend({
     },
 
     options: {
-        style: 'panel-info',
+        style: 'panel-default',
         button_addAnother: false,
         titleSelector: '#title',
         iconsPath: 'pix/'
@@ -2572,7 +2598,6 @@ return Backbone.View.extend({
         _.extend(this, this.options, opts);
         this.mode = this.mode || this.viewName;
         this._tabId = false;
-        this._uTitle = (!_.isUndefined(this.titleSelector)) && this.titleSelector!=='';
         this._subCollecs = this._subCollecsOK = false;
         /*
          if(this.model){
@@ -2662,18 +2687,6 @@ return Backbone.View.extend({
             that.setFieldValue(name, value);
          });
      },*/
-
-    getTitle: function(){
-        if(this.model){
-            if(this.model.isNew && this.model.isNew()){
-                return i18n.getLabel('NewEntity', this.uiModel.name);
-            }
-            var lf=this.uiModel.fnTitle;
-            return _.isFunction(lf)?lf(this.model):this.model.get(lf);
-        }else{
-            return eUI.capitalize(this.uiModel.name);
-        }
-    },
 
     getData: function (skipReadOnlyFields) {
         var that = this,
@@ -3036,10 +3049,10 @@ return Backbone.View.extend({
     _renderButtons: function (h, mode) {
         h.push(eUI.html.clearer+
             '<div class="evol-buttons panel '+this.style+'">'+
-            eUI.button('cancel', i18n.bCancel, 'btn-default')+
-            eUI.button('save', i18n.bSave, 'btn-primary'));
+            eUI.button('cancel', i18n.tools.bCancel, 'btn-default')+
+            eUI.button('save', i18n.tools.bSave, 'btn-primary'));
         if (this.model && this.model.isNew() && this.button_addAnother && mode!=='json') {
-            h.push(eUI.button('save-add', i18n.bSaveAdd, 'btn-default'));
+            h.push(eUI.button('save-add', i18n.tools.bSaveAdd, 'btn-default'));
         }
         h.push('</div>');
     },
@@ -3253,26 +3266,20 @@ return Backbone.View.extend({
         return this;
     },
 
-    setTitle: function (title){
-        if(this._uTitle){
-            var selector=this.titleSelector;
-            if(selector && selector!==''){
-                var t,
-                    lf=this.uiModel.fnTitle;
-                if(title){
-                    t=title;
-                }else if((!_.isUndefined(lf)) && lf!==''){
-                    t=this.getTitle();
-                }else{
-                    t=eUI.capitalize(this.uiModel.entities);
-                }
-                $(selector).text(t);
-                this._uTitle=true;
-                return this;
+    getTitle: function(){
+        if(this.model){
+            if(this.model.isNew && this.model.isNew()){
+                return i18n.getLabel('tools.NewEntity', this.uiModel.name);
             }
-            this._uTitle=false;
+            var lf=this.uiModel.fnTitle;
+            return _.isFunction(lf)?lf(this.model):this.model.get(lf);
+        }else{
+            return eUI.capitalize(this.uiModel.name);
         }
-        return this;
+    },
+
+    setTitle: function (title){
+        return eDico.setViewTitle(this, title);
     },
 
     validate: function (fields) {
@@ -3804,8 +3811,8 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
     _renderButtons: function (h) {
         h.push(Evol.UI.html.clearer+
             '<div class="evol-buttons panel '+this.style+'">'+
-            Evol.UI.button('cancel', Evol.i18n.bCancel, 'btn-default')+
-            Evol.UI.button('edit', Evol.i18n.bEdit, 'btn-primary')+
+            Evol.UI.button('cancel', Evol.i18n.tools.bCancel, 'btn-default')+
+            Evol.UI.button('edit', Evol.i18n.tools.bEdit, 'btn-primary')+
             '</div>');
     }
 
@@ -3868,7 +3875,17 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
             var h = [],
                 jsonStr=JSON.stringify(this.model, null, 2);
 
-            h.push(eUI.label('uimjson', 'JSON')+eUI.input.textMJSON('uimjson', jsonStr, 16));
+            h.push(
+                eUI.HTMLPanelBegin({
+                    id: 'p-json',
+                    label:Evol.UI.capitalize(this.uiModel.name), 
+                    label2: 'JSON'
+                }, this.style+' evo-p-json', true)+
+                '<fieldset>'+
+                eUI.label('uimjson', 'JSON')+
+                eUI.input.textMJSON('uimjson', jsonStr, 16)+
+                '</fieldset>'+
+                eUI.HTMLPanelEnd());
             this._renderButtons(h, 'json');
             this.$el.html(h.join(''));
         }else{
@@ -3918,7 +3935,7 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
     },
 
     _getDOMField: function(){
-        return this.$el.children('textarea');
+        return this.$('textarea');
     }
 
 });
@@ -3977,7 +3994,7 @@ return Evol.ViewOne.Edit.extend({
             iconsPath = this.iconsPath;
             
         h.push('<div data-p-width="100%" class="evol-pnl evol-p-mini">'+
-            eUI.HTMLPanelBegin(p, this.style||'panel-default')+
+            eUI.HTMLPanelBegin(p, this.style)+
             '<fieldset data-pid="'+p.id+(p.readonly?'" disabled>':'">'));
         _.each(p.elements, function (elem) {
             if(elem.type==fts.hidden){
@@ -4092,7 +4109,7 @@ return Backbone.View.extend({
             iMax = fields.length,
             useMore = iMax > 14;
 
-        h.push('<div class="evol-xpt-form"><div class="evol-xpt-flds">'+
+        h.push('<div class="evol-xpt panel '+this.style+'"><div class="evol-xpt-form clearfix"><div class="evol-xpt-flds">'+
             '<div><label>'+i18nXpt.xpFields+'</label></div>'+
             '<fieldset class="checkbox">');
 
@@ -4147,9 +4164,10 @@ return Backbone.View.extend({
             '<textarea class="evol-xpt-val form-control"></textarea>'+
             '</div></div></div></div>'+
             // ## Download button
-            '<div class="evol-buttons form-actions">'+
-                eUI.button('cancel', i18n.bCancel, 'btn-default')+
+            '<div class="panel '+this.style +' evol-buttons form-actions">'+
+                eUI.button('cancel', i18n.tools.bCancel, 'btn-default')+
                 eUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
+            '</div>'+
             '</div>'
         );
         return h.join('');
@@ -4199,6 +4217,10 @@ return Backbone.View.extend({
         }else{
             return i18n.getLabel('export.ExportOne', this.uiModel.name);
         }
+    },
+
+    setTitle: function(){
+        eDico.setViewTitle(this);
     },
 
     _preview: function (format) {
@@ -5220,7 +5242,8 @@ Evol.viewClasses = {
 Evol.Toolbar = function() {
 
     var eUI = Evol.UI,
-        i18n = Evol.i18n;
+        i18n = Evol.i18n,
+        i18nTool = i18n.tools;
 
 return Backbone.View.extend({
 
@@ -5253,19 +5276,19 @@ return Backbone.View.extend({
         pageSize:20,
         buttons: {
             always:[
-                {id: 'list', label: i18n.bList, icon:'th-list', n:'x'},
-                {id: 'new', label: i18n.bNew, icon:'plus', n:'x', readonly:false}
+                {id: 'list', label: i18nTool.bList, icon:'th-list', n:'x'},
+                {id: 'new', label: i18nTool.bNew, icon:'plus', n:'x', readonly:false}
             ],
                 //linkOpt2h('selections','','star');
             actions:[
-                //{id:'browse', label: i18n.bBrowse, icon:'eye', n:'1', readonly:false},
-                {id:'edit', label: i18n.bEdit, icon:'edit', n:'1', readonly:false},
-                {id:'save', label: i18n.bSave, icon:'floppy-disk', n:'1', readonly:false},
-                {id:'del', label: i18n.bDelete, icon:'trash', n:'1', readonly:false},
-                {id:'filter', label: i18n.bFilter, icon:'filter',n:'n'},
-                //{id:'group',label: i18n.bGroup, icon:'resize-horizontal',n:'n'},
-                {id:'export', label: i18n.bExport, icon:'cloud-download',n:'n'}
-                //{id:'cog',label: i18n.bSettings, icon:'cog',n:'n'}
+                //{id:'browse', label: i18nTool.bBrowse, icon:'eye', n:'1', readonly:false},
+                {id:'edit', label: i18nTool.bEdit, icon:'edit', n:'1', readonly:false},
+                {id:'save', label: i18nTool.bSave, icon:'floppy-disk', n:'1', readonly:false},
+                {id:'del', label: i18nTool.bDelete, icon:'trash', n:'1', readonly:false},
+                {id:'filter', label: i18nTool.bFilter, icon:'filter',n:'n'},
+                //{id:'group',label: i18nTool.bGroup, icon:'resize-horizontal',n:'n'},
+                {id:'export', label: i18nTool.bExport, icon:'cloud-download',n:'n'}
+                //{id:'cog',label: i18nTool.bSettings, icon:'cog',n:'n'}
             ],
             prevNext:[
                 {id:'prev', label: '', icon:'chevron-left', n:'x'},
@@ -5273,16 +5296,16 @@ return Backbone.View.extend({
             ],
             views: [
                 // -- views ONE ---
-                {id:'browse', label: i18n.bBrowse, icon:'eye-open',n:'1'},// // ReadOnly
-                {id:'edit', label: i18n.bEdit, icon:'edit',n:'1', readonly:false},// // All Fields for editing
-                {id:'mini', label: i18n.bMini, icon:'th-large',n:'1', readonly:false},// // Important Fields only
-                //{id:'wiz',label: i18n.bWizard, icon:'arrow-right',n:'1'},
-                {id:'json', label: i18n.bJSON, icon:'barcode',n:'1', readonly:false},
+                {id:'browse', label: i18nTool.bBrowse, icon:'eye-open',n:'1'},// // ReadOnly
+                {id:'edit', label: i18nTool.bEdit, icon:'edit',n:'1', readonly:false},// // All Fields for editing
+                {id:'mini', label: i18nTool.bMini, icon:'th-large',n:'1', readonly:false},// // Important Fields only
+                //{id:'wiz',label: i18nTool.bWizard, icon:'arrow-right',n:'1'},
+                {id:'json', label: i18nTool.bJSON, icon:'barcode',n:'1', readonly:false},
                 // -- views MANY ---
-                {id:'list', label: i18n.bList, icon:'th-list',n:'n'},
-                {id:'cards', label: i18n.bCards, icon:'th-large',n:'n'},
-                {id:'bubbles', label: i18n.bBubbles, icon:'adjust',n:'n'},
-                {id:'charts', label: i18n.bCharts, icon:'stats',n:'n'}
+                {id:'list', label: i18nTool.bList, icon:'th-list',n:'n'},
+                {id:'cards', label: i18nTool.bCards, icon:'th-large',n:'n'},
+                {id:'bubbles', label: i18nTool.bBubbles, icon:'adjust',n:'n'},
+                {id:'charts', label: i18nTool.bCharts, icon:'stats',n:'n'}
             ],
             search: false
         }
@@ -5470,8 +5493,6 @@ return Backbone.View.extend({
                         case 'export':
                             config.sampleMaxSize = config.pageSize;
                             vw = new ViewClass(config).render();
-                            $v.addClass('panel panel-info')
-                                .slideDown();
                             break;
                         // --- one --- browse, edit, mini, json, wiz
                         default :
@@ -5537,13 +5558,9 @@ return Backbone.View.extend({
 
     setTitle: function(){
         if(this.curView){
-            if(this.curView.viewName==='export'){
-                $(this.titleSelector)
-                    .html(this.curView.getTitle());
-            }else{
-                this.curView.setTitle();
-            }
+            this.curView.setTitle();
         }
+        return this;
     },
 
     proceedIfReady:function(cbOK, cbCancel){
@@ -5573,9 +5590,9 @@ return Backbone.View.extend({
                 msg,
                 cbs,
                 [
-                    {id:'nosave', text:i18n.bNoSave, class:'btn-default'},
-                    {id:'cancel', text:i18n.bCancel, class:'btn-default'},
-                    {id:'ok', text:i18n.bSave, class:'btn-primary'}
+                    {id:'nosave', text:i18nTool.bNoSave, class:'btn-default'},
+                    {id:'cancel', text:i18nTool.bCancel, class:'btn-default'},
+                    {id:'ok', text:i18nTool.bSave, class:'btn-primary'}
                 ]
             );
         }else{
@@ -5623,16 +5640,9 @@ return Backbone.View.extend({
         if(this.$el){
             var tbBs=this.getToolbarButtons();
             //setVisible(tbBs.customize, mode!='json');
-            tbBs.prevNext.hide();//.removeClass('nav-disabled');
+            tbBs.prevNext.hide();//.removeClass('disabled');
             setVisible(tbBs.views, !(mode==='export' || mode=='new'));
             tbBs.del.hide();
-            /*var cssOpen='glyphicon-eye-open',
-                cssClose='glyphicon-eye-close';
-            if(mode==='mini' || mode==='json'){
-                tbBs.viewsIcon.removeClass(cssOpen).addClass(cssClose);
-            }else{
-                tbBs.viewsIcon.removeClass(cssClose).addClass(cssOpen);
-            }*/
             if(Evol.Dico.viewIsMany(mode)){
                 this._prevViewMany=mode;
                 oneMany(mode, false, true);
@@ -5645,14 +5655,14 @@ return Backbone.View.extend({
                         tbBs.prevNext.show();/*
                          // TODO finish disabling of paging buttons
                          if(this.curView.pageIndex===0){
-                         tbBs.prevNext.eq(0).addClass('nav-disabled');
+                         tbBs.prevNext.eq(0).addClass('disabled');
                          }else{
-                         tbBs.prevNext.eq(0).removeClass('nav-disabled');
+                         tbBs.prevNext.eq(0).removeClass('disabled');
                          }
                          if(this.collection.length/this.pageSize){
-                         tbBs.prevNext.eq(1).addClass('nav-disabled');
+                         tbBs.prevNext.eq(1).addClass('disabled');
                          }else{
-                         tbBs.prevNext.eq(1).removeClass('nav-disabled');
+                         tbBs.prevNext.eq(1).removeClass('disabled');
                          }*/
                     }
                 }
@@ -5867,7 +5877,7 @@ return Backbone.View.extend({
             }
         }
         return this.curView.setDefaults() //.clear()
-            .setTitle(i18n.getLabel('NewEntity', this.uiModel.name, vw.getTitle()));
+            .setTitle(i18n.getLabel('tools.NewEntity', this.uiModel.name, vw.getTitle()));
     },
 
     deleteItem: function(){
@@ -5922,7 +5932,7 @@ return Backbone.View.extend({
                     }
                 );
             }
-        }else{
+        }/*else{
             if(that.curView.getSelection){
                 var selection=that.curView.getSelection();
                 if(selection.length>0){
@@ -5932,7 +5942,7 @@ return Backbone.View.extend({
                     }
                 }
             }
-        }
+        }*/
     },
 
     setMessage: function(title, content, style){
@@ -5964,11 +5974,7 @@ return Backbone.View.extend({
     click_action: function(evt, actionId){
         switch(actionId){
             case 'cancel':
-                if(this.curView.cardinality==='1' && !this.model.isNew){
-                    this.setView(this._prevViewOne || 'browse');
-                }else{
-                    this.setView(this._prevViewMany || 'list');
-                }
+                window.history.back();
                 break;
             case 'edit':
                 this.setView(actionId, true);
@@ -6014,7 +6020,7 @@ return Backbone.View.extend({
 
     updateNav: function(){
         var cl=this.curView.collection.length,
-            cssDisabled='nav-disabled',
+            cssDisabled='disabled',
             pIdx=this.pageIndex||0,
             $item=this.$('[data-id="prev"]');
 
@@ -6024,7 +6030,7 @@ return Backbone.View.extend({
 
     _enableNav: function(){
         this.$('[data-id="prev"],[data-id="next"]')
-            .removeClass('nav-disabled');
+            .removeClass('disabled');
     },
 
     status_update: function(evt, ui){
@@ -6092,7 +6098,7 @@ return Backbone.View.extend({
              case 'new-panel':
                  Evol.Dico.showDesigner('', toolId.substr(4), $e);
                  break;*/
-            default:// 'edit', 'mini', 'list', 'cards', 'export', 'json', 'new'
+            default:// 'browse', edit', 'mini', 'json', 'list', 'cards', 'bubbles', 'export'
                 if(toolId && toolId!==''){
                     this.setView(toolId, true);
                 }
@@ -6227,7 +6233,7 @@ Evol.App = Backbone.View.extend({
             nav2: '.evo-head-links2',
             content: '#evol'
         },
-        style: 'panel-info',
+        style: 'panel-default',
         useRouter: true,
         pageSize:20,
         prefix: 'evol-'
