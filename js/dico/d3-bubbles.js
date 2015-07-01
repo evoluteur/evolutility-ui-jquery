@@ -188,7 +188,7 @@ Bubbles.prototype.changeBubblesSize = function (sizeFieldId){
   if(sizeFieldId){
     var sizes = _.map(this.data, function(d){
       var v=d[sizeFieldId];
-      return (v===null || v===isNaN)?0:v;
+      return (v===null || v===isNaN || _.isUndefined(v))?0:v;
     });
     this.plotScale = d3.scale.log().domain([ _.min(sizes), _.max(sizes)]).range([10, 25]);
     cs.transition().duration(500)
