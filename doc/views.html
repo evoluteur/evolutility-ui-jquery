@@ -85,6 +85,7 @@
         <a href="#one-mini"><i class="glyphicon glyphicon-th-large"></i>Mini (quick-edit)</a>
         <a href="#one-json"><i class="glyphicon glyphicon-barcode"></i>JSON</a>
     </li>
+<p><a href="#validation">Validation</a><a href="#layout">Layout</a></p>
 
     <li>Views for a collection of <strong>many</strong> models: <a href="#many">Evol.ViewMany</a>
         <br/>
@@ -104,7 +105,6 @@
 
 </p>
 
-<p>Views <a href="#validation">Validation</a> and <a href="#layout">Layout</a>.</p>
 
 <div class="v-sep"></div>
 
@@ -115,7 +115,9 @@
 
     <h2>Evol.ViewOne</h2>
 
-    <p>Views for <strong>one</strong> model:
+    <p>Evol.ViewOne provide a set of Backbone Views for to browse, add and edit <strong>one</strong> model.</p>
+
+    <p>Views: 
 
     <span class="evo-links-views">
         <a href="#one-browse"><i class="glyphicon glyphicon-eye-open"></i>Browse</a>,
@@ -123,9 +125,12 @@
         <a href="#one-mini"><i class="glyphicon glyphicon-th-large"></i>Mini</a> (quick-edit),
         <a href="#one-json"><i class="glyphicon glyphicon-barcode"></i>JSON</a>.
     </span>
- </p>
+</p>
 
     <p>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a>
+    </p>
+
+    <p>More: <a href="#one-api-options">Validation</a> - <a href="#one-api-methods">Layout</a>
     </p>
 
     <a name="one-browse" class="evo-anchor">&nbsp;</a>
@@ -208,20 +213,10 @@
     <p><br>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a></p>
 
 
-    </div>
-
-
-    <div id="vw-one"></div>
-
-</section>
-
-
-
-
 <a name="validation" class="evo-anchor">&nbsp;</a>
 <section>
     <h2>Validation</h2>
-    <p>Validation is determined by the field properties. Validation happens when the user click the "Save" button.</p>
+    <p>Validation is determined by the field properties.</p>
    
     <ul>
         <li><span class="xmlAttr">type</span> - Text, Integer, Decimal, Date...</li>
@@ -231,8 +226,10 @@
         <li><span class="xmlAttr">maxLength</span> - Maximum length.</li>
         <li><span class="xmlAttr">minLength</span> - Minimum length.</li>
         <li><span class="xmlAttr">regExp</span> - Regular expression to verify.</li>
-        <li><span class="xmlAttr">fnValidate</span> - Custom validation function that the model must pass.</li>
+        <li><span class="xmlAttr">fnValidate</span> - Custom validation function.</li>
     </ul>
+
+    <p>Validation happens when the user click the "Save" button. Invalid fields are flagged and a summary is displayed.</p>
 
 </section>
 
@@ -254,8 +251,25 @@
     <p>In the following screenshot the form is organized into 4 panels for "Identity" 
         (width=60%), "Contact Info" (width=40%), "Address" (width=60%), and 
         "Misc." (width=40%). Each of these panels contains one or several fields.</p> 
+
+    <TABLE cellSpacing="0" cellPadding="0" border="0" >
+        <TR>
+            <TD vAlign="top">
         <p><img src="screenshots/position-panels.gif" class="pixEvoPos shadow">
         </p> 
+
+            </TD>
+            <td>&nbsp;&nbsp;</td>
+            <TD vAlign="top"><br>
+                <P>Identity: width=60%<br/>
+                    "Contact Info": width=40%<br/>
+                    Address: width=60%<br/>
+                    "Misc.": width=40%</p>
+            </TD>
+        </TR>
+    </TABLE>
+
+
     <p>Inside each panel, fields are placed using the same rule: placed sequentially, 
         left to right, until a width of 100% is reached.</p> 
 
@@ -309,12 +323,36 @@
         </TR>
     </TABLE> 
 
-<h3>View layout customization with CSS</h3>
+<h4>View layout customization with CSS</h4>
 
     <p>It is possible to enhance or adapt layout by adding CSS classes. </p>
+<p>For example, here is a CSS to change the background of all cards in the Cards views for all apps.
+<pre><code>.evol-cards-body > .panel {
+  background-color: blue;
+}
+</code></pre>
+</p>
+<p>It can also by applied to a specific object as follow:
+
+<pre><code>[data-eid="contact"] .evol-cards-body > .panel {
+ background-color: green !important;
+}
+</code></pre>
+</p>
+ 
     <p>For the demo, in Cards view, cards height is defined in CSS for each entity.</p>
 
 </section>
+
+
+
+    </div>
+
+
+    <div id="vw-one"></div>
+
+</section>
+
 
 
 <a name="many" class="evo-anchor">&nbsp;</a>
