@@ -183,12 +183,14 @@ var uiModels_comics = {
             type: 'panel', label: 'Serie', width: 70,
             elements: [
                 {
-                    id: 'title', attribute: 'title', type: 'text', label: 'Title', required: true, 
+                    id: 'title', attribute: 'title', type: 'text', 
+                    label: 'Title', required: true, 
                     maxLength: 255,
                     width: 62, inMany: true
                 },
                 {
-                    id: 'genre', attribute: 'genre', type: 'lov', label: 'Genre', width: 38, inMany: true,
+                    id: 'genre', attribute: 'genre', type: 'lov', 
+                    label: 'Genre', width: 38, inMany: true,
                     list: [
                         {id: 'adv', text: 'Adventure'},
                         {id: 'conte', text: 'Fairy tale'},
@@ -206,38 +208,44 @@ var uiModels_comics = {
                     ]
                 },
                 {
-                    id: 'authors', attribute: 'authors', type: 'text', width: 62, inMany: true,
-                    label: 'Authors'
+                    id: 'authors', attribute: 'authors', type: 'text', 
+                    label: 'Authors', width: 62, inMany: true
                 },
                 {
-                    id: 'language', attribute: 'language', type: 'lov', label: 'Language', width: 38, inMany: false,
+                    id: 'language', attribute: 'language', type: 'lov', 
+                    label: 'Language', width: 38, inMany: false,
                     list: [
                         {id: 'FR', text: 'French'},
                         {id: 'EN', text: 'English'}
                     ]
                 },
                 {
-                    id: 'serieNb', attribute: 'serieNb', type: 'integer', width: 15, inMany: false,
-                    label: 'Albums', inCharts:false 
+                    id: 'serieNb', attribute: 'serieNb', type: 'integer', 
+                    label: 'Albums', width: 15, inMany: false,
+                    inCharts: false 
                 },
                 {
-                    id: 'haveNb', attribute: 'haveNb', type: 'integer', width: 15, inMany: false,
-                    label: 'Owned', inCharts:false 
+                    id: 'haveNb', attribute: 'haveNb', type: 'integer',
+                    label: 'Owned', width: 15, inMany: false, 
+                    inCharts:false 
                 },
                 {
-                    id: 'have', attribute: 'have', type: 'text', width: 32, inMany: false,
-                    label: 'have' 
+                    id: 'have', attribute: 'have', type: 'text',
+                    label: 'have', width: 32, inMany: false 
                 },
                 {
-                    id: 'complete', attribute: 'complete', type: 'boolean', width: 19, inMany: true,
-                    label: 'Complete', labelFalse:'Incomplete', labelTrue:'Complete'
+                    id: 'complete', attribute: 'complete', type: 'boolean',
+                    label: 'Complete', width: 19, inMany: true, 
+                    labelFalse:'Incomplete', labelTrue:'Complete'
                 },
                 {
-                    id: 'finished', attribute: 'finished', type: 'boolean', width: 19, inMany: true,
-                    label: 'Finished', labelTrue:'Finished', labelFalse:'Unfinished', css:'cBlue'
+                    id: 'finished', attribute: 'finished', type: 'boolean', 
+                    label: 'Finished', width: 19, inMany: true,
+                    labelTrue:'Finished', labelFalse:'Unfinished', css:'cBlue'
                 },
                 {
-                    id:'amazon', label:'Amazon', type:'formula', width:100, css:'evol-ellipsis',
+                    id:'amazon', type:'formula', 
+                    label:'Amazon', width:100, css:'evol-ellipsis',
                     formula:function(m){
                         var link=m.get('language')=='FR' ?
                             'http://www.amazon.fr/s/ref=sr_nr_n_1?keywords='
@@ -247,7 +255,8 @@ var uiModels_comics = {
                     }
                 },
                 {
-                    id: 'notes', attribute: 'notes', type: 'textmultiline', label: 'Notes', maxLength: 1000,
+                    id: 'notes', attribute: 'notes', type: 'textmultiline', 
+                    label: 'Notes', maxLength: 1000,
                     width: 100, height: 6, inMany: false
                 }
             ]
@@ -256,8 +265,8 @@ var uiModels_comics = {
             type: 'panel', label: 'Cover', width: 30,
             elements: [
                 {
-                    id: 'pix', attribute: 'pix', type: 'image', width: 100, inMany: true,
-                    label: 'Cover'
+                    id: 'pix', attribute: 'pix', type: 'image',
+                    label: 'Cover', width: 100, inMany: true
                 }
             ]
         }
