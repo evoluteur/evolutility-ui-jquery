@@ -40,8 +40,8 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
                 width:1200, 
                 height:700, 
                 fields: flds,
-                colorFieldId: flds[0].id,
-                groupFieldId: flds[0].id,
+                colorFieldId: flds.length?flds[0].id:null,
+                groupFieldId: flds.length?flds[0].id:null,
                 sizeFieldId: null,
                 uiModel: this.uiModel,
                 tooltip: function(d){
@@ -76,41 +76,43 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
         //h+=this._HTMLbody(this.getFields(), pSize, this.uiModel.icon, 0, this.selectable);
 
         h+='<div class="bubbles-opts '+this.style+'">';
-        // --- Group ---
-        h+='<label>'+i18nTools.vizGroupBy+': </label>';
-        if(fs2.length>5){
+        if(fs2.length){
+            // --- Group ---
+            h+='<label>'+i18nTools.vizGroupBy+': </label>';
+            if(fs2.length>5){
+                fo=_.map(fs2, function(f, idx){
+                        return hOpt(f.id, f.label, idx===0);
+                    });
+                h+='<select class="form-control bubble-group">'+hOptNull + fo.join('')+'</select>';
+            }else{
+                h+='<div class="btn-group" data-toggle="buttons">'+
+                _.map(fs2, function(f, idx){
+                    if(_.isUndefined(f.groupable) || f.groupable){
+                        return '<label class="btn btn-default'+(idx===0?' active':'')+'" id="'+f.id+'">'+
+                              '<input type="radio" name="options"'+(idx===0?' checked':'')+'>'+f.label+'</label>';
+                    }
+                }).join('')+
+                '</div>';
+            }
+            // --- Color ---
             fo=_.map(fs2, function(f, idx){
-                    return hOpt(f.id, f.label, idx===0);
+                    return (_.isUndefined(f.colorable) || f.colorable) ? hOpt(f.id, f.label, idx===0) : '';
                 });
-            h+='<select class="form-control bubble-group">'+hOptNull + fo.join('')+'</select>';
-        }else{
-            h+='<div class="btn-group" data-toggle="buttons">'+
-            _.map(fs2, function(f, idx){
-                if(_.isUndefined(f.groupable) || f.groupable){
-                    return '<label class="btn btn-default'+(idx===0?' active':'')+'" id="'+f.id+'">'+
-                          '<input type="radio" name="options"'+(idx===0?' checked':'')+'>'+f.label+'</label>';
-                }
-            }).join('')+'</div>';
-        }
-
-
-
-        // --- Color ---
-        fo=_.map(fs2, function(f, idx){
-                return (_.isUndefined(f.colorable) || f.colorable) ? hOpt(f.id, f.label, idx===0) : '';
+            h+='<label>'+i18nTools.vizColorBy+': </label><select class="form-control bubble-color">'+hOptNull + fo.join('')+'</select>';
+            // --- Size ---
+            fs2=_.filter(fs2, function(f){
+                return (_.isUndefined(f.sizable) || f.sizable) ? Evol.Dico.isNumberType(f.type) : '';
             });
-        h+='<label>'+i18nTools.vizColorBy+': </label><select class="form-control bubble-color">'+hOptNull + fo.join('')+'</select>';
-        // --- Size ---
-        fs2=_.filter(fs2, function(f){
-            return (_.isUndefined(f.sizable) || f.sizable) ? Evol.Dico.isNumberType(f.type) : '';
-        });
-        fo=_.map(fs2, function(f, idx){
-            return hOpt(f.id, f.label);
-        });
-        if(fo.length){
-            h+='<label>'+i18nTools.vizSizeBy+': </label><select class="form-control bubble-size">'+hOptNull+fo.join('')+'</select>';
+            fo=_.map(fs2, function(f, idx){
+                return hOpt(f.id, f.label);
+            });
+            if(fo.length){
+                h+='<label>'+i18nTools.vizSizeBy+': </label><select class="form-control bubble-size">'+hOptNull+fo.join('')+'</select>';
+            }
+            //h+=Evol.UI.html.clearer;
+        }else{
+            h+=Evol.i18n.notEnoughdata;
         }
-        //h+=Evol.UI.html.clearer;
         h+='</div></div></div>';
         this.$el.html(h);
         this.setupBubbles();

@@ -88,6 +88,7 @@ Evol.i18n = {
     none: 'None',
     na: 'N/A', // 'not available'
     nodata: 'No data available.',
+    notEnoughdata: 'Not enough data available.',
     nopix: 'No picture.',
     nochart: 'No charts available.',
     badchart: 'Not enough information provided to draw charts.',
