@@ -247,11 +247,12 @@ var uiModels_comics = {
                     id:'amazon', type:'formula', 
                     label:'Amazon', width:100, css:'evol-ellipsis',
                     formula:function(m){
-                        var link=m.get('language')=='FR' ?
+                        var urlData=m.get('title')+' '+m.get('authors'),
+                        link=m.get('language')=='FR' ?
                             'http://www.amazon.fr/s/ref=sr_nr_n_1?keywords='
                             :'http://www.amazon.com/s/ref=nb_sb_noss?field-keywords=';
-                        link+=encodeURI(m.get('title')+' '+m.get('authors'));
-                        return '<a target="a" href="'+link+'">'+link+'</a>';
+                        return '<a target="a" href="'+link+encodeURI(urlData)+'">'+
+                            _.escape(urlData)+'</a>';
                     }
                 },
                 {
@@ -283,15 +284,15 @@ UI-Models for the demo apps:
 [Wine Cellar](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/winecellar.js),
 [Graphic Novels](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/comics.js).
 
-With Evolutility, a single UI-model defines a full single page applications (SPA) to view, edit, filter and export a Backbone model or collection.
+With Evolutility, a single UI-model defines a full single page applications (SPA) to view, edit, filter and export a Backbone.js model or collection.
 
 Try it now: Download Evolutility.JS, make modification to the demo UI-models by adding and modifying fields and panels and see the demo apps become your apps.
 
 ## Stack and dependencies
 
 Javascript, HTML5, CSS3,
-[Backbone] (http://backbonejs.org),
-[Underscore] (http://underscorejs.org/),
+[Backbone.js] (http://backbonejs.org),
+[Underscore.js] (http://underscorejs.org/),
 [jQuery] (http://jquery.com),
 [D3.js] (http://d3js.org),
 [Bootstrap] (http://getbootstrap.com/),
