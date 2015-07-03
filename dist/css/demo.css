@@ -368,8 +368,11 @@ h4 {
   margin-top: 20px;
 }
 .version {
+  position: relative;
+  top: 16px;
+  left: -36px;
   font-weight: normal;
-  font-size: .4em;
+  font-size: 0.3em;
 }
 #evol-views-params {
   margin: 20px 0;
