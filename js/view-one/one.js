@@ -599,10 +599,10 @@ return Backbone.View.extend({
             var hidden= _.isUndefined(visible)?false:!visible;
             h.push('<div data-p-width="100" class="evol-pnl evo-p-wiz" style="width:100%;'+(hidden?'display:none;':'')+'">');
         }else{
-            h.push('<div data-p-width="'+p.width+'" class="evol-pnl pull-left" style="width:'+p.width+'%">');
+            h.push('<div data-p-width="'+p.width+'" class="evol-pnl" style="width:'+p.width+'%">');
         }
         h.push(eUI.HTMLPanelBegin(p, this.style||'panel-default'),
-            '<fieldset data-pid="'+p.id+(p.readonly?'" disabled>':'">'));
+            '<fieldset data-pid="'+p.id+(p.readonly?'" disabled>':'"><div class="evol-fset">'));
         _.each(p.elements, function (elem) {
             if(elem.type=='panel-list'){
                 that._renderPanelList(h, elem, elem.readonly?'browse':mode);
@@ -610,13 +610,13 @@ return Backbone.View.extend({
                 if(elem.type==fts.hidden){
                     h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultValue, mode)));
                 }else{
-                    h.push('<div style="width:'+parseInt(elem.width||100, 10)+'%" class="pull-left evol-fld">');
+                    h.push('<div style="width:'+parseInt(elem.width||100, 10)+'%" class="evol-fld">');
                     that.renderField(h, elem, mode, iconsPath);
                     h.push("</div>");
                 }
             }
         });
-        h.push('</fieldset>'+
+        h.push('</div></fieldset>'+
             eUI.HTMLPanelEnd()+
             '</div>');
         return this;
@@ -626,7 +626,7 @@ return Backbone.View.extend({
         var isEditable = p.readonly?false:(mode!=='browse'),
             vMode=isEditable?mode:'browse';
 
-        h.push('<div style="width:'+p.width+'%" class="evol-pnl pull-left" data-pid="'+p.id+'">',
+        h.push('<div style="width:'+p.width+'%" class="evol-pnl" data-pid="'+p.id+'">',
             eUI.HTMLPanelBegin(p, this.style),
             '<table class="table" data-mid="'+(p.attribute || p.id)+'"><thead><tr>');
         _.each(p.elements, function (elem) {

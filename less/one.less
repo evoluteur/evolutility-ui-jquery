@@ -4,21 +4,24 @@
 //  Copyright (c) 2015, Olivier Giulieri
 
 /* --- panels & tabs --- */
-.evol-pnl .table .evol-money{
-  //TODO: better fix
-  width: 200px;
+.evol-pnls{
+  .flex-holder()
 }
-.evol-pnl > div > fieldset{
-    padding: 10px 10px 5px 2px;
+.evol-pnl {
+  .flex-item();
+  .table .evol-money{
+    //TODO: better fix
+    width: 200px;
+  }
+  .evol-pnl {
+     > .panel{
+        margin-bottom: 12px;
+    }
+    > div > fieldset{
+      padding: 10px 10px 5px 2px;
+    }
+  }
 }
-.evol-pnl > .panel{
-    margin-bottom: 12px;
-}
-.evol-fld{
-    padding-left:10px !important;
-    margin-bottom: 6px;
-}
-
 .evol-pnl,
 .evol-pnl-lst{
     padding-left:10px !important;
@@ -44,6 +47,14 @@
 }
 
 /* --- fields --- */
+.evol-fset{
+    .flex-holder();
+}
+.evol-fld{
+    .flex-item();
+    padding-left:10px !important;
+    margin-bottom: 6px;
+}
 
 .evol-required,
 .evol-asterix{
