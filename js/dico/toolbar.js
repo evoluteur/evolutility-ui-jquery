@@ -632,7 +632,7 @@ return Backbone.View.extend({
                     collec.create(this.getData(true), {
                         success: function(m){
                             fnSuccess(m);
-                            that.setMessage(i18n.getLabel('saved', eUI.capitalize(entityName)), i18n.getLabel('status.added', entityName, _.escape(vw.getTitle())), 'success');
+                            that.setMessage(i18n.getLabel('saved', eUI.capitalize(entityName)), i18n.getLabel('msg.added', entityName, _.escape(vw.getTitle())), 'success');
                         },
                         error:function(m, err){
                             alert('error in "saveItem"');
@@ -648,7 +648,7 @@ return Backbone.View.extend({
                 this.model.save('','',{
                     success: function(m){
                         fnSuccess(m);
-                        that.setMessage(i18n.getLabel('saved', eUI.capitalize(entityName)), i18n.getLabel('status.updated', eUI.capitalize(entityName), _.escape(vw.getTitle())), 'success');
+                        that.setMessage(i18n.getLabel('saved', eUI.capitalize(entityName)), i18n.getLabel('msg.updated', eUI.capitalize(entityName), _.escape(vw.getTitle())), 'success');
                     },
                     error:function(m, err){
                         alert('error in "saveItem"');
@@ -718,7 +718,7 @@ return Backbone.View.extend({
                                         that.curView.setModel(newModel);
                                     }
                                     var eName=eUI.capitalize(entityName);
-                                    that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('status.deleted', eName, entityValue), 'success');
+                                    that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('msg.deleted', eName, entityValue), 'success');
                                     that._trigger('item.deleted');
                                 },
                                 error:function(m, err){

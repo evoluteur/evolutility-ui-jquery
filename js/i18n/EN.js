@@ -17,9 +17,11 @@ Evol.i18n = {
             l=this[label];
         }
         if(string1 && l){
-            l= l.replace('{0}',string1);
+            l = l.replace('{0}', string1);
+            //l = l.replace(/\{0\}/g, string1);
             if(string2){
-                l= l.replace('{1}',string2);
+                l = l.replace('{1}', string2);
+                //l = l.replace(/\{1\}/g, string2);
             }
         }
         return l;
@@ -61,10 +63,16 @@ Evol.i18n = {
         // --- data visualization ---
         vizGroupBy: 'Group by',
         vizColorBy: 'Color by',
-        vizSizeBy: 'Size by'
+        vizSizeBy: 'Size by',
+
+        // --- wizard ---
+        prev: 'Previous',
+        next: 'Next',
+        finish: 'Finish !'
     },
 
     // --- msg & status ---
+    //msg: {
     saved: '{0} saved.',
     unSavedTitle: 'Changes pending',
     unSavedChanges: 'Do you want to save the changes you made to "{0}"?',
@@ -94,14 +102,16 @@ Evol.i18n = {
     badchart: 'Not enough information provided to draw charts.',
     range: '{0} - {1} of {2} {3}', //rangeBegin, '-', rangeEnd, ' of ', mSize, ' ', entities'
     selected: '{0} selected',
-    'sgn_money': '$', // indicator for money
-    'sgn_email': '@', // indicator for email
+    //},
     
     // --- status ---
-    status:{
+    msg:{
+        sgn_money: '$', // indicator for money
+        sgn_email: '@', // indicator for email
         added: 'New {0} "{1}" added.',
         updated: '{0} "{1}" updated.',
         deleted: '{0} "{1}" deleted.'
+        //error: 'Error',
     },
 
     // --- validation ---
@@ -127,9 +137,6 @@ Evol.i18n = {
         regExp: '"{0}" is not of the expected format.'
         //regExp: '"{0}" must match the regular expression pattern for "{1}".'
     },
-
-    // --- errors ---
-    error: 'Error',
 
     // --- charts ---
     charts:{
@@ -198,12 +205,7 @@ Evol.i18n = {
         bUpdateFilter: 'Update filter',
         bSubmit: 'Submit',
         bCancel: 'Cancel'
-    },
-
-    // --- wizard ---
-    prev: 'Previous',
-    next: 'Next',
-    finish: 'Finish !'/*,
+    }/*,
 
     // --- documentation ---
     doc:{

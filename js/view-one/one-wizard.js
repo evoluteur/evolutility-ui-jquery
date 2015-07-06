@@ -11,8 +11,7 @@
 
 Evol.ViewOne.Wizard = function(){
 
-    var eUI = Evol.UI,
-        i18n = Evol.i18n;
+    var eUI = Evol.UI;
 
 return Evol.ViewOne.extend({
 
@@ -110,12 +109,13 @@ return Evol.ViewOne.extend({
     },
 
     _renderButtons: function (h) {
-        var b=eUI.button;
+        var bLabel=Evol.i18n.tools,
+            b=eUI.button;
         h.push(eUI.html.clearer,
             '<div class="evo-wiz-buttons">',
-            b('prev', i18n.prev, 'btn-default disabled'),
-            b('next', i18n.next, 'btn-primary'),
-            b('finish', i18n.finish, 'btn-default'),
+            b('prev', bLabel.prev, 'btn-default disabled'),
+            b('next', bLabel.next, 'btn-primary'),
+            b('finish', bLabel.finish, 'btn-default'),
             '</div>');
         return this;
     },
@@ -129,7 +129,7 @@ return Evol.ViewOne.extend({
                 //TODO what? got ot OneView.View
                 this.$el.trigger('action', 'save');
             }else{
-                this.sendMessage(i18n.validation.incomplete, v, 'warning');
+                this.sendMessage(Evol.i18n.validation.incomplete, v, 'warning');
             }
         }else{
             var stepIdx=parseInt(bId,10);

@@ -100,7 +100,7 @@ return {
             return '<div id="'+fid+'" class="w-100 form-control"></div>';
         },
         email: function (f, fid, fv) {
-            return '<div class="input-group">'+uiInput.typeFlag(i18n.sgn_email)+
+            return '<div class="input-group">'+uiInput.typeFlag(i18n.msg.sgn_email)+
                 uiInput.text(fid, fv, f)+
                 '</div>';
         },
