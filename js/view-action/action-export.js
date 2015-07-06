@@ -381,13 +381,17 @@ return Backbone.View.extend({
                                 case fts.list:
                                     if(_.isUndefined(fValue) || fValue===''|| (_.isArray(fValue) && fValue.length===0)){
                                         h+='NULL';
+                                    }else if(_.isNumber(fValue)){
+                                        h+=fValue;
                                     }else{
                                         h+='"'+eDico.fieldHTML_ReadOny(f, fValue, Evol.hashLov, '').replace(/"/g, '""')+'"';
                                     }
                                     break;
                                 default:
-                                    if(_.isUndefined(fValue)){
+                                    if(_.isUndefined(fValue)||fValue===''){
                                         h+='""';
+                                    }else if(_.isNumber(fValue)){
+                                        h+=fValue;
                                     }else{
                                         h+='"'+fValue.replace(/"/g, '""')+'"';
                                     }
