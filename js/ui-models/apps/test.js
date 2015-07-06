@@ -205,7 +205,7 @@ uiModels.test = {
         },
         {
             type: 'tab',
-            label: 'Formula',
+            label: 'Formulas',
             elements: [
                 {
                     type: 'panel', label: 'Formula fields', width: 62,
