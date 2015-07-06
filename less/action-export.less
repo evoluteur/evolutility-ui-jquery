@@ -8,24 +8,27 @@
 }
 
 .evol-xpt-form {
+  .flex-holder();
   border-collapse:collapse;
   border:0;
   width:100%;
 
   > div {
+    .flex-item();
     padding:15px;
     vertical-align:top;
   }
 
-  .evol-buttons{
-    clear:left;
-  }
-
 }
 .evol-xpt-flds {
-  float:left;
   border-right: 0 !important;
   width:@widthR1;
+  min-width: 200px;
+  max-width:245px;
+
+  @media only screen and (max-width: @screen1) {
+    max-width: none;
+  }
 
   >fieldset{
     margin-left: 20px;
@@ -40,8 +43,8 @@
 }
 
 .evol-xpt-para{
-  float:left;
   width:@widthR2;
+  min-width: 300px;
   border-left: 0 !important;
 }
 

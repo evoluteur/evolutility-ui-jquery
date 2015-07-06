@@ -84,33 +84,33 @@ return Backbone.View.extend({
     },
 
     _renderHTML: function () {
-        var h = [],
+        var h = '',
             formats = this.formats,
             fields = this.getFields(),
             iMax = fields.length,
             useMore = iMax > 14;
 
-        h.push('<div class="evol-xpt panel '+this.style+'"><div class="evol-xpt-form clearfix"><div class="evol-xpt-flds">'+
+        h+='<div class="evol-xpt panel '+this.style+'"><div class="evol-xpt-form clearfix"><div class="evol-xpt-flds">'+
             '<div><label>'+i18nXpt.xpFields+'</label></div>'+
-            '<fieldset class="checkbox">');
+            '<fieldset class="checkbox">';
 
         //### list of columns to export #########################################
-        h.push('<div><label><input type="checkbox" value="1" id="showID">'+i18nXpt.IDkey+'</label></div>');
+        h+='<div><label><input type="checkbox" value="1" id="showID">'+i18nXpt.IDkey+'</label></div>';
         _.each(fields, function(f, idx){
             var fLabel = f.labelexport || f.label || f.labellist,
                 fID = 'fx-' + f.id;
             if (fLabel === null || fLabel === '') {
                 fLabel = '(' + fID + ')';
             }
-            h.push('<div><label><input type="checkbox" value="1" id="'+fID+'" checked="checked">'+fLabel+'</label></div>');
+            h+='<div><label><input type="checkbox" value="1" id="'+fID+'" checked="checked">'+fLabel+'</label></div>';
             if (idx === 10 && useMore){
-                h.push(EvoExport.html_more2(i18nXpt.allFields));
+                h+=EvoExport.html_more2(i18nXpt.allFields);
             }
         });
         if (useMore){
-            h.push('</div>');
+            h+='</div>';
         }
-        h.push('</fieldset></div><div class="evol-xpt-para">');
+        h+='</fieldset></div><div class="evol-xpt-para">';
         //##### export formats ########################################
         var fId = 'evol-xpt-format',
             formatsList = _.map(formats, function(format){
@@ -119,10 +119,10 @@ return Backbone.View.extend({
                         text: i18nXpt['format'+format]
                     };
                 });
-        h.push('<label for="'+fId+'">'+i18nXpt.format+'</label>'+
-            uiInput.select(fId, '', 'evol-xpt-format', false, formatsList));
+        h+='<label for="'+fId+'">'+i18nXpt.format+'</label>'+
+            uiInput.select(fId, '', 'evol-xpt-format', false, formatsList);
         fId = 'xptFLH';
-        h.push('<div class="evol-xpt-opts">'+
+        h+='<div class="evol-xpt-opts">'+
             //# field (shared b/w formats - header #######
             '<div class="evol-FLH clearfix">'+
             '<label>'+uiInput.checkbox(fId, true)+i18nXpt.firstLine+'</label>'+
@@ -134,11 +134,11 @@ return Backbone.View.extend({
             eUI.fieldLabel('separator', i18nXpt.separator)+
             uiInput.text('separator', ',', '0')+
             '</div>'+ // </div>
-        '</div>');
+        '</div>';
         _.each(formats, function(f){
-            h.push('<div id="xpt'+f+'" style="display:none;"></div>');
+            h+='<div id="xpt'+f+'" style="display:none;"></div>';
         });
-        h.push('</div>'+
+        h+='</div>'+
             //# Preview #######
             '<label>'+i18nXpt.preview+'</label><div class="evol-xpt-preview">'+
             // ## Samples
@@ -149,9 +149,8 @@ return Backbone.View.extend({
                 eUI.button('cancel', i18n.tools.bCancel, 'btn-default')+
                 eUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
             '</div>'+
-            '</div>'
-        );
-        return h.join('');
+            '</div>';
+        return h;
     },
 
     setModel: function(model){
@@ -330,22 +329,21 @@ return Backbone.View.extend({
                     var optTransaction = this.$('#transaction').prop('checked'),
                         optIdInsert = this.$('#insertId').prop('checked'),
                         sqlTable = this.$('#table').val().replace(/ /g,'_'),
-                        sql = ['INSERT INTO '+sqlTable+' ('];
+                        sql = 'INSERT INTO '+sqlTable+' (';
 
                     if(sqlTable===''){
                         sqlTable = this.uiModel.name.replace(/ /g,'_');
                     }
                     if(showID){
-                        sql.push('ID, ');
+                        sql+='ID, ';
                     }
                     _.each(flds, function(f,idx){
-                        sql.push(f.id);
+                        sql+=f.id;
                         if(idx<fMax){
-                            sql.push(', ');
+                            sql+=', ';
                         }
                     });
-                    sql.push(')\n VALUES (');
-                    sql = sql.join('');
+                    sql+=')\n VALUES (';
                     // -- options
                     if(optTransaction){
                         h+='BEGIN TRANSACTION\n';
