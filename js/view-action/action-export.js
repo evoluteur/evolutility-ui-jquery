@@ -20,21 +20,21 @@ Evol.ViewAction.Export = function(){
 
         optEntityName: function(id,label,entity){
             return eUI.fieldLabel(id, label) +
-                uiInput.text(id, entity.replace(/ /g, '_'), 30) +
-                '<br>';
+                uiInput.text(id, entity.replace(/ /g, '_'), 30);
         },
 
         optsXML: function(entity){
-            return this.html_more2(i18nXpt.options)+
+            return '<div>'+//this.html_more2(i18nXpt.options)+
                 this.optEntityName('elementName', i18nXpt.XMLroot, entity)+
                 '</div>';
         },
 
         optsSQL: function(entity){
-            return this.html_more2(i18nXpt.options)+
+            return '<div>'+//this.html_more2(i18nXpt.options)+
                 this.optEntityName('table', i18nXpt.SQLTable, entity)+
-                '<div>'+uiInput.checkbox('insertId', '0')+eUI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert)+'</div>'+
-                '<div>'+uiInput.checkbox('transaction', '0')+eUI.fieldLabelSpan('transaction', i18nXpt.SQLTrans)+'</div>'+
+                '<div class="evo-inline-holder">'+
+                    '<div>'+uiInput.checkbox('insertId', '0')+eUI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert)+'</div>'+
+                    '<div>'+uiInput.checkbox('transaction', '0')+eUI.fieldLabelSpan('transaction', i18nXpt.SQLTrans)+'</div>'+
                 '</div>';
         },
 
@@ -58,7 +58,7 @@ return Backbone.View.extend({
     cardinality: 'n',
 
     events: {
-        "change .evol-xpt-format": "click_format",
+        'change .evol-xpt-format': 'click_format',
         'change input': 'click_preview',
         'click .evol-xpt-more': 'click_toggle_sel',
         'click button': 'click_button'
@@ -125,16 +125,16 @@ return Backbone.View.extend({
         h+='<div class="evol-xpt-opts">'+
             //# field (shared b/w formats - header #######
             '<div class="evol-FLH clearfix">'+
-            '<label>'+uiInput.checkbox(fId, true)+i18nXpt.firstLine+'</label>'+
+                '<label>'+uiInput.checkbox(fId, true)+i18nXpt.firstLine+'</label>'+
             //##### CSV, TAB - First line for field names #######
-            '</div><div id="xptCSV">'+
-            //# field - separator
-            //# - csv - any separator #######
-            '<div data-id="csv2" class="evol-w120">'+
-            eUI.fieldLabel('separator', i18nXpt.separator)+
-            uiInput.text('separator', ',', '0')+
-            '</div>'+ // </div>
-        '</div>';
+            '</div><div id="xptCSV" class="evol-xpt-opt">'+
+                //# field - separator
+                //# - csv - any separator #######
+                '<div data-id="csv2" class="evol-w120">'+
+                eUI.fieldLabel('separator', i18nXpt.separator)+
+                uiInput.text('separator', ',', '0')+
+                '</div>'+ // </div>
+            '</div>';
         _.each(formats, function(f){
             h+='<div id="xpt'+f+'" style="display:none;"></div>';
         });
@@ -516,6 +516,7 @@ return Backbone.View.extend({
         var bId=$(evt.currentTarget).data('id');
         this.$el.trigger('action', bId);
     }
+
 });
 
 }();
