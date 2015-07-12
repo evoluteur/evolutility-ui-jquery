@@ -109,7 +109,24 @@ module.exports = function (grunt) {
         copy: {
           main: {
             files: [
-              {expand: true, flatten: true, src: ['bower_components/bootstrap/dist/fonts/*'], dest: '<%= pkg.target %>/fonts/'}
+                {
+                    expand: true, 
+                    flatten: true, 
+                    src: [
+                        'bower_components/bootstrap/dist/fonts/*'
+                    ], 
+                    dest: '<%= pkg.target %>/fonts/'
+                },
+                {
+                    expand: true, 
+                    flatten: true, 
+                    src: [
+                        'bower_components/select2/select2-spinner.gif',
+                        'bower_components/select2/select2.png',
+                        'bower_components/select2/select2x2.png'
+                    ], 
+                    dest: '<%= pkg.target %>/css'
+                }
             ]
           }
         },
@@ -195,7 +212,7 @@ module.exports = function (grunt) {
         less: {
             dev: {
                 files: {
-                    "dist/css/evolutility.css": "less/evol.less"
+                    "dist/css/evolutility.css": "less/evolutility.less"
                 }
             },
             demo: {
@@ -210,7 +227,7 @@ module.exports = function (grunt) {
                 },
                 files: {
                     "dist/css/dependencies.min.css": "less/dependencies.less",
-                    "dist/css/evolutility.min.css": "less/evol.less"
+                    "dist/css/evolutility.min.css": "less/evolutility.less"
                 }
             }
         }
