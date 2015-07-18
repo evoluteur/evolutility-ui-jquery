@@ -151,10 +151,10 @@ return Backbone.View.extend({
             fs = _.filter(fs, fnNotReadOnly);
             subCollecs = _.filter(subCollecs, fnNotReadOnly);
         }
-        _.each(fs, function(f){
+        _.forEach(fs, function(f){
             vs[f.id]=that.getFieldValue(f);
         });
-        if(subCollecs){
+        if(subCollecs && subCollecs.length){
             // -- for each sub collection (panel-list)
             _.each(subCollecs, function (sc) {
                 var rows=that.$('[data-pid="'+sc.id+'"] tbody tr').not('[data-id="nodata"]').toArray(),
@@ -251,7 +251,7 @@ return Backbone.View.extend({
                     }
                 }
             });
-            if(subCollecs){
+            if(subCollecs && subCollecs.length){
                 _.each(subCollecs, function (sc) {
                     var h=[];
                     that._renderPanelListBody(h, sc, fv, sc.readonly?'browse':'edit');
@@ -709,7 +709,7 @@ return Backbone.View.extend({
         }
         if(f.type==='formula'){
             h.push(Evol.Dico.HTMLFieldLabel(f, mode || 'edit')+
-                Evol.UI.input.formula(this.fieldViewId(f.id), this.model));
+                Evol.UI.input.formula(this.fieldViewId(f.id), f, this.model));
         }else{
             h.push(eDico.fieldHTML(f, this.fieldViewId(f.id), fv, mode, iconsPath, skipLabel));
         }
