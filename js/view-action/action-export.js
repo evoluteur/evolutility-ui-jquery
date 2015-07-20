@@ -33,7 +33,7 @@ Evol.ViewAction.Export = function(){
             return '<div>'+//this.html_more2(i18nXpt.options)+
                 this.optEntityName('table', i18nXpt.SQLTable, entity)+
                 '<div class="evo-inline-holder">'+
-                    '<div>'+uiInput.checkbox('insertId', '0')+eUI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert)+'</div>'+
+                    //'<div>'+uiInput.checkbox('insertId', '0')+eUI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert)+'</div>'+
                     '<div>'+uiInput.checkbox('transaction', '0')+eUI.fieldLabelSpan('transaction', i18nXpt.SQLTrans)+'</div>'+
                 '</div>';
         },
@@ -328,11 +328,38 @@ return Backbone.View.extend({
                 case 'SQL':
                     var optTransaction = this.$('#transaction').prop('checked'),
                         optIdInsert = this.$('#insertId').prop('checked'),
+                        crlf = '\n',
                         sqlTable = this.$('#table').val().replace(/ /g,'_'),
-                        sql = 'INSERT INTO '+sqlTable+' (';
-
+                        sql = 'INSERT INTO '+sqlTable+' (',
+                        //db = 'postgres',//'sqlserver'
+                        formatString, emptyString, sNull, beginTrans, commitTrans;
+/*
+                    switch(db){
+                        case 'postgres':*/
+                            formatString = function(v){
+                                if(_.isUndefined(v) || v===null){
+                                    return "''";
+                                }else{
+                                    return "'"+v.replace(/'/g, "''")+"'";
+                                }
+                            };
+                            sNull='null';
+                            emptyString="''";
+                            beginTrans='BEGIN;';
+                            commitTrans='COMMIT;';/*
+                            break;
+                        case 'sqlserver':
+                            formatString = function(v){
+                                return '"'+v.replace(/"/g, '""')+'"';
+                            };
+                            sNull='NULL';
+                            emptyString='""';
+                            beginTrans='BEGIN TRANSACTION';
+                            commitTrans='COMMIT TRANSACTION';
+                            break;
+                    }*/
                     if(sqlTable===''){
-                        sqlTable = this.uiModel.name.replace(/ /g,'_');
+                        sqlTable = this.uiModel.table || this.uiModel.id;//this.uiModel.name.replace(/ /g,'_');
                     }
                     if(showID){
                         sql+='ID, ';
@@ -346,17 +373,17 @@ return Backbone.View.extend({
                     sql+=')\n VALUES (';
                     // -- options
                     if(optTransaction){
-                        h+='BEGIN TRANSACTION\n';
+                        h+=beginTrans+crlf;
                     }
                     if(optIdInsert){
-                        h+='SET IDENTITY_INSERT '+sqlTable+' ON;\n';
+                        h+='SET IDENTITY_INSERT '+sqlTable+' ON;'+crlf;
                     }
                     // -- data
                     var fValue;
                     _.every(data, function(m, idx){
                         h+=sql;
                         if(showID){
-                            h+='"'+m.id+'", ';
+                            h+=formatString(fValue)+', ';
                         }
                         _.each(flds, function(f, idx){
                             fValue=m.get(f.id);
@@ -364,36 +391,36 @@ return Backbone.View.extend({
                                 case fts.int:
                                 case fts.dec:
                                 case fts.money:
-                                    h+=fValue?fValue:'NULL';
+                                    h+=fValue?fValue:sNull;
                                     break;
                                 case fts.bool:
-                                    h+=(typeof fValue === 'boolean')?fValue:'NULL';
+                                    h+=(typeof fValue === 'boolean')?fValue:sNull;
                                     break;
                                 case fts.date:
                                 case fts.datetime:
                                 case fts.time:
                                     if(_.isUndefined(fValue)||fValue===''){
-                                        h+='NULL';
+                                        h+=sNull;
                                     }else{
-                                        h+='"'+fValue.replace(/"/g, '""')+'"';
+                                        h+=formatString(fValue);
                                     }
                                     break;
                                 case fts.list:
                                     if(_.isUndefined(fValue) || fValue===''|| (_.isArray(fValue) && fValue.length===0)){
-                                        h+='NULL';
+                                        h+=sNull;
                                     }else if(_.isNumber(fValue)){
                                         h+=fValue;
                                     }else{
-                                        h+='"'+eDico.fieldHTML_ReadOny(f, fValue, Evol.hashLov, '').replace(/"/g, '""')+'"';
+                                        h+=formatString(eDico.fieldHTML_ReadOny(f, fValue, Evol.hashLov, ''));
                                     }
                                     break;
                                 default:
                                     if(_.isUndefined(fValue)||fValue===''){
-                                        h+='""';
+                                        h+=emptyString;
                                     }else if(_.isNumber(fValue)){
                                         h+=fValue;
                                     }else{
-                                        h+='"'+fValue.replace(/"/g, '""')+'"';
+                                        h+=formatString(fValue);
                                     }
                             }
                             if(idx<fMax){
@@ -405,10 +432,10 @@ return Backbone.View.extend({
                     });
                     // -- options
                     if(optIdInsert){
-                        h+='SET IDENTITY_INSERT '+sqlTable+' OFF;\n';
+                        h+='SET IDENTITY_INSERT '+sqlTable+' OFF;'+crlf;
                     }
                     if(optTransaction){
-                        h+='COMMIT TRANSACTION\n';
+                        h+=commitTrans+crlf;
                     }
                     break;
                 case 'XML':
