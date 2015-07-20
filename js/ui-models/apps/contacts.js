@@ -326,27 +326,33 @@ uiModels.contact = {
             type: 'panel', label: 'Identity', width: 62,
             elements: [
                 {
-                    type: 'text', id: 'lastname', label: 'Lastname', maxLength: 50,
+                    type: 'text', id: 'lastname', attribute: 'lastname', 
+                    label: 'Lastname', maxLength: 50,
                     required: true, width: 62, inMany: true
                 },
                 {
-                    type: 'text', id: 'firstname', label: 'Firstname', maxLength: 50,
+                    type: 'text', id: 'firstname', attribute: 'firstname', 
+                     label: 'Firstname', maxLength: 50,
                     required: true, width: 38, inMany: true
                 },
                 {
-                    type: 'text', id: 'jobtitle', label: 'Title', maxLength: 50,
+                    type: 'text', id: 'jobtitle', attribute: 'jobtitle', 
+                     label: 'Title', maxLength: 50,
                     width: 62
                 },
                 {
-                    type: 'text', id: 'company', label: 'Company', maxLength: 50,
+                    type: 'text', id: 'company', attribute: 'company', 
+                     label: 'Company', maxLength: 50,
                     width: 38, inMany: true
                 },
                 {
-                    type: 'email', id: 'email', label: 'email', maxLength: 255,
+                    type: 'email', id: 'email', attribute: 'email', 
+                     label: 'email', maxLength: 255,
                     width: 100, inMany: true
                 },
                 {
-                    type: 'url', id: 'web', label: 'web', maxLength: 255, width: 100
+                    type: 'url', id: 'web', attribute: 'web', 
+                     label: 'web', maxLength: 255, width: 100
                 }
             ]
         },
@@ -354,16 +360,20 @@ uiModels.contact = {
             type: 'panel', label: 'Contact Info', width: 38,
             elements: [
                 {
-                    type: 'text', id: 'phone', label: 'Work Phone', maxLength: 20, width: 100, mini:'1'
+                    type: 'text', id: 'phone', attribute: 'phone', 
+                     label: 'Work Phone', maxLength: 20, width: 100, mini:'1'
                 },
                 {
-                    type: 'text', id: 'phonehome', label: 'Home Phone', maxLength: 20, width: 100
+                    type: 'text', id: 'phonehome', attribute: 'phonehome', 
+                     label: 'Home Phone', maxLength: 20, width: 100
                 },
                 {
-                    type: 'text', id: 'phonecell', label: 'Cell.', maxLength: 20, width: 100, mini:'1'
+                    type: 'text', id: 'phonecell', attribute: 'phonecell', 
+                     label: 'Cell.', maxLength: 20, width: 100, mini:'1'
                 },
                 {
-                    type: 'text', id: 'fax', label: 'Fax', maxLength: 20, width: 100
+                    type: 'text', id: 'fax', attribute: 'fax', 
+                     label: 'Fax', maxLength: 20, width: 100
                 }
             ]
         },
@@ -371,23 +381,29 @@ uiModels.contact = {
             type: 'panel', label: 'Address', width: 62,
             elements: [
                 {
-                    type: 'text', id: 'address1', label: 'Address', maxLength: 150, width: 100
+                    type: 'text', id: 'address1', attribute: 'address1', 
+                     label: 'Address', maxLength: 150, width: 100
                 },
                 {
-                    type: 'text', id: 'address2', label: '', labellist: 'Address 2', maxLength: 150, width: 100
+                    type: 'text', id: 'address2', attribute: 'address2', 
+                     label: '', labellist: 'Address 2', maxLength: 150, width: 100
                 },
                 {
-                    type: 'text', id: 'city', label: 'City', maxLength: 100, width: 62
+                    type: 'text', id: 'city', attribute: 'city', 
+                     label: 'City', maxLength: 100, width: 62
                 },
                 {
-                    type: 'lov', id: 'state', label: 'State', width: 23,
+                    type: 'lov', id: 'state', attribute: 'state', 
+                     label: 'State', width: 23,
                     list: contact_LOVs.states
                 },
                 {
-                    type: 'text', id: 'zip', label: 'Zip', maxLength: 12, width: 15
+                    type: 'text', id: 'zip', attribute: 'zip', 
+                     label: 'Zip', maxLength: 12, width: 15
                 },
                 {
-                    type: 'lov', id: 'country', label: 'Country', maxLength: 60, width: 100,
+                    type: 'lov', id: 'country', attribute: 'country', 
+                     label: 'Country', maxLength: 60, width: 100,
                     list: contact_LOVs.countries
                 }
             ]
@@ -396,23 +412,31 @@ uiModels.contact = {
             type: 'panel', label: 'Misc.', width: 38,
             elements: [
                 {
-                    type: 'lov', id: 'category', label: 'Category', width: 100,
+                    type: 'lov', id: 'category', attribute: 'category', 
+                     label: 'Category', width: 100,
                     inMany: true,
                     list: contact_LOVs.categories
                 },
                 {
-                    type: 'text', id: 'custom1', label: 'Custom 1', maxLength: 250,
+                    type: 'text', id: 'custom1', attribute: 'custom1', 
+                     label: 'Custom 1', maxLength: 250,
                     width: 100
                 },
                 {
-                    type: 'text', id: 'custom2', label: 'Custom 2', maxLength: 250,
+                    type: 'text', id: 'custom2', attribute: 'custom2', 
+                     label: 'Custom 2', maxLength: 250,
                     width: 100
                 },
                 {
-                    type: 'text', id: 'custom3', label: 'Custom 3', maxLength: 250,
+                    type: 'text', id: 'custom3', attribute: 'custom3', 
+                     label: 'Custom 3', maxLength: 250,
                     width: 100
                 }
             ]
         }
     ]
 };
+
+if(typeof module === "object" && typeof module.exports === "object"){
+    module.exports = uiModels.contact;
+}

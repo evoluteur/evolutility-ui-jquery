@@ -17,7 +17,7 @@ var uiFieldTypes=[
     {id:'color',text:"Color", icon:'ft-color.gif'},
     {id:'lov',text:"List (dropdown)", icon:'ft-lov.gif'},
     {id:'list',text:"List (multi-select)", icon:'ft-list.gif'},
-    //{id:'html',text:"HTML", icon:'ft-htm.gif'},
+    {id:'html',text:"HTML", icon:'ft-htm.gif'},
     {id:'email',text:"email", icon:'ft-email.gif'},
     {id:'url',text:"Link", icon:'ft-url.gif'},
     {id:'hidden',text:"Hidden", icon:'ft-hidden.gif'}
@@ -26,6 +26,7 @@ var uiFieldTypes=[
 var uiModels=uiModels||{};
 uiModels.field = {
     id:'field',
+    table:'field',
     icon: "edi_fld.png",
     name: "field",
     namePlural: "fields",
@@ -38,6 +39,7 @@ uiModels.field = {
             elements: [
                 {
                     id:'label',
+                    attribute:'label',
                     label: "Label",
                     type: "text",
                     help: "Field title for the user",
@@ -48,6 +50,7 @@ uiModels.field = {
                 },
                 {
                     id: 'type',
+                    attribute: 'type',
                     label: "Type",
                     help: "Type of field: UI type rather than data type.",
                     type: "lov",
@@ -59,6 +62,7 @@ uiModels.field = {
                 },
                 {
                     id: "attribute",
+                    attribute: 'attribute',
                     label: "Attribute",
                     help: "Attribute name in the Backbone model",
                     required: true,
@@ -68,6 +72,7 @@ uiModels.field = {
                 },
                 {
                     id: 'eid',
+                    attribute: 'eid',
                     label: "ID",
                     labellist: "ID",
                     type: "text",
@@ -77,6 +82,7 @@ uiModels.field = {
                 },
                 {
                     id:'format',
+                    attribute:'attribute',
                     label: "Format",
                     type: "text",
                     help: "example '$ 0.00'",
@@ -92,6 +98,7 @@ uiModels.field = {
             elements: [
                 {
                     id:'position',
+                    attribute:'position',
                     label: "Position",
                     help: "Integer (do not have to be consecutive)",
                     type: "integer",
@@ -100,6 +107,7 @@ uiModels.field = {
                 },
                 {
                     id:'inMany',
+                    attribute:'inMany',
                     label: "List",
                     help: "Field shows in lists",
                     labellist: "List",
@@ -109,6 +117,7 @@ uiModels.field = {
                 },
                 {
                     id:'width',
+                    attribute:'width',
                     label: "Width",
                     defaultValue: 100,
                     help: "Relative width of the field (in percentage)",
@@ -121,7 +130,7 @@ uiModels.field = {
                     id:'height',
                     attribute:'height',
                     label: "Height",
-                    help: "Height in number of lines (for ''Textmultiline'' fields)",
+                    help: 'Height in number of lines (for "Textmultiline" fields)',
                     type: "integer",
                     maxLength: 3,
                     defaultValue: 1,
@@ -130,6 +139,7 @@ uiModels.field = {
                 },
                 {
                     id: 'css',
+                    attribute: 'css',
                     label: "CSS",
                     labellist: "CSS Edit",
                     help: "Stylesheet class name for the field for the edit view.",
@@ -146,6 +156,7 @@ uiModels.field = {
             elements: [
                 {
                     id:'required',
+                    attribute:'required',
                     label: "Required",
                     //defaultValue: false,
                     help: "Mandatory field",
@@ -156,6 +167,7 @@ uiModels.field = {
                 },
                 {
                     id:'readonly',
+                    attribute:'readonly',
                     label: "Read only",
                     defaultValue:false,
                     help: "Users can view this field value but cannot modify it",
@@ -165,6 +177,7 @@ uiModels.field = {
                 },
                 {
                     id:'minLength',
+                    attribute:'minLength',
                     label: "Min. length",
                     help: "Minimum number of characters required",
                     type: "integer",
@@ -172,6 +185,7 @@ uiModels.field = {
                 },
                 {
                     id:'maxLength',
+                    attribute:'maxLength',
                     label: "Max. length",
                     help: "Maximum number of characters allowed",
                     type: "integer",
@@ -180,6 +194,7 @@ uiModels.field = {
                 },
                 {
                     id:'minvalue',
+                    attribute:'minvalue',
                     label: "Min. value",
                     help: "Minimum value allowed for the field",
                     /*conditions: [{
@@ -192,6 +207,7 @@ uiModels.field = {
                 },
                 {
                     id:'maxvalue',
+                    attribute:'maxvalue',
                     label: "Max. value",
                     help: "Maximum value allowed for the field",
                     /*conditions: [{
@@ -204,6 +220,7 @@ uiModels.field = {
                 },
                 {
                     id:'regExp',
+                    attribute:'regExp',
                     label: "Regular Expression",
                     labellist: "RegExp",
                     type: "text",
@@ -213,6 +230,7 @@ uiModels.field = {
                 },
                 {
                     id:'fnValidate',
+                    attribute:'fnValidate',
                     label: "Custom Validation Method",
                     type: "text",
                     maxLength: 100,
@@ -229,6 +247,7 @@ uiModels.field = {
             elements: [
                 {
                     id: 'help',
+                    attribute: 'help',
                     label: "Help",
                     help: "Help on the field for edition",
                     type: "textmultiline",
@@ -240,3 +259,7 @@ uiModels.field = {
         }
     ]
 };
+
+if(typeof module === "object" && typeof module.exports === "object"){
+    module.exports = uiModels.field;
+}

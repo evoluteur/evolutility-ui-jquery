@@ -73,11 +73,14 @@ uiModels.comics = {
                 {
                     id:'amazon', label:'Amazon', type:'formula', width:100, css:'evol-ellipsis',
                     formula:function(m){
-                        var urlData=m.get('title')+' '+m.get('authors'),
-                        link=m.get('language')=='FR' ?
-                            'http://www.amazon.fr/s/ref=sr_nr_n_1?keywords='
-                            :'http://www.amazon.com/s/ref=nb_sb_noss?field-keywords=';
-                        return '<a target="a" href="'+link+encodeURI(urlData)+'">'+_.escape(urlData)+'</a>';
+                        if(m){
+                            var urlData=m.get('title')+' '+(m.get('authors')||''),
+                            link=m.get('language')=='FR' ?
+                                'http://www.amazon.fr/s/ref=sr_nr_n_1?keywords='
+                                :'http://www.amazon.com/s/ref=nb_sb_noss?field-keywords=';
+                            return '<a target="a" href="'+link+encodeURI(urlData)+'">'+_.escape(urlData)+'</a>';
+                        }
+                        return 'N/A';
                     }
                 },
                 {
@@ -97,3 +100,7 @@ uiModels.comics = {
         }
     ]
 };
+
+if(typeof module === "object" && typeof module.exports === "object"){
+    module.exports = uiModels.comics;
+}

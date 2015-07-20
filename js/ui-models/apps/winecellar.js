@@ -154,6 +154,7 @@ uiModels.winecellar = {
             elements: [
                 {
                     id:'name',
+                    attribute:'name',
                     type: 'text',
                     label: 'Name',
                     required: true,
@@ -164,6 +165,7 @@ uiModels.winecellar = {
                 },
                 {
                     id:'vintage',
+                    attribute:'vintage',
                     type: 'integer',
                     label: 'Vintage',
                     required: true,
@@ -187,6 +189,7 @@ uiModels.winecellar = {
                     elements: [
                         {
                             id:'winery',
+                            attribute:'winery',
                             type: 'text',
                             label: 'Winery',
                             maxLength: 100,
@@ -197,6 +200,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'bsize',
+                            attribute:'bsize',
                             type: 'lov',
                             label: 'Bottle Size',
                             labellist: 'Bottle',
@@ -205,6 +209,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'grape',
+                            attribute:'grape',
                             type: 'lov',
                             label: 'Grape',
                             inMany: false,
@@ -213,6 +218,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'type',
+                            attribute:'type',
                             type: 'lov',
                             label: 'Type',
                             inMany: true,
@@ -221,6 +227,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'appellation',
+                            attribute:'appellation',
                             type: 'text',
                             label: 'Appellation',
                             width: 100,
@@ -228,6 +235,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'country',
+                            attribute:'country',
                             type: 'lov',
                             label: 'Country',
                             width: 32,
@@ -235,6 +243,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'region',
+                            attribute:'region',
                             type: 'text',
                             label: 'Region',
                             maxLength: 100,
@@ -242,6 +251,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'area',
+                            attribute:'area',
                             type: 'text',
                             label: 'Area',
                             maxLength: 100,
@@ -257,6 +267,7 @@ uiModels.winecellar = {
                     elements: [
                         {
                             id:'label_img',
+                            attribute:'label_img',
                             type: 'image',
                             label: 'Label',
                             maxLength: 200,
@@ -278,12 +289,14 @@ uiModels.winecellar = {
                     elements: [
                         {
                             id:'buying_date',
+                            attribute: 'buying_date',
                             type: 'date',
                             label: 'Buying Date',
                             width: 40
                         },
                         {
                             id:'price',
+                            attribute: 'price',
                             type: 'money',
                             label: 'Price',
                             inMany: true,
@@ -291,12 +304,14 @@ uiModels.winecellar = {
                         },
                         {
                             id:'value',
+                            attribute: 'value',
                             type: 'money',
                             label: 'Value',
                             width: 30
                         },
                         {
                             id:'purchased',
+                            attribute: 'purchased',
                             type: 'integer',
                             label: 'Bottles Purchased',
                             labellist: 'Purchased',
@@ -305,6 +320,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'remaining',
+                            attribute: 'remaining',
                             type: 'integer',
                             label: 'Remaining',
                             labeledit: 'Bottles Remaining',
@@ -314,6 +330,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'notes',
+                            attribute: 'notes',
                             type: 'textmultiline',
                             label: 'Notes',
                             maxLength: 150,
@@ -337,6 +354,7 @@ uiModels.winecellar = {
                     elements: [
                         {
                             id:'drink_from',
+                            attribute: 'drink_from',
                             type: 'integer',
                             label: 'Drink from (year)',
                             labellist: 'Drink',
@@ -349,6 +367,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'drink_to',
+                            attribute: 'drink_to',
                             type: 'integer',
                             label: 'to',
                             labelCharts: 'Wines by End drinking period',
@@ -359,6 +378,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'peak_from',
+                            attribute: 'peak_from',
                             type: 'integer',
                             label: 'Peak from',
                             labelCharts: 'Wines by Start peak period',
@@ -369,6 +389,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'peak_to',
+                            attribute: 'peak_to',
                             type: 'integer',
                             label: 'to',
                             labelCharts: 'Wines by End peak period',
@@ -379,6 +400,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'meal',
+                            attribute: 'meal',
                             type: 'textmultiline',
                             label: 'Meal',
                             maxLength: 200,
@@ -395,6 +417,7 @@ uiModels.winecellar = {
                     elements: [
                         {
                             id:'score',
+                            attribute: 'score',
                             type: 'lov',
                             label: 'My Score',
                             labellist: 'Score',
@@ -404,6 +427,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'score_parker',
+                            attribute: 'score_parker',
                             type: 'integer',
                             label: 'Parker',
                             labelCharts: 'Parker scores',
@@ -414,6 +438,7 @@ uiModels.winecellar = {
                         },
                         {
                             id:'score_winespectator',
+                            attribute: 'score_winespectator',
                             type: 'integer',
                             label: 'Wine Spectator',
                             labelCharts: 'Wine Spectator scores',
@@ -459,6 +484,7 @@ uiModels.winecellar = {
                     elements: [
                         {
                             id: 'comments',
+                            attribute: 'comments',
                             type: 'textmultiline',
                             label: 'Comments',
                             maxLength: 500,
@@ -471,3 +497,7 @@ uiModels.winecellar = {
         }
     ]
 };
+
+if(typeof module === "object" && typeof module.exports === "object"){
+    module.exports = uiModels.winecellar;
+}

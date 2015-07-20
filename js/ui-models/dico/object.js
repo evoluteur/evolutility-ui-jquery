@@ -1,13 +1,37 @@
 // TODO cleanup
 // this is a port of XML from the ASP.net version
 
+var uiFieldTypes=[ // TODO ../dico/pix/
+    {id:'text',text:"Text", icon:'ft-txt.gif'},
+    {id:'textmultiline',text:"Text multiline", icon:'ft-txtml.gif'},
+    {id:'boolean',text:"Boolean", icon:'ft-bool.gif'},
+    {id:'decimal',text:"Decimal", icon:'ft-dec.gif'},
+    {id:'money',text:"Money", icon:'ft-money.gif'},
+    {id:'integer',text:"Integer", icon:'ft-int.gif'},
+    {id:'date',text:"Date", icon:'ft-date.gif'},
+    {id:'time',text:"Time", icon:'ft-time.gif'},
+    {id:'datetime',text:"Date-time", icon:'ft-datehm.gif'},
+    {id:'image',text:"Image", icon:'ft-img.gif'},
+    {id:'document',text:"Document", icon:'ft-doc.gif'},
+    {id:'color',text:"Color", icon:'ft-color.gif'},
+    {id:'lov',text:"List (dropdown)", icon:'ft-lov.gif'},
+    {id:'list',text:"List (multi-select)", icon:'ft-list.gif'},
+    //{id:'html',text:"HTML", icon:'ft-htm.gif'},
+    {id:'email',text:"email", icon:'ft-email.gif'},
+    {id:'url',text:"Link", icon:'ft-url.gif'},
+    {id:'hidden',text:"Hidden", icon:'ft-hidden.gif'}
+];
+
+
 var uiModels=uiModels||{};
-uiModels.object = {
-    id: 'object',
-    icon: "edi_frm.png",
+uiModels.entity = {
+    id: 'entity',
+    label: 'Object',
+    icon: "cube.gif",
     name: "object",
     namePlural: "objects",
-    fnTitle: "Title",
+    fnTitle: "title",
+    table: 'entity',
     elements: [
         {
             type: 'panel',
@@ -19,12 +43,21 @@ uiModels.object = {
                     label: "Title",
                     help: "example: 'Address book web application'",
                     type: "text",
-                    id: "Title",
-                    attribute: "Title",
+                    id: "title",
+                    attribute: "title",
                     maxLength: 100,
                     inMany: true,
-                    width: 80,
+                    width: 52,
                     required: true
+                },
+                {
+                    label: "Id",
+                    type: "text",
+                    id: "id",
+                    attribute: "id",
+                    maxLength: 20,
+                    inMany: true,
+                    width: 18
                 },
                 {
                     label: "Active",
@@ -33,17 +66,6 @@ uiModels.object = {
                     attribute: "PUBLISH",
                     inMany: true,
                     width: 20
-                },
-                {
-                    label: "ID",
-                    help: "Primary Key in table 'EvoDico_Form'.",
-                    type: "text",
-                    id: "id",
-                    attribute: "id",
-                    maxLength: 100,
-                    inMany: true,
-                    width: 100,
-                    readonly: true
                 }
             ]
         },
@@ -53,8 +75,8 @@ uiModels.object = {
             elements: [
                 {
                     type: "panel",
-                    id: 'p-obj',
-                    label: "Object",
+                    id: 'p-def',
+                    label: "Definition",
                     width: 100,
                     elements: [
                         {
@@ -98,11 +120,11 @@ uiModels.object = {
                         {
                             label: "Description",
                             type: "textmultiline",
-                            id: "Description",
-                            attribute: "Description",
+                            id: "description",
+                            attribute: "description",
                             maxLength: 250,
                             width: 100,
-                            height: 7
+                            height: 4
                         }
                     ]
                 }
@@ -111,420 +133,96 @@ uiModels.object = {
         {
             type: "tab",
             label:'Fields',
+            id:'tab-fields',
             elements: [
                 {
                     label: "Fields",
                     type: "panel-list",
-                    id: "pl-fields",
-                    attribute: "obj-fields",
+                    id: "fields",
+                    attribute: "fields",
                     width: 100,
                     elements: [
                         {
-                            "panelid": "14",
+                            label: "Attribute",
+                            type: "text",
+                            id: "attribute",
+                            attribute: "attribute",
+                            maxLength: 100,
+                            inMany:true,
+                            //"link": "EvoDicoField.aspx?ID=@itemid",
+                            required: true
+                        },
+                        {
                             label: "Label",
                             type: "text",
-                            id: "Label",
-                            attribute: "Label",
+                            id: "label",
+                            attribute: "label",
                             maxLength: 100,
-                            listmany:true
-                            //"link": "EvoDicoField.aspx?ID=@itemid"
+                            inMany:true,
+                            required: true
                         },
                         {
-                            "panelid": "15",
-                            "dbwherelov": "EvoDico_vpanel.formID=@itemid",
-                            label: "Panel",
-                            type: "lov",
-                            id: "panelid",
-                            attribute: "panel",
-                            "dbtablelov": "EvoDico_vpanel",
-                            "dbcolumnreadlov": "label",
-                            maxLength: "50",
-                            "search": "1",
-                            "searchlist": "1",
-                            width: "50"
-                        },
-                        {
-                            "panelid": "16",
                             label: "Type",
                             type: "lov",
                             "dbcolumnicon": "Typepix",
-                            id: "TypeID",
-                            attribute: "Type",
-                            "dbtablelov": "EvoDico_vFieldType",
-                            maxLength: "100",
-                            "search": "1",
-                            "searchlist": "1",
-                            "searchadv": "1",
-                            width: "60",
+                            id: "type",
+                            attribute: "type",
+                            width: 60,
                             list:uiFieldTypes
                         },
                         {
-                            "panelid": "14",
-                            label: "Result List",
+                            label: "In List",
                             help: "Field shows as header field for lists",
-                            "labellist": "List",
                             type: "boolean",
-                            id: "searchlist",
-                            attribute: "searchlist",
-                            "search": "1",
-                            "searchlist": "1",
-                            "searchadv": "1",
-                            width: "50",
+                            id: "inMany",
+                            attribute: "inMany",
+                            width: 50,
                             "img": "checkg.gif"
                         },
                         {
                             "panelid": "14",
-                            label: "Search",
+                            label: "Required",
                             type: "boolean",
-                            id: "search",
-                            attribute: "search",
-                            "search": "1",
-                            "searchlist": "1",
-                            "searchadv": "1",
-                            width: 100
+                            id: "required",
+                            attribute: "required"
                         },
                         {
-                            "panelid": "14",
-                            label: "Position",
+                            label: "Max length",
                             help: "Integer (gaps OK)",
                             type: "integer",
-                            id: "fpos",
-                            attribute: "fpos",
-                            maxLength: "3",
-                            "search": "0",
-                            "searchlist": "1",
+                            id: "maxLength",
+                            attribute: "maxLength",
+                            maxLength: 3,
                             width: 38
                         },
                         {
-                            "panelid": "14",
                             label: "Width",
                             help: "Relative width in percentage",
                             type: "integer",
                             "format": "0 '%'",
-                            id: "Width",
-                            attribute: "Width",
-                            maxLength: "3",
-                            "search": "0",
-                            "searchlist": "1",
-                            "searchadv": "1",
+                            id: "width",
+                            attribute: "width",
+                            maxLength: 3,
                             width: 62
                         },
                         {
-                            "panelid": "14",
                             label: "Height",
                             help: "Height in number of lines (for ''Textmultiline'' fields)",
                             type: "integer",
-                            id: "Height",
-                            attribute: "Height",
+                            id: "height",
+                            attribute: "height",
                             maxLength: "3",
-                            "search": "0",
-                            "searchlist": "1",
-                            "searchadv": "1",
                             width: 38
                         }
                     ]
-                }
-            ]
-        },
-        {
-            type: 'tab',
-            id: 'tpanels',
-            label: "Panels",
-            elements: [
-                {
-                    type: 'panel-list',
-                    "id": "p5",
-                    attribute: 'obj-panels',
-                    label: "Panels",
-                    width: 100,
-                    "dbtabledetails": "EvoDico_Panel",
-                    "dbcolumndetails": "FormID",
-                    "dborder": "t.ppos,t.id",
-                    elements: [
-                        {
-                            "panelid": "5",
-                            label: "Panel label",
-                            type: "text",
-                            id: "Label",
-                            attribute: "Label",
-                            maxLength: "100",
-                            "link": "EvoDicoPanel.aspx?ID=@itemid",
-                            "search": "1",
-                            "searchlist": "1",
-                            "searchadv": "1",
-                            width: 62
-                        },
-                        {
-                            "panelid": "5",
-                            label: "Position",
-                            help: "Integer (gaps OK)",
-                            type: "integer",
-                            id: "ppos",
-                            attribute: "ppos",
-                            maxLength: "3",
-                            "search": "0",
-                            "searchlist": "1",
-                            "searchadv": "1",
-                            width: 38
-                        },
-                        {
-                            "panelid": "5",
-                            label: "Width",
-                            type: "integer",
-                            id: "Width",
-                            attribute: "Width",
-                            maxLength: "3",
-                            "search": "0",
-                            "searchlist": "1",
-                            "searchadv": "1",
-                            width: "31"
-                        },
-                        {
-                            "panelid": "5",
-                            label: "CSS Class",
-                            "labellist": "CSS",
-                            type: "text",
-                            id: "cssclass",
-                            attribute: "cssclass",
-                            maxLength: "100",
-                            "searchadv": "1",
-                            width: 38
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            type:'tab',
-            label: "Database",
-            elements:[
-                {
-                    type:'panel',
-                    label: "Database",
-                    width: 38,
-                    elements: [
-                        {
-                            label: "DB Table",
-                            help: "Driving table",
-                            type: "text",
-                            id: "dbtable",
-                            attribute: "dbtable",
-                            maxLength: "100",
-                            "search": "1",
-                            "searchlist": "0",
-                            "searchadv": "1",
-                            width: 100,
-                            "height": "1",
-                            required: true
-                        },
-                        {
-                            label: "WHERE clause",
-                            help: "Example 'CategoryID=3'",
-                            "labellist": "Where",
-                            type: "text",
-                            id: "dbwhere",
-                            attribute: "dbwhere",
-                            maxLength: "50",
-                            "search": "0",
-                            "searchlist": "0",
-                            "searchadv": "1",
-                            width: 100,
-                            "height": "1"
-                        },
-                        {
-                            label: "ORDER BY clause",
-                            help: "Use 'T' for driving table alias. Example 'T.lastname,T.firstname'",
-                            "labellist": "Order",
-                            type: "text",
-                            id: "dborder",
-                            attribute: "dborder",
-                            maxLength: "50",
-                            "search": "0",
-                            "searchlist": "0",
-                            "searchadv": "1",
-                            width: 100,
-                            "height": "1"
-                        },
-                        {
-                            label: "Column used as title",
-                            help: "Title column",
-                            type: "text",
-                            id: "dbcolumnlead",
-                            attribute: "dbcolumnlead",
-                            maxLength: "100",
-                            "searchlist": "0",
-                            "searchadv": "1",
-                            width: 100,
-                            "height": "1"
-                        },
-                        {
-                            label: "Primary key name",
-                            help: "Usually ID",
-                            "labellist": "P.Key",
-                            type: "text",
-                            id: "dbcolumnpk",
-                            attribute: "dbcolumnpk",
-                            maxLength: "50",
-                            "search": "0",
-                            "searchlist": "0",
-                            "searchadv": "1",
-                            width: "50",
-                            "height": "1"
-                        },
-                        {
-                            label: "Icon Column",
-                            help: "Column used to store the name of a thumnail or icon specific to each record",
-                            type: "text",
-                            id: "dbColumnicon",
-                            attribute: "dbColumnicon",
-                            maxLength: "50",
-                            "search": "1",
-                            "searchlist": "0",
-                            "searchadv": "1",
-                            width: "50",
-                            "height": "1"
-                        },
-                        {
-                            label: "Users table",
-                            help: "Table storing users",
-                            type: "text",
-                            id: "dbtableusers",
-                            attribute: "dbtableusers",
-                            maxLength: "100",
-                            "searchlist": "0",
-                            "searchadv": "0",
-                            width: "50",
-                            "height": "1"
-                        },
-                        {
-                            label: "Comments table",
-                            help: "Table storing user comments",
-                            type: "text",
-                            id: "dbtablecomments",
-                            attribute: "dbtablecomments",
-                            maxLength: "100",
-                            "searchlist": "0",
-                            "searchadv": "0",
-                            width: "50",
-                            "height": "1"
-                        }
-                    ]
-                },
-                {
-                    type:'panel',
-                    label: "Stored Procedures",
-                    width: 62,
-                    elements: [
-                        {
-                            label: "Paging",
-                            help: "Stored Procedure used for displaying selection lists",
-                            "labeledit": "Paging SP",
-                            type: "textmultiline",
-                            id: "spPaging",
-                            attribute: "spPaging",
-                            maxLength: "200",
-                            "search": "1",
-                            "searchlist": "0",
-                            "searchadv": "1",
-                            width: 100,
-                            "height": "4"
-                        },
-                        {
-                            label: "Login",
-                            help: "Stored Procedure used for user login",
-                            type: "textmultiline",
-                            "optional": "1",
-                            id: "spLogin",
-                            attribute: "spLogin",
-                            maxLength: "200",
-                            "search": "0",
-                            "searchlist": "0",
-                            "searchadv": "1",
-                            width: 100,
-                            "height": "2"
-                        },
-                        {
-                            label: "Get",
-                            help: "Stored Procedure used to get a single record",
-                            type: "textmultiline",
-                            id: "spGet",
-                            attribute: "spGet",
-                            maxLength: 200,
-                            "search": "0",
-                            "searchlist": "0",
-                            "searchadv": "1",
-                            width: 100,
-                            height: 2
-                        },
-                        {
-                            label: "Delete",
-                            help: "Stored Procedure used to delete or disable a record",
-                            type: "textmultiline",
-                            "optional": "1",
-                            id: "spDelete",
-                            attribute: "spDelete",
-                            maxLength: "200",
-                            width: 100,
-                            height: 2
-                        }
-                    ]
-                }
-
-            ]
-        },
-        {
-            type: 'tab',
-            label: "User Help",
-            elements: [
-                {
-                    type: 'panel',
-                    label: "Help",
-                    width: 100,
-                    elements: [
-                        {
-                            label: "Help",
-                            help: "Help on the field (for edition)",
-                            "labeledit": "Help",
-                            type: "textmultiline",
-                            id: "Help",
-                            attribute: "Help",
-                            maxLength: "500",
-                            width: 100,
-                            height: 4
-                        }
-                    ]
-                },
-                {
-                    type: 'panel-list',
-                    width: 100,
-                    elements: {
-                        id: "fieldsHelp",
-                        label: "Fields help",
-                        width: 100,
-                        elements: [
-                            {
-                                label: "Label",
-                                type: "text",
-                                id: "Label",
-                                attribute: "Label",
-                                "readonly": "2",
-                                maxLength: 100,
-                                "searchlist": "1",
-                                "searchadv": "1",
-                                "link": "EvoDicoField.aspx?ID=@itemid"
-                            },
-                            {
-                                label: "Field Help",
-                                type: "textmultiline",
-                                maxLength: "500",
-                                id: "Help",
-                                attribute: "Help",
-                                "searchlist": "1"
-                            }
-                        ]
-                    }
                 }
             ]
         }
     ]
 };
+
+
+if(typeof module === "object" && typeof module.exports === "object"){
+    module.exports = uiModels.entity;
+}
+
