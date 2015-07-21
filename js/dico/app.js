@@ -158,15 +158,32 @@ Evol.App = Backbone.View.extend({
     },
 
     createEntity: function($v, uiModel, data, defaultView, options, cb){
-        var that=this,
-            lc = new Backbone.LocalStorage(this.prefix+uiModel.id),
-            M = Backbone.Model.extend({
-                localStorage: lc
-            }),
-            Ms = Backbone.Collection.extend({
-                model: M,
-                localStorage: lc
-            });
+        var that=this, url, M, Ms;
+
+        if(Evol.Config){
+            if(Evol.Config.localStorage){
+                var lc = new Backbone.LocalStorage(this.prefix+uiModel.id);
+                M = Backbone.Model.extend({
+                    localStorage: lc
+                });
+                Ms = Backbone.Collection.extend({
+                    model: M,
+                    localStorage: lc
+                });
+            }else{
+                url = Evol.Config.url+uiModel.id;
+                M = Backbone.Model.extend({
+                    url: url,
+                    urlRoot: url
+                });
+                Ms = Backbone.Collection.extend({
+                    model: M,
+                    url: url
+                });
+            }
+        }else{
+            alert('Error: missing config file.');
+        }
 
         var ms = new Ms();
         ms.fetch({

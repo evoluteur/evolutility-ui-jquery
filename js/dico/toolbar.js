@@ -129,7 +129,6 @@ return Backbone.View.extend({
             that=this,
             eUIm=eUI.menu,
             tb=this.buttons,
-            endMenu='</ul></li>',
             menuDevider='<li class="divider" data-cardi="1"></li>',
             menuDeviderH='<li class="divider-h"></li>';
 
@@ -171,7 +170,7 @@ return Backbone.View.extend({
                  h.push(menuDevider);
                  link2h('new-field','New Field','plus');
                  link2h('new-panel','New Panel','plus');
-                 h+=endMenu;
+                 h+='</ul></li>';
              } */
 
         }
@@ -551,12 +550,14 @@ return Backbone.View.extend({
     },
 
     setModelById: function(id){
-        var m=this.collection.get(id);
+        var m = this.collection.get(id);
+        //var m = new Backbone.Model();
+        //m.fetch(id);
         if(_.isUndefined(m)){
             alert('Error: Invalid model ID.');
             //TODO: do something
         }else{
-            this.model=m;
+            this.model = m;
             if(this.curView.cardinality!='1'){
                 this.setView('browse');//(this._prevViewOne || 'edit');
             }
@@ -644,14 +645,16 @@ return Backbone.View.extend({
                 }
             }else{
                 // TODO fix bug w/ insert when filter applied => dup record
-                this.model.set(this.getData(true));
-                this.model.save('','',{
+                var updateModel = this.getData(true);
+                //this.model.set(updateModel);
+                this.model.save(updateModel, {
+                    //patch: true,
                     success: function(m){
                         fnSuccess(m);
                         that.setMessage(i18n.getLabel('saved', eUI.capitalize(entityName)), i18n.getLabel('msg.updated', eUI.capitalize(entityName), _.escape(vw.getTitle())), 'success');
                     },
-                    error:function(m, err){
-                        alert('error in "saveItem"');
+                    error: function(m, err){
+                        alert('Error '+err.status+' - '+err.statusText);
                     }
                 });
             }
@@ -679,11 +682,12 @@ return Backbone.View.extend({
 
     deleteItem: function(){
         var that=this,
+            uimId=this.uiModel.id,
             entityName=this.uiModel.name,
             entityValue=this.curView.getTitle();
 
         if(this.curView.cardinality==='1'){
-            var delModel=this.curView.model;
+            var delModel=this.model;
             if(delModel){
                 eUI.modal.confirm(
                     'delete',
@@ -710,6 +714,7 @@ return Backbone.View.extend({
                                 newModel.collection = collec;
                             }
                             delModel.destroy({
+                                url: that.model.url+'/'+delModel.id,
                                 success:function(){
                                     if(newModel===null || collec.length===0){
                                         that.curView.clear();
