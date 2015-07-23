@@ -49,8 +49,8 @@ return Backbone.View.extend({
         'navigate.many >div': 'click_navigate',
         'paginate.many >div': 'paginate',
         //'selection.many >div': 'click_select',
-        'click .evo-search>.btn': 'click_search',
-        'keyup .evo-search>input': 'key_search',
+        //'click .evo-search>.btn': 'click_search',
+        //'keyup .evo-search>input': 'key_search',
         'change.tab >div': 'change_tab',
         'action >div': 'click_action',
         'status >div': 'status_update',
@@ -74,9 +74,9 @@ return Backbone.View.extend({
         buttons: {
             always:[
                 {id: 'list', label: i18nTool.bList, icon:'th-list', n:'x'},
+                //{id: 'selections', label: i18nTool.Selections, icon:'star', n:'x'},
                 {id: 'new', label: i18nTool.bNew, icon:'plus', n:'x', readonly:false}
             ],
-                //linkOpt2h('selections','','star');
             actions:[
                 //{id:'browse', label: i18nTool.bBrowse, icon:'eye', n:'1', readonly:false},
                 {id:'edit', label: i18nTool.bEdit, icon:'edit', n:'1', readonly:false},
@@ -151,16 +151,16 @@ return Backbone.View.extend({
         if(this.toolbar){
             h+='</ul><ul class="nav nav-pills pull-right" data-id="views">'+
                 '<li class="evo-tb-status" data-cardi="n"></li>';
-                if(tb.search){
-                    h+='<li><div class="input-group evo-search">'+
-                        '<input class="evo-field form-control" type="text" maxlength="100">'+
-                        '<span class="btn input-group-addon glyphicon glyphicon-search"></span>'+
+            if(tb.search){
+                h+='<li><div class="input-group evo-search">'+
+                    '<input class="evo-field form-control" type="text" maxlength="100">'+
+                    '<span class="btn input-group-addon glyphicon glyphicon-search"></span>'+
                     '</div></li>';
-                }
+            }
             //h+=eUIm.hBegin('views','li','eye-open');
-            h+=menuItems(tb.prevNext);
-            h+=menuDeviderH;
-            h+=menuItems(tb.views, true);
+            h+=menuItems(tb.prevNext)+
+                menuDeviderH+
+                menuItems(tb.views, true);
             //h+=menuDeviderH;
             //h+=eUIm.hItem('customize','','wrench', 'x', 'Customize');
             /*
@@ -550,21 +550,36 @@ return Backbone.View.extend({
     },
 
     setModelById: function(id){
-        var m = this.collection.get(id);
-        //var m = new Backbone.Model();
-        //m.fetch(id);
-        if(_.isUndefined(m)){
-            alert('Error: Invalid model ID.');
-            //TODO: do something
-        }else{
-            this.model = m;
-            if(this.curView.cardinality!='1'){
-                this.setView('browse');//(this._prevViewOne || 'edit');
+        var that = this,
+            fnSuccess = function(){
+                that.model = m;
+                if(that.curView.cardinality!='1'){
+                    that.setView('browse');//(that._prevViewOne || 'edit');
+                }
+                that.curView.setModel(m);
+            },
+            fnError = function(){
+                alert('Error: Invalid model ID.');
+            };
+
+        if(Evol.Config.localStorage){
+            var m = this.collection.get(id);
+            if(_.isUndefined(m)){
+                fnError();
+            }else{
+                fnSuccess();
             }
-            this.curView.setModel(m);
-            // todo: decide change model for all views or model event
+        }else{
+            var M = Backbone.Model.extend({
+                urlRoot: Evol.Config.url+that.uiModel.id
+            });
+            var m = new M({id:id});
+            m.fetch({
+                success: fnSuccess,
+                error: fnError
+            });
         }
-        return m; // TODO: return "this" ???
+        return this;
     },
 
     browse: function(direction){ // direction = "prev" or "next"
@@ -659,10 +674,8 @@ return Backbone.View.extend({
                 });
             }
         }else{
-            if (msgs.length > 0) {
-                var msg = '<ul><li>'+msgs.join('</li><li>')+'</li></ul>'; // i18nVal.intro,
-                this.setMessage(i18n.validation.incomplete, msg, 'warning');
-            }
+            var msg = '<ul><li>'+msgs.join('</li><li>')+'</li></ul>'; // i18nVal.intro,
+            this.setMessage(i18n.validation.incomplete, msg, 'warning');
         }
         return this;
     },
