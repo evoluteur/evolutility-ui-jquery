@@ -762,7 +762,7 @@ return Backbone.View.extend({
 
     setMessage: function(title, content, style){
         toastr.options.closeButton = true;
-        toastr[style](content, title);
+        toastr[style || 'info'](content, title);
         return this;
     },
 
