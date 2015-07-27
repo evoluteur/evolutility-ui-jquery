@@ -8,11 +8,11 @@ module.exports = function (grunt) {
 
         pkg: grunt.file.readJSON('package.json'),
 
-        banner :  '/*   <%= pkg.name  %> v<%= pkg.version %>   */\n' +
-            '/*   <%= pkg.copyright %>   */\n' +
-            '/*   https://github.com/evoluteur/evolutility   */\n',
+        banner :  '/*!\n   <%= pkg.name  %> <%= pkg.version %> \n' +
+            '   <%= pkg.copyright %> \n' +
+            '   <%= pkg.homepage %>  \n*/\n',
 
-        bannerDependencies: '/*\n <%= pkg.name %> v<%= pkg.version %> dependencies: \n' +
+        bannerDependencies: '/*!\n <%= pkg.name %> <%= pkg.version %> dependencies: \n' +
            ' bootstrap 3.3.4, jquery 2.1.4, backbone 1.1.2, backbone.localStorage v1.1.7, underscore 1.8.3, d3 3.5.5, bootstrap-datepicker" 1.4.0, select2 3.5.2, toastr 2.1.1.   \n*/\n',
 
         // *************************************************************************************
@@ -213,6 +213,9 @@ module.exports = function (grunt) {
         // *************************************************************************************
         less: {
             dev: {
+                options: {
+                    banner: '<%= banner %>'
+                },
                 files: {
                     "dist/css/evolutility.css": "less/evolutility.less"
                 }
@@ -222,13 +225,21 @@ module.exports = function (grunt) {
                     "dist/css/demo.css": "less/demo.less"
                 }
             },
-            prod: {
+            dependencies: {
                 options: {
                     banner: '<%= bannerDependencies %>',
                     compress: true
                 },
                 files: {
-                    "dist/css/dependencies.min.css": "less/dependencies.less",
+                    "dist/css/dependencies.min.css": "less/dependencies.less"
+                }
+            },
+            prod: {
+                options: {
+                    banner: '<%= banner %>',
+                    //compress: true
+                },
+                files: {
                     "dist/css/evolutility.min.css": "less/evolutility.less"
                 }
             }
@@ -248,16 +259,36 @@ module.exports = function (grunt) {
 
 
     // *************************************************************************************
-    //      BUILD TASKS : dev prod
+    //      BUILD TASKS : dev prod demo dep
     // *************************************************************************************
-    // Default task(s).
-    grunt.registerTask('default', ['dev']);
+    grunt.registerTask('default', ['prod', 'dep']);
 
-    // Dev task(s).
-    grunt.registerTask('dev', ['concat:js', 'less:dev', 'less:demo']);
-
-    // Prod task(s).
-    grunt.registerTask('prod', ['jshint', 'copy', 'dev', 'concat:demo', 'concat:dependencies', 'less:prod', 'uglify']);
+    grunt.registerTask('dev', [
+        'concat:js', 
+        'demo', 
+        'less:dev'
+    ]);
+    grunt.registerTask('demo', [
+        'concat:demo', 
+        'less:demo', 
+        'uglify:demo'
+    ]);
+    grunt.registerTask('prod', [
+        'jshint', 
+        'dev', 
+        'demo', 
+        'less:prod', 
+        'uglify:prod'
+    ]);
+    grunt.registerTask('prod2', [
+        'dev', 
+        'uglify:prod'
+    ]);
+    grunt.registerTask('dep', [
+        'less:dependencies',
+        'concat:dependencies', 
+        'copy', 
+        'uglify:dependencies'
+    ]);
 
 };
-

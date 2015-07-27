@@ -4,16 +4,16 @@
   "copyright": "(c) 2015 Olivier Giulieri",
   "license": "AGPL-3.0",
   "target": "dist",
-    "homepage": "https://github.com/evoluteur/evolutility",
-    "author": {
-        "name": "Olivier Giulieri",
-        "url": "https://github.com/evoluteur"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/evoluteur/evolutility.git"
-    },
-    "bugs": "https://github.com/evoluteur/evolutility/issues",
+  "homepage": "http://evoluteur.github.io/evolutility/",
+  "author": {
+      "name": "Olivier Giulieri",
+      "url": "https://github.com/evoluteur"
+  },
+  "repository": {
+      "type": "git",
+      "url": "git://github.com/evoluteur/evolutility.git"
+  },
+  "bugs": "https://github.com/evoluteur/evolutility/issues",
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-contrib-concat": "~0.3.0",
@@ -30,16 +30,19 @@
     "d3": "3.5.5",
     "bootstrap": "3.3.4",
     "bootstrap-datepicker": "1.4.0",
-    "select2": "3.5.2"
+    "select2": "3.5.2",
+    "toastr": "2.1.1"
   },
-    "keywords": [
-        "MDA",
-        "MDDA",
-        "metadata",
-        "form",
-        "CRUD",
-        "UI",
-        "D3",
-        "Backbone"
-    ]
+  "keywords": [
+      "metadata",
+      "UI",
+      "forms",
+      "CRUD",
+      "framework",
+      "D3",
+      "Backbone",
+      "web",
+      "MDA",
+      "MDDA"
+  ]
 }
