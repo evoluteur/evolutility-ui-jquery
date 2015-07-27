@@ -13,7 +13,7 @@ module.exports = function (grunt) {
             '/*   https://github.com/evoluteur/evolutility   */\n',
 
         bannerDependencies: '/*\n <%= pkg.name %> v<%= pkg.version %> dependencies: \n' +
-           ' bootstrap 3.3.4, jquery 2.1.4, backbone 1.1.2, backbone.localStorage v1.1.7, underscore 1.8.3, d3 3.5.5, bootstrap-datepicker" 1.4.0, select2 3.5.2.   \n*/\n',
+           ' bootstrap 3.3.4, jquery 2.1.4, backbone 1.1.2, backbone.localStorage v1.1.7, underscore 1.8.3, d3 3.5.5, bootstrap-datepicker" 1.4.0, select2 3.5.2, toastr 2.1.1.   \n*/\n',
 
         // *************************************************************************************
         //      CONCAT
@@ -49,7 +49,8 @@ module.exports = function (grunt) {
 
                     // Widgets
                     'bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js',
-                    'bower_components/select2/select2.js'
+                    'bower_components/select2/select2.js',
+                    'bower_components/toastr/toastr.js'
                 ],
                 dest: '<%= pkg.target %>/dependencies.js'
             },

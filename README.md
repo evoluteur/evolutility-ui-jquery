@@ -161,7 +161,7 @@ More Views will be added in the future (thinking of Summary, Import, Mass update
 
 ## UI-model
 
-Views are not defined in templates but configured with a UI-model using [vocabulary](http://evoluteur.github.io/evolutility/doc/ui-model.html) with words like "field", "panel" and "tab" rather than "INPUT" and "DIV" to describe UI elements.
+Views are not defined in templates but configured with a UI-model using a [vocabulary](http://evoluteur.github.io/evolutility/doc/ui-model.html) with words like "field", "panel" and "tab" rather than "INPUT" and "DIV" to describe UI elements.
 
 Here is the UI-model used to configure all views for the ["Graphic Novels" app demo](http://evoluteur.github.io/evolutility/demo/index.html#comics/cards):
 
@@ -297,7 +297,8 @@ Javascript, HTML5, CSS3,
 [D3.js] (http://d3js.org),
 [Bootstrap] (http://getbootstrap.com/),
 [Bootstrap-datepicker] (http://eternicode.github.io/bootstrap-datepicker/),
-[Select2] (http://ivaynberg.github.io/select2/).
+[Select2] (http://ivaynberg.github.io/select2/),
+[Toastr] (https://github.com/CodeSeven/toastr).
 
 Note: For convenience, all dependencies are minified together in a single file "dependencies.min.js". The dependencies list is specified in "Gruntfile.js".
 

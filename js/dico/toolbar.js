@@ -761,15 +761,8 @@ return Backbone.View.extend({
     },
 
     setMessage: function(title, content, style){
-        var $msg=this.$('[data-id="msg"]');
-        if($msg.length){
-            $msg.attr('class', 'evo-msg alert alert-'+style+' alert-dismissable');
-            $msg.find('>strong').text(title);
-            $msg.find('>span').eq(0).html(content); //TODO text ?
-            $msg.show();
-        }else{
-            $(eUI.HTMLMsg(title, ' '+content, style)).insertAfter(this.$el.children()[0]);
-        }
+        toastr.options.closeButton = true;
+        toastr[style](content, title);
         return this;
     },
 
