@@ -25,15 +25,31 @@ var ViewDescriptions = {
 };
 
 function createSampleDataIfEmpty(entityName){
-    var lc = new Backbone.LocalStorage('evol-'+entityName),
+    var M, MS;
+    if(Evol.Config.localStorage){
+        var lc = new Backbone.LocalStorage('evol-'+entityName);
         M = Backbone.Model.extend({
             localStorage: lc
-        }),
+        });
         Ms = Backbone.Collection.extend({
             model: M,
             localStorage: lc
-        }),
-        ms = new Ms();
+        });
+    }else{
+        M = new Backbone.Model({
+            urlRoot: Evol.Config.url+entityName
+        });
+        Ms = Backbone.Collection.extend({
+            model: M,
+            url: Evol.Config.url+entityName,
+            sync : function(method, collection, options) {
+                //options.dataType = "jsonp";
+                return Backbone.sync(method, collection, options);
+            }
+        });
+    }
+
+    var ms = new Ms();
     ms.fetch({
         success: function(collection){
             // TODO remove sample data
@@ -52,6 +68,7 @@ function showUIModel(uiModel){
         .slideDown();
     $('#hide_def').show();
 }
+
 function hideUIModel(){
     $('#uimodel').slideUp();
     $('#hide_def').hide();
