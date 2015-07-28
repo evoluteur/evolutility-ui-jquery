@@ -68,7 +68,7 @@ return Backbone.View.extend({
         defaultViewOne: 'browse',
         defaultViewMany: 'list',
         style: 'panel-info',
-        display: 'label', // tooltip, text, icon, none
+        display: 'label', // other possible values: tooltip, text, icon, none
         titleSelector: '#title',
         pageSize:20,
         buttons: {
@@ -552,6 +552,7 @@ return Backbone.View.extend({
     setModelById: function(id){
         var that = this,
             fnSuccess = function(){
+                // TODO set collection ??
                 that.model = m;
                 if(that.curView.cardinality!='1'){
                     that.setView('browse');//(that._prevViewOne || 'edit');
@@ -582,7 +583,7 @@ return Backbone.View.extend({
         return this;
     },
 
-    browse: function(direction){ // direction = "prev" or "next"
+    navPrevNext: function(direction){ // direction = "prev" or "next"
         var collec=this._curCollec(),
             cModel=this.curView.model;
 
@@ -603,7 +604,6 @@ return Backbone.View.extend({
         if(cModel){
             this.setRoute(cModel?cModel.id:null, false);
         }else{
-            //eUI.modal.alert(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.name));
             this.setMessage(i18n.notFound, i18n.getLabel('notFoundMsg', this.uiModel.name));
         }
         return this
@@ -661,11 +661,12 @@ return Backbone.View.extend({
             }else{
                 // TODO fix bug w/ insert when filter applied => dup record
                 var updateModel = this.getData(true);
-                //this.model.set(updateModel);
-                this.model.save(updateModel, {
+                this.model.set(updateModel);
+                this.model.save({}, {
                     //patch: true,
                     success: function(m){
                         fnSuccess(m);
+                        that.collection.set(m, {remove:false});
                         that.setMessage(i18n.getLabel('saved', eUI.capitalize(entityName)), i18n.getLabel('msg.updated', eUI.capitalize(entityName), _.escape(vw.getTitle())), 'success');
                     },
                     error: function(m, err){
@@ -726,9 +727,8 @@ return Backbone.View.extend({
                             if(newModel){
                                 newModel.collection = collec;
                             }
-                            delModel.destroy({
-                                url: that.model.url+'/'+delModel.id,
-                                success:function(){
+                            var opts = {
+                                success: function(){
                                     if(newModel===null || collec.length===0){
                                         that.curView.clear();
                                     }else{
@@ -739,10 +739,15 @@ return Backbone.View.extend({
                                     that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('msg.deleted', eName, entityValue), 'success');
                                     that._trigger('item.deleted');
                                 },
-                                error:function(m, err){
+                                error: function(m, err){
                                     alert('error in "deleteItem"');
                                 }
-                            });
+                            };
+                            if(!Evol.Config.localStorage){
+                                opts.url=_.isString(that.model.url)?that.model.url+'/'+delModel.id:that.model.url();
+                            }
+                            collec.remove(delModel);
+                            delModel.destroy(opts);
                         }
                     }
                 );
@@ -890,7 +895,7 @@ return Backbone.View.extend({
                 if(this.curView.cardinality==='1'){
                     var that=this;
                     this.proceedIfReady(function(){
-                        that.browse(toolId);
+                        that.navPrevNext(toolId);
                     });
                 }else if(this.curView.cardinality==='n'){
                     this.paginate(toolId);
