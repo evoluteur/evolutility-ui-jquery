@@ -194,12 +194,10 @@ $(document).ready(function(){
         $('#viewInfo').html(vwInfo.desc);
     }
 
-    $(document).ready(function(){
-        $('#evolModel,#evolView').on('change', function(){
-            showView();
-        });
+    $('#evolModel,#evolView').on('change', function(){
         showView();
     });
+    showView();
 });
 
 </script>

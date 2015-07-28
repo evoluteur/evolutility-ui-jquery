@@ -47,7 +47,7 @@ return {
 
     fieldTypes: fts,
 
-    fieldOneEdit: {// f, fid, fv, iconsPath
+    fieldOneEdit: {
         field: function (f, fType, fid, fv) {
             return uiInput[fType](fid, fv, f, null);
         },
@@ -121,7 +121,6 @@ return {
             return h;
         },
         color: function(f, fid, fv){
-            //return '<div id="',fid, '" class="form-control">',fv,'</div>');
             return uiInput.color(fid, fv);
         },
         hidden: function(f, fid, fv){
@@ -599,8 +598,9 @@ return {
     },
 
     sortingText: function(fid){
-        //return (modelA.get(fid)||'').localeCompare(modelB.get(fid)||'');
-        return this.sortingNumber(fid);
+        return function(modelA, modelB) {
+            return (modelA[fid]||'').localeCompare(modelB[fid]||'');
+        };
     },
 
     getRoute: function(){

@@ -1,3 +1,4 @@
+// default config for Evolutility UI
 
 var Evol = Evol || {};
 

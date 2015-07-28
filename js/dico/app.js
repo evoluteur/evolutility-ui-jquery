@@ -173,7 +173,6 @@ Evol.App = Backbone.View.extend({
             }else{
                 url = Evol.Config.url+uiModel.id;
                 M = Backbone.Model.extend({
-                    url: url,
                     urlRoot: url
                 });
                 Ms = Backbone.Collection.extend({
