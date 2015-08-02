@@ -18,14 +18,14 @@ var EvoUI = Evol.UI,
     EvoDico = Evol.Dico,
     i18n = Evol.i18n;
 
-return Evol.ViewMany.extend({
+return Evol.View_Many.extend({
 
     viewName: 'charts',
 
     options: {
         //sizes: '600x300',
         style: 'panel-info',
-        fieldsetFilter: EvoDico.fieldInCharts,
+        fieldsetFilter: Evol.Def.fieldInCharts,
         autoUpdate: false
     },
 
@@ -35,7 +35,7 @@ return Evol.ViewMany.extend({
     },
 
     render: function () {
-        this.entityName=EvoUI.capitalize(this.uiModel.namePlural);
+        this.entityName=Evol.Format.capitalize(this.uiModel.namePlural);
         if(this.collection && this.collection.length>0){
             this.$el.html('<div class="evol-many-'+this.viewName+'">'+
                 this._HTMLcharts(this.style || 'panel-info', this.sizes)+
@@ -48,7 +48,7 @@ return Evol.ViewMany.extend({
 
     _HTMLcharts: function (style, sizes) {
         var h='',
-            fTypes = EvoDico.fieldTypes,
+            fTypes = Evol.Def.fieldTypes,
             uiModel = this.uiModel,
             models = this.collection.models,
             iconsPath = this.iconsPath || '',

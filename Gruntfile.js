@@ -62,6 +62,8 @@ module.exports = function (grunt) {
                 src: [
                     'js/dico/config.js',
 
+                    'js/dico/def.js',
+                    'js/dico/format.js',
                     'js/dico/ui.js',
                     'js/dico/ui-*.js',
                     'js/i18n/EN.js',

@@ -9,7 +9,7 @@
  *
  *************************************************************************** */
 
-Evol.ViewOne.Browse = Evol.ViewOne.extend({
+Evol.ViewOne.Browse = Evol.View_One.extend({
 
     viewName: 'browse',
     editable: false,
@@ -24,7 +24,7 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
         if(!_.isUndefined(model) && model!==null){
             var that=this,
                 uii=Evol.UI.input,
-                fts = Evol.Dico.fieldTypes,
+                fts = Evol.Def.fieldTypes,
                 fieldHTML_ReadOny = Evol.Dico.fieldHTML_ReadOny,
                 $f, fv,
                 prefix='#'+ that.prefix + '-',
@@ -82,7 +82,7 @@ Evol.ViewOne.Browse = Evol.ViewOne.extend({
     clear: function () {
         var that=this,
             $f,
-            fts = Evol.Dico.fieldTypes,
+            fts = Evol.Def.fieldTypes,
             prefix='#'+ that.prefix + '-',
             subCollecs=this.getSubCollecs();
 

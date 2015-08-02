@@ -228,11 +228,7 @@ Evol.UI = {
         return h;
     },
     linkEmail: function (id, email) {
-        if(email){
-            return this.link(id, email, 'mailto:'+email);
-        }else{
-            return '';
-        }
+        return email ? this.link(id, email, 'mailto:'+email) : '';
     },
     //html_more: function (label) {
     //    return ['<a href="javascript:void(0)" class="evol-more">', label, '</a>'].join('');
@@ -242,10 +238,10 @@ Evol.UI = {
     icon: function (icon, css) {
         return '<i class="'+(css?css+' ':'')+Evol.UI.html.glyphicon+icon+'"></i>';
     },
-
+    /*
     iconCustomize: function (id, type) {
         return Evol.UI.iconId(id, type, 'wrench');
-    },
+    },*/
 
     iconId: function (id, type, icon) {
         return '<i class="'+Evol.UI.html.glyphicon+icon+'" data-id="'+id+'" data-type="'+type+'"></i>';
@@ -358,40 +354,6 @@ Evol.UI = {
             '<strong>'+title+'</strong> <span>'+msg+'</span></div>';
     },
 
-    // --- date formats ---
-    formatDate: function(d){
-        if(!_.isUndefined(d) && d!==null){
-            var dateParts=d.split('-');
-            if(dateParts.length>1){
-                return dateParts[1]+'/'+dateParts[2]+'/'+dateParts[0];
-            }
-        }
-        return '';
-    },
-    formatTime: function(d){
-        if(!_.isUndefined(d) && d!==null && d!==''){
-            var timeParts=d.split(':'),
-                hour=parseInt(timeParts[0],10);
-            if(hour>12){
-                return (hour-12)+':'+timeParts[1]+' PM';
-            }else{
-                return hour+':'+timeParts[1]+' AM';
-            }
-        }
-        return '';
-    },
-    formatDateTime: function(d){
-        if(!_.isUndefined(d) && d!==null && d!==''){
-            var dateParts=d.split('T');
-            if(dateParts.length>1){
-                return this.formatDate(dateParts[0])+', '+this.formatTime(dateParts[1]);
-            }else{
-                return this.formatDate(dateParts[0]);
-            }
-        }
-        return '';
-    },
-
     // ---  Misc. ---
     /*
      // get w/ automatic create if not in DOM
@@ -404,30 +366,6 @@ Evol.UI = {
          }
          return e;
      },*/
-
-    // insert a dataSet into a Backbone collection
-    insertCollection: function (collection, dataSet){
-        //if(collection.length===0){
-            _.each(dataSet,function(d){
-                collection.create(d);
-            });
-        //}
-    },
-
-    capitalize: function(word){ // TODO use _.str.capitalize(word);
-        if(word && word.length>0){
-            //return _.capitalize(word);
-            return word.substring(0,1).toUpperCase() + word.substring(1);//.toLowerCase();
-        }
-        return '';
-    },
-
-    trim: function(stringValue){ // TODO use _.trim(word);
-        if(_.isString(stringValue) && stringValue!==''){
-            return stringValue.replace(/^\s+|\s+$/g, '');
-        }
-        return '';
-    },
 
     setVisible: function($e, visible){
         if(visible){

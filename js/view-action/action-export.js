@@ -11,7 +11,7 @@ Evol.ViewAction.Export = function(){
 
     var eUI = Evol.UI,
         eDico = Evol.Dico,
-        fts = eDico.fieldTypes,
+        fts = Evol.Def.fieldTypes,
         uiInput = eUI.input,
         i18n = Evol.i18n,
         i18nXpt = i18n.export;
@@ -184,7 +184,7 @@ return Backbone.View.extend({
 
     getFields: function (){
         if(!this.fields){
-            this.fields=eDico.getFields(this.uiModel, function(f){
+            this.fields=Evol.Def.getFields(this.uiModel, function(f){
                 return _.isUndefined(f.inExport) || f.inExport;
             });
         }
@@ -232,7 +232,7 @@ return Backbone.View.extend({
                 case 'CSV':
                 case 'TAB':
                 case 'TXT':
-                    var sep = eUI.trim(this.$('#separator').val());
+                    var sep = Evol.Format.trim(this.$('#separator').val());
                     if(format=='TAB'){
                         sep='&#09;';
                     }

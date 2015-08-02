@@ -9,7 +9,7 @@
  *
  *************************************************************************** */
 
-Evol.ViewOne.JSON = Evol.ViewOne.extend({
+Evol.ViewOne.JSON = Evol.View_One.extend({
 
     events: {
         'click > .evol-buttons > button': 'click_button'
@@ -26,7 +26,7 @@ Evol.ViewOne.JSON = Evol.ViewOne.extend({
             h.push(
                 eUI.HTMLPanelBegin({
                     id: 'p-json',
-                    label:Evol.UI.capitalize(this.uiModel.name), 
+                    label:Evol.Format.capitalize(this.uiModel.name), 
                     label2: 'JSON'
                 }, this.style+' evo-p-json', true)+
                 '<fieldset>'+

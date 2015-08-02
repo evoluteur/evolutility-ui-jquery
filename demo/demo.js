@@ -41,11 +41,11 @@ function createSampleDataIfEmpty(entityName){
         });
         Ms = Backbone.Collection.extend({
             model: M,
-            url: Evol.Config.url+entityName,
+            url: Evol.Config.url+entityName/*,
             sync : function(method, collection, options) {
                 //options.dataType = "jsonp";
                 return Backbone.sync(method, collection, options);
-            }
+            }*/
         });
     }
 
@@ -54,7 +54,9 @@ function createSampleDataIfEmpty(entityName){
         success: function(collection){
             // TODO remove sample data
             if(collection.length===0){
-                Evol.UI.insertCollection(collection, uiModels[entityName+'_data']);
+                _.each(uiModels[entityName+'_data'], function(d){
+                    collection.create(d);
+                });
             }
         }
     });

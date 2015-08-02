@@ -273,14 +273,13 @@ return Backbone.View.extend({
                 this.$('[data-id="new"]').show();
                 this.$('[data-id="views"] > li').removeClass('evo-sel')
                     .filter('[data-id="'+viewName+'"]').addClass('evo-sel');
-                if(Evol.Dico.viewIsMany(viewName)){
+                if(Evol.Def.isViewMany(viewName)){
                     //fieldsetFilter
                     vw = new ViewClass(config)
                                 .render();
                     this._prevViewMany=viewName;
                     vw.setTitle();
                     if(viewName!='charts' && viewName!='bubbles' && this.pageIndex > 0){
-                        //var pIdx=this.curView.getPage();
                         vw.setPage(this.pageIndex || 0);
                     }
                 }else{
@@ -439,7 +438,7 @@ return Backbone.View.extend({
             tbBs.prevNext.hide();//.removeClass('disabled');
             setVisible(tbBs.views, !(mode==='export' || mode=='new'));
             tbBs.del.hide();
-            if(Evol.Dico.viewIsMany(mode)){
+            if(Evol.Def.isViewMany(mode)){
                 this._prevViewMany=mode;
                 oneMany(mode, false, true);
                 if(mode==='charts' || mode==='bubbles'){
@@ -450,15 +449,16 @@ return Backbone.View.extend({
                     if(cSize > pSize){
                         tbBs.prevNext.show();/*
                          // TODO finish disabling of paging buttons
+                         // use ui.addRemClass
                          if(this.curView.pageIndex===0){
-                         tbBs.prevNext.eq(0).addClass('disabled');
+                            tbBs.prevNext.eq(0).addClass('disabled');
                          }else{
-                         tbBs.prevNext.eq(0).removeClass('disabled');
+                            tbBs.prevNext.eq(0).removeClass('disabled');
                          }
                          if(this.collection.length/this.pageSize){
-                         tbBs.prevNext.eq(1).addClass('disabled');
+                            tbBs.prevNext.eq(1).addClass('disabled');
                          }else{
-                         tbBs.prevNext.eq(1).removeClass('disabled');
+                            tbBs.prevNext.eq(1).removeClass('disabled');
                          }*/
                     }
                 }
@@ -527,8 +527,8 @@ return Backbone.View.extend({
      },*/
 
     setStatus: function(msg){
-        var $e=this.$('.evo-toolbar .evo-tb-status');
-        $e.html(msg);
+        this.$('.evo-toolbar .evo-tb-status')
+            .html(msg);
     },
 
     setData: function(data){
@@ -551,11 +551,12 @@ return Backbone.View.extend({
 
     setModelById: function(id){
         var that = this,
+            m,
             fnSuccess = function(){
                 // TODO set collection ??
                 that.model = m;
                 if(that.curView.cardinality!='1'){
-                    that.setView('browse');//(that._prevViewOne || 'edit');
+                    that.setView(that.defaultViewOne);
                 }
                 that.curView.setModel(m);
             },
@@ -564,7 +565,7 @@ return Backbone.View.extend({
             };
 
         if(Evol.Config.localStorage){
-            var m = this.collection.get(id);
+            m = this.collection.get(id);
             if(_.isUndefined(m)){
                 fnError();
             }else{
@@ -574,7 +575,7 @@ return Backbone.View.extend({
             var M = Backbone.Model.extend({
                 urlRoot: Evol.Config.url+that.uiModel.id
             });
-            var m = new M({id:id});
+            m = new M({id:id});
             m.fetch({
                 success: fnSuccess,
                 error: fnError
@@ -611,7 +612,8 @@ return Backbone.View.extend({
     },
 
     setRoute: function(id, triggerRoute){
-        Evol.Dico.setRoute(this.router, this.curView.getTitle(), this.uiModel.id, this.curView.viewName, id, triggerRoute);
+        Evol.Dico.setRoute(this.router, this.uiModel.id, this.curView.viewName, id, triggerRoute);
+        Evol.Dico.setPageTitle(this.curView.getTitle());
         return this;
     },
 
@@ -648,7 +650,8 @@ return Backbone.View.extend({
                     collec.create(this.getData(true), {
                         success: function(m){
                             fnSuccess(m);
-                            that.setMessage(i18n.getLabel('saved', eUI.capitalize(entityName)), i18n.getLabel('msg.added', entityName, _.escape(vw.getTitle())), 'success');
+                            //that.collection.set(m, {remove:false});
+                            that.setMessage(i18n.getLabel('saved', Evol.Format.capitalize(entityName)), i18n.getLabel('msg.added', entityName, _.escape(vw.getTitle())), 'success');
                         },
                         error:function(m, err){
                             alert('error in "saveItem"');
@@ -667,7 +670,7 @@ return Backbone.View.extend({
                     success: function(m){
                         fnSuccess(m);
                         that.collection.set(m, {remove:false});
-                        that.setMessage(i18n.getLabel('saved', eUI.capitalize(entityName)), i18n.getLabel('msg.updated', eUI.capitalize(entityName), _.escape(vw.getTitle())), 'success');
+                        that.setMessage(i18n.getLabel('saved', Evol.Format.capitalize(entityName)), i18n.getLabel('msg.updated', Evol.Format.capitalize(entityName), _.escape(vw.getTitle())), 'success');
                     },
                     error: function(m, err){
                         alert('Error '+err.status+' - '+err.statusText);
@@ -675,7 +678,7 @@ return Backbone.View.extend({
                 });
             }
         }else{
-            var msg = '<ul><li>'+msgs.join('</li><li>')+'</li></ul>'; // i18nVal.intro,
+            var msg = '<ul><li>'+msgs.join('</li><li>')+'</li></ul>';
             this.setMessage(i18n.validation.incomplete, msg, 'warning');
         }
         return this;
@@ -683,7 +686,7 @@ return Backbone.View.extend({
 
     newItem: function(){
         var vw=this.curView;
-        if(vw.viewName=='browse'){
+        if(vw.viewName==='browse'){
             if(this._prevViewOne!=='browse' && this._prevViewOne!=='json'){
                 this.setView(this._prevViewOne);
             }else{
@@ -735,7 +738,7 @@ return Backbone.View.extend({
                                         that.model = newModel;
                                         that.curView.setModel(newModel);
                                     }
-                                    var eName=eUI.capitalize(entityName);
+                                    var eName=Evol.Format.capitalize(entityName);
                                     that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('msg.deleted', eName, entityValue), 'success');
                                     that._trigger('item.deleted');
                                 },
@@ -744,7 +747,7 @@ return Backbone.View.extend({
                                 }
                             };
                             if(!Evol.Config.localStorage){
-                                opts.url=_.isString(that.model.url)?that.model.url+'/'+delModel.id:that.model.url();
+                                opts.url=that.model.url();
                             }
                             collec.remove(delModel);
                             delModel.destroy(opts);
@@ -863,13 +866,13 @@ return Backbone.View.extend({
     },
     /*
      _ok2go: function(){
-     if(this.curView && this.curView.editable && this.curView.isDirty && this.curView.isDirty()){
-     if(confirm(i18n.unSavedChanges)){
-     return true;
-     }
-     return false;
-     }
-     return true;
+         if(this.curView && this.curView.editable && this.curView.isDirty && this.curView.isDirty()){
+             if(confirm(i18n.unSavedChanges)){
+                return true;
+             }
+             return false;
+         }
+         return true;
      },*/
 
     click_toolbar: function(evt, ui){

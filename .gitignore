@@ -4,16 +4,12 @@ js/dependencies.js
 js/ui-models/doc/
 dist/dependencies.js
 js/models
-js/ui-models/chinook
-*.xml
 *-nogit
 *-nogit.*
 
 demo-*/
-dico/pix/
-doc/pix/
-doc/Doc_*
 demo/demo-data.js
+dico/pix/
 
 # Windows stuff
 Thumbs.db

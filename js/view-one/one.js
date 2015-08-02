@@ -11,14 +11,17 @@
 
 var Evol = Evol || {};
 
-Evol.ViewOne = function(){
+Evol.ViewOne = {};
+
+Evol.View_One = function(){
 
     var eUI = Evol.UI,
         uiInput = eUI.input,
         i18n = Evol.i18n,
         i18nTools = i18n.tools,
+        eDef=Evol.Def,
         eDico = Evol.Dico,
-        fts = eDico.fieldTypes;
+        fts = eDef.fieldTypes;
 
 return Backbone.View.extend({
 
@@ -33,8 +36,8 @@ return Backbone.View.extend({
         'click ul.evol-tabs>li>a': 'click_tab',
         'click label>.glyphicon-question-sign': 'click_help',
         //'click .glyphicon-wrench': 'click_customize',
-        'click [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel',
-        'keyup [data-id="bPlus"],[data-id="bMinus"]':'click_detailsAddDel'
+        'click [data-id="bPlus"],[data-id="bMinus"]': 'click_detailsAddDel',
+        'keyup [data-id="bPlus"],[data-id="bMinus"]': 'click_detailsAddDel'
     },
 
     options: {
@@ -73,11 +76,11 @@ return Backbone.View.extend({
 
     getFields: function (){
         if(!this._fields){
-            this._fields=eDico.getFields(this.uiModel, this.fieldsetFilter);
-            this._fieldHash={};
-            var that=this;
+            var that = this;
+            this._fields = eDef.getFields(this.uiModel, this.fieldsetFilter);
+            this._fieldHash = {};
             _.each(this._fields, function(f){
-                that._fieldHash[f.id]=f;
+                that._fieldHash[f.id] = f;
             });
         }
         return this._fields;
@@ -92,8 +95,8 @@ return Backbone.View.extend({
 
     getSubCollecs: function (){
         if(!this._subCollecsOK){
-            this._subCollecs=eDico.getSubCollecs(this.uiModel);
-            this._subCollecsOK=true;
+            this._subCollecs = eDef.getSubCollecs(this.uiModel);
+            this._subCollecsOK = true;
         }
         return this._subCollecs;
     },
@@ -408,7 +411,7 @@ return Backbone.View.extend({
          }
          if(this.editable){
              var fs= this.getFields(),
-                 isNumType=eDico.isNumberType,
+                 isNumType=eDef.fieldIsNumber,
                  data=this.getData(),
                  model=this.model,
                  i,
@@ -421,7 +424,7 @@ return Backbone.View.extend({
                      dataVal = data[prop],
                      modelVal = model.get(prop);
 
-                 if(isNumType(f.type)){
+                 if(isNumType(f)){
                      if(isNaN(dataVal)){
                          if(!isNaN(modelVal)){
                             return true;
@@ -724,7 +727,7 @@ return Backbone.View.extend({
             var lf=this.uiModel.fnTitle;
             return _.isFunction(lf)?lf(this.model):this.model.get(lf);
         }else{
-            return eUI.capitalize(this.uiModel.name);
+            return Evol.Format.capitalize(this.uiModel.name);
         }
     },
 
@@ -811,7 +814,7 @@ return Backbone.View.extend({
 
     validateField: function(f, v){
         var i18nVal = i18n.validation,
-            numberField = eDico.isNumberType(f.type);
+            numberField = eDef.fieldIsNumber(f);
 
         function formatMsg(fLabel, msg, r2, r3){
             return msg.replace('{0}', fLabel)

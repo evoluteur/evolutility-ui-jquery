@@ -9,7 +9,7 @@
  *
  *************************************************************************** */
 
-Evol.ViewOne.Edit = Evol.ViewOne.extend({
+Evol.ViewOne.Edit = Evol.View_One.extend({
 
     viewName: 'edit',
     prefix: 'oe',

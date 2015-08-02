@@ -11,7 +11,9 @@
 
 var Evol = Evol || {};
 
-Evol.ViewMany = function() {
+Evol.ViewMany = {};
+
+Evol.View_Many = function() {
 
     var eUI = Evol.UI,
         eDico = Evol.Dico,
@@ -21,7 +23,7 @@ return Backbone.View.extend({
 
     viewName: 'Many',
     viewType: 'many',
-    editable: false,
+    //editable: false,
     cardinality: 'n',
 
     options: {
@@ -90,17 +92,14 @@ return Backbone.View.extend({
     _HTMLbody: function (fields, pSize, icon, pageIdx, selectable) {
         var h =[],
             models = this.collection.models,
-            model,
-            r,
             rMin = (pageIdx > 0) ? pageIdx * pSize : 0,
             rMax = _.min([models.length, rMin + pSize]),
             ico = icon ? (this.iconsPath || '') + icon : null;
 
         if (rMax > 0) {
             var route = this.getItemRoute();
-            for (r = rMin; r < rMax; r++) {
-                model = models[r];
-                this.HTMLItem(h, fields, model, ico, selectable, route);
+            for (var r = rMin; r < rMax; r++) {
+                this.HTMLItem(h, fields, models[r], ico, selectable, route);
             }
         }
         return h.join('');
@@ -167,12 +166,12 @@ return Backbone.View.extend({
 
     getTitle: function () {
         // -- returns a string like "Contacts list"
-        return eUI.capitalize(this.uiModel.namePlural) + ' ' + this.viewName;
+        return Evol.Format.capitalize(this.uiModel.namePlural) + ' ' + this.viewName;
     },
 
     getFields: function () {
         if (!this._fields) {
-            this._fields = eDico.getFields(this.uiModel, this.fieldsetFilter);
+            this._fields = Evol.Def.getFields(this.uiModel, this.fieldsetFilter);
             this._fieldHash = {};
             var fh = this._fieldHash;
             _.each(this._fields, function (f) {
@@ -223,15 +222,13 @@ return Backbone.View.extend({
 
     setSelection: function (sel) {
         // - param: sel = array of ids like ['1','2']
-        if (this.selectable) {
-            if (sel.length > 0) {
-                // TODO optimize and uncheck prev checked
-                var selector = [];
-                _.each(sel, function (id) {
-                    selector.push('[data-mid=' + id + '] .list-sel');
-                });
-                this.$(selector.join(',')).prop('checked', true);
-            }
+        if (this.selectable && sel.length > 0) {
+            // TODO optimize and uncheck prev checked
+            var selector = [];
+            _.each(sel, function (id) {
+                selector.push('[data-mid=' + id + '] .list-sel');
+            });
+            this.$(selector.join(',')).prop('checked', true);
         }
         return this;
     },
@@ -314,10 +311,10 @@ return Backbone.View.extend({
 
     sortList: function (f, down, noRemember, noTrigger) {
         var collec = this.collection,
-            ft = eDico.fieldTypes;
+            fts = Evol.Def.fieldTypes;
         if (!_.isUndefined(collec)) {
             var sel = this.getSelection();
-            if (f.type == ft.text || f.type == ft.textml || f.type == ft.email) {
+            if (f.type == fts.text || f.type == fts.textml || f.type == fts.email) {
                 collec.comparator = eDico.bbComparatorText(f.id);
             } else if (f.value) {
                 collec.comparator = f.value;
@@ -342,13 +339,10 @@ return Backbone.View.extend({
     },
 
     getItemRoute: function () {
-        var router = this.router,
-            route = null;
-
-        if (router) {
-            route = '#' + this.uiModel.id + '/browse/';
+        if (this.router) {
+            return '#' + this.uiModel.id + '/browse/';
         }
-        return route;
+        return null;
     },
 
     click_navigate: function (evt) {

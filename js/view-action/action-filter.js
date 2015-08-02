@@ -12,7 +12,7 @@ Evol.ViewAction.Filter = function(){
 
     var eUI = Evol.UI,
         uiInput = eUI.input,
-        fts = Evol.Dico.fieldTypes,
+        fts = Evol.Def.fieldTypes,
         evoLang = Evol.i18n.filters,
         fOps = {
             sEqual:'eq',
@@ -53,7 +53,7 @@ return Backbone.View.extend({
         _.extend(this, this.options, opts);
         // - if no fields are provided, then get them from the uiModel
         if(this.fields.length<1 && this.uiModel){
-            this.fields = _.map(Evol.Dico.getFields(this.uiModel, function(f){
+            this.fields = _.map(Evol.Def.getFields(this.uiModel, function(f){
                     return f.type!==fts.hidden;
                 }),
                 function(f){
@@ -219,7 +219,7 @@ return Backbone.View.extend({
         var f=$('<a href="javascript:void(0)">'+this._htmlCond(filter)+'</a>')
             .prependTo(this._filters)/*
          .button({
-         icons: {secondary:'ui-icon-close'}
+            icons: {secondary:'ui-icon-close'}
          })*/
             .data('filter', filter)
             .fadeIn();
@@ -589,28 +589,6 @@ return Backbone.View.extend({
         });
         return v.join(' '+evoLang.opAnd+' ');
     },
-    /*
-     valUrl: function(){
-         var vs=this.val(),
-             iMax=vs.length,
-             url=['filters=',iMax];
-         if(iMax<1){
-            return '';
-         }
-         for(var i=0;i<iMax;i++){
-             var v=vs[i];
-             url.push(
-                 '&field-',i,'=',v.field.value,
-                 '&operator-',i,'=',v.operator.value,
-                 '&value-',i,'=',encodeURIComponent(v.value.value)
-             );
-             if(v.operator==fOps.sBetween){
-                url.push('&value2-',i,'=',encodeURIComponent(v.value.value2));
-             }
-         }
-         url.push('&label=',encodeURIComponent(this.valText()));
-         return url.join('');
-     },*/
 
     clear: function(){
         this._cFilter=null;

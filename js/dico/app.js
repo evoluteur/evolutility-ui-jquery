@@ -24,7 +24,7 @@ Evol.App = Backbone.View.extend({
         },
         style: 'panel-default',
         useRouter: true,
-        pageSize:20,
+        pageSize: 20,
         prefix: 'evol-'
     },
 
@@ -79,7 +79,8 @@ Evol.App = Backbone.View.extend({
     setRoute: function(id, triggerRoute){
         var cView = this._tbs[this._curEntity].curView;
         if(cView){
-            Evol.Dico.setRoute(this.router, cView.getTitle(), cView.uiModel.id, cView.viewName, id, triggerRoute);
+            Evol.Dico.setRoute(this.router, cView.uiModel.id, cView.viewName, id, triggerRoute);
+            Evol.Dico.setPageTitle(cView.getTitle());
         }else{
             alert('Error: Invalid route.');
         }

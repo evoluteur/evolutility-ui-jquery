@@ -13,7 +13,7 @@ Evol.ViewOne.Wizard = function(){
 
     var eUI = Evol.UI;
 
-return Evol.ViewOne.extend({
+return Evol.View_One.extend({
 
     viewName: 'wizard',
     prefix: 'wiz',

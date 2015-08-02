@@ -9,7 +9,7 @@
  *
  *************************************************************************** */
 
-Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
+Evol.ViewMany.Bubbles = Evol.View_Many.extend({
 
     viewName: 'bubbles',
 
@@ -24,16 +24,15 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
         'click svg>circle': 'clickCircle'
     },
 
-    fieldsetFilter: Evol.Dico.fieldChartable,
+    fieldsetFilter: Evol.Def.fieldChartable,
 
     setupBubbles: function() {
         var that=this,
             ui=this.uiModel,
-            eDico=Evol.Dico,
             models = this.collection.models;
 
         if(!this._bubblesInitialized){
-            var flds = eDico.getFields(this.uiModel, eDico.fieldChartable);
+            var flds = Evol.Def.getFields(this.uiModel, Evol.Def.fieldChartable);
             this.bubbles = new Evol.Bubbles({
                 //selector:'.evol-bubbles-body',
                 elem: this.$('.evol-bubbles-body').get(0),
@@ -70,7 +69,7 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
             hOpt = eUI.input.option,
             hOptNull = eUI.html.emptyOption,
             fo,
-            fs2 = Evol.Dico.getFields(this.uiModel, Evol.Dico.fieldChartable),
+            fs2 = Evol.Def.getFields(this.uiModel, Evol.Def.fieldChartable),
             h = '<div class="evol-many-bubbles panel '+this.style+'"><div class="evol-bubbles-body">'+
                 '<div class="d3-tooltip" style="opacity:0;"></div>';
         //h+=this._HTMLbody(this.getFields(), pSize, this.uiModel.icon, 0, this.selectable);
@@ -101,7 +100,7 @@ Evol.ViewMany.Bubbles = Evol.ViewMany.extend({
             h+='<label>'+i18nTools.vizColorBy+': </label><select class="form-control bubble-color">'+hOptNull + fo.join('')+'</select>';
             // --- Size ---
             fs2=_.filter(fs2, function(f){
-                return (_.isUndefined(f.sizable) || f.sizable) ? Evol.Dico.isNumberType(f.type) : '';
+                return (_.isUndefined(f.sizable) || f.sizable) ? Evol.Def.fieldIsNumber(f) : '';
             });
             fo=_.map(fs2, function(f, idx){
                 return hOpt(f.id, f.label);

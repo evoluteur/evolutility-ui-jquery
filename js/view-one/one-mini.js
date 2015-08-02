@@ -12,7 +12,7 @@
 Evol.ViewOne.Mini = function(){
 
     var eUI = Evol.UI,
-        fts = Evol.Dico.fieldTypes;
+        fts = Evol.Def.fieldTypes;
 
 return Evol.ViewOne.Edit.extend({
 
@@ -38,7 +38,7 @@ return Evol.ViewOne.Edit.extend({
             id: 'p-mini',
             type: 'panel',
             class: 'evol-mini-holder',
-            label: Evol.UI.capitalize(this.uiModel.name),
+            label: Evol.Format.capitalize(this.uiModel.name),
             width: 100,
             elements: this.getFields()
         };

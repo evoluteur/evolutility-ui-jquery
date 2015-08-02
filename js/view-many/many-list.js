@@ -9,7 +9,7 @@
  *
  *************************************************************************** */
 
-Evol.ViewMany.List = Evol.ViewMany.extend({
+Evol.ViewMany.List = Evol.View_Many.extend({
 
     viewName: 'list',
     
@@ -50,7 +50,8 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             v,
             bf = that.uiModel.fnBadge,
             link = (this.links!==false),
-            ft = Evol.Dico.fieldTypes;
+            ft = Evol.Def.fieldTypes,
+            input = Evol.UI.input;
 
         h.push('<tr data-mid="'+model.id+'">');
         if(selectable){
@@ -58,9 +59,9 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
         }
         _.each(fields, function(f, idx){
             if(f.type===ft.color){
-                v = Evol.UI.input.colorBox(f.id, model.escape(f.attribute || f.id));
+                v = input.colorBox(f.id, model.escape(f.attribute || f.id));
             }else if(f.type===ft.formula){
-                v = Evol.UI.input.formula(null, f, model);
+                v = input.formula(null, f, model);
             }else if(f.value){
                 v = f.value(model);
             }else{
@@ -82,7 +83,7 @@ Evol.ViewMany.List = Evol.ViewMany.extend({
             var css=f.css || '';
             if(f.type===ft.textml || f.type===ft.email || f.type===ft.url){
                 css+=' evol-ellipsis';
-            }else if(Evol.Dico.isNumberType(f.type)){
+            }else if(Evol.Def.fieldIsNumber(f)){
                 css+=' evol-r-align';
             }
             h.push('<td class="'+css+'">'+v+'</td>');

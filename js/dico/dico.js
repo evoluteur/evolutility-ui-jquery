@@ -17,35 +17,9 @@ Evol.Dico = function(){
     var eUI = Evol.UI,
         uiInput = eUI.input,
         i18n = Evol.i18n,
-        fts={
-            text: 'text',
-            textml: 'textmultiline',
-            bool: 'boolean',
-            int: 'integer',
-            dec: 'decimal',
-            money: 'money',
-            date: 'date',
-            datetime: 'datetime',
-            time: 'time',
-            lov: 'lov',
-            list: 'list', // many values for one field (behave like tags - return an array of strings)
-            html: 'html',
-            formula:'formula', // soon to be a field attribute rather than a field type
-            email: 'email',
-            pix: 'image',
-            //geoloc: 'geolocation',
-            //doc:'document',
-            url: 'url',
-            color: 'color',
-            hidden: 'hidden'
-            //json: 'json',
-            //rating: 'rating',
-            //widget: 'widget'
-        };
+        fts = Evol.Def.fieldTypes;
 
 return {
-
-    fieldTypes: fts,
 
     fieldOneEdit: {
         field: function (f, fType, fid, fv) {
@@ -192,11 +166,9 @@ return {
                 }
                 return v;
             case fts.date:
-                return eUI.formatDate(v);
             case fts.time:
-                return eUI.formatTime(v);
             case fts.datetime:
-                return eUI.formatDateTime(v);
+                return Evol.Format[f.type+'String'](v);
             case fts.pix:
                 if (v && v.length) {
                     //return uiInput.img(f.id, (v.substr(0, 2)==='..')?v:iconsPath + v, 'img-thumbnail');
@@ -255,72 +227,6 @@ return {
         return h;
     },
 
-    // -- list of operator and function for filters
-    fieldConditions: {
-        // filter functions take parameters fv=fieldValue, cv=condition value, cv2
-        // -- equals
-        'eq': function(fv, cv){
-            return cv==fv;
-        },
-        // -- not equal
-        'ne': function(fv, cv){
-            return cv!=fv;
-        },
-        // -- > or after
-        'gt': function(fv, cv){
-            return fv>cv;
-        },
-        // -- < or before
-        'lt': function(fv, cv){
-            return fv<cv;
-        },
-        // -- between
-        'bw': function(fv, cv, cv2){
-            return !(cv>fv || fv>cv2);
-        },
-        // -- start w/
-        'sw': function(fv, cv){
-            return fv.toLocaleLowerCase().indexOf(cv)===0;
-        },
-        // -- contains
-        'ct': function(fv, cv){
-            if(fv){
-                return fv.toLocaleLowerCase().indexOf(cv)>-1;
-            }
-            return false;
-        },
-        // -- finish w/
-        'fw': function(fv, cv){
-            var l1=fv.length,
-                l2=cv.length;
-            if (l1<l2){
-                return false;
-            }else{
-                return fv.toLocaleLowerCase().substring(l1-l2)===cv;
-            }
-        },
-        // -- empty
-        'null': function(fv, cv){
-            return  fv=='' || _.isUndefined(fv);
-        },
-        // -- not null
-        'nn': function(fv, cv){
-            return !(_.isUndefined(fv) || fv=='');
-        },
-        // -- in []
-        'in': function(fv, cv){
-            return  _.contains(cv.split(','),fv);
-        },
-        // -- true
-        '1': function(fv, cv){
-            return fv;
-        },
-        // -- false
-        '0': function(fv, cv){
-            return !fv;
-        }
-    },
-
     clearCacheLOV: function(){
         Evol.hashLov={};
     },
@@ -330,50 +236,6 @@ return {
             $(that.titleSelector).html(title?title:that.getTitle());
         }
         return that;
-    },
-
-    viewIsOne: function(viewName){
-        return viewName==='new' || viewName==='edit' || viewName==='browse' || viewName==='json';
-    },
-    viewIsMany: function(viewName){
-        return viewName==='list' || viewName==='cards' || viewName==='charts' || viewName==='bubbles';
-    },
-
-    fieldInCharts: function (f) {
-        return (_.isUndefined(f.inCharts) || f.inCharts) && Evol.Dico.fieldChartable(f);
-    },
-    fieldChartable: function (f) {
-        return  f.type===fts.lov || f.type===fts.bool || f.type===fts.int || f.type===fts.money;
-    },
-
-    isNumberType: function(fType){
-        return fType===fts.int || fType===fts.dec || fType===fts.money;
-    },
-    isDateOrTimeType: function(fType){
-        return fType === fts.date || fType === fts.datetime || fType === fts.time;
-    },
-
-    // get all "shallow" fields (no sub collections) from a UI model
-    getFields: function (uiModel, fnFilter) {
-        var fs = [];
-
-        function collectFields(te) {
-            if (te && te.elements && te.elements.length > 0) {
-                _.each(te.elements, function (te) {
-                    if(te.type!='panel-list'){
-                        collectFields(te);
-                    }
-                });
-            } else {
-                fs.push(te);
-            }
-        }
-
-        collectFields(uiModel);
-        if (_.isFunction(fnFilter)) {
-            fs= _.filter(fs, fnFilter);
-        }
-        return fs;
     },
 
     getFieldTypedValue:function(f, $f){
@@ -390,30 +252,6 @@ return {
             default:
                 return $f.val();
         }
-    },
-
-    // get sub collections
-    getSubCollecs: function(uiModel){
-        var ls = {};
-
-        function collectCollecs(te) {
-            if(te.type==='panel-list'){
-                ls[te.attribute]=te;
-            }else if (te.type!=='panel' && te.elements && te.elements.length > 0) {
-                _.each(te.elements, function (te) {
-                    if(te.type==='panel-list'){
-                        ls[te.attribute]=te;
-                    }else if(te.type!=='panel'){
-                        collectCollecs(te);
-                    }
-                });
-            } else {
-                ls[te.attribute]=te;
-            }
-        }
-
-        collectCollecs(uiModel);
-        return ls;
     },
     /*
      compactUI: function(uiModel){
@@ -510,8 +348,8 @@ return {
     uiModel2tdbTable: function(uiModel){
         // -- generates SQL script to create a Postgress DB table for the object
         var t=uiModel.id || uiModel.name;
-        var fields=this.getFields(uiModel);
-        var sql='CREATE TABLE "Evolutility".'+t;
+        var fields=Evol.Def.getFields(uiModel);
+        var sql='CREATE TABLE '+t;
         sql+='\n(\n';
         sql+=[' id serial NOT NULL,\n'];
         _.forEach(fields, function(f, idx){
@@ -529,6 +367,9 @@ return {
                 default:
                     sql+='text';
             }
+            if(f.required){
+                sql+=' not null';
+            }
             sql+=',\n';
         });
         sql+='CONSTRAINT "'+t+'_pkey" PRIMARY KEY (id)';
@@ -537,7 +378,6 @@ return {
         return sql;
     },
 */
-
     filterModels: function(models, filters){
         if(filters.length){
             // TODO pre-build function to avoid repeating loop
@@ -585,22 +425,18 @@ return {
             return 0;
         };
     },
-    sortingNumberDesc: function(fid){
-        return function(modelA, modelB) {
-            if(modelA[fid]>modelB[fid]){
-                return 1;
-            }
-            if(modelB[fid]>modelA[fid]){
-                return -1;
-            }
-            return 0;
-        };
-    },
 
     sortingText: function(fid){
         return function(modelA, modelB) {
             return (modelA[fid]||'').localeCompare(modelB[fid]||'');
         };
+    },
+
+    setPageTitle: function(title){
+        if(_.isUndefined(this._$headTitle)){
+            this._$headTitle = $('#headTitle');
+        }
+        this._$headTitle.html(title);
     },
 
     getRoute: function(){
@@ -609,8 +445,7 @@ return {
         return (idx>-1)?cURL.substr(idx+1):'';
     },
 
-    setRoute: function(router, title, entity, view, opts, trigger){
-        // set route
+    setRoute: function(router, entity, view, opts, trigger){
         if(!_.isUndefined(router)){
             var route = entity + '/' + view;
             if(opts){
@@ -620,11 +455,72 @@ return {
                 router.navigate('#' + route, {trigger: trigger});
             }
         }
-        // set page title in head
-        if(_.isUndefined(this._$headTitle)){
-            this._$headTitle = $('#headTitle');
+    },
+
+    // -- list of operator and function for filters
+    fieldConditions: {
+        // filter functions take parameters fv=fieldValue, cv=condition value, cv2
+        // -- equals
+        'eq': function(fv, cv){
+            return cv==fv;
+        },
+        // -- not equal
+        'ne': function(fv, cv){
+            return cv!=fv;
+        },
+        // -- > or after
+        'gt': function(fv, cv){
+            return fv>cv;
+        },
+        // -- < or before
+        'lt': function(fv, cv){
+            return fv<cv;
+        },
+        // -- between
+        'bw': function(fv, cv, cv2){
+            return !(cv>fv || fv>cv2);
+        },
+        // -- start w/
+        'sw': function(fv, cv){
+            return fv.toLocaleLowerCase().indexOf(cv)===0;
+        },
+        // -- contains
+        'ct': function(fv, cv){
+            if(fv){
+                return fv.toLocaleLowerCase().indexOf(cv)>-1;
+            }
+            return false;
+        },
+        // -- finish w/
+        'fw': function(fv, cv){
+            var l1=fv.length,
+                l2=cv.length;
+            if (l1<l2){
+                return false;
+            }else{
+                return fv.toLocaleLowerCase().substring(l1-l2)===cv;
+            }
+        },
+        // -- empty
+        'null': function(fv, cv){
+            return  fv=='' || _.isUndefined(fv);
+        },
+        // -- not null
+        'nn': function(fv, cv){
+            return !(_.isUndefined(fv) || fv=='');
+        },
+        // -- in []
+        'in': function(fv, cv){
+            return  _.contains(cv.split(','),fv);
+        },
+        // -- true
+        '1': function(fv, cv){
+            return fv;
+        },
+        // -- false
+        '0': function(fv, cv){
+            return !fv;
         }
-        this._$headTitle.html(title);
     }
 
 };

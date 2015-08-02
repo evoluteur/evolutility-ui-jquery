@@ -9,7 +9,7 @@
  *
  *************************************************************************** */
 
-Evol.ViewMany.Cards = Evol.ViewMany.extend({
+Evol.ViewMany.Cards = Evol.View_Many.extend({
 
     viewName: 'cards',
 
@@ -37,7 +37,7 @@ Evol.ViewMany.Cards = Evol.ViewMany.extend({
     HTMLItem: function(h, fields, model, icon, selectable, route, isTooltip){
         var that = this,
             v,
-            fts = Evol.Dico.fieldTypes,
+            fts = Evol.Def.fieldTypes,
             link = (this.links!==false);
 
         if(isTooltip){

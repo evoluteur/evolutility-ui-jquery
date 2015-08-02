@@ -144,7 +144,7 @@ Bubbles.prototype.getCenters = function (fId, size, data) {
           c.label=na;
         }
       });
-    }else if(Evol.Dico.isNumberType(f.type)){
+    }else if(Evol.Def.fieldIsNumber(f)){
       centers = centers.sort(Evol.Dico.sortingNumber('name'));
       var c=_.findWhere(centers, {'name': null});
       if(c){
