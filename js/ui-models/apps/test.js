@@ -46,6 +46,7 @@ function fieldTypePanel(id, label, labelPanel, label2Panel, css){
         fields=[
             {
                 id: id+'1',
+                attribute: id+'1',
                 type: id,
                 label: label+' 1',
                 required: true,
@@ -73,7 +74,7 @@ function fieldTypePanel(id, label, labelPanel, label2Panel, css){
         ];
 
     if(id==='list' || id==='lov'){
-        fields= _.each(fields, function(f){
+        fields= fields.forEach(function(f){
             f.list=testLOV;
         });
     }else if(id==='hidden'){
@@ -327,3 +328,6 @@ uiModels.test = {
     ]
 };
 
+if(typeof module === "object" && typeof module.exports === "object"){
+    module.exports = uiModels.test;
+}

@@ -170,3 +170,7 @@ uiModels.contact_data = [{
     country: 'US',
     category: '4'
 }];
+
+if(typeof module === "object" && typeof module.exports === "object"){
+    module.exports = uiModels.contact_data;
+}

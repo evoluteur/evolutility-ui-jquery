@@ -24,3 +24,7 @@ uiModels.todo_data = [
     {id: '22', title: 'Checkout cool restaurant', priority: '3', category: 'home', complete: false},
     {id: '23', title: 'Kill the vampires', priority: '3', category: 'others'}
 ];
+
+if(typeof module === "object" && typeof module.exports === "object"){
+    module.exports = uiModels.todo_data;
+}

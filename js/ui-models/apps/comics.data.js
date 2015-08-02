@@ -312,3 +312,6 @@ uiModels.comics_data = [{
   "pix": "comics/ghost-in-the-shell.jpeg"
 }];
 
+if(typeof module === "object" && typeof module.exports === "object"){
+    module.exports = uiModels.comics_data;
+}
