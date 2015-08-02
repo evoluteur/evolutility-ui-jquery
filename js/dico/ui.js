@@ -386,5 +386,10 @@ Evol.UI = {
             $e.removeClass(css);
         }
         return doAdd;
+    },
+
+    scroll2Top: function(){
+        window.scrollTo(0, 0);
     }
+
 };

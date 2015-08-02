@@ -559,6 +559,7 @@ return Backbone.View.extend({
                     that.setView(that.defaultViewOne);
                 }
                 that.curView.setModel(m);
+                eUI.scroll2Top();
             },
             fnError = function(){
                 alert('Error: Invalid model ID.');
