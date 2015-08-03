@@ -1,6 +1,636 @@
 /*!
- *  evolutility
- *
- *  https://github.com/evoluteur/evolutility
- *  (c) 2015, Olivier Giulieri
-*/.evo-toolbar{border:1px solid #bce8f1;border-radius:4px;-moz-border-radius:4px;-webkit-border-radius:4px;margin-bottom:10px;padding:3px;background-color:#fbfbfb}.evo-toolbar>[data-cid="views"]{color:black}.evo-toolbar>ul>.evo-sel .glyphicon:before{color:black}.evo-toolbar>ul>li.divider-h{height:41px;width:1px;background-color:#bce8f1}.evo-toolbar .evo-dropdown-icons{min-width:50px}.evo-filter-on{background-color:#e0f2f1}.evo-view-on{color:#428bca}.evo-tb-status{color:#0f0f0f !important;min-height:35px;line-height:35px;margin-top:2px;margin-right:5px}.evo-search{width:200px;padding:3px 4px 2px 2px}.evo-search>.btn{position:relative;top:0}.evol-pnl .table .evol-money{width:200px}.evol-pnl>div>fieldset{padding:10px 10px 5px 2px}.evol-pnl>.panel{margin-bottom:12px}.evol-fld{padding-left:10px !important;margin-bottom:6px}.evol-pnl,.evol-pnl-lst{padding-left:10px !important}.panel-heading>.panel-title{display:inline-block}.panel-heading>.evol-subtitle{display:inline-block;margin-left:.4em}.evo-panel-help{margin-top:5px}.evol-tabs{margin:0 10px 10px !important}.evol-required,.evol-asterix{margin-left:3px;font-weight:bold}.evol-required{color:#b94a48}.evol-asterix{color:#09c}.evo-rdonly{min-height:32px;padding-top:5px}.evol-buttons{clear:both;margin-top:0 !important}.evol-buttons>button{margin:1em}.evol-ellipsis{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.evol-title-toggle{cursor:pointer;float:right}.evol-json{width:100%;margin:0 0 10px}.evo-p-json{margin-bottom:10px}.evo-p-json fieldset{padding:10px !important}.glyphicon-wrench{margin-left:5px;display:inline !important}.table>thead>tr>th{font-weight:500;background-color:#fbfbfb}label{font-weight:500;margin-bottom:2px}.help-block{padding:2px 5px;background-color:#fff8e1;border:1px solid #ffecb3;border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px}.evol-mini-holder .help-block,.evolw-edit .help-block{color:#737373 !important;clear:both}.evol-fld>.text-danger{margin-bottom:0 !important}.evol-field-label>label{color:#0d0d0d}.evol-field-label>label>.glyphicon-question-sign{cursor:pointer;padding-left:4px;color:silver}.evol-field-label>label>.glyphicon-question-sign:hover{color:#428bca}.w-100{width:100%}.evo-one-edit,.evo-one-browse,.evo-one-wiz{margin-left:-10px}.evol-pl-nodata{text-align:center}.evol-pl-nodata [data-id="bPlus"]{margin-left:10px;cursor:pointer}.evo-td-plusminus{width:70px}.evo-td-plusminus>div{float:left;margin-top:10px;margin-left:10px;cursor:pointer;color:#31708f}.evo-td-plusminus>div:hover{color:#428bca}.evo-td-plusminus>div:last-child:after{clear:left}.evo-msg.alert-warning{padding:10px 10px 3px}.evo-msg.alert-warning>.close{top:0 !important;right:0 !important}.evo-msg ul{margin-top:10px}#isDirty [data-id="nosave"]{float:left}.evo-color-box{display:inline-block;height:20px;width:20px;border:solid 1px silver}.evo-color-box span{margin-left:24px}.evol-mini-label{float:left;width:25%;padding-right:10px}.evol-mini-label>div{text-align:right}@media only screen and (max-width:500px){.evol-mini-label>div{text-align:left}}.evol-mini-label>div>label{margin-top:5px}.evol-mini-content{float:left;width:75%}.evol-mini-content>[type="checkbox"]{margin-top:10px}.evol-mini-content>.help-block{min-width:50px;clear:left}.evol-mini-content .img-thumbnail{max-height:150px}.evol-p-mini{width:100%;padding-left:0 !important}@media only screen and (max-width:500px){.evol-mini-label,.evol-mini-content{float:none;width:100%}.evol-mini-content>fieldset{width:100%}}.evol-many-icon{margin-right:6px !important}.evol-many-list>.table img{max-height:60px;padding:0}.evol-many-list>.table th{font-weight:500 !important;background-color:#fbfbfb}.evol-many-list>.table th .glyphicon{display:none;position:absolute;opacity:.8;margin-left:6px;background-color:white;cursor:pointer;width:22px;height:22px}.evol-many-list>.table th:hover .glyphicon{display:inline !important;cursor:pointer}.evol-many-list>.table .evol-ellipsis{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px}.evol-many-list .glyphicon.evol-last-sort{display:none;position:absolute}.evol-r-align{text-align:right}.badge-list{position:relative;top:-2px;margin-left:5px}.evol-sort-icons{position:relative;top:3px;padding:3px;width:300px}.evol-sort-icons>.glyphicon{color:#31708f;position:absolute;top:2px}.evol-sort-icons>.glyphicon:hover{color:#428bca}.evol-sort-icons>.glyphicon-chevron-up{left:7px}.evol-sort-icons>.glyphicon-chevron-down{left:24px}.panel-heading>.evol-title-toggle{display:none}.panel-heading:hover>.evol-title-toggle{display:inline}.list-td-sel{width:30px}/*! normalize.css v3.0.2 | MIT License | git.io/normalize */html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}table{border-collapse:collapse;border-spacing:0}.evol-cards-body>div.panel{float:left;width:240px;min-width:140px;height:182px;margin:5px;padding:2px 10px 10px;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;overflow:auto}.evol-cards-body>div.panel>div>label{vertical-align:top}.evol-bubble-tooltip>.panel{padding:0 10px}.evol-bubbles-body{overflow:hidden;width:100%;height:800px}.evol-bubbles-body svg{margin-top:10px}.bubbles-opts{width:100%;padding:8px;border-bottom-style:solid;border-bottom-width:1px;background-color:#fbfbfb}.bubbles-opts>select{display:inline-block;width:auto}.bubbles-opts>label{margin:2px 10px}.bubbles-opts>label:first-child{margin-left:0}.popover-content{padding:4px 10px 10px 10px}.a{min-height:50px;padding:0 1px 1px 6px}circle{stroke:white;stroke-width:2px;opacity:.7}circle:hover{stroke:grey}text.label{font-size:100%;text-shadow:0 0 3px #fff}.evol-chart-holder{float:left;text-align:center;background-color:#fff;margin:10px 10px 10px 5px;width:400px;min-height:286px}.evol-chart-title{text-align:center;padding:10px 20px 30px}.evo-chart-config{margin:5px;cursor:pointer;color:silver}.evo-chart-config:hover{color:#428bca}.evol-xpt{margin-bottom:10px}.evol-xpt-form{border-collapse:collapse;border:0;width:100%}.evol-xpt-form>div{padding:15px;vertical-align:top}.evol-xpt-form .evol-buttons{clear:left}.evol-xpt-flds{float:left;border-right:0 !important;width:38%}.evol-xpt-flds>fieldset{margin-left:20px}.evol-xpt-flds input[type="checkbox"]{clear:left;float:left;margin-right:.5em}.evol-xpt-para{float:left;width:62%;border-left:0 !important}.evol-xpt-format{max-width:270px;margin-bottom:6px}.evol-xpt-val{display:block;padding:5px;min-height:150px;height:200px;margin-top:6px}.evol-w120{max-width:120px}.evol-xpt-opts{padding:10px}.evol-xpt-opts input[type="checkbox"]{margin-right:.5em}.evol-xpt-preview textarea{min-height:200px}.evol-xpt-more{display:block;margin-top:10px}.evol-xpt-more-fields{clear:both;display:none}.evo-bNew,.evo-bAdd,.evo-bDel,.evo-bSubmit{margin:1px 6px 6px 1px}.evo-lBold{font-weight:bold}.evo-lLight{font-weight:normal}.evo-zfilters{padding-bottom:6px}.evo-zfilters>a{margin:1px 2px 2px 1px;padding:3px 2px;clear:left}.evo-zfilters>a>span.ui-button-text{padding:4px 33px 4px 12px}.evo-zfilters>a>button{float:none !important;margin:2px 2px 0 4px}.evo-zfilters .glyphicon-remove{margin:0 6px}.evo-filters.panel{min-height:50px;padding:0 1px 1px 6px}.evo-filters.panel>a{margin:1px 6px 6px 1px;padding-right:6px}.evo-filters>.close{margin-right:4px}.evo-editFilter{vertical-align:middle}.evo-editFilter:last-child{clear:left}.evo-editFilter:after,.evo-editFilter>button,.evo-editFilter>a{clear:left}.evo-editFilter .as-Txt{line-height:30px}.evo-editFilter>#value{margin-right:5px;line-height:30px}.evo-editFilter>#value>label{margin-left:6px;margin-right:6px}.evo-editFilter>#value>label>input[type="checkbox"],.evo-editFilter>#value>label>input[type="radio"]{margin-right:10px}.evo-editFilter>select,.evo-editFilter>input,.evo-editFilter>span{float:left;margin:1px 6px 6px 1px;font-size:1.1em;width:auto}.evo-editFilter input[type="number"]#value,.evo-editFilter input[type="time"]#value,.evo-editFilter input[type="time"]#value2{width:6em}.evo-editFilter input.hasDatepicker{width:7em}
+   evolutility 1.0.2 
+   (c) 2015 Olivier Giulieri 
+   http://evoluteur.github.io/evolutility/  
+*/
+.evo-toolbar {
+  border: 1px solid #bce8f1;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 3px;
+  background-color: #fbfbfb;
+  /*
+  [data-id="prev"].nav-disabled,
+  [data-id="next"].nav-disabled{
+    a {
+      color: @color-disabled;
+      &:hover{
+        background-color: transparent;
+        cursor:default;
+      }
+    }
+  }
+*/
+}
+.evo-toolbar > [data-cid="views"] {
+  color: black;
+}
+.evo-toolbar > ul > .evo-sel .glyphicon:before {
+  color: black;
+}
+.evo-toolbar > ul > li.divider-h {
+  height: 41px;
+  width: 1px;
+  background-color: #bce8f1;
+}
+.evo-toolbar .evo-dropdown-icons {
+  min-width: 50px;
+}
+.evo-filter-on {
+  background-color: #e0f2f1;
+}
+.evo-view-on {
+  color: #428bca;
+}
+.evo-tb-status {
+  color: #0f0f0f !important;
+  min-height: 35px;
+  line-height: 35px;
+  margin-top: 2px;
+  margin-right: 5px;
+}
+.evo-search {
+  width: 200px;
+  padding: 3px 4px 2px 2px;
+}
+.evo-search > .btn {
+  position: relative;
+  top: 0;
+}
+/* --- panels & tabs --- */
+.evol-pnls {
+  display: flex;
+  flex-wrap: wrap;
+}
+.evol-pnl {
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+.evol-pnl .table .evol-money {
+  width: 200px;
+}
+.evol-pnl .evol-pnl > .panel {
+  margin-bottom: 12px;
+}
+.evol-pnl .evol-pnl > div > fieldset {
+  padding: 10px 10px 5px 2px;
+}
+.evol-pnl,
+.evol-pnl-lst {
+  padding-left: 10px !important;
+}
+.panel-heading > .panel-title {
+  display: inline-block;
+}
+.panel-heading > .evol-subtitle {
+  display: inline-block;
+  margin-left: .4em;
+}
+.evo-panel-help {
+  margin-top: 5px;
+}
+.evol-tabs {
+  margin: 0 10px 10px !important;
+}
+/* --- fields --- */
+.evol-fset {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px 10px 5px 0;
+}
+.evol-fld {
+  box-sizing: border-box;
+  flex-grow: 1;
+  padding-left: 10px !important;
+  margin-bottom: 6px;
+}
+.evol-required,
+.evol-asterix {
+  margin-left: 3px;
+  font-weight: bold;
+}
+.evol-required {
+  color: #b94a48;
+}
+.evol-asterix {
+  color: #0099cc;
+}
+.evo-rdonly {
+  min-height: 32px;
+  padding-top: 5px;
+}
+.evol-buttons {
+  clear: both;
+  margin-top: 0 !important;
+}
+.evol-buttons > button {
+  margin: 1em;
+}
+.evol-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.evol-title-toggle {
+  cursor: pointer;
+  float: right;
+}
+.evol-json {
+  width: 100%;
+  margin: 0 0 10px;
+}
+.evo-p-json {
+  margin-bottom: 10px;
+}
+.evo-p-json fieldset {
+  padding: 10px !important;
+}
+.glyphicon-wrench {
+  margin-left: 5px;
+  display: inline !important;
+}
+/* bootstrap customizations*/
+.table > thead > tr > th {
+  font-weight: 500;
+  background-color: #fbfbfb;
+}
+label {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.help-block {
+  padding: 2px 5px;
+  background-color: #FFF8E1;
+  border: 1px solid #FFECB3;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+.evol-mini-holder .help-block,
+.evolw-edit .help-block {
+  color: #737373 !important;
+  clear: both;
+}
+.evol-fld > .text-danger {
+  margin-bottom: 0 !important;
+}
+.evol-field-label > label {
+  color: #0d0d0d;
+}
+.evol-field-label > label > .glyphicon-question-sign {
+  cursor: pointer;
+  padding-left: 4px;
+  color: silver;
+}
+.evol-field-label > label > .glyphicon-question-sign:hover {
+  color: #428bca;
+}
+.w-100 {
+  width: 100%;
+}
+.evo-one-edit,
+.evo-one-browse,
+.evo-one-wiz {
+  margin-left: -10px;
+}
+.evol-pl-nodata {
+  text-align: center;
+}
+.evol-pl-nodata [data-id="bPlus"] {
+  margin-left: 10px;
+  cursor: pointer;
+}
+.evo-td-plusminus {
+  width: 70px;
+}
+.evo-td-plusminus > div {
+  float: left;
+  margin-top: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  color: #31708f;
+}
+.evo-td-plusminus > div:hover {
+  color: #428bca;
+}
+.evo-td-plusminus > div:last-child:after {
+  clear: left;
+}
+.evo-msg.alert-warning {
+  padding: 10px 10px 3px;
+}
+.evo-msg.alert-warning > .close {
+  top: 0 !important;
+  right: 0 !important;
+}
+.evo-msg ul {
+  margin-top: 10px;
+}
+#isDirty [data-id="nosave"] {
+  float: left;
+}
+.evo-color-box {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border: solid 1px silver;
+}
+.evo-color-box span {
+  margin-left: 24px;
+}
+/* --- mini --- */
+.evol-mini-label {
+  float: left;
+  width: 25%;
+  padding-right: 10px;
+}
+.evol-mini-label > div {
+  text-align: right;
+}
+@media only screen and (max-width: 500px) {
+  .evol-mini-label > div {
+    text-align: left;
+  }
+}
+.evol-mini-label > div > label {
+  margin-top: 5px;
+}
+.evol-mini-content {
+  float: left;
+  width: 75%;
+}
+.evol-mini-content > [type="checkbox"] {
+  margin-top: 10px;
+}
+.evol-mini-content > .help-block {
+  min-width: 50px;
+  clear: left;
+}
+.evol-mini-content .img-thumbnail {
+  max-height: 150px;
+}
+.evol-p-mini {
+  width: 100%;
+  padding-left: 0 !important;
+  margin-bottom: 10px;
+}
+.evol-p-mini fieldset {
+  padding: 10px 10px 5px 0;
+}
+@media only screen and (max-width: 500px) {
+  .evol-mini-label,
+  .evol-mini-content {
+    float: none;
+    width: 100%;
+  }
+  .evol-mini-content > fieldset {
+    width: 100%;
+  }
+}
+/* --- list --- */
+.evol-many-icon {
+  margin-right: 6px !important;
+}
+.evol-many-list > .table img {
+  max-height: 60px;
+  padding: 0;
+}
+.evol-many-list > .table th {
+  font-weight: 500 !important;
+  background-color: #fbfbfb;
+}
+.evol-many-list > .table th .glyphicon {
+  display: none;
+  position: absolute;
+  opacity: .8;
+  margin-left: 6px;
+  background-color: white;
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+}
+.evol-many-list > .table th:hover .glyphicon {
+  display: inline !important;
+  cursor: pointer;
+}
+.evol-many-list > .table .evol-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
+}
+.evol-many-list .glyphicon.evol-last-sort {
+  display: none;
+  position: absolute;
+}
+.evol-r-align {
+  text-align: right;
+}
+.badge-list {
+  position: relative;
+  top: -2px;
+  margin-left: 5px;
+}
+/* --- list > sort icons --- */
+.evol-sort-icons {
+  position: relative;
+  top: 3px;
+  padding: 3px;
+  width: 300px;
+}
+.evol-sort-icons > .glyphicon {
+  color: #31708f;
+  position: absolute;
+  top: 2px;
+}
+.evol-sort-icons > .glyphicon:hover {
+  color: #428bca;
+}
+.evol-sort-icons > .glyphicon-chevron-up {
+  left: 7px;
+}
+.evol-sort-icons > .glyphicon-chevron-down {
+  left: 24px;
+}
+.panel-heading > .evol-title-toggle {
+  display: none;
+}
+.panel-heading:hover > .evol-title-toggle {
+  display: inline;
+}
+.list-td-sel {
+  width: 30px;
+}
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/* --- cards --- */
+.evol-cards-body > div.panel {
+  float: left;
+  width: 240px;
+  min-width: 140px;
+  height: 182px;
+  margin: 5px;
+  padding: 2px 10px 10px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  overflow: auto;
+}
+.evol-cards-body > div.panel > div > label {
+  vertical-align: top;
+}
+.evol-bubble-tooltip > .panel {
+  padding: 0 10px;
+}
+.evol-bubbles-body {
+  overflow: hidden;
+  width: 100%;
+  height: 800px;
+}
+.evol-bubbles-body svg {
+  margin-top: 10px;
+}
+.bubbles-opts {
+  width: 100%;
+  padding: 8px;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  background-color: #fbfbfb;
+}
+.bubbles-opts > select {
+  display: inline-block;
+  width: auto;
+}
+.bubbles-opts > label {
+  margin: 2px 10px;
+}
+.bubbles-opts > label:first-child {
+  margin-left: 0;
+}
+.popover-content {
+  padding: 4px 10px 10px 10px;
+}
+.a {
+  min-height: 50px;
+  padding: 0 1px 1px 6px;
+}
+circle {
+  stroke: white;
+  stroke-width: 2px;
+  opacity: .7;
+}
+circle:hover {
+  stroke: grey;
+  cursor: pointer;
+}
+text.label {
+  font-size: 100%;
+  text-shadow: 0px 0px 3px #ffffff;
+}
+/* --- charts --- */
+.evol-chart-holder {
+  float: left;
+  text-align: center;
+  background-color: #FFFFFF;
+  margin: 10px 10px 10px 5px;
+  width: 400px;
+  min-height: 286px;
+}
+.evol-chart-title {
+  text-align: center;
+  padding: 10px 20px 30px;
+}
+.evo-chart-config {
+  margin: 5px;
+  cursor: pointer;
+  color: silver;
+}
+.evo-chart-config:hover {
+  color: #428bca;
+}
+.evol-xpt {
+  margin-bottom: 10px;
+}
+.evol-xpt-form {
+  display: flex;
+  flex-wrap: wrap;
+  border-collapse: collapse;
+  border: 0;
+  width: 100%;
+}
+.evol-xpt-form > div {
+  box-sizing: border-box;
+  flex-grow: 1;
+  padding: 15px;
+  vertical-align: top;
+}
+.evol-xpt-flds {
+  border-right: 0 !important;
+  width: 38%;
+  min-width: 200px;
+  max-width: 245px;
+}
+@media only screen and (max-width: 500px) {
+  .evol-xpt-flds {
+    max-width: none;
+  }
+}
+.evol-xpt-flds > fieldset {
+  margin-left: 20px;
+}
+.evol-xpt-flds input[type="checkbox"] {
+  clear: left;
+  float: left;
+  margin-right: .5em;
+}
+.evol-xpt-para {
+  width: 62%;
+  min-width: 300px;
+  border-left: 0 !important;
+}
+.evol-xpt-format {
+  max-width: 270px;
+  margin-bottom: 6px;
+}
+.evol-xpt-val {
+  display: block;
+  padding: 5px;
+  min-height: 150px;
+  height: 200px;
+  margin-top: 6px;
+}
+.evol-xpt-opts {
+  margin: 0 15px 0 20px;
+  padding: 10px;
+}
+.evol-xpt-opts .evol-FLH {
+  margin-bottom: 10px;
+}
+.evol-xpt-opts input[type="checkbox"] {
+  margin-right: .5em;
+}
+.evol-xpt-preview textarea {
+  min-height: 200px;
+}
+.evol-xpt-more {
+  display: block;
+  margin-top: 10px;
+}
+.evol-xpt-more-fields {
+  clear: both;
+  display: none;
+}
+.evo-inline-holder {
+  margin-top: 10px;
+}
+.evo-inline-holder > div {
+  display: inline-block;
+  margin: 0 10px 0 0;
+}
+.evol-w120 {
+  max-width: 120px;
+}
+.evo-bNew,
+.evo-bAdd,
+.evo-bDel,
+.evo-bSubmit {
+  margin: 1px 6px 6px 1px;
+}
+.evo-lBold {
+  font-weight: bold;
+}
+.evo-lLight {
+  font-weight: normal;
+}
+.evo-zfilters {
+  padding-bottom: 6px;
+}
+.evo-zfilters > a {
+  margin: 1px 2px 2px 1px;
+  padding: 3px 2px;
+  clear: left;
+  /*
+    &:hover,
+    &:active{
+      //background-color: @color-condition;
+      //color: #fff;
+      text-decoration: none;
+    }
+*/
+}
+.evo-zfilters > a > span.ui-button-text {
+  padding: 4px 33px 4px 12px;
+}
+.evo-zfilters > a > button {
+  float: none !important;
+  margin: 2px 2px 0 4px;
+}
+.evo-zfilters .glyphicon-remove {
+  margin: 0 6px;
+}
+.evo-filters.panel {
+  min-height: 50px;
+  padding: 0 1px 1px 6px;
+}
+.evo-filters.panel > a {
+  margin: 1px 6px 6px 1px;
+  padding-right: 6px;
+}
+.evo-filters > .close {
+  margin-right: 4px;
+}
+.evo-editFilter {
+  vertical-align: middle;
+}
+.evo-editFilter:last-child {
+  clear: left;
+}
+.evo-editFilter:after,
+.evo-editFilter > button,
+.evo-editFilter > a {
+  clear: left;
+}
+.evo-editFilter .as-Txt {
+  line-height: 30px;
+}
+.evo-editFilter > #value {
+  margin-right: 5px;
+  line-height: 30px;
+}
+.evo-editFilter > #value > label {
+  margin-left: 6px;
+  margin-right: 6px;
+}
+.evo-editFilter > #value > label > input[type="checkbox"],
+.evo-editFilter > #value > label > input[type="radio"] {
+  margin-right: 10px;
+}
+.evo-editFilter > select,
+.evo-editFilter > input,
+.evo-editFilter > span {
+  float: left;
+  margin: 1px 6px 6px 1px;
+  font-size: 1.1em;
+  width: auto;
+}
+.evo-editFilter input[type="number"]#value,
+.evo-editFilter input[type="time"]#value,
+.evo-editFilter input[type="time"]#value2 {
+  width: 6em;
+}
+.evo-editFilter input.hasDatepicker {
+  width: 7em;
+}

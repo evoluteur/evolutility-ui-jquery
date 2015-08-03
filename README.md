@@ -22,6 +22,8 @@ bower install evolutility
 bower install evolutility#master
 ```
 
+By default, Evolutility uses LocalStorage but it can be configured for REST (using [Evolutility-server](https://github.com/evoluteur/evolutility-server) or your own REST API). 
+
 ## Views
 
 Evolutility's views have a Backbone model (to define the data) and also a UI-model (to define the UI for this model).

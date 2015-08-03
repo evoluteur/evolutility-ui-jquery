@@ -1,8 +1,7 @@
 /*!
- *  evolutility
- *
- *  https://github.com/evoluteur/evolutility
- *  (c) 2015, Olivier Giulieri
+   evolutility 1.0.2 
+   (c) 2015 Olivier Giulieri 
+   http://evoluteur.github.io/evolutility/  
 */
 .evo-toolbar {
   border: 1px solid #bce8f1;
@@ -61,18 +60,22 @@
   top: 0;
 }
 /* --- panels & tabs --- */
+.evol-pnls {
+  display: flex;
+  flex-wrap: wrap;
+}
+.evol-pnl {
+  box-sizing: border-box;
+  flex-grow: 1;
+}
 .evol-pnl .table .evol-money {
   width: 200px;
 }
-.evol-pnl > div > fieldset {
-  padding: 10px 10px 5px 2px;
-}
-.evol-pnl > .panel {
+.evol-pnl .evol-pnl > .panel {
   margin-bottom: 12px;
 }
-.evol-fld {
-  padding-left: 10px !important;
-  margin-bottom: 6px;
+.evol-pnl .evol-pnl > div > fieldset {
+  padding: 10px 10px 5px 2px;
 }
 .evol-pnl,
 .evol-pnl-lst {
@@ -92,6 +95,17 @@
   margin: 0 10px 10px !important;
 }
 /* --- fields --- */
+.evol-fset {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px 10px 5px 0;
+}
+.evol-fld {
+  box-sizing: border-box;
+  flex-grow: 1;
+  padding-left: 10px !important;
+  margin-bottom: 6px;
+}
 .evol-required,
 .evol-asterix {
   margin-left: 3px;
@@ -260,6 +274,10 @@ label {
 .evol-p-mini {
   width: 100%;
   padding-left: 0 !important;
+  margin-bottom: 10px;
+}
+.evol-p-mini fieldset {
+  padding: 10px 10px 5px 0;
 }
 @media only screen and (max-width: 500px) {
   .evol-mini-label,
@@ -416,6 +434,7 @@ circle {
 }
 circle:hover {
   stroke: grey;
+  cursor: pointer;
 }
 text.label {
   font-size: 100%;
@@ -446,21 +465,28 @@ text.label {
   margin-bottom: 10px;
 }
 .evol-xpt-form {
+  display: flex;
+  flex-wrap: wrap;
   border-collapse: collapse;
   border: 0;
   width: 100%;
 }
 .evol-xpt-form > div {
+  box-sizing: border-box;
+  flex-grow: 1;
   padding: 15px;
   vertical-align: top;
 }
-.evol-xpt-form .evol-buttons {
-  clear: left;
-}
 .evol-xpt-flds {
-  float: left;
   border-right: 0 !important;
   width: 38%;
+  min-width: 200px;
+  max-width: 245px;
+}
+@media only screen and (max-width: 500px) {
+  .evol-xpt-flds {
+    max-width: none;
+  }
 }
 .evol-xpt-flds > fieldset {
   margin-left: 20px;
@@ -471,8 +497,8 @@ text.label {
   margin-right: .5em;
 }
 .evol-xpt-para {
-  float: left;
   width: 62%;
+  min-width: 300px;
   border-left: 0 !important;
 }
 .evol-xpt-format {
@@ -486,11 +512,12 @@ text.label {
   height: 200px;
   margin-top: 6px;
 }
-.evol-w120 {
-  max-width: 120px;
-}
 .evol-xpt-opts {
+  margin: 0 15px 0 20px;
   padding: 10px;
+}
+.evol-xpt-opts .evol-FLH {
+  margin-bottom: 10px;
 }
 .evol-xpt-opts input[type="checkbox"] {
   margin-right: .5em;
@@ -505,6 +532,16 @@ text.label {
 .evol-xpt-more-fields {
   clear: both;
   display: none;
+}
+.evo-inline-holder {
+  margin-top: 10px;
+}
+.evo-inline-holder > div {
+  display: inline-block;
+  margin: 0 10px 0 0;
+}
+.evol-w120 {
+  max-width: 120px;
 }
 .evo-bNew,
 .evo-bAdd,
