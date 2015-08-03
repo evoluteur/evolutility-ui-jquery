@@ -57,7 +57,7 @@ uiModels.comics_data = [{
   "have": "1-6",
   "haveNb": 6,
   "serieNb": 6,
-  "lang": "FR",
+  "language": "FR",
   "authors": "Alain Ayroles et Bruno Maïorana",
   "complete": true,
   "finished": true,

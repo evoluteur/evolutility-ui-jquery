@@ -79,7 +79,7 @@ uiModels.contact_data = [{
     company: 'Au Bon Pain',
     email: 'pdupond@aubonpain.fr',
     phone: '45 456 414 45',
-    url: 'http://aubonpain.fr',
+    web: 'http://aubonpain.fr',
     city: 'Paris',
     state: '',
     country: 'FR',
@@ -92,7 +92,7 @@ uiModels.contact_data = [{
     city: 'San Mateo',
     state: '',
     email: 'olivier@evolutility.org',
-    url: 'http://www.evol-utility.org'
+    web: 'http://www.evol-utility.org'
 }, {
     id: '8',
     lastname: 'Martin',
@@ -119,7 +119,7 @@ uiModels.contact_data = [{
     phonehome: '322 784 3453',
     phonecell: '322 538 2568',
     fax: '322 234 5345',
-    url: 'http://roman.munar.com',
+    web: 'http://roman.munar.com',
     address1: 'Washington',
     address2: 'Buendia',
     city: 'Makati',
