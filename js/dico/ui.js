@@ -329,7 +329,7 @@ Evol.UI = {
     },
 
     // --- panels ---
-    HTMLPanelBegin: function (p, css, noToggle) {
+    panelBegin: function (p, css, noToggle) {
         return '<div data-pid="'+p.id+'" class="panel '+(p.css?p.css:css)+'">'+
             '<div class="panel-heading '+(p.cssLabel? p.cssLabel:'')+'">'+
             (!noToggle?Evol.UI.icon('chevron-up', 'evol-title-toggle'):'')+
@@ -339,11 +339,11 @@ Evol.UI = {
             '</div>';
     },
 
-    HTMLPanelEnd: function () {
+    panelEnd: function () {
         return '</div>';
     },
 
-    HTMLEmptyPanel: function(id, css, style){
+    panelEmpty: function(id, css, style){
         return '<div class="'+css+' panel panel-'+style+'" data-id="'+id+'"></div>';
     },
 

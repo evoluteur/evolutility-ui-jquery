@@ -170,7 +170,7 @@ return Backbone.View.extend({
                     cells=$(row).children();
                     // -- for each field
                     _.each(sc.elements,function(f, idx){
-                        v[f.id]=eDico.getFieldTypedValue(f, cells.eq(idx).find('input,select,textarea').eq(0));
+                        v[f.id]=eDico.getFieldVal(f, cells.eq(idx).find('input,select,textarea').eq(0));
                     });
                     vs2.push(v);
                 });
@@ -214,7 +214,7 @@ return Backbone.View.extend({
                         case fts.bool:
                         case fts.url:
                         case fts.email:
-                            $f.html(eDico.fieldHTML_ReadOny(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
+                            $f.html(eDico.fieldHTML_RO(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                             break;
                         case fts.formula:
                             $f.html(f.formula?f.formula(model):'');
@@ -223,7 +223,7 @@ return Backbone.View.extend({
                             $f.html(uiInput.colorBox(f.id, fv, fv));
                             break;
                         default:
-                            $f.text(eDico.fieldHTML_ReadOny(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
+                            $f.text(eDico.fieldHTML_RO(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                     }
                 }else{
                     switch(f.type) {
@@ -236,6 +236,12 @@ return Backbone.View.extend({
                             break;
                         case fts.bool:
                             $f.prop('checked', fv?'checked':false);
+                            break;
+                        case fts.date:
+                            if(fv){
+                                fv=fv.substring(0, 10);
+                            }
+                            $f.val(fv);
                             break;
                         case fts.pix:
                             newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+i18n.nopix+'</p>');
@@ -290,9 +296,9 @@ return Backbone.View.extend({
 
     getFieldValue: function (f){
         if(_.isString(f)){
-            return eDico.getFieldTypedValue(this._fieldHash[f], this.$field(f));
+            return eDico.getFieldVal(this._fieldHash[f], this.$field(f));
         }else{
-            return eDico.getFieldTypedValue(f, this.$field(f.id));
+            return eDico.getFieldVal(f, this.$field(f.id));
         }
     },
 
@@ -604,7 +610,7 @@ return Backbone.View.extend({
         }else{
             h.push('<div data-p-width="'+p.width+'" class="evol-pnl" style="width:'+p.width+'%">');
         }
-        h.push(eUI.HTMLPanelBegin(p, this.style||'panel-default'),
+        h.push(eUI.panelBegin(p, this.style||'panel-default'),
             '<fieldset data-pid="'+p.id+(p.readonly?'" disabled>':'"><div class="evol-fset">'));
         _.each(p.elements, function (elem) {
             if(elem.type=='panel-list'){
@@ -620,7 +626,7 @@ return Backbone.View.extend({
             }
         });
         h.push('</div></fieldset>'+
-            eUI.HTMLPanelEnd()+
+            eUI.panelEnd()+
             '</div>');
         return this;
     },
@@ -630,7 +636,7 @@ return Backbone.View.extend({
             vMode=isEditable?mode:'browse';
 
         h.push('<div style="width:'+p.width+'%" class="evol-pnl" data-pid="'+p.id+'">',
-            eUI.HTMLPanelBegin(p, this.style),
+            eUI.panelBegin(p, this.style),
             '<table class="table" data-mid="'+(p.attribute || p.id)+'"><thead><tr>');
         _.each(p.elements, function (elem) {
             h.push('<th>'+elem.label+((isEditable && elem.required)?eUI.html.required:'')+'</th>');
@@ -641,7 +647,7 @@ return Backbone.View.extend({
         h.push('</tr></thead><tbody>');
         this._renderPanelListBody(h, p, null, vMode);
         h.push('</tbody></table>',
-            eUI.HTMLPanelEnd(),
+            eUI.panelEnd(),
             '</div>');
         return this;
     },
@@ -666,12 +672,12 @@ return Backbone.View.extend({
                             if(row[f.id]){
                                 //form-control
                                 if(f.type===fts.bool || f.type===fts.lov){
-                                    h.push(eDico.fieldHTML_ReadOny(f, row[f.id], Evol.hashLov, iconsPath));
+                                    h.push(eDico.fieldHTML_RO(f, row[f.id], Evol.hashLov, iconsPath));
                                 }else{
-                                    h.push(_.escape(eDico.fieldHTML_ReadOny(f, row[f.id], Evol.hashLov, iconsPath)));
+                                    h.push(_.escape(eDico.fieldHTML_RO(f, row[f.id], Evol.hashLov, iconsPath)));
                                 }
                             }else{
-                                h.push(_.escape(eDico.fieldHTML_ReadOny(f, '', Evol.hashLov, iconsPath)));
+                                h.push(_.escape(eDico.fieldHTML_RO(f, '', Evol.hashLov, iconsPath)));
                             }
                             h.push('</td>');
                         });

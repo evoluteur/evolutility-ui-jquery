@@ -21,7 +21,7 @@ Evol.Dico = function(){
 
 return {
 
-    fieldOneEdit: {
+    fieldEdit: {
         field: function (f, fType, fid, fv) {
             return uiInput[fType](fid, fv, f, null);
         },
@@ -127,16 +127,16 @@ return {
                     h+='<div id="'+fid+'" class="form-control">'+uiInput.colorBox(fid, fv)+'</div>';
                     break;
                 default:
-                    h+=this.fieldHTML_ReadOny(fld, fv, {}, iconsPath);
+                    h+=this.fieldHTML_RO(fld, fv, {}, iconsPath);
             }
             h+='&nbsp;</div>';
         }else{
-            h+=Evol.Dico.fieldOneEdit[fld.type](fld, fid, fv, iconsPath);
+            h+=Evol.Dico.fieldEdit[fld.type](fld, fid, fv, iconsPath);
         }
         return h;
     },
 
-    fieldHTML_ReadOny: function(f, v, hashLov, iconsPath, wId){
+    fieldHTML_RO: function(f, v, hashLov, iconsPath, wId){
         switch(f.type){
             case fts.bool:
                 if (v==='true' || v=='1') {
@@ -205,7 +205,7 @@ return {
         return h;
     },
 
-    HTMLFieldLink: function (id, fld, value, icon, noLink, route) {
+    fieldLink: function (id, fld, value, icon, noLink, route) {
         var h='';
         if(!noLink){
             h+='<a href="'+(route?route:'javascript:void(0);');
@@ -238,7 +238,7 @@ return {
         return that;
     },
 
-    getFieldTypedValue:function(f, $f){
+    getFieldVal:function(f, $f){
         switch(f.type) {
             case fts.bool:
                 return $f.prop('checked');

@@ -22,24 +22,6 @@ var testLOV2 = [
     {id:'rose',text:'Rose', icon:'wine/winerose.gif'}
 ];
 
-var fieldsPanelList = [
-        {id: 'pl1f1',  type: 'text', label: 'Name', required:true, maxLength: 50},
-        {id: 'pl1f2',  type: 'text', label: 'Text', required:true, maxLength: 100},
-        {id: 'pl1f3',  type: 'lov', label: 'Sizes', required:true, list: testLOV}
-    ],
-    fieldsPanelList2 = [
-        {id: 'pl2f1',  type: 'text', label: 'Name', maxLength: 50},
-        {id: 'pl2f3',  type: 'date', label: 'Date', inMany: true},
-        {id: 'pl2f4',  type: 'boolean', label: 'Bool'},
-        {id: 'pl2f2',  type: 'text', label: 'Text', maxLength: 100}
-    ],
-    fieldsPanelList3 = [
-        {id: 'pl3f1',  type: 'text', label: 'Name', maxLength: 50},
-        {id: 'pl3f2',  type: 'integer', label: 'Integer'},
-        {id: 'pl3f3',  type: 'money', label: 'Money'},
-        {id: 'pl3f4',  type: 'lov', label: 'Sizes', list: testLOV}
-    ];
-
 function fieldTypePanel(id, label, labelPanel, label2Panel, css){
     var labelP = labelPanel || label || id,
         label2P = label2Panel,
@@ -67,6 +49,7 @@ function fieldTypePanel(id, label, labelPanel, label2Panel, css){
             },
             {
                 id: id+'3',
+                attribute: id,
                 type: id,
                 label: label+' 3',
                 width: 100
@@ -74,7 +57,7 @@ function fieldTypePanel(id, label, labelPanel, label2Panel, css){
         ];
 
     if(id==='list' || id==='lov'){
-        fields= fields.forEach(function(f){
+        fields = _.each(fields, function(f){
             f.list=testLOV;
         });
     }else if(id==='hidden'){
@@ -303,7 +286,11 @@ uiModels.test = {
                     attribute:'subCollec1',
                     label: 'Collection 1',
                     width: 100,
-                    elements: fieldsPanelList
+                    elements: [
+                        {id: 'pl1f1',  type: 'text', label: 'Name', required:true, maxLength: 50},
+                        {id: 'pl1f2',  type: 'text', label: 'Text', required:true, maxLength: 100},
+                        {id: 'pl1f3',  type: 'lov', label: 'Sizes', required:true, list: testLOV}
+                    ]
                 },
                 {
                     type: 'panel-list',
@@ -312,7 +299,12 @@ uiModels.test = {
                     attribute:'subCollec2',
                     label: 'Collection 2',
                     width: 100,
-                    elements: fieldsPanelList2
+                    elements: [
+                        {id: 'pl2f1',  type: 'text', label: 'Name', maxLength: 50},
+                        {id: 'pl2f3',  type: 'date', label: 'Date', inMany: true},
+                        {id: 'pl2f4',  type: 'boolean', label: 'Bool'},
+                        {id: 'pl2f2',  type: 'text', label: 'Text', maxLength: 100}
+                    ]
                 },
                 {
                     type: 'panel-list',
@@ -321,7 +313,12 @@ uiModels.test = {
                     attribute:'subCollec3',
                     label: 'Collection 3',
                     width: 100,
-                    elements: fieldsPanelList3
+                    elements: [
+                        {id: 'pl3f1', type: 'text', label: 'Name', maxLength: 50},
+                        {id: 'pl3f2', type: 'integer', label: 'Integer'},
+                        {id: 'pl3f3', type: 'money', label: 'Money'},
+                        {id: 'pl3f4', type: 'lov', label: 'Sizes', list: testLOV}
+                    ]
                 }
             ]
         }

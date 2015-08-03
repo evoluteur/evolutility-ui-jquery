@@ -411,7 +411,7 @@ return Backbone.View.extend({
                                     }else if(_.isNumber(fValue)){
                                         h+=fValue;
                                     }else{
-                                        h+=formatString(eDico.fieldHTML_ReadOny(f, fValue, Evol.hashLov, ''));
+                                        h+=formatString(eDico.fieldHTML_RO(f, fValue, Evol.hashLov, ''));
                                     }
                                     break;
                                 default:

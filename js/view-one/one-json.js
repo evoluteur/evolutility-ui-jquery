@@ -24,7 +24,7 @@ Evol.ViewOne.JSON = Evol.View_One.extend({
                 jsonStr=JSON.stringify(this.model, null, 2);
 
             h.push(
-                eUI.HTMLPanelBegin({
+                eUI.panelBegin({
                     id: 'p-json',
                     label:Evol.Format.capitalize(this.uiModel.name), 
                     label2: 'JSON'
@@ -33,7 +33,7 @@ Evol.ViewOne.JSON = Evol.View_One.extend({
                 eUI.label('uimjson', 'JSON')+
                 eUI.input.textMJSON('uimjson', jsonStr, 16)+
                 '</fieldset>'+
-                eUI.HTMLPanelEnd());
+                eUI.panelEnd());
             this._renderButtons(h, 'json');
             this.$el.html(h.join(''));
         }else{

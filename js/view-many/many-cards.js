@@ -72,7 +72,7 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
                 // Item title
                 h.push('<h4>'+
                     (selectable?that._HTMLCheckbox(model.id):'')+
-                    Evol.Dico.HTMLFieldLink(null, f, v, icon, !link, route?route+model.id:null)+
+                    Evol.Dico.fieldLink(null, f, v, icon, !link, route?route+model.id:null)+
                     '</h4></div>');
             }else{
                 h.push('<div'+ (f.type==fts.email || f.type==fts.url?' class="evol-ellipsis"':'') +'><label>'+

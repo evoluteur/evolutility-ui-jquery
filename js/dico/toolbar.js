@@ -482,7 +482,7 @@ return Backbone.View.extend({
         if(!this._filters){
             if(orCreate){
                 var that=this,
-                    $ff=$(eUI.HTMLEmptyPanel('filters', 'evo-filters', 'info'));
+                    $ff=$(eUI.panelEmpty('filters', 'evo-filters', 'info'));
                 this.$('.evo-toolbar').after($ff);
                 this._filters = new Evol.ViewAction.Filter({
                     el: $ff,

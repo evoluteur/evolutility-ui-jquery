@@ -52,7 +52,7 @@ return Evol.ViewOne.Edit.extend({
             iconsPath = this.iconsPath;
             
         h.push('<div data-p-width="100%" class="evol-pnl evol-p-mini">'+
-            eUI.HTMLPanelBegin(p, this.style)+
+            eUI.panelBegin(p, this.style)+
             '<fieldset data-pid="'+p.id+(p.readonly?'" disabled>':'">'));
         _.each(p.elements, function (elem) {
             if(elem.type==fts.hidden){
@@ -66,7 +66,7 @@ return Evol.ViewOne.Edit.extend({
             }
         });
         h.push('</fieldset>'+
-            eUI.HTMLPanelEnd()+
+            eUI.panelEnd()+
             '</div>');
         return this;
     }

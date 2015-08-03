@@ -54,9 +54,9 @@ Evol.Format = {
         if(!_.isUndefined(d) && d!==null && d!==''){
             var dateParts=d.split('T');
             if(dateParts.length>1){
-                return this.formatDate(dateParts[0])+', '+this.formatTime(dateParts[1]);
+                return this.dateString(dateParts[0])+', '+this.timeString(dateParts[1]);
             }else{
-                return this.formatDate(dateParts[0]);
+                return this.dateString(dateParts[0]);
             }
         }
         return '';

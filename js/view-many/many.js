@@ -119,7 +119,7 @@ return Backbone.View.extend({
             }
             fv+='</div>';
         }else{
-            fv = eDico.fieldHTML_ReadOny(f, v, Evol.hashLov, this.iconsPath || '');
+            fv = eDico.fieldHTML_RO(f, v, Evol.hashLov, this.iconsPath || '');
             if (f.type === 'list') {
                 return _.escape(fv);
             }
