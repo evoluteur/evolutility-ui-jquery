@@ -30,6 +30,9 @@ Evol.Format = {
 
     // --- date formats ---
     dateString: function(d){
+        if(d){
+            d=d.substring(0, 10);
+        }
         if(!_.isUndefined(d) && d!==null){
             var dateParts=d.split('-');
             if(dateParts.length>1){

@@ -46,9 +46,7 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
             h.push('<div class="panel '+this.style+'">');
         }
         _.each(fields, function(f, idx){
-            if(f.value){
-                v = f.value(model);
-            }else if(f.type===fts.color) {
+            if(f.type===fts.color) {
                 v = model.escape(f.attribute || f.id);
                 v = Evol.UI.input.colorBox(f.id, v, v);
             }else if(f.type==='formula'){
@@ -70,8 +68,7 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
                     h.push('</span>');
                 }
                 // Item title
-                h.push('<h4>'+
-                    (selectable?that._HTMLCheckbox(model.id):'')+
+                h.push('<h4>'+(selectable?that._HTMLCheckbox(model.id):'')+
                     Evol.Dico.fieldLink(null, f, v, icon, !link, route?route+model.id:null)+
                     '</h4></div>');
             }else{

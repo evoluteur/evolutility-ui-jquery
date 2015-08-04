@@ -62,8 +62,6 @@ Evol.ViewMany.List = Evol.View_Many.extend({
                 v = input.colorBox(f.id, model.escape(f.attribute || f.id));
             }else if(f.type===ft.formula){
                 v = input.formula(null, f, model);
-            }else if(f.value){
-                v = f.value(model);
             }else{
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
