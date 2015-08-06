@@ -24,13 +24,13 @@ Evol.ViewAction.Export = function(){
         },
 
         optsXML: function(entity){
-            return '<div>'+//this.html_more2(i18nXpt.options)+
+            return '<div>'+
                 this.optEntityName('elementName', i18nXpt.XMLroot, entity)+
                 '</div>';
         },
 
         optsSQL: function(entity){
-            return '<div>'+//this.html_more2(i18nXpt.options)+
+            return '<div>'+
                 this.optEntityName('table', i18nXpt.SQLTable, entity)+
                 '<div class="evo-inline-holder">'+
                     //'<div>'+uiInput.checkbox('insertId', '0')+eUI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert)+'</div>'+
@@ -44,10 +44,6 @@ Evol.ViewAction.Export = function(){
 
         optsJSON: function(){
             return '';
-        },
-
-        html_more2: function (label) {
-            return '<a href="javascript:void(0)" class="evol-xpt-more">' + label + '</a><div style="display:none;">';
         }
 
     };
@@ -104,7 +100,7 @@ return Backbone.View.extend({
             }
             h+='<div><label><input type="checkbox" value="1" id="'+fID+'" checked="checked">'+fLabel+'</label></div>';
             if (idx === 10 && useMore){
-                h+=EvoExport.html_more2(i18nXpt.allFields);
+                h+='<a href="javascript:void(0)" class="evol-xpt-more">' + i18nXpt.allFields+ '</a><div style="display:none;">';
             }
         });
         if (useMore){

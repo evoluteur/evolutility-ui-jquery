@@ -13,6 +13,7 @@ var Evol = Evol || {};
 
 Evol.Format = {
 
+    // --- string helpers ---
     capitalize: function(word){ // TODO use _.string.capitalize(word);
         if(word && word.length>0){
             //return _.capitalize(word);
@@ -20,7 +21,6 @@ Evol.Format = {
         }
         return '';
     },
-
     trim: function(stringValue){ // TODO use _.string.trim(word);
         if(_.isString(stringValue) && stringValue!==''){
             return stringValue.replace(/^\s+|\s+$/g, '');

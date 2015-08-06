@@ -2,7 +2,7 @@
  *
  * evolutility :: one.js
  *
- * View "one" for other ViewOne views to inherit from.
+ * View "one" should not be instanciated but inherited.
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
@@ -52,12 +52,6 @@ return Backbone.View.extend({
         this.mode = this.mode || this.viewName;
         this._tabId = false;
         this._subCollecs = this._subCollecsOK = false;
-        /*
-         if(this.model){
-             this.model.on('change', function(model){
-                that.setModel(model);
-             });
-         }*/
     },
 
     render: function () {
@@ -101,19 +95,6 @@ return Backbone.View.extend({
         return this._subCollecs;
     },
 
-    setMode: function(mode) {
-        var pMode=this.mode;
-        if(mode!=pMode){
-            this.mode = mode;
-            return this
-                .render();
-        }
-    },
-
-    getMode:function() {
-        return this.mode;
-    },
-
     setModel: function(model) {
         this.model = model;
         return this
@@ -133,13 +114,6 @@ return Backbone.View.extend({
     getUIModel: function() {
         return this.uiModel;
     },
-    /*
-     modelUpdate: function (model) {
-         var that=this;
-         _.each(model.changed, function(value, name){
-            that.setFieldValue(name, value);
-         });
-     },*/
 
     getData: function (skipReadOnlyFields) {
         var that = this,
@@ -191,11 +165,7 @@ return Backbone.View.extend({
             _.each(this.getFields(), function (f) {
                 $f=that.$field(f.id);
                 if(isModel){
-                    if(f.value){
-                        fv=f.value(model);
-                    }else{
-                        fv=model.get(f.attribute || f.id);
-                    }
+                    fv=model.get(f.attribute || f.id);
                 }else{
                     fv=model[f.attribute || f.id];
                 }
@@ -670,7 +640,6 @@ return Backbone.View.extend({
                         _.each(fs, function (f) {
                             h.push('<td>');
                             if(row[f.id]){
-                                //form-control
                                 if(f.type===fts.bool || f.type===fts.lov){
                                     h.push(eDico.fieldHTML_RO(f, row[f.id], Evol.hashLov, iconsPath));
                                 }else{
@@ -751,7 +720,7 @@ return Backbone.View.extend({
         this.clearMessages();
         errMsgs = this._checkFields(fs, data);
         isValid = errMsgs==='';
-        // validate sub-collections
+        // --- validate sub-collections
         if(this._subCollecs){
             var that = this;
             _.each(this._subCollecs, function (sc) {
@@ -974,31 +943,6 @@ return Backbone.View.extend({
         }
         return this;
     },
-
-    /*
-     _setResponsive: function (evt) {
-         if(mode==='new' || mode==='edit'){
-             this.windowSize='big';
-             $(window).resize(function() {
-                 var pnls = that.$('.evol-pnl');
-                 if($(window).width()>480){
-                     if(that.windowSize!=='big'){
-                         _.each(pnls, function (pnl){
-                             var $p=$(pnl),
-                                ps=$p.data('p-width');
-                             $p.attr('style', 'width:'+ps+'%;');
-                         });
-                         that.windowSize='big';
-                     }
-                 }else{
-                     if(that.windowSize!=='small'){
-                        pnls.attr('style', 'width:100%');
-                        that.windowSize='small';
-                     }
-                 }
-             });
-         }
-     },*/
 
     clearMessages: function(){
         this.$el.trigger('message', null);

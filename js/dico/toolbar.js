@@ -737,6 +737,7 @@ return Backbone.View.extend({
                                         that.curView.clear();
                                     }else{
                                         that.model = newModel;
+                                        that.setRoute(newModel.id, false);
                                         that.curView.setModel(newModel);
                                     }
                                     var eName=Evol.Format.capitalize(entityName);
@@ -800,7 +801,6 @@ return Backbone.View.extend({
                 eUI.modal.alert(
                     'This feature must be implemented server side.',
                     JSON.stringify(this.curView.val(), null, 2)
-                    //eUI.cr2br(JSON.stringify(this.curView.val(), null, 2))
                 );
                 break;
             case 'save':

@@ -253,13 +253,6 @@ return {
                 return $f.val();
         }
     },
-    /*
-     compactUI: function(uiModel){
-         var uiM = _.extend({}, uiModel);
-         // TODO makes panels 100% + create tabs
-         return uiM;
-     },
-     */
     // get field value (not id but text) for a field of type lov
     lovText:function(f, v, hash, iconsPath){
         if(f.list && f.list.length>0 && hash){

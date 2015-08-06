@@ -21,7 +21,6 @@ return Evol.ViewOne.Edit.extend({
         'click .evol-title-toggle': 'click_toggle',
         //'click .glyphicon-wrench': 'click_customize',
         'click label > .glyphicon-question-sign': 'click_help'
-        // extra evt for $(window) resize
     },
 
     viewName: 'mini',
