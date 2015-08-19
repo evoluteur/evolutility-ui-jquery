@@ -270,6 +270,7 @@ uiModels.winecellar = {
                             attribute:'label_img',
                             type: 'image',
                             label: 'Label',
+                            labelCards: '',
                             maxLength: 200,
                             width: 100,
                             inMany: true

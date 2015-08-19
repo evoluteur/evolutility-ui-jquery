@@ -94,7 +94,7 @@ uiModels.comics = {
             elements: [
                 {
                     id: 'pix', attribute: 'pix', type: 'image', width: 100, inMany: true,
-                    label: 'Cover'
+                    label: 'Cover', labelCards:''
                 }
             ]
         }

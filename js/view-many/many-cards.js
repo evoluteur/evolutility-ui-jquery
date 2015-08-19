@@ -72,8 +72,17 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
                     Evol.Dico.fieldLink(null, f, v, icon, !link, route?route+model.id:null)+
                     '</h4></div>');
             }else{
-                h.push('<div'+ (f.type==fts.email || f.type==fts.url?' class="evol-ellipsis"':'') +'><label>'+
-                    (f.labelcards?f.labelcards:f.label)+':</label> '+v+'</div>');
+                var label2 = f.labelCards,
+                    css2=(f.type==fts.email || f.type==fts.url?'evol-ellipsis"':'');
+                if(label2===''){
+                    css2 += (f.type==fts.pix?'evol-c-center"':'');
+                    h.push('<div'+ (css2?' class="'+css2+'"':'') +'>'+v+'</div>');
+                }else {
+                    if(!label2){
+                        label2 = f.label;
+                    }
+                    h.push('<div class="'+ css2 +'"><label>'+label2+':</label> '+v+'</div>');
+                }
             }
         });
         h.push('</div>');
