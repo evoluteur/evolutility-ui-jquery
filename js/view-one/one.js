@@ -346,6 +346,9 @@ return Backbone.View.extend({
                             .prev().remove();
                         $f.before(newPix);
                         break;
+                    case fts.formula:
+                        $f.html('');
+                        break;
                     default:
                         $f.val(defaultVal);
                 }
