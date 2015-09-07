@@ -219,8 +219,8 @@
     <p>Validation is determined by the field properties.</p>
    
     <ul>
-        <li><span class="xmlAttr">type</span> - Text, Integer, Decimal, Date...</li>
-        <li><span class="xmlAttr">required</span> - Must have a value.</li>
+        <li><span class="xmlAttr">type</span> - Field must be of the specified type (Text, Integer, Decimal, Date...).</li>
+        <li><span class="xmlAttr">required</span> - Field must have a value.</li>
         <li><span class="xmlAttr">max</span> - Maximum value allowed.</li>
         <li><span class="xmlAttr">min</span> - Minimum value allowed.</li>
         <li><span class="xmlAttr">maxLength</span> - Maximum length.</li>
@@ -229,7 +229,7 @@
         <li><span class="xmlAttr">fnValidate</span> - Custom validation function.</li>
     </ul>
 
-    <p>Validation happens when the user click the "Save" button. Invalid fields are flagged and a summary is displayed.</p>
+    <p>Validation happens when the user clicks the "Save" button. Invalid fields are flagged and a summary of all fields which didn't pass the validation is displayed.</p>
 
 </section>
 
@@ -446,7 +446,7 @@
     <div id="doc-charts">
     <h3><i class="glyphicon glyphicon-stats"></i>&nbsp;Charts <span class="view-fullname">Evol.ViewMany.Charts</span></h3>
 
-    <p>Draws charts about the collection.</p>
+    <p>Displays charts about the collection. Draws a pie chart or bar chart for each field of type list, boolean, integer and decimal.</p>
 
     <div class="evol-doc-views">
         <img class="pixEvoView shadow" src="screenshots/many-charts.gif"/><br/>&nbsp;
