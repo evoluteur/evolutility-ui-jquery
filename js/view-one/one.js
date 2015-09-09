@@ -230,8 +230,8 @@ return Backbone.View.extend({
                     }
                 }
             });
-            if(subCollecs && subCollecs.length){
-                _.each(subCollecs, function (sc) {
+            if(subCollecs){
+                _.forEach(subCollecs, function (sc) {
                     var h=[];
                     that._renderPanelListBody(h, sc, fv, sc.readonly?'browse':'edit');
                     that.$('[data-pid="'+sc.id+'"] tbody')
