@@ -56,7 +56,10 @@ function fieldTypePanel(id, label, labelPanel, label2Panel, css){
             }
         ];
 
-    if(id==='list' || id==='lov'){
+    if(id==='boolean'){
+        fields[1].css='cGreen';
+        fields[2].css='cBlue';
+    }else if(id==='list' || id==='lov'){
         fields = _.each(fields, function(f){
             f.list=testLOV;
         });

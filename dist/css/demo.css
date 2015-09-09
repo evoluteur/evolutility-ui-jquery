@@ -469,5 +469,11 @@ h4 {
   height: 532px !important;
 }
 .cBlue {
-  color: blue;
+  color: #0277BD;
+}
+.cGreen {
+  color: #4CAF50;
+}
+.cRed {
+  color: #DD2C00;
 }
