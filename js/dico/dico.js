@@ -140,7 +140,7 @@ return {
         switch(f.type){
             case fts.bool:
                 if (v==='true' || v=='1') {
-                    return eUI.icon('ok');
+                    return eUI.icon('ok', f.css);
                 }
                 break;
             case fts.lov:
