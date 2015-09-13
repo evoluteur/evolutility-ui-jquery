@@ -330,13 +330,16 @@ Evol.UI = {
 
     // --- panels ---
     panelBegin: function (p, css, noToggle) {
-        return '<div data-pid="'+p.id+'" class="panel '+(p.css?p.css:css)+'">'+
-            '<div class="panel-heading '+(p.cssLabel? p.cssLabel:'')+'">'+
-            (!noToggle?Evol.UI.icon('chevron-up', 'evol-title-toggle'):'')+
-            '<h3 class="panel-title">'+p.label+'</h3>'+
-            (p.label2?'<div class="evol-subtitle">'+p.label2+'</div>' : '')+
-            (p.help?'<p class="evo-panel-help">'+p.help+'</p>':'')+
-            '</div>';
+        var h='<div data-pid="'+p.id+'" class="panel '+(p.css?p.css:css)+'">';
+        if(p.label || p.label2){
+            h+='<div class="panel-heading '+(p.cssLabel? p.cssLabel:'')+'">'+
+                (!noToggle?Evol.UI.icon('chevron-up', 'evol-title-toggle'):'')+
+                '<h3 class="panel-title">'+p.label+'</h3>'+
+                (p.label2?'<div class="evol-subtitle">'+p.label2+'</div>' : '')+
+                (p.help?'<p class="evo-panel-help">'+p.help+'</p>':'')+
+                '</div>';
+        }
+        return h;
     },
 
     panelEnd: function () {
