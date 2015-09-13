@@ -75,3 +75,8 @@ function hideUIModel(){
     $('#uimodel').slideUp();
     $('#hide_def').hide();
 }
+
+function showApp(entity, view){
+    $('#title').html(uiModels[entity].label);
+    window.location.href = '#'+entity+'/'+(view||'list');
+}
