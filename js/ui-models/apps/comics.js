@@ -44,10 +44,10 @@ uiModels.comics = {
                     label: 'Authors'
                 },
                 {
-                    id: 'language', attribute: 'language', type: 'lov', label: 'Language', width: 38, inMany: false,
+                    id: 'language', attribute: 'language', type: 'lov', label: 'Language', width: 38, inMany: true,
                     list: [
-                        {id: 'FR', text: 'French'},
-                        {id: 'EN', text: 'English'}
+                        {id: 'FR', text: 'French', icon:'flag_fr.gif'},
+                        {id: 'EN', text: 'English', icon:'flag_us.gif'}
                     ]
                 },
                 {
@@ -94,7 +94,7 @@ uiModels.comics = {
             elements: [
                 {
                     id: 'pix', attribute: 'pix', type: 'image', width: 100, inMany: true,
-                    label: 'Cover', labelCards:''
+                    label: 'Cover', labelBrowse:'', labelCards:''
                 }
             ]
         }
