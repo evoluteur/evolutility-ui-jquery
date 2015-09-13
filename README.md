@@ -1,7 +1,7 @@
 # Evolutility.js
 
 Evolutility provides a set of generic Backbone Views to browse, edit, filter, export and chart Backbone models and collections of different structures.
-With it you configure views with metadata instead of hand-coding templates, Javascript and CSS.
+With it you can make web applications by configuring views with metadata instead of hand-coding templates, Javascript and CSS.
 
 ## Demo apps
 
@@ -9,6 +9,8 @@ With it you configure views with metadata instead of hand-coding templates, Java
 [AddressBook](http://evoluteur.github.io/evolutility/demo/index.html#contact/list),
 [Wine Cellar](http://evoluteur.github.io/evolutility/demo/index.html#winecellar/list),
 [Graphic Novels](http://evoluteur.github.io/evolutility/demo/index.html#comics/cards).
+
+These demos use the browser local storage for their data but Evolutility can also be configured for REST (using [Evolutility-server](https://github.com/evoluteur/evolutility-server) or your own REST API). 
 
 ## Installation
 
@@ -22,11 +24,9 @@ bower install evolutility
 bower install evolutility#master
 ```
 
-By default, Evolutility uses LocalStorage but it can be configured for REST (using [Evolutility-server](https://github.com/evoluteur/evolutility-server) or your own REST API). 
-
 ## Views
 
-Evolutility's views have a Backbone model (to define the data) and also a UI-model (to define the UI for this model).
+Evolutility's views have a Backbone model (to define the data) and also a UI-model (to define the UI to display the data and interact with it).
 
 All views for a Backbone model and collection share a single UI-Model which defines of all UI elements across views in a simple declarative way.
 
