@@ -51,6 +51,10 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
                 v = Evol.UI.input.colorBox(f.id, v, v);
             }else if(f.type==='formula'){
                 v = Evol.UI.input.formula(null, f, model);
+            }else if(f.type==='image' && !isTooltip){ 
+                v = '<a href="#'+route+model.id+'">'+
+                    that._HTMLField(f, model.escape(f.attribute || f.id))+
+                    '</a>';
             }else{
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
