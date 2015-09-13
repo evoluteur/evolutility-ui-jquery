@@ -806,8 +806,9 @@ return Backbone.View.extend({
             if (f.required && (v==='' ||
                     (numberField && isNaN(v)) ||
                     (f.type===fts.lov && v==='0') ||
-                    (f.type===fts.list && v.length===0) ||
-                    (f.type===fts.color && v==='#000000'))){
+                    (f.type===fts.list && v.length===0) //||
+                    //(f.type===fts.color && v==='#000000')
+                )){
                 return formatMsg(f.label, i18nVal.empty);
             } else {
 
