@@ -144,6 +144,7 @@ module.exports = function (grunt) {
                 // --- tools ---
                 'Gruntfile.js',
                 'package.json',
+                'bower.json',
 
                 // --- dist ---
                 'js/ui*.js',
@@ -259,13 +260,26 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-less');
 
-
+    grunt.registerTask('header', 'Evolutility version', function(arg1) {
+        var pkg=grunt.file.readJSON('package.json');
+        console.log(
+            '\n  ______          _           _ _ _   \n'+
+            ' |  ____|        | |      /| (_) (_)/|\n'+
+            ' | |____   _____ | |_   _| |_ _| |_| |_ _   _ \n'+
+            ' |  __\\ \\ / / _ \\| | | | | __| | | | __| | | |\n'+
+            ' | |___\\ V / (_) | | |_| | |_| | | | |_| |_| |\n'+
+            ' |______\\_/ \\___/|_|\\__,_|\\__|_|_|_|\\__|\\__, |\n'+
+            '                                         __/ |\n'+
+            '                                        |___/   ' + arg1 + ' '+ pkg.version
+        );
+    });
     // *************************************************************************************
     //      BUILD TASKS : dev prod demo dep
     // *************************************************************************************
     grunt.registerTask('default', ['prod', 'dep']);
 
     grunt.registerTask('dev', [
+        'header:dev',
         'concat:js', 
         'demo', 
         'less:dev'
@@ -276,10 +290,11 @@ module.exports = function (grunt) {
         'uglify:demo'
     ]);
     grunt.registerTask('prod', [
+        'header:prod',
         'jshint', 
-        'dev', 
+        'concat:js', 
         'demo', 
-        'less:prod', 
+        'less', 
         'uglify:prod'
     ]);
     grunt.registerTask('prod2', [
