@@ -1,0 +1,25 @@
+
+@media print {
+
+  // things to hide
+    .evol-buttons,
+    .evo-toolbar,
+    .evo-noprint{
+      display: none !important;
+    }
+    
+    .evo-filters {
+      border: none;
+      > .btn {
+        display: none !important;
+      }
+    }
+
+  // things to show
+    .evo-filters{
+      min-height:0;
+    }
+    .tab-pane{
+      display: block !important;
+    }
+}
