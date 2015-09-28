@@ -297,7 +297,8 @@ module.exports = function (grunt) {
         'concat:js', 
         'demo', 
         'less', 
-        'uglify:prod'
+        'uglify:prod',
+        'dep'
     ]);
     grunt.registerTask('prod2', [
         'dev', 
