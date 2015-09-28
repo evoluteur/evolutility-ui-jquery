@@ -47,7 +47,7 @@ uiModels.comics = {
                     id: 'language', attribute: 'language', type: 'lov', label: 'Language', width: 38, inMany: true,
                     list: [
                         {id: 'FR', text: 'French', icon:'flag_fr.gif'},
-                        {id: 'EN', text: 'English', icon:'flag_us.gif'}
+                        {id: 'EN', text: 'American', icon:'flag_us.gif'}
                     ]
                 },
                 {

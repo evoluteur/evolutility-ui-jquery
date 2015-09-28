@@ -407,6 +407,21 @@ return {
         };
     },
 
+    bbComparatorFormula: function(fid, fn){
+        return function(modelA, modelB) {
+            var mA = fn(modelA),
+                mB = fn(modelB);
+            if(mA<mB){
+                return 1;
+            }
+            if(mB<mA){
+                return -1;
+            }
+            return 0;
+           // return (fn(modelA)||'').localeCompare(fn(modelB)||'');
+        };
+    },
+
     sortingNumber: function(fid){
         return function(modelA, modelB) {
             if(modelA[fid]<modelB[fid]){

@@ -263,6 +263,7 @@ module.exports = function (grunt) {
     grunt.registerTask('header', 'Evolutility version', function(arg1) {
         var pkg=grunt.file.readJSON('package.json');
         console.log(
+            (new Date()).toString() + '\n' + 
             '\n  ______          _           _ _ _   \n'+
             ' |  ____|        | |      /| (_) (_)/|\n'+
             ' | |____   _____ | |_   _| |_ _| |_| |_ _   _ \n'+
@@ -270,7 +271,8 @@ module.exports = function (grunt) {
             ' | |___\\ V / (_) | | |_| | |_| | | | |_| |_| |\n'+
             ' |______\\_/ \\___/|_|\\__,_|\\__|_|_|_|\\__|\\__, |\n'+
             '                                         __/ |\n'+
-            '                                        |___/   ' + arg1 + ' '+ pkg.version
+            '                                        |___/   ' + 
+            arg1 + ' '+ pkg.version
         );
     });
     // *************************************************************************************

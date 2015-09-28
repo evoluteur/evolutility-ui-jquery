@@ -50,6 +50,10 @@ return {
     isViewMany: function(viewName){
         return viewName==='list' || viewName==='cards' || viewName==='charts' || viewName==='bubbles';
     },
+    
+    isViewCollection: function(viewName){
+        return viewName==='list' || viewName==='cards';
+    },
 
     fieldInCharts: function (f) {
         return (_.isUndefined(f.inCharts) || f.inCharts) && Evol.Def.fieldChartable(f);

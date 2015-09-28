@@ -222,7 +222,7 @@ return Backbone.View.extend({
                     this.model.collection=collec;
                 }
                 vw=this.viewsHash[viewName];
-                if(vw.setCollection){
+                if(vw && vw.setCollection){
                     vw.setCollection(collec);
                 }
                 if(this.model && !this.model.isNew()){

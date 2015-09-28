@@ -643,7 +643,7 @@ return Backbone.View.extend({
                         _.each(fs, function (f) {
                             h.push('<td>');
                             if(row[f.id]){
-                                if(f.type===fts.bool || f.type===fts.lov){
+                                if(f.type===fts.bool || f.type===fts.lov || f.type===fts.pix){
                                     h.push(eDico.fieldHTML_RO(f, row[f.id], Evol.hashLov, iconsPath));
                                 }else{
                                     h.push(_.escape(eDico.fieldHTML_RO(f, row[f.id], Evol.hashLov, iconsPath)));

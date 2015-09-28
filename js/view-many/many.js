@@ -316,6 +316,8 @@ return Backbone.View.extend({
             var sel = this.getSelection();
             if (f.type == fts.text || f.type == fts.textml || f.type == fts.email) {
                 collec.comparator = eDico.bbComparatorText(f.id);
+            }  else if (f.type === fts.formula) {
+                collec.comparator = eDico.bbComparatorFormula(f.id, f.formula);
             } else if (f.value) {
                 collec.comparator = f.value;
             } else {

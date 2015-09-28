@@ -122,6 +122,10 @@ Evol.ViewMany.Bubbles = Evol.View_Many.extend({
 
     },
 
+    _HTMLlegend: function(){
+        // todo
+    },
+
     _$body: function(){
         return this.$('.evol-bubbles-body');
     },
