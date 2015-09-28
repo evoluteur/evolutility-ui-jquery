@@ -1,5 +1,5 @@
 /*!
-   evolutility 1.0.2 
+   evolutility 1.0.3 
    (c) 2015 Olivier Giulieri 
    http://evoluteur.github.io/evolutility/  
 */
@@ -80,6 +80,11 @@
 .evol-pnl,
 .evol-pnl-lst {
   padding-left: 10px !important;
+}
+.evol-pnl .table img,
+.evol-pnl-lst .table img {
+  max-height: 60px;
+  padding: 0;
 }
 .panel-heading > .panel-title {
   display: inline-block;
@@ -392,6 +397,10 @@ table {
 .evol-cards-body > div.panel > div > label {
   vertical-align: top;
 }
+.evol-cards-body .evol-c-center {
+  text-align: center;
+  margin: 5px 2px;
+}
 .evol-bubble-tooltip > .panel {
   padding: 0 10px;
 }
@@ -633,4 +642,23 @@ text.label {
 }
 .evo-editFilter input.hasDatepicker {
   width: 7em;
+}
+@media print {
+  .evol-buttons,
+  .evo-toolbar,
+  .evo-noprint {
+    display: none !important;
+  }
+  .evo-filters {
+    border: none;
+  }
+  .evo-filters > .btn {
+    display: none !important;
+  }
+  .evo-filters {
+    min-height: 0;
+  }
+  .tab-pane {
+    display: block !important;
+  }
 }
