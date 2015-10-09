@@ -65,7 +65,7 @@ return Backbone.View.extend({
         uiModel: null,
         many: true,
         sampleMaxSize: 20,
-        formats: ['CSV', 'TAB', 'HTML', 'JSON', 'XML', 'SQL']
+        formats: ['CSV', 'TAB', 'JSON', 'HTML', 'XML', 'SQL']
     },
 
     initialize: function (opts) {
@@ -93,7 +93,7 @@ return Backbone.View.extend({
         //### list of columns to export #########################################
         h+='<div><label><input type="checkbox" value="1" id="showID">'+i18nXpt.IDkey+'</label></div>';
         _.each(fields, function(f, idx){
-            var fLabel = f.labelexport || f.label || f.labellist,
+            var fLabel = f.labelExport || f.label || f.labelList,
                 fID = 'fx-' + f.id;
             if (fLabel === null || fLabel === '') {
                 fLabel = '(' + fID + ')';
@@ -181,7 +181,8 @@ return Backbone.View.extend({
     getFields: function (){
         if(!this.fields){
             this.fields=Evol.Def.getFields(this.uiModel, function(f){
-                return _.isUndefined(f.inExport) || f.inExport;
+                // todo: allow formula fields & provide value in export
+                return f.type!=fts.formula && (_.isUndefined(f.inExport) || f.inExport);
             });
         }
         return this.fields;
@@ -200,7 +201,8 @@ return Backbone.View.extend({
     },
 
     _preview: function (format) {
-        this.$('.evol-xpt-val').html(this.exportContent(format));
+        //this.$('.evol-xpt-val').html(this.exportContent(format));
+        this.$('.evol-xpt-preview').html('<textarea class="evol-xpt-val form-control">'+this.exportContent(format)+'</textarea>');
     },
 
     exportContent: function(format){
@@ -238,7 +240,7 @@ return Backbone.View.extend({
                             h+='ID'+sep;
                         }
                         _.each(flds, function(f, idx){
-                            h+=f.label;
+                            h+=f.labelExport || f.label;
                             if(idx<fMax){
                                 h+=sep;
                             }
