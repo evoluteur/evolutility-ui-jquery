@@ -6,6 +6,7 @@
 /* --- charts --- */
 
 .evol-chart-holder{
+	position: relative;
 	float:left;
 	text-align: center;
 	background-color :#FFFFFF;
@@ -18,10 +19,17 @@
 	padding:10px 20px 30px;
 }
 .evo-chart-config{
-	margin: 5px;
+	position: absolute;
+	top: 5px;
+	right: 5px;
 	cursor: pointer;
 	color: silver;
 	&:hover{
 		color:#428bca;
 	}
 }
+/*
+.evo-chart-table{
+	overflow-y: auto;
+}
+*/

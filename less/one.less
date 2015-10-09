@@ -64,6 +64,31 @@
     .flex-item();
     padding-left:10px !important;
     margin-bottom: 6px;
+    > .evo-rdonly{
+          // todo: use or remove line below?
+          // border-bottom: 1px solid silver;
+      > img{
+        position: relative;
+        top: -2px;
+        margin-right: 3px;
+      }
+    }
+    > .text-danger{
+        margin-bottom: 0 !important;
+    }
+}
+.evol-field-label > label {
+  color:@color-text;
+
+  > .glyphicon-question-sign{
+    cursor: pointer;
+    padding-left: 4px;
+    color: silver;
+
+    &:hover{
+      color:@color-icon-hover;
+    }
+  }
 }
 
 .evol-required,
@@ -138,23 +163,6 @@ label{
   }
 }
 
-.evol-fld > .text-danger{
-    margin-bottom: 0 !important;
-}
-.evol-field-label > label {
-  color:@color-text;
-
-  > .glyphicon-question-sign{
-    cursor: pointer;
-    padding-left: 4px;
-    color: silver;
-
-    &:hover{
-      color:@color-icon-hover;
-    }
-  }
-}
-
 .w-100{
     width: 100%;
 }
@@ -220,3 +228,10 @@ label{
     margin-left:24px;
   }
 }
+.badge-one{
+    position: relative;
+    top: -14px;
+    font-size: .5em;
+    margin-left: 5px;
+}
+
