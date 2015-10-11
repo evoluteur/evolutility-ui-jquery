@@ -38,7 +38,8 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
         var that = this,
             v,
             fts = Evol.Def.fieldTypes,
-            link = (this.links!==false);
+            link = (this.links!==false),
+            uiInput = Evol.UI.input;
 
         if(isTooltip){
             h.push('<div class="evol-bubble-tooltip">');
@@ -48,9 +49,9 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
         _.each(fields, function(f, idx){
             if(f.type===fts.color) {
                 v = model.escape(f.attribute || f.id);
-                v = Evol.UI.input.colorBox(f.id, v, v);
+                v = uiInput.colorBox(f.id, v, v);
             }else if(f.type==='formula'){
-                v = Evol.UI.input.formula(null, f, model);
+                v = uiInput.formula(null, f, model);
             }else if(f.type==='image' && !isTooltip){ 
                 v = '<a href="#'+route+model.id+'">'+
                     that._HTMLField(f, model.escape(f.attribute || f.id))+

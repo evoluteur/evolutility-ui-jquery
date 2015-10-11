@@ -710,7 +710,11 @@ return Backbone.View.extend({
     },
 
     setTitle: function (title){
-        return eDico.setViewTitle(this, title);
+        var bdg=this.uiModel.fnBadge;
+        if(bdg){
+            bdg=bdg(this.model);
+        }
+        return eDico.setViewTitle(this, title, bdg);
     },
 
     validate: function (fields) {
@@ -903,8 +907,8 @@ return Backbone.View.extend({
     fieldViewId: function(fid){
         return this.prefix + '-' + fid;
     },
-    /*
-     customize: function(){
+
+    /*customize: function(){
          var labelSelector = '.evol-field-label>label',
             panelSelector ='.evol-pnl .panel-title';
          if(this.custOn){
@@ -1062,8 +1066,8 @@ return Backbone.View.extend({
          evt.stopImmediatePropagation();
          eDico.showDesigner(id, eType, $e, this);
          this.$el.trigger(eType+'.customize', {id: id, type:eType});
-     },
-     */
+     },*/
+
     click_detailsAddDel: function(evt){
         // -- add/remove row in panel-list (subcollection)
         var $target=$(evt.currentTarget),

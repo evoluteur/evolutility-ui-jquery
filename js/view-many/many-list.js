@@ -81,6 +81,8 @@ Evol.ViewMany.List = Evol.View_Many.extend({
             var css=f.css || '';
             if(f.type===ft.textml || f.type===ft.email || f.type===ft.url){
                 css+=' evol-ellipsis';
+            }else if(f.type===ft.pix){
+                css+=' evol-td-pix';
             }else if(Evol.Def.fieldIsNumber(f)){
                 css+=' evol-r-align';
             }
@@ -91,7 +93,7 @@ Evol.ViewMany.List = Evol.View_Many.extend({
 
     _HTMLlistHeader: function (f) {
         var h='<th><span id="'+f.id+'-lbl">'+
-            (f.labellist || f.labelmany || f.label);
+            (f.labelList || f.labelMany || f.label);
         if(f.sortable!==false){
             h+='<span class="evol-sort-icons" data-fid="'+f.id+'">'+
                 Evol.UI.icon('chevron-up')+//'sort-by-alphabet'
