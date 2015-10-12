@@ -74,7 +74,6 @@ uiModels.field = {
                     id: 'eid',
                     attribute: 'eid',
                     label: "ID",
-                    labellist: "ID",
                     type: "text",
                     help: 'Field ID in the DOM = prefix + ID',
                     maxLength: 100,
@@ -110,7 +109,6 @@ uiModels.field = {
                     attribute:'inMany',
                     label: "List",
                     help: "Field shows in lists",
-                    labellist: "List",
                     type: "boolean",
                     inMany: true,
                     width: 38
@@ -141,7 +139,6 @@ uiModels.field = {
                     id: 'css',
                     attribute: 'css',
                     label: "CSS",
-                    labellist: "CSS Edit",
                     help: "Stylesheet class name for the field for the edit view.",
                     type: "text",
                     maxLength: 20,
@@ -200,7 +197,7 @@ uiModels.field = {
                     /*conditions: [{
                         'visible': showIfNumber
                      }],*/
-                    labellist: "Min.",
+                    labelList: "Min.",
                     type: "integer",
                     maxLength: 4,
                     width: 50
@@ -213,7 +210,7 @@ uiModels.field = {
                     /*conditions: [{
                         'visible': showIfNumber
                     }],*/
-                    labellist: "Max.",
+                    labelList: "Max.",
                     type: "integer",
                     maxLength: 4,
                     width: 50
@@ -222,7 +219,7 @@ uiModels.field = {
                     id:'regExp',
                     attribute:'regExp',
                     label: "Regular Expression",
-                    labellist: "RegExp",
+                    labelList: "RegExp",
                     type: "text",
                     maxLength: 100,
                     width: 50,

@@ -71,7 +71,7 @@ uiModels.comics = {
                     label: 'Finished', labelTrue:'Finished', labelFalse:'Unfinished', css:'cBlue'
                 },
                 {
-                    id:'amazon', label:'Amazon', type:'formula', width:100, css:'evol-ellipsis',
+                    id:'amazon', label:'Amazon', type:'formula', width:62, css:'evol-ellipsis',
                     formula:function(m){
                         if(m){
                             var urlData=m.get('title')+' '+(m.get('authors')||''),
@@ -84,8 +84,19 @@ uiModels.comics = {
                     }
                 },
                 {
+                    id:'bdfugue', label:'BDFugue', type:'formula', width:38, css:'evol-ellipsis',
+                    formula:function(m){
+                        if(m){
+                            var urlData=m.get('title')+' '+(m.get('authors')||''),
+                            link='http://www.bdfugue.com/catalogsearch/result/?q=';
+                            return '<a target="a" href="'+link+encodeURI(urlData)+'">'+_.escape(urlData)+'</a>';
+                        }
+                        return 'N/A';
+                    }
+                },
+                {
                     id: 'notes', attribute: 'notes', type: 'textmultiline', label: 'Notes', maxLength: 1000,
-                    width: 100, height: 6, inMany: false
+                    width: 100, height: 7, inMany: false
                 }
             ]
         },
@@ -94,7 +105,7 @@ uiModels.comics = {
             elements: [
                 {
                     id: 'pix', attribute: 'pix', type: 'image', width: 100, inMany: true,
-                    label: 'Cover', labelBrowse:'', labelCards:''
+                    label: 'Album Cover', labelList:'Cover', labelBrowse:'', labelCards:''
                 }
             ]
         }

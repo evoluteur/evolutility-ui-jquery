@@ -386,7 +386,7 @@ uiModels.contact = {
                 },
                 {
                     type: 'text', id: 'address2', attribute: 'address2', 
-                     label: '', labellist: 'Address 2', maxLength: 150, width: 100
+                     label: '', labelMany: 'Address 2', maxLength: 150, width: 100
                 },
                 {
                     type: 'text', id: 'city', attribute: 'city', 

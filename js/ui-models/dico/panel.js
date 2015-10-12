@@ -26,7 +26,6 @@ uiModels.panel = {
                 {
                     id: 'css',
                     label: "CSS",
-                    labellist: "CSS Edit",
                     help: "Stylesheet class name for the field for the edit view.",
                     type: "text",
                     maxLength: 20,

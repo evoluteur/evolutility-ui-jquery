@@ -80,7 +80,6 @@ uiModels.fieldmini = {
                         {
                             id: 'eid',
                             label: "ID",
-                            labellist: "ID",
                             type: "text",
                             help: 'Field ID in the DOM = prefix + ID',
                             maxLength: 100,
@@ -97,7 +96,6 @@ uiModels.fieldmini = {
                         {
                             id: 'css',
                             label: "CSS",
-                            labellist: "CSS Edit",
                             help: "Stylesheet class name for the field for the edit view.",
                             type: "text",
                             maxLength: 20,
@@ -157,7 +155,7 @@ uiModels.fieldmini = {
                             conditions: [{
                                 'visible': showIfNumber
                             }],
-                            labellist: "Min.",
+                            labelList: "Min.",
                             type: "integer",
                             maxLength: 4,
                             width: 50
@@ -169,7 +167,7 @@ uiModels.fieldmini = {
                             conditions: [{
                                 'visible': showIfNumber
                             }],
-                            labellist: "Max.",
+                            labelList: "Max.",
                             type: "integer",
                             maxLength: 4,
                             width: 50
@@ -177,7 +175,7 @@ uiModels.fieldmini = {
                          {
                          id:'regExp',
                          label: "Regular Expression",
-                         labellist: "RegExp",
+                         labelList: "RegExp",
                          type: "integer",
                          maxLength: 100,
                          width: 100,
@@ -208,7 +206,6 @@ uiModels.fieldmini = {
                             id:'inMany',
                             label: "List",
                             help: "Field shows in lists",
-                            labellist: "List",
                             type: "boolean",
                             inMany: true,
                             width: 38

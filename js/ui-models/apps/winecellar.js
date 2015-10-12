@@ -203,7 +203,7 @@ uiModels.winecellar = {
                             attribute:'bsize',
                             type: 'lov',
                             label: 'Bottle Size',
-                            labellist: 'Bottle',
+                            labelList: 'Bottle',
                             width: 38,
                             list: winecellar_lovs.bottleSize
                         },
@@ -315,7 +315,7 @@ uiModels.winecellar = {
                             attribute: 'purchased',
                             type: 'integer',
                             label: 'Bottles Purchased',
-                            labellist: 'Purchased',
+                            labelList: 'Purchased',
                             maxLength: 10,
                             width: 40
                         },
@@ -358,7 +358,7 @@ uiModels.winecellar = {
                             attribute: 'drink_from',
                             type: 'integer',
                             label: 'Drink from (year)',
-                            labellist: 'Drink',
+                            labelList: 'Drink',
                             labelCharts: 'Wines by Start drinking period',
                             placeholder: '2012',
                             maxLength: 10,
@@ -421,7 +421,7 @@ uiModels.winecellar = {
                             attribute: 'score',
                             type: 'lov',
                             label: 'My Score',
-                            labellist: 'Score',
+                            labelList: 'Score',
                             list: winecellar_lovs.score,
                             maxLength: 100,
                             width: 100
