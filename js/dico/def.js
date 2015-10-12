@@ -77,7 +77,9 @@ return {
         function collectFields(te) {
             if (te && te.elements && te.elements.length > 0) {
                 _.each(te.elements, function (te) {
-                    if(te.type!='panel-list'){
+                    if(te.type!='panel-list' && te.type!='panel'){
+                        fs.push(te);
+                    }else{
                         collectFields(te);
                     }
                 });

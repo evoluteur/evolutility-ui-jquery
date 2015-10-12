@@ -49,8 +49,8 @@ Evol.UI = {
                 value=value.replace(/"/g,'\"');
             }
             h+='" value="'+value;
-            if(fd) {
-                h+='" class="evo-field form-control '+(css || '');
+            h+='" class="evo-field form-control '+(css || '');
+            if(fd){
                 // properties mapping to html attributes
                 _.each(['id', 'min', 'max', 'maxLength', 'placeholder'], function (item) { // 'max-width', 'min-width',
                     if (!_.isUndefined(fd[item])) {
@@ -135,9 +135,10 @@ Evol.UI = {
                 (sel?'" checked="checked':'')+'">'+label+'</label>&nbsp;';
         },
         lov: function (id, value, label, fLOV) {
-            var h = '<select class="evo-field form-control" id="'+id+'"><option value="'+value+'" selected>'+label+'</option>';
+            var h = '<select class="evo-field form-control" id="'+id+'"><option value="'+value+'" selected>'+label+'</option>',
+                opt=this.option;
             _.each(fLOV, function (f) {
-                h+=this.option(f.id, f.text);//, f.id===value);
+                h+=opt(f.id, f.text);//, f.id===value);
             });
             h+='</select>';
             return h;
