@@ -18,24 +18,22 @@ Evol.ViewAction.Export = function(){
 
     var EvoExport = {
 
-        optEntityName: function(id,label,entity){
+        fieldHTML: function(id,label,text){
             return eUI.fieldLabel(id, label) +
-                uiInput.text(id, entity.replace(/ /g, '_'), 30);
+                uiInput.text(id, text.replace(/ /g, '_'), null, 'xpt-mw300');
         },
 
         optsXML: function(entity){
-            return '<div>'+
-                this.optEntityName('elementName', i18nXpt.XMLroot, entity)+
-                '</div>';
+            return '<div>'+this.fieldHTML('elementName', i18nXpt.XMLroot, entity)+'</div>';
         },
 
         optsSQL: function(entity){
-            return '<div>'+
-                this.optEntityName('table', i18nXpt.SQLTable, entity)+
-                '<div class="evo-inline-holder">'+
-                    //'<div>'+uiInput.checkbox('insertId', '0')+eUI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert)+'</div>'+
-                    '<div>'+uiInput.checkbox('transaction', '0')+eUI.fieldLabelSpan('transaction', i18nXpt.SQLTrans)+'</div>'+
-                '</div>';
+            return '<div><label for="xpt-db">'+i18nXpt.db+'</label> '+
+                    uiInput.select('xpt-db', 'postgres', 'evol-xpt-db', null, [{id:'postgres', text:'PostgreSQL'},{id:'sqlserver', text:'SQL Server'}])+
+                    '<div class="evo-inline-holder">'+
+                        '<div>'+this.fieldHTML('table', i18nXpt.SQLTable, entity)+'</div>'+
+                        '<div><label>'+uiInput.checkbox('transaction', '0')+i18nXpt.SQLTrans+'</label></div>'+
+                    '</div></div>';
         },
 
         optsHTML: function(){
@@ -55,7 +53,7 @@ return Backbone.View.extend({
 
     events: {
         'change .evol-xpt-format': 'click_format',
-        'change input': 'click_preview',
+        'change input, .evol-xpt-db': '_preview',
         'click .evol-xpt-more': 'click_toggle_sel',
         'click button': 'click_button'
     },
@@ -129,7 +127,7 @@ return Backbone.View.extend({
                 '<div data-id="csv2" class="evol-w120">'+
                 eUI.fieldLabel('separator', i18nXpt.separator)+
                 uiInput.text('separator', ',', '0')+
-                '</div>'+ // </div>
+                '</div>'+
             '</div>';
         _.each(formats, function(f){
             h+='<div id="xpt'+f+'" style="display:none;"></div>';
@@ -200,43 +198,43 @@ return Backbone.View.extend({
         eDico.setViewTitle(this);
     },
 
-    _preview: function (format) {
-        //this.$('.evol-xpt-val').html(this.exportContent(format));
-        this.$('.evol-xpt-preview').html('<textarea class="evol-xpt-val form-control">'+this.exportContent(format)+'</textarea>');
+    _preview: function () {
+        this.$('.evol-xpt-preview').html(
+            '<textarea class="evol-xpt-val form-control">'+
+            this.exportContent(this.val())+
+            '</textarea>'
+        );
     },
 
-    exportContent: function(format){
+    exportContent: function(params){
         var h='',
+            options = params.options,
             maxItem = this.sampleMaxSize-1;
 
         if(this.model && this.model.collection){
             var data = this.model.collection.models,
-                flds = this.getFields(),
-                fldsDom = this.$('.evol-xpt-flds > fieldset input:checked'), //_valFields
-                fldsDomHash = {},
-                useHeader = this.$('#xptFLH').prop('checked'),
-                showID = this.$('#showID').prop('checked');
+                fldsDomHash = {};
 
-            _.each(fldsDom, function(f){
-                fldsDomHash[f.id.substring(3)]='';
+            _.each(params.fields, function(fid){
+                fldsDomHash[fid]='';
             });
-            flds = _.filter(flds, function(f){
+            var flds = _.filter(this.getFields(), function(f){
                 if(f.id && _.has(fldsDomHash, f.id)){
                     return true;
                 }
             });
             var fMax = flds.length-1;
-            switch (format){
+            switch (params.format){
                 case 'CSV':
                 case 'TAB':
                 case 'TXT':
                     var sep = Evol.Format.trim(this.$('#separator').val());
-                    if(format=='TAB'){
+                    if(params.format=='TAB'){
                         sep='&#09;';
                     }
                     // -- header
-                    if (useHeader) {
-                        if(showID){
+                    if (options.firstLineHeader) {
+                        if(options.showID){
                             h+='ID'+sep;
                         }
                         _.each(flds, function(f, idx){
@@ -249,7 +247,7 @@ return Backbone.View.extend({
                     }
                     // -- data
                     _.every(data, function(m, idx){
-                        if(showID){
+                        if(options.showID){
                             h+=m.id+sep;
                         }
                         _.each(flds, function(f, idx){
@@ -276,9 +274,9 @@ return Backbone.View.extend({
                 case 'HTML':
                     // -- header
                     h='<table>\n';
-                    if (useHeader) {
+                    if (options.firstLineHeader) {
                         h+='<tr>\n';
-                        if(showID){
+                        if(options.showID){
                             h+='<th>ID</th>';
                         }
                         _.each(flds, function(f){
@@ -289,7 +287,7 @@ return Backbone.View.extend({
                     // -- data
                     _.every(data, function(m, idx){
                         h+='<tr>\n';
-                        if(showID){
+                        if(options.showID){
                             h+='<td>'+m.id+'</td>';
                         }
                         _.each(flds, function(f){
@@ -309,7 +307,7 @@ return Backbone.View.extend({
                     var propList= _.map(flds, function(f){
                         return f.id;
                     });
-                    if(showID){
+                    if(options.showID){
                         propList.unshift('id');
                     }
                     h=[];
@@ -317,49 +315,46 @@ return Backbone.View.extend({
                         h.push(JSON.stringify(_.pick(m.toJSON(), propList), null, 2));
                         return idx<maxItem;
                     });
-                    if(format==='JSON' && this.many){
+                    if(this.many){
                         h = '['+h.join(',\n')+']';
                     }else{
                         h = h.join('');
                     }
                     break;
                 case 'SQL':
-                    var optTransaction = this.$('#transaction').prop('checked'),
-                        optIdInsert = this.$('#insertId').prop('checked'),
+                    var optIdInsert = false,
                         crlf = '\n',
-                        sqlTable = this.$('#table').val().replace(/ /g,'_'),
+                        sqlTable = options.table.replace(/ /g,'_'),
                         sql = 'INSERT INTO '+sqlTable+' (',
-                        //db = 'postgres',//'sqlserver'
-                        formatString, emptyString, sNull, beginTrans, commitTrans;
-/*
-                    switch(db){
-                        case 'postgres':*/
-                            formatString = function(v){
-                                if(_.isUndefined(v) || v===null){
-                                    return "''";
-                                }else{
-                                    return "'"+v.replace(/'/g, "''")+"'";
-                                }
-                            };
-                            sNull='null';
-                            emptyString="''";
-                            beginTrans='BEGIN;';
-                            commitTrans='COMMIT;';/*
-                            break;
+                        fnString, formatString, emptyString, sNull, beginTrans, commitTrans;
+                    switch(options.database){
                         case 'sqlserver':
-                            formatString = function(v){
-                                return '"'+v.replace(/"/g, '""')+'"';
-                            };
+                            fnString = function(v){return '"'+v.replace(/"/g, '""')+'"';};
                             sNull='NULL';
                             emptyString='""';
                             beginTrans='BEGIN TRANSACTION';
                             commitTrans='COMMIT TRANSACTION';
+                            optIdInsert=options.showID;
                             break;
-                    }*/
-                    if(sqlTable===''){
-                        sqlTable = this.uiModel.table || this.uiModel.id;//this.uiModel.name.replace(/ /g,'_');
+                        default: //case 'postgres':
+                            fnString = function(v){return "'"+v.replace(/'/g, "''")+"'";};
+                            sNull='null';
+                            emptyString="''";
+                            beginTrans='BEGIN;';
+                            commitTrans='COMMIT;';
                     }
-                    if(showID){
+                    formatString = function(v){
+                        if(_.isUndefined(v) || v===null){
+                            return sNull;
+                        }else if(v===''){
+                            return emptyString;
+                        }else if(_.isNumber(v)){
+                            return v;
+                        }else{
+                            return fnString(v);
+                        }
+                    };
+                    if(options.showID){
                         sql+='ID, ';
                     }
                     _.each(flds, function(f,idx){
@@ -370,7 +365,7 @@ return Backbone.View.extend({
                     });
                     sql+=')\n VALUES (';
                     // -- options
-                    if(optTransaction){
+                    if(options.transaction){
                         h+=beginTrans+crlf;
                     }
                     if(optIdInsert){
@@ -380,7 +375,7 @@ return Backbone.View.extend({
                     var fValue;
                     _.every(data, function(m, idx){
                         h+=sql;
-                        if(showID){
+                        if(options.showID){
                             h+=formatString(fValue)+', ';
                         }
                         _.each(flds, function(f, idx){
@@ -432,18 +427,18 @@ return Backbone.View.extend({
                     if(optIdInsert){
                         h+='SET IDENTITY_INSERT '+sqlTable+' OFF;'+crlf;
                     }
-                    if(optTransaction){
+                    if(options.transaction){
                         h+=commitTrans+crlf;
                     }
                     break;
                 case 'XML':
-                    var elemName = this.$('#elementName').val() || this.uiModel.name.replace(/ /g,'_'),
+                    var elemName = options.elementName,
                         fv;
 
                     h='<xml>\n';
                     _.every(data, function(m, idx){
                         h+='<'+elemName+' ';
-                        if(showID){
+                        if(options.showID){
                             h+='ID="'+m.id+'" ';
                         }
                         _.each(flds, function(f){
@@ -473,7 +468,9 @@ return Backbone.View.extend({
     val: function (value) {
         if (_.isUndefined(value)) {
             var format = this.$('#evol-xpt-format').val(),
+                title = this.uiModel.label || Evol.Format.capitalize(this.uiModel.entities),
                 v = {
+                    title: title ? title + ' ('+format+')' : format,
                     format: format,
                     fields: this._valFields(),
                     options: {}
@@ -495,9 +492,12 @@ return Backbone.View.extend({
                 if(v.format==='TAB'){
                     delete v.options.separator;
                 }
+            }else if(v.format==='SQL'){
+                v.options.database = this.$('.evol-xpt-db').val() || this.uiModel.table || this.uiModel.id;
             }else if(v.format==='HTML'){
                 delete v.options;
             }
+            v.options.showID = this.$('#showID').prop('checked');
             return v;
         } else {
             // TODO implement setvalue?
@@ -523,13 +523,8 @@ return Backbone.View.extend({
                 .siblings().not('.evol-FLH').hide();
         }
         this.showFormatOpts(format);
-        this._preview(format);
+        this._preview();
         this.$el.trigger('change.export', 'format', format);
-    },
-
-    click_preview: function (evt) {
-        var format = this.$('.evol-xpt-format').val();
-        this._preview(format);
     },
 
     click_toggle_sel: function (evt) {

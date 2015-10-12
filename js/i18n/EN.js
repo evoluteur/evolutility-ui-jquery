@@ -168,6 +168,7 @@ Evol.i18n = {
         XMLroot: 'Element name', // 'Root element name'
         //xpXMLAttr: 'Attributes',
         //xpXMLElem: 'Elements',
+        db: 'Database',
         SQL: 'SQL Options',
         SQLTable: 'Table name',
         SQLTrans: 'In transaction',
