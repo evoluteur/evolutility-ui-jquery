@@ -76,11 +76,11 @@ return {
 
         function collectFields(te) {
             if (te && te.elements && te.elements.length > 0) {
-                _.each(te.elements, function (te) {
-                    if(te.type!='panel-list' && te.type!='panel'){
-                        fs.push(te);
-                    }else{
-                        collectFields(te);
+                _.each(te.elements, function (tec) {
+                    if(tec.type!='panel' && tec.type!='tab'){
+                        fs.push(tec);
+                    }else if(tec.type!='panel-list'){
+                        collectFields(tec);
                     }
                 });
             } else {
