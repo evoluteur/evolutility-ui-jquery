@@ -470,7 +470,7 @@ return Backbone.View.extend({
             var format = this.$('#evol-xpt-format').val(),
                 title = this.uiModel.label || Evol.Format.capitalize(this.uiModel.entities),
                 v = {
-                    title: title ? title + ' ('+format+')' : format,
+                    title: title,
                     format: format,
                     fields: this._valFields(),
                     options: {}
@@ -534,7 +534,27 @@ return Backbone.View.extend({
 
     click_button: function (evt) {
         var bId=$(evt.currentTarget).data('id');
+        if(bId==='export'){
+            var params=this.val();
+
+            this.download(params);
+        }
         this.$el.trigger('action', bId);
+    },
+
+    download: function(params){
+        var blob = new Blob([this.$('.evol-xpt-val').val()], {type: 'text/plain'}),
+            ext = params.format==='TAB' ? 'txt' : params.format.toLowerCase(),
+            filename = params.title.replace(/ /g, '_') + '.' + ext;
+
+        var a = document.createElement("a");
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+        document.body.appendChild(a);
+        a.click();
+        if (a.remove) {
+            a.remove();
+        }
     }
 
 });

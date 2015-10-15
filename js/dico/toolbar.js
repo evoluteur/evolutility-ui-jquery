@@ -797,12 +797,6 @@ return Backbone.View.extend({
             case 'edit':
                 this.setView(actionId, true);
                 break;
-            case 'export':
-                eUI.modal.alert(
-                    'This feature must be implemented server side.',
-                    JSON.stringify(this.curView.val(), null, 2)
-                );
-                break;
             case 'save':
             case 'save-add':
                 this.saveItem(actionId==='save-add');
