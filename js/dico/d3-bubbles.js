@@ -79,7 +79,8 @@ Bubbles.prototype.setData = function(data){
     .attr("r", function (d) { return d.radius; })
     .style("fill", function (d) { return that.fill(d[that.colorFieldId]); })
     .on("mouseenter", showPopover)
-    .on("mouseleave", removePopovers);
+    .on("mouseleave", removePopovers)
+    .on("click", removePopovers);
 
   this.nodes
     .attr('data-mid', function (d) { return d.id;});

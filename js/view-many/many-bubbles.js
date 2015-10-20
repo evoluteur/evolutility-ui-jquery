@@ -32,15 +32,16 @@ Evol.ViewMany.Bubbles = Evol.View_Many.extend({
             models = this.collection.models;
 
         if(!this._bubblesInitialized){
-            var flds = Evol.Def.getFields(this.uiModel, Evol.Def.fieldChartable);
+            var flds = Evol.Def.getFields(this.uiModel, Evol.Def.fieldChartable),
+                fd=flds.length?flds[0].id:null;
             this.bubbles = new Evol.Bubbles({
                 //selector:'.evol-bubbles-body',
                 elem: this.$('.evol-bubbles-body').get(0),
                 width:1200, 
                 height:700, 
                 fields: flds,
-                colorFieldId: flds.length?flds[0].id:null,
-                groupFieldId: flds.length?flds[0].id:null,
+                colorFieldId: fd,
+                groupFieldId: fd,
                 sizeFieldId: null,
                 uiModel: this.uiModel,
                 tooltip: function(d){
@@ -48,9 +49,6 @@ Evol.ViewMany.Bubbles = Evol.View_Many.extend({
                     flds=that.getFields();//(h, fields, model, icon, selectable, route, isTooltip)
                     Evol.ViewMany.Cards.prototype.HTMLItem.call(that, h, flds, new Backbone.Model(d), null, null, null, true);
                     return h.join('');
-                },
-                click: function(d){
-                    this.$el.trigger('click.bubble', {id:d.id}); 
                 }
             });
             this.bubbles.setData(_.map(models, function(m){
@@ -157,6 +155,7 @@ Evol.ViewMany.Bubbles = Evol.View_Many.extend({
 
     clickCircle: function(evt){
         var id=$(evt.currentTarget).data('mid');
+        this.$el.trigger('click.bubble', {id:id});
         window.location.href = '#'+ this.uiModel.id + '/browse/'+id;
     }
 
