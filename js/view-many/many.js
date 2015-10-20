@@ -11,7 +11,14 @@
 
 var Evol = Evol || {};
 
-Evol.ViewMany = {};
+Evol.ViewMany = {
+    _eventMany: {
+        'click .pagination>li': 'click_pagination',
+        //'click .evol-field-label .glyphicon-wrench': 'click_customize',
+        'change .list-sel': 'click_selection',
+        'change [data-id="cbxAll"]': 'click_checkall'
+    }
+};
 
 Evol.View_Many = function() {
 
@@ -23,7 +30,6 @@ return Backbone.View.extend({
 
     viewName: 'Many',
     viewType: 'many',
-    //editable: false,
     cardinality: 'n',
 
     options: {
@@ -33,7 +39,8 @@ return Backbone.View.extend({
         autoUpdate: false,
         // router: ...
         //titleSelector: '#title',
-        selectable: false,
+        //selectable: true,
+        //TODO: editable: false,
         links: true,
         noDataString: i18n.nodata, //'No data to display.',
         iconsPath: 'pix/',
@@ -42,13 +49,7 @@ return Backbone.View.extend({
         }
     },
 
-    events: {
-        'click .evol-sort-icons>i': 'click_sort',
-        'click .pagination>li': 'click_pagination',
-        //'click .evol-field-label .glyphicon-wrench': 'click_customize',
-        'change .list-sel': 'click_selection',
-        'change [data-id="cbxAll"]': 'click_checkall'
-    },
+    events: Evol.ViewMany._eventMany,
 
     initialize: function (opts) {
         var lastSort = localStorage.getItem(opts.uiModel.id + '-sort'),
@@ -351,15 +352,6 @@ return Backbone.View.extend({
         var id = $(evt.currentTarget).closest('[data-mid]').data('mid');
         evt.type = 'navigate.many';
         this.$el.trigger(evt, {id: id});
-    },
-
-    click_sort: function (evt) {
-        var target = $(evt.currentTarget),
-            fid = target.parent().data('fid'),
-            f = this.getField(fid),
-            down = target.attr('class').indexOf('-down') > 0;
-        this.sortList(f, down);
-        target.addClass('evol-last-sort');
     },
 
     click_pagination: function (evt) {

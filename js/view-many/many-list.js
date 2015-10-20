@@ -12,7 +12,15 @@
 Evol.ViewMany.List = Evol.View_Many.extend({
 
     viewName: 'list',
-    
+
+    events: _.extend({
+        'click .evol-sort-icons>i': 'click_sort'
+    },Evol.ViewMany._eventMany),/*
+    events: _.extend({
+            'click .evol-sort-icons>i': 'click_sort'
+        },
+        Evol.View_Many.events),*/
+
     fieldsetFilter: function (f) {
         return f.inMany || f.inList;
     },
@@ -102,6 +110,15 @@ Evol.ViewMany.List = Evol.View_Many.extend({
         }
         h+='</span></th>';
         return h;
+    },
+
+    click_sort: function (evt) {
+        var target = $(evt.currentTarget),
+            fid = target.parent().data('fid'),
+            f = this.getField(fid),
+            down = target.attr('class').indexOf('-down') > 0;
+        this.sortList(f, down);
+        target.addClass('evol-last-sort');
     }
 
 });
