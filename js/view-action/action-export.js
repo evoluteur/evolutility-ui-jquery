@@ -32,7 +32,7 @@ Evol.ViewAction.Export = function(){
                     uiInput.select('xpt-db', 'postgres', 'evol-xpt-db', null, [{id:'postgres', text:'PostgreSQL'},{id:'sqlserver', text:'SQL Server'}])+
                     '<div class="evo-inline-holder">'+
                         '<div>'+this.fieldHTML('table', i18nXpt.SQLTable, entity)+'</div>'+
-                        '<div><label>'+uiInput.checkbox('transaction', '0')+i18nXpt.SQLTrans+'</label></div>'+
+                        '<div><label>'+uiInput.checkbox('transaction', false)+i18nXpt.SQLTrans+'</label></div>'+
                     '</div></div>';
         },
 
@@ -248,7 +248,7 @@ return Backbone.View.extend({
                     // -- data
                     _.every(data, function(m, idx){
                         if(options.showID){
-                            h+=m.id+sep;
+                            h+=(m.id||('m'+idx))+sep;
                         }
                         _.each(flds, function(f, idx){
                             var mv = m.get(f.id);
@@ -376,7 +376,7 @@ return Backbone.View.extend({
                     _.every(data, function(m, idx){
                         h+=sql;
                         if(options.showID){
-                            h+=formatString(fValue)+', ';
+                            h+=formatString(m.id)+', ';
                         }
                         _.each(flds, function(f, idx){
                             fValue=m.get(f.id);
