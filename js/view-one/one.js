@@ -289,7 +289,7 @@ return Backbone.View.extend({
                     }
                     break;
                 case 'visible':
-                    eUI.setVisible($f, value);
+                    eUI.showOrHide($f, value);
                     break;
             }
         }
@@ -593,7 +593,12 @@ return Backbone.View.extend({
                     h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultValue, mode)));
                 }else{
                     h.push('<div style="width:'+parseInt(elem.width||100, 10)+'%" class="evol-fld">');
-                    that.renderField(h, elem, mode, iconsPath);
+                    if(elem.type==='panel'){
+                        that._renderPanel(h, elem, mode, iconsPath);
+                    }else{
+                        that.renderField(h, elem, mode, iconsPath);
+                    }
+                    
                     h.push("</div>");
                 }
             }

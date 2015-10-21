@@ -173,7 +173,7 @@ return Backbone.View.extend({
         var divOpts = this.$('#xpt' + xFormat).show()
             .siblings().hide();
         var $e1 = divOpts.filter('.evol-FLH');
-        eUI.setVisible($e1, xFormat==='TAB' || xFormat==='CSV' || xFormat==='HTML');
+        eUI.showOrHide($e1, xFormat==='TAB' || xFormat==='CSV' || xFormat==='HTML');
     },
 
     getFields: function (){

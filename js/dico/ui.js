@@ -348,7 +348,7 @@ Evol.UI = {
     },
 
     panelEmpty: function(id, css, style){
-        return '<div class="'+css+' panel panel-'+style+'" data-id="'+id+'"></div>';
+        return '<div data-id="'+id+'" class="'+css+' panel panel-'+style+'"></div>';
     },
 
     // --- status ---
@@ -371,7 +371,7 @@ Evol.UI = {
          return e;
      },*/
 
-    setVisible: function($e, visible){
+    showOrHide: function($e, visible){
         if(visible){
             $e.show();
         }else{

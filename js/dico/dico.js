@@ -56,7 +56,7 @@ return {
         },
         money: function (f, fid, fv) {
             return '<div class="input-group evol-money">'+uiInput.typeFlag('$')+
-                uiInput.textInt(fid, fv)+'</div>';
+                uiInput.textInt(fid, fv, f.max, f.min)+'</div>';
         },
         date: function (f, fid, fv) {
             return uiInput.date(fid, fv);
@@ -107,6 +107,13 @@ return {
 
     fieldHTML: function(fld, fid, fv, mode, iconsPath, skipLabel){
         var h='';
+        function getStyleHeight(f){
+            var fh = parseInt(f.height || 0, 10);
+            if(fh<2){
+                fh=2;
+            }
+            return 'height:'+parseInt(fh*1.6, 10)+'em';
+        }
         // --- field label ---
         if(!skipLabel){
             h+=this.HTMLFieldLabel(fld, mode || 'edit');
@@ -115,7 +122,7 @@ return {
         if(fld.readonly || mode==='browse'){
             h+='<div class="disabled evo-rdonly'+(fld.type===fts.email || fld.type===fts.url?' evol-ellipsis':'')+'" id="'+fid;
             if(fld.type===fts.textml && fld.height>1){
-                h+='" style="height:'+fld.height+'em;overflow-y: auto;';
+                h+='" style="'+getStyleHeight(fld)+';overflow-y: auto;';
             }
             h+='">';
             switch (fld.type) {
@@ -126,12 +133,19 @@ return {
                 case fts.color: // TODO is the color switch necessary?
                     h+='<div id="'+fid+'" class="form-control">'+uiInput.colorBox(fid, fv)+'</div>';
                     break;
+                case fts.textmultiline:
+                    h+='<div id="'+fid+'" class="form-control" style="'+height+'">'+_.escape(fv)+'</div>';
+                    break;
                 default:
                     h+=this.fieldHTML_RO(fld, fv, {}, iconsPath);
             }
             h+='&nbsp;</div>';
         }else{
-            h+=Evol.Dico.fieldEdit[fld.type](fld, fid, fv, iconsPath);
+            var ftc=Evol.Dico.fieldEdit[fld.type];
+            if(!ftc){
+                ftc=Evol.Dico.fieldEdit.default;
+            }
+            h+=ftc(fld, fid, fv, iconsPath);
         }
         return h;
     },
@@ -231,9 +245,13 @@ return {
         Evol.hashLov={};
     },
 
-    setViewTitle: function(that, title){
+    setViewTitle: function(that, title, badge){
         if(that.titleSelector){
-            $(that.titleSelector).html(title?title:that.getTitle());
+            $(that.titleSelector)
+                .html(
+                    (title?title:that.getTitle())+
+                    (badge?'<span class="badge badge-one">'+badge+'</span>':'')
+                );
         }
         return that;
     },
@@ -268,7 +286,7 @@ return {
                 });
                 if(listItem){
                     var txt= _.escape(listItem.text);
-                    if(listItem.icon!='' && !_.isUndefined(listItem.icon)){
+                    if(listItem.icon!=='' && !_.isUndefined(listItem.icon)){
                         txt='<img src="'+((listItem.icon && listItem.icon.substring(0,1)!=='.')?iconsPath:'')+listItem.icon+'"> '+txt;
                     }
                     hashLov[v]=txt;
@@ -289,7 +307,7 @@ return {
         return '';
     },
 /*
-     showDesigner: function(id, type, $el, context){
+    showDesigner: function(id, type, $el, context){
          var css='evodico-'+type,
              //$('<div class="evodico-'+type+'"></div>'),
              model,
@@ -511,11 +529,11 @@ return {
         },
         // -- empty
         'null': function(fv, cv){
-            return  fv=='' || _.isUndefined(fv);
+            return  fv==='' || _.isUndefined(fv);
         },
         // -- not null
         'nn': function(fv, cv){
-            return !(_.isUndefined(fv) || fv=='');
+            return !(_.isUndefined(fv) || fv==='');
         },
         // -- in []
         'in': function(fv, cv){

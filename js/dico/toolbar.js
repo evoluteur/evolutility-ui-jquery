@@ -31,6 +31,7 @@ Evol.viewClasses = {
     // --- Action ---
     'filter': Evol.ViewAction.Filter,
     'export': Evol.ViewAction.Export
+    // --- Designer ---
     //'uimodel': Evol.ViewAction.UI_Model,
     //'doc': Evol.ViewAction.Doc
 };
@@ -423,20 +424,20 @@ return Backbone.View.extend({
     },
 
     setIcons: function(mode){
-        var setVisible=eUI.setVisible;
+        var showOrHide=eUI.showOrHide;
 
         function oneMany(mode, showOne, showMany){
-            setVisible(tbBs.ones, showOne);
-            setVisible(tbBs.manys, showMany);
+            showOrHide(tbBs.ones, showOne);
+            showOrHide(tbBs.manys, showMany);
             tbBs.vws.removeAttr('style');
             tbBs.views.find('[data-id="'+mode+'"]>a').css('color', '#428bca');
         }
 
         if(this.$el){
             var tbBs=this.getToolbarButtons();
-            //setVisible(tbBs.customize, mode!='json');
+            //showOrHide(tbBs.customize, mode!='json');
             tbBs.prevNext.hide();//.removeClass('disabled');
-            setVisible(tbBs.views, !(mode==='export' || mode=='new'));
+            showOrHide(tbBs.views, !(mode==='export' ||mode=='new'));
             tbBs.del.hide();
             if(Evol.Def.isViewMany(mode)){
                 this._prevViewMany=mode;
@@ -466,15 +467,15 @@ return Backbone.View.extend({
                 oneMany(mode, false, false);
                 tbBs.del.hide();
                 tbBs.views.hide();
-                setVisible(tbBs.save, mode!=='export');
+                showOrHide(tbBs.save, mode!=='export');
             }else{
                 this._prevViewOne=mode;
                 oneMany(mode, true, false);
                 tbBs.prevNext.show();
-                setVisible(tbBs.save, mode!=='browse');
-                setVisible(tbBs.edit, mode==='browse');
+                showOrHide(tbBs.save, mode!=='browse');
+                showOrHide(tbBs.edit, mode==='browse');
             }
-            setVisible(tbBs.manys.filter('[data-id="group"]'), mode==='cards');
+            showOrHide(tbBs.manys.filter('[data-id="group"]'), mode==='cards');
         }
     },
 
@@ -789,7 +790,13 @@ return Backbone.View.extend({
         }
     },
 
-    click_action: function(evt, actionId){
+    click_action: function(evt, options){
+        var actionId;
+        if(_.isString(options)){
+            actionId=options;
+        }else{
+            actionId=options.id;
+        }
         switch(actionId){
             case 'cancel':
                 window.history.back();
@@ -830,7 +837,7 @@ return Backbone.View.extend({
     },
 
     updateNav: function(){
-        var cl=this.curView.collection.length,
+        var cl=this.curView.collection ? this.curView.collection.length : 0,
             cssDisabled='disabled',
             pIdx=this.pageIndex||0,
             $item=this.$('[data-id="prev"]');
