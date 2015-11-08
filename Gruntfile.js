@@ -1,5 +1,17 @@
 module.exports = function (grunt) {
 
+    function uiDependenciesList(){
+        var pkg=grunt.file.readJSON('bower.json'),
+        lst = [];
+        if(pkg){
+            var  deps = pkg.dependencies;
+            for(var p in deps){
+                lst.push(p+' '+deps[p]); 
+            }
+        }
+        return lst.join(' + ');
+    }
+
     grunt.initConfig({
 
         // *************************************************************************************
@@ -12,8 +24,8 @@ module.exports = function (grunt) {
             '   <%= pkg.copyright %> \n' +
             '   <%= pkg.homepage %>  \n*/\n',
 
-        bannerDependencies: '/*!\n <%= pkg.name %> <%= pkg.version %> dependencies: \n' +
-           ' bootstrap 3.3.4, jquery 2.1.4, backbone 1.1.2, backbone.localStorage v1.1.7, underscore 1.8.3, d3 3.5.5, bootstrap-datepicker" 1.4.0, select2 3.5.2, toastr 2.1.1.   \n*/\n',
+        bannerDependencies: '/*!\n <%= pkg.name %> <%= pkg.version %> dependencies: ' +
+            uiDependenciesList()+'\n*/\n',
 
         // *************************************************************************************
         //      CONCAT
@@ -28,9 +40,9 @@ module.exports = function (grunt) {
 
                     // D3.js
                     'bower_components/d3/d3.js',
-                    // jQuery & jQuery UI
+
+                    // jQuery
                     'bower_components/jquery/dist/jquery.js',
-                    //'bower_components/jquery-ui/ui/jquery.ui.widget.js',
                     //'bower_components/jquery.csv.js',
 
                     // Backbone & Underscore
@@ -61,12 +73,12 @@ module.exports = function (grunt) {
                 },
                 src: [
                     'js/dico/config.js',
+                    'js/i18n/EN.js',
 
                     'js/dico/def.js',
                     'js/dico/format.js',
                     'js/dico/ui.js',
                     'js/dico/ui-*.js',
-                    'js/i18n/EN.js',
                     'js/dico/dico.js',
                     'js/dico/d3-*.js',
 
@@ -275,6 +287,7 @@ module.exports = function (grunt) {
             arg1 + ' '+ pkg.version
         );
     });
+
     // *************************************************************************************
     //      BUILD TASKS : dev prod demo dep
     // *************************************************************************************

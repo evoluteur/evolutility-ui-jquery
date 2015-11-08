@@ -9,12 +9,12 @@
   "homepage": "http://evoluteur.github.io/evolutility/",
   "dependencies": {
     "jquery": "2.1.4",
-    "backbone": "1.2",
+    "backbone": "1.2.3",
     "backbone.localStorage": "v1.1.16",
     "underscore": "1.8.3",
-    "d3": "3.5.5",
-    "bootstrap": "3.3.4",
-    "bootstrap-datepicker": "1.4.0",
+    "d3": "3.5.6",
+    "bootstrap": "3.3.5",
+    "bootstrap-datepicker": "1.5.0",
     "select2": "3.5.2",
     "toastr": "2.1.1"
   },
