@@ -16,36 +16,6 @@ Evol.ViewAction.Export = function(){
         i18n = Evol.i18n,
         i18nXpt = i18n.export;
 
-    var EvoExport = {
-
-        fieldHTML: function(id,label,text){
-            return eUI.fieldLabel(id, label) +
-                uiInput.text(id, text.replace(/ /g, '_'), null, 'xpt-mw300');
-        },
-
-        optsXML: function(entity){
-            return '<div>'+this.fieldHTML('elementName', i18nXpt.XMLroot, entity)+'</div>';
-        },
-
-        optsSQL: function(entity){
-            return '<div><label for="xpt-db">'+i18nXpt.db+'</label> '+
-                    uiInput.select('xpt-db', 'postgres', 'evol-xpt-db', null, [{id:'postgres', text:'PostgreSQL'},{id:'sqlserver', text:'SQL Server'}])+
-                    '<div class="evo-inline-holder">'+
-                        '<div>'+this.fieldHTML('table', i18nXpt.SQLTable, entity)+'</div>'+
-                        '<div><label>'+uiInput.checkbox('transaction', false)+i18nXpt.SQLTrans+'</label></div>'+
-                    '</div></div>';
-        },
-
-        optsHTML: function(){
-            return '';
-        },
-
-        optsJSON: function(){
-            return '';
-        }
-
-    };
-
 return Backbone.View.extend({
 
     viewName: 'export',
@@ -152,35 +122,26 @@ return Backbone.View.extend({
     },
 
     showFormatOpts: function (xFormat) {
-        switch (xFormat) {
-            case 'TAB':
-                xFormat = 'CSV';
-                this.$('[data-id="csv2"]').hide();
-                break;
-            case 'CSV':
-                this.$('[data-id="csv2"]').show();
-                break;
-            case 'HTML':
-            case 'XML':
-            case 'SQL':
-            case 'JSON':
-                var c = this.$('#xpt' + xFormat);
-                if (c.html() === '') {
-                    c.html(EvoExport['opts' + xFormat](this.uiModel.name));
-                }
-                break;
+        if(xFormat==='TAB') {
+            xFormat = 'CSV';
+            this.$('[data-id="csv2"]').hide();
+        }else if(xFormat==='CSV'){
+            this.$('[data-id="csv2"]').show();
+        }else{
+            this.$('#xpt' + xFormat)
+                .html(this._formatOptions(xFormat, this.uiModel.name));
         }
         var divOpts = this.$('#xpt' + xFormat).show()
             .siblings().hide();
-        var $e1 = divOpts.filter('.evol-FLH');
-        eUI.showOrHide($e1, xFormat==='TAB' || xFormat==='CSV' || xFormat==='HTML');
+        eUI.showOrHide(divOpts.filter('.evol-FLH'), xFormat==='TAB' || xFormat==='CSV' || xFormat==='HTML');
+        return this;
     },
 
     getFields: function (){
         if(!this.fields){
             this.fields=Evol.Def.getFields(this.uiModel, function(f){
                 // todo: allow formula fields & provide value in export
-                return f.type!=fts.formula && (_.isUndefined(f.inExport) || f.inExport);
+                return f.type!=fts.formula && f.type!=fts.json && (_.isUndefined(f.inExport) || f.inExport);
             });
         }
         return this.fields;
@@ -256,8 +217,10 @@ return Backbone.View.extend({
                                 if(f.type===fts.bool){
                                     h+=mv;
                                     //}else if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
-                                }else if((f.type==fts.text || f.type==fts.textml) && (mv.indexOf(',')>-1)){ // || f.type==fts.list
-                                    h+='"'+mv.replace('"', '\\"')+'"';
+                                }else if((f.type==fts.text || f.type==fts.textml) && (mv.indexOf(',')>-1)){
+                                    h+=mv ? '"'+mv.replace('"', '\\"')+'"' : '""';
+                                }else if(f.type==fts.list){
+                                    h+=mv ? '"'+mv+'"' : '""';
                                 }else{
                                     h+=mv;
                                 }
@@ -329,7 +292,12 @@ return Backbone.View.extend({
                         fnString, formatString, emptyString, sNull, beginTrans, commitTrans;
                     switch(options.database){
                         case 'sqlserver':
-                            fnString = function(v){return '"'+v.replace(/"/g, '""')+'"';};
+                            fnString = function(v){
+                                if(_.isUndefined(v) || _.isObject(v)){
+                                    return '""';
+                                }
+                                return ('"'+v.replace(/"/g, '""')+'"');
+                            };
                             sNull='NULL';
                             emptyString='""';
                             beginTrans='BEGIN TRANSACTION';
@@ -337,7 +305,12 @@ return Backbone.View.extend({
                             optIdInsert=options.showID;
                             break;
                         default: //case 'postgres':
-                            fnString = function(v){return "'"+v.replace(/'/g, "''")+"'";};
+                            fnString = function(v){
+                                if(_.isUndefined(v) || _.isObject(v)){
+                                    return '""';
+                                }
+                                return ("'"+v.replace(/'/g, "''")+"'");
+                            };
                             sNull='null';
                             emptyString="''";
                             beginTrans='BEGIN;';
@@ -465,9 +438,14 @@ return Backbone.View.extend({
         return h;
     },
 
+    fieldHTML: function(id,label,text){
+        return eUI.fieldLabel(id, label) +
+            uiInput.text(id, text.replace(/ /g, '_'), null, 'xpt-mw300');
+    },
+
     val: function (value) {
         if (_.isUndefined(value)) {
-            var format = this.$('#evol-xpt-format').val(),
+            var format = this.$('.evol-xpt-format').val(),
                 title = this.uiModel.label || Evol.Format.capitalize(this.uiModel.entities),
                 v = {
                     title: title,
@@ -494,8 +472,6 @@ return Backbone.View.extend({
                 }
             }else if(v.format==='SQL'){
                 v.options.database = this.$('.evol-xpt-db').val() || this.uiModel.table || this.uiModel.id;
-            }else if(v.format==='HTML'){
-                delete v.options;
             }
             v.options.showID = this.$('#showID').prop('checked');
             return v;
@@ -515,15 +491,29 @@ return Backbone.View.extend({
         return v;
     },
 
+    _formatOptions: function(format, entity){
+        if(format==='XML'){
+            return '<div>'+this.fieldHTML('elementName', i18nXpt.XMLroot, entity)+'</div>';
+        }else if(format==='SQL'){
+            return '<div><label for="xpt-db">'+i18nXpt.db+'</label> '+
+                uiInput.select('xpt-db', 'postgres', 'evol-xpt-db', null, [{id:'postgres', text:'PostgreSQL'},{id:'sqlserver', text:'SQL Server'}])+
+                '<div class="evo-inline-holder">'+
+                    '<div>'+this.fieldHTML('table', i18nXpt.SQLTable, entity)+'</div>'+
+                    '<div><label>'+uiInput.checkbox('transaction', false)+i18nXpt.SQLTrans+'</label></div>'+
+                '</div></div>';
+        }
+        return '';
+    },
+
     click_format: function (evt) {
         var format = $(evt.currentTarget).val();
         if (format === 'XML') {
-            this.$('#XML').html(EvoExport.optsXML(this.uiModel.name))
+            this.$('#XML').html(this._formatOptions('XML', this.uiModel.name))
                 .show()
                 .siblings().not('.evol-FLH').hide();
         }
-        this.showFormatOpts(format);
-        this._preview();
+        this.showFormatOpts(format)
+            ._preview();
         this.$el.trigger('change.export', 'format', format);
     },
 
@@ -535,9 +525,7 @@ return Backbone.View.extend({
     click_button: function (evt) {
         var bId=$(evt.currentTarget).data('id');
         if(bId==='export'){
-            var params=this.val();
-
-            this.download(params);
+            this.download(this.val());
         }
         this.$el.trigger('action', bId);
     },
@@ -545,9 +533,9 @@ return Backbone.View.extend({
     download: function(params){
         var blob = new Blob([this.$('.evol-xpt-val').val()], {type: 'text/plain'}),
             ext = params.format==='TAB' ? 'txt' : params.format.toLowerCase(),
-            filename = params.title.replace(/ /g, '_') + '.' + ext;
+            filename = params.title.replace(/ /g, '_') + '.' + ext,
+            a = document.createElement("a");
 
-        var a = document.createElement("a");
         a.download = filename;
         a.href = window.URL.createObjectURL(blob);
         document.body.appendChild(a);

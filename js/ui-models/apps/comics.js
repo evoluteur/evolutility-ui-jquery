@@ -60,7 +60,7 @@ uiModels.comics = {
                 },
                 {
                     id: 'have', attribute: 'have', type: 'text', width: 32, inMany: false,
-                    label: 'have' 
+                    label: 'Have' 
                 },
                 {
                     id: 'complete', attribute: 'complete', type: 'boolean', width: 19, inMany: true,

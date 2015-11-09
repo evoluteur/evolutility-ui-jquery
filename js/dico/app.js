@@ -11,9 +11,9 @@
 
 Evol.App = Backbone.View.extend({
 
-    events: {
+    //events: {
         //'click .evo-head-links2>li': 'click_entity'
-    },
+    //},
 
     options: {
         //uiModels: [],

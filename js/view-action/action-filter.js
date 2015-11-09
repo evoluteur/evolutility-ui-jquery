@@ -194,10 +194,7 @@ return Backbone.View.extend({
 
     _getFieldById: function(fId){
         if(!this._hash){
-            this._hash={};
-            for (var i=0,iMax=this.fields.length;i<iMax;i++){
-                this._hash[this.fields[i].id]=this.fields[i];
-            }
+            this._hash=Evol.Def.getFieldsHash(this.fields);
         }
         return this._hash[fId];
     },

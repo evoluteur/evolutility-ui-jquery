@@ -59,6 +59,7 @@ return {
         return (_.isUndefined(f.inCharts) || f.inCharts) && Evol.Def.fieldChartable(f);
     },
     fieldChartable: function (f) {
+        //  || f.type===fts.list
         return  f.type===fts.lov || f.type===fts.bool || f.type===fts.int || f.type===fts.money;
     },
 
@@ -77,7 +78,7 @@ return {
         function collectFields(te) {
             if (te && te.elements && te.elements.length > 0) {
                 _.each(te.elements, function (tec) {
-                    if(tec.type!='panel' && tec.type!='tab'){
+                    if(!tec.elements){
                         fs.push(tec);
                     }else if(tec.type!='panel-list'){
                         collectFields(tec);
@@ -93,6 +94,14 @@ return {
             fs= _.filter(fs, fnFilter);
         }
         return fs;
+    },
+
+    getFieldsHash: function(fields){
+        var h = {};
+        _.each(fields, function(f){
+            h[f.id] = f;
+        });
+        return h;
     },
 
     // get sub collections

@@ -198,7 +198,7 @@ Evol.UI = {
         return '<button type="button" data-id="'+id+'" class="btn'+(css?' '+css:'')+'">'+label+'</button>';
     },
     buttonsIcon: function(id, cssGlyphIcon){
-        return '<div data-id="'+id+'" class="glyphicon glyphicon-'+cssGlyphIcon+'" tabindex="0"></div>';
+        return '<div data-id="'+id+'" class="'+this.html.glyphicon+cssGlyphIcon+'" tabindex="0"></div>';
     },
     buttonsPlus: function(){
         return this.buttonsIcon('bPlus', 'plus-sign');
@@ -245,7 +245,11 @@ Evol.UI = {
     },*/
 
     iconId: function (id, type, icon) {
-        return '<i class="'+Evol.UI.html.glyphicon+icon+'" data-id="'+id+'" data-type="'+type+'"></i>';
+        return '<i class="'+this.html.glyphicon+icon+'" data-id="'+id+(type?('" data-type="'+type):'')+'"></i>';
+    },
+
+    htmlIcon: function(id, chartType, css){
+        return '<div class="glyphicon '+css+'" data-id="'+id+'" data-ctype="'+chartType+'"></div>';
     },
 
     // --- menu ---
@@ -377,10 +381,6 @@ Evol.UI = {
         }else{
             $e.hide();
         }
-    },
-
-    cr2br: function(v){
-        return v.replace(/[\r\n]/g, '<br>');
     },
 
     addRemClass: function ($e, doAdd, css) {

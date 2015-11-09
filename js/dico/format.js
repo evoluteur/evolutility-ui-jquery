@@ -27,6 +27,9 @@ Evol.Format = {
         }
         return '';
     },
+    cr2br: function(v){
+        return (v || '').replace(/[\r\n]/g, '<br>');
+    },
 
     // --- date formats ---
     dateString: function(d){
@@ -63,6 +66,12 @@ Evol.Format = {
             }
         }
         return '';
+    },
+
+    // --- JSON formats ---
+    jsonString: function(d){
+        return _.escape(JSON.stringify(d, null, '\t'));
     }
+    
 
 };

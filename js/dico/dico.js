@@ -42,7 +42,7 @@ return {
         },
         html: function (f, fid, fv) {
             // TODO
-            return this.textmultiline(f, fid, fv);
+            return uiInput.textM(fid, fv, f.maxlength, f.height);
         },
         boolean: function (f, fid, fv) {
             return uiInput.checkbox(fid, fv);
@@ -234,7 +234,7 @@ return {
          if(_.isUndefined(value) || value===''){
          value='('+model.id+')';
          }*/
-        h+=value;
+        h+='<span>'+value+'</span>';
         if(!noLink){
             h+='</a>';
         }
@@ -463,6 +463,10 @@ return {
             this._$headTitle = $('#headTitle');
         }
         this._$headTitle.html(title);
+    },
+
+    getItemTitle: function(e){
+        return e.find('h4>a>span').text();
     },
 
     getRoute: function(){

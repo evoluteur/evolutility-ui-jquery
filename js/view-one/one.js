@@ -72,10 +72,7 @@ return Backbone.View.extend({
         if(!this._fields){
             var that = this;
             this._fields = eDef.getFields(this.uiModel, this.fieldsetFilter);
-            this._fieldHash = {};
-            _.each(this._fields, function(f){
-                that._fieldHash[f.id] = f;
-            });
+            this._fieldHash = eDef.getFieldsHash(this._fields);
         }
         return this._fields;
     },
@@ -172,6 +169,7 @@ return Backbone.View.extend({
                 if(f.readonly){
                     switch(f.type){
                         case fts.pix:
+                            //newPix=(fv)?('<img src="'+iconsPath+fv+'" onError="Evol.PixErr()" class="img-thumbnail">'):('<p class="">'+i18n.nopix+'</p>');
                             newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+i18n.nopix+'</p>');
                             $f.val(fv)
                                 .prev().remove();
@@ -179,7 +177,7 @@ return Backbone.View.extend({
                             //$f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+i18n.nopix+'</p>'));
                             break;
                         case fts.textml:
-                            $f.html(eUI.cr2br(_.escape(fv)));
+                            $f.html(Evol.Format.cr2br(_.escape(fv)));
                             break;
                         case fts.bool:
                         case fts.url:
@@ -337,7 +335,7 @@ return Backbone.View.extend({
                         $f.prop('checked', defaultVal?'checked':false);
                         break;
                     case fts.list:
-                        $f.select2('val', null);
+                        $f.select2('val', defaultVal);
                         break;
                     case fts.pix:
                         //var newPix=(defaultVal)?('<img src="'+iconsPath+defaultVal+'" class="img-thumbnail">'):('<p class="">'+i18n.nopix+'</p>');
