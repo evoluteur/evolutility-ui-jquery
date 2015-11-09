@@ -82,6 +82,10 @@ return {
             return uiInput.text(fid, fv, f);
             //fv!==''?EvoUI.link(fid,'',fv):''
         },
+        json: function(f, fid, fv){
+            // TODO
+            return uiInput.textM(fid, fv, f.maxlength, f.height);
+        },
         //doc: function(f, fid, fv, iconsPath){
         //},
         image: function(f, fid, fv, iconsPath){

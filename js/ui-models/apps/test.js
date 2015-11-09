@@ -49,7 +49,7 @@ function fieldTypePanel(id, label, labelPanel, label2Panel, css){
             },
             {
                 id: id+'3',
-                attribute: id,
+                attribute: id+'3',
                 type: id,
                 label: label+' 3',
                 width: 100
@@ -323,6 +323,13 @@ uiModels.test = {
                         {id: 'pl3f4', type: 'lov', label: 'Sizes', list: testLOV}
                     ]
                 }
+            ]
+        },
+        {
+            type: 'tab',
+            label: 'JSON',
+            elements: [
+                fieldTypePanel('json', 'JSON', 'JSON', '', 'panel-success')
             ]
         }
     ]

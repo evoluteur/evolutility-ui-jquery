@@ -190,6 +190,9 @@ return Backbone.View.extend({
                         case fts.color:
                             $f.html(uiInput.colorBox(f.id, fv, fv));
                             break;
+                        case fts.json:
+                            $f.html(Evol.Format.cr2br(fv));
+                            break;
                         default:
                             $f.text(eDico.fieldHTML_RO(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                     }
@@ -840,6 +843,15 @@ return Backbone.View.extend({
                             case fts.datetime:
                             case fts.time:
                                 if ((v !== '') && (!_.isDate(new Date(v)))) {
+                                    return formatMsg(f.label, i18nVal[f.type]);
+                                }
+                                break;
+                            case fts.json:
+                                var obj;
+                                try{
+                                    obj=$.parseJSON(v);
+                                }catch(err){}
+                                if(_.isUndefined(obj)){
                                     return formatMsg(f.label, i18nVal[f.type]);
                                 }
                                 break;

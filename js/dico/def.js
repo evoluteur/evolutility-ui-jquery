@@ -33,8 +33,8 @@ var fts = {
     //doc:'document',
     url: 'url',
     color: 'color',
-    hidden: 'hidden'
-    //json: 'json',
+    hidden: 'hidden',
+    json: 'json'
     //rating: 'rating',
     //widget: 'widget'
 };
@@ -48,7 +48,7 @@ return {
         return viewName==='new' || viewName==='edit' || viewName==='browse' || viewName==='json';
     },*/
     isViewMany: function(viewName){
-        return viewName==='list' || viewName==='cards' || viewName==='charts' || viewName==='bubbles';
+        return viewName==='list' || viewName==='cards' || viewName==='charts' || viewName==='bubbles'|| viewName==='sunburst';
     },
     
     isViewCollection: function(viewName){
