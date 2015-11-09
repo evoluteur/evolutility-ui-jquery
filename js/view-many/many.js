@@ -12,12 +12,43 @@
 var Evol = Evol || {};
 
 Evol.ViewMany = {
-    _eventMany: {
+
+    menuOne: [
+        //{id:'fav', type:null, icon:'star'},
+        {id:'edit', type:null, icon:'edit'},
+        {id:'delete',type: null, icon:'trash'}
+    ],
+    
+    eventsMany: {
         'click .pagination>li': 'click_pagination',
         //'click .evol-field-label .glyphicon-wrench': 'click_customize',
+        'click .evol-actions>i': 'clickAction',
         'change .list-sel': 'click_selection',
         'change [data-id="cbxAll"]': 'click_checkall'
+    },
+
+    actionEvents: {
+        enterItem: function(icons, fnElem){
+            return function(evt){
+                //evt.currentTarget).children().eq(0)
+                //$(evt.currentTarget).children().eq(0).append(
+                var e=$(evt.currentTarget);
+                if(fnElem){
+                    e=fnElem(e);
+                }
+                e.append(
+                    '<div class="evol-actions">'+
+                    _.map(icons, function(i){
+                        return Evol.UI.iconId(i.id, i.type, i.icon);
+                    }).join('')+
+                    '</div>');
+            };
+        },
+        leaveItem: function(evt){
+            $(evt.currentTarget).find('.evol-actions').remove();
+        }
     }
+
 };
 
 Evol.View_Many = function() {
@@ -49,7 +80,7 @@ return Backbone.View.extend({
         }
     },
 
-    events: Evol.ViewMany._eventMany,
+    events: Evol.ViewMany.eventsMany,
 
     initialize: function (opts) {
         var lastSort = localStorage.getItem(opts.uiModel.id + '-sort'),
@@ -194,7 +225,7 @@ return Backbone.View.extend({
             fields = this.getFields(),
             pSize = this.pageSize,
             collecLength = this.collection.length,
-            pSummary = this.pageSummary(pageIdx, pSize, collecLength);
+            pSummary = this._pageSummary(pageIdx, pSize, collecLength);
 
         this._$body().html(this._HTMLbody(fields, pSize, this.uiModel.icon, pageIdx, this.selectable));
         this.$('.evo-pagination').html(this._HTMLpaginationBody(pageIdx, pSize, collecLength));
@@ -234,7 +265,11 @@ return Backbone.View.extend({
         return this;
     },
 
-    pageSummary: function (pIdx, pSize, cSize) {
+    pageSummary: function(){
+        return this._pageSummary(this.pageIndex, this.pageSize, this.collection.length);
+    },
+
+    _pageSummary: function (pIdx, pSize, cSize) {
         if (cSize === 0) {
             return '';
         } else if (cSize === 1) {

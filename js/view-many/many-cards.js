@@ -13,6 +13,11 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
 
     viewName: 'cards',
 
+    events: _.extend({
+        'mouseenter .evol-cards-body>div': 'enterItem',
+        'mouseleave .evol-cards-body>div': 'leaveItem'
+    }, Evol.ViewMany.eventsMany),
+
     fieldsetFilter: function (f) {
         return f.inMany || f.inCards;
     },
@@ -84,7 +89,7 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
                     h.push('<div'+ (css2?' class="'+css2+'"':'') +'>'+v+'</div>');
                 }else {
                     if(!label2){
-                        label2 = f.label;
+                        label2 = f.labelMany || f.label;
                     }
                     h.push('<div class="'+ css2 +'"><label>'+label2+':</label> '+v+'</div>');
                 }
@@ -92,9 +97,9 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
         });
         h.push('</div>');
         return this;
-    }/*,
+    },
 
-    customize: function () {
+    /* customize: function () {
         var labels = this.$('h4 > a.evol-nav-id');
         if(this._custOn){
             labels.find('i').remove();
@@ -105,6 +110,34 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
         }
         return this;
     }*/
+
+    enterItem: Evol.ViewMany.actionEvents.enterItem(Evol.ViewMany.menuOne),
+
+    leaveItem: Evol.ViewMany.actionEvents.leaveItem,
+    
+    clickAction: function(evt){
+        var that = this,
+            e = $(evt.currentTarget),
+            aid = e.data('id'),
+            id = e.parent().siblings().eq(0).data('mid'),
+            p = e.closest('.panel');
+        
+        if(aid==='edit'){
+            this.$el.trigger('navigate', {id: id, view: aid});
+        }else{
+            this.$el.trigger('action', {
+                id: aid, 
+                mid: id, 
+                title: Evol.Dico.getItemTitle(p),
+                fnSuccess: function(escape){
+                    p.fadeOut(500, function(){
+                        p.remove();
+                        that.$el.trigger('status', that.pageSummary());
+                    });
+                }
+            });
+        }
+    }
 
 });
 

@@ -11,30 +11,23 @@
 
 Evol.viewClasses = {
     getClass: function(className){
-        var cn=Evol.viewClasses;
-        if(cn[className]){
-            return cn[className];
+        if(this[className]){
+            return this[className];
         }else{
-            return cn.list;
+            return this.list;
         }
-    },
-    // --- One ---
-    'browse': Evol.ViewOne.Browse,
-    'edit': Evol.ViewOne.Edit,
-    'mini': Evol.ViewOne.Mini,
-    'json': Evol.ViewOne.JSON,
-    // --- Many ---
-    'list': Evol.ViewMany.List,
-    'cards': Evol.ViewMany.Cards,
-    'bubbles': Evol.ViewMany.Bubbles,
-    'charts': Evol.ViewMany.Charts,
-    // --- Action ---
-    'filter': Evol.ViewAction.Filter,
-    'export': Evol.ViewAction.Export
-    // --- Designer ---
-    //'uimodel': Evol.ViewAction.UI_Model,
-    //'doc': Evol.ViewAction.Doc
+    }
 };
+
+_.forEach([ 'browse', 'edit', 'mini', 'json'],function(vn){
+    Evol.viewClasses[vn] = Evol.ViewOne[vn==='json'?'JSON':Evol.Format.capitalize(vn)];
+});
+_.forEach([ 'list', 'cards', 'bubbles', 'charts'],function(vn){
+    Evol.viewClasses[vn] =  Evol.ViewMany[Evol.Format.capitalize(vn)];
+});
+_.forEach([ 'filter', 'export'],function(vn){
+    Evol.viewClasses[vn] =  Evol.ViewAction[Evol.Format.capitalize(vn)];
+});
 
 // toolbar widget which also acts as a controller for all views "one" and "many" as well as actions
 Evol.Toolbar = function() {
@@ -84,8 +77,7 @@ return Backbone.View.extend({
                 {id:'save', label: i18nTool.bSave, icon:'floppy-disk', n:'1', readonly:false},
                 {id:'del', label: i18nTool.bDelete, icon:'trash', n:'1', readonly:false},
                 {id:'filter', label: i18nTool.bFilter, icon:'filter',n:'n'},
-                //{id:'group',label: i18nTool.bGroup, icon:'resize-horizontal',n:'n'},
-                {id:'export', label: i18nTool.bExport, icon:'cloud-download',n:'n'}
+                {id:'export', label: i18nTool.bExport, icon:'cloud-download',n:'n'},
                 //{id:'cog',label: i18nTool.bSettings, icon:'cog',n:'n'}
             ],
             prevNext:[
@@ -113,7 +105,6 @@ return Backbone.View.extend({
         _.extend(this, this.options, opts);
         this.views=[];
         this.viewsHash={};
-        //this._group=false;
     },
 
     render: function() {
@@ -316,7 +307,8 @@ return Backbone.View.extend({
                 }
             }
         }
-        if(this.curView.cardinality==='n'){
+        this.updateStatus();
+        if(vw.cardinality==='n'){
             this.setRoute('', false);
             if(this._filterOn){ // TODO do not always change flag
                 this.showFilter(false);
@@ -350,13 +342,6 @@ return Backbone.View.extend({
 
     getView:function(){
         return this.curView;
-    },
-
-    setTitle: function(){
-        if(this.curView){
-            this.curView.setTitle();
-        }
-        return this;
     },
 
     proceedIfReady:function(cbOK, cbCancel){
@@ -397,11 +382,11 @@ return Backbone.View.extend({
         return this;
     },
 
-     _keepTab: function(viewName){
+    _keepTab: function(viewName){
          if(this.tabId && (viewName=='browse'||viewName=='edit')){
             this.curView.setTab(this.tabId);
          }
-     },
+    },
 
     getToolbarButtons: function(){
         if(!this._toolbarButtons){
@@ -442,9 +427,7 @@ return Backbone.View.extend({
             if(Evol.Def.isViewMany(mode)){
                 this._prevViewMany=mode;
                 oneMany(mode, false, true);
-                if(mode==='charts' || mode==='bubbles'){
-                    this.setStatus('');
-                }else{
+                if(mode!=='charts' && mode!=='bubbles'){
                     var cSize=this.collection.length,
                         pSize=this.curView.pageSize;
                     if(cSize > pSize){
@@ -475,7 +458,7 @@ return Backbone.View.extend({
                 showOrHide(tbBs.save, mode!=='browse');
                 showOrHide(tbBs.edit, mode==='browse');
             }
-            showOrHide(tbBs.manys.filter('[data-id="group"]'), mode==='cards');
+            //showOrHide(tbBs.manys.filter('[data-id="group"]'), mode==='cards');
         }
     },
 
@@ -527,11 +510,6 @@ return Backbone.View.extend({
          return this;
      },*/
 
-    setStatus: function(msg){
-        this.$('.evo-toolbar .evo-tb-status')
-            .html(msg);
-    },
-
     setData: function(data){
         if(this.curView){
             this.curView.setData(data);
@@ -550,17 +528,19 @@ return Backbone.View.extend({
         return this._curCollec();
     },
 
-    setModelById: function(id){
+    setModelById: function(id, skipNav){
         var that = this,
             m,
             fnSuccess = function(){
                 // TODO set collection ??
                 that.model = m;
-                if(that.curView.cardinality!='1'){
-                    that.setView(that.defaultViewOne);
+                if(!skipNav){
+                    if(that.curView.cardinality!='1'){
+                        that.setView(that.defaultViewOne);
+                    }
+                    that.curView.setModel(m);
+                    eUI.scroll2Top();
                 }
-                that.curView.setModel(m);
-                eUI.scroll2Top();
             },
             fnError = function(){
                 alert('Error: Invalid model ID.');
@@ -613,8 +593,8 @@ return Backbone.View.extend({
             .clearMessage();
     },
 
-    setRoute: function(id, triggerRoute){
-        Evol.Dico.setRoute(this.router, this.uiModel.id, this.curView.viewName, id, triggerRoute);
+    setRoute: function(id, triggerRoute, view){
+        Evol.Dico.setRoute(this.router, this.uiModel.id, view || this.curView.viewName, id, triggerRoute);
         Evol.Dico.setPageTitle(this.curView.getTitle());
         return this;
     },
@@ -699,64 +679,78 @@ return Backbone.View.extend({
             .setTitle(i18n.getLabel('tools.NewEntity', this.uiModel.name, vw.getTitle()));
     },
 
-    deleteItem: function(){
+    deleteItem: function(skipConfirmation, id, options){
         var that=this,
-            uimId=this.uiModel.id,
+            uimId=id || this.uiModel.id,
             entityName=this.uiModel.name,
-            entityValue=this.curView.getTitle();
+            entityValue=(options && options.title) || this.curView.getTitle(),
+            fnSuccess;
 
-        if(this.curView.cardinality==='1'){
-            var delModel=this.model;
-            if(delModel){
-                eUI.modal.confirm(
-                    'delete',
-                    i18n.getLabel('deleteX', entityName),
-                    i18n.getLabel('delete1', entityName, _.escape(entityValue)),
-                    {
-                        'ok': function(){
-                            var collec=that.collection,
-                                delIdx=_.indexOf(collec.models, delModel),
-                                newIdx=delIdx,
-                                newModel=null;
+        if(id || this.curView.cardinality==='1'){
+            if(id){
+                this.setModelById(id, true);
+            }
+            fnSuccess = function(){
+                var collec=that.collection,
+                    delIdx=_.indexOf(collec.models, delModel),
+                    newIdx=delIdx,
+                    newModel=null;
 
-                            if(collec.length>1){
-                                if(delIdx===0){
-                                    newIdx=1;
-                                }else if(delIdx<collec.length-1){
-                                    newIdx=delIdx+1;
-                                }else{
-                                    newIdx=delIdx-1;
-                                }
-                                newModel = collec.at(newIdx);
-                            }
-                            if(newModel){
-                                newModel.collection = collec;
-                            }
-                            var opts = {
-                                success: function(){
-                                    if(newModel===null || collec.length===0){
-                                        that.curView.clear();
-                                    }else{
-                                        that.model = newModel;
-                                        that.setRoute(newModel.id, false);
-                                        that.curView.setModel(newModel);
-                                    }
-                                    var eName=Evol.Format.capitalize(entityName);
-                                    that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('msg.deleted', eName, entityValue), 'success');
-                                    that._trigger('item.deleted');
-                                },
-                                error: function(m, err){
-                                    alert('error in "deleteItem"');
-                                }
-                            };
-                            if(!Evol.Config.localStorage){
-                                opts.url=that.model.url();
-                            }
-                            collec.remove(delModel);
-                            delModel.destroy(opts);
-                        }
+                if(collec.length>1){
+                    if(delIdx===0){
+                        newIdx=1;
+                    }else if(delIdx<collec.length-1){
+                        newIdx=delIdx+1;
+                    }else{
+                        newIdx=delIdx-1;
                     }
-                );
+                    newModel = collec.at(newIdx);
+                }
+                if(newModel){
+                    newModel.collection = collec;
+                }
+                var opts = {
+                    success: function(){
+                        if(newModel===null || collec.length===0){
+                            that.curView.clear();
+                        }else{
+                            that.model = newModel;
+                            if(!id){
+                                that.setRoute(newModel.id, false);
+                                that.curView.setModel(newModel);
+                            }
+                        }
+                        var eName=Evol.Format.capitalize(entityName);
+                        that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('msg.deleted', eName, entityValue), 'success');
+                        if(options && options.fnSuccess){
+                            options.fnSuccess();
+                        }
+                        that._trigger('item.deleted');
+                    },
+                    error: function(m, err){
+                        alert('error in "deleteItem"');
+                    }
+                };
+                if(!(id || Evol.Config.localStorage)){
+                    opts.url=that.model.url();
+                }
+                collec.remove(delModel);
+                delModel.destroy(opts);
+            };
+            var delModel = this.model;
+            if(delModel){
+                if(skipConfirmation){
+                    fnSuccess();
+                }else{
+                    eUI.modal.confirm(
+                        'delete',
+                        i18n.getLabel('deleteX', entityName),
+                        i18n.getLabel('delete1', entityName, _.escape(entityValue)),
+                        {
+                            'ok': fnSuccess
+                        }
+                    );
+                }
             }
         }/*else{
             if(that.curView.getSelection){
@@ -790,6 +784,35 @@ return Backbone.View.extend({
         }
     },
 
+    setTitle: function(){
+        if(this.curView){
+            this.curView.setTitle();
+        }
+        return this;
+    },
+
+    getStatus: function(){
+        if(this.curView.cardinality==='n'){
+            if(this._filteredCollection){
+                return this._filteredCollection.length+' / '+this.collection.length+' '+this.uiModel.namePlural;
+            }else{
+                return this.collection.length+' '+this.uiModel.namePlural;
+            }
+        }else{
+            return '';
+        }
+    },
+
+    setStatus: function(msg){
+        this.$('.evo-toolbar .evo-tb-status')
+            .html(msg);
+        this.$('.evo-many-summary').html(msg);
+    },
+
+    updateStatus: function(){
+        this.setStatus(this.getStatus());
+    },
+
     click_action: function(evt, options){
         var actionId;
         if(_.isString(options)){
@@ -802,7 +825,18 @@ return Backbone.View.extend({
                 window.history.back();
                 break;
             case 'edit':
-                this.setView(actionId, true);
+                if(options.mid){
+                    this.setModelById(options.mid);
+                    this.setRoute(options.mid, false, 'edit');
+                }else{
+                    //todo
+                    this.setView(actionId, true);
+                }
+                break;
+            case 'delete':
+                if(options.mid){
+                    this.deleteItem(false, options.mid, options);
+                }
                 break;
             case 'save':
             case 'save-add':
@@ -890,7 +924,7 @@ return Backbone.View.extend({
                 this.saveItem(false);
                 break;
             case 'del':
-                this.deleteItem();
+                this.deleteItem(evt.shiftKey);
                 break;
             case 'filter':
                 this.toggleFilter();
@@ -920,6 +954,7 @@ return Backbone.View.extend({
                 if(toolId && toolId!==''){
                     this.setView(toolId, true);
                 }
+                this.updateStatus();
         }
         this._trigger('toolbar.'+toolId);
     },
@@ -928,10 +963,13 @@ return Backbone.View.extend({
         this.$el.trigger(name, ui);
     },
 
-    click_navigate: function(evt, ui){
+    click_navigate: function(evt, ui, view){
         evt.stopImmediatePropagation();
         this.setModelById(ui.id);
-        this.setRoute(ui.id, false);
+        if(ui.view){
+            this.setView(ui.view);
+        }
+        this.setRoute(ui.id, false, ui.view);
     },
 
     change_tab: function(evt, ui){
@@ -954,12 +992,12 @@ return Backbone.View.extend({
                 collec=new Backbone.Collection(models);
             }
             this._filteredCollection=collec;
-            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.namePlural);
+            
         }else{
             collec=this.collection;
             this._filteredCollection=null;
-            this.setStatus(collec.length+' '+this.uiModel.namePlural);
         }
+        this.updateStatus();
         this._flagFilterIcon(fvs.length);
         this.pageIndex=0;
         this.curView.setCollection(collec);
@@ -988,12 +1026,11 @@ return Backbone.View.extend({
                 collec=new Backbone.Collection(models);
             }
             this._filteredCollection=collec;
-            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.namePlural);
         }else{
             collec=this.collection;
             this._filteredCollection=null;
-            this.setStatus(collec.length+' '+this.uiModel.namePlural);
         }
+        this.updateStatus();
         this.pageIndex=0;
         if(this.curView.setCollection){
             this.curView.setCollection(collec);

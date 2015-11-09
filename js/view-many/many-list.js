@@ -14,12 +14,10 @@ Evol.ViewMany.List = Evol.View_Many.extend({
     viewName: 'list',
 
     events: _.extend({
+        'mouseenter tbody>tr': 'enterItem',
+        'mouseleave tbody>tr': 'leaveItem',
         'click .evol-sort-icons>i': 'click_sort'
-    },Evol.ViewMany._eventMany),/*
-    events: _.extend({
-            'click .evol-sort-icons>i': 'click_sort'
-        },
-        Evol.View_Many.events),*/
+    }, Evol.ViewMany.eventsMany),
 
     fieldsetFilter: function (f) {
         return f.inMany || f.inList;
@@ -70,6 +68,11 @@ Evol.ViewMany.List = Evol.View_Many.extend({
                 v = input.colorBox(f.id, model.escape(f.attribute || f.id));
             }else if(f.type===ft.formula){
                 v = input.formula(null, f, model);
+            }else if(f.type===ft.html){
+                v = model.get(f.attribute || f.id);
+                //if(v && v.length>200){
+                    //v = v.subString(0,200)+'...';
+                //}
             }else{
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
@@ -87,7 +90,7 @@ Evol.ViewMany.List = Evol.View_Many.extend({
                 }
             }
             var css=f.css || '';
-            if(f.type===ft.textml || f.type===ft.email || f.type===ft.url){
+            if(f.type===ft.email || f.type===ft.url){
                 css+=' evol-ellipsis';
             }else if(f.type===ft.pix){
                 css+=' evol-td-pix';
@@ -118,7 +121,40 @@ Evol.ViewMany.List = Evol.View_Many.extend({
             f = this.getField(fid),
             down = target.attr('class').indexOf('-down') > 0;
         this.sortList(f, down);
-        target.addClass('evol-last-sort');
+        //target.addClass('evol-last-sort');
+    },
+
+    enterItem: Evol.ViewMany.actionEvents.enterItem(
+        Evol.ViewMany.menuOne, 
+        function(e){
+            return e.children().eq(0);
+        }
+    ),
+
+    leaveItem: Evol.ViewMany.actionEvents.leaveItem,
+    
+    clickAction: function(evt){
+        var that=this,
+            e=$(evt.currentTarget),
+            aid=e.data('id'),
+            tr=e.closest('tr'),
+            id=tr.data('mid');
+
+        if(aid==='edit'){
+            this.$el.trigger('navigate', {id: id, view: aid});
+        }else{
+            this.$el.trigger('action', {
+                id: aid, 
+                mid: id, 
+                title: e.closest('tr').find('a>span').text(),
+                fnSuccess: function(escape){
+                    tr.fadeOut(500, function(){
+                        tr.remove();
+                        that.$el.trigger('status', that.pageSummary());
+                    });
+                }
+            });
+        }
     }
 
 });
