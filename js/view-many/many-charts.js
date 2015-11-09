@@ -22,6 +22,8 @@ return Evol.View_Many.extend({
 
     viewName: 'charts',
 
+    isChart: true,
+
     options: {
         //sizes: '600x300',
         style: 'panel-info',
@@ -30,7 +32,9 @@ return Evol.View_Many.extend({
     },
 
     events: {
-        'click .evo-chart-config': 'changeChartType'
+        'mouseenter .evol-many-charts>div': 'enterItem',
+        'mouseleave .evol-many-charts>div': 'leaveItem',
+        'click .evol-actions>i': 'clickAction'
         //'click .evol-field-label .glyphicon-wrench': 'click_customize'
     },
 
@@ -61,11 +65,12 @@ return Evol.View_Many.extend({
             var groups,
                 lb;
             _.each(chartFields, function(f){
-                var data=[],
-                    labels=[],
+                var trData = Evol.Def.countBy(models, f, cData, iconsPath);
+                var data=trData.data,
+                    labels=trData.labels,
                     nb, dataSetName,
                     isList=f.type===fTypes.lov || f.type===fTypes.list;
-
+/*
                 if(f.type===fTypes.bool){
                     groups = _.countBy(models, function(m) {
                         return m.get(f.id)===true;
@@ -103,17 +108,10 @@ return Evol.View_Many.extend({
                         labels.push(lb+' ('+nb+')');
                     }
                 }
+                */
                 chartType = f.typeChart || (f.type===fTypes.lov ? 'pie':'bars');
                 h+='<div class="evol-chart-holder panel '+style+'">'+
-                    '<div class="glyphicon glyphicon-cog evo-chart-config pull-right" data-id="'+f.id+'" data-ctype="'+chartType+'"></div>'+
-                    '<div class="chart-holder">';
-                cData[f.id] = {
-                    field: f,
-                    data: data,
-                    labels: labels,
-                    style: style,
-                    sizes: sizes
-                };
+                    '<div class="opts"></div><div class="chart-holder" data-fid="'+f.id+'" data-ctype="'+chartType+'">';
                 if(chartType==='pie'){
                     h+=EvoUI.Charts.Pie(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aByB', entityName, f.label), data, labels, style, sizes);
                 }else if(chartType==='bars'){
@@ -134,20 +132,35 @@ return Evol.View_Many.extend({
         // b/c it can be invoked for all view Many
     },
 
-    changeChartType: function(evt){
+    enterItem: Evol.ViewMany.actionEvents.enterItem([
+        {id:'bars', type:null, icon:'stats'},
+        {id:'pie',type: null, icon:'record'},
+        //{id:'big',type: null, icon:'resize-full'} // resize-small
+    ]),
+
+    leaveItem: Evol.ViewMany.actionEvents.leaveItem,
+
+    clickAction: function(evt){
         var el=$(evt.currentTarget),
-            id=el.data('id'),
-            ctype=el.data('ctype'),
-            chart=EvoUI.Charts,
-            oldData=this._cData[id],
+            cType=el.data('id'),
+            holder=el.parent().parent().find('.chart-holder'),
+            oType=holder.data('ctype'),
+            fid=holder.data('fid'),
+            oldData=this._cData[fid],
             f=oldData.field,
-            holder=el.parent().find('.chart-holder');
-        if(ctype==='pie'){
-            holder.html(chart.Bars(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aB', this.entityName, f.label), oldData.data, oldData.labels, oldData.style, oldData.sizes));
-            el.data('ctype', 'bars');
-        }else{
-            holder.html(chart.Pie(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aByB', this.entityName, f.label), oldData.data, oldData.labels, oldData.style, oldData.sizes));
-            el.data('ctype', 'pie');
+            chart=EvoUI.Charts,
+            c, cl;
+
+        if(cType!=oType){
+            if(cType==='bars'){
+                c='Bars';
+                cl='charts.aB';
+            }else{
+                c='Pie';
+                cl='charts.aByB';
+            }
+            holder.html(chart[c](f.labelCharts?f.labelCharts:i18n.getLabel(cl, this.entityName, f.label), oldData.data, oldData.labels, oldData.style, oldData.sizes));
+            holder.data('ctype', cType);
         }
     }
 

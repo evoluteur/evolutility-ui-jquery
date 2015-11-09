@@ -4,29 +4,26 @@
 //  Copyright (c) 2015, Olivier Giulieri
 
 /* --- charts --- */
-
+.evol-many-charts{
+	.flex-holder();
+}
 .evol-chart-holder{
+	.flex-item();
 	position: relative;
-	float:left;
 	text-align: center;
 	background-color :#FFFFFF;
 	margin:10px 10px 10px 5px;
 	width: 400px;
 	min-height:286px;
 }
+.chart-holder{
+	>label{
+		display:block;
+	}
+}
 .evol-chart-title{
 	text-align:center;
 	padding:10px 20px 30px;
-}
-.evo-chart-config{
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	cursor: pointer;
-	color: silver;
-	&:hover{
-		color:#428bca;
-	}
 }
 /*
 .evo-chart-table{

@@ -126,6 +126,61 @@ return {
 
         collectCollecs(uiModel);
         return ls;
+    },
+
+    countBy: function(models, f, cData, iconsPath){
+        var fTypes=Evol.Def.fieldTypes,
+            i18n = Evol.i18n,
+            data=[],
+            labels=[],
+            nb, dataSetName;
+
+        if(f.type===fTypes.bool){
+            groups = _.countBy(models, function(m) {
+                return m.get(f.id)===true;
+            });
+            for(dataSetName in groups) {
+                nb=groups[dataSetName];
+                if(dataSetName==='true'){
+                    lb = f.labelTrue || i18n.yes;
+                }else{
+                    lb = f.labelFalse || i18n.no;
+                }
+                data.push(nb);
+                labels.push(lb+' ('+nb+')');
+            }
+        }else{
+            groups = _.countBy(models, function(m) {
+                return m.get(f.id);
+            });
+            for(dataSetName in groups) {
+                nb=groups[dataSetName];
+                if(dataSetName==='undefined'){
+                    lb = i18n.na;
+                }else if(dataSetName==='' || dataSetName==='null'){
+                    lb = i18n.none;
+                }else if(f.type===fTypes.lov || f.type===fTypes.list){
+                    if(f.list && f.list.length && f.list[0].icon){
+                        lb = Evol.Dico.lovTextNoPix(f, dataSetName);
+                    }else{
+                        lb = Evol.Dico.lovText(f, dataSetName, Evol.hashLov, iconsPath);
+                    }
+                }else{
+                    lb = dataSetName;
+                }
+                data.push(nb);
+                labels.push(lb+' ('+nb+')');
+            }
+        }
+        chartType = f.typeChart || (f.type===fTypes.lov ? 'pie':'bars');
+        cData[f.id] = {
+            field: f,
+            data: data,
+            labels: labels,
+            //style: style,
+            //sizes: sizes
+        };
+        return { data: data, labels: labels};
     }
 
 };
