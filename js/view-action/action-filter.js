@@ -19,6 +19,7 @@ Evol.ViewAction.Filter = function(){
             sNotEqual:'ne',
             sStart:'sw',
             sContain:'ct',
+            sNotContain:'nct',
             sFinish:'fw',
             sInList:'in',
             sIsNull:'null',
@@ -356,6 +357,7 @@ return Backbone.View.extend({
                                 fOption(fOps.sNotEqual, evoLang.sNotEqual)+
                                 fOption(fOps.sStart, evoLang.sStart)+
                                 fOption(fOps.sContain, evoLang.sContain)+
+                                fOption(fOps.sNotContain, evoLang.sNotContain)+
                                 fOption(fOps.sFinish, evoLang.sFinish);
                     }
                     h+=fOption(fOps.sIsNull, evoLang.sIsNull)+

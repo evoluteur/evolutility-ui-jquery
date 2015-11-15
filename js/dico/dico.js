@@ -525,6 +525,13 @@ return {
             }
             return false;
         },
+        // -- doesn't contains
+        'nct': function(fv, cv){
+            if(fv){
+                return fv.toLocaleLowerCase().indexOf(cv)===-1;
+            }
+            return true;
+        },
         // -- finish w/
         'fw': function(fv, cv){
             var l1=fv.length,
