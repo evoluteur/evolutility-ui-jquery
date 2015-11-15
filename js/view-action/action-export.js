@@ -160,10 +160,8 @@ return Backbone.View.extend({
     },
 
     _preview: function () {
-        this.$('.evol-xpt-preview').html(
-            '<textarea class="evol-xpt-val form-control">'+
-            this.exportContent(this.val())+
-            '</textarea>'
+        this.$('.evol-xpt-val').val(
+            this.exportContent(this.val())
         );
     },
 
@@ -191,7 +189,7 @@ return Backbone.View.extend({
                 case 'TXT':
                     var sep = Evol.Format.trim(this.$('#separator').val());
                     if(params.format=='TAB'){
-                        sep='&#09;';
+                        sep='\t'; //sep='&#09;';
                     }
                     // -- header
                     if (options.firstLineHeader) {
