@@ -24,6 +24,8 @@ bower install evolutility
 bower install evolutility#master
 ```
 
+... or download it from [GitHub](https://github.com/evoluteur/evolutility/archive/master.zip).
+
 ## Views
 
 Evolutility's views have a Backbone model (to define the data) and also a UI-model (to define the UI to display the data and interact with it).
