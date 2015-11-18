@@ -539,28 +539,7 @@
 <script>
 
     $(document).ready(function(){
-        var itemHtml = function(m){
-                return '<p><strong>'+m.name+'</strong>:&nbsp;'+m.description+'</p>';
-            },
-            viewsHtml = function (selector, namespace, opts){//<a name="one" class="evo-anchor">&nbsp;</a>
-                var h='<a name="'+selector+'-api" class="evo-anchor">&nbsp;</a><h3>API for "'+selector+'" <span class="view-fullname">'+namespace+'</span></h3>';
-                opts.type='option';
-                h += '<a name="'+selector+'-api-options" class="evo-anchor">&nbsp;</a><h4><i class="glyphicon glyphicon-list-alt"></i>&nbsp;Options</h4>';
-                h += _.map(_.where(EvoDoc, opts), itemHtml).join('');
-                opts.type='method';
-                h += '<br><a name="'+selector+'-api-methods" class="evo-anchor">&nbsp;</a><h4><i class="glyphicon glyphicon-console"></i>&nbsp;Methods</h4>';
-                h += _.map(_.where(EvoDoc, opts), itemHtml).join('');
-                opts.type='event';
-                h += '<br><a name="'+selector+'-api-events" class="evo-anchor">&nbsp;</a><h4><i class="glyphicon glyphicon-flash"></i>&nbsp;Events</h4>';
-                h += _.map(_.where(EvoDoc, opts), itemHtml).join('');
-
-                $('#vw-'+selector).append(h);
-            };
-
-        viewsHtml('one', 'Evol.ViewOne', {one:true});
-        viewsHtml('many', 'Evol.ViewMany', {many:true});
-        viewsHtml('filter', 'Evol.ViewAction.Filter', {view:'filter'});
-        viewsHtml('export', 'Evol.ViewAction.Export', {view:'export'});
+        enhanceViewDefinitions();
     });
 
 </script>
