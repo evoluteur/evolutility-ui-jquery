@@ -283,10 +283,10 @@ var uiModels_comics = {
 See [UI-Model documentation](http://evoluteur.github.io/evolutility/doc/ui-model.html) for the UI vocabulary available (structure of UI-models or metamodel).
 
 UI-Models for the demo apps:
-[To Do list](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/todo.js),
-[AddressBook](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/contacts.js),
-[Wine Cellar](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/winecellar.js),
-[Graphic Novels](http://github.com/evoluteur/evolutility/blob/master/js/ui-models/apps/comics.js).
+[To Do list](http://github.com/evoluteur/evolutility/blob/master/ui-models/todo.js),
+[AddressBook](http://github.com/evoluteur/evolutility/blob/master/ui-models/contacts.js),
+[Wine Cellar](http://github.com/evoluteur/evolutility/blob/master/ui-models/winecellar.js),
+[Graphic Novels](http://github.com/evoluteur/evolutility/blob/master/ui-models/comics.js).
 
 With Evolutility, a single UI-model defines a full single page applications (SPA) to view, edit, filter and export a Backbone.js model or collection.
 

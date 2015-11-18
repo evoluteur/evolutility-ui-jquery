@@ -103,14 +103,14 @@ module.exports = function (grunt) {
                     },
                 src: [
                     //"demo/demo.js",
-                    //"js/ui-models/apps/todo.js",
-                    "js/ui-models/apps/todo.data.js",
-                    //"js/ui-models/apps/contacts.js",
-                    "js/ui-models/apps/contacts.data.js",
-                    //"js/ui-models/apps/winecellar.js",
-                    "js/ui-models/apps/winecellar.data.js",
-                    //"js/ui-models/apps/comics.js",
-                    "js/ui-models/apps/comics.data.js"
+                    //"ui-models/todo.js",
+                    "ui-models/todo.data.js",
+                    //"ui-models/contacts.js",
+                    "ui-models/contacts.data.js",
+                    //"ui-models/winecellar.js",
+                    "ui-models/winecellar.data.js",
+                    //"ui-models/comics.js",
+                    "ui-models/comics.data.js"
                 ],
                 dest: 'demo/demo-data.js'
             }
@@ -167,11 +167,7 @@ module.exports = function (grunt) {
                 'js/toolbar.js',
 
                 // --- ui models ---
-                'js/ui-models/apps/*.js',
-                'js/ui-models/test/*.js',
-
-                // --- testing stuff ---
-                '!*-nogit.js'
+                'ui-models/*.js'
 
             ]
         },
