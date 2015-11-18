@@ -93,9 +93,6 @@ module.exports = function (grunt) {
                     //'js/navbar.js',
                     'js/dico/toolbar.js',
                     'js/dico/app.js'
-                    //'js/ui-models/dico/field.js',
-                    //'js/ui-models/dico/field-popup.js',
-                    //'js/ui-models/dico/panel.js'
                 ],
                 dest: '<%= pkg.target %>/evolutility.js'
             },
@@ -168,8 +165,6 @@ module.exports = function (grunt) {
 
                 //'js/navbar.js',
                 'js/toolbar.js',
-
-                'js/ui-models/dico/*.js',
 
                 // --- ui models ---
                 'js/ui-models/apps/*.js',
