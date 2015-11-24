@@ -59,14 +59,14 @@ return Backbone.View.extend({
             '<fieldset class="checkbox">';
 
         //### list of columns to export #########################################
-        h+='<div><label><input type="checkbox" value="1" id="showID">'+i18nXpt.IDkey+'</label></div>';
+        h+='<label><input type="checkbox" value="1" id="showID">'+i18nXpt.IDkey+'</label>';
         _.each(fields, function(f, idx){
             var fLabel = f.labelExport || f.label || f.labelList,
                 fID = 'fx-' + f.id;
             if (fLabel === null || fLabel === '') {
                 fLabel = '(' + fID + ')';
             }
-            h+='<div><label><input type="checkbox" value="1" id="'+fID+'" checked="checked">'+fLabel+'</label></div>';
+            h+='<label><input type="checkbox" value="1" id="'+fID+'" checked="checked">'+fLabel+'</label>';
             if (idx === 10 && useMore){
                 h+='<a href="javascript:void(0)" class="evol-xpt-more">' + i18nXpt.allFields+ '</a><div style="display:none;">';
             }
@@ -104,10 +104,10 @@ return Backbone.View.extend({
         });
         h+='</div>'+
             //# Preview #######
-            '<label>'+i18nXpt.preview+'</label><div class="evol-xpt-preview">'+
+            '<label>'+i18nXpt.preview+'</label>'+
             // ## Samples
             '<textarea class="evol-xpt-val form-control"></textarea>'+
-            '</div></div></div></div>'+
+            '</div></div></div>'+
             // ## Download button
             '<div class="panel '+this.style +' evol-buttons form-actions">'+
                 eUI.button('cancel', i18n.tools.bCancel, 'btn-default')+
