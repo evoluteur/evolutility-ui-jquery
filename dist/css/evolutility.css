@@ -1,5 +1,5 @@
 /*!
-   evolutility 1.0.3 
+   evolutility 1.0.4 
    (c) 2015 Olivier Giulieri 
    http://evoluteur.github.io/evolutility/  
 */
@@ -35,6 +35,9 @@
   width: 1px;
   background-color: #bce8f1;
 }
+.evo-toolbar > ul > li > a {
+  transition: all 0.5s ease;
+}
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
 }
@@ -59,8 +62,41 @@
   position: relative;
   top: 0;
 }
+.evol-actions {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  top: 35px;
+  right: 1px;
+  background-color: #fbfbfb;
+  border: 1px solid #bce8f1;
+  border-right: none;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.evol-actions > i {
+  color: #31708f;
+  margin: 5px;
+  cursor: pointer;
+}
+.evol-actions > i:hover {
+  color: #428bca;
+}
+.evol-many-list .evol-actions {
+  top: 0;
+  flex-direction: row;
+}
 /* --- panels & tabs --- */
 .evol-pnls {
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
   display: flex;
   flex-wrap: wrap;
 }
@@ -99,8 +135,19 @@
 .evol-tabs {
   margin: 0 10px 10px !important;
 }
+.evol-tabs > li > a {
+  transition: all 0.6s ease;
+}
 /* --- fields --- */
 .evol-fset {
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
   display: flex;
   flex-wrap: wrap;
   padding: 10px 10px 5px 0;
@@ -110,6 +157,25 @@
   flex-grow: 1;
   padding-left: 10px !important;
   margin-bottom: 6px;
+}
+.evol-fld > .evo-rdonly > img {
+  position: relative;
+  top: -2px;
+  margin-right: 3px;
+}
+.evol-fld > .text-danger {
+  margin-bottom: 0 !important;
+}
+.evol-field-label > label {
+  color: #0d0d0d;
+}
+.evol-field-label > label > .glyphicon-question-sign {
+  cursor: pointer;
+  padding-left: 4px;
+  color: silver;
+}
+.evol-field-label > label > .glyphicon-question-sign:hover {
+  color: #428bca;
 }
 .evol-required,
 .evol-asterix {
@@ -178,20 +244,6 @@ label {
   color: #737373 !important;
   clear: both;
 }
-.evol-fld > .text-danger {
-  margin-bottom: 0 !important;
-}
-.evol-field-label > label {
-  color: #0d0d0d;
-}
-.evol-field-label > label > .glyphicon-question-sign {
-  cursor: pointer;
-  padding-left: 4px;
-  color: silver;
-}
-.evol-field-label > label > .glyphicon-question-sign:hover {
-  color: #428bca;
-}
 .w-100 {
   width: 100%;
 }
@@ -244,6 +296,15 @@ label {
 }
 .evo-color-box span {
   margin-left: 24px;
+}
+.badge-one {
+  position: relative;
+  top: -14px;
+  font-size: .5em;
+  margin-left: 5px;
+}
+.w100 {
+  width: 100%;
 }
 /* --- mini --- */
 .evol-mini-label {
@@ -301,6 +362,12 @@ label {
 .evol-many-list > .table img {
   max-height: 60px;
   padding: 0;
+}
+.evol-many-list > .table tr {
+  transition: all 0.3s ease;
+}
+.evol-many-list > .table td {
+  position: relative;
 }
 .evol-many-list > .table th {
   font-weight: 500 !important;
@@ -382,8 +449,9 @@ table {
   border-spacing: 0;
 }
 /* --- cards --- */
-.evol-cards-body > div.panel {
+.evol-cards-body > .panel {
   float: left;
+  position: relative;
   width: 240px;
   min-width: 140px;
   height: 182px;
@@ -394,7 +462,7 @@ table {
   -webkit-border-radius: 10px;
   overflow: auto;
 }
-.evol-cards-body > div.panel > div > label {
+.evol-cards-body > .panel > div > label {
   vertical-align: top;
 }
 .evol-cards-body .evol-c-center {
@@ -450,30 +518,47 @@ text.label {
   text-shadow: 0px 0px 3px #ffffff;
 }
 /* --- charts --- */
+.evol-many-charts {
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
+  display: flex;
+  flex-wrap: wrap;
+}
 .evol-chart-holder {
-  float: left;
+  box-sizing: border-box;
+  flex-grow: 1;
+  position: relative;
   text-align: center;
   background-color: #FFFFFF;
   margin: 10px 10px 10px 5px;
   width: 400px;
   min-height: 286px;
 }
+.chart-holder > label {
+  display: block;
+}
 .evol-chart-title {
   text-align: center;
   padding: 10px 20px 30px;
-}
-.evo-chart-config {
-  margin: 5px;
-  cursor: pointer;
-  color: silver;
-}
-.evo-chart-config:hover {
-  color: #428bca;
 }
 .evol-xpt {
   margin-bottom: 10px;
 }
 .evol-xpt-form {
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
   display: flex;
   flex-wrap: wrap;
   border-collapse: collapse;
@@ -500,6 +585,9 @@ text.label {
 .evol-xpt-flds > fieldset {
   margin-left: 20px;
 }
+.evol-xpt-flds > fieldset label {
+  display: block;
+}
 .evol-xpt-flds input[type="checkbox"] {
   clear: left;
   float: left;
@@ -509,6 +597,9 @@ text.label {
   width: 62%;
   min-width: 300px;
   border-left: 0 !important;
+}
+.evol-xpt-para textarea {
+  min-height: 200px;
 }
 .evol-xpt-format {
   max-width: 270px;
@@ -531,8 +622,8 @@ text.label {
 .evol-xpt-opts input[type="checkbox"] {
   margin-right: .5em;
 }
-.evol-xpt-preview textarea {
-  min-height: 200px;
+.evol-xpt-opts input[type="text"] {
+  max-width: 280px;
 }
 .evol-xpt-more {
   display: block;
@@ -548,6 +639,9 @@ text.label {
 .evo-inline-holder > div {
   display: inline-block;
   margin: 0 10px 0 0;
+}
+.evol-xpt-db {
+  width: auto;
 }
 .evol-w120 {
   max-width: 120px;

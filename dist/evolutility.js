@@ -1,5 +1,5 @@
 /*!
-   evolutility 1.0.3 
+   evolutility 1.0.4 
    (c) 2015 Olivier Giulieri 
    http://evoluteur.github.io/evolutility/  
 */
@@ -11,643 +11,6 @@ Evol.Config = {
 	localStorage: true,
 	url: 'http://localhost:3000/api/v1/evolutility/'
 };
-;
-/*! ***************************************************************************
- *
- * evolutility :: def.js
- *
- * Library of helpers for metamodel
- *
- * https://github.com/evoluteur/evolutility
- * Copyright (c) 2015, Olivier Giulieri
- *
- *************************************************************************** */
-
-var Evol = Evol || {};
-
-Evol.Def = function(){
-
-var fts = {
-    text: 'text',
-    textml: 'textmultiline',
-    bool: 'boolean',
-    int: 'integer',
-    dec: 'decimal',
-    money: 'money',
-    date: 'date',
-    datetime: 'datetime',
-    time: 'time',
-    lov: 'lov',
-    list: 'list', // many values for one field (behave like tags - return an array of strings)
-    html: 'html',
-    formula:'formula', // soon to be a field attribute rather than a field type
-    email: 'email',
-    pix: 'image',
-    //geoloc: 'geolocation',
-    //doc:'document',
-    url: 'url',
-    color: 'color',
-    hidden: 'hidden'
-    //json: 'json',
-    //rating: 'rating',
-    //widget: 'widget'
-};
-
-return {
-
-    fieldTypes: fts,
-
-    /*
-    isViewOne: function(viewName){
-        return viewName==='new' || viewName==='edit' || viewName==='browse' || viewName==='json';
-    },*/
-    isViewMany: function(viewName){
-        return viewName==='list' || viewName==='cards' || viewName==='charts' || viewName==='bubbles';
-    },
-    
-    isViewCollection: function(viewName){
-        return viewName==='list' || viewName==='cards';
-    },
-
-    fieldInCharts: function (f) {
-        return (_.isUndefined(f.inCharts) || f.inCharts) && Evol.Def.fieldChartable(f);
-    },
-    fieldChartable: function (f) {
-        return  f.type===fts.lov || f.type===fts.bool || f.type===fts.int || f.type===fts.money;
-    },
-
-    fieldIsNumber: function(f){
-        var ft=f.type;
-        return ft===fts.int || ft===fts.dec || ft===fts.money;
-    },/*
-    fieldIsDateOrTime: function(fType){
-        return fType===fts.date || fType===fts.datetime || fType===fts.time;
-    },*/
-
-    // get all "shallow" fields (no sub collections) from a UI model
-    getFields: function (uiModel, fnFilter) {
-        var fs = [];
-
-        function collectFields(te) {
-            if (te && te.elements && te.elements.length > 0) {
-                _.each(te.elements, function (te) {
-                    if(te.type!='panel-list'){
-                        collectFields(te);
-                    }
-                });
-            } else {
-                fs.push(te);
-            }
-        }
-
-        collectFields(uiModel);
-        if (_.isFunction(fnFilter)) {
-            fs= _.filter(fs, fnFilter);
-        }
-        return fs;
-    },
-
-    // get sub collections
-    getSubCollecs: function(uiModel){
-        var ls = {};
-
-        function collectCollecs(te) {
-            if(te.type==='panel-list'){
-                ls[te.attribute]=te;
-            }else if (te.type!=='panel' && te.elements && te.elements.length > 0) {
-                _.each(te.elements, function (te) {
-                    if(te.type==='panel-list'){
-                        ls[te.attribute]=te;
-                    }else if(te.type!=='panel'){
-                        collectCollecs(te);
-                    }
-                });
-            } else {
-                ls[te.attribute]=te;
-            }
-        }
-
-        collectCollecs(uiModel);
-        return ls;
-    }
-
-};
-
-}();
-;
-/*! ***************************************************************************
- *
- * evolutility :: format.js
- *
- * Helpers for string manipulation and date formats
- *
- * https://github.com/evoluteur/evolutility
- * Copyright (c) 2015, Olivier Giulieri
- *
- *************************************************************************** */
-
-var Evol = Evol || {};
-
-Evol.Format = {
-
-    // --- string helpers ---
-    capitalize: function(word){ // TODO use _.string.capitalize(word);
-        if(word && word.length>0){
-            //return _.capitalize(word);
-            return word.substring(0,1).toUpperCase() + word.substring(1);//.toLowerCase();
-        }
-        return '';
-    },
-    trim: function(stringValue){ // TODO use _.string.trim(word);
-        if(_.isString(stringValue) && stringValue!==''){
-            return stringValue.replace(/^\s+|\s+$/g, '');
-        }
-        return '';
-    },
-
-    // --- date formats ---
-    dateString: function(d){
-        if(d){
-            d=d.substring(0, 10);
-        }
-        if(!_.isUndefined(d) && d!==null){
-            var dateParts=d.split('-');
-            if(dateParts.length>1){
-                return dateParts[1]+'/'+dateParts[2]+'/'+dateParts[0];
-            }
-        }
-        return '';
-    },
-    timeString: function(d){
-        if(!_.isUndefined(d) && d!==null && d!==''){
-            var timeParts=d.split(':'),
-                hour=parseInt(timeParts[0],10);
-            if(hour>12){
-                return (hour-12)+':'+timeParts[1]+' PM';
-            }else{
-                return hour+':'+timeParts[1]+' AM';
-            }
-        }
-        return '';
-    },
-    datetimeString: function(d){
-        if(!_.isUndefined(d) && d!==null && d!==''){
-            var dateParts=d.split('T');
-            if(dateParts.length>1){
-                return this.dateString(dateParts[0])+', '+this.timeString(dateParts[1]);
-            }else{
-                return this.dateString(dateParts[0]);
-            }
-        }
-        return '';
-    }
-
-};
-;
-/*! ***************************************************************************
- *
- * evolutility :: ui.js
- *
- * https://github.com/evoluteur/evolutility
- * Copyright (c) 2015, Olivier Giulieri
- *
- *************************************************************************** */
-
-var Evol = Evol || {};
-Evol.hashLov = {};
-Evol.ViewAction = {};
-
-Evol.UI = {
-
-    // --- static html fragments ---
-    html: {
-        trTableEnd: '</tr></table>',
-        TdTrTableEnd: '</td></tr></table>',
-        clearer: '<div class="clearfix"></div>',
-        emptyOption: '<option value=""> - </option>',
-        glyphicon: 'glyphicon glyphicon-',
-        required: '<span class="evol-required">*</span>', // TODO replace by div w/ ":after" css for icon
-        buttonClose: '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'
-    },
-
-    // --- field labels ---
-    label: function (id, label) {
-        return '<label for="'+id+'">'+label+'</label>';
-    },
-    fieldLabel: function (id, label) {
-        return '<div class="evol-field-label">'+this.label(id, label)+'</div>';
-    },
-    fieldLabelSpan: function (id, label) {
-        return '<span class="evol-field-label">'+this.label(id, label)+'</span>';
-    },
-
-    // --- input fields ---
-    input: {
-
-        formula: function (id, f , model) {
-            return '<div class="disabled evo-rdonly evol-ellipsis'+(id?'" id ="'+id:'')+'">'+
-                        (f.formula?f.formula(model):'')+
-                    '</div>';
-        },
-        text: function (id, value, fd, css) {
-            var h = '<input type="text" id="'+id;
-            if(value && value.indexOf('"')>-1){
-                value=value.replace(/"/g,'\"');
-            }
-            h+='" value="'+value;
-            if(fd) {
-                h+='" class="evo-field form-control '+(css || '');
-                // properties mapping to html attributes
-                _.each(['id', 'min', 'max', 'maxLength', 'placeholder'], function (item) { // 'max-width', 'min-width',
-                    if (!_.isUndefined(fd[item])) {
-                        h+='" '+item+'="'+fd[item];
-                    }
-                });
-                //other fields attributes
-                if(fd.readonly){
-                    h+='" disabled="disabled';
-                }
-            }
-            h+='">';
-            return h;
-        },
-        textInt: function (id, value, min, max) {
-            // TODO validation on leave field
-            // TODO textDec
-            var h='<input class="evo-field form-control" type="number" id="'+id+'" value="'+value;
-            if(!_.isUndefined(min)){
-                h+='" min="'+min;
-            }
-            if(!_.isUndefined(max)){
-                h+='" max="'+max;
-            }
-            h+='" maxlength="12">';
-            return h;
-        },
-        textM: function (id, value, maxLen, height) {
-            return '<textarea id="'+id+'" class="evo-field form-control" rows="'+height+'">'+value+'</textarea>';
-                //(maxLen > 0) ? ('" onKeyUp="Evol.UI.Validation.fixLength(this,' + maxLen + ')') : '',
-        },
-        textMJSON: function (id, fVobj, height, disabled) {
-            return '<textarea id="'+id+'" rows="'+height+'" class="evol-json evo-field form-control"'+(disabled?' disabled':'')+'>'+
-                _.escape(JSON.stringify(fVobj, null, '\t'))+'</textarea>';
-        },
-        myType: function (type, id, value) {
-            return '<input type="'+type+'" id="'+id+'" value="'+value+
-                '" class="evo-field form-control" size="15">';
-        },
-        date: function (id, value) {
-            return this.myType('date', id, value);
-            //+'&nbsp;<a href="javascript:ShowDatePicker(\'', id, '\');" class="ico Calendar"></a></nobr>'
-        },
-        dateTime: function (id, value) {
-            return this.myType('datetime-local', id, value);
-        },
-        time: function (id, value) {
-            return this.myType('time', id, value);
-        },
-        typeFlag: function(id){
-            return '<span class="input-group-addon">'+id+'</span>';
-        },
-        color: function (id, value) {
-            return '<input type="color" id="'+id+'" value="'+value+'" size="15">';
-        },
-        colorBox: function (id, value, text) {
-            return '<div class="evo-color-box" id="'+id+
-                '" style="background-color:'+value+'" title="'+value+'">'+
-                (text?'<span>'+text+'</span>':'')+'</div>';
-        },
-
-        checkbox: function (id, value) {
-            return '<input type="checkbox" id="'+id+
-                (value?'" checked="checked':'')+'" value="1">';
-        },
-        checkbox2: function (id, value, css) {
-            return '<input type="checkbox" data-id="'+id+'" class="'+css+'"'+
-                (value?' checked="checked"':'')+' value="1">';
-        },
-        checkboxLOV:function(fLOV){
-            var h='';
-            for(var i in fLOV){
-                var lv=fLOV[i];
-                h+='<input type="checkbox" id="'+lv.id+'" value="'+lv.id+'"/>'+
-                    '<label for="'+lv.id+'">'+lv.text+'</label> ';
-            }
-            return h;
-        },
-
-        radio: function (fN, value, label, sel, id) {
-            return '<label for="'+id+'"><input id="'+id+'" name="'+fN+'" type="radio" value="'+value+
-                (sel?'" checked="checked':'')+'">'+label+'</label>&nbsp;';
-        },
-        lov: function (id, value, label, fLOV) {
-            var h = '<select class="evo-field form-control" id="'+id+'"><option value="'+value+'" selected>'+label+'</option>';
-            _.each(fLOV, function (f) {
-                h+=this.option(f.id, f.text);//, f.id===value);
-            });
-            h+='</select>';
-            return h;
-        },
-
-        img: function (id, value, css) {
-            return '<img id="'+id+'" src="'+value.replace(/"/g,'\"')+(css?'" class="'+css:'')+'">';
-        },
-
-        hidden: function (id, value) {
-            return '<input type="hidden" name="'+id+'" id="'+id+'" value="'+value.replace(/"/g,'\"')+'"/>';
-        },
-        selectBegin: function (id, css, emptyOption) {
-            return '<select id="'+id+'" class="form-control '+css+'">'+(emptyOption?Evol.UI.html.emptyOption:'');
-        },
-        select:function (id, value, css, emptyOption, list) {
-            return  this.selectBegin(id, css, emptyOption)+this.options(list, value)+'</select>';
-        },
-
-        option: function (id, text, selected) {
-            return '<option value="'+id+(selected?'" selected':'"')+'>'+text+'</option>';
-        },
-        options: function (lovList, value) {
-            var fnOpt = Evol.UI.input.option,
-                opts='';
-            _.each(lovList,function(f){
-                if(f.id===value){
-                    opts+='<option value="'+f.id+'" selected="selected">'+f.text+'</option>';
-                }else{
-                    opts+=fnOpt(f.id, f.text);
-                }
-            });
-            return opts;
-        }/*,
-
-         toggle: function  (items) {
-         var h=['<div class="btn-group" data-toggle="buttons">'];
-         _.each(items, function(item){
-         h.push('<label class="btn btn-info"><input type="radio" name="options" id="',item.id,'">',item.text,'</label>');
-         });
-         h.push('</div>');
-         return h.join('');
-         },*/
-    },
-
-    toggleCheckbox: function($cb, v){
-        if(v){
-            $cb.prop('checked', 'checked');
-        }else{
-            //$cb.removeProp('checked');
-            $cb.prop('checked', false);
-        }
-    },
-
-    // --- buttons ---
-    button: function (id, label, css) {
-        return '<button type="button" data-id="'+id+'" class="btn'+(css?' '+css:'')+'">'+label+'</button>';
-    },
-    buttonsIcon: function(id, cssGlyphIcon){
-        return '<div data-id="'+id+'" class="glyphicon glyphicon-'+cssGlyphIcon+'" tabindex="0"></div>';
-    },
-    buttonsPlus: function(){
-        return this.buttonsIcon('bPlus', 'plus-sign');
-    },
-    buttonsMinus: function(){
-        return this.buttonsIcon('bMinus', 'minus-sign');
-    },
-    buttonsPlusMinus: function(){
-        return this.buttonsPlus()+this.buttonsMinus();
-    },/*
-    buttonsPrev: function(){
-        return this.buttonsIcon('bPrev', 'chevron-left');
-    },
-    buttonsNext: function(){
-        return this.buttonsIcon('bNext', 'chevron-right');
-    },*/
-
-    // --- links ---
-    link: function (id, label, url, target) {
-        var h='<a class="evo-field" href="'+encodeURI(url);
-        if(id){
-            h+='" id="'+id;
-        }
-        if(target){
-            h+='" target="'+target;
-        }
-        h+='">'+_.escape(label)+'</a>';
-        return h;
-    },
-    linkEmail: function (id, email) {
-        return email ? this.link(id, email, 'mailto:'+email) : '';
-    },
-    //html_more: function (label) {
-    //    return ['<a href="javascript:void(0)" class="evol-more">', label, '</a>'].join('');
-    //},
-
-    // --- icons ---
-    icon: function (icon, css) {
-        return '<i class="'+(css?css+' ':'')+Evol.UI.html.glyphicon+icon+'"></i>';
-    },
-    /*
-    iconCustomize: function (id, type) {
-        return Evol.UI.iconId(id, type, 'wrench');
-    },*/
-
-    iconId: function (id, type, icon) {
-        return '<i class="'+Evol.UI.html.glyphicon+icon+'" data-id="'+id+'" data-type="'+type+'"></i>';
-    },
-
-    // --- menu ---
-    menu: {
-        hBegin: function (id, tag, icon){
-            return '<'+tag+' class="dropdown" data-id="'+id+'">'+
-                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'+Evol.UI.icon(icon)+' <b class="caret"></b></a>'+
-                '<ul class="dropdown-menu evo-dropdown-icons">';
-        },
-        hEnd: function(tag){
-            return '</ul></'+tag+'>';
-        },
-        hItem: function(id, label, icon, cardi, style){
-            var h='<li data-id="'+id;
-            if(cardi){
-                h+='" data-cardi="'+cardi;
-            }
-            if(style!=='label'){
-                h+='" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="'+label;
-            }
-            h+='"><a href="javascript:void(0);" data-id="'+id+'">'+Evol.UI.icon(icon);
-            if(style!=='tooltip'){
-                h+='&nbsp;'+label;
-            }
-            h+='</a></li>';
-            return h;
-        }
-    },
-
-    // --- modal ---
-    modal:{
-
-        alert: function(title, msg){
-            var $m=$(this.HTMLModal('alert', title, msg, [{
-                    id:'ok',
-                    text: Evol.i18n.tools.bOK,
-                    class: 'btn-primary'
-                }]))
-                .on('click', 'button', function(evt){
-                    $m.remove();
-                })
-                .modal('show');
-        },
-
-        confirm: function(id, title, msg, callbacks, buttons){
-            var $m=$(this.HTMLModal(id, title, msg, buttons))
-                .on('click', 'button', function(evt){
-                    var bId=$(evt.currentTarget).data('id');
-                    if(callbacks && callbacks[bId]){
-                        callbacks[bId]();
-                    }
-                    $m.remove();
-                })
-                .modal('show');
-        },
-
-        HTMLModal: function(id, title, msg, buttons) {
-            var hButton = function(id, label, css){
-                    return '<button data-id="'+id+'" type="button" class="btn '+css+'" data-dismiss="modal">'+label+'</button>';
-                },
-                h = '<div class="modal fade" id="'+id+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
-                    '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">'+
-                    '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'+
-                    '<h4 class="modal-title">'+title+'</h4>'+
-                    '</div>'+
-                    '<div class="modal-body">'+msg+'</div>'+
-                    '<div class="modal-footer">';
-
-            if(!buttons){
-                buttons=[
-                    {id:'cancel', text:Evol.i18n.tools.bCancel, class:'btn-default'},
-                    {id:'ok', text:Evol.i18n.tools.bOK, class:'btn-primary'}
-                ];
-            }
-            _.each(buttons, function(b){
-                h+=hButton(b.id, b.text, b.class);
-            });
-            h+='</div></div></div></div>';
-            return h;
-        }
-
-    },
-
-    // --- panels ---
-    panelBegin: function (p, css, noToggle) {
-        var h='<div data-pid="'+p.id+'" class="panel '+(p.css?p.css:css)+'">';
-        if(p.label || p.label2){
-            h+='<div class="panel-heading '+(p.cssLabel? p.cssLabel:'')+'">'+
-                (!noToggle?Evol.UI.icon('chevron-up', 'evol-title-toggle'):'')+
-                '<h3 class="panel-title">'+p.label+'</h3>'+
-                (p.label2?'<div class="evol-subtitle">'+p.label2+'</div>' : '')+
-                (p.help?'<p class="evo-panel-help">'+p.help+'</p>':'')+
-                '</div>';
-        }
-        return h;
-    },
-
-    panelEnd: function () {
-        return '</div>';
-    },
-
-    panelEmpty: function(id, css, style){
-        return '<div class="'+css+' panel panel-'+style+'" data-id="'+id+'"></div>';
-    },
-
-    // --- status ---
-    HTMLMsg: function (title, msg, style) {
-        return '<div data-id="msg" class="evo-msg alert alert-'+(style || 'info')+
-            ' alert-dismissable">'+this.html.buttonClose+
-            '<strong>'+title+'</strong> <span>'+msg+'</span></div>';
-    },
-
-    // ---  Misc. ---
-    /*
-     // get w/ automatic create if not in DOM
-     getOrCreate: function (fID,$holder) {
-         var e = $holder.find('#' + fID);
-         if (e.length===0) {
-             $('<div id="' + fID + '"></div>');
-             ($holder || $(body)).append(e);
-             e = $holder.find('#' + fID);
-         }
-         return e;
-     },*/
-
-    setVisible: function($e, visible){
-        if(visible){
-            $e.show();
-        }else{
-            $e.hide();
-        }
-    },
-
-    cr2br: function(v){
-        return v.replace(/[\r\n]/g, '<br>');
-    },
-
-    addRemClass: function ($e, doAdd, css) {
-        if(doAdd){
-            $e.addClass(css);
-        }else{
-            $e.removeClass(css);
-        }
-        return doAdd;
-    },
-
-    scroll2Top: function(){
-        window.scrollTo(0, 0);
-    }
-
-};
-;
-/*! ***************************************************************************
- *
- * evolutility :: ui-charts.js
- *
- * https://github.com/evoluteur/evolutility
- * Copyright (c) 2015, Olivier Giulieri
- *
- *************************************************************************** */
-
-Evol.UI.Charts = {
-
-    // same as d3.scale.category10() 
-    colors:['1f77b4','ff7f0e','2ca02c','d62728','9467bd','8c564b','e377c2','7f7f7f','bcbd22','17becf'],
-
-    _colorsList: function(nbColors){
-        return this.colors.slice(0, nbColors).join(',');
-    },
-
-    URL: 'http://chart.apis.google.com/chart',
-
-    _HTML: function(title, urlPix, style){
-        return '<label class="evol-chart-title">'+
-            title+'</label><img src="'+urlPix+'">';
-    },
-
-    Pie: function (label, data, labels, style, sizes){
-        var size=sizes?sizes:'390x200';
-        var urlGoogleChart = this.URL+'?chd=t:'+data.join(',')+
-        '&chco='+this._colorsList(data.length)+
-            '&amp;chl='+labels.join('|')+
-            '&amp;cht=p&amp;chs='+size;
-        return this._HTML(label, urlGoogleChart, style || 'panel-default');
-    },
-
-    Bars: function (label, data, labels, style, sizes){
-        var size=sizes?sizes:'360x200';
-        var maxCount = _.max(data),
-            urlGoogleChart = this.URL+'?chbh=a&amp;chs='+size+'&cht=bvg&chco='+this._colorsList(data.length)+'&chds=0,'+maxCount+
-                '&amp;chd=t:'+data.join('|')+
-                '&amp;chp=0.05&amp;chts=676767,10.5&amp;chdl='+labels.join('|');
-        return this._HTML(label, urlGoogleChart, style);
-    }
-
-};
-
 ;
 //   Evolutility Localization Library ENGLISH
 //   https://github.com/evoluteur/evolutility
@@ -780,6 +143,7 @@ Evol.i18n = {
         date: '"{0}" must be a valid date, format must be "MM/DD/YYYY" like "12/24/2015".',
         datetime: '"{0}" must be a valid date/time, format must be "MM/DD/YYYY hh:mm AM/PM" like "12/24/2015 10:30 AM".',
         time: '"{0}" must be a valid date/time, format must be "hh:mm AM/PM" like "10:30 AM".',
+        json: '"{0}" must be a valid JSON expression like "{"a": 1}".',
         max: '"{0}" must be smaller or equal to {1}.',
         min: '"{0}" must be greater or equal to {1}.',
         maxLength: '"{0}" must be {1} characters long maximum.',
@@ -819,6 +183,7 @@ Evol.i18n = {
         XMLroot: 'Element name', // 'Root element name'
         //xpXMLAttr: 'Attributes',
         //xpXMLElem: 'Elements',
+        db: 'Database',
         SQL: 'SQL Options',
         SQLTable: 'Table name',
         SQLTrans: 'In transaction',
@@ -832,8 +197,9 @@ Evol.i18n = {
         sNotEqual: 'not equal',
         sStart: 'starts with',
         sContain: 'contains',
+        sNotContain: 'doesn\'t contain',
         sFinish: 'finishes with',
-        sInList: 'any of',
+        sInList: 'is any of',
         sIsNull: 'is empty',
         sIsNotNull: 'is not empty',
         sBefore: 'before',
@@ -866,6 +232,719 @@ Evol.i18n = {
     }*/
 
 };
+;
+/*! ***************************************************************************
+ *
+ * evolutility :: def.js
+ *
+ * Library of helpers for metamodel
+ *
+ * https://github.com/evoluteur/evolutility
+ * Copyright (c) 2015, Olivier Giulieri
+ *
+ *************************************************************************** */
+
+var Evol = Evol || {};
+
+Evol.Def = function(){
+
+var fts = {
+    text: 'text',
+    textml: 'textmultiline',
+    bool: 'boolean',
+    int: 'integer',
+    dec: 'decimal',
+    money: 'money',
+    date: 'date',
+    datetime: 'datetime',
+    time: 'time',
+    lov: 'lov',
+    list: 'list', // many values for one field (behave like tags - return an array of strings)
+    html: 'html',
+    formula:'formula', // soon to be a field attribute rather than a field type
+    email: 'email',
+    pix: 'image',
+    //geoloc: 'geolocation',
+    //doc:'document',
+    url: 'url',
+    color: 'color',
+    hidden: 'hidden',
+    json: 'json'
+    //rating: 'rating',
+    //widget: 'widget'
+};
+
+return {
+
+    fieldTypes: fts,
+
+    /*
+    isViewOne: function(viewName){
+        return viewName==='new' || viewName==='edit' || viewName==='browse' || viewName==='json';
+    },*/
+    isViewMany: function(viewName){
+        return viewName==='list' || viewName==='cards' || viewName==='charts' || viewName==='bubbles'|| viewName==='sunburst';
+    },
+    
+    isViewCollection: function(viewName){
+        return viewName==='list' || viewName==='cards';
+    },
+
+    fieldInCharts: function (f) {
+        return (_.isUndefined(f.inCharts) || f.inCharts) && Evol.Def.fieldChartable(f);
+    },
+    fieldChartable: function (f) {
+        //  || f.type===fts.list
+        return  f.type===fts.lov || f.type===fts.bool || f.type===fts.int || f.type===fts.money;
+    },
+
+    fieldIsNumber: function(f){
+        var ft=f.type;
+        return ft===fts.int || ft===fts.dec || ft===fts.money;
+    },/*
+    fieldIsDateOrTime: function(fType){
+        return fType===fts.date || fType===fts.datetime || fType===fts.time;
+    },*/
+
+    // get all "shallow" fields (no sub collections) from a UI model
+    getFields: function (uiModel, fnFilter) {
+        var fs = [];
+
+        function collectFields(te) {
+            if (te && te.elements && te.elements.length > 0) {
+                _.each(te.elements, function (tec) {
+                    if(!tec.elements){
+                        fs.push(tec);
+                    }else if(tec.type!='panel-list'){
+                        collectFields(tec);
+                    }
+                });
+            } else {
+                fs.push(te);
+            }
+        }
+
+        collectFields(uiModel);
+        if (_.isFunction(fnFilter)) {
+            fs= _.filter(fs, fnFilter);
+        }
+        return fs;
+    },
+
+    getFieldsHash: function(fields){
+        var h = {};
+        _.each(fields, function(f){
+            h[f.id] = f;
+        });
+        return h;
+    },
+
+    // get sub collections
+    getSubCollecs: function(uiModel){
+        var ls = {};
+
+        function collectCollecs(te) {
+            if(te.type==='panel-list'){
+                ls[te.attribute]=te;
+            }else if (te.type!=='panel' && te.elements && te.elements.length > 0) {
+                _.each(te.elements, function (te) {
+                    if(te.type==='panel-list'){
+                        ls[te.attribute]=te;
+                    }else if(te.type!=='panel'){
+                        collectCollecs(te);
+                    }
+                });
+            } else {
+                ls[te.attribute]=te;
+            }
+        }
+
+        collectCollecs(uiModel);
+        return ls;
+    },
+
+    countBy: function(models, f, cData, iconsPath){
+        var fTypes=Evol.Def.fieldTypes,
+            i18n = Evol.i18n,
+            data=[],
+            labels=[],
+            nb, dataSetName;
+
+        if(f.type===fTypes.bool){
+            groups = _.countBy(models, function(m) {
+                return m.get(f.id)===true;
+            });
+            for(dataSetName in groups) {
+                nb=groups[dataSetName];
+                if(dataSetName==='true'){
+                    lb = f.labelTrue || i18n.yes;
+                }else{
+                    lb = f.labelFalse || i18n.no;
+                }
+                data.push(nb);
+                labels.push(lb+' ('+nb+')');
+            }
+        }else{
+            groups = _.countBy(models, function(m) {
+                return m.get(f.id);
+            });
+            for(dataSetName in groups) {
+                nb=groups[dataSetName];
+                if(dataSetName==='undefined'){
+                    lb = i18n.na;
+                }else if(dataSetName==='' || dataSetName==='null'){
+                    lb = i18n.none;
+                }else if(f.type===fTypes.lov || f.type===fTypes.list){
+                    if(f.list && f.list.length && f.list[0].icon){
+                        lb = Evol.Dico.lovTextNoPix(f, dataSetName);
+                    }else{
+                        lb = Evol.Dico.lovText(f, dataSetName, Evol.hashLov, iconsPath);
+                    }
+                }else{
+                    lb = dataSetName;
+                }
+                data.push(nb);
+                labels.push(lb+' ('+nb+')');
+            }
+        }
+        chartType = f.typeChart || (f.type===fTypes.lov ? 'pie':'bars');
+        cData[f.id] = {
+            field: f,
+            data: data,
+            labels: labels,
+            //style: style,
+            //sizes: sizes
+        };
+        return { data: data, labels: labels};
+    }
+
+};
+
+}();
+;
+/*! ***************************************************************************
+ *
+ * evolutility :: format.js
+ *
+ * Helpers for string manipulation and date formats
+ *
+ * https://github.com/evoluteur/evolutility
+ * Copyright (c) 2015, Olivier Giulieri
+ *
+ *************************************************************************** */
+
+var Evol = Evol || {};
+
+Evol.Format = {
+
+    // --- string helpers ---
+    capitalize: function(word){ // TODO use _.string.capitalize(word);
+        if(word && word.length>0){
+            //return _.capitalize(word);
+            return word.substring(0,1).toUpperCase() + word.substring(1);//.toLowerCase();
+        }
+        return '';
+    },
+    trim: function(stringValue){ // TODO use _.string.trim(word);
+        if(_.isString(stringValue) && stringValue!==''){
+            return stringValue.replace(/^\s+|\s+$/g, '');
+        }
+        return '';
+    },
+    cr2br: function(v){
+        return (v || '').replace(/[\r\n]/g, '<br>');
+    },
+
+    // --- date formats ---
+    dateString: function(d){
+        if(d){
+            d=d.substring(0, 10);
+        }
+        if(!_.isUndefined(d) && d!==null){
+            var dateParts=d.split('-');
+            if(dateParts.length>1){
+                return dateParts[1]+'/'+dateParts[2]+'/'+dateParts[0];
+            }
+        }
+        return '';
+    },
+    timeString: function(d){
+        if(!_.isUndefined(d) && d!==null && d!==''){
+            var timeParts=d.split(':'),
+                hour=parseInt(timeParts[0],10);
+            if(hour>12){
+                return (hour-12)+':'+timeParts[1]+' PM';
+            }else{
+                return hour+':'+timeParts[1]+' AM';
+            }
+        }
+        return '';
+    },
+    datetimeString: function(d){
+        if(!_.isUndefined(d) && d!==null && d!==''){
+            var dateParts=d.split('T');
+            if(dateParts.length>1){
+                return this.dateString(dateParts[0])+', '+this.timeString(dateParts[1]);
+            }else{
+                return this.dateString(dateParts[0]);
+            }
+        }
+        return '';
+    },
+
+    // --- JSON formats ---
+    jsonString: function(d){
+        return _.escape(JSON.stringify(d, null, '\t'));
+    }
+    
+
+};
+;
+/*! ***************************************************************************
+ *
+ * evolutility :: ui.js
+ *
+ * https://github.com/evoluteur/evolutility
+ * Copyright (c) 2015, Olivier Giulieri
+ *
+ *************************************************************************** */
+
+var Evol = Evol || {};
+Evol.hashLov = {};
+Evol.ViewAction = {};
+
+Evol.UI = {
+
+    // --- static html fragments ---
+    html: {
+        trTableEnd: '</tr></table>',
+        TdTrTableEnd: '</td></tr></table>',
+        clearer: '<div class="clearfix"></div>',
+        emptyOption: '<option value=""> - </option>',
+        glyphicon: 'glyphicon glyphicon-',
+        required: '<span class="evol-required">*</span>', // TODO replace by div w/ ":after" css for icon
+        buttonClose: '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'
+    },
+
+    // --- field labels ---
+    label: function (id, label) {
+        return '<label for="'+id+'">'+label+'</label>';
+    },
+    fieldLabel: function (id, label) {
+        return '<div class="evol-field-label">'+this.label(id, label)+'</div>';
+    },
+    fieldLabelSpan: function (id, label) {
+        return '<span class="evol-field-label">'+this.label(id, label)+'</span>';
+    },
+
+    // --- input fields ---
+    input: {
+
+        formula: function (id, f , model) {
+            return '<div class="disabled evo-rdonly evol-ellipsis'+(id?'" id ="'+id:'')+'">'+
+                        (f.formula?f.formula(model):'')+
+                    '</div>';
+        },
+        text: function (id, value, fd, css) {
+            var h = '<input type="text" id="'+id;
+            if(value && value.indexOf('"')>-1){
+                value=value.replace(/"/g,'\"');
+            }
+            h+='" value="'+value;
+            h+='" class="evo-field form-control '+(css || '');
+            if(fd){
+                // properties mapping to html attributes
+                _.each(['id', 'min', 'max', 'maxLength', 'placeholder'], function (item) { // 'max-width', 'min-width',
+                    if (!_.isUndefined(fd[item])) {
+                        h+='" '+item+'="'+fd[item];
+                    }
+                });
+                //other fields attributes
+                if(fd.readonly){
+                    h+='" disabled="disabled';
+                }
+            }
+            h+='">';
+            return h;
+        },
+        textInt: function (id, value, min, max) {
+            // TODO validation on leave field
+            // TODO textDec
+            var h='<input class="evo-field form-control" type="number" id="'+id+'" value="'+value;
+            if(!_.isUndefined(min)){
+                h+='" min="'+min;
+            }
+            if(!_.isUndefined(max)){
+                h+='" max="'+max;
+            }
+            h+='" maxlength="12">';
+            return h;
+        },
+        textM: function (id, value, maxLen, height) {
+            return '<textarea id="'+id+'" class="evo-field form-control" rows="'+height+'">'+value+'</textarea>';
+                //(maxLen > 0) ? ('" onKeyUp="Evol.UI.Validation.fixLength(this,' + maxLen + ')') : '',
+        },
+        textMJSON: function (id, fVobj, height, disabled) {
+            return '<textarea id="'+id+'" rows="'+height+'" class="evol-json evo-field form-control"'+(disabled?' disabled':'')+'>'+
+                _.escape(JSON.stringify(fVobj, null, '\t'))+'</textarea>';
+        },
+        myType: function (type, id, value) {
+            return '<input type="'+type+'" id="'+id+'" value="'+value+
+                '" class="evo-field form-control" size="15">';
+        },
+        date: function (id, value) {
+            return this.myType('date', id, value);
+            //+'&nbsp;<a href="javascript:ShowDatePicker(\'', id, '\');" class="ico Calendar"></a></nobr>'
+        },
+        dateTime: function (id, value) {
+            return this.myType('datetime-local', id, value);
+        },
+        time: function (id, value) {
+            return this.myType('time', id, value);
+        },
+        typeFlag: function(id){
+            return '<span class="input-group-addon">'+id+'</span>';
+        },
+        color: function (id, value) {
+            return '<input type="color" id="'+id+'" value="'+value+'" size="15">';
+        },
+        colorBox: function (id, value, text) {
+            return '<div class="evo-color-box" id="'+id+
+                '" style="background-color:'+value+'" title="'+value+'">'+
+                (text?'<span>'+text+'</span>':'')+'</div>';
+        },
+
+        checkbox: function (id, value) {
+            return '<input type="checkbox" id="'+id+
+                (value?'" checked="checked':'')+'" value="1">';
+        },
+        checkbox2: function (id, value, css) {
+            return '<input type="checkbox" data-id="'+id+'" class="'+css+'"'+
+                (value?' checked="checked"':'')+' value="1">';
+        },
+        checkboxLOV:function(fLOV){
+            var h='';
+            for(var i in fLOV){
+                var lv=fLOV[i];
+                h+='<input type="checkbox" id="'+lv.id+'" value="'+lv.id+'"/>'+
+                    '<label for="'+lv.id+'">'+lv.text+'</label> ';
+            }
+            return h;
+        },
+
+        radio: function (fN, value, label, sel, id) {
+            return '<label for="'+id+'"><input id="'+id+'" name="'+fN+'" type="radio" value="'+value+
+                (sel?'" checked="checked':'')+'">'+label+'</label>&nbsp;';
+        },
+        lov: function (id, value, label, fLOV) {
+            var h = '<select class="evo-field form-control" id="'+id+'"><option value="'+value+'" selected>'+label+'</option>',
+                opt=this.option;
+            _.each(fLOV, function (f) {
+                h+=opt(f.id, f.text);//, f.id===value);
+            });
+            h+='</select>';
+            return h;
+        },
+
+        img: function (id, value, css) {
+            return '<img id="'+id+'" src="'+value.replace(/"/g,'\"')+(css?'" class="'+css:'')+'">';
+        },
+
+        hidden: function (id, value) {
+            return '<input type="hidden" name="'+id+'" id="'+id+'" value="'+value.replace(/"/g,'\"')+'"/>';
+        },
+        selectBegin: function (id, css, emptyOption) {
+            return '<select id="'+id+'" class="form-control '+css+'">'+(emptyOption?Evol.UI.html.emptyOption:'');
+        },
+        select:function (id, value, css, emptyOption, list) {
+            return  this.selectBegin(id, css, emptyOption)+this.options(list, value)+'</select>';
+        },
+
+        option: function (id, text, selected) {
+            return '<option value="'+id+(selected?'" selected':'"')+'>'+text+'</option>';
+        },
+        options: function (lovList, value) {
+            var fnOpt = Evol.UI.input.option,
+                opts='';
+            _.each(lovList,function(f){
+                if(f.id===value){
+                    opts+='<option value="'+f.id+'" selected="selected">'+f.text+'</option>';
+                }else{
+                    opts+=fnOpt(f.id, f.text);
+                }
+            });
+            return opts;
+        }/*,
+
+         toggle: function  (items) {
+         var h=['<div class="btn-group" data-toggle="buttons">'];
+         _.each(items, function(item){
+         h.push('<label class="btn btn-info"><input type="radio" name="options" id="',item.id,'">',item.text,'</label>');
+         });
+         h.push('</div>');
+         return h.join('');
+         },*/
+    },
+
+    toggleCheckbox: function($cb, v){
+        if(v){
+            $cb.prop('checked', 'checked');
+        }else{
+            //$cb.removeProp('checked');
+            $cb.prop('checked', false);
+        }
+    },
+
+    // --- buttons ---
+    button: function (id, label, css) {
+        return '<button type="button" data-id="'+id+'" class="btn'+(css?' '+css:'')+'">'+label+'</button>';
+    },
+    buttonsIcon: function(id, cssGlyphIcon){
+        return '<div data-id="'+id+'" class="'+this.html.glyphicon+cssGlyphIcon+'" tabindex="0"></div>';
+    },
+    buttonsPlus: function(){
+        return this.buttonsIcon('bPlus', 'plus-sign');
+    },
+    buttonsMinus: function(){
+        return this.buttonsIcon('bMinus', 'minus-sign');
+    },
+    buttonsPlusMinus: function(){
+        return this.buttonsPlus()+this.buttonsMinus();
+    },/*
+    buttonsPrev: function(){
+        return this.buttonsIcon('bPrev', 'chevron-left');
+    },
+    buttonsNext: function(){
+        return this.buttonsIcon('bNext', 'chevron-right');
+    },*/
+
+    // --- links ---
+    link: function (id, label, url, target) {
+        var h='<a class="evo-field" href="'+encodeURI(url);
+        if(id){
+            h+='" id="'+id;
+        }
+        if(target){
+            h+='" target="'+target;
+        }
+        h+='">'+_.escape(label)+'</a>';
+        return h;
+    },
+    linkEmail: function (id, email) {
+        return email ? this.link(id, email, 'mailto:'+email) : '';
+    },
+    //html_more: function (label) {
+    //    return ['<a href="javascript:void(0)" class="evol-more">', label, '</a>'].join('');
+    //},
+
+    // --- icons ---
+    icon: function (icon, css) {
+        return '<i class="'+(css?css+' ':'')+Evol.UI.html.glyphicon+icon+'"></i>';
+    },
+    /*
+    iconCustomize: function (id, type) {
+        return Evol.UI.iconId(id, type, 'wrench');
+    },*/
+
+    iconId: function (id, type, icon) {
+        return '<i class="'+this.html.glyphicon+icon+'" data-id="'+id+(type?('" data-type="'+type):'')+'"></i>';
+    },
+
+    htmlIcon: function(id, chartType, css){
+        return '<div class="glyphicon '+css+'" data-id="'+id+'" data-ctype="'+chartType+'"></div>';
+    },
+
+    // --- menu ---
+    menu: {
+        hBegin: function (id, tag, icon){
+            return '<'+tag+' class="dropdown" data-id="'+id+'">'+
+                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'+Evol.UI.icon(icon)+' <b class="caret"></b></a>'+
+                '<ul class="dropdown-menu evo-dropdown-icons">';
+        },
+        hEnd: function(tag){
+            return '</ul></'+tag+'>';
+        },
+        hItem: function(id, label, icon, cardi, style){
+            var h='<li data-id="'+id;
+            if(cardi){
+                h+='" data-cardi="'+cardi;
+            }
+            if(style!=='label'){
+                h+='" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="'+label;
+            }
+            h+='"><a href="javascript:void(0);" data-id="'+id+'">'+Evol.UI.icon(icon);
+            if(style!=='tooltip'){
+                h+='&nbsp;'+label;
+            }
+            h+='</a></li>';
+            return h;
+        }
+    },
+
+    // --- modal ---
+    modal:{
+
+        alert: function(title, msg){
+            var $m=$(this.HTMLModal('alert', title, msg, [{
+                    id:'ok',
+                    text: Evol.i18n.tools.bOK,
+                    class: 'btn-primary'
+                }]))
+                .on('click', 'button', function(evt){
+                    $m.remove();
+                })
+                .modal('show');
+        },
+
+        confirm: function(id, title, msg, callbacks, buttons){
+            var $m=$(this.HTMLModal(id, title, msg, buttons))
+                .on('click', 'button', function(evt){
+                    var bId=$(evt.currentTarget).data('id');
+                    if(callbacks && callbacks[bId]){
+                        callbacks[bId]();
+                    }
+                    $m.remove();
+                })
+                .modal('show');
+        },
+
+        HTMLModal: function(id, title, msg, buttons) {
+            var hButton = function(id, label, css){
+                    return '<button data-id="'+id+'" type="button" class="btn '+css+'" data-dismiss="modal">'+label+'</button>';
+                },
+                h = '<div class="modal fade" id="'+id+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
+                    '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">'+
+                    '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'+
+                    '<h4 class="modal-title">'+title+'</h4>'+
+                    '</div>'+
+                    '<div class="modal-body">'+msg+'</div>'+
+                    '<div class="modal-footer">';
+
+            if(!buttons){
+                buttons=[
+                    {id:'cancel', text:Evol.i18n.tools.bCancel, class:'btn-default'},
+                    {id:'ok', text:Evol.i18n.tools.bOK, class:'btn-primary'}
+                ];
+            }
+            _.each(buttons, function(b){
+                h+=hButton(b.id, b.text, b.class);
+            });
+            h+='</div></div></div></div>';
+            return h;
+        }
+
+    },
+
+    // --- panels ---
+    panelBegin: function (p, css, noToggle) {
+        var h='<div data-pid="'+p.id+'" class="panel '+(p.css?p.css:css)+'">';
+        if(p.label || p.label2){
+            h+='<div class="panel-heading '+(p.cssLabel? p.cssLabel:'')+'">'+
+                (!noToggle?Evol.UI.icon('chevron-up', 'evol-title-toggle'):'')+
+                '<h3 class="panel-title">'+p.label+'</h3>'+
+                (p.label2?'<div class="evol-subtitle">'+p.label2+'</div>' : '')+
+                (p.help?'<p class="evo-panel-help">'+p.help+'</p>':'')+
+                '</div>';
+        }
+        return h;
+    },
+
+    panelEnd: function () {
+        return '</div>';
+    },
+
+    panelEmpty: function(id, css, style){
+        return '<div data-id="'+id+'" class="'+css+' panel panel-'+style+'"></div>';
+    },
+
+    // --- status ---
+    HTMLMsg: function (title, msg, style) {
+        return '<div data-id="msg" class="evo-msg alert alert-'+(style || 'info')+
+            ' alert-dismissable">'+this.html.buttonClose+
+            '<strong>'+title+'</strong> <span>'+msg+'</span></div>';
+    },
+
+    // ---  Misc. ---
+    /*
+     // get w/ automatic create if not in DOM
+     getOrCreate: function (fID,$holder) {
+         var e = $holder.find('#' + fID);
+         if (e.length===0) {
+             $('<div id="' + fID + '"></div>');
+             ($holder || $(body)).append(e);
+             e = $holder.find('#' + fID);
+         }
+         return e;
+     },*/
+
+    showOrHide: function($e, visible){
+        if(visible){
+            $e.show();
+        }else{
+            $e.hide();
+        }
+    },
+
+    addRemClass: function ($e, doAdd, css) {
+        if(doAdd){
+            $e.addClass(css);
+        }else{
+            $e.removeClass(css);
+        }
+        return doAdd;
+    },
+
+    scroll2Top: function(){
+        window.scrollTo(0, 0);
+    }
+
+};
+;
+/*! ***************************************************************************
+ *
+ * evolutility :: ui-charts.js
+ *
+ * https://github.com/evoluteur/evolutility
+ * Copyright (c) 2015, Olivier Giulieri
+ *
+ *************************************************************************** */
+
+Evol.UI.Charts = {
+
+    // same as d3.scale.category10() 
+    colors:['1f77b4','ff7f0e','2ca02c','d62728','9467bd','8c564b','e377c2','7f7f7f','bcbd22','17becf'],
+
+    _colorsList: function(nbColors){
+        return this.colors.slice(0, nbColors).join(',');
+    },
+
+    URL: 'http://chart.apis.google.com/chart',
+
+    _HTML: function(title, urlPix, style){
+        return '<label class="evol-chart-title">'+
+            title+'</label><img src="'+urlPix+'">';
+    },
+
+    Pie: function (label, data, labels, style, sizes){
+        var size=sizes?sizes:'390x200';
+        var urlGoogleChart = this.URL+'?chd=t:'+data.join(',')+
+        '&chco='+this._colorsList(data.length)+
+            '&amp;chl='+labels.join('|')+
+            '&amp;cht=p&amp;chs='+size;
+        return this._HTML(label, urlGoogleChart, style || 'panel-default');
+    },
+
+    Bars: function (label, data, labels, style, sizes){
+        var size=sizes?sizes:'360x200';
+        var maxCount = _.max(data),
+            urlGoogleChart = this.URL+'?chbh=a&amp;chs='+size+'&cht=bvg&chco='+this._colorsList(data.length)+'&chds=0,'+maxCount+
+                '&amp;chd=t:'+data.join('|')+
+                '&amp;chp=0.05&amp;chts=676767,10.5&amp;chdl='+labels.join('|');
+        return this._HTML(label, urlGoogleChart, style);
+    }
+
+};
+
 ;
 /*! ***************************************************************************
  *
@@ -911,7 +990,7 @@ return {
         },
         html: function (f, fid, fv) {
             // TODO
-            return this.textmultiline(f, fid, fv);
+            return uiInput.textM(fid, fv, f.maxlength, f.height);
         },
         boolean: function (f, fid, fv) {
             return uiInput.checkbox(fid, fv);
@@ -925,7 +1004,7 @@ return {
         },
         money: function (f, fid, fv) {
             return '<div class="input-group evol-money">'+uiInput.typeFlag('$')+
-                uiInput.textInt(fid, fv)+'</div>';
+                uiInput.textInt(fid, fv, f.max, f.min)+'</div>';
         },
         date: function (f, fid, fv) {
             return uiInput.date(fid, fv);
@@ -950,6 +1029,10 @@ return {
         url: function (f, fid, fv) {
             return uiInput.text(fid, fv, f);
             //fv!==''?EvoUI.link(fid,'',fv):''
+        },
+        json: function(f, fid, fv){
+            // TODO
+            return uiInput.textM(fid, fv, f.maxlength, f.height);
         },
         //doc: function(f, fid, fv, iconsPath){
         //},
@@ -976,6 +1059,13 @@ return {
 
     fieldHTML: function(fld, fid, fv, mode, iconsPath, skipLabel){
         var h='';
+        function getStyleHeight(f){
+            var fh = parseInt(f.height || 0, 10);
+            if(fh<2){
+                fh=2;
+            }
+            return 'height:'+parseInt(fh*1.6, 10)+'em';
+        }
         // --- field label ---
         if(!skipLabel){
             h+=this.HTMLFieldLabel(fld, mode || 'edit');
@@ -984,7 +1074,7 @@ return {
         if(fld.readonly || mode==='browse'){
             h+='<div class="disabled evo-rdonly'+(fld.type===fts.email || fld.type===fts.url?' evol-ellipsis':'')+'" id="'+fid;
             if(fld.type===fts.textml && fld.height>1){
-                h+='" style="height:'+fld.height+'em;overflow-y: auto;';
+                h+='" style="'+getStyleHeight(fld)+';overflow-y: auto;';
             }
             h+='">';
             switch (fld.type) {
@@ -995,12 +1085,19 @@ return {
                 case fts.color: // TODO is the color switch necessary?
                     h+='<div id="'+fid+'" class="form-control">'+uiInput.colorBox(fid, fv)+'</div>';
                     break;
+                case fts.textmultiline:
+                    h+='<div id="'+fid+'" class="form-control" style="'+height+'">'+_.escape(fv)+'</div>';
+                    break;
                 default:
                     h+=this.fieldHTML_RO(fld, fv, {}, iconsPath);
             }
             h+='&nbsp;</div>';
         }else{
-            h+=Evol.Dico.fieldEdit[fld.type](fld, fid, fv, iconsPath);
+            var ftc=Evol.Dico.fieldEdit[fld.type];
+            if(!ftc){
+                ftc=Evol.Dico.fieldEdit.default;
+            }
+            h+=ftc(fld, fid, fv, iconsPath);
         }
         return h;
     },
@@ -1089,7 +1186,7 @@ return {
          if(_.isUndefined(value) || value===''){
          value='('+model.id+')';
          }*/
-        h+=value;
+        h+='<span>'+value+'</span>';
         if(!noLink){
             h+='</a>';
         }
@@ -1100,9 +1197,13 @@ return {
         Evol.hashLov={};
     },
 
-    setViewTitle: function(that, title){
+    setViewTitle: function(that, title, badge){
         if(that.titleSelector){
-            $(that.titleSelector).html(title?title:that.getTitle());
+            $(that.titleSelector)
+                .html(
+                    (title?title:that.getTitle())+
+                    (badge?'<span class="badge badge-one">'+badge+'</span>':'')
+                );
         }
         return that;
     },
@@ -1137,7 +1238,7 @@ return {
                 });
                 if(listItem){
                     var txt= _.escape(listItem.text);
-                    if(listItem.icon!='' && !_.isUndefined(listItem.icon)){
+                    if(listItem.icon!=='' && !_.isUndefined(listItem.icon)){
                         txt='<img src="'+((listItem.icon && listItem.icon.substring(0,1)!=='.')?iconsPath:'')+listItem.icon+'"> '+txt;
                     }
                     hashLov[v]=txt;
@@ -1158,7 +1259,7 @@ return {
         return '';
     },
 /*
-     showDesigner: function(id, type, $el, context){
+    showDesigner: function(id, type, $el, context){
          var css='evodico-'+type,
              //$('<div class="evodico-'+type+'"></div>'),
              model,
@@ -1316,6 +1417,10 @@ return {
         this._$headTitle.html(title);
     },
 
+    getItemTitle: function(e){
+        return e.find('h4>a>span').text();
+    },
+
     getRoute: function(){
         var cURL=window.location.href,
             idx=cURL.indexOf('#');
@@ -1368,6 +1473,13 @@ return {
             }
             return false;
         },
+        // -- doesn't contains
+        'nct': function(fv, cv){
+            if(fv){
+                return fv.toLocaleLowerCase().indexOf(cv)===-1;
+            }
+            return true;
+        },
         // -- finish w/
         'fw': function(fv, cv){
             var l1=fv.length,
@@ -1380,11 +1492,11 @@ return {
         },
         // -- empty
         'null': function(fv, cv){
-            return  fv=='' || _.isUndefined(fv);
+            return  fv==='' || _.isUndefined(fv);
         },
         // -- not null
         'nn': function(fv, cv){
-            return !(_.isUndefined(fv) || fv=='');
+            return !(_.isUndefined(fv) || fv==='');
         },
         // -- in []
         'in': function(fv, cv){
@@ -1485,7 +1597,8 @@ Bubbles.prototype.setData = function(data){
     .attr("r", function (d) { return d.radius; })
     .style("fill", function (d) { return that.fill(d[that.colorFieldId]); })
     .on("mouseenter", showPopover)
-    .on("mouseleave", removePopovers);
+    .on("mouseleave", removePopovers)
+    .on("click", removePopovers);
 
   this.nodes
     .attr('data-mid', function (d) { return d.id;});
@@ -1694,7 +1807,45 @@ return Bubbles;
 
 var Evol = Evol || {};
 
-Evol.ViewMany = {};
+Evol.ViewMany = {
+
+    menuOne: [
+        //{id:'fav', type:null, icon:'star'},
+        {id:'edit', type:null, icon:'edit'},
+        {id:'delete',type: null, icon:'trash'}
+    ],
+    
+    eventsMany: {
+        'click .pagination>li': 'click_pagination',
+        //'click .evol-field-label .glyphicon-wrench': 'click_customize',
+        'click .evol-actions>i': 'clickAction',
+        'change .list-sel': 'click_selection',
+        'change [data-id="cbxAll"]': 'click_checkall'
+    },
+
+    actionEvents: {
+        enterItem: function(icons, fnElem){
+            return function(evt){
+                //evt.currentTarget).children().eq(0)
+                //$(evt.currentTarget).children().eq(0).append(
+                var e=$(evt.currentTarget);
+                if(fnElem){
+                    e=fnElem(e);
+                }
+                e.append(
+                    '<div class="evol-actions">'+
+                    _.map(icons, function(i){
+                        return Evol.UI.iconId(i.id, i.type, i.icon);
+                    }).join('')+
+                    '</div>');
+            };
+        },
+        leaveItem: function(evt){
+            $(evt.currentTarget).find('.evol-actions').remove();
+        }
+    }
+
+};
 
 Evol.View_Many = function() {
 
@@ -1706,7 +1857,6 @@ return Backbone.View.extend({
 
     viewName: 'Many',
     viewType: 'many',
-    //editable: false,
     cardinality: 'n',
 
     options: {
@@ -1716,7 +1866,8 @@ return Backbone.View.extend({
         autoUpdate: false,
         // router: ...
         //titleSelector: '#title',
-        selectable: false,
+        //selectable: true,
+        //TODO: editable: false,
         links: true,
         noDataString: i18n.nodata, //'No data to display.',
         iconsPath: 'pix/',
@@ -1725,13 +1876,7 @@ return Backbone.View.extend({
         }
     },
 
-    events: {
-        'click .evol-sort-icons>i': 'click_sort',
-        'click .pagination>li': 'click_pagination',
-        //'click .evol-field-label .glyphicon-wrench': 'click_customize',
-        'change .list-sel': 'click_selection',
-        'change [data-id="cbxAll"]': 'click_checkall'
-    },
+    events: Evol.ViewMany.eventsMany,
 
     initialize: function (opts) {
         var lastSort = localStorage.getItem(opts.uiModel.id + '-sort'),
@@ -1876,7 +2021,7 @@ return Backbone.View.extend({
             fields = this.getFields(),
             pSize = this.pageSize,
             collecLength = this.collection.length,
-            pSummary = this.pageSummary(pageIdx, pSize, collecLength);
+            pSummary = this._pageSummary(pageIdx, pSize, collecLength);
 
         this._$body().html(this._HTMLbody(fields, pSize, this.uiModel.icon, pageIdx, this.selectable));
         this.$('.evo-pagination').html(this._HTMLpaginationBody(pageIdx, pSize, collecLength));
@@ -1916,7 +2061,11 @@ return Backbone.View.extend({
         return this;
     },
 
-    pageSummary: function (pIdx, pSize, cSize) {
+    pageSummary: function(){
+        return this._pageSummary(this.pageIndex, this.pageSize, this.collection.length);
+    },
+
+    _pageSummary: function (pIdx, pSize, cSize) {
         if (cSize === 0) {
             return '';
         } else if (cSize === 1) {
@@ -2036,15 +2185,6 @@ return Backbone.View.extend({
         this.$el.trigger(evt, {id: id});
     },
 
-    click_sort: function (evt) {
-        var target = $(evt.currentTarget),
-            fid = target.parent().data('fid'),
-            f = this.getField(fid),
-            down = target.attr('class').indexOf('-down') > 0;
-        this.sortList(f, down);
-        target.addClass('evol-last-sort');
-    },
-
     click_pagination: function (evt) {
         this.$el.trigger('paginate.many', {id: $(evt.currentTarget).closest('li').data('id')});
     },
@@ -2109,15 +2249,16 @@ Evol.ViewMany.Bubbles = Evol.View_Many.extend({
             models = this.collection.models;
 
         if(!this._bubblesInitialized){
-            var flds = Evol.Def.getFields(this.uiModel, Evol.Def.fieldChartable);
+            var flds = Evol.Def.getFields(this.uiModel, Evol.Def.fieldChartable),
+                fd=flds.length?flds[0].id:null;
             this.bubbles = new Evol.Bubbles({
                 //selector:'.evol-bubbles-body',
                 elem: this.$('.evol-bubbles-body').get(0),
                 width:1200, 
                 height:700, 
                 fields: flds,
-                colorFieldId: flds.length?flds[0].id:null,
-                groupFieldId: flds.length?flds[0].id:null,
+                colorFieldId: fd,
+                groupFieldId: fd,
                 sizeFieldId: null,
                 uiModel: this.uiModel,
                 tooltip: function(d){
@@ -2125,9 +2266,6 @@ Evol.ViewMany.Bubbles = Evol.View_Many.extend({
                     flds=that.getFields();//(h, fields, model, icon, selectable, route, isTooltip)
                     Evol.ViewMany.Cards.prototype.HTMLItem.call(that, h, flds, new Backbone.Model(d), null, null, null, true);
                     return h.join('');
-                },
-                click: function(d){
-                    this.$el.trigger('click.bubble', {id:d.id}); 
                 }
             });
             this.bubbles.setData(_.map(models, function(m){
@@ -2234,6 +2372,7 @@ Evol.ViewMany.Bubbles = Evol.View_Many.extend({
 
     clickCircle: function(evt){
         var id=$(evt.currentTarget).data('mid');
+        this.$el.trigger('click.bubble', {id:id});
         window.location.href = '#'+ this.uiModel.id + '/browse/'+id;
     }
 
@@ -2254,6 +2393,11 @@ Evol.ViewMany.Bubbles = Evol.View_Many.extend({
 Evol.ViewMany.Cards = Evol.View_Many.extend({
 
     viewName: 'cards',
+
+    events: _.extend({
+        'mouseenter .evol-cards-body>div': 'enterItem',
+        'mouseleave .evol-cards-body>div': 'leaveItem'
+    }, Evol.ViewMany.eventsMany),
 
     fieldsetFilter: function (f) {
         return f.inMany || f.inCards;
@@ -2280,7 +2424,8 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
         var that = this,
             v,
             fts = Evol.Def.fieldTypes,
-            link = (this.links!==false);
+            link = (this.links!==false),
+            uiInput = Evol.UI.input;
 
         if(isTooltip){
             h.push('<div class="evol-bubble-tooltip">');
@@ -2290,9 +2435,9 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
         _.each(fields, function(f, idx){
             if(f.type===fts.color) {
                 v = model.escape(f.attribute || f.id);
-                v = Evol.UI.input.colorBox(f.id, v, v);
+                v = uiInput.colorBox(f.id, v, v);
             }else if(f.type==='formula'){
-                v = Evol.UI.input.formula(null, f, model);
+                v = uiInput.formula(null, f, model);
             }else if(f.type==='image' && !isTooltip){ 
                 v = '<a href="#'+route+model.id+'">'+
                     that._HTMLField(f, model.escape(f.attribute || f.id))+
@@ -2325,7 +2470,7 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
                     h.push('<div'+ (css2?' class="'+css2+'"':'') +'>'+v+'</div>');
                 }else {
                     if(!label2){
-                        label2 = f.label;
+                        label2 = f.labelMany || f.label;
                     }
                     h.push('<div class="'+ css2 +'"><label>'+label2+':</label> '+v+'</div>');
                 }
@@ -2333,9 +2478,9 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
         });
         h.push('</div>');
         return this;
-    }/*,
+    },
 
-    customize: function () {
+    /* customize: function () {
         var labels = this.$('h4 > a.evol-nav-id');
         if(this._custOn){
             labels.find('i').remove();
@@ -2346,6 +2491,34 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
         }
         return this;
     }*/
+
+    enterItem: Evol.ViewMany.actionEvents.enterItem(Evol.ViewMany.menuOne),
+
+    leaveItem: Evol.ViewMany.actionEvents.leaveItem,
+    
+    clickAction: function(evt){
+        var that = this,
+            e = $(evt.currentTarget),
+            aid = e.data('id'),
+            id = e.parent().siblings().eq(0).data('mid'),
+            p = e.closest('.panel');
+        
+        if(aid==='edit'){
+            this.$el.trigger('navigate', {id: id, view: aid});
+        }else{
+            this.$el.trigger('action', {
+                id: aid, 
+                mid: id, 
+                title: Evol.Dico.getItemTitle(p),
+                fnSuccess: function(escape){
+                    p.fadeOut(500, function(){
+                        p.remove();
+                        that.$el.trigger('status', that.pageSummary());
+                    });
+                }
+            });
+        }
+    }
 
 });
 
@@ -2374,6 +2547,8 @@ return Evol.View_Many.extend({
 
     viewName: 'charts',
 
+    isChart: true,
+
     options: {
         //sizes: '600x300',
         style: 'panel-info',
@@ -2382,7 +2557,9 @@ return Evol.View_Many.extend({
     },
 
     events: {
-        'click .evo-chart-config': 'changeChartType'
+        'mouseenter .evol-many-charts>div': 'enterItem',
+        'mouseleave .evol-many-charts>div': 'leaveItem',
+        'click .evol-actions>i': 'clickAction'
         //'click .evol-field-label .glyphicon-wrench': 'click_customize'
     },
 
@@ -2413,11 +2590,12 @@ return Evol.View_Many.extend({
             var groups,
                 lb;
             _.each(chartFields, function(f){
-                var data=[],
-                    labels=[],
+                var trData = Evol.Def.countBy(models, f, cData, iconsPath);
+                var data=trData.data,
+                    labels=trData.labels,
                     nb, dataSetName,
                     isList=f.type===fTypes.lov || f.type===fTypes.list;
-
+/*
                 if(f.type===fTypes.bool){
                     groups = _.countBy(models, function(m) {
                         return m.get(f.id)===true;
@@ -2455,17 +2633,10 @@ return Evol.View_Many.extend({
                         labels.push(lb+' ('+nb+')');
                     }
                 }
+                */
                 chartType = f.typeChart || (f.type===fTypes.lov ? 'pie':'bars');
                 h+='<div class="evol-chart-holder panel '+style+'">'+
-                    '<div class="glyphicon glyphicon-cog evo-chart-config pull-right" data-id="'+f.id+'" data-ctype="'+chartType+'"></div>'+
-                    '<div class="chart-holder">';
-                cData[f.id] = {
-                    field: f,
-                    data: data,
-                    labels: labels,
-                    style: style,
-                    sizes: sizes
-                };
+                    '<div class="opts"></div><div class="chart-holder" data-fid="'+f.id+'" data-ctype="'+chartType+'">';
                 if(chartType==='pie'){
                     h+=EvoUI.Charts.Pie(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aByB', entityName, f.label), data, labels, style, sizes);
                 }else if(chartType==='bars'){
@@ -2486,20 +2657,35 @@ return Evol.View_Many.extend({
         // b/c it can be invoked for all view Many
     },
 
-    changeChartType: function(evt){
+    enterItem: Evol.ViewMany.actionEvents.enterItem([
+        {id:'bars', type:null, icon:'stats'},
+        {id:'pie',type: null, icon:'record'},
+        //{id:'big',type: null, icon:'resize-full'} // resize-small
+    ]),
+
+    leaveItem: Evol.ViewMany.actionEvents.leaveItem,
+
+    clickAction: function(evt){
         var el=$(evt.currentTarget),
-            id=el.data('id'),
-            ctype=el.data('ctype'),
-            chart=EvoUI.Charts,
-            oldData=this._cData[id],
+            cType=el.data('id'),
+            holder=el.parent().parent().find('.chart-holder'),
+            oType=holder.data('ctype'),
+            fid=holder.data('fid'),
+            oldData=this._cData[fid],
             f=oldData.field,
-            holder=el.parent().find('.chart-holder');
-        if(ctype==='pie'){
-            holder.html(chart.Bars(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aB', this.entityName, f.label), oldData.data, oldData.labels, oldData.style, oldData.sizes));
-            el.data('ctype', 'bars');
-        }else{
-            holder.html(chart.Pie(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aByB', this.entityName, f.label), oldData.data, oldData.labels, oldData.style, oldData.sizes));
-            el.data('ctype', 'pie');
+            chart=EvoUI.Charts,
+            c, cl;
+
+        if(cType!=oType){
+            if(cType==='bars'){
+                c='Bars';
+                cl='charts.aB';
+            }else{
+                c='Pie';
+                cl='charts.aByB';
+            }
+            holder.html(chart[c](f.labelCharts?f.labelCharts:i18n.getLabel(cl, this.entityName, f.label), oldData.data, oldData.labels, oldData.style, oldData.sizes));
+            holder.data('ctype', cType);
         }
     }
 
@@ -2521,7 +2707,13 @@ return Evol.View_Many.extend({
 Evol.ViewMany.List = Evol.View_Many.extend({
 
     viewName: 'list',
-    
+
+    events: _.extend({
+        'mouseenter tbody>tr': 'enterItem',
+        'mouseleave tbody>tr': 'leaveItem',
+        'click .evol-sort-icons>i': 'click_sort'
+    }, Evol.ViewMany.eventsMany),
+
     fieldsetFilter: function (f) {
         return f.inMany || f.inList;
     },
@@ -2571,6 +2763,11 @@ Evol.ViewMany.List = Evol.View_Many.extend({
                 v = input.colorBox(f.id, model.escape(f.attribute || f.id));
             }else if(f.type===ft.formula){
                 v = input.formula(null, f, model);
+            }else if(f.type===ft.html){
+                v = model.get(f.attribute || f.id);
+                //if(v && v.length>200){
+                    //v = v.subString(0,200)+'...';
+                //}
             }else{
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
@@ -2588,8 +2785,10 @@ Evol.ViewMany.List = Evol.View_Many.extend({
                 }
             }
             var css=f.css || '';
-            if(f.type===ft.textml || f.type===ft.email || f.type===ft.url){
+            if(f.type===ft.email || f.type===ft.url){
                 css+=' evol-ellipsis';
+            }else if(f.type===ft.pix){
+                css+=' evol-td-pix';
             }else if(Evol.Def.fieldIsNumber(f)){
                 css+=' evol-r-align';
             }
@@ -2600,7 +2799,7 @@ Evol.ViewMany.List = Evol.View_Many.extend({
 
     _HTMLlistHeader: function (f) {
         var h='<th><span id="'+f.id+'-lbl">'+
-            (f.labellist || f.labelmany || f.label);
+            (f.labelList || f.labelMany || f.label);
         if(f.sortable!==false){
             h+='<span class="evol-sort-icons" data-fid="'+f.id+'">'+
                 Evol.UI.icon('chevron-up')+//'sort-by-alphabet'
@@ -2609,6 +2808,48 @@ Evol.ViewMany.List = Evol.View_Many.extend({
         }
         h+='</span></th>';
         return h;
+    },
+
+    click_sort: function (evt) {
+        var target = $(evt.currentTarget),
+            fid = target.parent().data('fid'),
+            f = this.getField(fid),
+            down = target.attr('class').indexOf('-down') > 0;
+        this.sortList(f, down);
+        //target.addClass('evol-last-sort');
+    },
+
+    enterItem: Evol.ViewMany.actionEvents.enterItem(
+        Evol.ViewMany.menuOne, 
+        function(e){
+            return e.children().eq(0);
+        }
+    ),
+
+    leaveItem: Evol.ViewMany.actionEvents.leaveItem,
+    
+    clickAction: function(evt){
+        var that=this,
+            e=$(evt.currentTarget),
+            aid=e.data('id'),
+            tr=e.closest('tr'),
+            id=tr.data('mid');
+
+        if(aid==='edit'){
+            this.$el.trigger('navigate', {id: id, view: aid});
+        }else{
+            this.$el.trigger('action', {
+                id: aid, 
+                mid: id, 
+                title: e.closest('tr').find('a>span').text(),
+                fnSuccess: function(escape){
+                    tr.fadeOut(500, function(){
+                        tr.remove();
+                        that.$el.trigger('status', that.pageSummary());
+                    });
+                }
+            });
+        }
     }
 
 });
@@ -2688,10 +2929,7 @@ return Backbone.View.extend({
         if(!this._fields){
             var that = this;
             this._fields = eDef.getFields(this.uiModel, this.fieldsetFilter);
-            this._fieldHash = {};
-            _.each(this._fields, function(f){
-                that._fieldHash[f.id] = f;
-            });
+            this._fieldHash = eDef.getFieldsHash(this._fields);
         }
         return this._fields;
     },
@@ -2788,6 +3026,7 @@ return Backbone.View.extend({
                 if(f.readonly){
                     switch(f.type){
                         case fts.pix:
+                            //newPix=(fv)?('<img src="'+iconsPath+fv+'" onError="Evol.PixErr()" class="img-thumbnail">'):('<p class="">'+i18n.nopix+'</p>');
                             newPix=(fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p class="">'+i18n.nopix+'</p>');
                             $f.val(fv)
                                 .prev().remove();
@@ -2795,7 +3034,7 @@ return Backbone.View.extend({
                             //$f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+i18n.nopix+'</p>'));
                             break;
                         case fts.textml:
-                            $f.html(eUI.cr2br(_.escape(fv)));
+                            $f.html(Evol.Format.cr2br(_.escape(fv)));
                             break;
                         case fts.bool:
                         case fts.url:
@@ -2807,6 +3046,9 @@ return Backbone.View.extend({
                             break;
                         case fts.color:
                             $f.html(uiInput.colorBox(f.id, fv, fv));
+                            break;
+                        case fts.json:
+                            $f.html(Evol.Format.cr2br(fv));
                             break;
                         default:
                             $f.text(eDico.fieldHTML_RO(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
@@ -2905,7 +3147,7 @@ return Backbone.View.extend({
                     }
                     break;
                 case 'visible':
-                    eUI.setVisible($f, value);
+                    eUI.showOrHide($f, value);
                     break;
             }
         }
@@ -2953,7 +3195,7 @@ return Backbone.View.extend({
                         $f.prop('checked', defaultVal?'checked':false);
                         break;
                     case fts.list:
-                        $f.select2('val', null);
+                        $f.select2('val', defaultVal);
                         break;
                     case fts.pix:
                         //var newPix=(defaultVal)?('<img src="'+iconsPath+defaultVal+'" class="img-thumbnail">'):('<p class="">'+i18n.nopix+'</p>');
@@ -3209,7 +3451,12 @@ return Backbone.View.extend({
                     h.push(uiInput.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultValue, mode)));
                 }else{
                     h.push('<div style="width:'+parseInt(elem.width||100, 10)+'%" class="evol-fld">');
-                    that.renderField(h, elem, mode, iconsPath);
+                    if(elem.type==='panel'){
+                        that._renderPanel(h, elem, mode, iconsPath);
+                    }else{
+                        that.renderField(h, elem, mode, iconsPath);
+                    }
+                    
                     h.push("</div>");
                 }
             }
@@ -3326,7 +3573,11 @@ return Backbone.View.extend({
     },
 
     setTitle: function (title){
-        return eDico.setViewTitle(this, title);
+        var bdg=this.uiModel.fnBadge;
+        if(bdg){
+            bdg=bdg(this.model);
+        }
+        return eDico.setViewTitle(this, title, bdg);
     },
 
     validate: function (fields) {
@@ -3452,6 +3703,15 @@ return Backbone.View.extend({
                                     return formatMsg(f.label, i18nVal[f.type]);
                                 }
                                 break;
+                            case fts.json:
+                                var obj;
+                                try{
+                                    obj=$.parseJSON(v);
+                                }catch(err){}
+                                if(_.isUndefined(obj)){
+                                    return formatMsg(f.label, i18nVal[f.type]);
+                                }
+                                break;
                         }
                     }
                 }
@@ -3519,8 +3779,8 @@ return Backbone.View.extend({
     fieldViewId: function(fid){
         return this.prefix + '-' + fid;
     },
-    /*
-     customize: function(){
+
+    /*customize: function(){
          var labelSelector = '.evol-field-label>label',
             panelSelector ='.evol-pnl .panel-title';
          if(this.custOn){
@@ -3678,8 +3938,8 @@ return Backbone.View.extend({
          evt.stopImmediatePropagation();
          eDico.showDesigner(id, eType, $e, this);
          this.$el.trigger(eType+'.customize', {id: id, type:eType});
-     },
-     */
+     },*/
+
     click_detailsAddDel: function(evt){
         // -- add/remove row in panel-list (subcollection)
         var $target=$(evt.currentTarget),
@@ -3992,7 +4252,7 @@ return Evol.ViewOne.Edit.extend({
     prefix: 'om',
 
     fieldsetFilter: function(f){
-        return (f.required || f.inMany || f.inMini) && f.type!='formula';
+        return (f.required || f.inMany || f.inMini);// && f.type!='formula';
     },
 
     _render: function (h, mode) {
@@ -4057,38 +4317,6 @@ Evol.ViewAction.Export = function(){
         i18n = Evol.i18n,
         i18nXpt = i18n.export;
 
-    var EvoExport = {
-
-        optEntityName: function(id,label,entity){
-            return eUI.fieldLabel(id, label) +
-                uiInput.text(id, entity.replace(/ /g, '_'), 30);
-        },
-
-        optsXML: function(entity){
-            return '<div>'+
-                this.optEntityName('elementName', i18nXpt.XMLroot, entity)+
-                '</div>';
-        },
-
-        optsSQL: function(entity){
-            return '<div>'+
-                this.optEntityName('table', i18nXpt.SQLTable, entity)+
-                '<div class="evo-inline-holder">'+
-                    //'<div>'+uiInput.checkbox('insertId', '0')+eUI.fieldLabelSpan('insertId', i18nXpt.SQLIdInsert)+'</div>'+
-                    '<div>'+uiInput.checkbox('transaction', '0')+eUI.fieldLabelSpan('transaction', i18nXpt.SQLTrans)+'</div>'+
-                '</div>';
-        },
-
-        optsHTML: function(){
-            return '';
-        },
-
-        optsJSON: function(){
-            return '';
-        }
-
-    };
-
 return Backbone.View.extend({
 
     viewName: 'export',
@@ -4096,7 +4324,7 @@ return Backbone.View.extend({
 
     events: {
         'change .evol-xpt-format': 'click_format',
-        'change input': 'click_preview',
+        'change input, .evol-xpt-db': '_preview',
         'click .evol-xpt-more': 'click_toggle_sel',
         'click button': 'click_button'
     },
@@ -4106,7 +4334,7 @@ return Backbone.View.extend({
         uiModel: null,
         many: true,
         sampleMaxSize: 20,
-        formats: ['CSV', 'TAB', 'HTML', 'JSON', 'XML', 'SQL']
+        formats: ['CSV', 'TAB', 'JSON', 'HTML', 'XML', 'SQL']
     },
 
     initialize: function (opts) {
@@ -4132,14 +4360,14 @@ return Backbone.View.extend({
             '<fieldset class="checkbox">';
 
         //### list of columns to export #########################################
-        h+='<div><label><input type="checkbox" value="1" id="showID">'+i18nXpt.IDkey+'</label></div>';
+        h+='<label><input type="checkbox" value="1" id="showID">'+i18nXpt.IDkey+'</label>';
         _.each(fields, function(f, idx){
-            var fLabel = f.labelexport || f.label || f.labellist,
+            var fLabel = f.labelExport || f.label || f.labelList,
                 fID = 'fx-' + f.id;
             if (fLabel === null || fLabel === '') {
                 fLabel = '(' + fID + ')';
             }
-            h+='<div><label><input type="checkbox" value="1" id="'+fID+'" checked="checked">'+fLabel+'</label></div>';
+            h+='<label><input type="checkbox" value="1" id="'+fID+'" checked="checked">'+fLabel+'</label>';
             if (idx === 10 && useMore){
                 h+='<a href="javascript:void(0)" class="evol-xpt-more">' + i18nXpt.allFields+ '</a><div style="display:none;">';
             }
@@ -4170,17 +4398,17 @@ return Backbone.View.extend({
                 '<div data-id="csv2" class="evol-w120">'+
                 eUI.fieldLabel('separator', i18nXpt.separator)+
                 uiInput.text('separator', ',', '0')+
-                '</div>'+ // </div>
+                '</div>'+
             '</div>';
         _.each(formats, function(f){
             h+='<div id="xpt'+f+'" style="display:none;"></div>';
         });
         h+='</div>'+
             //# Preview #######
-            '<label>'+i18nXpt.preview+'</label><div class="evol-xpt-preview">'+
+            '<label>'+i18nXpt.preview+'</label>'+
             // ## Samples
             '<textarea class="evol-xpt-val form-control"></textarea>'+
-            '</div></div></div></div>'+
+            '</div></div></div>'+
             // ## Download button
             '<div class="panel '+this.style +' evol-buttons form-actions">'+
                 eUI.button('cancel', i18n.tools.bCancel, 'btn-default')+
@@ -4195,34 +4423,26 @@ return Backbone.View.extend({
     },
 
     showFormatOpts: function (xFormat) {
-        switch (xFormat) {
-            case 'TAB':
-                xFormat = 'CSV';
-                this.$('[data-id="csv2"]').hide();
-                break;
-            case 'CSV':
-                this.$('[data-id="csv2"]').show();
-                break;
-            case 'HTML':
-            case 'XML':
-            case 'SQL':
-            case 'JSON':
-                var c = this.$('#xpt' + xFormat);
-                if (c.html() === '') {
-                    c.html(EvoExport['opts' + xFormat](this.uiModel.name));
-                }
-                break;
+        if(xFormat==='TAB') {
+            xFormat = 'CSV';
+            this.$('[data-id="csv2"]').hide();
+        }else if(xFormat==='CSV'){
+            this.$('[data-id="csv2"]').show();
+        }else{
+            this.$('#xpt' + xFormat)
+                .html(this._formatOptions(xFormat, this.uiModel.name));
         }
         var divOpts = this.$('#xpt' + xFormat).show()
             .siblings().hide();
-        var $e1 = divOpts.filter('.evol-FLH');
-        eUI.setVisible($e1, xFormat==='TAB' || xFormat==='CSV' || xFormat==='HTML');
+        eUI.showOrHide(divOpts.filter('.evol-FLH'), xFormat==='TAB' || xFormat==='CSV' || xFormat==='HTML');
+        return this;
     },
 
     getFields: function (){
         if(!this.fields){
             this.fields=Evol.Def.getFields(this.uiModel, function(f){
-                return _.isUndefined(f.inExport) || f.inExport;
+                // todo: allow formula fields & provide value in export
+                return f.type!=fts.formula && f.type!=fts.json && (_.isUndefined(f.inExport) || f.inExport);
             });
         }
         return this.fields;
@@ -4240,46 +4460,45 @@ return Backbone.View.extend({
         eDico.setViewTitle(this);
     },
 
-    _preview: function (format) {
-        this.$('.evol-xpt-val').html(this.exportContent(format));
+    _preview: function () {
+        this.$('.evol-xpt-val').val(
+            this.exportContent(this.val())
+        );
     },
 
-    exportContent: function(format){
+    exportContent: function(params){
         var h='',
+            options = params.options,
             maxItem = this.sampleMaxSize-1;
 
         if(this.model && this.model.collection){
             var data = this.model.collection.models,
-                flds = this.getFields(),
-                fldsDom = this.$('.evol-xpt-flds > fieldset input:checked'), //_valFields
-                fldsDomHash = {},
-                useHeader = this.$('#xptFLH').prop('checked'),
-                showID = this.$('#showID').prop('checked');
+                fldsDomHash = {};
 
-            _.each(fldsDom, function(f){
-                fldsDomHash[f.id.substring(3)]='';
+            _.each(params.fields, function(fid){
+                fldsDomHash[fid]='';
             });
-            flds = _.filter(flds, function(f){
+            var flds = _.filter(this.getFields(), function(f){
                 if(f.id && _.has(fldsDomHash, f.id)){
                     return true;
                 }
             });
             var fMax = flds.length-1;
-            switch (format){
+            switch (params.format){
                 case 'CSV':
                 case 'TAB':
                 case 'TXT':
                     var sep = Evol.Format.trim(this.$('#separator').val());
-                    if(format=='TAB'){
-                        sep='&#09;';
+                    if(params.format=='TAB'){
+                        sep='\t'; //sep='&#09;';
                     }
                     // -- header
-                    if (useHeader) {
-                        if(showID){
+                    if (options.firstLineHeader) {
+                        if(options.showID){
                             h+='ID'+sep;
                         }
                         _.each(flds, function(f, idx){
-                            h+=f.label;
+                            h+=f.labelExport || f.label;
                             if(idx<fMax){
                                 h+=sep;
                             }
@@ -4288,8 +4507,8 @@ return Backbone.View.extend({
                     }
                     // -- data
                     _.every(data, function(m, idx){
-                        if(showID){
-                            h+=m.id+sep;
+                        if(options.showID){
+                            h+=(m.id||('m'+idx))+sep;
                         }
                         _.each(flds, function(f, idx){
                             var mv = m.get(f.id);
@@ -4297,8 +4516,10 @@ return Backbone.View.extend({
                                 if(f.type===fts.bool){
                                     h+=mv;
                                     //}else if((_.isArray(mv) && mv.length>1)|| (mv.indexOf(',')>-1)){
-                                }else if((f.type==fts.text || f.type==fts.textml) && (mv.indexOf(',')>-1)){ // || f.type==fts.list
-                                    h+='"'+mv.replace('"', '\\"')+'"';
+                                }else if((f.type==fts.text || f.type==fts.textml) && (mv.indexOf(',')>-1)){
+                                    h+=mv ? '"'+mv.replace('"', '\\"')+'"' : '""';
+                                }else if(f.type==fts.list){
+                                    h+=mv ? '"'+mv+'"' : '""';
                                 }else{
                                     h+=mv;
                                 }
@@ -4315,9 +4536,9 @@ return Backbone.View.extend({
                 case 'HTML':
                     // -- header
                     h='<table>\n';
-                    if (useHeader) {
+                    if (options.firstLineHeader) {
                         h+='<tr>\n';
-                        if(showID){
+                        if(options.showID){
                             h+='<th>ID</th>';
                         }
                         _.each(flds, function(f){
@@ -4328,7 +4549,7 @@ return Backbone.View.extend({
                     // -- data
                     _.every(data, function(m, idx){
                         h+='<tr>\n';
-                        if(showID){
+                        if(options.showID){
                             h+='<td>'+m.id+'</td>';
                         }
                         _.each(flds, function(f){
@@ -4348,7 +4569,7 @@ return Backbone.View.extend({
                     var propList= _.map(flds, function(f){
                         return f.id;
                     });
-                    if(showID){
+                    if(options.showID){
                         propList.unshift('id');
                     }
                     h=[];
@@ -4356,49 +4577,56 @@ return Backbone.View.extend({
                         h.push(JSON.stringify(_.pick(m.toJSON(), propList), null, 2));
                         return idx<maxItem;
                     });
-                    if(format==='JSON' && this.many){
+                    if(this.many){
                         h = '['+h.join(',\n')+']';
                     }else{
                         h = h.join('');
                     }
                     break;
                 case 'SQL':
-                    var optTransaction = this.$('#transaction').prop('checked'),
-                        optIdInsert = this.$('#insertId').prop('checked'),
+                    var optIdInsert = false,
                         crlf = '\n',
-                        sqlTable = this.$('#table').val().replace(/ /g,'_'),
+                        sqlTable = options.table.replace(/ /g,'_'),
                         sql = 'INSERT INTO '+sqlTable+' (',
-                        //db = 'postgres',//'sqlserver'
-                        formatString, emptyString, sNull, beginTrans, commitTrans;
-/*
-                    switch(db){
-                        case 'postgres':*/
-                            formatString = function(v){
-                                if(_.isUndefined(v) || v===null){
-                                    return "''";
-                                }else{
-                                    return "'"+v.replace(/'/g, "''")+"'";
-                                }
-                            };
-                            sNull='null';
-                            emptyString="''";
-                            beginTrans='BEGIN;';
-                            commitTrans='COMMIT;';/*
-                            break;
+                        fnString, formatString, emptyString, sNull, beginTrans, commitTrans;
+                    switch(options.database){
                         case 'sqlserver':
-                            formatString = function(v){
-                                return '"'+v.replace(/"/g, '""')+'"';
+                            fnString = function(v){
+                                if(_.isUndefined(v) || _.isObject(v)){
+                                    return '""';
+                                }
+                                return ('"'+v.replace(/"/g, '""')+'"');
                             };
                             sNull='NULL';
                             emptyString='""';
                             beginTrans='BEGIN TRANSACTION';
                             commitTrans='COMMIT TRANSACTION';
+                            optIdInsert=options.showID;
                             break;
-                    }*/
-                    if(sqlTable===''){
-                        sqlTable = this.uiModel.table || this.uiModel.id;//this.uiModel.name.replace(/ /g,'_');
+                        default: //case 'postgres':
+                            fnString = function(v){
+                                if(_.isUndefined(v) || _.isObject(v)){
+                                    return '""';
+                                }
+                                return ("'"+v.replace(/'/g, "''")+"'");
+                            };
+                            sNull='null';
+                            emptyString="''";
+                            beginTrans='BEGIN;';
+                            commitTrans='COMMIT;';
                     }
-                    if(showID){
+                    formatString = function(v){
+                        if(_.isUndefined(v) || v===null){
+                            return sNull;
+                        }else if(v===''){
+                            return emptyString;
+                        }else if(_.isNumber(v)){
+                            return v;
+                        }else{
+                            return fnString(v);
+                        }
+                    };
+                    if(options.showID){
                         sql+='ID, ';
                     }
                     _.each(flds, function(f,idx){
@@ -4409,7 +4637,7 @@ return Backbone.View.extend({
                     });
                     sql+=')\n VALUES (';
                     // -- options
-                    if(optTransaction){
+                    if(options.transaction){
                         h+=beginTrans+crlf;
                     }
                     if(optIdInsert){
@@ -4419,8 +4647,8 @@ return Backbone.View.extend({
                     var fValue;
                     _.every(data, function(m, idx){
                         h+=sql;
-                        if(showID){
-                            h+=formatString(fValue)+', ';
+                        if(options.showID){
+                            h+=formatString(m.id)+', ';
                         }
                         _.each(flds, function(f, idx){
                             fValue=m.get(f.id);
@@ -4471,18 +4699,18 @@ return Backbone.View.extend({
                     if(optIdInsert){
                         h+='SET IDENTITY_INSERT '+sqlTable+' OFF;'+crlf;
                     }
-                    if(optTransaction){
+                    if(options.transaction){
                         h+=commitTrans+crlf;
                     }
                     break;
                 case 'XML':
-                    var elemName = this.$('#elementName').val() || this.uiModel.name.replace(/ /g,'_'),
+                    var elemName = options.elementName,
                         fv;
 
                     h='<xml>\n';
                     _.every(data, function(m, idx){
                         h+='<'+elemName+' ';
-                        if(showID){
+                        if(options.showID){
                             h+='ID="'+m.id+'" ';
                         }
                         _.each(flds, function(f){
@@ -4509,10 +4737,17 @@ return Backbone.View.extend({
         return h;
     },
 
+    fieldHTML: function(id,label,text){
+        return eUI.fieldLabel(id, label) +
+            uiInput.text(id, text.replace(/ /g, '_'), null, 'xpt-mw300');
+    },
+
     val: function (value) {
         if (_.isUndefined(value)) {
-            var format = this.$('#evol-xpt-format').val(),
+            var format = this.$('.evol-xpt-format').val(),
+                title = this.uiModel.label || Evol.Format.capitalize(this.uiModel.entities),
                 v = {
+                    title: title,
                     format: format,
                     fields: this._valFields(),
                     options: {}
@@ -4534,9 +4769,10 @@ return Backbone.View.extend({
                 if(v.format==='TAB'){
                     delete v.options.separator;
                 }
-            }else if(v.format==='HTML'){
-                delete v.options;
+            }else if(v.format==='SQL'){
+                v.options.database = this.$('.evol-xpt-db').val() || this.uiModel.table || this.uiModel.id;
             }
+            v.options.showID = this.$('#showID').prop('checked');
             return v;
         } else {
             // TODO implement setvalue?
@@ -4554,21 +4790,30 @@ return Backbone.View.extend({
         return v;
     },
 
+    _formatOptions: function(format, entity){
+        if(format==='XML'){
+            return '<div>'+this.fieldHTML('elementName', i18nXpt.XMLroot, entity)+'</div>';
+        }else if(format==='SQL'){
+            return '<div><label for="xpt-db">'+i18nXpt.db+'</label> '+
+                uiInput.select('xpt-db', 'postgres', 'evol-xpt-db', null, [{id:'postgres', text:'PostgreSQL'},{id:'sqlserver', text:'SQL Server'}])+
+                '<div class="evo-inline-holder">'+
+                    '<div>'+this.fieldHTML('table', i18nXpt.SQLTable, entity)+'</div>'+
+                    '<div><label>'+uiInput.checkbox('transaction', false)+i18nXpt.SQLTrans+'</label></div>'+
+                '</div></div>';
+        }
+        return '';
+    },
+
     click_format: function (evt) {
         var format = $(evt.currentTarget).val();
         if (format === 'XML') {
-            this.$('#XML').html(EvoExport.optsXML(this.uiModel.name))
+            this.$('#XML').html(this._formatOptions('XML', this.uiModel.name))
                 .show()
                 .siblings().not('.evol-FLH').hide();
         }
-        this.showFormatOpts(format);
-        this._preview(format);
+        this.showFormatOpts(format)
+            ._preview();
         this.$el.trigger('change.export', 'format', format);
-    },
-
-    click_preview: function (evt) {
-        var format = this.$('.evol-xpt-format').val();
-        this._preview(format);
     },
 
     click_toggle_sel: function (evt) {
@@ -4578,7 +4823,25 @@ return Backbone.View.extend({
 
     click_button: function (evt) {
         var bId=$(evt.currentTarget).data('id');
+        if(bId==='export'){
+            this.download(this.val());
+        }
         this.$el.trigger('action', bId);
+    },
+
+    download: function(params){
+        var blob = new Blob([this.$('.evol-xpt-val').val()], {type: 'text/plain'}),
+            ext = params.format==='TAB' ? 'txt' : params.format.toLowerCase(),
+            filename = params.title.replace(/ /g, '_') + '.' + ext,
+            a = document.createElement("a");
+
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+        document.body.appendChild(a);
+        a.click();
+        if (a.remove) {
+            a.remove();
+        }
     }
 
 });
@@ -4606,6 +4869,7 @@ Evol.ViewAction.Filter = function(){
             sNotEqual:'ne',
             sStart:'sw',
             sContain:'ct',
+            sNotContain:'nct',
             sFinish:'fw',
             sInList:'in',
             sIsNull:'null',
@@ -4781,10 +5045,7 @@ return Backbone.View.extend({
 
     _getFieldById: function(fId){
         if(!this._hash){
-            this._hash={};
-            for (var i=0,iMax=this.fields.length;i<iMax;i++){
-                this._hash[this.fields[i].id]=this.fields[i];
-            }
+            this._hash=Evol.Def.getFieldsHash(this.fields);
         }
         return this._hash[fId];
     },
@@ -4885,7 +5146,7 @@ return Backbone.View.extend({
                     h='<select id="field" class="form-control"><option value=""></option>';
                 for (var i=0,iMax=fields.length;i<iMax;i++){
                     f=fields[i];
-                    h+=uiInput.option(f.id,f.label || f.labellist);
+                    h+=uiInput.option(f.id, f.label || f.labelList);
                 }
                 h+='</select>';
                 this._fList=h;
@@ -4946,6 +5207,7 @@ return Backbone.View.extend({
                                 fOption(fOps.sNotEqual, evoLang.sNotEqual)+
                                 fOption(fOps.sStart, evoLang.sStart)+
                                 fOption(fOps.sContain, evoLang.sContain)+
+                                fOption(fOps.sNotContain, evoLang.sNotContain)+
                                 fOption(fOps.sFinish, evoLang.sFinish);
                     }
                     h+=fOption(fOps.sIsNull, evoLang.sIsNull)+
@@ -5240,29 +5502,23 @@ return Backbone.View.extend({
 
 Evol.viewClasses = {
     getClass: function(className){
-        var cn=Evol.viewClasses;
-        if(cn[className]){
-            return cn[className];
+        if(this[className]){
+            return this[className];
         }else{
-            return cn.list;
+            return this.list;
         }
-    },
-    // --- One ---
-    'browse': Evol.ViewOne.Browse,
-    'edit': Evol.ViewOne.Edit,
-    'mini': Evol.ViewOne.Mini,
-    'json': Evol.ViewOne.JSON,
-    // --- Many ---
-    'list': Evol.ViewMany.List,
-    'cards': Evol.ViewMany.Cards,
-    'bubbles': Evol.ViewMany.Bubbles,
-    'charts': Evol.ViewMany.Charts,
-    // --- Action ---
-    'filter': Evol.ViewAction.Filter,
-    'export': Evol.ViewAction.Export
-    //'uimodel': Evol.ViewAction.UI_Model,
-    //'doc': Evol.ViewAction.Doc
+    }
 };
+
+_.forEach([ 'browse', 'edit', 'mini', 'json'],function(vn){
+    Evol.viewClasses[vn] = Evol.ViewOne[vn==='json'?'JSON':Evol.Format.capitalize(vn)];
+});
+_.forEach([ 'list', 'cards', 'bubbles', 'charts'],function(vn){
+    Evol.viewClasses[vn] =  Evol.ViewMany[Evol.Format.capitalize(vn)];
+});
+_.forEach([ 'filter', 'export'],function(vn){
+    Evol.viewClasses[vn] =  Evol.ViewAction[Evol.Format.capitalize(vn)];
+});
 
 // toolbar widget which also acts as a controller for all views "one" and "many" as well as actions
 Evol.Toolbar = function() {
@@ -5312,8 +5568,7 @@ return Backbone.View.extend({
                 {id:'save', label: i18nTool.bSave, icon:'floppy-disk', n:'1', readonly:false},
                 {id:'del', label: i18nTool.bDelete, icon:'trash', n:'1', readonly:false},
                 {id:'filter', label: i18nTool.bFilter, icon:'filter',n:'n'},
-                //{id:'group',label: i18nTool.bGroup, icon:'resize-horizontal',n:'n'},
-                {id:'export', label: i18nTool.bExport, icon:'cloud-download',n:'n'}
+                {id:'export', label: i18nTool.bExport, icon:'cloud-download',n:'n'},
                 //{id:'cog',label: i18nTool.bSettings, icon:'cog',n:'n'}
             ],
             prevNext:[
@@ -5341,7 +5596,6 @@ return Backbone.View.extend({
         _.extend(this, this.options, opts);
         this.views=[];
         this.viewsHash={};
-        //this._group=false;
     },
 
     render: function() {
@@ -5544,7 +5798,8 @@ return Backbone.View.extend({
                 }
             }
         }
-        if(this.curView.cardinality==='n'){
+        this.updateStatus();
+        if(vw.cardinality==='n'){
             this.setRoute('', false);
             if(this._filterOn){ // TODO do not always change flag
                 this.showFilter(false);
@@ -5578,13 +5833,6 @@ return Backbone.View.extend({
 
     getView:function(){
         return this.curView;
-    },
-
-    setTitle: function(){
-        if(this.curView){
-            this.curView.setTitle();
-        }
-        return this;
     },
 
     proceedIfReady:function(cbOK, cbCancel){
@@ -5625,11 +5873,11 @@ return Backbone.View.extend({
         return this;
     },
 
-     _keepTab: function(viewName){
+    _keepTab: function(viewName){
          if(this.tabId && (viewName=='browse'||viewName=='edit')){
             this.curView.setTab(this.tabId);
          }
-     },
+    },
 
     getToolbarButtons: function(){
         if(!this._toolbarButtons){
@@ -5652,27 +5900,25 @@ return Backbone.View.extend({
     },
 
     setIcons: function(mode){
-        var setVisible=eUI.setVisible;
+        var showOrHide=eUI.showOrHide;
 
         function oneMany(mode, showOne, showMany){
-            setVisible(tbBs.ones, showOne);
-            setVisible(tbBs.manys, showMany);
+            showOrHide(tbBs.ones, showOne);
+            showOrHide(tbBs.manys, showMany);
             tbBs.vws.removeAttr('style');
             tbBs.views.find('[data-id="'+mode+'"]>a').css('color', '#428bca');
         }
 
         if(this.$el){
             var tbBs=this.getToolbarButtons();
-            //setVisible(tbBs.customize, mode!='json');
+            //showOrHide(tbBs.customize, mode!='json');
             tbBs.prevNext.hide();//.removeClass('disabled');
-            setVisible(tbBs.views, !(mode==='export' || mode=='new'));
+            showOrHide(tbBs.views, !(mode==='export' ||mode=='new'));
             tbBs.del.hide();
             if(Evol.Def.isViewMany(mode)){
                 this._prevViewMany=mode;
                 oneMany(mode, false, true);
-                if(mode==='charts' || mode==='bubbles'){
-                    this.setStatus('');
-                }else{
+                if(mode!=='charts' && mode!=='bubbles'){
                     var cSize=this.collection.length,
                         pSize=this.curView.pageSize;
                     if(cSize > pSize){
@@ -5695,15 +5941,15 @@ return Backbone.View.extend({
                 oneMany(mode, false, false);
                 tbBs.del.hide();
                 tbBs.views.hide();
-                setVisible(tbBs.save, mode!=='export');
+                showOrHide(tbBs.save, mode!=='export');
             }else{
                 this._prevViewOne=mode;
                 oneMany(mode, true, false);
                 tbBs.prevNext.show();
-                setVisible(tbBs.save, mode!=='browse');
-                setVisible(tbBs.edit, mode==='browse');
+                showOrHide(tbBs.save, mode!=='browse');
+                showOrHide(tbBs.edit, mode==='browse');
             }
-            setVisible(tbBs.manys.filter('[data-id="group"]'), mode==='cards');
+            //showOrHide(tbBs.manys.filter('[data-id="group"]'), mode==='cards');
         }
     },
 
@@ -5755,11 +6001,6 @@ return Backbone.View.extend({
          return this;
      },*/
 
-    setStatus: function(msg){
-        this.$('.evo-toolbar .evo-tb-status')
-            .html(msg);
-    },
-
     setData: function(data){
         if(this.curView){
             this.curView.setData(data);
@@ -5778,17 +6019,19 @@ return Backbone.View.extend({
         return this._curCollec();
     },
 
-    setModelById: function(id){
+    setModelById: function(id, skipNav){
         var that = this,
             m,
             fnSuccess = function(){
                 // TODO set collection ??
                 that.model = m;
-                if(that.curView.cardinality!='1'){
-                    that.setView(that.defaultViewOne);
+                if(!skipNav){
+                    if(that.curView.cardinality!='1'){
+                        that.setView(that.defaultViewOne);
+                    }
+                    that.curView.setModel(m);
+                    eUI.scroll2Top();
                 }
-                that.curView.setModel(m);
-                eUI.scroll2Top();
             },
             fnError = function(){
                 alert('Error: Invalid model ID.');
@@ -5841,8 +6084,8 @@ return Backbone.View.extend({
             .clearMessage();
     },
 
-    setRoute: function(id, triggerRoute){
-        Evol.Dico.setRoute(this.router, this.uiModel.id, this.curView.viewName, id, triggerRoute);
+    setRoute: function(id, triggerRoute, view){
+        Evol.Dico.setRoute(this.router, this.uiModel.id, view || this.curView.viewName, id, triggerRoute);
         Evol.Dico.setPageTitle(this.curView.getTitle());
         return this;
     },
@@ -5927,64 +6170,80 @@ return Backbone.View.extend({
             .setTitle(i18n.getLabel('tools.NewEntity', this.uiModel.name, vw.getTitle()));
     },
 
-    deleteItem: function(){
+    deleteItem: function(skipConfirmation, id, options){
         var that=this,
-            uimId=this.uiModel.id,
+            uimId=id || this.uiModel.id,
             entityName=this.uiModel.name,
-            entityValue=this.curView.getTitle();
+            entityValue=(options && options.title) || this.curView.getTitle(),
+            fnSuccess;
 
-        if(this.curView.cardinality==='1'){
-            var delModel=this.model;
-            if(delModel){
-                eUI.modal.confirm(
-                    'delete',
-                    i18n.getLabel('deleteX', entityName),
-                    i18n.getLabel('delete1', entityName, _.escape(entityValue)),
-                    {
-                        'ok': function(){
-                            var collec=that.collection,
-                                delIdx=_.indexOf(collec.models, delModel),
-                                newIdx=delIdx,
-                                newModel=null;
+        if(id || this.curView.cardinality==='1'){
+            if(id){
+                this.setModelById(id, true);
+            }
+            fnSuccess = function(){
+                var collec=that.collection,
+                    delIdx=_.indexOf(collec.models, delModel),
+                    newIdx=delIdx,
+                    newModel=null;
 
-                            if(collec.length>1){
-                                if(delIdx===0){
-                                    newIdx=1;
-                                }else if(delIdx<collec.length-1){
-                                    newIdx=delIdx+1;
-                                }else{
-                                    newIdx=delIdx-1;
-                                }
-                                newModel = collec.at(newIdx);
-                            }
-                            if(newModel){
-                                newModel.collection = collec;
-                            }
-                            var opts = {
-                                success: function(){
-                                    if(newModel===null || collec.length===0){
-                                        that.curView.clear();
-                                    }else{
-                                        that.model = newModel;
-                                        that.setRoute(newModel.id, false);
-                                        that.curView.setModel(newModel);
-                                    }
-                                    var eName=Evol.Format.capitalize(entityName);
-                                    that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('msg.deleted', eName, entityValue), 'success');
-                                    that._trigger('item.deleted');
-                                },
-                                error: function(m, err){
-                                    alert('error in "deleteItem"');
-                                }
-                            };
-                            if(!Evol.Config.localStorage){
-                                opts.url=that.model.url();
-                            }
-                            collec.remove(delModel);
-                            delModel.destroy(opts);
-                        }
+                if(collec.length>1){
+                    if(delIdx===0){
+                        newIdx=1;
+                    }else if(delIdx<collec.length-1){
+                        newIdx=delIdx+1;
+                    }else{
+                        newIdx=delIdx-1;
                     }
-                );
+                    newModel = collec.at(newIdx);
+                }
+                if(newModel){
+                    newModel.collection = collec;
+                }
+                var opts = {
+                    success: function(){
+                        if(newModel===null || collec.length===0){
+                            if(that.curView.clear){
+                                that.curView.clear();
+                            }
+                        }else{
+                            that.model = newModel;
+                            if(!id){
+                                that.setRoute(newModel.id, false);
+                                that.curView.setModel(newModel);
+                            }
+                        }
+                        var eName=Evol.Format.capitalize(entityName);
+                        that.setMessage(i18n.getLabel('deleted1', eName), i18n.getLabel('msg.deleted', eName, entityValue), 'success');
+                        if(options && options.fnSuccess){
+                            options.fnSuccess();
+                        }
+                        that._trigger('item.deleted');
+                    },
+                    error: function(m, err){
+                        alert('error in "deleteItem"');
+                    }
+                };
+                if(!(id || Evol.Config.localStorage)){
+                    opts.url=that.model.url();
+                }
+                collec.remove(delModel);
+                delModel.destroy(opts);
+            };
+            var delModel = this.model;
+            if(delModel){
+                if(skipConfirmation){
+                    fnSuccess();
+                }else{
+                    eUI.modal.confirm(
+                        'delete',
+                        i18n.getLabel('deleteX', entityName),
+                        i18n.getLabel('delete1', entityName, _.escape(entityValue)),
+                        {
+                            'ok': fnSuccess
+                        }
+                    );
+                }
             }
         }/*else{
             if(that.curView.getSelection){
@@ -6018,19 +6277,59 @@ return Backbone.View.extend({
         }
     },
 
-    click_action: function(evt, actionId){
+    setTitle: function(){
+        if(this.curView){
+            this.curView.setTitle();
+        }
+        return this;
+    },
+
+    getStatus: function(){
+        if(this.curView.cardinality==='n'){
+            if(this._filteredCollection){
+                return this._filteredCollection.length+' / '+this.collection.length+' '+this.uiModel.namePlural;
+            }else{
+                return this.collection.length+' '+this.uiModel.namePlural;
+            }
+        }else{
+            return '';
+        }
+    },
+
+    setStatus: function(msg){
+        this.$('.evo-toolbar .evo-tb-status')
+            .html(msg);
+        this.$('.evo-many-summary').html(msg);
+    },
+
+    updateStatus: function(){
+        this.setStatus(this.getStatus());
+    },
+
+    click_action: function(evt, options){
+        var actionId;
+        if(_.isString(options)){
+            actionId=options;
+        }else{
+            actionId=options.id;
+        }
         switch(actionId){
             case 'cancel':
                 window.history.back();
                 break;
             case 'edit':
-                this.setView(actionId, true);
+                if(options.mid){
+                    this.setModelById(options.mid);
+                    this.setRoute(options.mid, false, 'edit');
+                }else{
+                    //todo
+                    this.setView(actionId, true);
+                }
                 break;
-            case 'export':
-                eUI.modal.alert(
-                    'This feature must be implemented server side.',
-                    JSON.stringify(this.curView.val(), null, 2)
-                );
+            case 'delete':
+                if(options.mid){
+                    this.deleteItem(false, options.mid, options);
+                }
                 break;
             case 'save':
             case 'save-add':
@@ -6065,7 +6364,7 @@ return Backbone.View.extend({
     },
 
     updateNav: function(){
-        var cl=this.curView.collection.length,
+        var cl=this.curView.collection ? this.curView.collection.length : 0,
             cssDisabled='disabled',
             pIdx=this.pageIndex||0,
             $item=this.$('[data-id="prev"]');
@@ -6118,7 +6417,7 @@ return Backbone.View.extend({
                 this.saveItem(false);
                 break;
             case 'del':
-                this.deleteItem();
+                this.deleteItem(evt.shiftKey);
                 break;
             case 'filter':
                 this.toggleFilter();
@@ -6148,6 +6447,7 @@ return Backbone.View.extend({
                 if(toolId && toolId!==''){
                     this.setView(toolId, true);
                 }
+                this.updateStatus();
         }
         this._trigger('toolbar.'+toolId);
     },
@@ -6156,10 +6456,13 @@ return Backbone.View.extend({
         this.$el.trigger(name, ui);
     },
 
-    click_navigate: function(evt, ui){
+    click_navigate: function(evt, ui, view){
         evt.stopImmediatePropagation();
         this.setModelById(ui.id);
-        this.setRoute(ui.id, false);
+        if(ui.view){
+            this.setView(ui.view);
+        }
+        this.setRoute(ui.id, false, ui.view);
     },
 
     change_tab: function(evt, ui){
@@ -6182,12 +6485,12 @@ return Backbone.View.extend({
                 collec=new Backbone.Collection(models);
             }
             this._filteredCollection=collec;
-            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.namePlural);
+            
         }else{
             collec=this.collection;
             this._filteredCollection=null;
-            this.setStatus(collec.length+' '+this.uiModel.namePlural);
         }
+        this.updateStatus();
         this._flagFilterIcon(fvs.length);
         this.pageIndex=0;
         this.curView.setCollection(collec);
@@ -6216,12 +6519,11 @@ return Backbone.View.extend({
                 collec=new Backbone.Collection(models);
             }
             this._filteredCollection=collec;
-            this.setStatus(collec.length+' / '+this.collection.length+' '+this.uiModel.namePlural);
         }else{
             collec=this.collection;
             this._filteredCollection=null;
-            this.setStatus(collec.length+' '+this.uiModel.namePlural);
         }
+        this.updateStatus();
         this.pageIndex=0;
         if(this.curView.setCollection){
             this.curView.setCollection(collec);
@@ -6268,9 +6570,9 @@ return Backbone.View.extend({
 
 Evol.App = Backbone.View.extend({
 
-    events: {
+    //events: {
         //'click .evo-head-links2>li': 'click_entity'
-    },
+    //},
 
     options: {
         //uiModels: [],

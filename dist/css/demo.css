@@ -207,6 +207,9 @@
 .evol-doc-views > section img {
   width: 500px;
 }
+.evol-doc-views h4 {
+  margin-top: 25px;
+}
 img.shadow {
   border: 1px solid #e0e0e0;
   box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);
@@ -317,11 +320,10 @@ code {
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-}
-.links-bh a:hover,
-.links-bih a:hover {
-  background-color: #E3F2FD;
-  text-decoration: none;
+  /*&:hover{
+      background-color: #E3F2FD;
+      text-decoration: none;
+    }*/
 }
 .links-bh a > img,
 .links-bih a > img {
@@ -450,17 +452,8 @@ h4 {
 [data-eid="contact"] .evol-cards-body > .panel {
   height: 160px !important;
 }
-[data-eid="winecellar"] .evol-cards-body {
-  /*label {
-    text-align:right;
-    min-width: 80px;
-  }*/
-}
 [data-eid="winecellar"] .evol-cards-body > div.panel {
   height: 272px !important;
-}
-[data-eid="winecellar"] .evol-cards-body p {
-  clear: left;
 }
 [data-eid="comics"] .evol-cards-body > .panel {
   height: 500px !important;
