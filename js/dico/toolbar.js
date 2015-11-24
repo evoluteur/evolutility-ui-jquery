@@ -712,7 +712,9 @@ return Backbone.View.extend({
                 var opts = {
                     success: function(){
                         if(newModel===null || collec.length===0){
-                            that.curView.clear();
+                            if(that.curView.clear){
+                                that.curView.clear();
+                            }
                         }else{
                             that.model = newModel;
                             if(!id){
