@@ -212,9 +212,20 @@
   top:-140px;
 }
 
+
+@height-footer: 100px;
+.evo-page{
+  min-height: 100%;
+  margin-bottom: -@height-footer; 
+  &:after {
+    content: "";
+    display: block;
+  }
+}
 // --- footer ---
 .footer{
-  margin-top: 40px;
+  padding-top:70px;
+  height:@height-footer;
 	text-align: center;
 	font-size:smaller;
 	color:@color-text-footer;

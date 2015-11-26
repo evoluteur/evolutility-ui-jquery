@@ -195,8 +195,17 @@
   position: relative;
   top: -140px;
 }
+.evo-page {
+  min-height: 100%;
+  margin-bottom: -100px;
+}
+.evo-page:after {
+  content: "";
+  display: block;
+}
 .footer {
-  margin-top: 40px;
+  padding-top: 70px;
+  height: 100px;
   text-align: center;
   font-size: smaller;
   color: silver;
@@ -346,6 +355,7 @@ code {
 body {
   font-size: 15px !important;
   font-weight: 300;
+  height: 100%;
 }
 a {
   color: #0099cc;
