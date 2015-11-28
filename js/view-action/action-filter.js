@@ -15,9 +15,9 @@ Evol.ViewAction.Filter = function(){
         fts = Evol.Def.fieldTypes,
         evoLang = Evol.i18n.filters,
         fOps = {
+            sStart:'sw',
             sEqual:'eq',
             sNotEqual:'ne',
-            sStart:'sw',
             sContain:'ct',
             sNotContain:'nct',
             sFinish:'fw',
