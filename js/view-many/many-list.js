@@ -128,7 +128,8 @@ Evol.ViewMany.List = Evol.View_Many.extend({
         Evol.ViewMany.menuOne, 
         function(e){
             return e.children().eq(0);
-        }
+        },
+        true
     ),
 
     leaveItem: Evol.ViewMany.actionEvents.leaveItem,

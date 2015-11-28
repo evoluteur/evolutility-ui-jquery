@@ -75,18 +75,14 @@
 }
 
 // -- mini vertical toolbar in views
-.evol-actions{
+.evol-actions,.evol-actions-nxtTd{
+  transition: all 4s ease;
   position: absolute;
   display: flex;
   flex-direction: column;
   padding: 5px;
-  top: 35px;
-  right: 1px;
   background-color: @toolbar-background-color;
   border: 1px solid #bce8f1;
-  border-right: none;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
   >i{
     color: @color-icon;
     margin: 5px;
@@ -96,6 +92,21 @@
     }
   }
 }
+.evol-actions{
+  top: 35px;
+  right: 1px;
+  border-right: none;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.evol-actions-nxtTd{
+  left: 0;
+  top:0;
+  z-index: 2;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
 .evol-many-list{
   .evol-actions{
     top:0;
