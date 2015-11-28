@@ -134,9 +134,12 @@ Evol.UI = {
             return '<label for="'+id+'"><input id="'+id+'" name="'+fN+'" type="radio" value="'+value+
                 (sel?'" checked="checked':'')+'">'+label+'</label>&nbsp;';
         },
-        lov: function (id, value, label, fLOV) {
-            var h = '<select class="evo-field form-control" id="'+id+'"><option value="'+value+'" selected>'+label+'</option>',
-                opt=this.option;
+        lov: function (id, value, text, fLOV) {
+            var h = '<select class="evo-field form-control" id="'+id+'">';
+            if(text){
+                h+='<option value="'+value+'" selected>'+text+'</option>';
+            }
+            opt=this.option;
             _.each(fLOV, function (f) {
                 h+=opt(f.id, f.text);//, f.id===value);
             });
@@ -254,10 +257,14 @@ Evol.UI = {
 
     // --- menu ---
     menu: {
-        hBegin: function (id, tag, icon){
-            return '<'+tag+' class="dropdown" data-id="'+id+'">'+
-                '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'+Evol.UI.icon(icon)+' <b class="caret"></b></a>'+
-                '<ul class="dropdown-menu evo-dropdown-icons">';
+        hBegin: function(id, tag, icon, text, cardi){
+            var h='<'+tag+' class="dropdown" data-id="'+id+(cardi ? ('" data-cardi="'+cardi) : '')+'">'+
+                    '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
+                if(text) { h+=text; }
+                if(icon) { h+=Evol.UI.icon(icon); }
+                h+=' <b class="caret"></b></a>'+
+                    '<ul class="dropdown-menu evo-dropdown-icons">';
+            return h;
         },
         hEnd: function(tag){
             return '</ul></'+tag+'>';
@@ -337,14 +344,21 @@ Evol.UI = {
     panelBegin: function (p, css, noToggle) {
         var h='<div data-pid="'+p.id+'" class="panel '+(p.css?p.css:css)+'">';
         if(p.label || p.label2){
-            h+='<div class="panel-heading '+(p.cssLabel? p.cssLabel:'')+'">'+
-                (!noToggle?Evol.UI.icon('chevron-up', 'evol-title-toggle'):'')+
+            h+=this.panelHeader(p, noToggle);
+        }
+        return h;
+    },
+
+    panelHeader: function (p, noToggle) {
+        if(p.label || p.label2){
+            return '<div class="panel-heading '+(p.cssLabel? p.cssLabel:'')+'">'+
+                (noToggle===false?Evol.UI.icon('chevron-up', 'evol-title-toggle'):'')+
                 '<h3 class="panel-title">'+p.label+'</h3>'+
                 (p.label2?'<div class="evol-subtitle">'+p.label2+'</div>' : '')+
                 (p.help?'<p class="evo-panel-help">'+p.help+'</p>':'')+
                 '</div>';
         }
-        return h;
+        return '';
     },
 
     panelEnd: function () {

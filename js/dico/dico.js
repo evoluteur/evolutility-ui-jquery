@@ -111,12 +111,12 @@ return {
 
     fieldHTML: function(fld, fid, fv, mode, iconsPath, skipLabel){
         var h='';
-        function getStyleHeight(f){
-            var fh = parseInt(f.height || 0, 10);
+        function emHeight(f){
+            var fh = parseInt(f.height || 2, 10);
             if(fh<2){
                 fh=2;
             }
-            return 'height:'+parseInt(fh*1.6, 10)+'em';
+            return parseInt(fh*1.6, 10);
         }
         // --- field label ---
         if(!skipLabel){
@@ -126,7 +126,7 @@ return {
         if(fld.readonly || mode==='browse'){
             h+='<div class="disabled evo-rdonly'+(fld.type===fts.email || fld.type===fts.url?' evol-ellipsis':'')+'" id="'+fid;
             if(fld.type===fts.textml && fld.height>1){
-                h+='" style="'+getStyleHeight(fld)+';overflow-y: auto;';
+                h+='" style="height:'+emHeight(fld)+'em;overflow-y: auto;';
             }
             h+='">';
             switch (fld.type) {
