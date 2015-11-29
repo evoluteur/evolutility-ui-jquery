@@ -15,9 +15,9 @@ Evol.ViewAction.Filter = function(){
         fts = Evol.Def.fieldTypes,
         evoLang = Evol.i18n.filters,
         fOps = {
-            sStart:'sw',
             sEqual:'eq',
             sNotEqual:'ne',
+            sStart:'sw',
             sContain:'ct',
             sNotContain:'nct',
             sFinish:'fw',
@@ -353,9 +353,9 @@ return Backbone.View.extend({
                                 fOption(fOps.sSmaller, evoLang.sSmaller);
                             break;
                         default:
-                            h+=fOption(fOps.sEqual, evoLang.sEqual)+
+                            h+= fOption(fOps.sStart, evoLang.sStart)+
+                                fOption(fOps.sEqual, evoLang.sEqual)+
                                 fOption(fOps.sNotEqual, evoLang.sNotEqual)+
-                                fOption(fOps.sStart, evoLang.sStart)+
                                 fOption(fOps.sContain, evoLang.sContain)+
                                 fOption(fOps.sNotContain, evoLang.sNotContain)+
                                 fOption(fOps.sFinish, evoLang.sFinish);
