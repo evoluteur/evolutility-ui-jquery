@@ -552,7 +552,17 @@ return {
         },
         // -- in []
         'in': function(fv, cv){
-            return  _.contains(cv.split(','),fv);
+            if(_.isArray(fv)){
+                var cvs=cv.split(',');
+                for(var i=0;i<fv.length;i++){
+                    if(_.contains(cvs, fv[i])){
+                        return true;
+                    }
+                }
+                return false;
+            }else{
+                return _.contains(cv.split(','), fv);
+            }
         },
         // -- true
         '1': function(fv, cv){
