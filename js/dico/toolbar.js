@@ -29,6 +29,15 @@ _.forEach([ 'filter', 'export'],function(vn){
     Evol.viewClasses[vn] =  Evol.ViewAction[Evol.Format.capitalize(vn)];
 });
 
+if(toastr){
+    toastr.options = {
+        hideDuration: 800,
+        preventDuplicates: true,
+        closeButton: true,
+        progressBar: true
+    };
+}
+
 // toolbar widget which also acts as a controller for all views "one" and "many" as well as actions
 Evol.Toolbar = function() {
 
@@ -503,13 +512,6 @@ return Backbone.View.extend({
         return this._filterOn?this.showFilter(true):this.hideFilter();
     },
 
-    /*
-     showGroup: function(){
-         this._group = true;
-         this.curView.showGroup();
-         return this;
-     },*/
-
     setData: function(data){
         if(this.curView){
             this.curView.setData(data);
@@ -768,7 +770,6 @@ return Backbone.View.extend({
     },
 
     setMessage: function(title, content, style){
-        toastr.options.closeButton = true;
         toastr[style || 'info'](content, title);
         return this;
     },
@@ -837,7 +838,7 @@ return Backbone.View.extend({
                 break;
             case 'delete':
                 if(options.mid){
-                    this.deleteItem(false, options.mid, options);
+                    this.deleteItem(options.skipWarning, options.mid, options);
                 }
                 break;
             case 'save':

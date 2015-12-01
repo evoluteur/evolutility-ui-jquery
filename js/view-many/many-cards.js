@@ -129,6 +129,7 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
                 id: aid, 
                 mid: id, 
                 title: Evol.Dico.getItemTitle(p),
+                skipWarning: evt.shiftKey,
                 fnSuccess: function(escape){
                     p.fadeOut(500, function(){
                         p.remove();

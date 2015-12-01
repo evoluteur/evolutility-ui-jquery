@@ -148,6 +148,7 @@ Evol.ViewMany.List = Evol.View_Many.extend({
                 id: aid, 
                 mid: id, 
                 title: e.closest('tr').find('a>span').text(),
+                skipWarning: evt.shiftKey,
                 fnSuccess: function(escape){
                     tr.fadeOut(500, function(){
                         tr.remove();
