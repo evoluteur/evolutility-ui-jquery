@@ -155,7 +155,7 @@ return {
             });
             for(dataSetName in groups) {
                 nb=groups[dataSetName];
-                if(dataSetName==='undefined'){
+                if(_.isUndefined(dataSetName)){
                     lb = i18n.na;
                 }else if(dataSetName==='' || dataSetName==='null'){
                     lb = i18n.none;
@@ -181,6 +181,40 @@ return {
             //sizes: sizes
         };
         return { data: data, labels: labels};
+    },
+
+    sampleDatum: function(f, idx){
+        function char(idx){
+            return String.fromCharCode(97 + idx)+ String.fromCharCode(98 + idx)+ String.fromCharCode(99 + idx);
+        }
+        switch(f.type){
+            case 'boolean':
+                return true;
+                break;
+            case 'date':
+                return '2015-0'+(idx+1)+'-'+(idx+14);
+                break;
+            case 'integer':
+                if(f.min){
+                    return f.min+5+(idx*2);
+                }
+                return idx;
+                break;
+            case 'decimal':
+            case 'money':
+                return (idx+1)*10.2;
+                break;
+            case 'lov':
+                if(f.list && f.list.length){
+                    if(idx<f.list.length){
+                        return  f.list[idx].id;
+                    }
+                    return  f.list[0].id;
+                }
+                break;
+            default:
+                return char(idx);
+        }
     }
 
 };

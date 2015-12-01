@@ -41,6 +41,9 @@ module.exports = function (grunt) {
                     // D3.js
                     'bower_components/d3/d3.js',
 
+                    // PapaParse.js (CSV parser)
+                    'bower_components/papaparse/papaparse.js',
+
                     // jQuery
                     'bower_components/jquery/dist/jquery.js',
                     //'bower_components/jquery.csv.js',

@@ -25,7 +25,7 @@ _.forEach([ 'browse', 'edit', 'mini', 'json'],function(vn){
 _.forEach([ 'list', 'cards', 'bubbles', 'charts'],function(vn){
     Evol.viewClasses[vn] =  Evol.ViewMany[Evol.Format.capitalize(vn)];
 });
-_.forEach([ 'filter', 'export'],function(vn){
+_.forEach([ 'filter', 'export', 'import'],function(vn){
     Evol.viewClasses[vn] =  Evol.ViewAction[Evol.Format.capitalize(vn)];
 });
 
@@ -290,6 +290,19 @@ return Backbone.View.extend({
                             config.sampleMaxSize = config.pageSize;
                             vw = new ViewClass(config).render();
                             break;
+                        case 'import':
+                            config = {
+                                el: $v,
+                                mode: viewName,
+                                uiModel: this.uiModel,
+                                collection: this.collection,
+                                style: this.style,
+                                titleSelector: this.titleSelector,
+                                router: this.router//,
+                                //iconsPath: this.iconsPath || ''
+                            };
+                            vw = new ViewClass(config).render();
+                            break;
                         // --- one --- browse, edit, mini, json, wiz
                         default :
                             var vwPrev = null,
@@ -431,8 +444,9 @@ return Backbone.View.extend({
             var tbBs=this.getToolbarButtons();
             //showOrHide(tbBs.customize, mode!='json');
             tbBs.prevNext.hide();//.removeClass('disabled');
-            showOrHide(tbBs.views, !(mode==='export' ||mode=='new'));
+            showOrHide(tbBs.views, !(mode==='export' || mode==='import' ||mode=='new'));
             tbBs.del.hide();
+
             if(Evol.Def.isViewMany(mode)){
                 this._prevViewMany=mode;
                 oneMany(mode, false, true);
@@ -455,11 +469,11 @@ return Backbone.View.extend({
                          }*/
                     }
                 }
-            }else if((this.model && this.model.isNew()) || mode==='new' || mode==='export'){
+            }else if((this.model && this.model.isNew()) || mode==='new' || mode==='export' || mode==='import'){
                 oneMany(mode, false, false);
                 tbBs.del.hide();
                 tbBs.views.hide();
-                showOrHide(tbBs.save, mode!=='export');
+                showOrHide(tbBs.save, mode!=='export' && mode!=='import');
             }else{
                 this._prevViewOne=mode;
                 oneMany(mode, true, false);
@@ -844,6 +858,21 @@ return Backbone.View.extend({
             case 'save':
             case 'save-add':
                 this.saveItem(actionId==='save-add');
+                break;
+            case 'import':
+                var d = options.data;
+                var msg, style;
+                if(d && d.total){
+                    style = d.errors.length ? (d.inserts.length ? 'warning' : 'error') : 'success';
+                    msg = d.inserts + ' ' +  this.uiModel.name + ' added.';
+                    if(d.errors>0){
+                        msg += '<br>' + d.errors.length + ' Errors.';
+                    }
+                    this.setMessage('Import done.', msg, style);
+
+                }else{
+                    this.setMessage('Nothing to Import.', '', 'warning');
+                }
                 break;
         }
     },

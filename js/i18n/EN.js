@@ -43,6 +43,7 @@ Evol.i18n = {
         //Selections: 'Selections',
         //Selection: 'Selection',
         bExport: 'Export',
+        bImport: 'Import',
         bCharts: 'Charts',
         //SearchRes: 'Search Result',
         //MassUpdate: 'Mass Update',
@@ -177,6 +178,16 @@ Evol.i18n = {
         SQLTrans: 'In transaction',
         SQLIdInsert: 'Identity insert',
         DownloadEntity: 'Download {0}'
+    },
+
+    // --- import ---
+    import:{
+        ImportOne: 'Import {0}', // {0}=entity
+        ImportMany: 'Import {0}', // {0}=entities
+        format: 'Source Format',
+        fSample: 'Sample',
+        allowDups: 'Allow duplicates',
+        data: 'Data to Import'
     },
 
     // --- filters ---
