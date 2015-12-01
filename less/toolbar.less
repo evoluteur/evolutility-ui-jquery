@@ -26,6 +26,7 @@
       }
       >a {
         transition: all 0.5s ease;
+        padding: 10px 6px 10px 8px
       }
     }
   }
@@ -43,6 +44,11 @@
 */
   .evo-dropdown-icons{
     min-width: 50px;
+  }
+
+  // bootstrap override
+  .dropdown-menu>li>a{
+    padding: 3px 10px;
   }
 
 }
@@ -65,18 +71,34 @@
 
 }
 
+// -- search
 .evo-search{
-  width:200px;
+  position:relative;
+  width:200px; 
+  margin: auto;
   padding: 3px 4px 2px 2px;
+.evo-field{
+    &:not(:valid) ~ .clear-icon {
+      opacity: 0;
+    }
+  }
   >.btn{
     position: relative;
     top:0;
   }
 }
 
+.clear-icon {
+  z-index: 3;
+  position: absolute;
+  top: 14px;
+  right: 47px;
+  color: #90a4ae;
+  cursor: pointer;
+}
+
 // -- mini vertical toolbar in views
 .evol-actions,.evol-actions-nxtTd{
-  transition: all 4s ease;
   position: absolute;
   display: flex;
   flex-direction: column;
