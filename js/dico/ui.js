@@ -341,22 +341,26 @@ Evol.UI = {
     },
 
     // --- panels ---
-    panelBegin: function (p, css, noToggle) {
-        var h='<div data-pid="'+p.id+'" class="panel '+(p.css?p.css:css)+'">';
+    panelBegin: function (p, css, toggle) {
+        var h='<div class="panel '+(p.css?p.css:css);
+        if(p.id){
+            h+='" data-pid="'+p.id;
+        }
+        h+='">';
         if(p.label || p.label2){
-            h+=this.panelHeader(p, noToggle);
+            h+=this.panelHeader(p, toggle);
         }
         return h;
     },
 
-    panelHeader: function (p, noToggle) {
+    panelHeader: function (p, toggle) {
         if(p.label || p.label2){
             return '<div class="panel-heading '+(p.cssLabel? p.cssLabel:'')+'">'+
-                (noToggle===false?Evol.UI.icon('chevron-up', 'evol-title-toggle'):'')+
-                '<h3 class="panel-title">'+p.label+'</h3>'+
-                (p.label2?'<div class="evol-subtitle">'+p.label2+'</div>' : '')+
-                (p.help?'<p class="evo-panel-help">'+p.help+'</p>':'')+
-                '</div>';
+                        (toggle!==false?Evol.UI.icon('chevron-up', 'evol-title-toggle'):'')+
+                        '<h3 class="panel-title">'+p.label+'</h3>'+
+                        (p.label2?'<div class="evol-subtitle">'+p.label2+'</div>' : '')+
+                        (p.help?'<p class="evo-panel-help">'+p.help+'</p>':'')+
+                    '</div>';
         }
         return '';
     },

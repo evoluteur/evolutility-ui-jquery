@@ -12,7 +12,8 @@
 Evol.ViewOne.JSON = Evol.View_One.extend({
 
     events: {
-        'click > .evol-buttons > button': 'click_button'
+        'click > .evol-buttons > button': 'click_button',
+        'click .evol-title-toggle': 'click_toggle',
     },
 
     viewName: 'json',

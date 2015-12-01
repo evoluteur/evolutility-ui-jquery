@@ -54,7 +54,9 @@ return Backbone.View.extend({
             iMax = fields.length,
             useMore = iMax > 14;
 
-        h+='<div class="evol-xpt panel '+this.style+'"><div class="evol-xpt-form clearfix"><div class="evol-xpt-flds">'+
+        h+='<div class="evol-xpt panel '+this.style+'">'+
+            eUI.panelHeader({label:this.getTitle()}, false)+
+            '<div class="evol-xpt-form clearfix"><div class="evol-xpt-flds">'+
             '<div><label>'+i18nXpt.xpFields+'</label></div>'+
             '<fieldset class="checkbox">';
 

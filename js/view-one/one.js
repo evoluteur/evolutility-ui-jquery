@@ -584,7 +584,7 @@ return Backbone.View.extend({
         }else{
             h.push('<div data-p-width="'+p.width+'" class="evol-pnl" style="width:'+p.width+'%">');
         }
-        h.push(eUI.panelBegin(p, this.style||'panel-default'),
+        h.push(eUI.panelBegin(p, this.style||'panel-default', true),
             '<fieldset data-pid="'+p.id+(p.readonly?'" disabled>':'"><div class="evol-fset">'));
         _.each(p.elements, function (elem) {
             if(elem.type=='panel-list'){
@@ -615,7 +615,7 @@ return Backbone.View.extend({
             vMode=isEditable?mode:'browse';
 
         h.push('<div style="width:'+p.width+'%" class="evol-pnl" data-pid="'+p.id+'">',
-            eUI.panelBegin(p, this.style),
+            eUI.panelBegin(p, this.style, true),
             '<table class="table" data-mid="'+(p.attribute || p.id)+'"><thead><tr>');
         _.each(p.elements, function (elem) {
             h.push('<th>'+elem.label+((isEditable && elem.required)?eUI.html.required:'')+'</th>');
