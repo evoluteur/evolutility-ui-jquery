@@ -24,6 +24,7 @@ return Backbone.View.extend({
     events: {
         'change .evol-xpt-format': 'click_format',
         'change input, .evol-xpt-db': '_preview',
+        'change #xpt-header': '_preview',
         'click .evol-xpt-more': 'click_toggle_sel',
         'click button': 'click_button'
     },
@@ -77,6 +78,7 @@ return Backbone.View.extend({
             h+='</div>';
         }
         h+='</fieldset></div><div class="evol-xpt-para">';
+
         //##### export formats ########################################
         var fId = 'evol-xpt-format',
             formatsList = _.map(formats, function(format){
@@ -85,13 +87,17 @@ return Backbone.View.extend({
                         text: i18nXpt['format'+format]
                     };
                 });
-        h+='<label for="'+fId+'">'+i18nXpt.format+'</label>'+
-            uiInput.select(fId, '', 'evol-xpt-format', false, formatsList);
+        h+='<div class="evol-xptf"><div class="evol-xpt-format-hld"><label for="'+fId+'">'+i18nXpt.format+'</label>'+
+            uiInput.select(fId, '', 'evol-xpt-format', false, formatsList)+'</div>';
         fId = 'xptFLH';
         h+='<div class="evol-xpt-opts">'+
             //# field (shared b/w formats - header #######
             '<div class="evol-FLH clearfix">'+
-                '<label>'+uiInput.checkbox(fId, true)+i18nXpt.firstLine+'</label>'+
+                '<label class="evol-xpt-cb1">'+uiInput.checkbox(fId, true)+i18nXpt.firstLine+'</label>'+
+                uiInput.select('xpt-header', '', 'evol-xpt-header', false, [
+                    {id:'label', text:i18nXpt.headerLabels},
+                    {id:'attribute', text:i18nXpt.headerIds}
+                ])+
             //##### CSV, TAB - First line for field names #######
             '</div><div id="xptCSV" class="evol-xpt-opt">'+
                 //# field - separator
@@ -104,9 +110,9 @@ return Backbone.View.extend({
         _.each(formats, function(f){
             h+='<div id="xpt'+f+'" style="display:none;"></div>';
         });
-        h+='</div>'+
+        h+='</div></div>'+
             //# Preview #######
-            '<label>'+i18nXpt.preview+'</label>'+
+            eUI.html.clearer+'<label class="evol-xpt-pvl">'+i18nXpt.preview+'</label>'+
             // ## Samples
             '<textarea class="evol-xpt-val form-control"></textarea>'+
             '</div></div></div>'+
@@ -185,6 +191,19 @@ return Backbone.View.extend({
                 }
             });
             var fMax = flds.length-1;
+            var fnLabel;
+            if (options.firstLineHeader) {
+                fnLabel = options.header==='label' ?
+                    function(f){
+                        var lbl=f.labelExport || f.label || f.id;
+                        if(lbl.indexOf(',')>-1){
+                            return '"' + lbl + '"';
+                        }
+                        return lbl;
+                    }:function(f){
+                        return f.attribute || f.id;
+                    };
+            }
             switch (params.format){
                 case 'CSV':
                 case 'TAB':
@@ -199,7 +218,7 @@ return Backbone.View.extend({
                             h+='ID'+sep;
                         }
                         _.each(flds, function(f, idx){
-                            h+=f.labelExport || f.label;
+                            h+=fnLabel(f);
                             if(idx<fMax){
                                 h+=sep;
                             }
@@ -243,7 +262,7 @@ return Backbone.View.extend({
                             h+='<th>ID</th>';
                         }
                         _.each(flds, function(f){
-                            h+='<th>'+f.label+'</th>';
+                            h+='<th>'+fnLabel(f)+'</th>';
                         });
                         h+='\n</tr>\n';
                     }
@@ -467,6 +486,9 @@ return Backbone.View.extend({
             }
             if(v.format==='CSV' || v.format==='TAB' || v.format==='HTML'){
                 v.options.firstLineHeader = this.$('#xptFLH').prop('checked');
+                if(v.options.firstLineHeader){
+                    v.options.header = this.$('#xpt-header').val();
+                }
                 if(v.format==='TAB'){
                     delete v.options.separator;
                 }
@@ -520,6 +542,10 @@ return Backbone.View.extend({
     click_toggle_sel: function (evt) {
         $(evt.currentTarget).hide()
             .next().slideDown();
+    },
+
+    change_header: function(evt){
+        this._preview();
     },
 
     click_button: function (evt) {

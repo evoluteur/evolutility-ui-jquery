@@ -3,8 +3,10 @@
 //  https://github.com/evoluteur/evolutility
 //  Copyright (c) 2015, Olivier Giulieri
 
+@xpt-padding: 10px;
+
 .evol-xpt{
-    margin-bottom: 10px;
+    margin-bottom: @xpt-padding;
 }
 
 .evol-xpt-form {
@@ -15,7 +17,7 @@
 
   > div {
     .flex-item();
-    padding:15px;
+    padding: @xpt-padding;
     vertical-align:top;
   }
 
@@ -55,7 +57,7 @@
 }
 .evol-xpt-format{
   max-width: 270px;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 .evol-xpt-val{
   display:block;
@@ -66,8 +68,11 @@
 }
 
 .evol-xpt-opts {
-  margin: 0 15px 0 20px;
-  padding:10px;
+  float:left;
+  min-width: 120px;
+  width: 220px;
+  margin: 0 0 0 10px;
+  padding-left:20px;
   .evol-FLH{
     margin-bottom:10px;
   }
@@ -79,6 +84,16 @@
   }
 }
 
+.evol-xpt-format-hld{
+  float: left;
+  &:after{
+    clear: both;
+  }
+}
+.evol-xptf{
+  padding-bottom: 10px;
+  min-height:100px;
+}
 .evol-xpt-more{
   display:block;
   margin-top:10px;
@@ -87,11 +102,17 @@
   clear: both;
   display: none;
 }
+.xpt-header{
+  margin-left: 20px;
+}
 .evo-inline-holder{
   margin-top:10px;
   >div{
     display: inline-block;
     margin:0 10px 0 0;
+  }
+  input[type="checkbox"]{
+    margin-top:10px;
   }
 }
 .evol-xpt-db{
@@ -100,3 +121,10 @@
 .evol-w120{
   max-width:120px;
 }
+.evol-xpt-cb1{
+  margin-top:26px;
+}
+.evol-xpt-pvl{
+  margin-top:15px
+}
+
