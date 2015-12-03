@@ -188,23 +188,27 @@ return {
             return String.fromCharCode(97 + idx)+ String.fromCharCode(98 + idx)+ String.fromCharCode(99 + idx);
         }
         switch(f.type){
-            case 'boolean':
+            case fts.bool:
                 return true;
-                break;
-            case 'date':
+            case fts.date:
                 return '2015-0'+(idx+1)+'-'+(idx+14);
-                break;
-            case 'integer':
+            case fts.datetime:
+                return '2015-04-23T17:15';
+            case fts.time:
+                return '14:30';
+            case fts.url:
+                return 'http://www.evolutility.org';
+            case fts.email:
+                return 'abc@abc.com';
+            case fts.int:
                 if(f.min){
                     return f.min+5+(idx*2);
                 }
                 return idx;
-                break;
-            case 'decimal':
-            case 'money':
+            case fts.dec:
+            case fts.money:
                 return (idx+1)*10.2;
-                break;
-            case 'lov':
+            case fts.lov:
                 if(f.list && f.list.length){
                     if(idx<f.list.length){
                         return  f.list[idx].id;
