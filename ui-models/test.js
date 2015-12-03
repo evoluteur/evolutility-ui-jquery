@@ -84,8 +84,9 @@ uiModels.test = {
     name: 'test',
     namePlural: 'tests',
     title: 'Test Object',
-    fnTitle:'name',
     icon:'color_wheel.png',
+    fnTitle:'name',
+    fnSearch:['name','text1','text','text3','textmultiline1','textmultiline','textmultiline3','html1','html','html3','email1','email','email3'],
     elements: [
         {
             type: 'panel',
@@ -96,6 +97,7 @@ uiModels.test = {
             elements: [
                 {
                     id:'name',
+                    attribute:'name',
                     type: 'text',
                     label: 'Title',
                     required: true,

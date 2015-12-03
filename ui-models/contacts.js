@@ -321,6 +321,7 @@ uiModels.contact = {
     fnTitle: function(model){
         return model.get('firstname')+' '+model.get('lastname');
     },
+    fnSearch: ['lastname', 'firstname', 'jobtitle', 'company'],
     elements: [
         {
             type: 'panel', label: 'Identity', width: 62,

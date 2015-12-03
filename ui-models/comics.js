@@ -7,6 +7,7 @@ uiModels.comics = {
     namePlural: 'graphic novel series',
     //icon: 'serie.gif',
     fnTitle: 'title',
+    fnSearch: ['title', 'authors', 'notes'],
     fnBadge: function(m){
         var hNb=m.get('haveNb'),
             sNb=m.get('serieNb');

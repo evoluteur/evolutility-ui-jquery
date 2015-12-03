@@ -112,7 +112,7 @@ return Backbone.View.extend({
                 {id:'bubbles', label: i18nTool.bBubbles, icon:'adjust',n:'n'},
                 {id:'charts', label: i18nTool.bCharts, icon:'stats',n:'n'}
             ],
-            search: false
+            search: true
         }
     },
 
@@ -975,8 +975,8 @@ return Backbone.View.extend({
             $e=$e.closest('a');
         }
         var toolId=$e.data('id');
-        evt.preventDefault();
-        evt.stopImmediatePropagation();
+        //evt.preventDefault();
+        //evt.stopImmediatePropagation();
         switch(toolId){
             case 'save':
                 this.saveItem(false);
@@ -1068,25 +1068,20 @@ return Backbone.View.extend({
     
     click_search: function(evt){
         var that=this,
-            searchString=$('.evo-search>input').val().toLowerCase(), 
-            searchFunction = function(sString){
-                return function(model){
-                    return that.uiModel.fnSearch(model, sString);
-                };
-            },
+            vSearch=this.$('.evo-search>input').val().toLowerCase(),
+            fnSearch = Evol.Def.fnSearch(this.uiModel, vSearch),
             collec;
 
-        this._searchString = searchString;
-        if(searchString){
+        this._searchString = vSearch;
+        if(vSearch){
             var models=(this.collection||this.model.collection).models
-                    .filter(searchFunction(searchString));
+                    .filter(fnSearch);
             if(this.collectionClass){
-                collec=new this.collectionClass(models);
+                collec = new this.collectionClass(models);
             }else{
-                collec=new Backbone.Collection(models);
+                collec = new Backbone.Collection(models);
             }
-            this._filteredCollection=collec;
-            this._searchString = searchString;
+            this._filteredCollection = collec;
         }else{
             collec=this.collection;
             this._filteredCollection=null;

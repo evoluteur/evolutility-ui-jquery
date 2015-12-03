@@ -7,6 +7,7 @@ uiModels.todo = {
     namePlural: 'tasks',
     icon: 'todo.gif',
     fnTitle:'title',
+    fnSearch: ['title', 'description', 'notes'],
     elements: [
         {
             type: 'panel', label: 'Task', width: 62,

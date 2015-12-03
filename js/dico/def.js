@@ -71,6 +71,32 @@ return {
         return fType===fts.date || fType===fts.datetime || fType===fts.time;
     },*/
 
+    fnSearch: function(uiModel, searchString){
+        var sfn = uiModel.fnSearch;
+        if(_.isFunction(sfn)){
+            return function(model){
+                return uiModel.fnSearch(model, searchString);
+            };
+        }else{
+            if(_.isArray(sfn)){
+                return function(model){
+                    var ln=sfn.length;
+                    for(var i=0;i<ln;i++){
+                        var fn=sfn[i];
+                        if(model.get(fn) && model.get(fn).toLowerCase().indexOf(searchString)>-1){
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+            }else if(_.isString(sfn)){
+                return function(model){
+                    return model.get(fn) ? model.get(fn).toLowerCase().indexOf(searchString)>-1  : false;
+                };
+            }
+        }
+    },
+
     // get all "shallow" fields (no sub collections) from a UI model
     getFields: function (uiModel, fnFilter) {
         var fs = [];

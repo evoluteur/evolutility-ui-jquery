@@ -146,8 +146,9 @@
     </tr>
     <tr>
         <td>fnSearch <span class="evol-asterix">*</span></td>
-        <td>Function to perform searches on the models. <br>
-            Example: fnSearch = function (){
+        <td>Function to perform searches on the models. It can also be an array of field ids.<br>
+            Example 1: fnSearch = ['lastname', 'firstname', 'email']
+            <br/>Example 2: fnSearch = function (model){
                 return model.get('firstname').toLowerCase().indexOf(searchString)>-1 ||
                     model.get('lastname').toLowerCase().indexOf(searchString)>-1;
             }
@@ -200,12 +201,6 @@
         <td>
         List of fields which participate in search (array of field ids).
         </td>
-    </tr>
-    <tr>
-        <td>$title</td>
-        <td>jQuery selector for an element outside of the View to show item main field as a title on navigation.
-            <br />
-            Example: <code>$title=&quot;#title&quot;</code> </td>
     </tr>
     </tbody></table>
 

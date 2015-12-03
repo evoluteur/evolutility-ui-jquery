@@ -146,6 +146,7 @@ uiModels.winecellar = {
     fnBadge: function(model){
         return model.get('remaining') || 0;
     },
+    fnSearch: ['name', 'winery', 'appellation', 'notes'],
     elements: [
         {
             type: 'panel',
