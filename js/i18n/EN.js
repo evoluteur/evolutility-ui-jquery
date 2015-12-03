@@ -187,7 +187,9 @@ Evol.i18n = {
         format: 'Source Format',
         fSample: 'Sample',
         allowDups: 'Allow duplicates',
-        data: 'Data to Import'
+        data: 'Data to Import',
+        success: 'Import done.',
+        empty: 'Nothing to Import.'
     },
 
     // --- filters ---

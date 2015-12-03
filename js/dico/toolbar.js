@@ -895,10 +895,9 @@ return Backbone.View.extend({
                     if(d.errors>0){
                         msg += '<br>' + d.errors.length + ' Errors.';
                     }
-                    this.setMessage('Import done.', msg, style);
-
+                    this.setMessage(i18n.import.success, msg, style);
                 }else{
-                    this.setMessage('Nothing to Import.', '', 'warning');
+                    this.setMessage(i18n.import.empty, '', 'warning');
                 }
                 break;
         }
