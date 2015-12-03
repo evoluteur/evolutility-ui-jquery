@@ -134,7 +134,7 @@ Bubbles.prototype.getCenters = function (fId, size, data) {
       _.forEach(centers, function(c){
         c.label=lovH[c.name]||na;
       });
-      centers=centers.sort(Evol.Dico.sortingText('label'));
+      centers=centers.sort(Evol.Dico.sortText('label'));
     }else if(f.type==='boolean'){
       _.forEach(centers, function(c){
         if(c.name===true){
@@ -146,7 +146,7 @@ Bubbles.prototype.getCenters = function (fId, size, data) {
         }
       });
     }else if(Evol.Def.fieldIsNumber(f)){
-      centers = centers.sort(Evol.Dico.sortingNumber('name'));
+      centers = centers.sort(Evol.Dico.sortNumber('name'));
       var c=_.findWhere(centers, {'name': null});
       if(c){
         c.label = na;

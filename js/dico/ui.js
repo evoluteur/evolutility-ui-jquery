@@ -120,14 +120,11 @@ Evol.UI = {
             return '<input type="checkbox" data-id="'+id+'" class="'+css+'"'+
                 (value?' checked="checked"':'')+' value="1">';
         },
-        checkboxLOV:function(fLOV){
-            var h='';
-            for(var i in fLOV){
-                var lv=fLOV[i];
-                h+='<input type="checkbox" id="'+lv.id+'" value="'+lv.id+'"/>'+
+        checkboxLOV: function(fLOV){
+            return _.map(fLOV, function(lv){
+                return '<input type="checkbox" id="'+lv.id+'" value="'+lv.id+'"/>'+
                     '<label for="'+lv.id+'">'+lv.text+'</label> ';
-            }
-            return h;
+            }).join('');
         },
 
         radio: function (fN, value, label, sel, id) {

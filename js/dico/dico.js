@@ -137,9 +137,6 @@ return {
                 case fts.color: // TODO is the color switch necessary?
                     h+='<div id="'+fid+'" class="form-control">'+uiInput.colorBox(fid, fv)+'</div>';
                     break;
-                case fts.textmultiline:
-                    h+='<div id="'+fid+'" class="form-control" style="'+height+'">'+_.escape(fv)+'</div>';
-                    break;
                 default:
                     h+=this.fieldHTML_RO(fld, fv, {}, iconsPath);
             }
@@ -444,7 +441,7 @@ return {
         };
     },
 
-    sortingNumber: function(fid){
+    sortNumber: function(fid){
         return function(modelA, modelB) {
             if(modelA[fid]<modelB[fid]){
                 return 1;
@@ -456,7 +453,7 @@ return {
         };
     },
 
-    sortingText: function(fid){
+    sortText: function(fid){
         return function(modelA, modelB) {
             return (modelA[fid]||'').localeCompare(modelB[fid]||'');
         };
