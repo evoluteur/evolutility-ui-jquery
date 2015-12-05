@@ -35,7 +35,7 @@ Evol.i18n = {
         bMini: 'Mini', // 'Quick Edit'
         // Login: 'Login',
         bNew: 'New',
-        NewEntity: 'New {0}', //'New Item',
+        newEntity: 'New {0}', //'New Item',
         //NewUpload: 'New Upload',
         //Search: 'Search',
         //AdvSearch: 'Advanced Search',
@@ -89,8 +89,8 @@ Evol.i18n = {
     notFoundMsg: 'No {0} found.',
     notFoundMsgId: 'No {0} found for ID="{1}".',
 
-    NoChange: 'No Change',
-    NoX: 'No {0}',
+    //NoChange: 'No Change',
+    //NoX: 'No {0}',
     //Back2SearchResults: 'Back to search results',
     yes: 'Yes',
     no: 'No',
@@ -148,8 +148,8 @@ Evol.i18n = {
 
     // --- export ---
     export:{
-        ExportOne: 'Export {0}', // {0}=entity
-        ExportMany: 'Export {0}', // {0}=entities
+        exportOne: 'Export {0}', // {0}=entity
+        exportMany: 'Export {0}', // {0}=entities
         preview: 'Export preview',
         header: 'Header',
         options: 'options',
@@ -182,8 +182,8 @@ Evol.i18n = {
 
     // --- import ---
     import:{
-        ImportOne: 'Import {0}', // {0}=entity
-        ImportMany: 'Import {0}', // {0}=entities
+        importOne: 'Import {0}', // {0}=entity
+        importMany: 'Import {0}', // {0}=entities
         format: 'Source Format',
         fSample: 'Sample',
         allowDups: 'Allow duplicates',

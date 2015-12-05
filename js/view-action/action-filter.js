@@ -389,7 +389,7 @@ return Backbone.View.extend({
                     switch (fType){
                         case fts.lov:// TODO use "section"?
                             h+='<section id="value">'+
-                                ((this._field.list.length>7)?'(<input type="checkbox" id="checkAll" value="1"/><label for="checkAll">All</label>) ':'')+
+                                ((this._field.list.length>7)?'(<input type="checkbox" id="checkAll" value="1"><label for="checkAll">All</label>) ':'')+
                                 uiInput.checkboxLOV(this._field.list)+
                                 '</section>';
                             break;
@@ -406,15 +406,15 @@ return Backbone.View.extend({
                         case fts.dec:
                         case fts.money:
                             var iType=(fType==fts.date)?'text':fType;
-                            h+='<input id="value" type="'+iType+'" class="form-control"/>';
+                            h+='<input id="value" type="'+iType+'" class="form-control">';
                             if(opBetween){
                                 h+='<span class="as-Txt">'+evoLang.opAnd+' </span>'+
-                                    '<input id="value2" type="'+iType+'" class="form-control"/>';
+                                    '<input id="value2" type="'+iType+'" class="form-control">';
                             }
                             addOK=false;
                             break;
                         default:
-                            h+='<input id="value" type="text" class="form-control"/>';
+                            h+='<input id="value" type="text" class="form-control">';
                             addOK=false;
                     }
                     editor.append(h);

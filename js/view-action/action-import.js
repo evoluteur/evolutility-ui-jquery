@@ -63,7 +63,7 @@ return Backbone.View.extend({
             '</div>'+eUI.panelEnd()+
             '<div class="panel '+this.style +' evol-buttons form-actions">'+
                 eUI.button('cancel', i18n.tools.bCancel, 'btn-default')+
-                eUI.button('import', i18nI.ImportMany.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
+                eUI.button('import', i18nI.importMany.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
             '</div>';
         return h;
     },
@@ -158,9 +158,9 @@ return Backbone.View.extend({
 
     getTitle: function(){
         //if(this.many){
-            return i18n.getLabel('import.ImportMany', this.uiModel.namePlural);
+            return i18n.getLabel('import.importMany', this.uiModel.namePlural);
         //}else{
-        //    return i18n.getLabel('import.ImportOne', this.uiModel.name);
+        //    return i18n.getLabel('import.importOne', this.uiModel.name);
         //}
     },
 

@@ -157,9 +157,9 @@ return Backbone.View.extend({
 
     getTitle: function(){
         if(this.many){
-            return i18n.getLabel('export.ExportMany', this.uiModel.namePlural);
+            return i18n.getLabel('export.exportMany', this.uiModel.namePlural);
         }else{
-            return i18n.getLabel('export.ExportOne', this.uiModel.name);
+            return i18n.getLabel('export.exportOne', this.uiModel.name);
         }
     },
 

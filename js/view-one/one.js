@@ -706,7 +706,7 @@ return Backbone.View.extend({
     getTitle: function(){
         if(this.model){
             if(this.model.isNew && this.model.isNew()){
-                return i18n.getLabel('tools.NewEntity', this.uiModel.name);
+                return i18n.getLabel('tools.newEntity', this.uiModel.name);
             }
             var lf=this.uiModel.fnTitle;
             return _.isFunction(lf)?lf(this.model):this.model.get(lf);

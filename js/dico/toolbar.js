@@ -450,7 +450,8 @@ return Backbone.View.extend({
     },
 
     setIcons: function(mode){
-        var showOrHide=eUI.showOrHide;
+        var showOrHide = eUI.showOrHide,
+            importExport = mode==='export' || mode==='import';
 
         function oneMany(mode, showOne, showMany){
             showOrHide(tbBs.ones, showOne);
@@ -463,7 +464,7 @@ return Backbone.View.extend({
             var tbBs=this.getToolbarButtons();
             //showOrHide(tbBs.customize, mode!='json');
             tbBs.prevNext.hide();//.removeClass('disabled');
-            showOrHide(tbBs.views, !(mode==='export' || mode==='import' ||mode=='new'));
+            showOrHide(tbBs.views, !(importExport || mode=='new'));
             tbBs.del.hide();
 
             if(Evol.Def.isViewMany(mode)){
@@ -488,12 +489,12 @@ return Backbone.View.extend({
                          }*/
                     }
                 }
-            }else if((this.model && this.model.isNew()) || mode==='new' || mode==='export' || mode==='import'){
+            }else if((this.model && this.model.isNew()) || mode==='new' || importExport){
                 oneMany(mode, false, false);
                 tbBs.del.hide();
                 tbBs.views.hide();
                 tbBs.more.show();
-                showOrHide(tbBs.save, mode!=='export' && mode!=='import');
+                showOrHide(tbBs.save, !importExport);
             }else{
                 this._prevViewOne=mode;
                 oneMany(mode, true, false);
@@ -711,7 +712,7 @@ return Backbone.View.extend({
             }
         }
         return this.curView.setDefaults() //.clear()
-            .setTitle(i18n.getLabel('tools.NewEntity', this.uiModel.name, vw.getTitle()));
+            .setTitle(i18n.getLabel('tools.newEntity', this.uiModel.name, vw.getTitle()));
     },
 
     deleteItem: function(skipConfirmation, id, options){
