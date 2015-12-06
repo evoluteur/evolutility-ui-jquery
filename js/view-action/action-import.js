@@ -146,16 +146,6 @@ return Backbone.View.extend({
         this.model = model;
     },
 
-    getFields: function (){
-        if(!this.fields){
-            this.fields=Evol.Def.getFields(this.uiModel, function(f){
-                // todo: allow formula fields & provide value in export
-                return f.type!=fts.formula && (_.isUndefined(f.inImport) || f.inImport);
-            });
-        }
-        return this.fields;
-    },
-
     getTitle: function(){
         //if(this.many){
             return i18n.getLabel('import.importMany', this.uiModel.namePlural);
@@ -268,11 +258,6 @@ return Backbone.View.extend({
     getFields: function () {
         if (!this._fields) {
             this._fields = Evol.Def.getFields(this.uiModel);
-            this._fieldHash = {};
-            var fh = this._fieldHash;
-            _.each(this._fields, function (f) {
-                fh[f.id] = f;
-            });
         }
         return this._fields;
     }
