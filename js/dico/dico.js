@@ -392,23 +392,35 @@ return {
 */
     filterModels: function(models, filters){
         if(filters.length){
-            // TODO pre-build function to avoid repeating loop
+            var fConds=Evol.Dico.fieldConditions;
             return models.filter(function(model){
-                var want=true,
-                    fConds=Evol.Dico.fieldConditions;
-                for(var i= 0, iMax=filters.length;i<iMax && want;i++){
-                    if(want===false){
-                        break;
-                    }
+                var good=true;
+                for(var i=0, iMax=filters.length;i<iMax;i++){
                     var filter=filters[i],
-                        vm=model.get(filter.field.value);// TODO use field.value(m) || field.id
+                        vm=model.get(filter.field.value);
 
-                    if(_.isUndefined(vm)){
-                        vm='';
+                    if(_.isArray(vm)){
+                        var ln=vm.length,
+                            fGood=false;
+                        for(var j=0;j<ln;j++){
+                            if(fConds[filter.operator.value](vm[j], filter.value.value)){
+                                fGood=true;
+                                break;
+                            }
+                        }
+                        if(!fGood){
+                            return fGood;
+                        }
+                    }else{
+                        if(_.isUndefined(vm)){
+                            vm='';
+                        }
+                        if(!fConds[filter.operator.value](vm, filter.value.value, filter.value.value2)){
+                            return false;
+                        }
                     }
-                    want=fConds[filter.operator.value](vm, filter.value.value, filter.value.value2); // vf2 is only used in "between" conditions
                 }
-                return want;
+                return good;
             });
         }
         return models;
