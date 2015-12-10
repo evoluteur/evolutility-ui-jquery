@@ -14,8 +14,8 @@
 
 Evol.ViewMany.Charts = function() {
 
-var EvoUI = Evol.UI,
-    EvoDico = Evol.Dico,
+var dom = Evol.DOM,
+    eDico = Evol.Dico,
     i18n = Evol.i18n;
 
 return Evol.View_Many.extend({
@@ -45,7 +45,7 @@ return Evol.View_Many.extend({
                 this._HTMLcharts(this.style || 'panel-info', this.sizes)+
                 '</div>');
         }else{
-            this.$el.html(EvoUI.HTMLMsg(i18n.nodata, '', 'info'));
+            this.$el.html(dom.HTMLMsg(i18n.nodata, '', 'info'));
         }
         return this.setTitle();
     },
@@ -97,9 +97,9 @@ return Evol.View_Many.extend({
                             lb = i18n.none;
                         }else if(isList){
                             if(f.list && f.list.length && f.list[0].icon){
-                                lb = EvoDico.lovTextNoPix(f, dataSetName);
+                                lb = eDico.lovTextNoPix(f, dataSetName);
                             }else{
-                                lb = EvoDico.lovText(f, dataSetName, Evol.hashLov, iconsPath);
+                                lb = eDico.lovText(f, dataSetName, Evol.hashLov, iconsPath);
                             }
                         }else{
                             lb = dataSetName;
@@ -113,17 +113,17 @@ return Evol.View_Many.extend({
                 h+='<div class="evol-chart-holder panel '+style+'">'+
                     '<div class="opts"></div><div class="chart-holder" data-fid="'+f.id+'" data-ctype="'+chartType+'">';
                 if(chartType==='pie'){
-                    h+=EvoUI.Charts.Pie(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aByB', entityName, f.label), data, labels, style, sizes);
+                    h+=dom.Charts.Pie(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aByB', entityName, f.label), data, labels, style, sizes);
                 }else if(chartType==='bars'){
-                    h+=EvoUI.Charts.Bars(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aB', entityName, f.label), data, labels, style, sizes);
+                    h+=dom.Charts.Bars(f.labelCharts?f.labelCharts:i18n.getLabel('charts.aB', entityName, f.label), data, labels, style, sizes);
                 }
                 h+='</div><br></div>';
             });
             this._cData=cData;
         }else{
-            h+=EvoUI.HTMLMsg(i18n.nochart, i18n.badchart);
+            h+=dom.HTMLMsg(i18n.nochart, i18n.badchart);
         }
-        h+=EvoUI.html.clearer;
+        h+=dom.html.clearer;
         return h;
     },
 
@@ -148,7 +148,7 @@ return Evol.View_Many.extend({
             fid=holder.data('fid'),
             oldData=this._cData[fid],
             f=oldData.field,
-            chart=EvoUI.Charts,
+            chart=dom.Charts,
             c, cl;
 
         if(cType!=oType){

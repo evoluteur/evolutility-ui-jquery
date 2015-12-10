@@ -62,10 +62,10 @@ Evol.ViewMany.Bubbles = Evol.View_Many.extend({
     },
 
     _render: function (models) {
-        var eUI = Evol.UI,
+        var dom = Evol.DOM,
             i18nTools = Evol.i18n.tools,
-            hOpt = eUI.input.option,
-            hOptNull = eUI.html.emptyOption,
+            hOpt = dom.input.option,
+            hOptNull = dom.html.emptyOption,
             fo,
             fs2 = Evol.Def.getFields(this.uiModel, Evol.Def.fieldChartable),
             h = '<div class="evol-many-bubbles panel '+this.style+'"><div class="evol-bubbles-body">'+
@@ -106,7 +106,7 @@ Evol.ViewMany.Bubbles = Evol.View_Many.extend({
             if(fo.length){
                 h+='<label>'+i18nTools.vizSizeBy+': </label><select class="form-control bubble-size">'+hOptNull+fo.join('')+'</select>';
             }
-            //h+=Evol.UI.html.clearer;
+            //h+=dom.html.clearer;
         }else{
             h+=Evol.i18n.notEnoughdata;
         }

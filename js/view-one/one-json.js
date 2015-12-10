@@ -19,26 +19,26 @@ Evol.ViewOne.JSON = Evol.View_One.extend({
     viewName: 'json',
 
     render: function () {
-        var eUI=Evol.UI;
+        var dom=Evol.DOM;
         if(this.model){
             var h = [],
                 jsonStr=JSON.stringify(this.model, null, 2);
 
             h.push(
-                eUI.panelBegin({
+                dom.panelBegin({
                     id: 'p-json',
                     label:Evol.Format.capitalize(this.uiModel.name), 
                     label2: 'JSON'
                 }, this.style+' evo-p-json', true)+
                 '<fieldset>'+
-                eUI.label('uimjson', 'JSON')+
-                eUI.input.textMJSON('uimjson', jsonStr, 16)+
+                dom.label('uimjson', 'JSON')+
+                dom.input.textMJSON('uimjson', jsonStr, 16)+
                 '</fieldset>'+
-                eUI.panelEnd());
+                dom.panelEnd());
             this._renderButtons(h, 'json');
             this.$el.html(h.join(''));
         }else{
-            this.$el.html(eUI.HTMLMsg(Evol.i18n.nodata, '', 'info'));
+            this.$el.html(dom.HTMLMsg(Evol.i18n.nodata, '', 'info'));
         }
         this.setData(this.model);
         //this.custOn=false;
@@ -51,7 +51,7 @@ Evol.ViewOne.JSON = Evol.View_One.extend({
             $fp=this._getDOMField().parent();
 
         //this.clearMessages();
-        isValid=!Evol.UI.addRemClass($fp, data===null, 'has-error');
+        isValid=!Evol.DOM.addRemClass($fp, data===null, 'has-error');
         this.$el.trigger('action', 'validate', {valid:isValid});
         return isValid?[]:[Evol.i18n.validation.invalid];
     },

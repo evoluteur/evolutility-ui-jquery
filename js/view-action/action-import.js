@@ -9,10 +9,10 @@
 
 Evol.ViewAction.Import = function(){
 
-    var eUI = Evol.UI,
+    var dom = Evol.DOM,
         eDico = Evol.Dico,
         fts = Evol.Def.fieldTypes,
-        uiInput = eUI.input,
+        uiInput = dom.input,
         i18n = Evol.i18n,
         i18nX = i18n.export,
         i18nI = i18n.import;
@@ -44,26 +44,26 @@ return Backbone.View.extend({
     },
 
     _renderHTML: function () {
-        var h = eUI.panelBegin({id: '', type: 'panel', label: this.getTitle(), width: 100}, 'evol-xpt '+this.style, false)+
+        var h = dom.panelBegin({id: '', type: 'panel', label: this.getTitle(), width: 100}, 'evol-xpt '+this.style, false)+
             '<div class="evol-fset">'+
                 '<div class="evol-fld w-100"><label class="lbl-block">'+i18nI.format+'</label>'+
-                //eUI.input.text('id', 'value', {}, null)+
-                eUI.input.lov('iptFormat', 'value', '', [
+                //dom.input.text('id', 'value', {}, null)+
+                dom.input.lov('iptFormat', 'value', '', [
                         {id:'csv',text: i18nX.formatCSV},
                         {id:'json',text: i18nX.formatJSON}
                     ])+
                     '<a href="javascript:void(0);" class="ipt-ssample">CSV '+i18nI.fSample+'</a>'+
-                    eUI.html.clearer+
+                    dom.html.clearer+
                 '</div>'+
                 //'<div class="evol-fld checkbox w-38"><label>'+uiInput.checkbox('dupOk', false)+i18nI.allowDups+'</label></div>'+
                 '<div class="evol-ipt-fh"><textarea class="evol-ipt-format help-block" style="resize: none;"></textarea></div>'+
                 '<div class="evol-fld w-100"><label style="margin-top:10px;">'+i18nI.data+'</label>'+
                 '<textarea class="evol-xpt-val form-control" id="import_data" rows="12"></textarea>'+
                 '</div>'+
-            '</div>'+eUI.panelEnd()+
+            '</div>'+dom.panelEnd()+
             '<div class="panel '+this.style +' evol-buttons form-actions">'+
-                eUI.button('cancel', i18n.tools.bCancel, 'btn-default')+
-                eUI.button('import', i18nI.importMany.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
+                dom.button('cancel', i18n.tools.bCancel, 'btn-default')+
+                dom.button('import', i18nI.importMany.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
             '</div>';
         return h;
     },

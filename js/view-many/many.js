@@ -47,7 +47,7 @@ Evol.ViewMany = {
                 e.append(
                     '<div class="'+css+'">'+
                     _.map(icons, function(i){
-                        return Evol.UI.iconId(i.id, i.type, i.icon);
+                        return Evol.DOM.iconId(i.id, i.type, i.icon);
                     }).join('')+
                     '</div>');
             };
@@ -61,7 +61,7 @@ Evol.ViewMany = {
 
 Evol.View_Many = function() {
 
-    var eUI = Evol.UI,
+    var dom = Evol.DOM,
         eDico = Evol.Dico,
         i18n = Evol.i18n;
 
@@ -124,7 +124,7 @@ return Backbone.View.extend({
             models = eDico.filterModels(models, this._filter);
             this._render(models);
         } else {
-            this.$el.html(eUI.HTMLMsg(this.noDataString, '', 'info'));
+            this.$el.html(dom.HTMLMsg(this.noDataString, '', 'info'));
         }
         return this.setTitle();
     },
@@ -168,7 +168,7 @@ return Backbone.View.extend({
     },
 
     _HTMLCheckbox: function (cid) {
-        return eUI.input.checkbox2(cid, false, 'list-sel');
+        return dom.input.checkbox2(cid, false, 'list-sel');
     },
     /*
      customize: function () {
@@ -176,7 +176,7 @@ return Backbone.View.extend({
          if(this._custOn){
             labels.find('i').remove();
          }else{
-            labels.append(eUI.iconCustomize('id', 'field'));
+            labels.append(dom.iconCustomize('id', 'field'));
          }
          this._custOn=!this._custOn;
          return this;

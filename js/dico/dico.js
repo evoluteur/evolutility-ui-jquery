@@ -14,8 +14,8 @@ var Evol = Evol || {};
 // not a "virtual DOM" but an "abstract DOM"
 Evol.Dico = function(){
 
-    var eUI = Evol.UI,
-        uiInput = eUI.input,
+    var dom = Evol.DOM,
+        uiInput = dom.input,
         i18n = Evol.i18n,
         fts = Evol.Def.fieldTypes;
 
@@ -155,7 +155,7 @@ return {
         switch(f.type){
             case fts.bool:
                 if (v==='true' || v=='1') {
-                    return eUI.icon('ok', f.css);
+                    return dom.icon('ok', f.css);
                 }
                 break;
             case fts.lov:
@@ -197,9 +197,9 @@ return {
                 }
                 break;
             case fts.email:
-                return eUI.linkEmail(wId?f.id:null, v);
+                return dom.linkEmail(wId?f.id:null, v);
             case fts.url:
-                return eUI.link(f.id, v, v, f.id);
+                return dom.link(f.id, v, v, f.id);
             //case fts.color:
             //    return uiInput.colorBox(f.id, v, v);
             default:
@@ -211,10 +211,10 @@ return {
     HTMLFieldLabel: function (fld, mode) {
         var h='<div class="evol-field-label" id="'+fld.id+'-lbl"><label class="control-label '+(fld.cssLabel?fld.cssLabel:'')+'" for="'+fld.id+'">'+fld.label;
         if (mode != 'browse' && fld.required){
-            h+=eUI.html.required;
+            h+=dom.html.required;
         }
         if (fld.help && fld.help!==''){
-            h+=eUI.icon('question-sign', '');
+            h+=dom.icon('question-sign', '');
         }
         h+='</label></div>';
         return h;
@@ -335,7 +335,7 @@ return {
          }
          //$el.closest('.evol-fld').after($elDesModal);
          $('body').append($elDesModal);
-         var $elDesModal=$(eUI.modal.HTMLModal('m'+id, 'Edit '+type+' '+ f.label, '<div class="'+css+'"></div>')),
+         var $elDesModal=$(dom.modal.HTMLModal('m'+id, 'Edit '+type+' '+ f.label, '<div class="'+css+'"></div>')),
          $elDes=$elDesModal.find('.'+css);
          var vw = new Evol.ViewOne.Edit({
              uiModel: uiModel,

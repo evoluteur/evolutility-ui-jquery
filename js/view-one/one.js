@@ -15,8 +15,8 @@ Evol.ViewOne = {};
 
 Evol.View_One = function(){
 
-    var eUI = Evol.UI,
-        uiInput = eUI.input,
+    var dom = Evol.DOM,
+        uiInput = dom.input,
         i18n = Evol.i18n,
         i18nTools = i18n.tools,
         eDef=Evol.Def,
@@ -290,7 +290,7 @@ return Backbone.View.extend({
                     }
                     break;
                 case 'visible':
-                    eUI.showOrHide($f, value);
+                    dom.showOrHide($f, value);
                     break;
             }
         }
@@ -480,12 +480,12 @@ return Backbone.View.extend({
     },
 
     _renderButtons: function (h, mode) {
-        h.push(eUI.html.clearer+
+        h.push(dom.html.clearer+
             '<div class="evol-buttons panel '+this.style+'">'+
-            eUI.button('cancel', i18n.tools.bCancel, 'btn-default')+
-            eUI.button('save', i18n.tools.bSave, 'btn-primary'));
+            dom.button('cancel', i18n.tools.bCancel, 'btn-default')+
+            dom.button('save', i18n.tools.bSave, 'btn-primary'));
         if (this.model && this.model.isNew() && this.button_addAnother && mode!=='json') {
-            h.push(eUI.button('save-add', i18n.tools.bSaveAdd, 'btn-default'));
+            h.push(dom.button('save-add', i18n.tools.bSaveAdd, 'btn-default'));
         }
         h.push('</div>');
     },
@@ -505,7 +505,7 @@ return Backbone.View.extend({
                     iPanel = -1;
                 }
                 if (iTab < 0) {
-                    h.push(eUI.html.clearer);
+                    h.push(dom.html.clearer);
                     that._renderTabTitles(h, elems);
                     h.push('<div class="tab-content">');
                 }
@@ -571,7 +571,7 @@ return Backbone.View.extend({
                 that._renderPanel(h, p, mode);
             }
         });
-        h.push(eUI.html.clearer+'</div></div>'); // TODO 2 div?
+        h.push(dom.html.clearer+'</div></div>'); // TODO 2 div?
     },
 
     _renderPanel: function (h, p, mode, visible) {
@@ -584,7 +584,7 @@ return Backbone.View.extend({
         }else{
             h.push('<div data-p-width="'+p.width+'" class="evol-pnl" style="width:'+p.width+'%">');
         }
-        h.push(eUI.panelBegin(p, this.style||'panel-default', true),
+        h.push(dom.panelBegin(p, this.style||'panel-default', true),
             '<fieldset data-pid="'+p.id+(p.readonly?'" disabled>':'"><div class="evol-fset">'));
         _.each(p.elements, function (elem) {
             if(elem.type=='panel-list'){
@@ -605,7 +605,7 @@ return Backbone.View.extend({
             }
         });
         h.push('</div></fieldset>'+
-            eUI.panelEnd()+
+            dom.panelEnd()+
             '</div>');
         return this;
     },
@@ -615,10 +615,10 @@ return Backbone.View.extend({
             vMode=isEditable?mode:'browse';
 
         h.push('<div style="width:'+p.width+'%" class="evol-pnl" data-pid="'+p.id+'">',
-            eUI.panelBegin(p, this.style, true),
+            dom.panelBegin(p, this.style, true),
             '<table class="table" data-mid="'+(p.attribute || p.id)+'"><thead><tr>');
         _.each(p.elements, function (elem) {
-            h.push('<th>'+elem.label+((isEditable && elem.required)?eUI.html.required:'')+'</th>');
+            h.push('<th>'+elem.label+((isEditable && elem.required)?dom.html.required:'')+'</th>');
         });
         if(vMode==='edit'){
             h.push('<th></th>');
@@ -626,7 +626,7 @@ return Backbone.View.extend({
         h.push('</tr></thead><tbody>');
         this._renderPanelListBody(h, p, null, vMode);
         h.push('</tbody></table>',
-            eUI.panelEnd(),
+            dom.panelEnd(),
             '</div>');
         return this;
     },
@@ -640,7 +640,7 @@ return Backbone.View.extend({
         if(this.model){
             var vs = this.model.get(uiPnl.attribute);
             if(vs && vs.length>0){
-                var TDbPM='<td class="evo-td-plusminus">'+eUI.buttonsPlusMinus()+'</td>';
+                var TDbPM='<td class="evo-td-plusminus">'+dom.buttonsPlusMinus()+'</td>';
                 _.each(vs, function(row, idx){
                     h.push('<tr data-idx="'+idx+'">');
                     if(editable){
@@ -671,7 +671,7 @@ return Backbone.View.extend({
     _TRnodata: function(colspan, mode){
         return '<tr data-id="nodata"><td colspan="'+(mode==='edit'?(colspan+1):colspan)+'" class="evol-pl-nodata">'+
             i18n.nodata+
-            (mode==='edit'?eUI.buttonsPlus():'')+
+            (mode==='edit'?dom.buttonsPlus():'')+
             '</td></tr>';
     },
 
@@ -696,7 +696,7 @@ return Backbone.View.extend({
         }
         if(f.type==='formula'){
             h.push(Evol.Dico.HTMLFieldLabel(f, mode || 'edit')+
-                Evol.UI.input.formula(this.fieldViewId(f.id), f, this.model));
+                dom.input.formula(this.fieldViewId(f.id), f, this.model));
         }else{
             h.push(eDico.fieldHTML(f, this.fieldViewId(f.id), fv, mode, iconsPath, skipLabel));
         }
@@ -933,9 +933,9 @@ return Backbone.View.extend({
              _.each(this.$(labelSelector),function(elem){
                  var $el=$(elem),
                  id=$el.attr('for');
-                 $el.append(eUI.iconCustomize(id,'field'));
+                 $el.append(dom.iconCustomize(id,'field'));
              });
-             this.$(panelSelector).append(eUI.iconCustomize('id','panel'));
+             this.$(panelSelector).append(dom.iconCustomize('id','panel'));
              this.custOn=true;
          }
          return this;
@@ -1102,7 +1102,7 @@ return Backbone.View.extend({
             h+='<tr>'+
                 this._TDsFieldsEdit(elems, {})+
                 '<td class="evo-td-plusminus">'+
-                eUI.buttonsPlusMinus()+
+                dom.buttonsPlusMinus()+
                 '</td></tr>';
             $(h).insertAfter(tr);
             if(tr.data('id')==='nodata'){

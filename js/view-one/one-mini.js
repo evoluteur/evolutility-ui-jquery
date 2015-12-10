@@ -11,7 +11,7 @@
 
 Evol.ViewOne.Mini = function(){
 
-    var eUI = Evol.UI,
+    var dom = Evol.DOM,
         fts = Evol.Def.fieldTypes;
 
 return Evol.ViewOne.Edit.extend({
@@ -51,11 +51,11 @@ return Evol.ViewOne.Edit.extend({
             iconsPath = this.iconsPath;
             
         h.push('<div data-p-width="100%" class="evol-pnl evol-p-mini">'+
-            eUI.panelBegin(p, this.style, true)+
+            dom.panelBegin(p, this.style, true)+
             '<fieldset data-pid="'+p.id+(p.readonly?'" disabled>':'">'));
         _.each(p.elements, function (elem) {
             if(elem.type==fts.hidden){
-                h.push(eUI.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultValue, mode)));
+                h.push(dom.input.hidden(that.fieldViewId(elem.id), that.getModelFieldValue(elem.id, elem.defaultValue, mode)));
             }else{
                 h.push('<div class="pull-left evol-fld w-100">'+
                     '<div class="evol-mini-label">'+Evol.Dico.HTMLFieldLabel(elem, mode)+
@@ -65,7 +65,7 @@ return Evol.ViewOne.Edit.extend({
             }
         });
         h.push('</fieldset>'+
-            eUI.panelEnd()+
+            dom.panelEnd()+
             '</div>');
         return this;
     }

@@ -5,6 +5,8 @@ var Evol=Evol||{};
 
 Evol.Bubbles = function(){
 
+var fts = Evol.Def.fieldTypes;
+
 var Bubbles = function(opts){
     _.extend(this, opts);
     this.fieldsH={};
@@ -71,19 +73,37 @@ Bubbles.prototype.setData = function(data){
 
   this.nodes.enter().append("circle")
     .attr("class", "node")
+    .attr('data-mid', function (d) { return d.id;})
     .attr("cx", function (d) { 
       return d.x;
     })
-    .attr('data-mid', function (d) { return d.id;})
-    .attr("cy", function (d) { return d.y; })
-    .attr("r", function (d) { return d.radius; })
-    .style("fill", function (d) { return that.fill(d[that.colorFieldId]); })
+    .attr("cy", function (d) { 
+      return d.y; 
+    })
+    .attr("r", function (d) { 
+      return d.radius; 
+    })
+    .style("fill", function (d) { 
+      return that.fill(d[that.colorFieldId]); 
+    })
     .on("mouseenter", showPopover)
     .on("mouseleave", removePopovers)
     .on("click", removePopovers);
 
   this.nodes
-    .attr('data-mid', function (d) { return d.id;});
+    .attr('data-mid', function (d) { return d.id;})
+    .attr("cx", function (d) { 
+      return d.x;
+    })
+    .attr("cy", function (d) { 
+      return d.y; 
+    })
+    .attr("r", function (d) { 
+      return d.radius; 
+    })
+    .style("fill", function (d) { 
+      return that.fill(d[that.colorFieldId]); 
+    });
 
 
   this.nodes.exit().remove();

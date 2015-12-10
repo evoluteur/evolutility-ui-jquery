@@ -11,7 +11,7 @@
 
 Evol.ViewOne.Wizard = function(){
 
-    var eUI = Evol.UI;
+    var dom = Evol.DOM;
 
 return Evol.View_One.extend({
 
@@ -49,7 +49,7 @@ return Evol.View_One.extend({
             }
         }
         var bs=this._getButtons();
-        eUI.addRemClass(bs.prev, this._stepIdx===0, 'disabled');
+        dom.addRemClass(bs.prev, this._stepIdx===0, 'disabled');
         if(this._stepIdx===this._nbStep-1){
             bs.next.hide();
             bs.finish.show();
@@ -110,8 +110,8 @@ return Evol.View_One.extend({
 
     _renderButtons: function (h) {
         var bLabel=Evol.i18n.tools,
-            b=eUI.button;
-        h.push(eUI.html.clearer,
+            b=dom.button;
+        h.push(dom.html.clearer,
             '<div class="evo-wiz-buttons">',
             b('prev', bLabel.prev, 'btn-default disabled'),
             b('next', bLabel.next, 'btn-primary'),

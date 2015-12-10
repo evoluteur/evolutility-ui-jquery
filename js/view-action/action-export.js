@@ -9,10 +9,10 @@
 
 Evol.ViewAction.Export = function(){
 
-    var eUI = Evol.UI,
+    var dom = Evol.DOM,
         eDico = Evol.Dico,
         fts = Evol.Def.fieldTypes,
-        uiInput = eUI.input,
+        uiInput = dom.input,
         i18n = Evol.i18n,
         i18nXpt = i18n.export;
 
@@ -56,7 +56,7 @@ return Backbone.View.extend({
             useMore = iMax > 14;
 
         h+='<div class="evol-xpt panel '+this.style+'">'+
-            eUI.panelHeader({label:this.getTitle()}, false)+
+            dom.panelHeader({label:this.getTitle()}, false)+
             '<div class="evol-xpt-form clearfix"><div class="evol-xpt-flds">'+
             '<div><label>'+i18nXpt.xpFields+'</label></div>'+
             '<fieldset class="checkbox">';
@@ -103,7 +103,7 @@ return Backbone.View.extend({
                 //# field - separator
                 //# - csv - any separator #######
                 '<div data-id="csv2" class="evol-w120">'+
-                eUI.fieldLabel('separator', i18nXpt.separator)+
+                dom.fieldLabel('separator', i18nXpt.separator)+
                 uiInput.text('separator', ',', '0')+
                 '</div>'+
             '</div>';
@@ -112,14 +112,14 @@ return Backbone.View.extend({
         });
         h+='</div></div>'+
             //# Preview #######
-            eUI.html.clearer+'<label class="evol-xpt-pvl">'+i18nXpt.preview+'</label>'+
+            dom.html.clearer+'<label class="evol-xpt-pvl">'+i18nXpt.preview+'</label>'+
             // ## Samples
             '<textarea class="evol-xpt-val form-control"></textarea>'+
             '</div></div></div>'+
             // ## Download button
             '<div class="panel '+this.style +' evol-buttons form-actions">'+
-                eUI.button('cancel', i18n.tools.bCancel, 'btn-default')+
-                eUI.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
+                dom.button('cancel', i18n.tools.bCancel, 'btn-default')+
+                dom.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
             '</div>'+
             '</div>';
         return h;
@@ -141,7 +141,7 @@ return Backbone.View.extend({
         }
         var divOpts = this.$('#xpt' + xFormat).show()
             .siblings().hide();
-        eUI.showOrHide(divOpts.filter('.evol-FLH'), xFormat==='TAB' || xFormat==='CSV' || xFormat==='HTML');
+        dom.showOrHide(divOpts.filter('.evol-FLH'), xFormat==='TAB' || xFormat==='CSV' || xFormat==='HTML');
         return this;
     },
 
@@ -458,7 +458,7 @@ return Backbone.View.extend({
     },
 
     fieldHTML: function(id,label,text){
-        return eUI.fieldLabel(id, label) +
+        return dom.fieldLabel(id, label) +
             uiInput.text(id, text.replace(/ /g, '_'), null, 'xpt-mw300');
     },
 

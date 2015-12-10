@@ -28,7 +28,7 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
 
         this.$el.html('<div class="evol-many-cards"><div class="evol-cards-body">'+
             this._HTMLbody(this.getFields(), pSize, this.uiModel.icon, 0, this.selectable)+
-            '</div>'+Evol.UI.html.clearer+
+            '</div>'+Evol.DOM.html.clearer+
             this._HTMLpagination(0, pSize, models.length)+
             '<div class="evo-many-summary">'+pSummary+'</div>'+
             '</div>');
@@ -44,7 +44,7 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
             v,
             fts = Evol.Def.fieldTypes,
             link = (this.links!==false),
-            uiInput = Evol.UI.input;
+            domInput = Evol.DOM.input;
 
         if(isTooltip){
             h.push('<div class="evol-bubble-tooltip">');
@@ -54,9 +54,9 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
         _.each(fields, function(f, idx){
             if(f.type===fts.color) {
                 v = model.escape(f.attribute || f.id);
-                v = uiInput.colorBox(f.id, v, v);
+                v = domInput.colorBox(f.id, v, v);
             }else if(f.type==='formula'){
-                v = uiInput.formula(null, f, model);
+                v = domInput.formula(null, f, model);
             }else if(f.type==='image' && !isTooltip){ 
                 v = '<a href="#'+route+model.id+'">'+
                     that._HTMLField(f, model.escape(f.attribute || f.id))+
@@ -105,7 +105,7 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
             labels.find('i').remove();
             this._custOn=false;
         }else{
-            labels.append(Evol.UI.iconCustomize('id','field'));
+            labels.append(Evol.DOM.iconCustomize('id','field'));
             this._custOn=true;
         }
         return this;

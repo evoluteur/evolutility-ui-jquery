@@ -80,8 +80,8 @@ module.exports = function (grunt) {
 
                     'js/dico/def.js',
                     'js/dico/format.js',
-                    'js/dico/ui.js',
-                    'js/dico/ui-*.js',
+                    'js/dico/dom.js',
+                    'js/dico/dom-*.js',
                     'js/dico/dico.js',
                     'js/dico/d3-*.js',
 
@@ -123,7 +123,7 @@ module.exports = function (grunt) {
         //      COPY
         // *************************************************************************************
         copy: {
-          main: {
+          dependencies: {
             files: [
                 {
                     expand: true, 
@@ -159,7 +159,7 @@ module.exports = function (grunt) {
                 'bower.json',
 
                 // --- dist ---
-                'js/ui*.js',
+                'js/dom*.js',
                 'js/i18n/EN.js',
 
                 'js/many*.js',
@@ -317,5 +317,4 @@ module.exports = function (grunt) {
         'copy', 
         'uglify:dependencies'
     ]);
-
 };
