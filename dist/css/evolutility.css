@@ -1,5 +1,5 @@
 /*!
-   evolutility 1.0.4 
+   evolutility 1.1 
    (c) 2015 Olivier Giulieri 
    http://evoluteur.github.io/evolutility/  
 */
@@ -37,9 +37,13 @@
 }
 .evo-toolbar > ul > li > a {
   transition: all 0.5s ease;
+  padding: 10px 6px 10px 8px;
 }
 .evo-toolbar .evo-dropdown-icons {
   min-width: 50px;
+}
+.evo-toolbar .dropdown-menu > li > a {
+  padding: 3px 10px;
 }
 .evo-filter-on {
   background-color: #e0f2f1;
@@ -55,33 +59,58 @@
   margin-right: 5px;
 }
 .evo-search {
+  position: relative;
   width: 200px;
+  margin: auto;
   padding: 3px 4px 2px 2px;
+}
+.evo-search .evo-field:not(:valid) ~ .clear-icon {
+  opacity: 0;
 }
 .evo-search > .btn {
   position: relative;
   top: 0;
 }
-.evol-actions {
+.clear-icon {
+  z-index: 3;
+  position: absolute;
+  top: 14px;
+  right: 47px;
+  color: #90a4ae;
+  cursor: pointer;
+}
+.evol-actions,
+.evol-actions-nxtTd {
   position: absolute;
   display: flex;
   flex-direction: column;
   padding: 5px;
-  top: 35px;
-  right: 1px;
   background-color: #fbfbfb;
   border: 1px solid #bce8f1;
-  border-right: none;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
 }
-.evol-actions > i {
+.evol-actions > i,
+.evol-actions-nxtTd > i {
   color: #31708f;
   margin: 5px;
   cursor: pointer;
 }
-.evol-actions > i:hover {
+.evol-actions > i:hover,
+.evol-actions-nxtTd > i:hover {
   color: #428bca;
+}
+.evol-actions {
+  top: 35px;
+  right: 1px;
+  border-right: none;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.evol-actions-nxtTd {
+  left: 0;
+  top: 0;
+  z-index: 2;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .evol-many-list .evol-actions {
   top: 0;
@@ -244,9 +273,6 @@ label {
   color: #737373 !important;
   clear: both;
 }
-.w-100 {
-  width: 100%;
-}
 .evo-one-edit,
 .evo-one-browse,
 .evo-one-wiz {
@@ -303,8 +329,34 @@ label {
   font-size: .5em;
   margin-left: 5px;
 }
-.w100 {
+.w-100 {
   width: 100%;
+}
+.w-62 {
+  width: 62%;
+}
+.w-38 {
+  width: 38%;
+}
+.evo-f-list > div {
+  margin: 0 5px 0 0;
+  padding: 2px 4px!important;
+  border: 1px solid silver;
+}
+.evo-f-list > div,
+.select2-search-choice {
+  display: inline-block;
+  background-image: none !important;
+  background-color: aliceblue !important;
+}
+.select2-search-choice {
+  padding: 5px 10px 5px 20px !important;
+}
+.evol-many-list .evo-f-list > div {
+  font-size: 15px;
+}
+.evol-cards-body .evo-f-list > div {
+  margin-bottom: 5px;
 }
 /* --- mini --- */
 .evol-mini-label {
@@ -568,7 +620,7 @@ text.label {
 .evol-xpt-form > div {
   box-sizing: border-box;
   flex-grow: 1;
-  padding: 15px;
+  padding: 10px;
   vertical-align: top;
 }
 .evol-xpt-flds {
@@ -603,7 +655,7 @@ text.label {
 }
 .evol-xpt-format {
   max-width: 270px;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 .evol-xpt-val {
   display: block;
@@ -613,8 +665,11 @@ text.label {
   margin-top: 6px;
 }
 .evol-xpt-opts {
-  margin: 0 15px 0 20px;
-  padding: 10px;
+  float: left;
+  min-width: 120px;
+  width: 220px;
+  margin: 0 0 0 10px;
+  padding-left: 20px;
 }
 .evol-xpt-opts .evol-FLH {
   margin-bottom: 10px;
@@ -625,6 +680,16 @@ text.label {
 .evol-xpt-opts input[type="text"] {
   max-width: 280px;
 }
+.evol-xpt-format-hld {
+  float: left;
+}
+.evol-xpt-format-hld:after {
+  clear: both;
+}
+.evol-xptf {
+  padding-bottom: 10px;
+  min-height: 100px;
+}
 .evol-xpt-more {
   display: block;
   margin-top: 10px;
@@ -633,6 +698,9 @@ text.label {
   clear: both;
   display: none;
 }
+.xpt-header {
+  margin-left: 20px;
+}
 .evo-inline-holder {
   margin-top: 10px;
 }
@@ -640,11 +708,53 @@ text.label {
   display: inline-block;
   margin: 0 10px 0 0;
 }
+.evo-inline-holder input[type="checkbox"] {
+  margin-top: 10px;
+}
 .evol-xpt-db {
   width: auto;
 }
 .evol-w120 {
   max-width: 120px;
+}
+.evol-xpt-cb1 {
+  margin-top: 26px;
+}
+.evol-xpt-pvl {
+  margin-top: 15px;
+}
+.evol-import {
+  margin-bottom: 10px;
+}
+/*
+.evol-fset>.checkbox>label{
+	margin-top: 20px;
+}*/
+.evol-ipt-fh {
+  transition: all 0.6s ease;
+  height: 0;
+  width: 100%;
+  margin-left: 10px;
+  overflow-y: hidden;
+}
+.evol-ipt-format {
+  overflow: auto;
+  height: 160px;
+  width: 100%;
+  padding: 10px;
+}
+.evo-ipt {
+  margin-top: 20px;
+}
+.ipt-ssample {
+  margin: 5px 10px 0 10px;
+}
+#iptFormat {
+  width: auto;
+  display: inline;
+}
+.lbl-block {
+  display: block;
 }
 .evo-bNew,
 .evo-bAdd,
