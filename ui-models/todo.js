@@ -60,6 +60,18 @@ uiModels.todo = {
             type: 'panel', label: 'Task Description', label2:'and Notes', width: 100,
             elements: [
                 {
+                    id: 'project', attribute: 'project', type: 'list', label: 'Projects', width: 100, inMany: true,
+                    list: [
+                        {id: '1', text: 'Project 1'},
+                        {id: '2', text: 'Project 2'},
+                        {id: '3', text: 'Project 3'},
+                        {id: '4', text: 'Top Secret Project'},
+                        {id: '5', text: 'Translation'},
+                        {id: '10', text: 'Other'}
+                    ],
+                    typeChart:'bars'
+                },
+                {
                     id: 'description', attribute: 'description', type: 'textmultiline', 
                     label: 'Description', 
                     maxLength: 1000,
