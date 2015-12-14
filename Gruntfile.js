@@ -87,14 +87,16 @@ module.exports = function (grunt) {
 
                     'js/view-many/many.js',
                     'js/view-many/many-*.js',
+
                     'js/view-one/one.js',
                     'js/view-one/one-*.js',
                     '!js/view-one/one-wizard.js', // NOT ! here
+
                     //'js/view-action/action.js',
                     'js/view-action/action-*.js',
-
+                    'js/view-action/toolbar.js',
                     //'js/navbar.js',
-                    'js/dico/toolbar.js',
+
                     'js/dico/app.js'
                 ],
                 dest: '<%= pkg.target %>/evolutility.js'
