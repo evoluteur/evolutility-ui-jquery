@@ -31,8 +31,8 @@ _.forEach([ 'filter', 'export', 'import'],function(vn){
 
 if(toastr){
     toastr.options = {
-        hideDuration: 800,
-        preventDuplicates: true,
+        hideDuration: 0,
+        //preventDuplicates: true,
         closeButton: true,
         progressBar: true
     };
@@ -451,7 +451,7 @@ return Backbone.View.extend({
 
     setIcons: function(mode){
         var showOrHide = dom.showOrHide,
-            importExport = mode==='export' || mode==='import';
+            importOrExport = mode==='export' || mode==='import';
 
         function oneMany(mode, showOne, showMany){
             showOrHide(tbBs.ones, showOne);
@@ -464,7 +464,7 @@ return Backbone.View.extend({
             var tbBs=this.getToolbarButtons();
             //showOrHide(tbBs.customize, mode!='json');
             tbBs.prevNext.hide();//.removeClass('disabled');
-            showOrHide(tbBs.views, !(importExport || mode=='new'));
+            showOrHide(tbBs.views, !(importOrExport || mode=='new'));
             tbBs.del.hide();
 
             if(Evol.Def.isViewMany(mode)){
@@ -475,7 +475,7 @@ return Backbone.View.extend({
                         pSize=this.curView.pageSize;
                     if(cSize > pSize){
                         tbBs.prevNext.show();/*
-                         // TODO finish disabling of paging buttons
+                         // TODO: finish disabling of paging buttons
                          // use ui.addRemClass
                          if(this.curView.pageIndex===0){
                             tbBs.prevNext.eq(0).addClass('disabled');
@@ -489,12 +489,12 @@ return Backbone.View.extend({
                          }*/
                     }
                 }
-            }else if((this.model && this.model.isNew()) || mode==='new' || importExport){
+            }else if((this.model && this.model.isNew()) || mode==='new' || importOrExport){
                 oneMany(mode, false, false);
                 tbBs.del.hide();
                 tbBs.views.hide();
-                tbBs.more.show();
-                showOrHide(tbBs.save, !importExport);
+                showOrHide(tbBs.more, importOrExport);
+                showOrHide(tbBs.save, !importOrExport);
             }else{
                 this._prevViewOne=mode;
                 oneMany(mode, true, false);
@@ -818,6 +818,7 @@ return Backbone.View.extend({
 
     clearMessage: function(){
         this.$('[data-id="msg"]').remove();
+        toastr.clear();
         return this;
     },
 
