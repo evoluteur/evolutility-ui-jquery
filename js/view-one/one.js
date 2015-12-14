@@ -177,11 +177,12 @@ return Backbone.View.extend({
                             //$f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+i18n.nopix+'</p>'));
                             break;
                         case fts.textml:
-                            $f.html(Evol.Format.cr2br(_.escape(fv)));
+                            $f.html(Evol.Format.cr2br(fv, true));
                             break;
                         case fts.bool:
                         case fts.url:
                         case fts.email:
+                        case fts.list:
                             $f.html(eDico.fieldHTML_RO(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                             break;
                         case fts.formula:
@@ -191,7 +192,7 @@ return Backbone.View.extend({
                             $f.html(uiInput.colorBox(f.id, fv, fv));
                             break;
                         case fts.json:
-                            $f.html(Evol.Format.cr2br(fv));
+                            $f.val(Evol.Format.jsonString(fv, true));
                             break;
                         default:
                             $f.text(eDico.fieldHTML_RO(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
@@ -225,6 +226,9 @@ return Backbone.View.extend({
                             break;
                         case fts.formula:
                             $f.html(f.formula?f.formula(model):'');
+                            break;
+                        case fts.json:
+                            $f.val(Evol.Format.jsonString(fv, false));
                             break;
                         default:
                             $f.val(fv);
@@ -268,9 +272,22 @@ return Backbone.View.extend({
     getFieldValue: function (f){
         if(_.isString(f)){
             return eDico.getFieldVal(this._fieldHash[f], this.$field(f));
-        }else{
-            return eDico.getFieldVal(f, this.$field(f.id));
+        }else {
+            var fv=eDico.getFieldVal(f, this.$field(f.id));
+            if(f.type===fts.json){
+                var obj;
+                try{
+                    obj=$.parseJSON(fv);
+                }catch(err){}
+                if(_.isUndefined(obj)){
+                    return fv;
+                }
+                return obj;
+            }else{
+                return eDico.getFieldVal(f, this.$field(f.id));
+            }
         }
+
     },
 
     setFieldProp: function(fid, prop, value){
@@ -599,7 +616,6 @@ return Backbone.View.extend({
                     }else{
                         that.renderField(h, elem, mode, iconsPath);
                     }
-                    
                     h.push("</div>");
                 }
             }
@@ -694,9 +710,12 @@ return Backbone.View.extend({
         if(this.model && this.model.has(f.id)){
             fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultValue || '';
         }
-        if(f.type==='formula'){
+        if(f.type===fts.formula){
             h.push(Evol.Dico.HTMLFieldLabel(f, mode || 'edit')+
                 dom.input.formula(this.fieldViewId(f.id), f, this.model));
+        }else if(f.type===fts.json && mode==='browse'){
+            h.push(Evol.Dico.HTMLFieldLabel(f, mode)+
+                dom.input.textM(this.fieldViewId(f.id), Evol.Format.jsonString(fv, false), f.maxLen, f.height, true));
         }else{
             h.push(eDico.fieldHTML(f, this.fieldViewId(f.id), fv, mode, iconsPath, skipLabel));
         }
@@ -809,6 +828,9 @@ return Backbone.View.extend({
                 .replace('{1}', r2)
                 .replace('{2}', r3);
         }
+        function fieldLabel(f){
+            return f.label || f.labelMany;
+        }
 
         if(!f.readonly){
 
@@ -829,30 +851,34 @@ return Backbone.View.extend({
                             case fts.int:
                             case fts.email:
                                 if (!this.valRegEx[f.type].test(v)) {
-                                    return formatMsg(f.label, i18nVal[f.type]);
+                                    return formatMsg(fieldLabel(f), i18nVal[f.type]);
                                 }
                                 break;
                             case fts.dec:
                             case fts.money:
                                 var regex = this.valRegEx[fts.dec + i18n.LOCALE] || this.valRegEx[fts.dec + 'EN'];
                                 if (!regex.test(v)){
-                                    return formatMsg(f.label, i18nVal[f.type]);
+                                    return formatMsg(fieldLabel(f), i18nVal[f.type]);
                                 }
                                 break;
                             case fts.date:
                             case fts.datetime:
                             case fts.time:
                                 if ((v !== '') && (!_.isDate(new Date(v)))) {
-                                    return formatMsg(f.label, i18nVal[f.type]);
+                                    return formatMsg(fieldLabel(f), i18nVal[f.type]);
                                 }
                                 break;
                             case fts.json:
                                 var obj;
-                                try{
-                                    obj=$.parseJSON(v);
-                                }catch(err){}
-                                if(_.isUndefined(obj)){
-                                    return formatMsg(f.label, i18nVal[f.type]);
+                                if(_.isObject(v)){
+                                    obj=v;
+                                }else{
+                                    try{
+                                        obj=$.parseJSON(v);
+                                    }catch(err){}
+                                    if(_.isUndefined(obj)){
+                                        return formatMsg(fieldLabel(f), i18nVal[f.type]);
+                                    }
                                 }
                                 break;
                         }
@@ -863,7 +889,7 @@ return Backbone.View.extend({
                 if (f.regExp !== null && !_.isUndefined(f.regExp)) {
                     var rg = new RegExp(f.regExp);
                     if (!v.match(rg)) {
-                        return formatMsg(f.label, i18nVal.regExp, f.label);
+                        return formatMsg(fieldLabel(f), i18nVal.regExp, fieldLabel(f));
                     }
                 }
 
@@ -871,10 +897,10 @@ return Backbone.View.extend({
                 if (numberField) {
                     if (v !== '') {
                         if (f.max && parseFloat(v) > f.max) {
-                            return formatMsg(f.label, i18nVal.max, f.max);
+                            return formatMsg(fieldLabel(f), i18nVal.max, f.max);
                         }
                         if (f.min && parseFloat(v) < f.min) {
-                            return formatMsg(f.label, i18nVal.min, f.min);
+                            return formatMsg(fieldLabel(f), i18nVal.min, f.min);
                         }
                     }
                 }
@@ -884,7 +910,7 @@ return Backbone.View.extend({
             if (f.fnValidate) {
                 var fValid = f.fnValidate(f, v);
                 if (fValid !== '') {
-                    return formatMsg(f.label, fValid);
+                    return formatMsg(fieldLabel(f), fValid);
                 }
             }
 
@@ -895,11 +921,11 @@ return Backbone.View.extend({
                     badMin = f.minLength?len < f.minLength:false;
                 if(badMax || badMin){
                     if(f.maxLength && f.minLength){
-                        return formatMsg(f.label, i18nVal.minMaxLength, f.minLength, f.maxLength);
+                        return formatMsg(fieldLabel(f), i18nVal.minMaxLength, f.minLength, f.maxLength);
                     }else if(f.maxLength){
-                        return formatMsg(f.label, i18nVal.maxLength, f.maxLength);
+                        return formatMsg(fieldLabel(f), i18nVal.maxLength, f.maxLength);
                     }else{
-                        return formatMsg(f.label, i18nVal.minLength, f.minLength);
+                        return formatMsg(fieldLabel(f), i18nVal.minLength, f.minLength);
                     }
                 }
             }

@@ -97,9 +97,9 @@ return Evol.View_Many.extend({
                             lb = i18n.none;
                         }else if(isList){
                             if(f.list && f.list.length && f.list[0].icon){
-                                lb = eDico.lovTextNoPix(f, dataSetName);
+                                lb = eDico.lovItemTextNoPix(f, dataSetName);
                             }else{
-                                lb = eDico.lovText(f, dataSetName, Evol.hashLov, iconsPath);
+                                lb = eDico.lovItemText(f, dataSetName, Evol.hashLov, iconsPath);
                             }
                         }else{
                             lb = dataSetName;

@@ -40,6 +40,7 @@ Evol.ViewOne.Browse = Evol.View_One.extend({
                 if(model){
                     switch(f.type){
                         case fts.lov:
+                        case fts.list:
                         case fts.bool:
                         case fts.email:
                         case fts.url:
@@ -61,6 +62,9 @@ Evol.ViewOne.Browse = Evol.View_One.extend({
                             }else{
                                 $f.html('');
                             }
+                            break;
+                        case fts.json:
+                            $f.val(Evol.Format.jsonString(fv, false));
                             break;
                         default:
                             $f.text(fieldHTML_ReadOnly(f, fv, Evol.hashLov, iconsPath) || ' ');

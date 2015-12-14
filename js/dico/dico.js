@@ -160,26 +160,19 @@ return {
                 break;
             case fts.lov:
                 if (v !== '') {
-                    //if(f.icon && f.list & f.list[0].icon){
-                    //    return 'f.icon' + this._lovText(f,v);
-                    //}else{
-                    //return Evol.Dico.lovText(f, iconPath+v, hashLov);
-                    return Evol.Dico.lovText(f, v, hashLov, iconsPath);
-                    //}
+                    return Evol.Dico.lovItemText(f, v, hashLov, iconsPath);
                 }
                 break;
             case fts.list:
                 if(_.isString(v)){
-                    v= v.split(',');
+                    v = v.split(',');
                 }
-                if(v && v.length){
-                    var vs=[];
-                    _.each(v, function(vi){
-                        vs.push(Evol.Dico.lovText(f, vi, hashLov, iconsPath));
-                    });
-                    return vs.join(', ');
+                if(v && v.length && v[0]!==''){
+                    return '<div class="evo-f-list"><div>'+_.map(v, function(vi){
+                        return Evol.Dico.lovItemText(f, vi, hashLov, iconsPath);
+                    }).join('</div><div>')+'</div></div>';
                 }
-                return v;
+                return '';
             case fts.date:
             case fts.time:
             case fts.datetime:
@@ -200,6 +193,8 @@ return {
                 return dom.linkEmail(wId?f.id:null, v);
             case fts.url:
                 return dom.link(f.id, v, v, f.id);
+            case fts.json:
+                return dom.input.textM(f.id, Evol.Format.jsonString(v, false), f.maxLen, f.height, true);
             //case fts.color:
             //    return uiInput.colorBox(f.id, v, v);
             default:
@@ -273,7 +268,7 @@ return {
         }
     },
     // get field value (not id but text) for a field of type lov
-    lovText:function(f, v, hash, iconsPath){
+    lovItemText:function(f, v, hash, iconsPath, inDiv){
         if(f.list && f.list.length>0 && hash){
             if(!(f.id in hash)){
                 hash[f.id]={};
@@ -298,7 +293,7 @@ return {
         return '';
     },
 
-    lovTextNoPix:function(f, v){
+    lovItemTextNoPix:function(f, v){
         var listItem=_.find(f.list, function(item){
             return item.id==v;
         });

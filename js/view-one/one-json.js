@@ -24,8 +24,7 @@ Evol.ViewOne.JSON = Evol.View_One.extend({
             var h = [],
                 jsonStr=JSON.stringify(this.model, null, 2);
 
-            h.push(
-                dom.panelBegin({
+            h.push(dom.panelBegin({
                     id: 'p-json',
                     label:Evol.Format.capitalize(this.uiModel.name), 
                     label2: 'JSON'
@@ -60,6 +59,9 @@ Evol.ViewOne.JSON = Evol.View_One.extend({
         var jsonStr=this._getDOMField().val(),
             obj;
 
+        if(jsonStr===''){
+            return jsonStr;
+        }
         try{
             obj=$.parseJSON(jsonStr);
         }catch(err){
@@ -69,7 +71,7 @@ Evol.ViewOne.JSON = Evol.View_One.extend({
     },
 
     setData: function (m) {
-        this.clearError()._getDOMField().val(JSON.stringify(m, null, 2));
+        this.clearError()._getDOMField().val(JSON.stringify(m.toJSON(), null, 2));
         return this.setTitle();
     },
 

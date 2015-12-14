@@ -150,21 +150,16 @@ return Backbone.View.extend({
     },
 
     _HTMLField: function (f, v) {
-        var that=this,
-            fv;
         if(f.type==='formula'){
-            fv = '<div class="disabled evo-rdonly evol-ellipsis">';
+            var fv = '<div class="disabled evo-rdonly evol-ellipsis">';
             if(f.formula && this.model){
                 fv+=f.formula(this.model);
             }
             fv+='</div>';
+            return fv;
         }else{
-            fv = eDico.fieldHTML_RO(f, v, Evol.hashLov, this.iconsPath || '');
-            if (f.type === 'list') {
-                return _.escape(fv);
-            }
+            return eDico.fieldHTML_RO(f, v, Evol.hashLov, this.iconsPath || '');
         }
-        return fv;
     },
 
     _HTMLCheckbox: function (cid) {

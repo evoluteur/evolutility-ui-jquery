@@ -56,7 +56,7 @@ return Backbone.View.extend({
                     dom.html.clearer+
                 '</div>'+
                 //'<div class="evol-fld checkbox w-38"><label>'+uiInput.checkbox('dupOk', false)+i18nI.allowDups+'</label></div>'+
-                '<div class="evol-ipt-fh"><textarea class="evol-ipt-format help-block" style="resize: none;"></textarea></div>'+
+                '<div class="evol-ipt-fh"><textarea class="evol-ipt-format help-block" style="resize:none;"></textarea></div>'+
                 '<div class="evol-fld w-100"><label style="margin-top:10px;">'+i18nI.data+'</label>'+
                 '<textarea class="evol-xpt-val form-control" id="import_data" rows="12"></textarea>'+
                 '</div>'+
@@ -68,7 +68,7 @@ return Backbone.View.extend({
         return h;
     },
 
-    importData: function(entityName, data, options){
+    importData: function(entityId, data, options){
         var M, MS,
             noDuplicates = options && options.noDuplicates;
 
@@ -81,7 +81,7 @@ return Backbone.View.extend({
 
 
             if(Evol.Config.localStorage){
-                var lc = new Backbone.LocalStorage('evol-'+entityName);
+                var lc = new Backbone.LocalStorage('evol-'+entityId);
                 M = Backbone.Model.extend({
                     localStorage: lc
                 });
@@ -91,11 +91,11 @@ return Backbone.View.extend({
                 });
             }else{
                 M = new Backbone.Model({
-                    urlRoot: Evol.Config.url+entityName
+                    urlRoot: Evol.Config.url+entityId
                 });
                 Ms = Backbone.Collection.extend({
                     model: M,
-                    url: Evol.Config.url+entityName/*,
+                    url: Evol.Config.url+entityId/*,
                     sync : function(method, collection, options) {
                         //options.dataType = "jsonp";
                         return Backbone.sync(method, collection, options);
