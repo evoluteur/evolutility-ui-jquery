@@ -230,6 +230,7 @@ return Backbone.View.extend({
             this.newItem();
             this.setIcons('new');
             vw.mode='new';
+            this.hideFilter();
         }else{
             var ViewClass = Evol.viewClasses.getClass(viewName);
             if($v.length){
@@ -349,11 +350,12 @@ return Backbone.View.extend({
         this.updateStatus();
         if(vw.cardinality==='n'){
             this.setRoute('', false);
-            if(this._filterOn){ // TODO do not always change flag
+            if(!this._filterOn && this._filterValue){ // TODO do not always change flag
                 this.showFilter(false);
             }
             this.updateNav();
         }else{
+            this.hideFilter();
             //if(this.curView.viewName==='wizard'){
             //    this.curView.stepIndex(0);
             //}
@@ -529,7 +531,7 @@ return Backbone.View.extend({
         return this;
     },
 
-    hideFilter: function(evt){
+    hideFilter: function(){
         if(this._filters){
             this._filters.$el.hide(); //.fadeOut(300);
         }
@@ -537,13 +539,13 @@ return Backbone.View.extend({
         return this;
     },
 
-    _flagFilterIcon: function(fOn){
-        dom.addRemClass(this.$('a[data-id="filter"]'), fOn, 'evo-filter-on');
+    toggleFilter: function(v){
+        this._filterOn = _.isBoolean(v) ? v : !this._filterOn;
+        return this._filterOn ? this.showFilter(true) : this.hideFilter();
     },
 
-    toggleFilter: function(){
-        this._filterOn=!this._filterOn;
-        return this._filterOn?this.showFilter(true):this.hideFilter();
+    _flagFilterIcon: function(fOn){
+        dom.addRemClass(this.$('a[data-id="filter"]'), fOn, 'evo-filter-on');
     },
 
     setData: function(data){
@@ -1042,23 +1044,19 @@ return Backbone.View.extend({
         var fvs=this._filters.val(),
             collec;
         if(fvs.length){
-            var models;
-            if(this._searchString){
-                models=this._filteredCollection.models;
-            }else{
-                models=this.model.collection.models;
-            }
+            var models=this._searchString ? this._filteredCollection.models : this.model.collection.models;
             models=Evol.Dico.filterModels(models, fvs);
             if(this.collectionClass){
                 collec=new this.collectionClass(models);
             }else{
                 collec=new Backbone.Collection(models);
             }
-            this._filteredCollection=collec;
-            
+            this._filteredCollection = collec;
+            this._filterValue = fvs;
         }else{
             collec=this.collection;
-            this._filteredCollection=null;
+            this._filteredCollection = null;
+            this._filterValue = null;
         }
         this.updateStatus();
         this._flagFilterIcon(fvs.length);
