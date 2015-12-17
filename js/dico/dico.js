@@ -282,7 +282,9 @@ return {
                 });
                 if(listItem){
                     var txt= _.escape(listItem.text);
-                    if(listItem.icon!=='' && !_.isUndefined(listItem.icon)){
+                    if(listItem.glyphicon){
+                        txt='<i class="glyphicon glyphicon-'+listItem.glyphicon+'"></i> '+txt;
+                    }else if(listItem.icon){
                         txt='<img src="'+((listItem.icon && listItem.icon.substring(0,1)!=='.')?iconsPath:'')+listItem.icon+'"> '+txt;
                     }
                     hashLov[v]=txt;
