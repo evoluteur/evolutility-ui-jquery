@@ -77,7 +77,8 @@ Evol.Format = {
         if(dd===''){
             return  dd;
         }else{
-            var txt=JSON.stringify(dd, null, '\t');
+            //var txt=JSON.stringify(dd, null, '\t');
+            var txt=JSON.stringify(dd, null, 2);
             if(cr2br){
                 txt=this.cr2br(txt);
             }
