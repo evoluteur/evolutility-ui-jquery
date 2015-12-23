@@ -10,8 +10,8 @@
 
 Evol.ViewAction.Filter = function(){
 
-    var eUI = Evol.UI,
-        uiInput = eUI.input,
+    var dom = Evol.DOM,
+        uiInput = dom.input,
         fts = Evol.Def.fieldTypes,
         evoLang = Evol.i18n.filters,
         fOps = {
@@ -77,7 +77,7 @@ return Backbone.View.extend({
             e=this.$el,
             h='';
 
-        h+=Evol.UI.html.buttonClose+'<div class="evo-zfilters"></div>'+
+        h+=dom.html.buttonClose+'<div class="evo-zfilters"></div>'+
             '<a class="evo-bNew btn btn-primary" href="javascript:void(0)">'+evoLang.bNewCond+'</a>';
         if(this.submitButton){
             h+='<a class="evo-bSubmit btn btn-primary" href="javascript:void(0)">'+evoLang.bSubmit+'</a>';
@@ -164,7 +164,7 @@ return Backbone.View.extend({
                 }
             }).on('click', '#checkAll', function(){
                 var $this=$(this);
-                eUI.toggleCheckbox($this.siblings(), $this.prop('checked'));
+                dom.toggleCheckbox($this.siblings(), $this.prop('checked'));
             });
         this._filters=e.find('.evo-zfilters').on('click', 'a', function(){
             that._editCond($(this));
@@ -183,7 +183,7 @@ return Backbone.View.extend({
     },
     /*
      _renderMenu: function(h){
-         var mn=eUI.menu;
+         var mn=dom.menu;
 
          h.push(
              mn.hBegin('file', 'div', 'cog'),
@@ -243,7 +243,7 @@ return Backbone.View.extend({
             h+='<span class="evo-lLight"> '+evoLang.opAnd+' </span>'+
                 '<span class="evo-lBold">'+filter.value.label2+'</span>';
         }
-        h+=eUI.html.buttonClose;
+        h+=dom.html.buttonClose;
         return h;
     },
 

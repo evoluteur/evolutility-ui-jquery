@@ -23,7 +23,7 @@ Evol.ViewOne.Browse = Evol.View_One.extend({
     setData: function (model) {
         if(!_.isUndefined(model) && model!==null){
             var that=this,
-                uii=Evol.UI.input,
+                uii=Evol.DOM.input,
                 fts = Evol.Def.fieldTypes,
                 fieldHTML_ReadOnly = Evol.Dico.fieldHTML_RO,
                 $f, fv,
@@ -40,6 +40,7 @@ Evol.ViewOne.Browse = Evol.View_One.extend({
                 if(model){
                     switch(f.type){
                         case fts.lov:
+                        case fts.list:
                         case fts.bool:
                         case fts.email:
                         case fts.url:
@@ -61,6 +62,9 @@ Evol.ViewOne.Browse = Evol.View_One.extend({
                             }else{
                                 $f.html('');
                             }
+                            break;
+                        case fts.json:
+                            $f.val(Evol.Format.jsonString(fv, false));
                             break;
                         default:
                             $f.text(fieldHTML_ReadOnly(f, fv, Evol.hashLov, iconsPath) || ' ');
@@ -111,10 +115,10 @@ Evol.ViewOne.Browse = Evol.View_One.extend({
     },
 
     _renderButtons: function (h) {
-        h.push(Evol.UI.html.clearer+
+        h.push(Evol.DOM.html.clearer+
             '<div class="evol-buttons panel '+this.style+'">'+
-            Evol.UI.button('cancel', Evol.i18n.tools.bCancel, 'btn-default')+
-            Evol.UI.button('edit', Evol.i18n.tools.bEdit, 'btn-primary')+
+            Evol.DOM.button('cancel', Evol.i18n.tools.bCancel, 'btn-default')+
+            Evol.DOM.button('edit', Evol.i18n.tools.bEdit, 'btn-primary')+
             '</div>');
     }
 

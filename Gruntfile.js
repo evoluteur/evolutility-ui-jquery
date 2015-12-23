@@ -80,21 +80,23 @@ module.exports = function (grunt) {
 
                     'js/dico/def.js',
                     'js/dico/format.js',
-                    'js/dico/ui.js',
-                    'js/dico/ui-*.js',
+                    'js/dico/dom.js',
+                    'js/dico/dom-*.js',
                     'js/dico/dico.js',
                     'js/dico/d3-*.js',
 
                     'js/view-many/many.js',
                     'js/view-many/many-*.js',
+
                     'js/view-one/one.js',
                     'js/view-one/one-*.js',
                     '!js/view-one/one-wizard.js', // NOT ! here
+
                     //'js/view-action/action.js',
                     'js/view-action/action-*.js',
-
+                    'js/view-action/toolbar.js',
                     //'js/navbar.js',
-                    'js/dico/toolbar.js',
+
                     'js/dico/app.js'
                 ],
                 dest: '<%= pkg.target %>/evolutility.js'
@@ -123,7 +125,7 @@ module.exports = function (grunt) {
         //      COPY
         // *************************************************************************************
         copy: {
-          main: {
+          dependencies: {
             files: [
                 {
                     expand: true, 
@@ -159,7 +161,7 @@ module.exports = function (grunt) {
                 'bower.json',
 
                 // --- dist ---
-                'js/ui*.js',
+                'js/dom*.js',
                 'js/i18n/EN.js',
 
                 'js/many*.js',
@@ -317,5 +319,4 @@ module.exports = function (grunt) {
         'copy', 
         'uglify:dependencies'
     ]);
-
 };

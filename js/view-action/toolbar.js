@@ -31,8 +31,8 @@ _.forEach([ 'filter', 'export', 'import'],function(vn){
 
 if(toastr){
     toastr.options = {
-        hideDuration: 800,
-        preventDuplicates: true,
+        hideDuration: 0,
+        //preventDuplicates: true,
         closeButton: true,
         progressBar: true
     };
@@ -41,7 +41,7 @@ if(toastr){
 // toolbar widget which also acts as a controller for all views "one" and "many" as well as actions
 Evol.Toolbar = function() {
 
-    var eUI = Evol.UI,
+    var dom = Evol.DOM,
         i18n = Evol.i18n,
         i18nTool = i18n.tools;
 
@@ -134,13 +134,13 @@ return Backbone.View.extend({
         var h,
             isReadOnly=this.readonly!==false,
             that=this,
-            eUIm=eUI.menu,
+            domm=dom.menu,
             tb=this.buttons,
             menuDivider='<li class="divider" data-cardi="x"></li>',
             menuDividerH='<li class="divider-h"></li>';
 
         function menuItem (m, noLabel){
-            return eUIm.hItem(m.id, noLabel?'':m.label, m.icon, m.n);
+            return domm.hItem(m.id, noLabel?'':m.label, m.icon, m.n);
         }
         function menuItems (ms, noLabel){
             return _.map(ms, function(m){
@@ -155,7 +155,7 @@ return Backbone.View.extend({
             menuItems(tb.always)+menuDividerH;
         h+=menuItems(tb.actions);
         if(tb.moreActions && tb.moreActions.length){
-             h+=Evol.UI.menu.hBegin('more','li','menu-hamburger', '', 'n');
+             h+=domm.hBegin('more','li','menu-hamburger', '', 'n');
              _.each(tb.moreActions, function(m){
                 if(m.id==='-'){
                     h+=menuDivider;
@@ -163,7 +163,7 @@ return Backbone.View.extend({
                     h+=menuItem(m);
                 }
             });
-            h+=Evol.UI.menu.hEnd('li');
+            h+=domm.hEnd('li');
         }
         if(tb.search){
             h+=menuDivider;
@@ -177,10 +177,10 @@ return Backbone.View.extend({
             h+='</ul><ul class="nav nav-pills pull-right" data-id="views">';
             h+='<li class="evo-tb-status" data-cardi="n"></li>';
             h+=menuItems(tb.prevNext);
-            //h+=eUIm.hBegin('views','li','eye-open');
+            //h+=domm.hBegin('views','li','eye-open');
             h+=menuDividerH+
                 menuItems(tb.views, true);
-            //h+=eUIm.hItem('customize','','wrench', 'x', 'Customize');
+            //h+=domm.hItem('customize','','wrench', 'x', 'Customize');
             /*
              if(this.buttons.customize){
                  h+=beginMenu('cust','wrench');
@@ -192,7 +192,7 @@ return Backbone.View.extend({
              } */
 
         }
-        h+='</ul>'+eUI.html.clearer+'</div>';
+        h+='</ul>'+dom.html.clearer+'</div>';
         return h;
     },
 
@@ -230,6 +230,7 @@ return Backbone.View.extend({
             this.newItem();
             this.setIcons('new');
             vw.mode='new';
+            this.hideFilter();
         }else{
             var ViewClass = Evol.viewClasses.getClass(viewName);
             if($v.length){
@@ -349,11 +350,12 @@ return Backbone.View.extend({
         this.updateStatus();
         if(vw.cardinality==='n'){
             this.setRoute('', false);
-            if(this._filterOn){ // TODO do not always change flag
+            if(!this._filterOn && this._filterValue){ // TODO do not always change flag
                 this.showFilter(false);
             }
             this.updateNav();
         }else{
+            this.hideFilter();
             //if(this.curView.viewName==='wizard'){
             //    this.curView.stepIndex(0);
             //}
@@ -404,7 +406,7 @@ return Backbone.View.extend({
             if(cbCancel){
                 cbs.cancel = cbCancel;
             }
-            eUI.modal.confirm(
+            dom.modal.confirm(
                 'isDirty',
                 i18n.unSavedTitle,
                 msg,
@@ -450,8 +452,8 @@ return Backbone.View.extend({
     },
 
     setIcons: function(mode){
-        var showOrHide = eUI.showOrHide,
-            importExport = mode==='export' || mode==='import';
+        var showOrHide = dom.showOrHide,
+            importOrExport = mode==='export' || mode==='import';
 
         function oneMany(mode, showOne, showMany){
             showOrHide(tbBs.ones, showOne);
@@ -464,7 +466,7 @@ return Backbone.View.extend({
             var tbBs=this.getToolbarButtons();
             //showOrHide(tbBs.customize, mode!='json');
             tbBs.prevNext.hide();//.removeClass('disabled');
-            showOrHide(tbBs.views, !(importExport || mode=='new'));
+            showOrHide(tbBs.views, !(importOrExport || mode=='new'));
             tbBs.del.hide();
 
             if(Evol.Def.isViewMany(mode)){
@@ -475,7 +477,7 @@ return Backbone.View.extend({
                         pSize=this.curView.pageSize;
                     if(cSize > pSize){
                         tbBs.prevNext.show();/*
-                         // TODO finish disabling of paging buttons
+                         // TODO: finish disabling of paging buttons
                          // use ui.addRemClass
                          if(this.curView.pageIndex===0){
                             tbBs.prevNext.eq(0).addClass('disabled');
@@ -489,12 +491,12 @@ return Backbone.View.extend({
                          }*/
                     }
                 }
-            }else if((this.model && this.model.isNew()) || mode==='new' || importExport){
+            }else if((this.model && this.model.isNew()) || mode==='new' || importOrExport){
                 oneMany(mode, false, false);
                 tbBs.del.hide();
                 tbBs.views.hide();
-                tbBs.more.show();
-                showOrHide(tbBs.save, !importExport);
+                showOrHide(tbBs.more, importOrExport);
+                showOrHide(tbBs.save, !importOrExport);
             }else{
                 this._prevViewOne=mode;
                 oneMany(mode, true, false);
@@ -509,7 +511,7 @@ return Backbone.View.extend({
         if(!this._filters){
             if(orCreate){
                 var that=this,
-                    $ff=$(eUI.panelEmpty('filters', 'evo-filters', 'info'));
+                    $ff=$(dom.panelEmpty('filters', 'evo-filters', 'info'));
                 this.$('.evo-toolbar').after($ff);
                 this._filters = new Evol.ViewAction.Filter({
                     el: $ff,
@@ -529,7 +531,7 @@ return Backbone.View.extend({
         return this;
     },
 
-    hideFilter: function(evt){
+    hideFilter: function(){
         if(this._filters){
             this._filters.$el.hide(); //.fadeOut(300);
         }
@@ -537,13 +539,13 @@ return Backbone.View.extend({
         return this;
     },
 
-    _flagFilterIcon: function(fOn){
-        eUI.addRemClass(this.$('a[data-id="filter"]'), fOn, 'evo-filter-on');
+    toggleFilter: function(v){
+        this._filterOn = _.isBoolean(v) ? v : !this._filterOn;
+        return this._filterOn ? this.showFilter(true) : this.hideFilter();
     },
 
-    toggleFilter: function(){
-        this._filterOn=!this._filterOn;
-        return this._filterOn?this.showFilter(true):this.hideFilter();
+    _flagFilterIcon: function(fOn){
+        dom.addRemClass(this.$('a[data-id="filter"]'), fOn, 'evo-filter-on');
     },
 
     setData: function(data){
@@ -575,7 +577,7 @@ return Backbone.View.extend({
                         that.setView(that.defaultViewOne);
                     }
                     that.curView.setModel(m);
-                    eUI.scroll2Top();
+                    dom.scroll2Top();
                 }
             },
             fnError = function(){
@@ -788,7 +790,7 @@ return Backbone.View.extend({
                 if(skipConfirmation){
                     fnSuccess();
                 }else{
-                    eUI.modal.confirm(
+                    dom.modal.confirm(
                         'delete',
                         i18n.getLabel('deleteX', entityName),
                         i18n.getLabel('delete1', entityName, _.escape(entityValue)),
@@ -818,6 +820,7 @@ return Backbone.View.extend({
 
     clearMessage: function(){
         this.$('[data-id="msg"]').remove();
+        toastr.clear();
         return this;
     },
 
@@ -935,8 +938,8 @@ return Backbone.View.extend({
             pIdx=this.pageIndex||0,
             $item=this.$('[data-id="prev"]');
 
-        eUI.addRemClass($item, pIdx===0, cssDisabled);
-        eUI.addRemClass($item.next(), (pIdx+1)*this.pageSize>cl, cssDisabled);
+        dom.addRemClass($item, pIdx===0, cssDisabled);
+        dom.addRemClass($item.next(), (pIdx+1)*this.pageSize>cl, cssDisabled);
     },
 
     _enableNav: function(){
@@ -1041,23 +1044,19 @@ return Backbone.View.extend({
         var fvs=this._filters.val(),
             collec;
         if(fvs.length){
-            var models;
-            if(this._searchString){
-                models=this._filteredCollection.models;
-            }else{
-                models=this.model.collection.models;
-            }
+            var models=this._searchString ? this._filteredCollection.models : this.model.collection.models;
             models=Evol.Dico.filterModels(models, fvs);
             if(this.collectionClass){
                 collec=new this.collectionClass(models);
             }else{
                 collec=new Backbone.Collection(models);
             }
-            this._filteredCollection=collec;
-            
+            this._filteredCollection = collec;
+            this._filterValue = fvs;
         }else{
             collec=this.collection;
-            this._filteredCollection=null;
+            this._filteredCollection = null;
+            this._filterValue = null;
         }
         this.updateStatus();
         this._flagFilterIcon(fvs.length);

@@ -1,6 +1,6 @@
 /*! ***************************************************************************
  *
- * evolutility :: ui.js
+ * evolutility :: dom.js
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
@@ -11,7 +11,7 @@ var Evol = Evol || {};
 Evol.hashLov = {};
 Evol.ViewAction = {};
 
-Evol.UI = {
+Evol.DOM = {
 
     // --- static html fragments ---
     html: {
@@ -78,18 +78,21 @@ Evol.UI = {
             h+='" maxlength="12">';
             return h;
         },
-        textM: function (id, value, maxLen, height) {
-            return '<textarea id="'+id+'" class="evo-field form-control" rows="'+height+'">'+value+'</textarea>';
-                //(maxLen > 0) ? ('" onKeyUp="Evol.UI.Validation.fixLength(this,' + maxLen + ')') : '',
+        textM: function (id, value, maxLen, height, disabled) {
+            return '<textarea id="'+id+'" class="evo-field form-control" rows="'+height+'"'+(disabled?' disabled':'')+'>'+value+'</textarea>';
+                //(maxLen > 0) ? ('" onKeyUp="Evol.DOM.Validation.fixLength(this,' + maxLen + ')') : '',
         },
         textMJSON: function (id, fVobj, height, disabled) {
             return '<textarea id="'+id+'" rows="'+height+'" class="evol-json evo-field form-control"'+(disabled?' disabled':'')+'>'+
-                _.escape(JSON.stringify(fVobj, null, '\t'))+'</textarea>';
+                    //_.escape(JSON.stringify(fVobj, null, '\t'))+
+                    Evol.Format.jsonString(fVobj, false)+
+                '</textarea>';
         },
         myType: function (type, id, value) {
             return '<input type="'+type+'" id="'+id+'" value="'+value+
                 '" class="evo-field form-control" size="15">';
         },
+
         date: function (id, value) {
             return this.myType('date', id, value);
             //+'&nbsp;<a href="javascript:ShowDatePicker(\'', id, '\');" class="ico Calendar"></a></nobr>'
@@ -152,7 +155,7 @@ Evol.UI = {
             return '<input type="hidden" name="'+id+'" id="'+id+'" value="'+value.replace(/"/g,'\"')+'"/>';
         },
         selectBegin: function (id, css, emptyOption) {
-            return '<select id="'+id+'" class="form-control '+css+'">'+(emptyOption?Evol.UI.html.emptyOption:'');
+            return '<select id="'+id+'" class="form-control '+css+'">'+(emptyOption?Evol.DOM.html.emptyOption:'');
         },
         select:function (id, value, css, emptyOption, list) {
             return  this.selectBegin(id, css, emptyOption)+this.options(list, value)+'</select>';
@@ -162,7 +165,7 @@ Evol.UI = {
             return '<option value="'+id+(selected?'" selected':'"')+'>'+text+'</option>';
         },
         options: function (lovList, value) {
-            var fnOpt = Evol.UI.input.option,
+            var fnOpt = this.option,
                 opts='';
             _.each(lovList,function(f){
                 if(f.id===value){
@@ -237,11 +240,11 @@ Evol.UI = {
 
     // --- icons ---
     icon: function (icon, css) {
-        return '<i class="'+(css?css+' ':'')+Evol.UI.html.glyphicon+icon+'"></i>';
+        return '<i class="'+(css?css+' ':'')+Evol.DOM.html.glyphicon+icon+'"></i>';
     },
     /*
     iconCustomize: function (id, type) {
-        return Evol.UI.iconId(id, type, 'wrench');
+        return this.iconId(id, type, 'wrench');
     },*/
 
     iconId: function (id, type, icon) {
@@ -258,7 +261,7 @@ Evol.UI = {
             var h='<'+tag+' class="dropdown" data-id="'+id+(cardi ? ('" data-cardi="'+cardi) : '')+'">'+
                     '<a href="#" class="dropdown-toggle" data-toggle="dropdown">';
                 if(text) { h+=text; }
-                if(icon) { h+=Evol.UI.icon(icon); }
+                if(icon) { h+=Evol.DOM.icon(icon); }
                 h+=' <b class="caret"></b></a>'+
                     '<ul class="dropdown-menu evo-dropdown-icons">';
             return h;
@@ -274,7 +277,7 @@ Evol.UI = {
             if(style!=='label'){
                 h+='" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="'+label;
             }
-            h+='"><a href="javascript:void(0);" data-id="'+id+'">'+Evol.UI.icon(icon);
+            h+='"><a href="javascript:void(0);" data-id="'+id+'">'+Evol.DOM.icon(icon);
             if(style!=='tooltip'){
                 h+='&nbsp;'+label;
             }
@@ -353,7 +356,7 @@ Evol.UI = {
     panelHeader: function (p, toggle) {
         if(p.label || p.label2){
             return '<div class="panel-heading '+(p.cssLabel? p.cssLabel:'')+'">'+
-                        (toggle!==false?Evol.UI.icon('chevron-up', 'evol-title-toggle'):'')+
+                        (toggle!==false?this.icon('chevron-up', 'evol-title-toggle'):'')+
                         '<h3 class="panel-title">'+p.label+'</h3>'+
                         (p.label2?'<div class="evol-subtitle">'+p.label2+'</div>' : '')+
                         (p.help?'<p class="evo-panel-help">'+p.help+'</p>':'')+

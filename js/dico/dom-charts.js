@@ -1,13 +1,14 @@
+
 /*! ***************************************************************************
  *
- * evolutility :: ui-charts.js
+ * evolutility :: dom-charts.js
  *
  * https://github.com/evoluteur/evolutility
  * Copyright (c) 2015, Olivier Giulieri
  *
  *************************************************************************** */
 
-Evol.UI.Charts = {
+Evol.DOM.Charts = {
 
     // same as d3.scale.category10() 
     colors:['1f77b4','ff7f0e','2ca02c','d62728','9467bd','8c564b','e377c2','7f7f7f','bcbd22','17becf'],
@@ -42,4 +43,3 @@ Evol.UI.Charts = {
     }
 
 };
-

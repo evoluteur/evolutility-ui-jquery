@@ -64,8 +64,7 @@ return {
     },
 
     fieldIsNumber: function(f){
-        var ft=f.type;
-        return ft===fts.int || ft===fts.dec || ft===fts.money;
+        return f.type===fts.int || f.type===fts.dec || f.type===fts.money;
     },/*
     fieldIsDateOrTime: function(fType){
         return fType===fts.date || fType===fts.datetime || fType===fts.time;
@@ -187,9 +186,9 @@ return {
                     lb = i18n.none;
                 }else if(f.type===fTypes.lov || f.type===fTypes.list){
                     if(f.list && f.list.length && f.list[0].icon){
-                        lb = Evol.Dico.lovTextNoPix(f, dataSetName);
+                        lb = Evol.Dico.lovItemTextNoPix(f, dataSetName);
                     }else{
-                        lb = Evol.Dico.lovText(f, dataSetName, Evol.hashLov, iconsPath);
+                        lb = Evol.Dico.lovItemText(f, dataSetName, Evol.hashLov, iconsPath);
                     }
                 }else{
                     lb = dataSetName;

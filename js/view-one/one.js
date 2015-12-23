@@ -15,8 +15,8 @@ Evol.ViewOne = {};
 
 Evol.View_One = function(){
 
-    var eUI = Evol.UI,
-        uiInput = eUI.input,
+    var dom = Evol.DOM,
+        uiInput = dom.input,
         i18n = Evol.i18n,
         i18nTools = i18n.tools,
         eDef=Evol.Def,
@@ -177,11 +177,12 @@ return Backbone.View.extend({
                             //$f.html((fv)?('<img src="'+iconsPath+fv+'" class="img-thumbnail">'):('<p>'+i18n.nopix+'</p>'));
                             break;
                         case fts.textml:
-                            $f.html(Evol.Format.cr2br(_.escape(fv)));
+                            $f.html(Evol.Format.cr2br(fv, true));
                             break;
                         case fts.bool:
                         case fts.url:
                         case fts.email:
+                        case fts.list:
                             $f.html(eDico.fieldHTML_RO(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                             break;
                         case fts.formula:
@@ -191,7 +192,7 @@ return Backbone.View.extend({
                             $f.html(uiInput.colorBox(f.id, fv, fv));
                             break;
                         case fts.json:
-                            $f.html(Evol.Format.cr2br(fv));
+                            $f.val(Evol.Format.jsonString(fv, true));
                             break;
                         default:
                             $f.text(eDico.fieldHTML_RO(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
@@ -225,6 +226,9 @@ return Backbone.View.extend({
                             break;
                         case fts.formula:
                             $f.html(f.formula?f.formula(model):'');
+                            break;
+                        case fts.json:
+                            $f.val(Evol.Format.jsonString(fv, false));
                             break;
                         default:
                             $f.val(fv);
@@ -268,9 +272,22 @@ return Backbone.View.extend({
     getFieldValue: function (f){
         if(_.isString(f)){
             return eDico.getFieldVal(this._fieldHash[f], this.$field(f));
-        }else{
-            return eDico.getFieldVal(f, this.$field(f.id));
+        }else {
+            var fv=eDico.getFieldVal(f, this.$field(f.id));
+            if(f.type===fts.json){
+                var obj;
+                try{
+                    obj=$.parseJSON(fv);
+                }catch(err){}
+                if(_.isUndefined(obj)){
+                    return fv;
+                }
+                return obj;
+            }else{
+                return eDico.getFieldVal(f, this.$field(f.id));
+            }
         }
+
     },
 
     setFieldProp: function(fid, prop, value){
@@ -290,7 +307,7 @@ return Backbone.View.extend({
                     }
                     break;
                 case 'visible':
-                    eUI.showOrHide($f, value);
+                    dom.showOrHide($f, value);
                     break;
             }
         }
@@ -480,12 +497,12 @@ return Backbone.View.extend({
     },
 
     _renderButtons: function (h, mode) {
-        h.push(eUI.html.clearer+
+        h.push(dom.html.clearer+
             '<div class="evol-buttons panel '+this.style+'">'+
-            eUI.button('cancel', i18n.tools.bCancel, 'btn-default')+
-            eUI.button('save', i18n.tools.bSave, 'btn-primary'));
+            dom.button('cancel', i18n.tools.bCancel, 'btn-default')+
+            dom.button('save', i18n.tools.bSave, 'btn-primary'));
         if (this.model && this.model.isNew() && this.button_addAnother && mode!=='json') {
-            h.push(eUI.button('save-add', i18n.tools.bSaveAdd, 'btn-default'));
+            h.push(dom.button('save-add', i18n.tools.bSaveAdd, 'btn-default'));
         }
         h.push('</div>');
     },
@@ -505,7 +522,7 @@ return Backbone.View.extend({
                     iPanel = -1;
                 }
                 if (iTab < 0) {
-                    h.push(eUI.html.clearer);
+                    h.push(dom.html.clearer);
                     that._renderTabTitles(h, elems);
                     h.push('<div class="tab-content">');
                 }
@@ -571,7 +588,7 @@ return Backbone.View.extend({
                 that._renderPanel(h, p, mode);
             }
         });
-        h.push(eUI.html.clearer+'</div></div>'); // TODO 2 div?
+        h.push(dom.html.clearer+'</div></div>'); // TODO 2 div?
     },
 
     _renderPanel: function (h, p, mode, visible) {
@@ -584,7 +601,7 @@ return Backbone.View.extend({
         }else{
             h.push('<div data-p-width="'+p.width+'" class="evol-pnl" style="width:'+p.width+'%">');
         }
-        h.push(eUI.panelBegin(p, this.style||'panel-default', true),
+        h.push(dom.panelBegin(p, this.style||'panel-default', true),
             '<fieldset data-pid="'+p.id+(p.readonly?'" disabled>':'"><div class="evol-fset">'));
         _.each(p.elements, function (elem) {
             if(elem.type=='panel-list'){
@@ -599,13 +616,12 @@ return Backbone.View.extend({
                     }else{
                         that.renderField(h, elem, mode, iconsPath);
                     }
-                    
                     h.push("</div>");
                 }
             }
         });
         h.push('</div></fieldset>'+
-            eUI.panelEnd()+
+            dom.panelEnd()+
             '</div>');
         return this;
     },
@@ -615,10 +631,10 @@ return Backbone.View.extend({
             vMode=isEditable?mode:'browse';
 
         h.push('<div style="width:'+p.width+'%" class="evol-pnl" data-pid="'+p.id+'">',
-            eUI.panelBegin(p, this.style, true),
+            dom.panelBegin(p, this.style, true),
             '<table class="table" data-mid="'+(p.attribute || p.id)+'"><thead><tr>');
         _.each(p.elements, function (elem) {
-            h.push('<th>'+elem.label+((isEditable && elem.required)?eUI.html.required:'')+'</th>');
+            h.push('<th>'+elem.label+((isEditable && elem.required)?dom.html.required:'')+'</th>');
         });
         if(vMode==='edit'){
             h.push('<th></th>');
@@ -626,7 +642,7 @@ return Backbone.View.extend({
         h.push('</tr></thead><tbody>');
         this._renderPanelListBody(h, p, null, vMode);
         h.push('</tbody></table>',
-            eUI.panelEnd(),
+            dom.panelEnd(),
             '</div>');
         return this;
     },
@@ -640,7 +656,7 @@ return Backbone.View.extend({
         if(this.model){
             var vs = this.model.get(uiPnl.attribute);
             if(vs && vs.length>0){
-                var TDbPM='<td class="evo-td-plusminus">'+eUI.buttonsPlusMinus()+'</td>';
+                var TDbPM='<td class="evo-td-plusminus">'+dom.buttonsPlusMinus()+'</td>';
                 _.each(vs, function(row, idx){
                     h.push('<tr data-idx="'+idx+'">');
                     if(editable){
@@ -671,7 +687,7 @@ return Backbone.View.extend({
     _TRnodata: function(colspan, mode){
         return '<tr data-id="nodata"><td colspan="'+(mode==='edit'?(colspan+1):colspan)+'" class="evol-pl-nodata">'+
             i18n.nodata+
-            (mode==='edit'?eUI.buttonsPlus():'')+
+            (mode==='edit'?dom.buttonsPlus():'')+
             '</td></tr>';
     },
 
@@ -694,9 +710,12 @@ return Backbone.View.extend({
         if(this.model && this.model.has(f.id)){
             fv = (mode !== 'new') ? this.model.get(f.id) : f.defaultValue || '';
         }
-        if(f.type==='formula'){
+        if(f.type===fts.formula){
             h.push(Evol.Dico.HTMLFieldLabel(f, mode || 'edit')+
-                Evol.UI.input.formula(this.fieldViewId(f.id), f, this.model));
+                dom.input.formula(this.fieldViewId(f.id), f, this.model));
+        }else if(f.type===fts.json && mode==='browse'){
+            h.push(Evol.Dico.HTMLFieldLabel(f, mode)+
+                dom.input.textM(this.fieldViewId(f.id), Evol.Format.jsonString(fv, false), f.maxLen, f.height, true));
         }else{
             h.push(eDico.fieldHTML(f, this.fieldViewId(f.id), fv, mode, iconsPath, skipLabel));
         }
@@ -809,6 +828,9 @@ return Backbone.View.extend({
                 .replace('{1}', r2)
                 .replace('{2}', r3);
         }
+        function fieldLabel(f){
+            return f.label || f.labelMany;
+        }
 
         if(!f.readonly){
 
@@ -829,30 +851,34 @@ return Backbone.View.extend({
                             case fts.int:
                             case fts.email:
                                 if (!this.valRegEx[f.type].test(v)) {
-                                    return formatMsg(f.label, i18nVal[f.type]);
+                                    return formatMsg(fieldLabel(f), i18nVal[f.type]);
                                 }
                                 break;
                             case fts.dec:
                             case fts.money:
                                 var regex = this.valRegEx[fts.dec + i18n.LOCALE] || this.valRegEx[fts.dec + 'EN'];
                                 if (!regex.test(v)){
-                                    return formatMsg(f.label, i18nVal[f.type]);
+                                    return formatMsg(fieldLabel(f), i18nVal[f.type]);
                                 }
                                 break;
                             case fts.date:
                             case fts.datetime:
                             case fts.time:
                                 if ((v !== '') && (!_.isDate(new Date(v)))) {
-                                    return formatMsg(f.label, i18nVal[f.type]);
+                                    return formatMsg(fieldLabel(f), i18nVal[f.type]);
                                 }
                                 break;
                             case fts.json:
                                 var obj;
-                                try{
-                                    obj=$.parseJSON(v);
-                                }catch(err){}
-                                if(_.isUndefined(obj)){
-                                    return formatMsg(f.label, i18nVal[f.type]);
+                                if(_.isObject(v)){
+                                    obj=v;
+                                }else{
+                                    try{
+                                        obj=$.parseJSON(v);
+                                    }catch(err){}
+                                    if(_.isUndefined(obj)){
+                                        return formatMsg(fieldLabel(f), i18nVal[f.type]);
+                                    }
                                 }
                                 break;
                         }
@@ -863,7 +889,7 @@ return Backbone.View.extend({
                 if (f.regExp !== null && !_.isUndefined(f.regExp)) {
                     var rg = new RegExp(f.regExp);
                     if (!v.match(rg)) {
-                        return formatMsg(f.label, i18nVal.regExp, f.label);
+                        return formatMsg(fieldLabel(f), i18nVal.regExp, fieldLabel(f));
                     }
                 }
 
@@ -871,10 +897,10 @@ return Backbone.View.extend({
                 if (numberField) {
                     if (v !== '') {
                         if (f.max && parseFloat(v) > f.max) {
-                            return formatMsg(f.label, i18nVal.max, f.max);
+                            return formatMsg(fieldLabel(f), i18nVal.max, f.max);
                         }
                         if (f.min && parseFloat(v) < f.min) {
-                            return formatMsg(f.label, i18nVal.min, f.min);
+                            return formatMsg(fieldLabel(f), i18nVal.min, f.min);
                         }
                     }
                 }
@@ -884,7 +910,7 @@ return Backbone.View.extend({
             if (f.fnValidate) {
                 var fValid = f.fnValidate(f, v);
                 if (fValid !== '') {
-                    return formatMsg(f.label, fValid);
+                    return formatMsg(fieldLabel(f), fValid);
                 }
             }
 
@@ -895,11 +921,11 @@ return Backbone.View.extend({
                     badMin = f.minLength?len < f.minLength:false;
                 if(badMax || badMin){
                     if(f.maxLength && f.minLength){
-                        return formatMsg(f.label, i18nVal.minMaxLength, f.minLength, f.maxLength);
+                        return formatMsg(fieldLabel(f), i18nVal.minMaxLength, f.minLength, f.maxLength);
                     }else if(f.maxLength){
-                        return formatMsg(f.label, i18nVal.maxLength, f.maxLength);
+                        return formatMsg(fieldLabel(f), i18nVal.maxLength, f.maxLength);
                     }else{
-                        return formatMsg(f.label, i18nVal.minLength, f.minLength);
+                        return formatMsg(fieldLabel(f), i18nVal.minLength, f.minLength);
                     }
                 }
             }
@@ -933,9 +959,9 @@ return Backbone.View.extend({
              _.each(this.$(labelSelector),function(elem){
                  var $el=$(elem),
                  id=$el.attr('for');
-                 $el.append(eUI.iconCustomize(id,'field'));
+                 $el.append(dom.iconCustomize(id,'field'));
              });
-             this.$(panelSelector).append(eUI.iconCustomize('id','panel'));
+             this.$(panelSelector).append(dom.iconCustomize('id','panel'));
              this.custOn=true;
          }
          return this;
@@ -1102,7 +1128,7 @@ return Backbone.View.extend({
             h+='<tr>'+
                 this._TDsFieldsEdit(elems, {})+
                 '<td class="evo-td-plusminus">'+
-                eUI.buttonsPlusMinus()+
+                dom.buttonsPlusMinus()+
                 '</td></tr>';
             $(h).insertAfter(tr);
             if(tr.data('id')==='nodata'){

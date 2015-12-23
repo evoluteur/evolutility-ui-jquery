@@ -141,7 +141,7 @@
 .evo-title2 {
   background-color: #0099cc;
   position: fixed;
-  z-index: 500;
+  z-index: 1001;
   width: 100%;
   overflow: hidden;
 }
@@ -197,15 +197,15 @@
 }
 .evo-page {
   min-height: 100%;
-  margin-bottom: -100px;
+  margin-bottom: -120px;
 }
 .evo-page:after {
   content: "";
   display: block;
 }
 .footer {
-  padding-top: 70px;
-  height: 100px;
+  padding-top: 80px;
+  height: 120px;
   text-align: center;
   font-size: smaller;
   color: silver;
@@ -345,6 +345,9 @@ code {
 .mt10 {
   margin-top: 10px;
 }
+.pl10 {
+  padding-left: 10px;
+}
 .t-props tr td:first-child {
   width: 140px;
   font-weight: 600;
@@ -460,7 +463,7 @@ h4 {
 /* demo card view*/
 [data-eid="todo"] .evol-cards-body > .panel,
 [data-eid="contact"] .evol-cards-body > .panel {
-  height: 160px !important;
+  height: 205px !important;
 }
 [data-eid="winecellar"] .evol-cards-body > div.panel {
   height: 272px !important;

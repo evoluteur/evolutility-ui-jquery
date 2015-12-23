@@ -284,6 +284,31 @@
                 <div class="clearfix"></div>
             </td>
         </tr>
+        <tr>
+            <td>list<span class="evol-asterix">*</span>
+            </td>
+            <td>Array of values to select from. Only for fields of type "lov" or "list". <br> <br>
+            Each item in the list must have attributes "id" and "text" to define its key and displayed value.
+                <br />
+                Example: 
+        <code><pre>list = [
+            {id:1, text:'1- ASAP'},
+            {id:2, text:'2- Urgent'}
+        ]</pre></code>
+                <p>Optionally, items can have an icon specified as "icon" or "glyphicon".<br>
+                Example 2: </p>
+        <code><pre>list = [
+            {id:1, text:'1- ASAP', icon:'p1.gif'},
+            {id:2, text:'2- Urgent', icon:'p2.gif'}
+        ]</pre></code>
+                <br />
+                Example 3: 
+        <code><pre>list = [
+            {id:1, text:'1- ASAP', glyphicon:'asterisk'},
+            {id:2, text:'2- Urgent', glyphicon:'star'}
+        ]</pre></code>
+            </td>
+        </tr>
 
         <tr class="t-row">
             <th colspan="2">Layout</th>

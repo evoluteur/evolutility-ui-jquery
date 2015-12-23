@@ -14,8 +14,8 @@ var Evol = Evol || {};
 // not a "virtual DOM" but an "abstract DOM"
 Evol.Dico = function(){
 
-    var eUI = Evol.UI,
-        uiInput = eUI.input,
+    var dom = Evol.DOM,
+        uiInput = dom.input,
         i18n = Evol.i18n,
         fts = Evol.Def.fieldTypes;
 
@@ -155,31 +155,24 @@ return {
         switch(f.type){
             case fts.bool:
                 if (v==='true' || v=='1') {
-                    return eUI.icon('ok', f.css);
+                    return dom.icon('ok', f.css);
                 }
                 break;
             case fts.lov:
                 if (v !== '') {
-                    //if(f.icon && f.list & f.list[0].icon){
-                    //    return 'f.icon' + this._lovText(f,v);
-                    //}else{
-                    //return Evol.Dico.lovText(f, iconPath+v, hashLov);
-                    return Evol.Dico.lovText(f, v, hashLov, iconsPath);
-                    //}
+                    return Evol.Dico.lovItemText(f, v, hashLov, iconsPath);
                 }
                 break;
             case fts.list:
                 if(_.isString(v)){
-                    v= v.split(',');
+                    v = v.split(',');
                 }
-                if(v && v.length){
-                    var vs=[];
-                    _.each(v, function(vi){
-                        vs.push(Evol.Dico.lovText(f, vi, hashLov, iconsPath));
-                    });
-                    return vs.join(', ');
+                if(v && v.length && v[0]!==''){
+                    return '<div class="evo-f-list"><div>'+_.map(v, function(vi){
+                        return Evol.Dico.lovItemText(f, vi, hashLov, iconsPath);
+                    }).join('</div><div>')+'</div></div>';
                 }
-                return v;
+                return '';
             case fts.date:
             case fts.time:
             case fts.datetime:
@@ -197,9 +190,11 @@ return {
                 }
                 break;
             case fts.email:
-                return eUI.linkEmail(wId?f.id:null, v);
+                return dom.linkEmail(wId?f.id:null, v);
             case fts.url:
-                return eUI.link(f.id, v, v, f.id);
+                return dom.link(f.id, v, v, f.id);
+            case fts.json:
+                return dom.input.textM(f.id, Evol.Format.jsonString(v, false), f.maxLen, f.height, true);
             //case fts.color:
             //    return uiInput.colorBox(f.id, v, v);
             default:
@@ -211,10 +206,10 @@ return {
     HTMLFieldLabel: function (fld, mode) {
         var h='<div class="evol-field-label" id="'+fld.id+'-lbl"><label class="control-label '+(fld.cssLabel?fld.cssLabel:'')+'" for="'+fld.id+'">'+fld.label;
         if (mode != 'browse' && fld.required){
-            h+=eUI.html.required;
+            h+=dom.html.required;
         }
         if (fld.help && fld.help!==''){
-            h+=eUI.icon('question-sign', '');
+            h+=dom.icon('question-sign', '');
         }
         h+='</label></div>';
         return h;
@@ -273,7 +268,7 @@ return {
         }
     },
     // get field value (not id but text) for a field of type lov
-    lovText:function(f, v, hash, iconsPath){
+    lovItemText:function(f, v, hash, iconsPath, inDiv){
         if(f.list && f.list.length>0 && hash){
             if(!(f.id in hash)){
                 hash[f.id]={};
@@ -287,7 +282,9 @@ return {
                 });
                 if(listItem){
                     var txt= _.escape(listItem.text);
-                    if(listItem.icon!=='' && !_.isUndefined(listItem.icon)){
+                    if(listItem.glyphicon){
+                        txt='<i class="glyphicon glyphicon-'+listItem.glyphicon+'"></i> '+txt;
+                    }else if(listItem.icon){
                         txt='<img src="'+((listItem.icon && listItem.icon.substring(0,1)!=='.')?iconsPath:'')+listItem.icon+'"> '+txt;
                     }
                     hashLov[v]=txt;
@@ -298,7 +295,7 @@ return {
         return '';
     },
 
-    lovTextNoPix:function(f, v){
+    lovItemTextNoPix:function(f, v){
         var listItem=_.find(f.list, function(item){
             return item.id==v;
         });
@@ -335,7 +332,7 @@ return {
          }
          //$el.closest('.evol-fld').after($elDesModal);
          $('body').append($elDesModal);
-         var $elDesModal=$(eUI.modal.HTMLModal('m'+id, 'Edit '+type+' '+ f.label, '<div class="'+css+'"></div>')),
+         var $elDesModal=$(dom.modal.HTMLModal('m'+id, 'Edit '+type+' '+ f.label, '<div class="'+css+'"></div>')),
          $elDes=$elDesModal.find('.'+css);
          var vw = new Evol.ViewOne.Edit({
              uiModel: uiModel,

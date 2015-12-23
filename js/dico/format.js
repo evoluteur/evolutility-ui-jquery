@@ -26,8 +26,12 @@ Evol.Format = {
         }
         return '';
     },
-    cr2br: function(v){
-        return (v || '').replace(/[\r\n]/g, '<br>');
+    cr2br: function(v, escape){
+        if(v==='' || v===null){
+            return '';
+        }
+        var txt=escape?_.escape(v):v;
+        return txt.replace(/[\r\n]/g, '<br>');
     },
 
     // --- date formats ---
@@ -68,9 +72,18 @@ Evol.Format = {
     },
 
     // --- JSON formats ---
-    jsonString: function(d){
-        return _.escape(JSON.stringify(d, null, '\t'));
+    jsonString: function(d, cr2br){
+        var dd = (_.isString(d) && d!=='') ? $.parseJSON(d) : d;
+        if(dd===''){
+            return  dd;
+        }else{
+            //var txt=JSON.stringify(dd, null, '\t');
+            var txt=JSON.stringify(dd, null, 2);
+            if(cr2br){
+                txt=this.cr2br(txt);
+            }
+            return txt;
+        }
     }
-    
 
 };
