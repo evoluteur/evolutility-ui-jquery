@@ -317,7 +317,7 @@ Evolutility.js is a re-write of [Evolutility] (http://www.evolutility.org) gener
 
 ## License
 
-Copyright (c) 2015 Olivier Giulieri.
+Copyright (c) 2016 Olivier Giulieri.
 
 Evolutility.js is released under the GNU Affero General Public License version 3 [GNU AGPLv3](http://www.gnu.org/licenses/agpl-3.0.html).
 
