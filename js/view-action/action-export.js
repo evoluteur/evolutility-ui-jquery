@@ -3,12 +3,13 @@
  * evolutility :: action-export.js
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2015, Olivier Giulieri
+ * Copyright (c) 2016, Olivier Giulieri
  *
  *************************************************************************** */
 
 Evol.ViewAction.Export = function(){
 
+    // TODO: add badge value, formula fields as possible exportable fields too.
     var dom = Evol.DOM,
         eDico = Evol.Dico,
         fts = Evol.Def.fieldTypes,
@@ -61,7 +62,7 @@ return Backbone.View.extend({
             '<div><label>'+i18nXpt.xpFields+'</label></div>'+
             '<fieldset class="checkbox">';
 
-        //### list of columns to export #########################################
+        //---- export fields: attributes included in the export -----------------------------
         h+='<label><input type="checkbox" value="1" id="showID">'+i18nXpt.IDkey+'</label>';
         _.each(fields, function(f, idx){
             var fLabel = f.labelExport || f.label || f.labelList,
@@ -79,7 +80,7 @@ return Backbone.View.extend({
         }
         h+='</fieldset></div><div class="evol-xpt-para">';
 
-        //##### export formats ########################################
+        //---- export formats: CSV, JSON... ------------------------------------------------
         var fId = 'evol-xpt-format',
             formatsList = _.map(formats, function(format){
                     return {
@@ -91,14 +92,14 @@ return Backbone.View.extend({
             uiInput.select(fId, '', 'evol-xpt-format', false, formatsList)+'</div>';
         fId = 'xptFLH';
         h+='<div class="evol-xpt-opts">'+
-            //# field (shared b/w formats - header #######
+            //---- field (shared b/w formats - header -----------------------------
             '<div class="evol-FLH clearfix">'+
                 '<label class="evol-xpt-cb1">'+uiInput.checkbox(fId, true)+i18nXpt.firstLine+'</label>'+
                 uiInput.select('xpt-header', '', 'evol-xpt-header', false, [
                     {id:'label', text:i18nXpt.headerLabels},
                     {id:'attribute', text:i18nXpt.headerIds}
                 ])+
-            //##### CSV, TAB - First line for field names #######
+            //---- CSV, TAB - First line for field names ----
             '</div><div id="xptCSV" class="evol-xpt-opt">'+
                 //# field - separator
                 //# - csv - any separator #######
@@ -111,12 +112,12 @@ return Backbone.View.extend({
             h+='<div id="xpt'+f+'" style="display:none;"></div>';
         });
         h+='</div></div>'+
-            //# Preview #######
+            //---- Preview -----------------------------
             dom.html.clearer+'<label class="evol-xpt-pvl">'+i18nXpt.preview+'</label>'+
-            // ## Samples
+            // ---- Samples ----
             '<textarea class="evol-xpt-val form-control"></textarea>'+
             '</div></div></div>'+
-            // ## Download button
+            // ---- Download button ----
             '<div class="panel '+this.style +' evol-buttons form-actions">'+
                 dom.button('cancel', i18n.tools.bCancel, 'btn-default')+
                 dom.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
@@ -231,6 +232,7 @@ return Backbone.View.extend({
                             h+=(m.id||('m'+idx))+sep;
                         }
                         _.each(flds, function(f, idx){
+                            //var mv = f.type==fts.formula ? f.formula(m) : m.get(f.id);
                             var mv = m.get(f.id);
                             if (mv) {
                                 if(f.type===fts.bool){

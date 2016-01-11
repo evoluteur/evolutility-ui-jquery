@@ -5,7 +5,7 @@
  * View "one" should not be instanciated but inherited.
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2015, Olivier Giulieri
+ * Copyright (c) 2016, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -222,7 +222,13 @@ return Backbone.View.extend({
                             $f.before(newPix);
                             break;
                         case fts.list:
-                            $f.select2('val', fv);
+                            //$f.select2('val', fv);
+                            try{
+                                $f.select2('val', _.isString(fv)?[fv]:fv);
+                            }catch(e){
+                                console.error('error with select2')
+                                return '';
+                            }
                             break;
                         case fts.formula:
                             $f.html(f.formula?f.formula(model):'');
@@ -838,7 +844,7 @@ return Backbone.View.extend({
             if (f.required && (v==='' ||
                     (numberField && isNaN(v)) ||
                     (f.type===fts.lov && v==='0') ||
-                    (f.type===fts.list && v.length===0) //||
+                    (f.type===fts.list && v && v.length===0) //||
                     //(f.type===fts.color && v==='#000000')
                 )){
                 return formatMsg(f.label, i18nVal.empty);

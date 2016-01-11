@@ -5,7 +5,7 @@
  * Library of helpers for dictionary
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2015, Olivier Giulieri
+ * Copyright (c) 2016, Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -22,9 +22,11 @@ Evol.Dico = function(){
 return {
 
     fieldEdit: {
+
         field: function (f, fType, fid, fv) {
             return uiInput[fType](fid, fv, f, null);
         },
+
         text: function (f, fid, fv) {
             return uiInput.text(fid, fv, f, null);
         },
@@ -40,10 +42,7 @@ return {
             }
             return uiInput.textM(fid, fv, f.maxlength, f.height);
         },
-        html: function (f, fid, fv) {
-            // TODO
-            return uiInput.textM(fid, fv, f.maxlength, f.height);
-        },
+
         boolean: function (f, fid, fv) {
             return uiInput.checkbox(fid, fv);
         },
@@ -58,6 +57,7 @@ return {
             return '<div class="input-group evol-money">'+uiInput.typeFlag('$')+
                 uiInput.textInt(fid, fv, f.max, f.min)+'</div>';
         },
+
         date: function (f, fid, fv) {
             return uiInput.date(fid, fv);
         },
@@ -67,12 +67,18 @@ return {
         time: function (f, fid, fv) {
             return uiInput.time(fid, fv);
         },
+/*
+        geoloc: function (f, fid, fv) {
+            return uiInput.geoloc(fid, fv);
+        },
+*/
         lov: function (f, fid, fv) {
             return uiInput.select(fid, fv, '', true, f.list);
         },
         list: function (f, fid, fv) { // fv is an array. will use select2
             return '<div id="'+fid+'" class="w-100 form-control"></div>';
         },
+
         email: function (f, fid, fv) {
             return '<div class="input-group">'+uiInput.typeFlag(i18n.msg.sgn_email)+
                 uiInput.text(fid, fv, f)+
@@ -81,10 +87,6 @@ return {
         url: function (f, fid, fv) {
             return uiInput.text(fid, fv, f);
             //fv!==''?EvoUI.link(fid,'',fv):''
-        },
-        json: function(f, fid, fv){
-            // TODO
-            return uiInput.textM(fid, fv, f.maxlength, f.height);
         },
         //doc: function(f, fid, fv, iconsPath){
         //},
@@ -103,6 +105,14 @@ return {
         },
         hidden: function(f, fid, fv){
             return uiInput.hidden(fid, fv);
+        },
+        html: function (f, fid, fv) {
+            // TODO
+            return uiInput.textM(fid, fv, f.maxlength, f.height);
+        },
+        json: function(f, fid, fv){
+            // TODO
+            return uiInput.textM(fid, fv, f.maxlength, f.height);
         },
         formula: function(f, fid, fv){
             return '<div class="evol-ellipsis">'+uiInput.text(fid, fv, f, null)+'</div>';
@@ -164,7 +174,7 @@ return {
                 }
                 break;
             case fts.list:
-                if(_.isString(v)){
+                if(_.isString(v) && v!==''){
                     v = v.split(',');
                 }
                 if(v && v.length && v[0]!==''){
@@ -262,7 +272,14 @@ return {
             case fts.money:
                 return parseFloat($f.val());
             case fts.list:
-                return $f.select2('val');
+                try{
+                    return $f.select2('val');
+                }catch(e){
+                    console.error('error with select2');
+                    //alert('error with select2')
+                    return '';
+                }
+                break;
             default:
                 return $f.val();
         }
