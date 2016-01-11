@@ -98,7 +98,8 @@
 }
 
 // -- mini vertical toolbar in views
-.evol-actions,.evol-actions-nxtTd{
+.evol-actions,
+.evol-actions-nxtTd{
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -107,10 +108,12 @@
   border: 1px solid #bce8f1;
   >i{
     color: @color-icon;
-    margin: 5px;
+    padding: 10px;
     cursor: pointer;
+    .border-radius(4px);
     &:hover{
       color: @color-icon-hover;
+      background-color: @color-icon-background-hover;
     }
   }
 }
@@ -122,8 +125,8 @@
   border-bottom-left-radius: 10px;
 }
 .evol-actions-nxtTd{
-  left: 0;
   top:0;
+  left: 0;
   z-index: 2;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
