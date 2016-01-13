@@ -132,7 +132,7 @@
     <p>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a>
     </p>
 
-    <p>More: <a href="#one-api-options">Validation</a> - <a href="#one-api-methods">Layout</a>
+    <p>More: <a href="#validation">Validation</a> - <a href="#layout">Layout</a>
     </p>
 
     <a name="one-browse" class="evo-anchor">&nbsp;</a>
@@ -200,7 +200,7 @@
     <div id="doc-json">
     <h3><i class="glyphicon glyphicon-barcode"></i>&nbsp;JSON <span class="view-fullname">Evol.ViewOne.JSON</span></h3>
 
-    <p>JSON representation of the data.</p>
+    <p>JSON representation of the data. </p>
 
     <div class="evol-doc-views">
         <img class="pixEvoView shadow" src="screenshots/one-json.gif"/> <br/>&nbsp;
@@ -211,14 +211,15 @@
     model: myModel
 });</code></pre>
 
-
+    <p>This view is not useful to everyone, but can be convinient for developers.</p>
     <p><br>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a></p>
 
 
 <a name="validation" class="evo-anchor">&nbsp;</a>
 <section>
     <h2>Validation</h2>
-    <p>Validation is determined by the field properties.</p>
+
+    <p>To validate users input before validation rules automatically apply. These is determined by the field properties in the UI-model.</p>
    
     <ul>
         <li><span class="xmlAttr">type</span> - Field must be of the specified type (Text, Integer, Decimal, Date...).</li>
@@ -231,7 +232,10 @@
         <li><span class="xmlAttr">fnValidate</span> - Custom validation function.</li>
     </ul>
 
-    <p>Validation happens when the user clicks the "Save" button. Invalid fields are flagged and a summary of all fields which didn't pass the validation is displayed.</p>
+    <p>Validation happens when the user clicks the "Save" button. 
+    Invalid fields are flagged and a summary of all fields which didn't pass the validation is displayed.</p>
+
+    <p>Validation is used in views <a href="#one-edit">Edit</a> and <a href="#one-mini">Mini (Quick Edit)</a>.</p>
 
 </section>
 
@@ -404,7 +408,9 @@
     <div id="doc-cards">
     <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Cards <span class="view-fullname">Evol.ViewMany.Cards</span></h3>
 
-    <p>Shows records side by side as cards.</p>
+    <p>Shows records side by side as cards. A single card can also act as a tooltip when using the 
+    <a href="#many-bubbles">view Bubbles</a>
+    .</p>
 
     <div class="evol-doc-views">
         <img class="pixEvoView shadow" src="screenshots/many-cards.gif"/><br/>&nbsp;
@@ -427,7 +433,7 @@
     <h3><i class="glyphicon glyphicon-adjust"></i>&nbsp;Bubbles <span class="view-fullname">Evol.ViewMany.Bubbles</span></h3>
 
     <p>The "Bubbles" view displays the data as bubbles with controls to group them and set their color and size (this view uses D3.js). 
-    A tooltip with the Card view of the item show on mouse over.</p>
+    </p>
     <div class="evol-doc-views">
         <img class="pixEvoView shadow" src="screenshots/many-bubbles.gif"/><br/>&nbsp;
     </div>
@@ -437,6 +443,10 @@
     collection: myCollection
 });</code></pre>
 
+<div> 
+    A tooltip with the <a href="#many-cards">Card view</a> of the item is displayed on mouse over.
+
+</div>
     <div><br>
     API: <a href="#many-api-options">Options</a> - <a href="#many-api-methods">Methods</a> - <a href="#many-api-events">Events</a>
     </div>

@@ -10,7 +10,10 @@ With it you can make web applications by configuring views with metadata instead
 [Wine Cellar](http://evoluteur.github.io/evolutility/demo/index.html#winecellar/list),
 [Graphic Novels](http://evoluteur.github.io/evolutility/demo/index.html#comics/cards).
 
-These demos use the browser local storage for their data but Evolutility can also be configured for REST (using [Evolutility-server](https://github.com/evoluteur/evolutility-server) or your own REST API). 
+These demos use the browser local storage to store data. 
+
+I'm still working on making Evolutility work with REST. 
+I started [Evolutility-server](https://github.com/evoluteur/evolutility-server) to work with Evolutility UI, but I'm now considering using [PostgREST](http://postgrest.com) instead. 
 
 ## Installation
 

@@ -1,7 +1,7 @@
 {
   "name": "evolutility",
   "version": "1.1",
-  "copyright": "(c) 2015 Olivier Giulieri",
+  "copyright": "(c) 2016 Olivier Giulieri",
   "license": "AGPL-3.0",
   "target": "dist",
   "homepage": "http://evoluteur.github.io/evolutility/",
