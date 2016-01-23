@@ -12,6 +12,7 @@
 Evol.ViewMany.List = Evol.View_Many.extend({
 
     viewName: 'list',
+    icon: 'th-list', // glyphicon-th-list
 
     events: _.extend({
         'mouseenter tbody>tr': 'enterItem',

@@ -5,13 +5,14 @@
  * View "many bubbles" to show a Bubble Chart of a collection of many models.
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2015, Olivier Giulieri
+ * Copyright (c) 2016, Olivier Giulieri
  *
  *************************************************************************** */
 
 Evol.ViewMany.Bubbles = Evol.View_Many.extend({
 
     viewName: 'bubbles',
+    icon: 'adjust', // glyphicon-adjust
 
     events: {
         //'click .evol-buttons>button': 'click_button',

@@ -24,6 +24,7 @@ return Evol.ViewOne.Edit.extend({
     },
 
     viewName: 'mini',
+    icon: 'th-large', // glyphicon-th-large
     prefix: 'om',
 
     fieldsetFilter: function(f){

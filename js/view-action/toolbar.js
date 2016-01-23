@@ -342,7 +342,7 @@ return Backbone.View.extend({
                     this.curView=vw;
                     this.viewsHash[viewName]=vw;
                     if(!skipIcons){
-                        $(this.titleSelector).html(vw.getTitle());
+                        this.setTitle();
                     }
                 }
             }

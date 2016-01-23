@@ -21,6 +21,7 @@ var dom = Evol.DOM,
 return Evol.View_Many.extend({
 
     viewName: 'charts',
+    icon: 'stats', // glyphicon-stats
 
     isChart: true,
 

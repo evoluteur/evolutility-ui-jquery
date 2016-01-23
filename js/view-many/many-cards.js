@@ -12,6 +12,8 @@
 Evol.ViewMany.Cards = Evol.View_Many.extend({
 
     viewName: 'cards',
+    // TODO icon should be different than view Mini
+    icon: 'th-large', // glyphicon-th-large
 
     events: _.extend({
         'mouseenter .evol-cards-body>div': 'enterItem',

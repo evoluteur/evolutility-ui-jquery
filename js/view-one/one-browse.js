@@ -13,6 +13,7 @@ Evol.ViewOne.Browse = Evol.View_One.extend({
 
     viewName: 'browse',
     editable: false,
+    icon: 'eye-open', // glyphicon-eye-open
     prefix: 'ovw',
 
     getData: function () {

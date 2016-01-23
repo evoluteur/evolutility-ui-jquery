@@ -12,6 +12,7 @@
 Evol.ViewOne.Edit = Evol.View_One.extend({
 
     viewName: 'edit',
+    icon: 'edit', // glyphicon-edit
     prefix: 'oe',
 
     postRender:function(){

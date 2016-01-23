@@ -17,6 +17,7 @@ Evol.ViewOne.JSON = Evol.View_One.extend({
     },
 
     viewName: 'json',
+    icon: 'barcode', // glyphicon-barcode
 
     render: function () {
         var dom=Evol.DOM;

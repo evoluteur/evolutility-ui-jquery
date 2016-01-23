@@ -21,6 +21,7 @@ return Backbone.View.extend({
 
     viewName: 'export',
     cardinality: 'n',
+    icon: 'cloud-download', // glyphicon-cloud-download
 
     events: {
         'change .evol-xpt-format': 'click_format',

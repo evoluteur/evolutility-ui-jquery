@@ -255,6 +255,7 @@ return {
         if(that.titleSelector){
             $(that.titleSelector)
                 .html(
+                    (that.icon?'<i class="glyphicon glyphicon-'+that.icon+'"></i>&nbsp;':'')+
                     (title?title:that.getTitle())+
                     (badge?'<span class="badge badge-one">'+badge+'</span>':'')
                 );
