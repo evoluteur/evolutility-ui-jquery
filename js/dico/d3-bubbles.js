@@ -108,6 +108,8 @@ Bubbles.prototype.setData = function(data){
 
   this.nodes.exit().remove();
 
+  this.changeBubblesSize (this.sizeFieldId);
+
   this.changeBubblesGroup(this.groupFieldId);
 
   function removePopovers () {

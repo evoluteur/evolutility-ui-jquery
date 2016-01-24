@@ -27,6 +27,10 @@ return {
             return uiInput[fType](fid, fv, f, null);
         },
 
+        default: function (f, fid, fv) {
+            return uiInput.text(fid, fv, f, null);
+        },
+
         text: function (f, fid, fv) {
             return uiInput.text(fid, fv, f, null);
         },
