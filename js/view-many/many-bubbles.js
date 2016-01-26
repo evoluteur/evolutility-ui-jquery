@@ -5,7 +5,7 @@
  * View "many bubbles" to show a Bubble Chart of a collection of many models.
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2016, Olivier Giulieri
+ * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */
 

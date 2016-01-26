@@ -5,7 +5,7 @@
  * Library of helpers for dictionary
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2016, Olivier Giulieri
+ * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */
 
