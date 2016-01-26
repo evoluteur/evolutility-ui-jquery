@@ -5,7 +5,7 @@
  * View "app" to manage the single page app for all objects/ui-models.
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2015, Olivier Giulieri
+ * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */
 

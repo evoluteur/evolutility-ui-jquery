@@ -5,7 +5,7 @@
  * View "one mini" to "quick edit" one backbone model (only showing important or required fields).
  *
  * https://github.com/evoluteur/evolutility
- * Copyright (c) 2015, Olivier Giulieri
+ * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */
 
