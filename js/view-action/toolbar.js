@@ -683,10 +683,10 @@ return Backbone.View.extend({
                 }
             }else{
                 // TODO fix bug w/ insert when filter applied => dup record
-                var updateModel = this.getData(true);
-                this.model.set(updateModel);
-                this.model.save({}, {
-                    //patch: true,
+                var updatedModel = this.getData(true);
+                this.model.set(updatedModel);
+                this.model.save(this.model.changedAttributes(), {
+                    patch: !this.model.isNew(),
                     success: function(m){
                         fnSuccess(m);
                         that.collection.set(m, {remove:false});
