@@ -226,7 +226,7 @@ return Backbone.View.extend({
                             try{
                                 $f.select2('val', _.isString(fv)?[fv]:fv);
                             }catch(e){
-                                console.error('error with select2')
+                                console.error('error with select2');
                                 return '';
                             }
                             break;

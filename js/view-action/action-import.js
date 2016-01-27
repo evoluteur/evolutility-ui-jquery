@@ -225,7 +225,7 @@ return Backbone.View.extend({
             h = JSON.stringify(sample, null, '\t');
         }else{
             var r=[];
-            for (p in sample[0]){
+            for (var p in sample[0]){
                 r.push(p);
             }
             h += r.join(',');

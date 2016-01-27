@@ -56,8 +56,8 @@ module.exports = function (grunt) {
 
                     // Twitter Bootstrap
                     'bower_components/bootstrap/js/modal.js',
-                    'bower_components/bootstrap/js/button.js',
                     'bower_components/bootstrap/js/dropdown.js',
+                    'bower_components/bootstrap/js/button.js',
                     'bower_components/bootstrap/js/tooltip.js',
                     'bower_components/bootstrap/js/popover.js',
                     //'bower_components/bootstrap/js/carousel.js',
@@ -155,25 +155,23 @@ module.exports = function (grunt) {
         jshint: {
             dev: [
 
-                // --- tools ---
                 'Gruntfile.js',
                 'package.json',
                 'bower.json',
 
-                // --- dist ---
-                'js/dom*.js',
+                'js/dico/*.js',
                 'js/i18n/EN.js',
 
-                'js/many*.js',
-                'js/one*.js',
-                'js/action-*.js',
+                'js/view-many/many*.js',
+                'js/view-one/one*.js',
+                'js/view-action/action-*.js',
+                'js/view-action/toolbar.js',
 
-                //'js/navbar.js',
-                'js/toolbar.js',
+                'ui-models/*.js',
 
-                // --- ui models ---
-                'ui-models/*.js'
+                '../demo/demo.js',
 
+                '!js/*/*-nogit.js'
             ]
         },
 
@@ -287,7 +285,7 @@ module.exports = function (grunt) {
     // *************************************************************************************
     //      BUILD TASKS : dev prod demo dep
     // *************************************************************************************
-    grunt.registerTask('default', ['prod', 'dep']);
+    grunt.registerTask('default', ['prod']);
 
     grunt.registerTask('dev', [
         'header:dev',

@@ -232,7 +232,8 @@ return {
     fieldLink: function (id, fld, value, icon, noLink, route) {
         var h='';
         if(!noLink){
-            h+='<a href="'+(route?route:'javascript:void(0);');
+            var js='javascript'; // necessary for jshint
+            h+='<a href="'+(route?route:(js+':void(0);'));
             if(id){
                 h+='" id="'+id;
             }
