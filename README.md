@@ -227,12 +227,12 @@ var uiModels_comics = {
                     ]
                 },
                 {
-                    id: 'serieNb', attribute: 'serieNb', type: 'integer', 
+                    id: 'serie_nb', attribute: 'serie_nb', type: 'integer', 
                     label: 'Albums', width: 15, inMany: false,
                     inCharts: false 
                 },
                 {
-                    id: 'haveNb', attribute: 'haveNb', type: 'integer',
+                    id: 'have_nb', attribute: 'have_nb', type: 'integer',
                     label: 'Owned', width: 15, inMany: false, 
                     inCharts:false 
                 },
