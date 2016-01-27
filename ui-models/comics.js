@@ -52,11 +52,11 @@ uiModels.comics = {
                     ]
                 },
                 {
-                    id: 'serieNb', attribute: 'serieNb', type: 'integer', width: 15, inMany: false,
+                    id: 'serieNb', attribute: 'serie_nb', type: 'integer', width: 15, inMany: false,
                     label: 'Albums', inCharts:false 
                 },
                 {
-                    id: 'haveNb', attribute: 'haveNb', type: 'integer', width: 15, inMany: false,
+                    id: 'haveNb', attribute: 'have_nb', type: 'integer', width: 15, inMany: false,
                     label: 'Owned', inCharts:false 
                 },
                 {

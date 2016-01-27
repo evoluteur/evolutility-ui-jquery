@@ -58,7 +58,7 @@ uiModels.todo = {
         },
         {
             type: 'panel', label: 'Task Description', label2:'and Notes', width: 100,
-            elements: [
+            elements: [/*
                 {
                     id: 'project', attribute: 'project', type: 'list', label: 'Projects', width: 100, inMany: true,
                     list: [
@@ -70,7 +70,7 @@ uiModels.todo = {
                         {id: '10', text: 'Other'}
                     ],
                     typeChart:'bars'
-                },
+                },*/
                 {
                     id: 'description', attribute: 'description', type: 'textmultiline', 
                     label: 'Description', 
