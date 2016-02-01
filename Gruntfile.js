@@ -246,7 +246,7 @@ module.exports = function (grunt) {
             prod: {
                 options: {
                     banner: '<%= banner %>',
-                    //compress: true
+                    compress: true
                 },
                 files: {
                     "dist/css/evolutility.min.css": "less/evolutility.less"

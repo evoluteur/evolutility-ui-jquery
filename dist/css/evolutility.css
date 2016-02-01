@@ -1,8 +1,12 @@
 /*!
-   evolutility 1.1 
-   (c) 2015 Olivier Giulieri 
+   evolutility 1.1.1 
+   (c) 2016 Olivier Giulieri 
    http://evoluteur.github.io/evolutility/  
 */
+#title > i {
+  color: #c6d9f0;
+  margin-right: 0.4em;
+}
 .evo-toolbar {
   border: 1px solid #bce8f1;
   border-radius: 4px;
@@ -91,12 +95,16 @@
 .evol-actions > i,
 .evol-actions-nxtTd > i {
   color: #31708f;
-  margin: 5px;
+  padding: 10px;
   cursor: pointer;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 .evol-actions > i:hover,
 .evol-actions-nxtTd > i:hover {
   color: #428bca;
+  background-color: #eceff1;
 }
 .evol-actions {
   top: 35px;
@@ -106,8 +114,8 @@
   border-bottom-left-radius: 10px;
 }
 .evol-actions-nxtTd {
-  left: 0;
   top: 0;
+  left: 0;
   z-index: 2;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -342,6 +350,7 @@ label {
   margin: 0 5px 0 0;
   padding: 2px 4px!important;
   border: 1px solid silver;
+  margin-bottom: 5px;
 }
 .evo-f-list > div,
 .select2-search-choice {
@@ -437,7 +446,6 @@ label {
 }
 .evol-many-list > .table th:hover .glyphicon {
   display: inline !important;
-  cursor: pointer;
 }
 .evol-many-list > .table .evol-ellipsis {
   overflow: hidden;

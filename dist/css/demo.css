@@ -147,7 +147,7 @@
 }
 .evo-title > h1,
 .evo-title2 > h1 {
-  margin-left: 20px;
+  margin-left: 16px;
   color: white;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
@@ -157,6 +157,10 @@
   .evo-title2 {
     top: 0 !important;
     margin-left: 190px;
+  }
+  .evo-title > h1,
+  .evo-title2 > h1 {
+    margin-left: 0;
   }
 }
 .evo-title {

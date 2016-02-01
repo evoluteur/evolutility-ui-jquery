@@ -1,6 +1,6 @@
 {
   "name": "evolutility",
-  "version": "1.1",
+  "version": "1.1.1",
   "description": "UI which changes form, volume and structure to adapt to your data.",
   "main": [
     "dist/evolutility.min.js",
