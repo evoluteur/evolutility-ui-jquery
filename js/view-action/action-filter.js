@@ -177,6 +177,7 @@ return Backbone.View.extend({
                     filter.remove();
                     that._triggerChange();
                 });
+                that._removeEditor();
             }
         });
         return this;
