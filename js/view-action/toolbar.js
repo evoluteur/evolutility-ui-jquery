@@ -664,24 +664,23 @@ return Backbone.View.extend({
 
         if(msgs.length===0){
             var entityName=this.uiModel.name;
-            if(_.isUndefined(this.model) || (this.model && this.model.isNew())){
-                var collec=this.collection;
-                if(collec){
-                    collec.create(this.getData(true), {
+            if(_.isUndefined(this.model) || (this.model && this.model.isNew())){ // CREATE
+                if(this.collection){
+                    this.collection.create(this.getData(true), {
                         success: function(m){
                             fnSuccess(m);
-                            //that.collection.set(m, {remove:false});
+                            that.setRoute(m.id, false);
                             that.setMessage(i18n.getLabel('saved', Evol.Format.capitalize(entityName)), i18n.getLabel('msg.added', entityName, _.escape(vw.getTitle())), 'success');
                         },
                         error:function(m, err){
-                            alert('error in "saveItem"');
+                            alert('Error in "saveItem"');
                         }
                     });
                     this.mode='edit';
                 }else{
                     alert('Can\'t save record b/c no collection is specified.'); //TODO use bootstrap modal
                 }
-            }else{
+            }else{ // UPDATE
                 // TODO fix bug w/ insert when filter applied => dup record
                 var updatedModel = this.getData(true);
                 this.model.set(updatedModel);
