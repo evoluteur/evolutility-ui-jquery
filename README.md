@@ -13,7 +13,7 @@ With it you can make web applications by configuring views with metadata instead
 These demos use the browser local storage to store data. 
 
 I'm still working on making Evolutility work with REST. 
-I started [Evolutility-server](https://github.com/evoluteur/evolutility-server) to work with Evolutility UI, but I'm now considering using [PostgREST](http://postgrest.com) instead. 
+I started a generic CRUD server [Evolutility-server](https://github.com/evoluteur/evolutility-server) which shares models as Evolutility UI. 
 
 ## Installation
 
