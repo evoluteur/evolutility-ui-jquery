@@ -725,7 +725,9 @@ return Backbone.View.extend({
 
         if(id || this.curView.cardinality==='1'){
             if(id){
-                this.setModelById(id, true);
+                //this.setModelById(id, true);
+                var mid=Evol.Config.localStorage?''+id:id; // using string or int
+                this.model=this.collection.findWhere({id: mid});
                 var t=this.uiModel.fnTitle;
                 if(t && this.model){
                     if(_.isString(t)){
