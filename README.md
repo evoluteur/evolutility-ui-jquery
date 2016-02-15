@@ -69,8 +69,8 @@ var vw = new Evol.ViewOne.Edit({
             model: myModel
         });
 ```
-### Mini (Quick Edit)
-Only shows important fields (required or showing as a column in grids). Fields are grouped in a single panel.
+### Mini
+Used for quick edits. Only shows important fields (required or showing as a column in grids). Fields are grouped in a single panel.
 
 ![Mini](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-mini.gif)
 ```javascript
