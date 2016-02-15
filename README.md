@@ -3,17 +3,19 @@
 Evolutility provides a set of generic Backbone Views to browse, edit, filter, export and chart Backbone models and collections of different structures.
 With it you can make web applications by configuring views with metadata instead of hand-coding templates, Javascript and CSS.
 
+This version of Evolutility uses your browser localstorage to store its data. The server-side for REST is a work in progress at [Evolutility-server](https://github.com/evoluteur/evolutility-server) using Node.js and Postgres. 
+
 ## Demo apps
 
+With Evolutility, a single UI-model defines a full single page applications (SPA) to browse, edit, filter and export a Backbone.js model or collection.
+
+Try it now: Download Evolutility.JS, make modification to the demo UI-models by adding and modifying fields and panels and see the demo apps become your apps.
+
+Sample Single Page Apps made with Evolutility: 
 [To Do list](http://evoluteur.github.io/evolutility/demo/index.html#todo/list),
 [AddressBook](http://evoluteur.github.io/evolutility/demo/index.html#contact/list),
 [Wine Cellar](http://evoluteur.github.io/evolutility/demo/index.html#winecellar/list),
 [Graphic Novels](http://evoluteur.github.io/evolutility/demo/index.html#comics/cards).
-
-These demos use the browser local storage to store data. 
-
-I'm still working on making Evolutility work with REST. 
-I started a generic CRUD server [Evolutility-server](https://github.com/evoluteur/evolutility-server) which shares models as Evolutility UI. 
 
 ## Installation
 
@@ -36,9 +38,9 @@ Evolutility's views have a Backbone model (to define the data) and also a UI-mod
 All views for a Backbone model and collection share a single UI-Model which defines of all UI elements across views in a simple declarative way.
 
 Evolutility provides 3 types of view
-* Views for a model: Browse, Edit, Mini (quick edit), JSON.
-* Views for a collection: List, Cards, Bubbles, Charts.
-* Views for actions on a model or collection: Export, Filter.
+* Views for a model: [Browse](#browse), [Edit](#edit), [Mini (quick edit)](#mini), [JSON](#json).
+* Views for a collection: [List](#list), [Cards](#cards), [Bubbles](#bubbles), [Charts](#charts).
+* Views for actions on a model or collection: [Filter](#filter), [Export](#export), [Import](#import).
 
 A large part of the API (methods, options and events) is common to all views. Some views have additional API.
 
@@ -46,7 +48,7 @@ A large part of the API (methods, options and events) is common to all views. So
 ### Browse
 Shows all fields for viewing (read only). Fields are grouped in panels and tabs.
 
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-browse.gif)
+![Browse](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-browse.gif)
 ```javascript
 var vw = new Evol.ViewOne.Browse({
             el: myElement,
@@ -59,7 +61,7 @@ This view shows all fields for edition to create or update models.
 It automatically performs validation based on the UI-model and supports the Master-Details pattern (nested collections).
 Fields are grouped in panels and tabs.
 
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-edit.gif)
+![Edit](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-edit.gif)
 ```javascript
 var vw = new Evol.ViewOne.Edit({
             el: myElement,
@@ -70,7 +72,7 @@ var vw = new Evol.ViewOne.Edit({
 ### Mini (Quick Edit)
 Only shows important fields (required or showing as a column in grids). Fields are grouped in a single panel.
 
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-mini.gif)
+![Mini](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-mini.gif)
 ```javascript
 var vw = new Evol.ViewOne.Mini({
             el: myElement,
@@ -81,7 +83,7 @@ var vw = new Evol.ViewOne.Mini({
 ### JSON
 JSON representation of the data.
 
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-json.gif)
+![JSON](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/one-json.gif)
 ```javascript
 var vw = new Evol.ViewOne.JSON({
             el: myElement,
@@ -94,7 +96,7 @@ var vw = new Evol.ViewOne.JSON({
 ### List
 Gives a tabular view of a collection with paging.
 
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-list.gif)
+![List](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-list.gif)
 ```javascript
 var vw = new Evol.ViewMany.List({
             el: myElement,
@@ -105,7 +107,7 @@ var vw = new Evol.ViewMany.List({
 ### Cards
 Shows records side by side as cards.
 
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-cards.gif)
+![Cards](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-cards.gif)
 ```javascript
 var vw = new Evol.ViewMany.Cards({
             el: myElement,
@@ -117,7 +119,7 @@ var vw = new Evol.ViewMany.Cards({
 The "Bubbles" view displays the data as bubbles with controls to group them and set their color and size (this view uses D3.js). 
     A tooltip with the Card view of the item show on mouse over.
 
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-bubbles.gif)
+![Bubbles](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-bubbles.gif)
 ```javascript
 var vw = new Evol.ViewMany.Bubbles({
             el: myElement,
@@ -128,7 +130,7 @@ var vw = new Evol.ViewMany.Bubbles({
 ### Charts
 Draws charts about the collection.
 
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-charts.gif)
+![Charts](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/many-charts.gif)
 ```javascript
 var vw = new Evol.ViewMany.Charts({
             el: myElement,
@@ -139,10 +141,20 @@ var vw = new Evol.ViewMany.Charts({
 
 ## Views for Actions
 Backbone Views for actions on a collection or a model.
+### Filter
+View used to build a structured query to filter a collection.
+
+![Filter](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/action-filter.gif)
+```javascript
+var vw = new Evol.ViewAction.Filter({
+            el: myElement,
+            uiModel: myUIModel
+        });
+```
 ### Export
 View to define export options and preview the collection export in different data formats (CSV, TAB, HTML, XML, SQL and JSON).
 
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/action-export.gif)
+![Export](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/action-export.gif)
 ```javascript
 var vw = new Evol.ViewAction.Export({
             el: myElement,
@@ -150,20 +162,18 @@ var vw = new Evol.ViewAction.Export({
             collection: myCollection
         });
 ```
-### Filter
-View used to build a structured query to filter a collection.
+### Import
+View to import data from a CSVor JSON file. It is a work in progress.
 
-![screenshot 1](https://raw.githubusercontent.com/evoluteur/evolutility/master/doc/screenshots/action-filter.gif)
 ```javascript
-var vw = new Evol.ViewAction.Filter({
+var vw = new Evol.ViewAction.Import({
             el: myElement,
-            uiModel: myUIModel
+            uiModel: myUIModel,
+            collection: myCollection
         });
 ```
 
 [Live demo](http://evoluteur.github.io/evolutility/index.html) of these views.
-
-More Views will be added in the future (thinking of Summary, Import, Mass update, Group, Dashboard, Report, PDF, Auto-documentation and specs...).
 
 
 ## UI-model
@@ -291,21 +301,17 @@ UI-Models for the demo apps:
 [Wine Cellar](http://github.com/evoluteur/evolutility/blob/master/ui-models/winecellar.js),
 [Graphic Novels](http://github.com/evoluteur/evolutility/blob/master/ui-models/comics.js).
 
-With Evolutility, a single UI-model defines a full single page applications (SPA) to view, edit, filter and export a Backbone.js model or collection.
-
-Try it now: Download Evolutility.JS, make modification to the demo UI-models by adding and modifying fields and panels and see the demo apps become your apps.
-
 ## Stack and dependencies
 
 Javascript, HTML5, CSS3,
-[Backbone.js] (http://backbonejs.org),
-[Underscore.js] (http://underscorejs.org/),
-[jQuery] (http://jquery.com),
-[D3.js] (http://d3js.org),
-[Bootstrap] (http://getbootstrap.com/),
-[Bootstrap-datepicker] (http://eternicode.github.io/bootstrap-datepicker/),
-[Select2] (http://ivaynberg.github.io/select2/),
-[Toastr] (https://github.com/CodeSeven/toastr).
+[Backbone.js](http://backbonejs.org),
+[Underscore.js](http://underscorejs.org/),
+[jQuery](http://jquery.com),
+[D3.js](http://d3js.org),
+[Bootstrap](http://getbootstrap.com/),
+[Bootstrap-datepicker](http://eternicode.github.io/bootstrap-datepicker/),
+[Select2](http://ivaynberg.github.io/select2/),
+[Toastr](https://github.com/CodeSeven/toastr).
 
 Note: For convenience, all dependencies are minified together in a single file "dependencies.min.js". The dependencies list is specified in "Gruntfile.js".
 
@@ -315,7 +321,7 @@ The (beginning of a) [documentation](http://evoluteur.github.io/evolutility/doc/
 
 ## Previous incarnation
 
-Evolutility.js is a re-write of [Evolutility] (http://www.evolutility.org) generic CRUD UI for ASP.net.
+Evolutility.js is a re-write of [Evolutility](http://www.evolutility.org) generic CRUD UI for ASP.net.
 
 
 ## License
