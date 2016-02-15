@@ -7,10 +7,6 @@ This version of Evolutility uses your browser localstorage to store its data. Th
 
 ## Demo apps
 
-With Evolutility, a single UI-model defines a full single page applications (SPA) to browse, edit, filter and export a Backbone.js model or collection.
-
-Try it now: Download Evolutility.JS, make modification to the demo UI-models by adding and modifying fields and panels and see the demo apps become your apps.
-
 Sample Single Page Apps made with Evolutility: 
 [To Do list](http://evoluteur.github.io/evolutility/demo/index.html#todo/list),
 [AddressBook](http://evoluteur.github.io/evolutility/demo/index.html#contact/list),
@@ -181,6 +177,8 @@ var vw = new Evol.ViewAction.Import({
 Views are not defined in templates but configured with a UI-model using a [vocabulary](http://evoluteur.github.io/evolutility/doc/ui-model.html) with words like "field", "panel" and "tab" rather than "INPUT" and "DIV" to describe UI elements.
 
 Here is the UI-model used to configure all views for the ["Graphic Novels" app demo](http://evoluteur.github.io/evolutility/demo/index.html#comics/cards):
+
+Try it now: Download Evolutility.JS, make modification to the demo UI-models by adding and modifying fields and panels and see the demo apps become your apps.
 
 ```javascript
 
