@@ -545,7 +545,7 @@ return {
         },
         // -- start w/
         'sw': function(fv, cv){
-            return fv.toLocaleLowerCase().indexOf(cv)===0;
+            return fv.substring(0, cv.length).toLocaleLowerCase()===cv;
         },
         // -- contains
         'ct': function(fv, cv){
