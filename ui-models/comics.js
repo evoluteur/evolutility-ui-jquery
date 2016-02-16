@@ -12,7 +12,7 @@ uiModels.comics = {
         if(m){
             var hNb=m.get('have_nb'),
                 sNb=m.get('serie_nb');
-            return (hNb==sNb)?hNb:hNb+'/'+sNb;
+            return (hNb==sNb)?hNb:(hNb||'-')+'/'+(sNb||'-');
         }
         return '';
     },
