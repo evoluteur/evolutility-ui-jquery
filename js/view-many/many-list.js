@@ -81,13 +81,15 @@ Evol.ViewMany.List = Evol.View_Many.extend({
                 v = Evol.Dico.fieldLink(null, f, v, icon, !link, route?route+model.id:null);
                 // Item badge
                 if(bf){
-                    v+='<span class="badge badge-list">';
+                    var badgeText;
                     if(_.isFunction(bf)){
-                        v+=bf(model);
+                       badgeText=bf(model)||'';
                     }else if(_.isString(bf)){
-                        v+=model.escape(bf);
+                        badgeText=model.escape(bf)||'';
                     }
-                    v+='</span>';
+                    if(badgeText){
+                        v+='<span class="badge badge-list">'+badgeText+'</span>';
+                    }
                 }
             }
             var css=f.css || '';
