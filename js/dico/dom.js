@@ -94,7 +94,7 @@ Evol.DOM = {
         },
 
         date: function (id, value) {
-            return this.myType('date', id, value);
+            return this.myType('date', id, (value||'').substring(0, 10));
             //+'&nbsp;<a href="javascript:ShowDatePicker(\'', id, '\');" class="ico Calendar"></a></nobr>'
         },
         dateTime: function (id, value) {

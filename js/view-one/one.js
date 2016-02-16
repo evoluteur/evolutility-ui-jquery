@@ -289,6 +289,9 @@ return Backbone.View.extend({
                     return fv;
                 }
                 return obj;
+            }else if(f.type===fts.date){
+                var v=eDico.getFieldVal(f, this.$field(f.id));
+                return v.length===10?v+'T08:00:00.000Z':v;
             }else{
                 return eDico.getFieldVal(f, this.$field(f.id));
             }
@@ -767,7 +770,7 @@ return Backbone.View.extend({
                     scInvalid = 0;
                 _.each(scData, function(rowData, idx){
                     _.each(sc.elements, function(f){
-                        if(that.validateField(f, rowData[f.id])){
+                        if(that.validateField(f, rowData[f.id].substring(0,10))){
                             trs.eq(idx).find('#'+f.id).parent().addClass('has-error');
                             scInvalid++;
                         }
