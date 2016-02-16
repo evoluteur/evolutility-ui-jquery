@@ -1,5 +1,5 @@
 /*!
-   evolutility 1.1.1 
+   evolutility 1.1.2 
    (c) 2016 Olivier Giulieri 
    http://evoluteur.github.io/evolutility/  
 */
@@ -703,7 +703,7 @@ Evol.DOM = {
         },
 
         date: function (id, value) {
-            return this.myType('date', id, value);
+            return this.myType('date', id, (value||'').substring(0, 10));
             //+'&nbsp;<a href="javascript:ShowDatePicker(\'', id, '\');" class="ico Calendar"></a></nobr>'
         },
         dateTime: function (id, value) {
@@ -1359,6 +1359,12 @@ return {
                     return '';
                 }
                 break;
+            case fts.date:
+                var d=$f.val();
+                if(d.length===10){
+                    d+='T08:00:00.000Z';
+                }
+                return d;
             default:
                 return $f.val();
         }
@@ -1618,7 +1624,7 @@ return {
         },
         // -- start w/
         'sw': function(fv, cv){
-            return fv.toLocaleLowerCase().indexOf(cv)===0;
+            return fv.substring(0, cv.length).toLocaleLowerCase()===cv;
         },
         // -- contains
         'ct': function(fv, cv){
@@ -2972,13 +2978,15 @@ Evol.ViewMany.List = Evol.View_Many.extend({
                 v = Evol.Dico.fieldLink(null, f, v, icon, !link, route?route+model.id:null);
                 // Item badge
                 if(bf){
-                    v+='<span class="badge badge-list">';
+                    var badgeText;
                     if(_.isFunction(bf)){
-                        v+=bf(model);
+                       badgeText=bf(model)||'';
                     }else if(_.isString(bf)){
-                        v+=model.escape(bf);
+                        badgeText=model.escape(bf)||'';
                     }
-                    v+='</span>';
+                    if(badgeText){
+                        v+='<span class="badge badge-list">'+badgeText+'</span>';
+                    }
                 }
             }
             var css=f.css || '';
@@ -3345,6 +3353,9 @@ return Backbone.View.extend({
                     return fv;
                 }
                 return obj;
+            }else if(f.type===fts.date){
+                var v=eDico.getFieldVal(f, this.$field(f.id));
+                return v.length===10?v+'T08:00:00.000Z':v;
             }else{
                 return eDico.getFieldVal(f, this.$field(f.id));
             }
@@ -3823,7 +3834,7 @@ return Backbone.View.extend({
                     scInvalid = 0;
                 _.each(scData, function(rowData, idx){
                     _.each(sc.elements, function(f){
-                        if(that.validateField(f, rowData[f.id])){
+                        if(that.validateField(f, rowData[f.id].substring(0,10))){
                             trs.eq(idx).find('#'+f.id).parent().addClass('has-error');
                             scInvalid++;
                         }
@@ -5300,6 +5311,7 @@ return Backbone.View.extend({
                     filter.remove();
                     that._triggerChange();
                 });
+                that._removeEditor();
             }
         });
         return this;
@@ -6134,16 +6146,16 @@ return Backbone.View.extend({
             ],
             views: [
                 // -- views ONE ---
-                {id:'browse', label: i18nTool.bBrowse, icon:'eye-open',n:'1'},// // ReadOnly
-                {id:'edit', label: i18nTool.bEdit, icon:'edit',n:'1', readonly:false},// // All Fields for editing
-                {id:'mini', label: i18nTool.bMini, icon:'th-large',n:'1', readonly:false},// // Important Fields only
+                {id:'browse', label: i18nTool.bBrowse, icon:'eye-open', n:'1'},// // ReadOnly
+                {id:'edit', label: i18nTool.bEdit, icon:'edit', n:'1', readonly:false},// // All Fields for editing
+                {id:'mini', label: i18nTool.bMini, icon:'th-large', n:'1', readonly:false},// // Important Fields only
                 //{id:'wiz',label: i18nTool.bWizard, icon:'arrow-right',n:'1'},
-                {id:'json', label: i18nTool.bJSON, icon:'barcode',n:'1', readonly:false},
+                {id:'json', label: i18nTool.bJSON, icon:'barcode', n:'1', readonly:false},
                 // -- views MANY ---
-                {id:'list', label: i18nTool.bList, icon:'th-list',n:'n'},
-                {id:'cards', label: i18nTool.bCards, icon:'th-large',n:'n'},
-                {id:'bubbles', label: i18nTool.bBubbles, icon:'adjust',n:'n'},
-                {id:'charts', label: i18nTool.bCharts, icon:'stats',n:'n'}
+                {id:'list', label: i18nTool.bList, icon:'th-list', n:'n'},
+                {id:'cards', label: i18nTool.bCards, icon:'th-large', n:'n'},
+                {id:'bubbles', label: i18nTool.bBubbles, icon:'adjust', n:'n'},
+                {id:'charts', label: i18nTool.bCharts, icon:'stats', n:'n'}
             ],
             search: true
         }
@@ -6697,29 +6709,28 @@ return Backbone.View.extend({
 
         if(msgs.length===0){
             var entityName=this.uiModel.name;
-            if(_.isUndefined(this.model) || (this.model && this.model.isNew())){
-                var collec=this.collection;
-                if(collec){
-                    collec.create(this.getData(true), {
+            if(_.isUndefined(this.model) || (this.model && this.model.isNew())){ // CREATE
+                if(this.collection){
+                    this.collection.create(this.getData(true), {
                         success: function(m){
                             fnSuccess(m);
-                            //that.collection.set(m, {remove:false});
+                            that.setRoute(m.id, false);
                             that.setMessage(i18n.getLabel('saved', Evol.Format.capitalize(entityName)), i18n.getLabel('msg.added', entityName, _.escape(vw.getTitle())), 'success');
                         },
                         error:function(m, err){
-                            alert('error in "saveItem"');
+                            alert('Error in "saveItem"');
                         }
                     });
                     this.mode='edit';
                 }else{
                     alert('Can\'t save record b/c no collection is specified.'); //TODO use bootstrap modal
                 }
-            }else{
+            }else{ // UPDATE
                 // TODO fix bug w/ insert when filter applied => dup record
                 var updatedModel = this.getData(true);
                 this.model.set(updatedModel);
                 this.model.save(this.model.changedAttributes(), {
-                    patch: !this.model.isNew() && !Evol.Config.localStorage,
+                    patch: !Evol.Config.localStorage,
                     success: function(m){
                         fnSuccess(m);
                         that.collection.set(m, {remove:false});
@@ -6759,7 +6770,9 @@ return Backbone.View.extend({
 
         if(id || this.curView.cardinality==='1'){
             if(id){
-                this.setModelById(id, true);
+                //this.setModelById(id, true);
+                var mid=Evol.Config.localStorage?''+id:id; // using string or int
+                this.model=this.collection.findWhere({id: mid});
                 var t=this.uiModel.fnTitle;
                 if(t && this.model){
                     if(_.isString(t)){
