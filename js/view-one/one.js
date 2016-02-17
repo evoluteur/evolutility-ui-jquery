@@ -637,13 +637,19 @@ return Backbone.View.extend({
 
     _renderPanelList: function (h, p, mode) {
         var isEditable = p.readonly?false:(mode!=='browse'),
-            vMode=isEditable?mode:'browse';
+            vMode=isEditable?mode:'browse',
+            fts=eDef.fieldTypes;
 
         h.push('<div style="width:'+p.width+'%" class="evol-pnl" data-pid="'+p.id+'">',
             dom.panelBegin(p, this.style, true),
             '<table class="table" data-mid="'+(p.attribute || p.id)+'"><thead><tr>');
         _.each(p.elements, function (elem) {
-            h.push('<th>'+elem.label+((isEditable && elem.required)?dom.html.required:'')+'</th>');
+            if(elem.type===fts.pix){
+                h.push('<th class="evo-col-pix">');
+            }else{
+                h.push('<th>');
+            }
+            h.push(elem.label+((isEditable && elem.required)?dom.html.required:'')+'</th>');
         });
         if(vMode==='edit'){
             h.push('<th></th>');
