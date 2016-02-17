@@ -2184,11 +2184,7 @@ return Backbone.View.extend({
     },
 
     setTitle: function (title){
-        var bdg=this.uiModel.fnBadge;
-        if(bdg){
-            bdg=bdg(this.model);
-        }
-        return eDico.setViewTitle(this, title||this.getTitle(), bdg);
+        return eDico.setViewTitle(this, title||this.getTitle());
     },
 
     getTitle: function () {
