@@ -342,8 +342,8 @@ return Backbone.View.extend({
                                     fOption(fOps.sNotEqual, evoLang.sNotOn);
                             }
                             h+=fOption(fOps.sGreater, evoLang.sAfter)+
-                                fOption(fOps.sSmaller, evoLang.sBefore)+
-                                fOption(fOps.sBetween, evoLang.sBetween);
+                                fOption(fOps.sSmaller, evoLang.sBefore);//+
+                                //fOption(fOps.sBetween, evoLang.sBetween 
                             break;
                         case fts.int:
                         case fts.dec:
