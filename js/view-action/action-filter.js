@@ -78,13 +78,13 @@ return Backbone.View.extend({
             h='';
 
         h+=dom.html.buttonClose+'<div class="evo-zfilters"></div>'+
-            '<a class="evo-bNew btn btn-primary" href="javascript:void(0)">'+evoLang.bNewCond+'</a>';
+            '<a class="evo-bNew btn btn-primary btn-group-sm glyphicon glyphicon-plus" href="javascript:void(0)"></a>';// '+evoLang.bNewCond+'
         if(this.submitButton){
-            h+='<a class="evo-bSubmit btn btn-primary" href="javascript:void(0)">'+evoLang.bSubmit+'</a>';
+            h+='<a class="evo-bSubmit btn btn-primary glyphicon glyphicon-ok" href="javascript:void(0)"></a>';// '+evoLang.bSubmit+'
         }
         h+='<div class="evo-editFilter"></div>'+
-            '<a class="evo-bAdd btn btn-primary" style="display:none;" href="javascript:void(0)">'+evoLang.bAddCond+'</a>'+
-            '<a class="evo-bDel btn btn-default" style="display:none;" href="javascript:void(0)">'+evoLang.bCancel+'</a>';
+            '<a class="evo-bAdd btn btn-primary glyphicon glyphicon-ok" style="display:none;" href="javascript:void(0)"></a>'+// '+evoLang.bAddCond+'
+            '<a class="evo-bDel btn btn-default glyphicon glyphicon-remove" style="display:none;" href="javascript:void(0)"></a>';// '+evoLang.bCancel+'
         e.html(h);
         this._step=0;
         if(this.submitReady){
