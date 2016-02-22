@@ -440,7 +440,7 @@ return Backbone.View.extend({
                             h+=f.id+'="';
                             if(f.type===fts.text || f.type===fts.textml){
                                 fv=m.get(f.id);
-                                if(!_.isArray(fv) && !_.isUndefined(fv)){
+                                if(!_.isArray(fv) && !_.isUndefined(fv) && fv!==''){
                                     h+=fv.replace(/"/g, '\\"');
                                 }
                             }else{
