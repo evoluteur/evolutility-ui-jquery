@@ -180,8 +180,8 @@ return Backbone.View.extend({
             options = params.options,
             maxItem = this.sampleMaxSize-1;
 
-        if(this.model && this.model.collection){
-            var data = this.model.collection.models,
+        if(this.collection || (this.model && this.model.collection)){
+            var data = this.collection ? this.collection.models : this.model.collection.models,
                 fldsDomHash = {};
 
             _.each(params.fields, function(fid){

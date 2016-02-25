@@ -119,8 +119,8 @@ return Backbone.View.extend({
     },
 
     render: function () {
-        var models = this.collection.models;
-        if (this.collection.length) {
+        var models = this.collection ? this.collection.models : null;
+        if (this.collection && this.collection.length) {
             models = eDico.filterModels(models, this._filter);
             this._render(models);
         } else {

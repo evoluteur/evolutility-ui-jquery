@@ -45,7 +45,7 @@ Evol.DOM = {
         },
         text: function (id, value, fd, css) {
             var h = '<input type="text" id="'+id;
-            if(value && value.indexOf('"')>-1){
+            if(value && _.isString(value)){
                 value=value.replace(/"/g,'\"');
             }
             h+='" value="'+value;
