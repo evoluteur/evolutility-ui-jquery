@@ -1,11 +1,12 @@
 var uiModels = uiModels || {};
-uiModels.test_data = [{
+uiModels.test_data = [
+{
   "name": "Test 1",
-  "text": "hello",
+  "text1": "hello",
   "text3": "world",
-  "lov": "Z",
+  "lov1": "Z",
   "lov3": "P",
-  "list": [
+  "list1": [
     "E"
   ],
   "list3": [
@@ -13,42 +14,51 @@ uiModels.test_data = [{
     "P",
     "M"
   ],
-  "textmultiline": "html test <b>BOLD</b>",
+  "lovicon1": "red",
+  "lovicon3": "white",
+  "textmultiline1": "html test <b>BOLD</b>",
   "textmultiline3": "fdfd",
-  "html": "html test <b>BOLD</b>",
+  "html1": "html test <b>BOLD</b>",
   "html3": "fdfd",
-  "date": "2015-04-16",
+  "date1": "2015-04-16",
   "date3": "2015-04-24",
-  "time": "00:15",
+  "time1": "00:15",
   "time3": "01:45",
-  "datetime": "2015-04-16T14:22",
+  "datetime1": "2015-04-16T14:22",
   "datetime3": "2015-04-15T15:30",
-  "integer": 2,
+  "integer1": 2,
   "integer3": 3,
-  "decimal": 2.4,
+  "decimal1": 2.4,
   "decimal3": 3.14,
-  "money": 2,
+  "money1": 2,
   "money3": 9.99,
-  "boolean": true,
+  "boolean1": true,
   "boolean3": false,
-  "email": "dsds@dffd.com",
+  "email1": "dsds@dffd.com",
   "email3": "aaa@bbb.edu",
-  "url": "http://google.com",
+  "url1": "http://google.com",
   "url3": "",
-  "image": "../pix/todo.gif",
+  "image1": "../pix/todo.gif",
   "image3": "",
-  "color": "#6aa895",
+  "color1": "#6aa895",
   "color3": "#000000",
-  "hidden": "hf1",
-  "hidden3": "hf2"
+  "hidden1": "hf1",
+  "hidden3": "hf2",
+  "json1": {
+    "a": 1
+  },
+  "json3": {
+    "a": 3,
+    "b": 5
+  }
 },
 {
   "name": "Test 2",
-  "text": "ggg",
+  "text1": "ggg",
   "text3": "",
-  "lov": "E",
+  "lov1": "E",
   "lov3": "T",
-  "list": [
+  "list1": [
     "Z",
     "T",
     "G"
@@ -57,32 +67,44 @@ uiModels.test_data = [{
     "h",
     "k"
   ],
-  "textmultiline": "gg",
+  "lovicon1": "red",
+  "lovicon3": "white",
+  "textmultiline1": "gg",
   "textmultiline3": "",
-  "html": "gg",
+  "html1": "gg",
   "html3": "",
-  "date": "2015-04-22",
+  "date1": "2015-04-22",
   "date3": "2015-04-01",
-  "time": "14:22",
+  "time1": "14:22",
   "time3": "05:05",
-  "datetime": "2015-04-16T02:03",
+  "datetime1": "2015-04-16T02:03",
   "datetime3": "2015-04-22T05:06",
-  "integer": 555,
+  "integer1": 555,
   "integer3": 3,
-  "decimal": 45.45,
+  "decimal1": 45.45,
   "decimal3": 4.12,
-  "money": 54.99,
+  "money1": 54.99,
   "money3": 100,
-  "boolean": false,
+  "boolean1": false,
   "boolean3": false,
-  "email": "gfgf@gfgf.com",
+  "email1": "gfgf@gfgf.com",
   "email3": "",
-  "url": "http://evolutility.com",
+  "url1": "http://evolutility.com",
   "url3": "",
-  "image": "../pix/contact.gif",
+  "image1": "../pix/contact.gif",
   "image3": "",
-  "color": "#2c84bb",
+  "color1": "#2c84bb",
   "color3": "#000000",
-  "hidden": "h1",
-  "hidden3": "h2"
+  "hidden1": "h1",
+  "hidden3": "h2",
+  "json1": {
+    "a": 5
+  },
+  "json3": {
+    "a": 4
+  },
 }];
+
+if(typeof module === "object" && typeof module.exports === "object"){
+    module.exports = uiModels.test_data;
+}
