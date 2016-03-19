@@ -90,9 +90,10 @@ uiModels.contact_data = [{
     firstname: 'Olivier',
     company: 'Evolutility',
     city: 'San Mateo',
-    state: '',
+    state: 'CA',
+    country: 'US',
     email: 'olivier@evolutility.org',
-    web: 'http://www.evol-utility.org'
+    web: 'http://www.evolutility.org'
 }, {
     id: '8',
     lastname: 'Martin',

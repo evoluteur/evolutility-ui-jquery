@@ -72,7 +72,7 @@ uiModels.comics = {
                 },
                 {
                     id: 'finished', attribute: 'finished', type: 'boolean', width: 19, inMany: true,
-                    label: 'Finished', labelTrue:'Finished', labelFalse:'Unfinished', css:'cBlue'
+                    label: 'Finished', labelTrue:'Finished', labelFalse:'Not finished', css:'cBlue'
                 },
                 {
                     id:'amazon', label:'Amazon', type:'formula', width:62, css:'evol-ellipsis',
