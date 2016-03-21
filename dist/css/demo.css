@@ -142,7 +142,7 @@
 .evo-title2 {
   background-color: #0099cc;
   position: absolute;
-  z-index: 1001;
+  z-index: 1002;
   width: 100%;
   overflow: hidden;
 }
@@ -156,6 +156,7 @@
 @media only screen and (min-width: 900px) {
   .evo-title,
   .evo-title2 {
+    width: calc(100% - 190px);
     top: 0 !important;
     margin-left: 190px;
   }
@@ -165,7 +166,6 @@
   }
 }
 .evo-title {
-  z-index: 1005;
   top: 65px;
   padding: 20px 10px;
   min-height: 120px;
@@ -173,6 +173,7 @@
 .evo-title2 {
   top: 65px;
   padding: 5px 10px;
+  z-index: 1001;
 }
 .evo-content {
   padding: 85px 30px 30px;
@@ -462,10 +463,10 @@ h4 {
 /* demo card view*/
 [data-eid="todo"] .evol-cards-body > .panel,
 [data-eid="contact"] .evol-cards-body > .panel {
-  height: 205px !important;
+  height: 145px !important;
 }
 [data-eid="winecellar"] .evol-cards-body > div.panel {
-  height: 272px !important;
+  height: 320px !important;
 }
 [data-eid="comics"] .evol-cards-body > .panel {
   height: 500px !important;
