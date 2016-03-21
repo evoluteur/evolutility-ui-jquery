@@ -49,7 +49,7 @@
 }
 
 .evo-header{
-  position: fixed;
+  position: absolute; // fixed;
   top:0;
   left:0;
   //opacity: .9;
@@ -75,6 +75,7 @@
     }
 
   @media only screen and (min-width: @screen2) {
+  position: fixed;
     width:@width-toolbar-left;
     min-width:@width-toolbar-left;
     height:100%;
@@ -154,7 +155,7 @@
 // --- page title ---
 .evo-title,.evo-title2{
   background-color: @color-header2;
-  position: fixed;
+  position: absolute; //fixed;
   z-index: 1001; // above bootstrap dropdown
   width: 100%;
   overflow: hidden;
@@ -176,6 +177,7 @@
 }
 
 .evo-title{
+  z-index: 1005;
   top: 65px;
   padding:20px 10px;
   min-height: 120px;
