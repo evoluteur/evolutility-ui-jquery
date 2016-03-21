@@ -33,7 +33,7 @@
   color: #ed991a;
 }
 .evo-header {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   overflow: none;
@@ -53,6 +53,7 @@
 }
 @media only screen and (min-width: 900px) {
   .evo-header {
+    position: fixed;
     width: 190px;
     min-width: 190px;
     height: 100%;
@@ -140,7 +141,7 @@
 .evo-title,
 .evo-title2 {
   background-color: #0099cc;
-  position: fixed;
+  position: absolute;
   z-index: 1001;
   width: 100%;
   overflow: hidden;
@@ -164,6 +165,7 @@
   }
 }
 .evo-title {
+  z-index: 1005;
   top: 65px;
   padding: 20px 10px;
   min-height: 120px;
@@ -191,13 +193,6 @@
     margin-left: 190px;
     padding-top: 85px;
   }
-  .evo-anchor {
-    top: -65px !important;
-  }
-}
-.evo-anchor {
-  position: relative;
-  top: -140px;
 }
 .evo-page {
   min-height: 100%;
