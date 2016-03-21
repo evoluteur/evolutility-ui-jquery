@@ -16,8 +16,7 @@ Sample Single Page Apps made with Evolutility:
 
 ## Installation
 
-You can use **NPM** to install Evolutility.
-**evolutility** is available as an [npm package](https://www.npmjs.com/package/evolutility):
+You can use **NPM** to install Evolutility as an [npm package](https://www.npmjs.com/package/evolutility):
 
 ```bash
 # To get the latest stable version, use Bower from the command line.
