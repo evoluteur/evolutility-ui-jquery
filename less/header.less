@@ -156,7 +156,8 @@
 .evo-title,.evo-title2{
   background-color: @color-header2;
   position: absolute; //fixed;
-  z-index: 1001; // above bootstrap dropdown
+  z-index: 1002; // above bootstrap dropdown
+  //width: ~"calc(100% - 190px)";
   width: 100%;
   overflow: hidden;
   >h1{
@@ -166,8 +167,9 @@
     font-weight: @weight-label;
   }
   @media only screen and (min-width: @screen2) {
-      top:0 !important;
-      margin-left: @width-toolbar-left;
+    width: ~"calc(100% - 190px)";
+    top:0 !important;
+    margin-left: @width-toolbar-left;
     //background-color: white;
     >h1{
       margin-left: 0;
@@ -177,7 +179,6 @@
 }
 
 .evo-title{
-  z-index: 1005;
   top: 65px;
   padding:20px 10px;
   min-height: 120px;
@@ -185,6 +186,7 @@
 .evo-title2{
   top: 65px;
   padding:5px 10px;
+  z-index: 1001;
 }
 
 // --- content ---
