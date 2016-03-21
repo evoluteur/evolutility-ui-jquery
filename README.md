@@ -3,7 +3,8 @@
 Evolutility provides a set of generic Backbone Views to browse, edit, filter, export and chart Backbone models and collections of different structures.
 With it you can make web applications by configuring views with metadata instead of hand-coding templates, Javascript and CSS.
 
-This version of Evolutility uses your browser localstorage to store its data. The server-side for REST is a work in progress at [Evolutility-server](https://github.com/evoluteur/evolutility-server) using Node.js and Postgres. 
+This version of Evolutility uses your browser localstorage to store its data. 
+The server-side RESTful API is a work in progress at [Evolutility-server](https://github.com/evoluteur/evolutility-server) using Node.js, Express, and Postgres. 
 
 ## Demo apps
 
@@ -15,7 +16,15 @@ Sample Single Page Apps made with Evolutility:
 
 ## Installation
 
-You can use Bower to install Evolutility.
+You can use **NPM** to install Evolutility.
+**evolutility** is available as an [npm package](https://www.npmjs.com/package/evolutility):
+
+```bash
+# To get the latest stable version, use Bower from the command line.
+npm install evolutility
+```
+
+You can also use **Bower** to install Evolutility.
 
 ```bash
 # To get the latest stable version, use Bower from the command line.
@@ -25,7 +34,7 @@ bower install evolutility
 bower install evolutility#master
 ```
 
-... or download it from [GitHub](https://github.com/evoluteur/evolutility/archive/master.zip).
+... or **download** it from [GitHub](https://github.com/evoluteur/evolutility/archive/master.zip).
 
 ## Views
 
