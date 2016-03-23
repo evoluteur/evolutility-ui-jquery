@@ -3,13 +3,11 @@
 //  https://github.com/evoluteur/evolutility
 //  Copyright (c) 2016 Olivier Giulieri
 
-// todo: WILL BE REMOVED LATER FOR BOOTSTRAP
-
 /* --- header, navbar, content and footer --- */
 
 @import "less/variables";
 
-@width-toolbar-left:190px;
+@width-toolbar-left:170px;
 @width-toolbar-top:620px;
 
 // --- top navbar ---
@@ -157,7 +155,6 @@
   background-color: @color-header2;
   position: absolute; //fixed;
   z-index: 1002; // above bootstrap dropdown
-  //width: ~"calc(100% - 190px)";
   width: 100%;
   overflow: hidden;
   >h1{
@@ -167,7 +164,7 @@
     font-weight: @weight-label;
   }
   @media only screen and (min-width: @screen2) {
-    width: ~"calc(100% - 190px)";
+    width: ~"calc(100% - 170px)";
     top:0 !important;
     margin-left: @width-toolbar-left;
     //background-color: white;
