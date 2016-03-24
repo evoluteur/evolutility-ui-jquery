@@ -47,7 +47,7 @@ Evol.ViewMany.Bubbles = Evol.View_Many.extend({
                 uiModel: this.uiModel,
                 tooltip: function(d){
                     var h=[],
-                    flds=that.getFields();//(h, fields, model, icon, selectable, route, isTooltip)
+                    flds=that.getFields();
                     Evol.ViewMany.Cards.prototype.HTMLItem.call(that, h, flds, new Backbone.Model(d), null, null, null, true);
                     return h.join('');
                 }

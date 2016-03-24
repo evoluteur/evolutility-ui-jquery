@@ -69,7 +69,7 @@ Evol.ViewMany.List = Evol.View_Many.extend({
                 v = input.colorBox(f.id, model.escape(f.attribute || f.id));
             }else if(f.type===ft.formula){
                 v = input.formula(null, f, model);
-            }else if(f.type===ft.html){
+            }else if(f.type===ft.json || f.type===ft.html){
                 v = model.get(f.attribute || f.id);
                 //if(v && v.length>200){
                     //v = v.subString(0,200)+'...';

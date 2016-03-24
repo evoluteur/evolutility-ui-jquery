@@ -63,6 +63,8 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
                 v = '<a href="#'+route+model.id+'">'+
                     that._HTMLField(f, model.escape(f.attribute || f.id))+
                     '</a>';
+            }else if(f.type===fts.json){
+                v = model.get(f.attribute || f.id);
             }else{
                 v = that._HTMLField(f, model.escape(f.attribute || f.id));
             }
