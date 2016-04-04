@@ -183,6 +183,7 @@ return Backbone.View.extend({
                         case fts.url:
                         case fts.email:
                         case fts.list:
+                        case fts.lov:
                             $f.html(eDico.fieldHTML_RO(f, _.isUndefined(fv)?'':fv, Evol.hashLov, iconsPath) + ' ');
                             break;
                         case fts.formula:
