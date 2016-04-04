@@ -642,7 +642,7 @@ return Backbone.View.extend({
 
         h.push('<div style="width:'+p.width+'%" class="evol-pnl" data-pid="'+p.id+'">',
             dom.panelBegin(p, this.style, true),
-            '<table class="table" data-mid="'+(p.attribute || p.id)+'"><thead><tr>');
+            '<div class="evo-plist"><table class="table" data-mid="'+(p.attribute || p.id)+'"><thead><tr>');
         _.each(p.elements, function (elem) {
             if(elem.type===fts.pix){
                 h.push('<th class="evo-col-pix">');
@@ -656,7 +656,7 @@ return Backbone.View.extend({
         }
         h.push('</tr></thead><tbody>');
         this._renderPanelListBody(h, p, null, vMode);
-        h.push('</tbody></table>',
+        h.push('</tbody></table></div>',
             dom.panelEnd(),
             '</div>');
         return this;

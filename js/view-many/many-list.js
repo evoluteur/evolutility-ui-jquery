@@ -32,7 +32,7 @@ Evol.ViewMany.List = Evol.View_Many.extend({
             link = (this.links!==false);
 
         h+='<div class="evol-many-list">'+
-            '<table class="table table-bordered'+(link?' table-hover':'')+'"><thead><tr>';
+            '<div><table class="table table-bordered'+(link?' table-hover':'')+'"><thead><tr>';
         if(this.selectable){
             h+='<th class="list-td-sel">'+this._HTMLCheckbox('cbxAll')+'</th>';
         }
@@ -41,7 +41,7 @@ Evol.ViewMany.List = Evol.View_Many.extend({
         });
         h+='</tr></thead><tbody>'+
             this._HTMLbody(fields, pSize, this.uiModel.icon, 0, this.selectable)+
-            '</tbody></table>'+
+            '</tbody></table></div>'+
             this._HTMLpagination(0, pSize, models.length)+
             '<div class="evo-many-summary">'+this.pageSummary(this.pageIndex, pSize, models.length)+'</div>'+
             '</div>';
