@@ -1,5 +1,5 @@
 /*!
-   evolutility 1.1.2 
+   evolutility 1.1.3 
    (c) 2016 Olivier Giulieri 
    http://evoluteur.github.io/evolutility/  
 */
@@ -138,8 +138,13 @@
   flex-wrap: wrap;
 }
 .evol-pnl {
+  padding-left: 10px !important;
   box-sizing: border-box;
   flex-grow: 1;
+}
+.evol-pnl .table img {
+  max-height: 60px;
+  padding: 0;
 }
 .evol-pnl .table .evol-money {
   width: 200px;
@@ -150,14 +155,18 @@
 .evol-pnl .evol-pnl > div > fieldset {
   padding: 10px 10px 5px 2px;
 }
-.evol-pnl,
-.evol-pnl-lst {
-  padding-left: 10px !important;
+.evo-plist {
+  overflow-x: auto;
 }
-.evol-pnl .table img,
-.evol-pnl-lst .table img {
-  max-height: 60px;
-  padding: 0;
+.evo-plist input[type="date"] {
+  max-width: 160px;
+}
+.evo-plist input[type="text"],
+.evo-plist textarea {
+  min-width: 120px;
+}
+.evo-plist .table {
+  margin-bottom: 0;
 }
 .panel-heading > .panel-title {
   display: inline-block;
@@ -295,6 +304,7 @@ label {
 }
 .evo-td-plusminus {
   width: 70px;
+  min-width: 70px;
 }
 .evo-td-plusminus > div {
   float: left;
@@ -420,21 +430,30 @@ label {
 .evol-many-icon {
   margin-right: 6px !important;
 }
-.evol-many-list > .table img {
+.evol-many-list > div {
+  overflow-x: auto;
+}
+.evol-many-list > div > .table {
+  margin-bottom: 0;
+}
+.evol-many-list > div > .table textarea {
+  min-width: 200px;
+}
+.evol-many-list > div > .table img {
   max-height: 60px;
   padding: 0;
 }
-.evol-many-list > .table tr {
+.evol-many-list > div > .table tr {
   transition: all 0.3s ease;
 }
-.evol-many-list > .table td {
+.evol-many-list > div > .table td {
   position: relative;
 }
-.evol-many-list > .table th {
+.evol-many-list > div > .table th {
   font-weight: 500 !important;
   background-color: #fbfbfb;
 }
-.evol-many-list > .table th .glyphicon {
+.evol-many-list > div > .table th .glyphicon {
   display: none;
   position: absolute;
   opacity: .8;
@@ -444,10 +463,10 @@ label {
   width: 22px;
   height: 22px;
 }
-.evol-many-list > .table th:hover .glyphicon {
+.evol-many-list > div > .table th:hover .glyphicon {
   display: inline !important;
 }
-.evol-many-list > .table .evol-ellipsis {
+.evol-many-list > div > .table .evol-ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -494,6 +513,9 @@ label {
 }
 .list-td-sel {
   width: 30px;
+}
+.evo-col-pix {
+  width: 100px;
 }
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 html {
@@ -607,6 +629,11 @@ text.label {
   text-align: center;
   padding: 10px 20px 30px;
 }
+/*
+.evo-chart-table{
+	overflow-y: auto;
+}
+*/
 .evol-xpt {
   margin-bottom: 10px;
 }
@@ -808,7 +835,6 @@ text.label {
 }
 .evo-filters.panel > a {
   margin: 1px 6px 6px 1px;
-  padding-right: 6px;
 }
 .evo-filters > .close {
   margin-right: 4px;

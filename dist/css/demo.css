@@ -54,8 +54,8 @@
 @media only screen and (min-width: 900px) {
   .evo-header {
     position: fixed;
-    width: 190px;
-    min-width: 190px;
+    width: 170px;
+    min-width: 170px;
     height: 100%;
   }
 }
@@ -72,11 +72,14 @@
     flex-direction: row;
   }
 }
+.evo-head-links > div,
+.evo-head-links2 > div {
+  margin-left: 10px;
+}
 .evo-head-links > li,
 .evo-head-links2 > li {
   display: inline;
   padding: 0 10px;
-  text-align: left;
 }
 .evo-head-links a,
 .evo-head-links2 a {
@@ -101,6 +104,7 @@
 }
 @media only screen and (max-width: 900px) {
   .evo-link2 {
+    margin-left: 30px;
     order: 100;
     width: 100%;
   }
@@ -156,9 +160,9 @@
 @media only screen and (min-width: 900px) {
   .evo-title,
   .evo-title2 {
-    width: calc(100% - 190px);
+    width: calc(100% - 170px);
     top: 0 !important;
-    margin-left: 190px;
+    margin-left: 170px;
   }
   .evo-title > h1,
   .evo-title2 > h1 {
@@ -181,7 +185,7 @@
 }
 @media only screen and (min-width: 900px) {
   .evo-content {
-    margin-left: 190px;
+    margin-left: 170px;
     padding-top: 10px;
   }
 }
@@ -191,7 +195,7 @@
 }
 @media only screen and (min-width: 900px) {
   .evo-content2 {
-    margin-left: 190px;
+    margin-left: 170px;
     padding-top: 85px;
   }
 }
