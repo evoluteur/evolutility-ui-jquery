@@ -33,13 +33,22 @@
 
 .evo-plist{
   overflow-x: auto;
-  input[type="date"]{
-    max-width: 160px;
+  input{
+    &[type="date"]{
+      max-width: 160px;
+    }
+    &[type="number"]{
+      min-width: 100px;
+    } 
+    &[type="text"], 
+    textarea{
+      min-width: 120px;
+    }
   }
-  input[type="text"], 
-  textarea{
+  select{
     min-width: 120px;
   }
+
   .table{
     margin-bottom: 0;
   }
