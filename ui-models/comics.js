@@ -23,7 +23,11 @@ uiModels.comics = {
                 {
                     id: 'title', attribute: 'title', type: 'text', label: 'Title', required: true, 
                     maxLength: 255,
-                    width: 62, inMany: true
+                    width: 100, inMany: true
+                },
+                {
+                    id: 'authors', attribute: 'authors', type: 'text', width: 62, inMany: true,
+                    label: 'Authors'
                 },
                 {
                     id: 'genre', attribute: 'genre', type: 'lov', label: 'Genre', width: 38, inMany: true,
@@ -41,17 +45,6 @@ uiModels.comics = {
                         {id: 'sf', text: 'Science-fiction'},
                         {id: 'sh', text: 'Super Heros'},
                         {id: 'wwest', text: 'Western'} 
-                    ]
-                },
-                {
-                    id: 'authors', attribute: 'authors', type: 'text', width: 62, inMany: true,
-                    label: 'Authors'
-                },
-                {
-                    id: 'language', attribute: 'language', type: 'lov', label: 'Language', width: 38, inMany: true,
-                    list: [
-                        {id: 'FR', text: 'French', icon:'flag_fr.gif'},
-                        {id: 'EN', text: 'American', icon:'flag_us.gif'}
                     ]
                 },
                 {
@@ -74,8 +67,16 @@ uiModels.comics = {
                     id: 'finished', attribute: 'finished', type: 'boolean', width: 19, inMany: true,
                     label: 'Finished', labelTrue:'Finished', labelFalse:'Not finished', css:'cBlue'
                 },
+
                 {
-                    id:'amazon', label:'Amazon', type:'formula', width:62, css:'evol-ellipsis',
+                    id: 'language', attribute: 'language', type: 'lov', label: 'Language', width: 30, inMany: true,
+                    list: [
+                        {id: 'FR', text: 'French', icon:'flag_fr.gif'},
+                        {id: 'EN', text: 'American', icon:'flag_us.gif'}
+                    ]
+                },
+                {
+                    id:'amazon', label:'Amazon', type:'formula', width:32, css:'evol-ellipsis',
                     formula:function(m){
                         if(m){
                             var urlData=m.get('title')+' '+(m.get('authors')||''),

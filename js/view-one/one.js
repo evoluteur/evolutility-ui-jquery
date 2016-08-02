@@ -162,9 +162,9 @@ return Backbone.View.extend({
             _.each(this.getFields(), function (f) {
                 $f=that.$field(f.id);
                 if(isModel){
-                    fv=model.get(f.attribute || f.id);
+                    fv=model.get(f.attribute || f.id)||'';
                 }else{
-                    fv=model[f.attribute || f.id];
+                    fv=model[f.attribute || f.id]||'';
                 }
                 if(f.readonly){
                     switch(f.type){
@@ -785,7 +785,7 @@ return Backbone.View.extend({
                     scInvalid = 0;
                 _.each(scData, function(rowData, idx){
                     _.each(sc.elements, function(f){
-                        if(that.validateField(f, f.type==='date' ? rowData[f.id].substring(0,10) : rowData[f.id])){
+                        if(that.validateField(f, (f.type==='date') ? (rowData[f.id]?rowData[f.id].substring(0,10):'') : rowData[f.id])){
                             trs.eq(idx).find('#'+f.id).parent().addClass('has-error');
                             scInvalid++;
                         }

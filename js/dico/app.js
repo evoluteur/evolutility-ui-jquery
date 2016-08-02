@@ -163,7 +163,7 @@ Evol.App = Backbone.View.extend({
 
         if(Evol.Config){
             if(Evol.Config.localStorage){
-                var lc = new Backbone.LocalStorage(this.prefix+uiModel.id);
+                var lc = new Backbone.LocalStorage(this.prefix+(uiModel.table || uiModel.id));
                 M = Backbone.Model.extend({
                     localStorage: lc
                 });
