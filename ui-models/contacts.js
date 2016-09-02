@@ -419,19 +419,9 @@ uiModels.contact = {
                     list: contact_LOVs.categories
                 },
                 {
-                    type: 'text', id: 'custom1', attribute: 'custom1', 
-                     label: 'Custom 1', maxLength: 250,
-                    width: 100
-                },
-                {
-                    type: 'text', id: 'custom2', attribute: 'custom2', 
-                     label: 'Custom 2', maxLength: 250,
-                    width: 100
-                },
-                {
-                    type: 'text', id: 'custom3', attribute: 'custom3', 
-                     label: 'Custom 3', maxLength: 250,
-                    width: 100
+                    type: 'textmultiline', id: 'notes', attribute: 'notes', 
+                     label: 'Notes', maxLength: 250,
+                    width: 100, height:6
                 }
             ]
         }

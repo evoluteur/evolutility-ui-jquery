@@ -297,7 +297,7 @@ return Backbone.View.extend({
                     h='<select id="field" class="form-control"><option value=""></option>';
                 for (var i=0,iMax=fields.length;i<iMax;i++){
                     f=fields[i];
-                    h+=uiInput.option(f.id, f.label || f.labelList);
+                    h+=uiInput.option(f.id, f.label || f.labelList || ('('+f.id+')'));
                 }
                 h+='</select>';
                 this._fList=h;
