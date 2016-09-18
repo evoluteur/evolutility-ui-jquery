@@ -161,8 +161,14 @@
 .evo-plist input[type="date"] {
   max-width: 160px;
 }
+.evo-plist input[type="number"] {
+  min-width: 100px;
+}
 .evo-plist input[type="text"],
-.evo-plist textarea {
+.evo-plist input textarea {
+  min-width: 120px;
+}
+.evo-plist select {
   min-width: 120px;
 }
 .evo-plist .table {
@@ -203,6 +209,9 @@
   flex-grow: 1;
   padding-left: 10px !important;
   margin-bottom: 6px;
+}
+.evol-fld input[type="checkbox"] {
+  font-size: 2em;
 }
 .evol-fld > .evo-rdonly > img {
   position: relative;
@@ -432,6 +441,7 @@ label {
 }
 .evol-many-list > div {
   overflow-x: auto;
+  overflow-y: hidden;
 }
 .evol-many-list > div > .table {
   margin-bottom: 0;
@@ -467,9 +477,9 @@ label {
   display: inline !important;
 }
 .evol-many-list > div > .table .evol-ellipsis {
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
   max-width: 120px;
 }
 .evol-many-list .glyphicon.evol-last-sort {
@@ -543,6 +553,11 @@ table {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   overflow: auto;
+}
+.evol-cards-body > .panel > div > h4 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .evol-cards-body > .panel > div > label {
   vertical-align: top;
@@ -629,11 +644,6 @@ text.label {
   text-align: center;
   padding: 10px 20px 30px;
 }
-/*
-.evo-chart-table{
-	overflow-y: auto;
-}
-*/
 .evol-xpt {
   margin-bottom: 10px;
 }
