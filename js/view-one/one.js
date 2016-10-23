@@ -641,17 +641,28 @@ return Backbone.View.extend({
             vMode=isEditable?mode:'browse',
             fts=eDef.fieldTypes;
 
-        h.push('<div style="width:'+p.width+'%" class="evol-pnl" data-pid="'+p.id+'">',
-            dom.panelBegin(p, this.style, true),
-            '<div class="evo-plist"><table class="table" data-mid="'+(p.attribute || p.id)+'"><thead><tr>');
-        _.each(p.elements, function (elem) {
-            if(elem.type===fts.pix){
+        function _th(h, e){
+            if(e.type===fts.pix){
                 h.push('<th class="evo-col-pix">');
             }else{
                 h.push('<th>');
             }
-            h.push(elem.label+((isEditable && elem.required)?dom.html.required:'')+'</th>');
-        });
+            h.push(e.label+((isEditable && e.required)?dom.html.required:'')+'</th>');
+        }
+
+        h.push('<div style="width:'+p.width+'%" class="evol-pnl" data-pid="'+p.id+'">',
+            dom.panelBegin(p, this.style, true),
+            '<div class="evo-plist"><table class="table" data-mid="'+(p.attribute || p.id)+'"><thead><tr>');
+        
+        if(_.isArray(p.elements)){
+            _.each(p.elements, function (elem) {
+                _th(h, elem);
+            });
+        }else if(_.isObject(p.elements)){
+            for( var elem in p.elements){
+                _th(h, elements[elem]);
+            }
+        }
         if(vMode==='edit'){
             h.push('<th></th>');
         }

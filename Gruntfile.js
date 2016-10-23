@@ -69,13 +69,13 @@ module.exports = function (grunt) {
                 ],
                 dest: '<%= pkg.target %>/dependencies.js'
             },
-            js:{
+            js: {
                 options: {
                     banner: '<%= banner %>',
                     separator: ';\n'
                 },
                 src: [
-                    'js/dico/config.js',
+                    'js/config.js',
                     'js/i18n/EN.js',
 
                     'js/dico/def.js',
@@ -97,7 +97,9 @@ module.exports = function (grunt) {
                     'js/view-action/toolbar.js',
                     //'js/navbar.js',
 
-                    'js/dico/app.js'
+                    'js/dico/app.js',
+
+                    '!*-nogit', // NOT ! here
                 ],
                 dest: '<%= pkg.target %>/evolutility.js'
             },
