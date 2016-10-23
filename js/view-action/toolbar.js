@@ -685,7 +685,6 @@ return Backbone.View.extend({
                 var updatedModel = this.getData(true);
                 this.model.set(updatedModel);
                 this.model.save(this.model.changedAttributes(), {
-                    patch: !Evol.Config.localStorage,
                     success: function(m){
                         fnSuccess(m);
                         that.collection.set(m, {remove:false});
