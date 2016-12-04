@@ -2,7 +2,6 @@ node_modules
 bower_components
 js/dependencies.js
 dist/dependencies.js
-js/models
 *-nogit
 *-nogit.*
 

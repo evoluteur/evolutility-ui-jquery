@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: one-mini.js
+ * evolutility-ui-jquery :: one-mini.js
  *
  * View "one mini" to "quick edit" one backbone model (only showing important or required fields).
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

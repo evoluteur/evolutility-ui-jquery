@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: format.js
+ * evolutility-ui-jquery :: format.js
  *
  * Helpers for string manipulation and date formats
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

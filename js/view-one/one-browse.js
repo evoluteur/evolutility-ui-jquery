@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: one-browse.js
+ * evolutility-ui-jquery :: one-browse.js
  *
  * View "one browse" to browse one model in readonly mode.
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

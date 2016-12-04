@@ -3,9 +3,10 @@
 .evo-logo {
   float: left;
   font-size: 2em;
-  margin: 16px 80px 5px 10px;
+  margin: 10px 80px 20px 10px;
 }
 .evo-logo > a {
+  line-height: 24px;
   text-decoration: none;
   color: #ffc107 !important;
 }

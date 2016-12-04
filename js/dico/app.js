@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: app.js
+ * evolutility-ui-jquery :: app.js
  *
  * View "app" to manage the single page app for all objects/ui-models.
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

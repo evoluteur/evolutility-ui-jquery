@@ -1,8 +1,8 @@
 /*! ***************************************************************************
  *
- * evolutility :: action-export.js
+ * evolutility-ui-jquery :: action-export.js
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

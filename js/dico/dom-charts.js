@@ -1,9 +1,9 @@
 
 /*! ***************************************************************************
  *
- * evolutility :: dom-charts.js
+ * evolutility-ui-jquery :: dom-charts.js
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

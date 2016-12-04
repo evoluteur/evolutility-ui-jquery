@@ -83,7 +83,6 @@ module.exports = function (grunt) {
                     'js/dico/dom.js',
                     'js/dico/dom-*.js',
                     'js/dico/dico.js',
-                    'js/dico/d3-*.js',
 
                     'js/view-many/many.js',
                     'js/view-many/many-*.js',
@@ -101,7 +100,7 @@ module.exports = function (grunt) {
 
                     '!*-nogit', // NOT ! here
                 ],
-                dest: '<%= pkg.target %>/evolutility.js'
+                dest: '<%= pkg.target %>/evolutility-ui-jquery.js'
             },
             demo:{
                 options: {
@@ -110,14 +109,14 @@ module.exports = function (grunt) {
                     },
                 src: [
                     //"demo/demo.js",
-                    //"ui-models/todo.js",
-                    "ui-models/todo.data.js",
-                    //"ui-models/contacts.js",
-                    "ui-models/contacts.data.js",
-                    //"ui-models/winecellar.js",
-                    "ui-models/winecellar.data.js",
-                    //"ui-models/comics.js",
-                    "ui-models/comics.data.js"
+                    //"models/todo.js",
+                    "models/todo.data.js",
+                    //"models/contacts.js",
+                    "models/contacts.data.js",
+                    //"models/winecellar.js",
+                    "models/winecellar.data.js",
+                    //"models/comics.js",
+                    "models/comics.data.js"
                 ],
                 dest: 'demo/demo-data.js'
             }
@@ -169,7 +168,7 @@ module.exports = function (grunt) {
                 'js/view-action/action-*.js',
                 'js/view-action/toolbar.js',
 
-                'ui-models/*.js',
+                'models/*.js',
 
                 '../demo/demo.js',
 
@@ -188,8 +187,8 @@ module.exports = function (grunt) {
                 },
                 files: [
                     {
-                        src: '<%= pkg.target %>/evolutility.js',
-                        dest: '<%= pkg.target %>/evolutility.min.js'
+                        src: '<%= pkg.target %>/evolutility-ui-jquery.js',
+                        dest: '<%= pkg.target %>/evolutility-ui-jquery.min.js'
                     }
                 ]
             },
@@ -228,7 +227,7 @@ module.exports = function (grunt) {
                     banner: '<%= banner %>'
                 },
                 files: {
-                    "dist/css/evolutility.css": "less/evolutility.less"
+                    "dist/css/evolutility-ui-jquery.css": "less/evolutility.less"
                 }
             },
             demo: {
@@ -251,7 +250,7 @@ module.exports = function (grunt) {
                     compress: true
                 },
                 files: {
-                    "dist/css/evolutility.min.css": "less/evolutility.less"
+                    "dist/css/evolutility-ui-jquery.min.css": "less/evolutility.less"
                 }
             }
         }
@@ -270,17 +269,21 @@ module.exports = function (grunt) {
 
     grunt.registerTask('header', 'Evolutility version', function(arg1) {
         var pkg=grunt.file.readJSON('package.json');
-        console.log(
-            (new Date()).toString() + '\n' + 
-            '\n  ______          _           _ _ _   \n'+
-            ' |  ____|        | |      /| (_) (_)/|\n'+
-            ' | |____   _____ | |_   _| |_ _| |_| |_ _   _ \n'+
+        console.log('\n' + 
+            '  ______          _       _   _ _ _ _\n'+
+            ' |  ____|        | |     | | (_) (_) |\n'+
+            ' | |____   _____ | |_   _| |_ _| |_| |_ _   _\n'+
             ' |  __\\ \\ / / _ \\| | | | | __| | | | __| | | |\n'+
             ' | |___\\ V / (_) | | |_| | |_| | | | |_| |_| |\n'+
             ' |______\\_/ \\___/|_|\\__,_|\\__|_|_|_|\\__|\\__, |\n'+
-            '                                         __/ |\n'+
-            '                                        |___/   ' + 
-            arg1 + ' '+ pkg.version
+            '        | |  | |_   _|    (_)/ __ \\      __/ |\n'+
+            '  ______| |  | | | |______ _| |  | |_   |___/_ _ __ _   _\n'+
+            ' |______| |  | | | |______| | |  | | | | |/ _ \\ \'__| | | |\n'+
+            '        | |__| |_| |_     | | |__| | |_| |  __/ |  | |_| |\n'+
+            '         \\____/|_____|    | |\\___\\_\\\\__,_|\\___|_|   \\__, |\n'+
+            '                         _/ |                        __/ |\n'+
+            '                        |__/                        |___/\n\n'+
+            'Version '+pkg.version+' '+(arg1?arg1:'')+' - '+ new Date()
         );
     });
 

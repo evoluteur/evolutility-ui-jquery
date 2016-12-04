@@ -1,19 +1,19 @@
 {
-  "name": "evolutility",
-  "version": "1.1.3",
+  "name": "evolutility-ui-jquery",
+  "version": "1.2.0",
   "copyright": "(c) 2016 Olivier Giulieri",
-  "license": "AGPL-3.0",
+  "license": "MIT",
   "target": "dist",
-  "homepage": "http://evoluteur.github.io/evolutility/",
+  "homepage": "http://evoluteur.github.io/evolutility-ui-jquery/",
   "author": {
       "name": "Olivier Giulieri",
       "url": "https://github.com/evoluteur"
   },
   "repository": {
       "type": "git",
-      "url": "git://github.com/evoluteur/evolutility.git"
+      "url": "git://github.com/evoluteur/evolutility-ui-jquery.git"
   },
-  "bugs": "https://github.com/evoluteur/evolutility/issues",
+  "bugs": "https://github.com/evoluteur/evolutility-ui-jquery/issues",
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-contrib-concat": "~0.3.0",
@@ -23,15 +23,17 @@
     "grunt-contrib-jshint": "~0.11.0"
   },
   "keywords": [
+      "model",
       "metadata",
       "UI",
       "forms",
       "CRUD",
-      "framework",
       "D3",
       "Backbone",
       "web",
       "MDA",
-      "MDDA"
+      "MDDA",
+      "javascript",
+      "low-code"
   ]
 }

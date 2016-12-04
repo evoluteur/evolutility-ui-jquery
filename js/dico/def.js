@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: def.js
+ * evolutility-ui-jquery :: def.js
  *
  * Library of helpers for metamodel
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

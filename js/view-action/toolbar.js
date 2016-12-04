@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: toolbar.js
+ * evolutility-ui-jquery :: toolbar.js
  *
  * View "toolbar" (one toolbar instance manages all views for a UI model).
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

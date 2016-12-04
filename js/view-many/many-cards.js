@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: many-cards.js
+ * evolutility-ui-jquery :: many-cards.js
  *
  * View "many cards" to show a collection as many cards.
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

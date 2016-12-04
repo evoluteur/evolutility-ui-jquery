@@ -1,6 +1,11 @@
 // Evolutility ui-model for a test object
 // because this ui-model is very repetitive, it is not a JSON but uses functions for repeted patterns ...
 
+
+if(typeof module === "object" && typeof module.exports === "object"){
+    var _ = require('underscore');
+}
+
 var testLOV = [
     {text:'yotta', id:'Y'},
     {text:'zetta', id:'Z'},

@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: many-bubbles.js
+ * evolutility-ui-jquery :: many-bubbles.js
  *
  * View "many bubbles" to show a Bubble Chart of a collection of many models.
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

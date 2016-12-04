@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: one.js
+ * evolutility-ui-jquery :: one.js
  *
  * View "one" should not be instanciated but inherited.
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

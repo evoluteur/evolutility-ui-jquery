@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: one-edit.js
+ * evolutility-ui-jquery :: one-edit.js
  *
  * View "one edit" to edit one backbone model.
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

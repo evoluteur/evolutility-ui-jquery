@@ -1,5 +1,5 @@
 // Original code and blog post by Steve Hall http://www.delimited.io/blog/2013/12/19/force-bubble-charts-in-d3
-// Modified for Evolutility by Olivier Giulieri http://evoluteur.github.io/evolutility/
+// Modified for Evolutility-UI-jQuery http://evoluteur.github.io/evolutility-ui-jquery/
 
 var Evol=Evol||{};
 

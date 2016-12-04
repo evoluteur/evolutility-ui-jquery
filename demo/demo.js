@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: demo.js
+ * evolutility-ui-jquery :: demo.js
  *
  * Demo
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

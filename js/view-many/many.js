@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: many.js
+ * evolutility-ui-jquery :: many.js
  *
  * View "many" for other ViewMany views to inherit from.
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

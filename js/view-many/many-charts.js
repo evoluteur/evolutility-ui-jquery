@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: many-charts.js
+ * evolutility-ui-jquery :: many-charts.js
  *
  * View "many charts" to display a collection as a set of charts.
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

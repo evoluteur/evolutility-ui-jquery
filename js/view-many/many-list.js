@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: many-list.js
+ * evolutility-ui-jquery :: many-list.js
  *
  * View "many list" to display a collection as a list (table w/ sorting and paging).
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */

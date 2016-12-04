@@ -1,7 +1,7 @@
 /*!
-   evolutility 1.1.3 
+   evolutility-ui-jquery 1.2.0 
    (c) 2016 Olivier Giulieri 
-   http://evoluteur.github.io/evolutility/  
+   http://evoluteur.github.io/evolutility-ui-jquery/  
 */
 #title > i {
   color: #c6d9f0;
@@ -209,9 +209,6 @@
   flex-grow: 1;
   padding-left: 10px !important;
   margin-bottom: 6px;
-}
-.evol-fld input[type="checkbox"] {
-  font-size: 2em;
 }
 .evol-fld > .evo-rdonly > img {
   position: relative;

@@ -1,10 +1,10 @@
 /*! ***************************************************************************
  *
- * evolutility :: dico.js
+ * evolutility-ui-jquery :: dico.js
  *
  * Library of helpers for dictionary
  *
- * https://github.com/evoluteur/evolutility
+ * https://github.com/evoluteur/evolutility-ui-jquery
  * Copyright (c) 2016 Olivier Giulieri
  *
  *************************************************************************** */
