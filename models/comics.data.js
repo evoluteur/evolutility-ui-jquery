@@ -84,18 +84,6 @@ uiModels.comics_data = [{
   "pix": "comics/salammbo1.jpeg"
 },
 {
-  "title": "Blacksad",
-  "genre": 10,
-  "authors": "Juan Díaz Canales et Juanjo Guarnido",
-  "complete": true,
-  "finished": false,
-  "have": "1-4",
-  "have_nb": 4,
-  "serie_nb": 4,
-  "language": 2,
-  "pix": "comics/blacksad1.jpeg"
-},
-{
   "title": "Carmen McCallum",
   "genre": 11,
   "authors": "Fred Duval et Gess",
@@ -226,18 +214,6 @@ uiModels.comics_data = [{
   "serie_nb": 1,
   "language": 1,
   "pix": "comics/ronin.jpeg"
-},
-{
-  "title": "Rising Stars",
-  "genre": 12,
-  "authors": "Joe Michael Straczynski, Christian Zanier, Keu Cha et Ken Lashley",
-  "complete": true,
-  "finished": true,
-  "have": "1",
-  "have_nb": 1,
-  "serie_nb": 1,
-  "language": 1,
-  "pix": "comics/risingstars.jpeg"
 },
 {
   "title": "Le Fleau des Dieux",
