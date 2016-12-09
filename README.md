@@ -24,7 +24,11 @@ Sample Single Page Apps made with Evolutility:
 git clone https://github.com/evoluteur/evolutility-ui-jquery
 ```
 
+By default, Evolutility-UI-jQuery is configured use localStorage for storing data. To make it work with a REST API, specify the REST root endpoint using the "url" attribute in the "config.js" file, and move the app to a web server.
+
 For the matching RESTful API you will also need to setup [Evolutility-Server-Node](https://github.com/evoluteur/evolutility-server-node). 
+
+
 
 ## Views
 
@@ -206,7 +210,7 @@ Views are not defined in templates but configured with a UI-model using a [vocab
 
 Here is the UI-model used to configure all views for the ["Graphic Novels" app demo](http://evoluteur.github.io/evolutility-ui-jquery/demo/index.html#comics/cards):
 
-Try it now: Download Evolutility.JS, make modification to the demo UI-models by adding and modifying fields and panels and see the demo apps become your apps.
+Try it now: [Download Evolutility-UI-jQuery](https://github.com/evoluteur/evolutility-ui-jquery/archive/master.zip), make modification to the demo UI-models (in the "model" sub-directory) by adding and modifying fields and panels and see the demo apps become your apps.
 
 ```javascript
 
@@ -345,9 +349,11 @@ Note: For convenience, all dependencies are minified together in a single file "
 
 The (beginning of a) [documentation](http://evoluteur.github.io/evolutility-ui-jquery/doc/index.html) is in progress: [ui-models](http://evoluteur.github.io/evolutility-ui-jquery/doc/ui-model.html) and [views](http://evoluteur.github.io/evolutility-ui-jquery/doc/views.html).
 
-## Other implementations
+## Other implementations of Evolutility
 
 [Evolutility-UI-React](https://github.com/evoluteur/evolutility-ui-react) using React.
+
+[Evolutility-Server-Node](https://github.com/evoluteur/evolutility-server-node) using Node.js, Express, and PostgreSQL.
 
 [Evolutility](http://www.evolutility.org) using ASP.net and Microsoft SQL-Server.
 

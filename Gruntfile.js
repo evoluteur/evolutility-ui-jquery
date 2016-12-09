@@ -75,7 +75,7 @@ module.exports = function (grunt) {
                     separator: ';\n'
                 },
                 src: [
-                    'js/config.js',
+                    'config.js',
                     'js/i18n/EN.js',
 
                     'js/dico/def.js',

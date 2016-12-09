@@ -3,7 +3,7 @@
    (c) 2016 Olivier Giulieri 
    http://evoluteur.github.io/evolutility-ui-jquery/  
 */
-// default config for Evolutility UI
+// default config for Evolutility-UI-jQuery
 
 var Evol = Evol || {};
 
@@ -12,7 +12,7 @@ Evol.Config = {
 	// --- using local storage
 	localStorage: true,
 
-	// --- using evolutility-server
+	// --- using evolutility-server-node
 	//url: 'http://localhost:3000/api/v1/evolutility/'
 
 	// --- using postgrest
