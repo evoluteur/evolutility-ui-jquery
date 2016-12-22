@@ -24,7 +24,11 @@ Sample Single Page Apps made with Evolutility:
 git clone https://github.com/evoluteur/evolutility-ui-jquery
 ```
 
-By default, Evolutility-UI-jQuery is configured use localStorage for storing data. To make it work with a REST API, specify the REST root endpoint using the "url" attribute in the "config.js" file, and move the app to a web server.
+By default, Evolutility-UI-jQuery is configured use localStorage for storing data. To make it work with a REST API:
+
+- specify the REST root endpoint using the "url" attribute in the "config.js" file,
+- run Grunt (to rebuild evolutility-ui-jquery.js (or evolutility-ui-jquery.min.js),
+- move the app to a web server.
 
 For the matching RESTful API you will also need to setup [Evolutility-Server-Node](https://github.com/evoluteur/evolutility-server-node). 
 
