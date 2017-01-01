@@ -1,14 +1,14 @@
 {
   "name": "evolutility-ui-jquery",
   "version": "1.2.0",
-  "copyright": "(c) 2016 Olivier Giulieri",
+  "copyright": "(c) 2017 Olivier Giulieri",
   "description": "UI which changes form, volume and structure to adapt to your data (using jQuery, Backbone, and D3.js).",
   "main": [
-    "dist/evolutility-ui-jquery.min.js",
-    "dist/css/evolutility-ui-jquery.min.css"
+    "dist/evolutility-ui-jquery.js",
+    "dist/css/evolutility-ui-jquery.css"
   ],
   "homepage": "http://evoluteur.github.io/evolutility-ui-jquery/",
-  "author": "Olivier Giulieri (https://evoluteur.github.io/)",
+  "authors": "Olivier Giulieri (https://evoluteur.github.io/)",
   "dependencies": {
     "jquery": "^3.1.1",
     "backbone": "^1.3.3",

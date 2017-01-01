@@ -36,11 +36,11 @@ For the matching RESTful API you will also need to setup [Evolutility-Server-Nod
 
 ## Views
 
-Evolutility's views have a Backbone model (to define the data) and also a UI-model (to define the UI to display the data and interact with it).
+Evolutility-UI-jQuery's views have a Backbone model (to define the data) and also a UI-model (to define the UI to display the data and interact with it).
 
 All views for a Backbone model and collection share a single UI-Model which defines of all UI elements across views in a simple declarative way.
 
-Evolutility provides 3 types of views
+Evolutility-UI-jQuery provides 3 types of views
 
 * Views for a model: [Browse](#browse), [Edit](#edit), [Mini (quick edit)](#mini), [JSON](#json).
 * Views for a collection: [List](#list), [Cards](#cards), [Bubbles](#bubbles), [Charts](#charts).
@@ -364,6 +364,6 @@ The (beginning of a) [documentation](http://evoluteur.github.io/evolutility-ui-j
 
 ## License
 
-Copyright (c) 2016 Olivier Giulieri.
+Copyright (c) 2017 [Olivier Giulieri](https://evoluteur.github.io/).
 
 Evolutility-UI-jQuery is released under the [MIT license](http://github.com/evoluteur/evolutility-ui-jquery/blob/master/LICENSE.md).
