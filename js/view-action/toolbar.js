@@ -5,7 +5,7 @@
  * View "toolbar" (one toolbar instance manages all views for a UI model).
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -337,7 +337,7 @@ return Backbone.View.extend({
                 }
                 if(_.isUndefined(vw)){
                     //TODO error tracking (in other places too)
-                    alert('error: invalid route.');
+                    alert('error: invalid route (for toolbar).');
                 }else{
                     this.curView=vw;
                     this.viewsHash[viewName]=vw;

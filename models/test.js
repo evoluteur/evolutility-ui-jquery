@@ -1,4 +1,4 @@
-// Evolutility ui-model for a test object
+// Evolutility-UI-jQuery model for a test object
 // because this ui-model is very repetitive, it is not a JSON but uses functions for repeted patterns ...
 
 

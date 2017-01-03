@@ -5,7 +5,7 @@
  * Demo
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 

@@ -5,7 +5,7 @@
  * View "app" to manage the single page app for all objects/ui-models.
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -82,7 +82,7 @@ Evol.App = Backbone.View.extend({
             Evol.Dico.setRoute(this.router, cView.uiModel.id, cView.viewName, id, triggerRoute);
             Evol.Dico.setPageTitle(cView.getTitle());
         }else{
-            alert('Error: Invalid route.');
+            alert('Error: Invalid route (for app).');
         }
         return this;
     },
@@ -208,19 +208,19 @@ Evol.App = Backbone.View.extend({
                 if(that.useRouter){
                     config.router = that.router;
                 }
-                var tb = new Evol.Toolbar(config).render();//.setTitle();
-                if(options && tb.cardinality==='1'){
-                    tb.setModelById(options);
+                var toolbar = new Evol.Toolbar(config).render();//.setTitle();
+                if(options && toolbar.cardinality==='1'){
+                    toolbar.setModelById(options);
                 }
                 if(that._tbs){
-                    that._tbs[uiModel.id] = tb;
+                    that._tbs[uiModel.id] = toolbar;
                 }
                 if(cb){
-                    cb(tb);
+                    cb(toolbar);
                 }
             },
             error: function(err){
-                alert('Error: invalid route.');
+                alert('Error: invalid route (for app).');
             }
         });
     },

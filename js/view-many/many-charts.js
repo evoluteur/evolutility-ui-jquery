@@ -5,7 +5,7 @@
  * View "many charts" to display a collection as a set of charts.
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 

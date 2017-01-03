@@ -5,7 +5,7 @@
  * View "one wizard" to edit one backbone model using a wizard (one step for each panel in the ui-model).
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 

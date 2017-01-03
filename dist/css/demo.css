@@ -397,7 +397,7 @@ h4 {
   display: inline;
   margin: 0 5px;
 }
-@media only screen and (max-width: 590px) {
+@media only screen and (max-width: 900px) {
   #evol-views-params {
     min-height: 40px;
   }
