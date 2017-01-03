@@ -17,9 +17,9 @@ uiModels.comics_data = [{
   "authors": "Brian K. Vaughan and Fiona Staples",
   "complete": false,
   "finished": false,
-  "have": "1-3",
-  "have_nb": 3,
-  "serie_nb": 4,
+  "have": "1-5",
+  "have_nb": 5,
+  "serie_nb": 6,
   "language": 1,
   "pix": "comics/saga1.jpeg"
 },
