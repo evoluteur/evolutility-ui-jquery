@@ -1,6 +1,6 @@
 /*!
-   evolutility-ui-jquery 1.2.0 
-   (c) 2016 Olivier Giulieri 
+   evolutility-ui-jquery 1.2.1 
+   (c) 2017 Olivier Giulieri 
    http://evoluteur.github.io/evolutility-ui-jquery/  
 */
 // default config for Evolutility-UI-jQuery
@@ -9,14 +9,12 @@ var Evol = Evol || {};
 
 Evol.Config = {
 
-	// --- using local storage
+	// --- using localStorage
 	localStorage: true,
 
 	// --- using evolutility-server-node
 	//url: 'http://localhost:3000/api/v1/evolutility/'
 
-	// --- using postgrest
-	//url: 'http://localhost:3001/'
 };
 ;
 //   Evolutility-UI-jQuery Localization Library ENGLISH
@@ -268,7 +266,7 @@ Evol.i18n = {
  * Library of helpers for metamodel
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -524,7 +522,7 @@ return {
  * Helpers for string manipulation and date formats
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -618,7 +616,7 @@ Evol.Format = {
  * evolutility-ui-jquery :: dom.js
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -1037,7 +1035,7 @@ Evol.DOM = {
  * evolutility-ui-jquery :: dom-charts.js
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -1084,7 +1082,7 @@ Evol.DOM.Charts = {
  * Library of helpers for dictionary
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -1699,7 +1697,7 @@ return {
  * View "many" for other ViewMany views to inherit from.
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -2421,7 +2419,7 @@ return Bubbles;
  * View "many bubbles" to show a Bubble Chart of a collection of many models.
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -2586,7 +2584,7 @@ Evol.ViewMany.Bubbles = Evol.View_Many.extend({
  * View "many cards" to show a collection as many cards.
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -2735,7 +2733,7 @@ Evol.ViewMany.Cards = Evol.View_Many.extend({
  * View "many charts" to display a collection as a set of charts.
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -2906,7 +2904,7 @@ return Evol.View_Many.extend({
  * View "many list" to display a collection as a list (table w/ sorting and paging).
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -3073,7 +3071,7 @@ Evol.ViewMany.List = Evol.View_Many.extend({
  * View "one" should not be instanciated but inherited.
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -4258,7 +4256,7 @@ return Backbone.View.extend({
  * View "one browse" to browse one model in readonly mode.
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -4385,7 +4383,7 @@ Evol.ViewOne.Browse = Evol.View_One.extend({
  * View "one edit" to edit one backbone model.
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -4418,7 +4416,7 @@ Evol.ViewOne.Edit = Evol.View_One.extend({
  * View "one json" to edit one backbone model in JSON.
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -4512,7 +4510,7 @@ Evol.ViewOne.JSON = Evol.View_One.extend({
  * View "one mini" to "quick edit" one backbone model (only showing important or required fields).
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -4587,7 +4585,7 @@ return Evol.ViewOne.Edit.extend({
  * evolutility-ui-jquery :: action-export.js
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -5167,7 +5165,7 @@ return Backbone.View.extend({
  * evolutility-ui-jquery :: action-filter.js
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -5809,7 +5807,7 @@ return Backbone.View.extend({
  * evolutility-ui-jquery :: action-import.js
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -6080,7 +6078,7 @@ return Backbone.View.extend({
  * View "toolbar" (one toolbar instance manages all views for a UI model).
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -6412,7 +6410,7 @@ return Backbone.View.extend({
                 }
                 if(_.isUndefined(vw)){
                     //TODO error tracking (in other places too)
-                    alert('error: invalid route.');
+                    alert('error: invalid route (for toolbar).');
                 }else{
                     this.curView=vw;
                     this.viewsHash[viewName]=vw;
@@ -7216,7 +7214,7 @@ return Backbone.View.extend({
  * View "app" to manage the single page app for all objects/ui-models.
  *
  * https://github.com/evoluteur/evolutility-ui-jquery
- * Copyright (c) 2016 Olivier Giulieri
+ * (c) 2017 Olivier Giulieri
  *
  *************************************************************************** */
 
@@ -7293,7 +7291,7 @@ Evol.App = Backbone.View.extend({
             Evol.Dico.setRoute(this.router, cView.uiModel.id, cView.viewName, id, triggerRoute);
             Evol.Dico.setPageTitle(cView.getTitle());
         }else{
-            alert('Error: Invalid route.');
+            alert('Error: Invalid route (for app).');
         }
         return this;
     },
@@ -7419,19 +7417,19 @@ Evol.App = Backbone.View.extend({
                 if(that.useRouter){
                     config.router = that.router;
                 }
-                var tb = new Evol.Toolbar(config).render();//.setTitle();
-                if(options && tb.cardinality==='1'){
-                    tb.setModelById(options);
+                var toolbar = new Evol.Toolbar(config).render();//.setTitle();
+                if(options && toolbar.cardinality==='1'){
+                    toolbar.setModelById(options);
                 }
                 if(that._tbs){
-                    that._tbs[uiModel.id] = tb;
+                    that._tbs[uiModel.id] = toolbar;
                 }
                 if(cb){
-                    cb(tb);
+                    cb(toolbar);
                 }
             },
             error: function(err){
-                alert('Error: invalid route.');
+                alert('Error: invalid route (for app).');
             }
         });
     },

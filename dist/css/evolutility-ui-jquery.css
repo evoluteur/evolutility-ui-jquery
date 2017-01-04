@@ -1,6 +1,6 @@
 /*!
-   evolutility-ui-jquery 1.2.0 
-   (c) 2016 Olivier Giulieri 
+   evolutility-ui-jquery 1.2.1 
+   (c) 2017 Olivier Giulieri 
    http://evoluteur.github.io/evolutility-ui-jquery/  
 */
 #title > i {
@@ -104,7 +104,7 @@
 .evol-actions > i:hover,
 .evol-actions-nxtTd > i:hover {
   color: #428bca;
-  background-color: #eceff1;
+  background-color: #ECEFF1;
 }
 .evol-actions {
   top: 35px;

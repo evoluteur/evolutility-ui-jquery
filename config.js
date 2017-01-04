@@ -10,6 +10,4 @@ Evol.Config = {
 	// --- using evolutility-server-node
 	//url: 'http://localhost:3000/api/v1/evolutility/'
 
-	// --- using postgrest
-	//url: 'http://localhost:3001/'
 };

@@ -17,7 +17,7 @@ Sample Single Page Apps made with Evolutility:
 
 ## Installation
 
-[**Download**](https://github.com/evoluteur/evolutility-ui-jquery/archive/master.zip) or **clone** Evolutility-UI-jQuery from GitHub.
+[Download](https://github.com/evoluteur/evolutility-ui-jquery/archive/master.zip) or **clone** Evolutility-UI-jQuery from GitHub.
 
 ```bash
 # To get the latest stable version, use git from the command line.
@@ -210,7 +210,7 @@ Code: [/js/view-action/action-import.js](https://github.com/evoluteur/evolutilit
 
 ## UI-model
 
-Views are not defined in templates but configured with a UI-model using a [vocabulary](http://evoluteur.github.io/evolutility-ui-jquery/doc/ui-model.html) with words like "field", "panel" and "tab" rather than "INPUT" and "DIV" to describe UI elements.
+Views are not defined in templates but configured with a UI-model using a [vocabulary](http://evoluteur.github.io/evolutility-ui-jquery/doc/ui-model.html) with words like "field", "panel" and "tab" rather than "input" and "div" to describe UI elements.
 
 Here is the UI-model used to configure all views for the ["Graphic Novels" app demo](http://evoluteur.github.io/evolutility-ui-jquery/demo/index.html#comics/cards):
 
