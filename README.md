@@ -355,11 +355,11 @@ The (beginning of a) [documentation](http://evoluteur.github.io/evolutility-ui-j
 
 ## Other implementations of Evolutility
 
-[Evolutility-UI-React](https://github.com/evoluteur/evolutility-ui-react) using React.
+[Evolutility-UI-React](https://github.com/evoluteur/evolutility-ui-react) - Model-driven Web UI for CRUD using React.
 
-[Evolutility-Server-Node](https://github.com/evoluteur/evolutility-server-node) using Node.js, Express, and PostgreSQL.
+[Evolutility-Server-Node](https://github.com/evoluteur/evolutility-server-node) - RESTful Micro-ORM for CRUD and more, written in Javascript, using Node.js, Express, and Postgres.
 
-[Evolutility](http://www.evolutility.org) using ASP.net and Microsoft SQL-Server.
+[Evolutility](http://www.evolutility.org) - Lightweight CRUD framework for heavy lifting with ASP.net and Microsoft SQL-Server.
 
 
 ## License
