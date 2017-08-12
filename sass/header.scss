@@ -5,10 +5,10 @@
 
 /* --- header, navbar, content and footer --- */
 
-@import "less/variables";
+@import "sass/variables";
 
-@width-toolbar-left:170px;
-@width-toolbar-top:620px;
+$width-toolbar-left:170px;
+$width-toolbar-top:620px;
 
 // --- top navbar ---
 .evo-logo{
@@ -21,7 +21,7 @@
     text-decoration: none;
     color: #ffc107 !important;
     &:hover{
-      color:@color-cool !important;
+      color:$color-cool !important;
       >span{
         color:#ffc107;
       }
@@ -53,11 +53,11 @@
   left:0;
   //opacity: .9;
   overflow: none;
-  background-color: @color-header;
+  background-color: $color-header;
   //border-bottom: #366092 solid 1px;
   min-height: 75px;
   width:100%;
-  min-width: @width-toolbar-top;
+  min-width: $width-toolbar-top;
   padding:2px 5px 2px 10px;
   z-index: 1001;
   //-webkit-box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
@@ -65,18 +65,18 @@
   //box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
 
     a{
-      color:@color-header-link;
+      color:$color-header-link;
       text-decoration: none;
 
       &:hover{
-        color:@color-header-link;
+        color:$color-header-link;
       }
     }
 
-  @media only screen and (min-width: @screen2) {
+  @media only screen and (min-width: $screen2) {
   position: fixed;
-    width:@width-toolbar-left;
-    min-width:@width-toolbar-left;
+    width:$width-toolbar-left;
+    min-width:$width-toolbar-left;
     height:100%;
   }
 
@@ -88,7 +88,7 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  @media only screen and (max-width: @screen2) {
+  @media only screen and (max-width: $screen2) {
     flex-direction: row;
   }
   >div{
@@ -101,7 +101,7 @@
   a{
     text-decoration: none;
     &:hover{
-      color:@color-header-link-hover;
+      color:$color-header-link-hover;
     }
     &.sel{
       color: white;
@@ -115,7 +115,7 @@
   li li{
       margin-left:-12px;
   }
-  @media only screen and (max-width: @screen2) {
+  @media only screen and (max-width: $screen2) {
     margin-left: 30px;
     order: 100;
     width:100%;
@@ -135,7 +135,7 @@
   margin-left:-30px;
   >li.spaced{
     margin-top:50px;
-    @media only screen and (max-width: @screen2) {
+    @media only screen and (max-width: $screen2) {
       margin-top:0;
       margin-left:30px;
     }
@@ -145,7 +145,7 @@
 .evo-head-links2{
   font-size: .7em;
   margin: 0 5px 0 -40px;
-  @media only screen and (min-width: @screen2) {
+  @media only screen and (min-width: $screen2) {
     margin: 0 0 10px;
     padding:0;
     >li{
@@ -156,7 +156,7 @@
 
 // --- page title ---
 .evo-title,.evo-title2{
-  background-color: @color-header2;
+  background-color: $color-header2;
   position: absolute; //fixed;
   z-index: 1002; // above bootstrap dropdown
   width: 100%;
@@ -165,16 +165,16 @@
     margin-left: 16px;
     color:white;
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: @weight-label;
+    font-weight: $weight-label;
   }
-  @media only screen and (min-width: @screen2) {
-    width: ~"calc(100% - 170px)";
+  @media only screen and (min-width: $screen2) {
+    width: "calc(100% - 170px)";
     top:0 !important;
-    margin-left: @width-toolbar-left;
+    margin-left: $width-toolbar-left;
     //background-color: white;
     >h1{
       margin-left: 0;
-    //  color: @color-text;
+    //  color: $color-text;
     }
   }
 }
@@ -194,8 +194,8 @@
 .evo-content{
   padding: 85px 30px 30px;
   margin-top: 10px;
-  @media only screen and (min-width: @screen2) {
-    margin-left: @width-toolbar-left;
+  @media only screen and (min-width: $screen2) {
+    margin-left: $width-toolbar-left;
     padding-top: 10px;
   }
 }
@@ -204,9 +204,9 @@
   margin-top: 10px;
 }
 
-@media only screen and (min-width: @screen2) {
+@media only screen and (min-width: $screen2) {
   .evo-content2{
-    margin-left: @width-toolbar-left;
+    margin-left: $width-toolbar-left;
     padding-top: 85px;
   }
   //.evo-anchor{
@@ -218,10 +218,10 @@
   //top:-140px;
 //}
 
-@height-footer: 120px;
+$height-footer: 120px;
 .evo-page{
   min-height: 100%;
-  margin-bottom: -@height-footer; 
+  margin-bottom: -$height-footer; 
   &:after {
     content: "";
     display: block;
@@ -231,8 +231,8 @@
 // --- footer ---
 .footer{
   padding-top:80px;
-  height:@height-footer;
+  height:$height-footer;
 	text-align: center;
 	font-size:smaller;
-	color:@color-text-footer;
+	color:$color-text-footer;
 }

@@ -4,50 +4,50 @@
 //  (c) 2017 Olivier Giulieri
 
 // base
-@color-text: #0d0d0d;
-@color-title: #428bca;
-@color-cool:#92cddc;
-@color-disabled:silver;
+$color-text: #0d0d0d;
+$color-title: #428bca;
+$color-cool:#92cddc;
+$color-disabled:silver;
 
 // responsive design
-@screen1: 500px;
-@screen2: 900px;
+$screen1: 500px;
+$screen2: 900px;
 
 // golden ratio
-@widthR1: 38%;
-@widthR2: 62%;
+$widthR1: 38%;
+$widthR2: 62%;
 
 // top nav bar
-@color-header: #0099cc;//#1d365d
-@color-header2: #0099cc;//#1f497d; //#0077cc;
-@color-header-link: #c6d9f0;
-@color-header-link-hover: #ffc107;//#ed991a;
+$color-header: #0099cc;//#1d365d
+$color-header2: #0099cc;//#1f497d; //#0077cc;
+$color-header-link: #c6d9f0;
+$color-header-link-hover: #ffc107;//#ed991a;
 
-@color-icon: #31708f;
-@color-icon-hover: #428bca;
-@color-icon-background-hover: #ECEFF1;
+$color-icon: #31708f;
+$color-icon-hover: #428bca;
+$color-icon-background-hover: #ECEFF1;
 
-@toolbar-background-color: #fbfbfb;
-@toolbar-border-color: #bce8f1;
+$toolbar-background-color: #fbfbfb;
+$toolbar-border-color: #bce8f1;
 
 // labels
-@weight-label: 500;
+$weight-label: 500;
 
 // footer
-@color-text-footer: silver;
+$color-text-footer: silver;
 
 // mixins
-.ellipsis(){
+@mixin ellipsis {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-.border-radius(@r){
-	border-radius: @r;
-	-moz-border-radius: @r;
-	-webkit-border-radius: @r;
+@mixin b-radius($r:0) {
+	border-radius: $r;
+	-moz-border-radius: $r;
+	-webkit-border-radius: $r;
 }
-.flex-holder(){
+@mixin flex-holder {
 	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
 	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
 	display: -ms-flexbox;      /* TWEENER - IE 10 */
@@ -55,18 +55,18 @@
 	display: flex;
 	flex-wrap: wrap;
 }
-.flex-item(){
+@mixin flex-item {
 	box-sizing: border-box;
 	flex-grow: 1;
 }
 
-.panel-top-bar(){
+@mixin panel-top-bar {
 	width:100%;
 	padding: 8px;
-	//border-bottom: solid 1px @toolbar-border-color;
+	/*border-bottom: solid 1px $toolbar-border-color;*/
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
-	background-color: @toolbar-background-color;
+	background-color: $toolbar-background-color;
 	> select{
 		display: inline-block;
 		width: auto;

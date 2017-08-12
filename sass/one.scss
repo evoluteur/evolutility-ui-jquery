@@ -5,7 +5,7 @@
 
 /* --- panels & tabs --- */
 .evol-pnls{
-  .flex-holder()
+  @include flex-holder;
 }
 .evol-pnl {
   padding-left:10px !important;
@@ -16,9 +16,9 @@
       padding:0;
     }
   }
-  .flex-item();
+  @include flex-item;
   .table .evol-money{
-    //TODO: better fix
+    /*TODO: better fix*/
     width: 200px;
   }
   .evol-pnl {
@@ -76,14 +76,14 @@
 
 /* --- fields --- */
 .evol-fset{
-    .flex-holder();
+    @include flex-holder;
     padding: 10px 10px 5px 0;
     //input[type="checkbox"]{
     //    height: 30px;
     //}
 }
 .evol-fld{
-    .flex-item();
+    @include flex-item;
     padding-left:10px !important;
     margin-bottom: 6px;
     > .evo-rdonly{
@@ -100,7 +100,7 @@
     }
 }
 .evol-field-label > label {
-  color:@color-text;
+  color:$color-text;
 
   > .glyphicon-question-sign{
     cursor: pointer;
@@ -108,7 +108,7 @@
     color: silver;
 
     &:hover{
-      color:@color-icon-hover;
+      color:$color-icon-hover;
     }
   }
 }
@@ -131,14 +131,14 @@
 .evol-buttons{
   clear:both;
   margin-top:0 !important;
-  //background-color: @toolbar-background-color;
+  //background-color: $toolbar-background-color;
   > button{
     margin:1em;
   }
 }
 
 .evol-ellipsis {
-  .ellipsis();
+  @include ellipsis;
 }
 .evol-title-toggle{
   cursor: pointer;
@@ -162,18 +162,18 @@
 
 /* bootstrap customizations*/
 .table > thead > tr > th{
-  font-weight: @weight-label;
+  font-weight: $weight-label;
   background-color: #fbfbfb;
 }
 label{
-  font-weight: @weight-label;
+  font-weight: $weight-label;
   margin-bottom: 2px;
 }
 .help-block{
   padding:2px 5px;
   background-color: #FFF8E1;
   border: 1px solid #FFECB3;
-  .border-radius(2px);
+  @include b-radius(2px);
 }
 .evol-mini-holder,
 .evolw-edit {
@@ -208,9 +208,9 @@ label{
     margin-top: 10px;
     margin-left:10px;
     cursor: pointer;
-    color: @color-icon;
+    color: $color-icon;
     &:hover{
-      color: @color-icon-hover;
+      color: $color-icon-hover;
     }
   }
   > div:last-child:after {

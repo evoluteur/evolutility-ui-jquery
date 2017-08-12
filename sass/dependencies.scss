@@ -1,0 +1,78 @@
+/*!
+  evolutility-ui-jquery : dependencies
+  
+  bootstrap v3.3.4, bootstrap-datepicker v1.4.0, select2 v3.5.2, toastr 2.1.1.
+
+  https://github.com/evoluteur/evolutility-ui-jquery
+*/
+
+/*!
+ * Bootstrap v3.3.7 (http://getbootstrap.com)
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+// Core variables and mixins
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_variables";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_mixins";
+
+// Reset and dependencies
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_normalize";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_print";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_glyphicons";
+
+// Core CSS
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_scaffolding";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_type";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_code";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_grid";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_tables";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_forms";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_buttons";
+
+// Components
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_component-animations";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_button-groups";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_input-groups";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_navs";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_navbar";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_breadcrumbs";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_pagination";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_pager";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_labels";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_badges";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_jumbotron";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_thumbnails";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_alerts";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_progress-bars";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_media";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_list-group";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_panels";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_responsive-embed";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_wells";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_close";
+
+// Components w/ JavaScript
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_modals";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_tooltip";
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_popovers";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_carousel";
+
+// Utility classes
+@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_utilities";
+//@import "../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_responsive-utilities";
+/*
+// Other third party
+@import '../node_modules/react-datepicker/dist/react-datepicker';
+//@import '../node_modules/react-select/dist/react-datepicker-cssmodules';
+@import '../node_modules/react-select/dist/react-select';
+
+ 
+*/
+// Widgets
+@import '../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker';
+@import '../bower_components/toastr/toastr.scss';
+@import '../bower_components/select2/select2';
+@import '../bower_components/select2/select2-bootstrap';
+

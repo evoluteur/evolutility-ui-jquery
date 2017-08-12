@@ -3,32 +3,32 @@
 //  https://github.com/evoluteur/evolutility-ui-jquery
 //  (c) 2017 Olivier Giulieri
 
-@xpt-padding: 10px;
+$xpt-padding: 10px;
 
 .evol-xpt{
-    margin-bottom: @xpt-padding;
+    margin-bottom: $xpt-padding;
 }
 
 .evol-xpt-form {
-  .flex-holder();
+  @include flex-holder;
   border-collapse:collapse;
   border:0;
   width:100%;
 
   > div {
-    .flex-item();
-    padding: @xpt-padding;
+    @include flex-item;
+    padding: $xpt-padding;
     vertical-align:top;
   }
 
 }
 .evol-xpt-flds {
   border-right: 0 !important;
-  width:@widthR1;
+  width:$widthR1;
   min-width: 200px;
   max-width:245px;
 
-  @media only screen and (max-width: @screen1) {
+  @media only screen and (max-width: $screen1) {
     max-width: none;
   }
 
@@ -48,7 +48,7 @@
 }
 
 .evol-xpt-para{
-  width:@widthR2;
+  width:$widthR2;
   min-width: 300px;
   border-left: 0 !important;
   textarea{

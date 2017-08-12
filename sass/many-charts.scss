@@ -5,10 +5,10 @@
 
 /* --- charts --- */
 .evol-many-charts{
-	.flex-holder();
+	@include flex-holder();
 }
 .evol-chart-holder{
-	.flex-item();
+	@include flex-item();
 	position: relative;
 	text-align: center;
 	background-color :#FFFFFF;

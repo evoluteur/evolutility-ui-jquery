@@ -74,7 +74,7 @@ code{
   overflow: auto;
   font-size: 85%;
   background-color: #f7f7f7;
-  .border-radius(3px);
+  @include b-radius(3px);
 }
 
 .list-views{
@@ -139,7 +139,7 @@ code{
   a {
     margin: 10px 5px;
     padding: 5px;
-    .border-radius(5px);
+    @include b-radius(5px);
     /*&:hover{
       background-color: #E3F2FD;
       text-decoration: none;

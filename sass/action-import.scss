@@ -3,10 +3,10 @@
 //  https://github.com/evoluteur/evolutility-ui-jquery
 //  (c) 2017 Olivier Giulieri
 
-@sample-import-height: 160px;
+$sample-import-height: 160px;
 
 .evol-import{
-  margin-bottom: @xpt-padding;
+  margin-bottom: $xpt-padding;
 }/*
 .evol-fset>.checkbox>label{
 	margin-top: 20px;
@@ -20,9 +20,9 @@
 }
 .evol-ipt-format{
 	overflow: auto;
-	height: @sample-import-height;
+	height: $sample-import-height;
 	width: 100%;
-	padding: @xpt-padding;
+	padding: $xpt-padding;
 }
 .evo-ipt{
 	margin-top: 20px;

@@ -17,7 +17,7 @@
   }
 }
 .bubbles-opts{
-  .panel-top-bar();
+  @include panel-top-bar();
 }
 // override Bootstrap
 .popover-content{

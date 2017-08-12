@@ -3,7 +3,7 @@
 //  https://github.com/evoluteur/evolutility-ui-jquery
 //  (c) 2017 Olivier Giulieri
 
-@color-condition: #f0ad4e;
+$color-condition: #f0ad4e;
 
 .evo-bNew, .evo-bAdd, .evo-bDel, .evo-bSubmit {
 	margin:1px 6px 6px 1px;	
@@ -22,7 +22,7 @@
   padding-bottom: 6px;
 
   > a {
-    //background-color: @color-condition;
+    //background-color: $color-condition;
     //color: #fff;
     margin: 1px 2px 2px 1px;
     padding: 3px 2px;
@@ -30,7 +30,7 @@
 /*
     &:hover,
     &:active{
-      //background-color: @color-condition;
+      //background-color: $color-condition;
       //color: #fff;
       text-decoration: none;
     }

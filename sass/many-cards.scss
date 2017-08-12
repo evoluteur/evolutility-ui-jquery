@@ -14,17 +14,17 @@
     height:182px;
     margin: 5px;
     padding:2px 10px 10px;
-    .border-radius(10px);
+    @include b-radius(10px);
     overflow: auto;
 
     >div {
       >h4{
-        .ellipsis()
+        @include ellipsis;
       }
       >label{
         vertical-align: top;
-        //text-align: right;
-        //min-width:80px;
+        /*text-align: right;
+        min-width:80px;*/
       }
     }
   }

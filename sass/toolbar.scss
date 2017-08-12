@@ -11,11 +11,11 @@
 }
 
 .evo-toolbar{
-  border: 1px solid @toolbar-border-color;
-  .border-radius(4px);
+  border: 1px solid $toolbar-border-color;
+  @include b-radius(4px);
   margin-bottom:10px;
   padding:3px;
-  background-color: @toolbar-background-color;
+  background-color: $toolbar-background-color;
 
   > [data-cid="views"]{
     color:black;
@@ -29,7 +29,7 @@
       &.divider-h{
         height: 41px;
         width: 1px;
-        background-color: @toolbar-border-color;
+        background-color: $toolbar-border-color;
       }
       >a {
         transition: all 0.5s ease;
@@ -41,7 +41,7 @@
   [data-id="prev"].nav-disabled,
   [data-id="next"].nav-disabled{
     a {
-      color: @color-disabled;
+      color: $color-disabled;
       &:hover{
         background-color: transparent;
         cursor:default;
@@ -64,7 +64,7 @@
   background-color: #e0f2f1;
 }
 .evo-view-on{
-  color: @color-icon-hover;
+  color: $color-icon-hover;
 }
 
 .evo-tb-status{
@@ -111,16 +111,16 @@
   display: flex;
   flex-direction: column;
   padding: 5px;
-  background-color: @toolbar-background-color;
+  background-color: $toolbar-background-color;
   border: 1px solid #bce8f1;
   >i{
-    color: @color-icon;
+    color: $color-icon;
     padding: 10px;
     cursor: pointer;
-    .border-radius(4px);
+    @include b-radius(4px);
     &:hover{
-      color: @color-icon-hover;
-      background-color: @color-icon-background-hover;
+      color: $color-icon-hover;
+      background-color: $color-icon-background-hover;
     }
   }
 }

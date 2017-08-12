@@ -134,7 +134,7 @@ module.exports = function (grunt) {
                     src: [
                         'bower_components/bootstrap/dist/fonts/*'
                     ], 
-                    dest: '<%= pkg.target %>/fonts/'
+                    dest: '<%= pkg.target %>/fonts/bootstrap/'
                 },
                 {
                     expand: true, 
@@ -219,40 +219,42 @@ module.exports = function (grunt) {
         },
 
         // *************************************************************************************
-        //      LESS
+        //      SASS
         // *************************************************************************************
-        less: {
+        sass: {
             dev: {
                 options: {
                     banner: '<%= banner %>'
                 },
                 files: {
-                    "dist/css/evolutility-ui-jquery.css": "less/evolutility.less"
+                    "dist/css/evolutility-ui-jquery.css": "sass/evolutility.scss"
                 }
             },
             demo: {
                 files: {
-                    "dist/css/demo.css": "less/demo.less"
+                    "dist/css/demo.css": "sass/demo.scss"
                 }
             },
             dependencies: {
                 options: {
-                    banner: '<%= bannerDependencies %>',
-                    compress: true
+                    banner: '<%= bannerDependencies %>'
                 },
                 files: {
-                    "dist/css/dependencies.min.css": "less/dependencies.less"
+                    "dist/css/dependencies.css": "sass/dependencies.scss"
                 }
             },
-            prod: {
-                options: {
-                    banner: '<%= banner %>',
-                    compress: true
-                },
-                files: {
-                    "dist/css/evolutility-ui-jquery.min.css": "less/evolutility.less"
-                }
-            }
+        },
+
+        cssmin: {
+          target: {
+            files: [{
+              expand: true,
+              cwd: 'dist/css',
+              src: ['dependencies.css', 'evolutility-ui-jquery.css'],
+              dest: 'dist/css',
+              ext: '.min.css'
+            }]
+          }
         }
 
     });
@@ -265,7 +267,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-sass');
 
     grunt.registerTask('header', 'Evolutility version', function(arg1) {
         var pkg=grunt.file.readJSON('package.json');
@@ -296,11 +299,11 @@ module.exports = function (grunt) {
         'header:dev',
         'concat:js', 
         'demo', 
-        'less:dev'
+        'sass:dev'
     ]);
     grunt.registerTask('demo', [
         'concat:demo', 
-        'less:demo', 
+        'sass:demo', 
         'uglify:demo'
     ]);
     grunt.registerTask('prod', [
@@ -308,18 +311,19 @@ module.exports = function (grunt) {
         'jshint', 
         'concat:js', 
         'demo', 
-        'less', 
+        'sass', 
         'uglify:prod',
-        'dep'
-    ]);
+        'dep',
+    ]); 
     grunt.registerTask('prod2', [
         'dev', 
         'uglify:prod'
     ]);
     grunt.registerTask('dep', [
-        'less:dependencies',
+        'sass:dependencies',
         'concat:dependencies', 
         'copy', 
-        'uglify:dependencies'
+        'uglify:dependencies',
+        'cssmin',
     ]);
 };

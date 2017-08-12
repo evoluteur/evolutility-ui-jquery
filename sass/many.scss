@@ -33,8 +33,8 @@
         position: relative;
       }
       th {
-        font-weight: @weight-label !important;
-        background-color: @toolbar-background-color;
+        font-weight: $weight-label !important;
+        background-color: $toolbar-background-color;
 
         .glyphicon {
           display:none;
@@ -53,7 +53,7 @@
 
       }
       .evol-ellipsis{
-        .ellipsis();
+        @include ellipsis();
         max-width: 120px;
       }
     }
@@ -83,11 +83,11 @@
   padding: 3px;
   width:300px;
   > .glyphicon {
-    color:@color-icon;
+    color:$color-icon;
     position: absolute;
     top:2px;
     &:hover{
-      color:@color-icon-hover;
+      color:$color-icon-hover;
     }
   }
   > .glyphicon-chevron-up {
@@ -117,7 +117,7 @@
 .evo-col-pix{
   width: 100px;
 }
-// from Bootstrap normalize.less (only pieces needed for Evolutility views)
+// from Bootstrap normalize.scss (only pieces needed for Evolutility views)
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 
 //

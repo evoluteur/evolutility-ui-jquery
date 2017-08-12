@@ -1,10 +1,9 @@
 
 /* evolutility : demo.css */
 
-
-@import "less/variables";
-@import "less/header";
-@import 'less/doc';
+@import "sass/variables";
+@import "sass/header";
+@import 'sass/doc';
 
 body{
 	font-size: 15px !important;
@@ -25,7 +24,7 @@ h1,h2,h3,h4{
 }
 .mt20{
   margin-top:20px;
-  //color:@color-header !important;
+  //color:$color-header !important;
 }
 
 .version{
@@ -44,7 +43,7 @@ h1,h2,h3,h4{
     margin: 0 5px;
   }
 }
-@media only screen and (max-width: @screen2) {
+@media only screen and (max-width: $screen2) {
   #evol-views-params{
     min-height: 40px;
   }
@@ -55,7 +54,7 @@ h1,h2,h3,h4{
 .demo-controls{
   padding: 10px;
   border: 2px solid #FFECB3;
-  .border-radius(4px);
+  @include b-radius(4px);
   background-color: #FFF8E1;
 }
 #viewInfo{
@@ -92,7 +91,7 @@ h1,h2,h3,h4{
 	border: 2px solid #A7C8E2;
 	margin: 4px 3px;
 	padding: 10px;
-    .border-radius(10px);
+  @include b-radius(10px);
 }
 .demovalue {
 	width: 100%;
@@ -113,9 +112,9 @@ h1,h2,h3,h4{
   color: #b3e5fc;
 }
 
-.mixin-badgeHeight(@h){
+@mixin mixin-badgeHeight($h) {
   .evol-badges-body > .panel {
-      @height: @h !important;
+      $height: $h !important;
   }
 }
 /* demo card view*/
