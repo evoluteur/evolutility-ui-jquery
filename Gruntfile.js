@@ -246,11 +246,20 @@ module.exports = function (grunt) {
         },
 
         cssmin: {
-          target: {
+          dev: {
             files: [{
               expand: true,
               cwd: 'dist/css',
-              src: ['dependencies.css', 'evolutility-ui-jquery.css'],
+              src: ['evolutility-ui-jquery.css'],
+              dest: 'dist/css',
+              ext: '.min.css'
+            }]
+          },
+          dependencies: {
+            files: [{
+              expand: true,
+              cwd: 'dist/css',
+              src: ['dependencies.css'],
               dest: 'dist/css',
               ext: '.min.css'
             }]
@@ -315,15 +324,22 @@ module.exports = function (grunt) {
         'uglify:prod',
         'dep',
     ]); 
-    grunt.registerTask('prod2', [
-        'dev', 
-        'uglify:prod'
+    grunt.registerTask('css', [
+        'sass:dev', 
+        'sass:demo', 
+        'cssmin:dev'
     ]);
+    grunt.registerTask('js', [
+        'concat:js', 
+        'uglify:prod',
+    ]);
+
+    // **** Dependencies
     grunt.registerTask('dep', [
         'sass:dependencies',
         'concat:dependencies', 
         'copy', 
         'uglify:dependencies',
-        'cssmin',
+        'cssmin:dependencies',
     ]);
 };
