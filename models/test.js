@@ -212,7 +212,7 @@ uiModels.test = {
                             id: 'ff1', attribute: 'ff1', type: 'formula', 
                             label: 'Formula Title', 
                             formula: function(m){
-                                return 'The record name is "'+m.escape('name')+'".';
+                                return m?('The record name is "'+m.escape('name')+'".'):'N/A';
                             },
                             width: 100, inMany: true
                         },
@@ -220,7 +220,7 @@ uiModels.test = {
                             id: 'fftt', attribute: 'fftt', type: 'formula', 
                             label: 'Formula 2 Titles', 
                             formula: function(m){
-                                return m.escape('name')+' '+m.escape('text');
+                                return m?(m.escape('name')+' '+m.escape('text')):'N/A';
                             },
                             width: 100, inMany: true
                         },
@@ -228,7 +228,7 @@ uiModels.test = {
                             id: 'fflink', attribute: 'fflink', type: 'formula', 
                             label: 'Google search for name', 
                             formula: function(m){
-                                return '<a href="http://www.google.com/search?q='+ encodeURI(m.get('name')) + '" target="google">'+ m.escape('name') + ' on Google</a>';
+                                return m?('<a href="http://www.google.com/search?q='+ encodeURI(m.get('name')) + '" target="google">'+ m.escape('name') + ' on Google</a>'):'';
                             },
                             width: 100, inMany: true
                         }
@@ -242,7 +242,7 @@ uiModels.test = {
                             label: 'Number of items in Collection 1', 
                             labelmany: '# Coll.1',
                             formula: function(m){
-                                return (m.get('subCollec1')||[]).length;
+                                return m?(m.get('subCollec1')||[]).length:'';
                             },
                             width: 100, inMany: true
                         },
@@ -251,7 +251,7 @@ uiModels.test = {
                             label: 'Number of items in Collection 2', 
                             labelmany: '# Coll.2',
                             formula: function(m){
-                                return (m.get('subCollec2')||[]).length;
+                                return m?(m.get('subCollec2')||[]).length:'';
                             },
                             width: 100, inMany: true
                         },
@@ -260,7 +260,7 @@ uiModels.test = {
                             label: 'Number of items in Collection 3', 
                             labelmany: '# Coll.3',
                             formula: function(m){
-                                return (m.get('subCollec3')||[]).length;
+                                return m?(m.get('subCollec3')||[]).length:'';
                             },
                             width: 100, inMany: true
                         }
@@ -274,13 +274,16 @@ uiModels.test = {
                             id: 'ffforest', attribute: 'ffforest', type: 'formula', 
                             label: 'Trees', 
                             formula: function(m){
-                                return _.map(m.get('subCollec1'), function(c){
-                                    return '<span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>';
-                                }).join('')+_.map(m.get('subCollec2'), function(c){
-                                    return '<span class="glyphicon glyphicon-tree-deciduous" aria-hidden="true"></span>';
-                                }).join('')+_.map(m.get('subCollec3'), function(c){
-                                    return '<span class="glyphicon glyphicon-apple" aria-hidden="true"></span>';
-                                }).join('');
+                                if(m){
+                                    return _.map(m.get('subCollec1'), function(c){
+                                        return '<span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>';
+                                    }).join('')+_.map(m.get('subCollec2'), function(c){
+                                        return '<span class="glyphicon glyphicon-tree-deciduous" aria-hidden="true"></span>';
+                                    }).join('')+_.map(m.get('subCollec3'), function(c){
+                                        return '<span class="glyphicon glyphicon-apple" aria-hidden="true"></span>';
+                                    }).join('');
+                                }
+                                return '';
                             },
                             width: 100, inMany: true
                         }
