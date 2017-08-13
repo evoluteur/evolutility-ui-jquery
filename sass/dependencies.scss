@@ -75,4 +75,11 @@
 @import '../bower_components/toastr/toastr.scss';
 @import '../bower_components/select2/select2';
 @import '../bower_components/select2/select2-bootstrap';
+@import '../bower_components/balloon.css/balloon';
 
+
+// override balloon.css
+[data-balloon]:after{
+  border-radius: 1px;
+  font-weight: 500;
+}

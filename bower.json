@@ -19,7 +19,8 @@
     "bootstrap": "^3.3.7",
     "bootstrap-datepicker": "^1.6.4",
     "select2": "^3.5.2",
-    "toastr": "^2.1.1"
+    "toastr": "^2.1.1",
+    "balloon.css": "^0.4.0"
   },
   "resolutions": {
     "jquery": "3.2.1"
