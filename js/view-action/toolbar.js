@@ -78,26 +78,26 @@ return Backbone.View.extend({
         buttons: {
             always:[
                 {id: 'list', label: i18nTool.bList, icon:'th-list', n:'x'},
+                {id:'charts', label: i18nTool.bCharts, icon:'stats', n:'x'},
                 //{id: 'selections', label: i18nTool.Selections, icon:'star', n:'x'},
-                {id: 'new', label: i18nTool.bNew, icon:'plus', n:'x', readonly:false}
+                {id: 'new', label: i18nTool.bNew, icon:'plus', n:'x', readonly:false},
             ],
             actions:[
                 //{id:'browse', label: i18nTool.bBrowse, icon:'eye', n:'1', readonly:false},
                 {id:'edit', label: i18nTool.bEdit, icon:'edit', n:'1', readonly:false},
                 {id:'save', label: i18nTool.bSave, icon:'floppy-disk', n:'1', readonly:false},
-                {id:'del', label: i18nTool.bDelete, icon:'trash', n:'1', readonly:false}
+                {id:'del', label: i18nTool.bDelete, icon:'trash', n:'1', readonly:false},
+                {id:'filter', label: i18nTool.bFilter, icon:'filter', n:'n'},
+                {id:'export', label: i18nTool.bExport, icon:'cloud-download',n:'n'},
             ],
             moreActions:[
-                {id:'filter', label: i18nTool.bFilter, icon:'filter', n:'n'},
-                {id:'-'},
-                {id:'export', label: i18nTool.bExport, icon:'cloud-download',n:'x'},
-                {id:'import', label: i18nTool.bImport, icon:'cloud-upload',n:'x'},
+                //{id:'import', label: i18nTool.bImport, icon:'cloud-upload',n:'x'},
                 //{id:'-'},
                 //{id:'cog',label: 'Customize', icon:'cog',n:'x'}
             ],
             prevNext:[
-                {id:'prev', label: '', icon:'chevron-left', n:'x'},
-                {id:'next', label: '', icon:'chevron-right', n:'x'}
+                {id:'prev', label: i18nTool.prev, icon:'chevron-left', n:'x'},
+                {id:'next', label: i18nTool.next, icon:'chevron-right', n:'x'}
             ],
             views: [
                 // -- views ONE ---
@@ -110,7 +110,6 @@ return Backbone.View.extend({
                 {id:'list', label: i18nTool.bList, icon:'th-list', n:'n'},
                 {id:'cards', label: i18nTool.bCards, icon:'th-large', n:'n'},
                 {id:'bubbles', label: i18nTool.bBubbles, icon:'adjust', n:'n'},
-                {id:'charts', label: i18nTool.bCharts, icon:'stats', n:'n'}
             ],
             search: true
         }
@@ -179,7 +178,7 @@ return Backbone.View.extend({
             h+=menuItems(tb.prevNext);
             //h+=domm.hBegin('views','li','eye-open');
             h+=menuDividerH+
-                menuItems(tb.views, true);
+                menuItems(tb.views, false);
             //h+=domm.hItem('customize','','wrench', 'x', 'Customize');
             /*
              if(this.buttons.customize){

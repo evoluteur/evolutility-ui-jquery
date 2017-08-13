@@ -274,13 +274,11 @@ Evol.DOM = {
             if(cardi){
                 h+='" data-cardi="'+cardi;
             }
-            if(style!=='label'){
-                h+='" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="'+label;
-            }
+            h+='" data-balloon-pos="down" data-balloon="'+label;
             h+='"><a href="javascript:void(0);" data-id="'+id+'">'+Evol.DOM.icon(icon);
-            if(style!=='tooltip'){
-                h+='&nbsp;'+label;
-            }
+            /*if(label && style!=='tooltip'){
+                h+='<span>'+label+'</span>';
+            }*/
             h+='</a></li>';
             return h;
         }
@@ -394,10 +392,15 @@ Evol.DOM = {
      },*/
 
     showOrHide: function($e, visible){
-        if(visible){
-            $e.show();
-        }else{
-            $e.hide();
+        if($e){
+            if(visible){
+                $e.show();
+            }else{
+                $e.hide();
+            }
+        }
+        else{
+            console.log('ERROR: invalid element in "showOrHide".');
         }
     },
 
