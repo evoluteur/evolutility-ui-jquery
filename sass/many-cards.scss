@@ -14,8 +14,9 @@
     height:182px;
     margin: 5px;
     padding:2px 10px 10px;
-    @include b-radius(10px);
+    @include b-radius(2px);
     overflow: auto;
+    border-color: $color-border;
 
     >div {
       >h4{

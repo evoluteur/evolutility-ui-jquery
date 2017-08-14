@@ -54,7 +54,7 @@ h1,h2,h3,h4{
 .demo-controls{
   padding: 10px;
   border: 2px solid #FFECB3;
-  @include b-radius(4px);
+  @include b-radius(2px);
   background-color: #FFF8E1;
 }
 #viewInfo{
@@ -91,7 +91,7 @@ h1,h2,h3,h4{
 	border: 2px solid #A7C8E2;
 	margin: 4px 3px;
 	padding: 10px;
-  @include b-radius(10px);
+  @include b-radius(2px);
 }
 .demovalue {
 	width: 100%;

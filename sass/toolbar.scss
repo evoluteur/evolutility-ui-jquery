@@ -12,7 +12,7 @@
 
 .evo-toolbar{
   border: 1px solid $toolbar-border-color;
-  @include b-radius(4px);
+  @include b-radius(2px);
   margin-bottom:10px;
   padding:3px;
   background-color: $toolbar-background-color;
@@ -139,7 +139,7 @@
     color: $color-icon;
     padding: 10px;
     cursor: pointer;
-    @include b-radius(4px);
+    @include b-radius(2px);
     &:hover{
       color: $color-icon-hover;
       background-color: $color-icon-background-hover;
@@ -150,15 +150,15 @@
   top: 35px;
   right: 1px;
   border-right: none;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 .evol-actions-nxtTd{
   top:0;
   left: 0;
   z-index: 2;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .evol-many-list{

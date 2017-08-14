@@ -6,6 +6,12 @@
 .form-control {
   font-size: 16px;
 }
+.panel{
+  @include b-radius(2px);
+}
+.label{
+  font-weight: 400;
+}
 
 /* --- panels & tabs --- */
 .evol-pnls{
