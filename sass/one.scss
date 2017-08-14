@@ -3,6 +3,10 @@
 //  https://github.com/evoluteur/evolutility-ui-jquery
 //  (c) 2017 Olivier Giulieri
 
+.form-control {
+  font-size: 16px;
+}
+
 /* --- panels & tabs --- */
 .evol-pnls{
   @include flex-holder;
@@ -99,8 +103,16 @@
         margin-bottom: 0 !important;
     }
 }
+label {
+  color:$color-label;
+  font-size: 14px;
+  font-weight: 300;
+}
+
 .evol-field-label > label {
-  color:$color-text;
+  color:$color-label;
+  font-size: 14px;
+  font-weight: 300;
 
   > .glyphicon-question-sign{
     cursor: pointer;
@@ -165,8 +177,7 @@
   font-weight: $weight-label;
   background-color: #fbfbfb;
 }
-label{
-  font-weight: $weight-label;
+.evol-fset label{
   margin-bottom: 2px;
 }
 .help-block{
