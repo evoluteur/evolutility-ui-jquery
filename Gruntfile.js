@@ -224,10 +224,18 @@ module.exports = function (grunt) {
         sass: {
             dev: {
                 options: {
-                    banner: '<%= banner %>'
+                    outputStyle: 'expanded'
                 },
                 files: {
                     "dist/css/evolutility-ui-jquery.css": "sass/evolutility.scss"
+                }
+            },
+            prod: {
+                options: {
+                    outputStyle: 'compressed'
+                },
+                files: {
+                    "dist/css/evolutility-ui-jquery.min.css": "sass/evolutility.scss"
                 }
             },
             demo: {
@@ -237,34 +245,13 @@ module.exports = function (grunt) {
             },
             dependencies: {
                 options: {
-                    banner: '<%= bannerDependencies %>'
+                    outputStyle: 'compressed'
                 },
                 files: {
-                    "dist/css/dependencies.css": "sass/dependencies.scss"
+                    "dist/css/dependencies.min.css": "sass/dependencies.scss"
                 }
             },
         },
-
-        cssmin: {
-          dev: {
-            files: [{
-              expand: true,
-              cwd: 'dist/css',
-              src: ['evolutility-ui-jquery.css'],
-              dest: 'dist/css',
-              ext: '.min.css'
-            }]
-          },
-          dependencies: {
-            files: [{
-              expand: true,
-              cwd: 'dist/css',
-              src: ['dependencies.css'],
-              dest: 'dist/css',
-              ext: '.min.css'
-            }]
-          }
-        }
 
     });
 
@@ -276,7 +263,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-sass');
 
     grunt.registerTask('header', 'Evolutility version', function(arg1) {
@@ -326,8 +312,8 @@ module.exports = function (grunt) {
     ]); 
     grunt.registerTask('css', [
         'sass:dev', 
-        'sass:demo', 
-        'cssmin:dev'
+        'sass:prod',
+        'sass:demo',
     ]);
     grunt.registerTask('js', [
         'concat:js', 
@@ -340,6 +326,5 @@ module.exports = function (grunt) {
         'concat:dependencies', 
         'copy', 
         'uglify:dependencies',
-        'cssmin:dependencies',
     ]);
 };
