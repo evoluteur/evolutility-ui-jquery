@@ -49,7 +49,11 @@
         text-align: center; 
         >i{
           display: block;
-          padding: 4px;
+          // font-size: 22px !important;
+          padding: 4px 3px;
+        }
+        .glyphicon-menu-hamburger{
+          display: inline-block;
         }
       }
 
@@ -116,7 +120,7 @@
 .clear-icon {
   z-index: 3;
   position: absolute;
-  top: 14px;
+  top: 12px;
   right: 47px;
   color: #90a4ae;
   cursor: pointer;
