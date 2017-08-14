@@ -20,8 +20,8 @@ Evol.DOM.Charts = {
     URL: 'http://chart.apis.google.com/chart',
 
     _HTML: function(title, urlPix, style){
-        return '<label class="evol-chart-title">'+
-            title+'</label><img src="'+urlPix+'">';
+        return '<div class="evol-chart-title">'+
+            title+'</div><img src="'+urlPix+'">';
     },
 
     Pie: function (label, data, labels, style, sizes){
