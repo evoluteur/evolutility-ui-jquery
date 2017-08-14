@@ -33,7 +33,7 @@ $xpt-padding: 10px;
   }
 
   >fieldset{
-    margin-left: 20px;
+    margin: 0 10px 10px 20px;
     label{
       display: block;
     }
@@ -66,13 +66,18 @@ $xpt-padding: 10px;
   height: 200px;
   margin-top: 6px;
 }
+.top-btn-xpt{
+  float: right;
+  padding:20px 10px 10px;
 
+  @media only screen and (max-width: 800px) {
+    display: none;
+  }
+}
 .evol-xpt-opts {
-  float:left;
   min-width: 120px;
   width: 220px;
-  margin: 0 0 0 10px;
-  padding-left:20px;
+  margin: 0 0 14px 30px;
   .evol-FLH{
     margin-bottom:10px;
   }
@@ -92,11 +97,12 @@ $xpt-padding: 10px;
 }
 .evol-xptf{
   padding-bottom: 10px;
-  min-height:100px;
+  min-height: 100px;
 }
 .evol-xpt-more{
   display:block;
-  margin-top:10px;
+  margin-top: 10px;
+  font-size: 14px;
 }
 .evol-xpt-more-fields{
   clear: both;

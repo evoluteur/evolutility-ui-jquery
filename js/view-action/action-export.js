@@ -54,32 +54,64 @@ return Backbone.View.extend({
         var h = '',
             formats = this.formats,
             fields = this.getFields(),
-            iMax = fields.length,
-            useMore = iMax > 14;
+            btnExport = dom.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.namePlural), 'btn btn-primary');
+
+        function checkboxes(){
+            var iMax = fields.length,
+                useMore = iMax > 14;
+            var fLabel, fID;
+            //---- export fields: attributes included in the export -----------------------------
+            var h='<fieldset class="checkbox">'+
+                '<label><input type="checkbox" value="1" id="showID">'+i18nXpt.IDkey+'</label>';
+            _.each(fields, function(f, idx){
+                fLabel = f.labelExport || f.label || f.labelList;
+                fID = 'fx-' + f.id;
+                if (fLabel === null || fLabel === '') {
+                    fLabel = '(' + fID + ')';
+                }
+                h+='<label><input type="checkbox" value="1" id="'+fID+'" checked="checked">'+fLabel+'</label>';
+                if (idx === 10 && useMore){
+                    h+='<a href="javascript:void(0)" class="evol-xpt-more">' + i18nXpt.allFields+ '</a><div style="display:none;">';
+                }
+            });
+            if (useMore){
+                h+='</div>';
+            }
+            h+='</fieldset>';
+            return h;
+        }
+        function exportOptions(fId){
+            var h='<div class="evol-xpt-opts">'+
+                //---- field (shared b/w formats - header -----------------------------
+                '<div class="evol-FLH clearfix">'+
+                    '<label class="evol-xpt-cb1">'+uiInput.checkbox(fId, true)+i18nXpt.firstLine+'</label>'+
+                    uiInput.select('xpt-header', '', 'evol-xpt-header', false, [
+                        {id:'label', text:i18nXpt.headerLabels},
+                        {id:'attribute', text:i18nXpt.headerIds}
+                    ])+
+                //---- CSV, TAB - First line for field names ----
+                '</div><div id="xptCSV" class="evol-xpt-opt">'+
+                    //# field - separator
+                    //# - csv - any separator #######
+                    '<div data-id="csv2" class="evol-w120">'+
+                    dom.fieldLabel('separator', i18nXpt.separator)+
+                    uiInput.text('separator', ',', '0')+
+                    '</div>'+
+                '</div>';
+
+            _.each(formats, function(f){
+                h+='<div id="xpt'+f+'" style="display:none;">&nbsp;</div>';
+            });
+            h+='</div></div>'+dom.html.clearer;
+            return h;
+        }
 
         h+='<div class="evol-xpt panel '+this.style+'">'+
             dom.panelHeader({label:this.getTitle()}, false)+
             '<div class="evol-xpt-form clearfix"><div class="evol-xpt-flds">'+
             '<div><label>'+i18nXpt.xpFields+'</label></div>'+
-            '<fieldset class="checkbox">';
-
-        //---- export fields: attributes included in the export -----------------------------
-        h+='<label><input type="checkbox" value="1" id="showID">'+i18nXpt.IDkey+'</label>';
-        _.each(fields, function(f, idx){
-            var fLabel = f.labelExport || f.label || f.labelList,
-                fID = 'fx-' + f.id;
-            if (fLabel === null || fLabel === '') {
-                fLabel = '(' + fID + ')';
-            }
-            h+='<label><input type="checkbox" value="1" id="'+fID+'" checked="checked">'+fLabel+'</label>';
-            if (idx === 10 && useMore){
-                h+='<a href="javascript:void(0)" class="evol-xpt-more">' + i18nXpt.allFields+ '</a><div style="display:none;">';
-            }
-        });
-        if (useMore){
-            h+='</div>';
-        }
-        h+='</fieldset></div><div class="evol-xpt-para">';
+            checkboxes()+
+            '</div><div class="evol-xpt-para">';
 
         //---- export formats: CSV, JSON... ------------------------------------------------
         var fId = 'evol-xpt-format',
@@ -90,38 +122,18 @@ return Backbone.View.extend({
                     };
                 });
         h+='<div class="evol-xptf"><div class="evol-xpt-format-hld"><label for="'+fId+'">'+i18nXpt.format+'</label>'+
-            uiInput.select(fId, '', 'evol-xpt-format', false, formatsList)+'</div>';
-        fId = 'xptFLH';
-        h+='<div class="evol-xpt-opts">'+
-            //---- field (shared b/w formats - header -----------------------------
-            '<div class="evol-FLH clearfix">'+
-                '<label class="evol-xpt-cb1">'+uiInput.checkbox(fId, true)+i18nXpt.firstLine+'</label>'+
-                uiInput.select('xpt-header', '', 'evol-xpt-header', false, [
-                    {id:'label', text:i18nXpt.headerLabels},
-                    {id:'attribute', text:i18nXpt.headerIds}
-                ])+
-            //---- CSV, TAB - First line for field names ----
-            '</div><div id="xptCSV" class="evol-xpt-opt">'+
-                //# field - separator
-                //# - csv - any separator #######
-                '<div data-id="csv2" class="evol-w120">'+
-                dom.fieldLabel('separator', i18nXpt.separator)+
-                uiInput.text('separator', ',', '0')+
-                '</div>'+
-            '</div>';
-        _.each(formats, function(f){
-            h+='<div id="xpt'+f+'" style="display:none;"></div>';
-        });
-        h+='</div></div>'+
+            uiInput.select(fId, '', 'evol-xpt-format', false, formatsList)+'</div>'; 
+        h+='<div class="top-btn-xpt">'+btnExport+'</div>';
+        h+=exportOptions('xptFLH')+
             //---- Preview -----------------------------
-            dom.html.clearer+'<label class="evol-xpt-pvl">'+i18nXpt.preview+'</label>'+
+            '<label class="evol-xpt-pvl">'+i18nXpt.preview+'</label>'+
             // ---- Samples ----
             '<textarea class="evol-xpt-val form-control"></textarea>'+
             '</div></div></div>'+
             // ---- Download button ----
             '<div class="panel '+this.style +' evol-buttons form-actions">'+
                 dom.button('cancel', i18n.tools.bCancel, 'btn-default')+
-                dom.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
+                btnExport+
             '</div>'+
             '</div>';
         return h;
@@ -527,7 +539,7 @@ return Backbone.View.extend({
                     '<div><label>'+uiInput.checkbox('transaction', false)+i18nXpt.SQLTrans+'</label></div>'+
                 '</div></div>';
         }
-        return '';
+        return '&nbsp;';
     },
 
     click_format: function (evt) {
