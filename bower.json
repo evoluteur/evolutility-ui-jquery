@@ -10,7 +10,7 @@
   "homepage": "http://evoluteur.github.io/evolutility-ui-jquery/",
   "authors": "Olivier Giulieri (https://evoluteur.github.io/)",
   "dependencies": {
-    "jquery": "^3.1.1",
+    "jquery": "^3.2.1",
     "backbone": "^1.3.3",
     "backbone.localStorage": "^v1.1.16",
     "underscore": "^1.8.3",
