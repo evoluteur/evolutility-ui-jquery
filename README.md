@@ -243,19 +243,19 @@ var uiModels_comics = {
                     id: 'genre', attribute: 'genre', type: 'lov', 
                     label: 'Genre', width: 38, inMany: true,
                     list: [
-                        {id: 'adv', text: 'Adventure'},
-                        {id: 'conte', text: 'Fairy tale'},
-                        {id: 'eros', text: 'Erotic'},
-                        {id: 'fantasy', text: 'Fantastic'},
-                        {id: 'hf', text: 'Heroic Fantasy'},
-                        {id: 'hist', text: 'Historic'},
-                        {id: 'humor', text: 'Humor'},
-                        {id: 'nocat', text: 'One of a kind'},
-                        {id: 'youth', text: 'Youth'},
-                        {id: 'pol', text: 'Thriller'},
-                        {id: 'sf', text: 'Science-fiction'},
-                        {id: 'sh', text: 'Super Heros'},
-                        {id: 'wwest', text: 'Western'} 
+                        {id: 1, text: 'Adventure'},
+                        {id: 2, text: 'Fairy tale'},
+                        {id: 3, text: 'Erotic'},
+                        {id: 4, text: 'Fantastic'},
+                        {id: 5, text: 'Heroic Fantasy'},
+                        {id: 6, text: 'Historic'},
+                        {id: 7, text: 'Humor'},
+                        {id: 8, text: 'One of a kind'},
+                        {id: 9, text: 'Youth'},
+                        {id: 10, text: 'Thriller'},
+                        {id: 11, text: 'Science-fiction'},
+                        {id: 12, text: 'Super Heros'},
+                        {id: 13, text: 'Western'} 
                     ]
                 },
                 {
@@ -266,9 +266,8 @@ var uiModels_comics = {
                     id: 'language', attribute: 'language', type: 'lov', 
                     label: 'Language', width: 38, inMany: false,
                     list: [
-                        {id: 'FR', text: 'French'},
-                        {id: 'EN', text: 'English'}
-                    ]
+                        {id: 2, text: 'French', icon:'flag_fr.gif'},
+                        {id: 1, text: 'American', icon:'flag_us.gif'}                    ]
                 },
                 {
                     id: 'serie_nb', attribute: 'serie_nb', type: 'integer', 
@@ -360,7 +359,6 @@ The (beginning of a) [documentation](http://evoluteur.github.io/evolutility-ui-j
 [Evolutility-Server-Node](https://github.com/evoluteur/evolutility-server-node) - RESTful Micro-ORM for CRUD and more, written in Javascript, using Node.js, Express, and Postgres.
 
 [Evolutility](http://www.evolutility.org) - Lightweight CRUD framework for heavy lifting with ASP.net and Microsoft SQL-Server.
-
 
 ## License
 
