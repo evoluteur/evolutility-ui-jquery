@@ -3,9 +3,9 @@ var uiModels = uiModels || {};
 uiModels.comics = {
     id: 'comics',
     label: 'Graphic Novels',
-    name: 'graphic novel serie',
-    namePlural: 'graphic novel series',
-    //icon: 'serie.gif',
+    name: 'serie',
+    namePlural: 'series',
+    icon: 'comics.png',
     fnTitle: 'title',
     fnSearch: ['title', 'authors', 'notes'],
     fnBadge: function(m){
