@@ -168,7 +168,7 @@ $width-toolbar-top:620px;
     font-weight: $weight-label;
   }
   @media only screen and (min-width: $screen2) {
-    width: "calc(100% - 170px)";
+    width: calc(100% - 170px);
     top:0 !important;
     margin-left: $width-toolbar-left;
     //background-color: white;
