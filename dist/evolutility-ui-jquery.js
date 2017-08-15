@@ -1,5 +1,5 @@
 /*!
-   evolutility-ui-jquery 1.2.1 
+   evolutility-ui-jquery 1.2.2 
    (c) 2017 Olivier Giulieri 
    http://evoluteur.github.io/evolutility-ui-jquery/  
 */
@@ -887,13 +887,11 @@ Evol.DOM = {
             if(cardi){
                 h+='" data-cardi="'+cardi;
             }
-            if(style!=='label'){
-                h+='" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="'+label;
-            }
+            h+='" data-balloon-pos="down" data-balloon="'+label;
             h+='"><a href="javascript:void(0);" data-id="'+id+'">'+Evol.DOM.icon(icon);
-            if(style!=='tooltip'){
-                h+='&nbsp;'+label;
-            }
+            /*if(label && style!=='tooltip'){
+                h+='<span>'+label+'</span>';
+            }*/
             h+='</a></li>';
             return h;
         }
@@ -1007,10 +1005,15 @@ Evol.DOM = {
      },*/
 
     showOrHide: function($e, visible){
-        if(visible){
-            $e.show();
-        }else{
-            $e.hide();
+        if($e){
+            if(visible){
+                $e.show();
+            }else{
+                $e.hide();
+            }
+        }
+        else{
+            console.log('ERROR: invalid element in "showOrHide".');
         }
     },
 
@@ -1051,8 +1054,8 @@ Evol.DOM.Charts = {
     URL: 'http://chart.apis.google.com/chart',
 
     _HTML: function(title, urlPix, style){
-        return '<label class="evol-chart-title">'+
-            title+'</label><img src="'+urlPix+'">';
+        return '<div class="evol-chart-title">'+
+            title+'</div><img src="'+urlPix+'">';
     },
 
     Pie: function (label, data, labels, style, sizes){
@@ -2931,7 +2934,7 @@ Evol.ViewMany.List = Evol.View_Many.extend({
             link = (this.links!==false);
 
         h+='<div class="evol-many-list">'+
-            '<div><table class="table table-bordered'+(link?' table-hover':'')+'"><thead><tr>';
+            '<div><table class="table'+(link?' table-hover':'')+'"><thead><tr>';
         if(this.selectable){
             h+='<th class="list-td-sel">'+this._HTMLCheckbox('cbxAll')+'</th>';
         }
@@ -4636,32 +4639,64 @@ return Backbone.View.extend({
         var h = '',
             formats = this.formats,
             fields = this.getFields(),
-            iMax = fields.length,
-            useMore = iMax > 14;
+            btnExport = dom.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.namePlural), 'btn btn-primary');
+
+        function checkboxes(){
+            var iMax = fields.length,
+                useMore = iMax > 14;
+            var fLabel, fID;
+            //---- export fields: attributes included in the export -----------------------------
+            var h='<fieldset class="checkbox">'+
+                '<label><input type="checkbox" value="1" id="showID">'+i18nXpt.IDkey+'</label>';
+            _.each(fields, function(f, idx){
+                fLabel = f.labelExport || f.label || f.labelList;
+                fID = 'fx-' + f.id;
+                if (fLabel === null || fLabel === '') {
+                    fLabel = '(' + fID + ')';
+                }
+                h+='<label><input type="checkbox" value="1" id="'+fID+'" checked="checked">'+fLabel+'</label>';
+                if (idx === 10 && useMore){
+                    h+='<a href="javascript:void(0)" class="evol-xpt-more">' + i18nXpt.allFields+ '</a><div style="display:none;">';
+                }
+            });
+            if (useMore){
+                h+='</div>';
+            }
+            h+='</fieldset>';
+            return h;
+        }
+        function exportOptions(fId){
+            var h='<div class="evol-xpt-opts">'+
+                //---- field (shared b/w formats - header -----------------------------
+                '<div class="evol-FLH clearfix">'+
+                    '<label class="evol-xpt-cb1">'+uiInput.checkbox(fId, true)+i18nXpt.firstLine+'</label>'+
+                    uiInput.select('xpt-header', '', 'evol-xpt-header', false, [
+                        {id:'label', text:i18nXpt.headerLabels},
+                        {id:'attribute', text:i18nXpt.headerIds}
+                    ])+
+                //---- CSV, TAB - First line for field names ----
+                '</div><div id="xptCSV" class="evol-xpt-opt">'+
+                    //# field - separator
+                    //# - csv - any separator #######
+                    '<div data-id="csv2" class="evol-w120">'+
+                    dom.fieldLabel('separator', i18nXpt.separator)+
+                    uiInput.text('separator', ',', '0')+
+                    '</div>'+
+                '</div>';
+
+            _.each(formats, function(f){
+                h+='<div id="xpt'+f+'" style="display:none;">&nbsp;</div>';
+            });
+            h+='</div></div>'+dom.html.clearer;
+            return h;
+        }
 
         h+='<div class="evol-xpt panel '+this.style+'">'+
             dom.panelHeader({label:this.getTitle()}, false)+
             '<div class="evol-xpt-form clearfix"><div class="evol-xpt-flds">'+
             '<div><label>'+i18nXpt.xpFields+'</label></div>'+
-            '<fieldset class="checkbox">';
-
-        //---- export fields: attributes included in the export -----------------------------
-        h+='<label><input type="checkbox" value="1" id="showID">'+i18nXpt.IDkey+'</label>';
-        _.each(fields, function(f, idx){
-            var fLabel = f.labelExport || f.label || f.labelList,
-                fID = 'fx-' + f.id;
-            if (fLabel === null || fLabel === '') {
-                fLabel = '(' + fID + ')';
-            }
-            h+='<label><input type="checkbox" value="1" id="'+fID+'" checked="checked">'+fLabel+'</label>';
-            if (idx === 10 && useMore){
-                h+='<a href="javascript:void(0)" class="evol-xpt-more">' + i18nXpt.allFields+ '</a><div style="display:none;">';
-            }
-        });
-        if (useMore){
-            h+='</div>';
-        }
-        h+='</fieldset></div><div class="evol-xpt-para">';
+            checkboxes()+
+            '</div><div class="evol-xpt-para">';
 
         //---- export formats: CSV, JSON... ------------------------------------------------
         var fId = 'evol-xpt-format',
@@ -4672,38 +4707,18 @@ return Backbone.View.extend({
                     };
                 });
         h+='<div class="evol-xptf"><div class="evol-xpt-format-hld"><label for="'+fId+'">'+i18nXpt.format+'</label>'+
-            uiInput.select(fId, '', 'evol-xpt-format', false, formatsList)+'</div>';
-        fId = 'xptFLH';
-        h+='<div class="evol-xpt-opts">'+
-            //---- field (shared b/w formats - header -----------------------------
-            '<div class="evol-FLH clearfix">'+
-                '<label class="evol-xpt-cb1">'+uiInput.checkbox(fId, true)+i18nXpt.firstLine+'</label>'+
-                uiInput.select('xpt-header', '', 'evol-xpt-header', false, [
-                    {id:'label', text:i18nXpt.headerLabels},
-                    {id:'attribute', text:i18nXpt.headerIds}
-                ])+
-            //---- CSV, TAB - First line for field names ----
-            '</div><div id="xptCSV" class="evol-xpt-opt">'+
-                //# field - separator
-                //# - csv - any separator #######
-                '<div data-id="csv2" class="evol-w120">'+
-                dom.fieldLabel('separator', i18nXpt.separator)+
-                uiInput.text('separator', ',', '0')+
-                '</div>'+
-            '</div>';
-        _.each(formats, function(f){
-            h+='<div id="xpt'+f+'" style="display:none;"></div>';
-        });
-        h+='</div></div>'+
+            uiInput.select(fId, '', 'evol-xpt-format', false, formatsList)+'</div>'; 
+        h+='<div class="top-btn-xpt">'+btnExport+'</div>';
+        h+=exportOptions('xptFLH')+
             //---- Preview -----------------------------
-            dom.html.clearer+'<label class="evol-xpt-pvl">'+i18nXpt.preview+'</label>'+
+            '<label class="evol-xpt-pvl">'+i18nXpt.preview+'</label>'+
             // ---- Samples ----
             '<textarea class="evol-xpt-val form-control"></textarea>'+
             '</div></div></div>'+
             // ---- Download button ----
             '<div class="panel '+this.style +' evol-buttons form-actions">'+
                 dom.button('cancel', i18n.tools.bCancel, 'btn-default')+
-                dom.button('export', i18nXpt.DownloadEntity.replace('{0}', this.uiModel.namePlural), 'btn btn-primary')+
+                btnExport+
             '</div>'+
             '</div>';
         return h;
@@ -5109,7 +5124,7 @@ return Backbone.View.extend({
                     '<div><label>'+uiInput.checkbox('transaction', false)+i18nXpt.SQLTrans+'</label></div>'+
                 '</div></div>';
         }
-        return '';
+        return '&nbsp;';
     },
 
     click_format: function (evt) {
@@ -6151,26 +6166,26 @@ return Backbone.View.extend({
         buttons: {
             always:[
                 {id: 'list', label: i18nTool.bList, icon:'th-list', n:'x'},
+                {id:'charts', label: i18nTool.bCharts, icon:'stats', n:'x'},
                 //{id: 'selections', label: i18nTool.Selections, icon:'star', n:'x'},
-                {id: 'new', label: i18nTool.bNew, icon:'plus', n:'x', readonly:false}
+                {id: 'new', label: i18nTool.bNew, icon:'plus', n:'x', readonly:false},
             ],
             actions:[
                 //{id:'browse', label: i18nTool.bBrowse, icon:'eye', n:'1', readonly:false},
                 {id:'edit', label: i18nTool.bEdit, icon:'edit', n:'1', readonly:false},
                 {id:'save', label: i18nTool.bSave, icon:'floppy-disk', n:'1', readonly:false},
-                {id:'del', label: i18nTool.bDelete, icon:'trash', n:'1', readonly:false}
+                {id:'del', label: i18nTool.bDelete, icon:'trash', n:'1', readonly:false},
+                {id:'filter', label: i18nTool.bFilter, icon:'filter', n:'n'},
+                {id:'export', label: i18nTool.bExport, icon:'cloud-download',n:'n'},
             ],
             moreActions:[
-                {id:'filter', label: i18nTool.bFilter, icon:'filter', n:'n'},
-                {id:'-'},
-                {id:'export', label: i18nTool.bExport, icon:'cloud-download',n:'x'},
-                {id:'import', label: i18nTool.bImport, icon:'cloud-upload',n:'x'},
+                //{id:'import', label: i18nTool.bImport, icon:'cloud-upload',n:'x'},
                 //{id:'-'},
                 //{id:'cog',label: 'Customize', icon:'cog',n:'x'}
             ],
             prevNext:[
-                {id:'prev', label: '', icon:'chevron-left', n:'x'},
-                {id:'next', label: '', icon:'chevron-right', n:'x'}
+                {id:'prev', label: i18nTool.prev, icon:'chevron-left', n:'x'},
+                {id:'next', label: i18nTool.next, icon:'chevron-right', n:'x'}
             ],
             views: [
                 // -- views ONE ---
@@ -6183,7 +6198,6 @@ return Backbone.View.extend({
                 {id:'list', label: i18nTool.bList, icon:'th-list', n:'n'},
                 {id:'cards', label: i18nTool.bCards, icon:'th-large', n:'n'},
                 {id:'bubbles', label: i18nTool.bBubbles, icon:'adjust', n:'n'},
-                {id:'charts', label: i18nTool.bCharts, icon:'stats', n:'n'}
             ],
             search: true
         }
@@ -6252,7 +6266,7 @@ return Backbone.View.extend({
             h+=menuItems(tb.prevNext);
             //h+=domm.hBegin('views','li','eye-open');
             h+=menuDividerH+
-                menuItems(tb.views, true);
+                menuItems(tb.views, false);
             //h+=domm.hItem('customize','','wrench', 'x', 'Customize');
             /*
              if(this.buttons.customize){
