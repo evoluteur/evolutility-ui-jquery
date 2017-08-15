@@ -149,9 +149,14 @@
 .evol-actions{
   top: 35px;
   right: 1px;
+  border-color: $color-border;
   border-right: none;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
+}
+.evol-many-list .evol-actions{
+  border: 1px solid $color-border;
+  border-radius: 5px;
 }
 .evol-actions-nxtTd{
   top:0;

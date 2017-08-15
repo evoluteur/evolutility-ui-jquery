@@ -15,7 +15,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     > .table {
-
+      border: 1px solid $color-border;
       margin-bottom: 0;
 
       textarea{
