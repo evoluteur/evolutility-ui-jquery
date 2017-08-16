@@ -133,13 +133,14 @@ return Backbone.View.extend({
         var h,
             isReadOnly=this.readonly!==false,
             that=this,
+            itemName=this.uiModel.name||'item',
             domm=dom.menu,
             tb=this.buttons,
             menuDivider='<li class="divider" data-cardi="x"></li>',
             menuDividerH='<li class="divider-h"></li>';
 
         function menuItem (m, noLabel){
-            return domm.hItem(m.id, noLabel?'':m.label, m.icon, m.n);
+            return domm.hItem(m.id, noLabel?'':((m.label=='New'?'New '+itemName:m.label)), m.icon, m.n);
         }
         function menuItems (ms, noLabel){
             return _.map(ms, function(m){
@@ -315,8 +316,7 @@ return Backbone.View.extend({
                                 collection: this.collection,
                                 style: this.style,
                                 titleSelector: this.titleSelector,
-                                router: this.router//,
-                                //iconsPath: this.iconsPath || ''
+                                router: this.router
                             };
                             vw = new ViewClass(config).render();
                             break;

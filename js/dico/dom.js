@@ -175,16 +175,7 @@ Evol.DOM = {
                 }
             });
             return opts;
-        }/*,
-
-         toggle: function  (items) {
-         var h=['<div class="btn-group" data-toggle="buttons">'];
-         _.each(items, function(item){
-         h.push('<label class="btn btn-info"><input type="radio" name="options" id="',item.id,'">',item.text,'</label>');
-         });
-         h.push('</div>');
-         return h.join('');
-         },*/
+        }
     },
 
     toggleCheckbox: function($cb, v){
@@ -211,13 +202,7 @@ Evol.DOM = {
     },
     buttonsPlusMinus: function(){
         return this.buttonsPlus()+this.buttonsMinus();
-    },/*
-    buttonsPrev: function(){
-        return this.buttonsIcon('bPrev', 'chevron-left');
     },
-    buttonsNext: function(){
-        return this.buttonsIcon('bNext', 'chevron-right');
-    },*/
 
     // --- links ---
     link: function (id, label, url, target) {

@@ -1,6 +1,6 @@
 ﻿//   Evolutility-UI-jQuery Localization Library ENGLISH
 //   https://github.com/evoluteur/evolutility-ui-jquery
-//   (c) 2015 Olivier Giulieri
+//   (c) 2017 Olivier Giulieri
 
 var Evol = Evol || {};
 

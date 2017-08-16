@@ -77,6 +77,11 @@ function hideUIModel(){
 }
 
 function showApp(entity, view){
-    $('#title').html(uiModels[entity].label);
-    window.location.href = '#'+entity+'/'+(view||'list');
+    var m=uiModels[entity];
+    if(m){
+        $('#title').html(m.label);
+        window.location.href = '#'+entity+'/'+(view||'list');
+    }else{
+        alert('App not defined "'+entity+'".');
+    }
 }

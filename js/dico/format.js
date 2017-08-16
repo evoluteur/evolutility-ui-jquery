@@ -81,7 +81,7 @@ Evol.Format = {
             dd={"error": "Evol.Format.jsonString"};
         }
         if(dd===''){
-            return  dd;
+            return dd;
         }else{
             //var txt=JSON.stringify(dd, null, '\t');
             var txt=JSON.stringify(dd, null, 2);
