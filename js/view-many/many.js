@@ -323,7 +323,7 @@ return Backbone.View.extend({
                 };
             h+='<li data-id="prev"'+
                 ((pId===1)?' class="disabled"':'')+
-                '><a href="javascript:void(0)">&laquo;</a></li>';
+                '><a href="javascript:void(0)">&lt;</a></li>';
             bPage(1);
             if(pId>4 && nbPages>6){
                 if(pId===5){
@@ -343,7 +343,7 @@ return Backbone.View.extend({
             }
             h+='<li data-id="next"'+
                 ((nbPages > pId) ? '' : ' class="disabled"')+
-                '><a href="javascript:void(0)">&raquo;</a></li>';
+                '><a href="javascript:void(0)">&gt;</a></li>';
         }
         return h;
     },

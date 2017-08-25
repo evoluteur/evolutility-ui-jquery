@@ -151,15 +151,3 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
-// paging
-.evo-pagination{
-  li[data-id="prev"], li[data-id="next"]{
-    a{
-      font-size: 24px;
-      line-height: 23px;
-      padding: 1px 8px 4px
-    }
-  }
-}
-
