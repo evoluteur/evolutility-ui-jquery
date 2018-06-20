@@ -36,7 +36,7 @@ function createSampleDataIfEmpty(entityName){
             localStorage: lc
         });
     }else{
-        M = new Backbone.Model({
+        M = Backbone.Model.extend({
             urlRoot: Evol.Config.url+entityName
         });
         Ms = Backbone.Collection.extend({
