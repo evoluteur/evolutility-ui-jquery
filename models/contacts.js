@@ -382,12 +382,8 @@ uiModels.contact = {
             type: 'panel', label: 'Address', width: 62,
             elements: [
                 {
-                    type: 'text', id: 'address1', attribute: 'address1', 
-                     label: 'Address', maxLength: 150, width: 100
-                },
-                {
-                    type: 'text', id: 'address2', attribute: 'address2', 
-                     label: '', labelMany: 'Address 2', maxLength: 150, width: 100
+                    type: 'text', id: 'address', attribute: 'address', 
+                     label: 'Address', maxLength: 150, width: 100, height: 3
                 },
                 {
                     type: 'text', id: 'city', attribute: 'city', 
