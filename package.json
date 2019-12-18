@@ -26,16 +26,16 @@
     "grunt-sass": "^2.0.0"
   },
   "keywords": [
+      "low-code",
       "model",
       "metadata",
       "UI",
       "forms",
       "CRUD",
       "Backbone",
-      "web",
       "MDA",
       "javascript",
-      "low-code",
-      "forms"
+      "forms",
+      "MVC"
   ]
 }

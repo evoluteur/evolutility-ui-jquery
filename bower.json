@@ -1,8 +1,8 @@
 {
   "name": "evolutility-ui-jquery",
   "version": "1.2.2",
-  "copyright": "(c) 2017 Olivier Giulieri",
-  "description": "UI which changes form, volume and structure to adapt to your data (using jQuery, Backbone, and D3.js).",
+  "copyright": "(c) 2019 Olivier Giulieri",
+  "description": "Set of model-driven views list, browse, edit, and chart your data (using jQuery, Backbone, and D3.js).",
   "main": [
     "dist/evolutility-ui-jquery.js",
     "dist/css/evolutility-ui-jquery.css"

@@ -30,6 +30,13 @@ By default, Evolutility-UI-jQuery is configured use localStorage for storing dat
 - run Grunt (to rebuild evolutility-ui-jquery.js (or evolutility-ui-jquery.min.js),
 - move the app to a web server.
 
+```bash
+# To rebuild the project
+cd evolutility-ui-jquery
+bower install
+grunt
+```
+
 For the matching RESTful API you will also need to setup [Evolutility-Server-Node](https://github.com/evoluteur/evolutility-server-node). 
 
 
@@ -348,20 +355,15 @@ Javascript, HTML5, CSS3,
 
 Note: For convenience, all dependencies are minified together in a single file "dependencies.min.js". The dependencies list is specified in "Gruntfile.js".
 
+The React alternative: 
+[Evolutility-UI-React](https://github.com/evoluteur/evolutility-ui-react)
+
 ## Documentation
 
 The (beginning of a) [documentation](http://evoluteur.github.io/evolutility-ui-jquery/doc/index.html) is in progress: [ui-models](http://evoluteur.github.io/evolutility-ui-jquery/doc/ui-model.html) and [views](http://evoluteur.github.io/evolutility-ui-jquery/doc/views.html).
 
-## Other implementations of Evolutility
-
-[Evolutility-UI-React](https://github.com/evoluteur/evolutility-ui-react) - Model-driven Web UI for CRUD using React.
-
-[Evolutility-Server-Node](https://github.com/evoluteur/evolutility-server-node) - RESTful Micro-ORM for CRUD and more, written in Javascript, using Node.js, Express, and Postgres.
-
-[Evolutility](http://www.evolutility.org) - Lightweight CRUD framework for heavy lifting with ASP.net and Microsoft SQL-Server.
-
 ## License
 
-Copyright (c) 2017 [Olivier Giulieri](https://evoluteur.github.io/).
+Copyright (c) 2019 [Olivier Giulieri](https://evoluteur.github.io/).
 
 Evolutility-UI-jQuery is released under the [MIT license](http://github.com/evoluteur/evolutility-ui-jquery/blob/master/LICENSE.md).
