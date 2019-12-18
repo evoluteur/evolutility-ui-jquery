@@ -53,10 +53,12 @@ input.form-control {
     &[type="number"]{
       min-width: 100px;
     } 
-    &[type="text"], 
-    textarea{
+    &[type="text"]{
       min-width: 120px;
     }
+  }
+  textarea{
+    min-width: 120px;
   }
   select{
     min-width: 120px;
