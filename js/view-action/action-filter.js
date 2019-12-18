@@ -515,6 +515,12 @@ return Backbone.View.extend({
                     case fts.datetime:
                         fv.value=formattedDate(vval);
                         break;
+                    case fts.int:
+                        fv.value=vval && typeof(vval)==='string'?parseInt(vval):null;
+                        break;
+                    case fts.dec:
+                        fv.value=vval && typeof(vval)==='string'?parseFloat(vval):null;
+                        break;
                     default:
                         fv.value=vval;
                 }
