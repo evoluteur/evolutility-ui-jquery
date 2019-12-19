@@ -1,6 +1,6 @@
 /*!
-   evolutility-ui-jquery 1.2.2 
-   (c) 2017 Olivier Giulieri 
+   evolutility-ui-jquery 1.2.3 
+   (c) 2019 Olivier Giulieri 
    http://evoluteur.github.io/evolutility-ui-jquery/  
 */
 // default config for Evolutility-UI-jQuery
@@ -13,13 +13,13 @@ Evol.Config = {
 	localStorage: true,
 
 	// --- using evolutility-server-node
-	//url: 'http://localhost:3000/api/v1/evolutility/'
+	//url: 'http://localhost:2000/api/v1/'
 
 };
 ;
 //   Evolutility-UI-jQuery Localization Library ENGLISH
 //   https://github.com/evoluteur/evolutility-ui-jquery
-//   (c) 2015 Olivier Giulieri
+//   (c) 2017 Olivier Giulieri
 
 var Evol = Evol || {};
 
@@ -598,7 +598,7 @@ Evol.Format = {
             dd={"error": "Evol.Format.jsonString"};
         }
         if(dd===''){
-            return  dd;
+            return dd;
         }else{
             //var txt=JSON.stringify(dd, null, '\t');
             var txt=JSON.stringify(dd, null, 2);
@@ -788,16 +788,7 @@ Evol.DOM = {
                 }
             });
             return opts;
-        }/*,
-
-         toggle: function  (items) {
-         var h=['<div class="btn-group" data-toggle="buttons">'];
-         _.each(items, function(item){
-         h.push('<label class="btn btn-info"><input type="radio" name="options" id="',item.id,'">',item.text,'</label>');
-         });
-         h.push('</div>');
-         return h.join('');
-         },*/
+        }
     },
 
     toggleCheckbox: function($cb, v){
@@ -824,13 +815,7 @@ Evol.DOM = {
     },
     buttonsPlusMinus: function(){
         return this.buttonsPlus()+this.buttonsMinus();
-    },/*
-    buttonsPrev: function(){
-        return this.buttonsIcon('bPrev', 'chevron-left');
     },
-    buttonsNext: function(){
-        return this.buttonsIcon('bNext', 'chevron-right');
-    },*/
 
     // --- links ---
     link: function (id, label, url, target) {
@@ -2018,7 +2003,7 @@ return Backbone.View.extend({
                 };
             h+='<li data-id="prev"'+
                 ((pId===1)?' class="disabled"':'')+
-                '><a href="javascript:void(0)">&laquo;</a></li>';
+                '><a href="javascript:void(0)">&lt;</a></li>';
             bPage(1);
             if(pId>4 && nbPages>6){
                 if(pId===5){
@@ -2038,7 +2023,7 @@ return Backbone.View.extend({
             }
             h+='<li data-id="next"'+
                 ((nbPages > pId) ? '' : ' class="disabled"')+
-                '><a href="javascript:void(0)">&raquo;</a></li>';
+                '><a href="javascript:void(0)">&gt;</a></li>';
         }
         return h;
     },
@@ -4449,6 +4434,125 @@ Evol.ViewOne.JSON = Evol.View_One.extend({
                 dom.input.textMJSON('uimjson', jsonStr, 16)+
                 '</fieldset>'+
                 dom.panelEnd());
+
+h.push(syntaxHighlight(jsonStr));
+
+            this._renderButtons(h, 'json');
+            this.$el.html(h.join(''));
+        }else{
+            this.$el.html(dom.HTMLMsg(Evol.i18n.nodata, '', 'info'));
+        }
+        this.setData(this.model);
+        //this.custOn=false;
+        return this;
+    },
+
+    validate: function () {
+        var isValid=true,
+            data=this.getData(),
+            $fp=this._getDOMField().parent();
+
+        //this.clearMessages();
+        isValid=!Evol.DOM.addRemClass($fp, data===null, 'has-error');
+        this.$el.trigger('action', 'validate', {valid:isValid});
+        return isValid?[]:[Evol.i18n.validation.invalid];
+    },
+
+    getData: function () {
+        var jsonStr=this._getDOMField().val(),
+            obj;
+
+        if(jsonStr===''){
+            return jsonStr;
+        }
+        try{
+            obj=$.parseJSON(jsonStr);
+        }catch(err){
+            obj=null;
+        }
+        return obj;
+    },
+
+    setData: function (m) {
+        this.clearError()._getDOMField().val(JSON.stringify(m.toJSON(), null, 2));
+        return this.setTitle();
+    },
+
+    clear: function () {
+        this._getDOMField().val('');
+        return this;
+    },
+
+    clearError: function(){
+        this._getDOMField().parent().removeClass('has-error');
+        return this;
+    },
+
+    _getDOMField: function(){
+        return this.$('textarea');
+    }
+
+});
+
+function syntaxHighlight(json) {
+    if (typeof json != 'string') {
+         json = JSON.stringify(json, undefined, 2);
+    }
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key';
+            } else {
+                cls = 'string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+    });
+}
+;
+/*! ***************************************************************************
+ *
+ * evolutility-ui-jquery :: one-json.js
+ *
+ * View "one json" to edit one backbone model in JSON.
+ *
+ * https://github.com/evoluteur/evolutility-ui-jquery
+ * (c) 2017 Olivier Giulieri
+ *
+ *************************************************************************** */
+
+Evol.ViewOne.JSON = Evol.View_One.extend({
+
+    events: {
+        'click > .evol-buttons > button': 'click_button',
+        'click .evol-title-toggle': 'click_toggle',
+    },
+
+    viewName: 'json',
+    icon: 'barcode', // glyphicon-barcode
+
+    render: function () {
+        var dom=Evol.DOM;
+        if(this.model){
+            var h = [],
+                jsonStr=JSON.stringify(this.model, null, 2);
+
+            h.push(dom.panelBegin({
+                    id: 'p-json',
+                    label:Evol.Format.capitalize(this.uiModel.name), 
+                    label2: 'JSON'
+                }, this.style+' evo-p-json', true)+
+                '<fieldset>'+
+                dom.label('uimjson', 'JSON')+
+                dom.input.textMJSON('uimjson', jsonStr, 16)+
+                '</fieldset>'+
+                dom.panelEnd());
             this._renderButtons(h, 'json');
             this.$el.html(h.join(''));
         }else{
@@ -5692,6 +5796,12 @@ return Backbone.View.extend({
                     case fts.datetime:
                         fv.value=formattedDate(vval);
                         break;
+                    case fts.int:
+                        fv.value=vval && typeof(vval)==='string'?parseInt(vval):null;
+                        break;
+                    case fts.dec:
+                        fv.value=vval && typeof(vval)==='string'?parseFloat(vval):null;
+                        break;
                     default:
                         fv.value=vval;
                 }
@@ -6221,13 +6331,14 @@ return Backbone.View.extend({
         var h,
             isReadOnly=this.readonly!==false,
             that=this,
+            itemName=this.uiModel.name||'item',
             domm=dom.menu,
             tb=this.buttons,
             menuDivider='<li class="divider" data-cardi="x"></li>',
             menuDividerH='<li class="divider-h"></li>';
 
         function menuItem (m, noLabel){
-            return domm.hItem(m.id, noLabel?'':m.label, m.icon, m.n);
+            return domm.hItem(m.id, noLabel?'':((m.label=='New'?'New '+itemName:m.label)), m.icon, m.n);
         }
         function menuItems (ms, noLabel){
             return _.map(ms, function(m){
@@ -6403,8 +6514,7 @@ return Backbone.View.extend({
                                 collection: this.collection,
                                 style: this.style,
                                 titleSelector: this.titleSelector,
-                                router: this.router//,
-                                //iconsPath: this.iconsPath || ''
+                                router: this.router
                             };
                             vw = new ViewClass(config).render();
                             break;

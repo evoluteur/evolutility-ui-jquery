@@ -1,5 +1,5 @@
 /*!
-  evolutility-ui-jquery 1.2.2
+  evolutility-ui-jquery 1.2.3
   
   https://github.com/evoluteur/evolutility-ui-jquery
 */
@@ -241,8 +241,11 @@ input.form-control {
   min-width: 100px;
 }
 
-.evo-plist input[type="text"],
-.evo-plist input textarea {
+.evo-plist input[type="text"] {
+  min-width: 120px;
+}
+
+.evo-plist textarea {
   min-width: 120px;
 }
 
@@ -710,12 +713,6 @@ body {
 table {
   border-collapse: collapse;
   border-spacing: 0;
-}
-
-.evo-pagination li[data-id="prev"] a, .evo-pagination li[data-id="next"] a {
-  font-size: 24px;
-  line-height: 23px;
-  padding: 1px 8px 4px;
 }
 
 /* --- cards --- */

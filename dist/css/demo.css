@@ -2,6 +2,7 @@
 /* --- header, navbar, content and footer --- */
 .evo-logo {
   float: left;
+  line-height: 30px;
   font-size: 2em;
   margin: 10px 80px 20px 10px; }
   .evo-logo > a {
@@ -31,7 +32,7 @@
   top: 0;
   left: 0;
   overflow: none;
-  background-color: #0099cc;
+  background-color: #336699;
   min-height: 75px;
   width: 100%;
   min-width: 620px;
@@ -97,7 +98,7 @@
 .evo-head-links {
   font-size: 1.5em;
   margin-top: 5px;
-  margin-left: -30px; }
+  margin-left: -40px; }
   .evo-head-links > li.spaced {
     margin-top: 50px; }
     @media only screen and (max-width: 900px) {
@@ -116,7 +117,7 @@
         display: block; } }
 
 .evo-title, .evo-title2 {
-  background-color: #0099cc;
+  background-color: #336699;
   position: absolute;
   z-index: 1002;
   width: 100%;
@@ -174,6 +175,8 @@
   text-align: center;
   font-size: smaller;
   color: silver; }
+  .footer a {
+    color: silver; }
 
 .evol-doc-views > section {
   margin: 10px; }
@@ -319,7 +322,8 @@ body {
   height: 100%; }
 
 a {
-  color: #0099cc; }
+  color: #0099cc;
+  font-weight: 400; }
 
 h1, h2, h3, h4 {
   color: #2072a7; }
@@ -407,7 +411,7 @@ h1, h2, h3, h4 {
 .title2 {
   font-size: smaller;
   font-weight: normal;
-  color: #b3e5fc; }
+  color: #336699; }
 
 /* demo card view*/
 [data-eid="todo"] .evol-cards-body > .panel,
