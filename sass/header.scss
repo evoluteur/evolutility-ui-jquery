@@ -7,12 +7,13 @@
 
 @import "sass/variables";
 
-$width-toolbar-left:170px;
-$width-toolbar-top:620px;
+$width-toolbar-left: 170px;
+$width-toolbar-top: 620px;
 
 // --- top navbar ---
 .evo-logo{
   float:left;
+  line-height: 30px;
   font-size: 2em;
   margin: 10px 80px 20px 10px;
 
@@ -53,7 +54,7 @@ $width-toolbar-top:620px;
   left:0;
   //opacity: .9;
   overflow: none;
-  background-color: $color-header;
+  background-color: $color-navbar;
   //border-bottom: #366092 solid 1px;
   min-height: 75px;
   width:100%;
@@ -132,7 +133,7 @@ $width-toolbar-top:620px;
 .evo-head-links{
   font-size: 1.5em;
   margin-top:5px;
-  margin-left:-30px;
+  margin-left:-40px;
   >li.spaced{
     margin-top:50px;
     @media only screen and (max-width: $screen2) {
@@ -156,7 +157,7 @@ $width-toolbar-top:620px;
 
 // --- page title ---
 .evo-title,.evo-title2{
-  background-color: $color-header2;
+  background-color: $color-navbar;
   position: absolute; //fixed;
   z-index: 1002; // above bootstrap dropdown
   width: 100%;
@@ -234,5 +235,8 @@ $height-footer: 120px;
   height:$height-footer;
 	text-align: center;
 	font-size:smaller;
-	color:$color-text-footer;
+  color:$color-text-footer;
+  a{
+    color:$color-text-footer;
+  }
 }

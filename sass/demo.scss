@@ -12,6 +12,7 @@ body{
 }
 a{
   color: #0099cc;
+  font-weight: 400;
 }
 h1,h2,h3,h4{
   color: #2072a7;
@@ -109,7 +110,7 @@ h1,h2,h3,h4{
 .title2{
   font-size:smaller;
   font-weight: normal;
-  color: #b3e5fc;
+  color: $color-navbar;
 }
 
 @mixin mixin-badgeHeight($h) {
