@@ -1,4 +1,5 @@
-# Evolutility-UI-jQuery
+# Evolutility-UI-jQuery &middot; [![GitHub license](https://img.shields.io/github/license/evoluteur/evolutility-ui-jquery)](https://github.com/evoluteur/evolutility-ui-jquery/blob/master/LICENSE.md) [![npm version](https://img.shields.io/npm/v/evolutility-ui-jquery)](https://www.npmjs.com/package/evolutility-ui-jquery) 
+
 
 Evolutility-UI-jQuery provides a set of generic Backbone Views to browse, edit, filter, export and chart Backbone models and collections of different structures.
 With it you can make web applications by configuring views with metadata instead of hand-coding templates, Javascript and CSS.
