@@ -25,6 +25,14 @@ Sample Single Page Apps made with Evolutility:
 git clone https://github.com/evoluteur/evolutility-ui-jquery
 ```
 
+or use the [npm package](https://www.npmjs.com/package/evolutility-ui-jquery):
+
+```bash
+# To get the latest stable version, use npm from the command line.
+npm install evolutility-ui-jquery
+```
+
+
 By default, Evolutility-UI-jQuery is configured use localStorage for storing data. To make it work with a REST API:
 
 - specify the REST root endpoint using the "url" attribute in the "config.js" file,
