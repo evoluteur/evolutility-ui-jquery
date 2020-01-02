@@ -373,6 +373,6 @@ The (beginning of a) [documentation](http://evoluteur.github.io/evolutility-ui-j
 
 ## License
 
-Copyright (c) 2019 [Olivier Giulieri](https://evoluteur.github.io/).
+Copyright (c) 2020 [Olivier Giulieri](https://evoluteur.github.io/).
 
 Evolutility-UI-jQuery is released under the [MIT license](http://github.com/evoluteur/evolutility-ui-jquery/blob/master/LICENSE.md).
