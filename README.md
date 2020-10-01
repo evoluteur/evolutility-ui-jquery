@@ -4,6 +4,8 @@
 Evolutility-UI-jQuery provides a set of generic Backbone Views to browse, edit, filter, export and chart Backbone models and collections of different structures.
 With it you can make web applications by configuring views with metadata instead of hand-coding templates, Javascript and CSS.
 
+![Edit](https://raw.githubusercontent.com/evoluteur/evolutility-ui-jquery/master/doc/screenshots/one-edit.gif)
+
 By default Evolutility-UI-jQuery uses your browser local storage to store data (easier for demos because there is no server or database to setup).
 
 [Evolutility-Server-Node](https://github.com/evoluteur/evolutility-server-node) provides a matching RESTful API using Node.js, Express, and Postgres. 
