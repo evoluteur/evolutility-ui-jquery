@@ -1,4 +1,4 @@
-# Evolutility-UI-jQuery &middot; [![GitHub license](https://img.shields.io/github/license/evoluteur/evolutility-ui-jquery)](https://github.com/evoluteur/evolutility-ui-jquery/blob/master/LICENSE.md) [![npm version](https://img.shields.io/npm/v/evolutility-ui-jquery)](https://www.npmjs.com/package/evolutility-ui-jquery) 
+# Evolutility-UI-jQuery &middot; [![GitHub license](https://img.shields.io/github/license/evoluteur/evolutility-ui-jquery)](https://github.com/evoluteur/evolutility-ui-jquery/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/evolutility-ui-jquery)](https://www.npmjs.com/package/evolutility-ui-jquery) 
 
 
 Evolutility-UI-jQuery provides a set of generic Backbone Views to browse, edit, filter, export and chart Backbone models and collections of different structures.
@@ -377,4 +377,4 @@ The (beginning of a) [documentation](http://evoluteur.github.io/evolutility-ui-j
 
 Copyright (c) 2020 [Olivier Giulieri](https://evoluteur.github.io/).
 
-Evolutility-UI-jQuery is released under the [MIT license](http://github.com/evoluteur/evolutility-ui-jquery/blob/master/LICENSE.md).
+Evolutility-UI-jQuery is released under the [MIT license](http://github.com/evoluteur/evolutility-ui-jquery/blob/master/LICENSE).

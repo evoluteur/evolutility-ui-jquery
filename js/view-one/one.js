@@ -70,7 +70,6 @@ return Backbone.View.extend({
 
     getFields: function (){
         if(!this._fields){
-            var that = this;
             this._fields = eDef.getFields(this.uiModel, this.fieldsetFilter);
             this._fieldHash = eDef.getFieldsHash(this._fields);
         }
