@@ -1,7 +1,7 @@
 {
   "name": "evolutility-ui-jquery",
   "description": "Set of model-driven views list, browse, edit, and chart your data (using jQuery, Backbone, and D3.js).",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "copyright": "(c) 2020 Olivier Giulieri",
   "license": "MIT",
   "target": "dist",

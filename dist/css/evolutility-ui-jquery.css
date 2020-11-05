@@ -1,5 +1,5 @@
 /*!
-  evolutility-ui-jquery 1.2.3
+  evolutility-ui-jquery 1.2.4
   
   https://github.com/evoluteur/evolutility-ui-jquery
 */
@@ -647,6 +647,10 @@ label {
   position: absolute;
 }
 
+.evo-many-summary {
+  margin-top: 10px;
+}
+
 .evol-r-align {
   text-align: right;
 }
@@ -1066,13 +1070,17 @@ text.label {
 }
 
 .evo-zfilters {
-  padding-bottom: 6px;
+  padding: 6px 0;
 }
 
 .evo-zfilters > a {
+  display: inline-block;
   margin: 1px 2px 2px 1px;
-  padding: 3px 2px;
+  padding: 0 5px 3px 10px;
+  border: silver 1px solid;
+  border-radius: 15px;
   clear: left;
+  text-decoration: none;
   /*
     &:hover,
     &:active{
@@ -1089,7 +1097,7 @@ text.label {
 
 .evo-zfilters > a > button {
   float: none !important;
-  margin: 2px 2px 0 4px;
+  margin: 2px 2px 0 10px;
 }
 
 .evo-zfilters .glyphicon-remove {
@@ -1105,7 +1113,14 @@ text.label {
   margin: 1px 6px 6px 1px;
 }
 
+.evo-filters {
+  position: relative;
+}
+
 .evo-filters > .close {
+  position: absolute;
+  right: 5px;
+  top: 5px;
   margin-right: 4px;
 }
 
@@ -1146,6 +1161,7 @@ text.label {
 .evo-editFilter > span {
   float: left;
   margin: 1px 6px 6px 1px;
+  padding: 3px 5px;
   font-size: 1.1em;
   width: auto;
 }

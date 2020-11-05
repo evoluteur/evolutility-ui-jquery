@@ -1,22 +1,8 @@
 /*!
-   evolutility-ui-jquery 1.2.3 
+   evolutility-ui-jquery 1.2.4 
    (c) 2020 Olivier Giulieri 
    http://evoluteur.github.io/evolutility-ui-jquery/  
 */
-// default config for Evolutility-UI-jQuery
-
-var Evol = Evol || {};
-
-Evol.Config = {
-
-	// --- using localStorage
-	localStorage: true,
-
-	// --- using evolutility-server-node
-	//url: 'http://localhost:2000/api/v1/'
-
-};
-;
 //   Evolutility-UI-jQuery Localization Library ENGLISH
 //   https://github.com/evoluteur/evolutility-ui-jquery
 //   (c) 2017 Olivier Giulieri
@@ -3124,7 +3110,6 @@ return Backbone.View.extend({
 
     getFields: function (){
         if(!this._fields){
-            var that = this;
             this._fields = eDef.getFields(this.uiModel, this.fieldsetFilter);
             this._fieldHash = eDef.getFieldsHash(this._fields);
         }
@@ -6010,7 +5995,7 @@ return Backbone.View.extend({
             // d3.csv.parse(csv);
 
 
-            if(Evol.Config.localStorage){
+            if(EvoConfig.localStorage){
                 var lc = new Backbone.LocalStorage('evol-'+entityId);
                 M = Backbone.Model.extend({
                     localStorage: lc
@@ -6021,11 +6006,11 @@ return Backbone.View.extend({
                 });
             }else{
                 M = new Backbone.Model({
-                    urlRoot: Evol.Config.url+entityId
+                    urlRoot: EvoConfig.url+entityId
                 });
                 Ms = Backbone.Collection.extend({
                     model: M,
-                    url: Evol.Config.url+entityId/*,
+                    url: EvoConfig.url+entityId/*,
                     sync : function(method, collection, options) {
                         //options.dataType = "jsonp";
                         return Backbone.sync(method, collection, options);
@@ -6781,7 +6766,7 @@ return Backbone.View.extend({
                 alert('Error: Invalid model ID.');
             };
 
-        if(Evol.Config.localStorage){
+        if(EvoConfig.localStorage){
             m = this.collection.get(id);
             if(_.isUndefined(m)){
                 fnError();
@@ -6790,7 +6775,7 @@ return Backbone.View.extend({
             }
         }else{
             var M = Backbone.Model.extend({
-                urlRoot: Evol.Config.url+that.uiModel.id
+                urlRoot: EvoConfig.url+that.uiModel.id
             });
             m = new M({id:id});
             m.fetch({
@@ -6922,7 +6907,7 @@ return Backbone.View.extend({
         if(id || this.curView.cardinality==='1'){
             if(id){
                 //this.setModelById(id, true);
-                var mid=Evol.Config.localStorage?''+id:id; // using string or int
+                var mid=EvoConfig.localStorage?''+id:id; // using string or int
                 this.model=this.collection.findWhere({id: mid});
                 var t=this.uiModel.fnTitle;
                 if(t && this.model){
@@ -6976,7 +6961,7 @@ return Backbone.View.extend({
                         alert('error in "deleteItem"');
                     }
                 };
-                if(!(id || Evol.Config.localStorage)){
+                if(!(id || EvoConfig.localStorage)){
                     opts.url=that.model.url();
                 }
                 collec.remove(delModel);
@@ -7342,6 +7327,8 @@ return Backbone.View.extend({
  *
  *************************************************************************** */
 
+EvoConfig = EvoConfig || {};
+
 Evol.App = Backbone.View.extend({
 
     //events: {
@@ -7494,8 +7481,8 @@ Evol.App = Backbone.View.extend({
     createEntity: function($v, uiModel, data, defaultView, options, cb){
         var that=this, url, M, Ms;
 
-        if(Evol.Config){
-            if(Evol.Config.localStorage){
+        if(EvoConfig){
+            if(EvoConfig.localStorage){
                 var lc = new Backbone.LocalStorage(this.prefix+(uiModel.table || uiModel.id));
                 M = Backbone.Model.extend({
                     localStorage: lc
@@ -7505,7 +7492,7 @@ Evol.App = Backbone.View.extend({
                     localStorage: lc
                 });
             }else{
-                url = Evol.Config.url+uiModel.id;
+                url = EvoConfig.url+uiModel.id;
                 M = Backbone.Model.extend({
                     urlRoot: url
                 });
