@@ -583,7 +583,7 @@ return Backbone.View.extend({
                 alert('Error: Invalid model ID.');
             };
 
-        if(Evol.Config.localStorage){
+        if(EvoConfig.localStorage){
             m = this.collection.get(id);
             if(_.isUndefined(m)){
                 fnError();
@@ -592,7 +592,7 @@ return Backbone.View.extend({
             }
         }else{
             var M = Backbone.Model.extend({
-                urlRoot: Evol.Config.url+that.uiModel.id
+                urlRoot: EvoConfig.url+that.uiModel.id
             });
             m = new M({id:id});
             m.fetch({
@@ -724,7 +724,7 @@ return Backbone.View.extend({
         if(id || this.curView.cardinality==='1'){
             if(id){
                 //this.setModelById(id, true);
-                var mid=Evol.Config.localStorage?''+id:id; // using string or int
+                var mid=EvoConfig.localStorage?''+id:id; // using string or int
                 this.model=this.collection.findWhere({id: mid});
                 var t=this.uiModel.fnTitle;
                 if(t && this.model){
@@ -778,7 +778,7 @@ return Backbone.View.extend({
                         alert('error in "deleteItem"');
                     }
                 };
-                if(!(id || Evol.Config.localStorage)){
+                if(!(id || EvoConfig.localStorage)){
                     opts.url=that.model.url();
                 }
                 collec.remove(delModel);

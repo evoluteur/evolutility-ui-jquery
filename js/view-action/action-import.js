@@ -81,7 +81,7 @@ return Backbone.View.extend({
             // d3.csv.parse(csv);
 
 
-            if(Evol.Config.localStorage){
+            if(EvoConfig.localStorage){
                 var lc = new Backbone.LocalStorage('evol-'+entityId);
                 M = Backbone.Model.extend({
                     localStorage: lc
@@ -92,11 +92,11 @@ return Backbone.View.extend({
                 });
             }else{
                 M = new Backbone.Model({
-                    urlRoot: Evol.Config.url+entityId
+                    urlRoot: EvoConfig.url+entityId
                 });
                 Ms = Backbone.Collection.extend({
                     model: M,
-                    url: Evol.Config.url+entityId/*,
+                    url: EvoConfig.url+entityId/*,
                     sync : function(method, collection, options) {
                         //options.dataType = "jsonp";
                         return Backbone.sync(method, collection, options);

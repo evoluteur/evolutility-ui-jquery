@@ -44,7 +44,7 @@ By default, Evolutility-UI-jQuery is configured use localStorage for storing dat
 ```bash
 # To rebuild the project
 cd evolutility-ui-jquery
-bower install
+npm install
 grunt
 ```
 
@@ -371,7 +371,7 @@ The React alternative:
 
 ## Documentation
 
-The (beginning of a) [documentation](http://evoluteur.github.io/evolutility-ui-jquery/doc/index.html) is in progress: [ui-models](http://evoluteur.github.io/evolutility-ui-jquery/doc/ui-model.html) and [views](http://evoluteur.github.io/evolutility-ui-jquery/doc/views.html).
+[Documentation](http://evoluteur.github.io/evolutility-ui-jquery/doc/index.html): [ui-models](http://evoluteur.github.io/evolutility-ui-jquery/doc/ui-model.html) and [views](http://evoluteur.github.io/evolutility-ui-jquery/doc/views.html).
 
 ## License
 

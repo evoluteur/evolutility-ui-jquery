@@ -9,6 +9,8 @@
  *
  *************************************************************************** */
 
+EvoConfig = EvoConfig || {};
+
 Evol.App = Backbone.View.extend({
 
     //events: {
@@ -161,8 +163,8 @@ Evol.App = Backbone.View.extend({
     createEntity: function($v, uiModel, data, defaultView, options, cb){
         var that=this, url, M, Ms;
 
-        if(Evol.Config){
-            if(Evol.Config.localStorage){
+        if(EvoConfig){
+            if(EvoConfig.localStorage){
                 var lc = new Backbone.LocalStorage(this.prefix+(uiModel.table || uiModel.id));
                 M = Backbone.Model.extend({
                     localStorage: lc
@@ -172,7 +174,7 @@ Evol.App = Backbone.View.extend({
                     localStorage: lc
                 });
             }else{
-                url = Evol.Config.url+uiModel.id;
+                url = EvoConfig.url+uiModel.id;
                 M = Backbone.Model.extend({
                     urlRoot: url
                 });

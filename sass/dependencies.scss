@@ -1,7 +1,7 @@
 /*!
-  evolutility-ui-jquery : dependencies
+  evolutility-ui-jquery
   
-  bootstrap v3.3.4, bootstrap-datepicker v1.4.0, select2 v3.5.2, toastr 2.1.1.
+  dependencies: bootstrap-sass 3.3.7 + bootstrap-datepicker 1.6.4 + select2 4.0.13 + toastr 2.1.4 + balloon-css 1.2.0
 
   https://github.com/evoluteur/evolutility-ui-jquery
 */
@@ -71,13 +71,18 @@
  
 */
 // Widgets
-@import '../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker';
-@import '../bower_components/toastr/toastr.scss';
-@import '../bower_components/select2/select2';
-@import '../bower_components/select2/select2-bootstrap';
-@import '../bower_components/balloon.css/balloon';
+@import '../node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker';
+@import '../node_modules/toastr/toastr.scss';
+@import '../node_modules/select2/dist/css/select2';
+@import '../node_modules/balloon-css/balloon';
 
+.select2{
+    width: 100% !important;
 
+    .select2-selection__rendered{
+        padding: 0 5px 5px !important;
+    }
+}
 // override balloon.css
 [data-balloon]:after{
   border-radius: 1px;

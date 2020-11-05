@@ -1,8 +1,6 @@
 // default config for Evolutility-UI-jQuery
 
-var Evol = Evol || {};
-
-Evol.Config = {
+var EvoConfig = {
 
 	// --- using localStorage
 	localStorage: true,

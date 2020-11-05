@@ -1,12 +1,12 @@
 module.exports = function (grunt) {
 
     function uiDependenciesList(){
-        var pkg=grunt.file.readJSON('bower.json'),
+        var pkg=grunt.file.readJSON('package.json'),
         lst = [];
         if(pkg){
             var  deps = pkg.dependencies;
             for(var p in deps){
-                lst.push(p+' '+deps[p]); 
+                lst.push(p+' '+deps[p].replace('^', '')); 
             }
         }
         return lst.join(' + ');
@@ -24,7 +24,7 @@ module.exports = function (grunt) {
             '   <%= pkg.copyright %> \n' +
             '   <%= pkg.homepage %>  \n*/\n',
 
-        bannerDependencies: '/*!\n <%= pkg.name %> <%= pkg.version %> dependencies: ' +
+        bannerDependencies: '/*!\n <%= pkg.name %> <%= pkg.version %>\n\ndependencies: ' +
             uiDependenciesList()+'\n*/\n',
 
         // *************************************************************************************
@@ -39,33 +39,33 @@ module.exports = function (grunt) {
                 src: [
 
                     // D3.js
-                    'bower_components/d3/d3.js',
+                    'node_modules/d3/d3.js',
 
                     // PapaParse.js (CSV parser)
-                    'bower_components/papaparse/papaparse.js',
+                    'node_modules/papaparse/papaparse.js',
 
                     // jQuery
-                    'bower_components/jquery/dist/jquery.js',
-                    //'bower_components/jquery.csv.js',
+                    'node_modules/jquery/dist/jquery.js',
+                    //'node_modules/jquery.csv.js',
 
                     // Backbone & Underscore
-                    'bower_components/underscore/underscore.js',
-                    //'bower_components/underscore.string/lib/underscore.string.js',
-                    'bower_components/backbone/backbone.js',
-                    'bower_components/backbone.localStorage/backbone.localStorage.js',
+                    'node_modules/underscore/underscore.js',
+                    //'node_modules/underscore.string/lib/underscore.string.js',
+                    'node_modules/backbone/backbone.js',
+                    'node_modules/backbone.localStorage/backbone.localstorage.js',
 
                     // Twitter Bootstrap
-                    'bower_components/bootstrap/js/modal.js',
-                    'bower_components/bootstrap/js/dropdown.js',
-                    'bower_components/bootstrap/js/button.js',
-                    'bower_components/bootstrap/js/tooltip.js',
-                    'bower_components/bootstrap/js/popover.js',
-                    //'bower_components/bootstrap/js/carousel.js',
+                    'node_modules/bootstrap/js/modal.js',
+                    'node_modules/bootstrap/js/dropdown.js',
+                    'node_modules/bootstrap/js/button.js',
+                    'node_modules/bootstrap/js/tooltip.js',
+                    'node_modules/bootstrap/js/popover.js',
+                    //'node_modules/bootstrap/js/carousel.js',
 
                     // Widgets
-                    'bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js',
-                    'bower_components/select2/select2.js',
-                    'bower_components/toastr/toastr.js'
+                    'node_modules/bootstrap-datepicker/js/bootstrap-datepicker.js',
+                    'node_modules/select2/dist/js/select2.js',
+                    'node_modules/toastr/toastr.js'
                 ],
                 dest: '<%= pkg.target %>/dependencies.js'
             },
@@ -75,7 +75,7 @@ module.exports = function (grunt) {
                     separator: ';\n'
                 },
                 src: [
-                    'config.js',
+                    //'config.js',
                     'js/i18n/EN.js',
 
                     'js/dico/def.js',
@@ -132,19 +132,9 @@ module.exports = function (grunt) {
                     expand: true, 
                     flatten: true, 
                     src: [
-                        'bower_components/bootstrap/dist/fonts/*'
+                        'node_modules/bootstrap/dist/fonts/*'
                     ], 
                     dest: '<%= pkg.target %>/fonts/bootstrap/'
-                },
-                {
-                    expand: true, 
-                    flatten: true, 
-                    src: [
-                        'bower_components/select2/select2-spinner.gif',
-                        'bower_components/select2/select2.png',
-                        'bower_components/select2/select2x2.png'
-                    ], 
-                    dest: '<%= pkg.target %>/css'
                 }
             ]
           }
@@ -158,7 +148,6 @@ module.exports = function (grunt) {
 
                 'Gruntfile.js',
                 'package.json',
-                'bower.json',
 
                 'js/dico/*.js',
                 'js/i18n/EN.js',
@@ -264,6 +253,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-sass');
+    //var sass = require('node-sass');
 
     grunt.registerTask('header', 'Evolutility version', function(arg1) {
         var pkg=grunt.file.readJSON('package.json');

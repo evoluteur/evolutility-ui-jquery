@@ -26,7 +26,7 @@ var ViewDescriptions = {
 
 function createSampleDataIfEmpty(entityName){
     var M, MS;
-    if(Evol.Config.localStorage){
+    if(EvoConfig.localStorage){
         var lc = new Backbone.LocalStorage('evol-'+entityName);
         M = Backbone.Model.extend({
             localStorage: lc
@@ -37,11 +37,11 @@ function createSampleDataIfEmpty(entityName){
         });
     }else{
         M = Backbone.Model.extend({
-            urlRoot: Evol.Config.url+entityName
+            urlRoot: EvoConfig.url+entityName
         });
         Ms = Backbone.Collection.extend({
             model: M,
-            url: Evol.Config.url+entityName/*,
+            url: EvoConfig.url+entityName/*,
             sync : function(method, collection, options) {
                 //options.dataType = "jsonp";
                 return Backbone.sync(method, collection, options);
