@@ -106,7 +106,7 @@ code{
   }
 }
 .titleindex{
-  font-size:100px;
+  font-size:50px;
   margin-bottom: 36px;
   color: #3399cc;/*
   > img{
@@ -118,15 +118,18 @@ code{
 #s-splash{
   margin: -20px -30px 30px -30px;
   background-color: #2072a7;
-  padding:40px;
+  padding:30px;
   text-align: center;
   color:white;
   >h1{
     color:white;
   }
+  >h2{
+    font-weight: 300;
+  }
 }
 #s-intro{
-
+    font-weight: 500;
 }
 .page-docidx{
   >section{
