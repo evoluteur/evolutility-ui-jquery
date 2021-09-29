@@ -2,7 +2,7 @@
   "name": "evolutility-ui-jquery",
   "description": "Set of model-driven views list, browse, edit, and chart your data (using jQuery, Backbone, and D3.js).",
   "version": "1.2.4",
-  "copyright": "(c) 2020 Olivier Giulieri",
+  "copyright": "(c) 2021 Olivier Giulieri",
   "license": "MIT",
   "target": "dist",
   "homepage": "http://evoluteur.github.io/evolutility-ui-jquery/",
@@ -14,10 +14,10 @@
   "bugs": "https://github.com/evoluteur/evolutility-ui-jquery/issues",
   "dependencies": {
     "bootstrap-sass": "^3.3.7",
-    "jquery": "^3.5.1",
+    "jquery": "^3.6.0",
     "backbone": "^1.4.0",
     "backbone.localstorage": "^1.1.6",
-    "underscore": "^1.11.0",
+    "underscore": "^1.13.1",
     "papaparse": "^5.3.0",
     "d3": "^3.5.17",
     "bootstrap": "^3.3.7",
@@ -27,12 +27,13 @@
     "balloon-css": "^1.2.0"
   },
   "devDependencies": {
-    "grunt": "~1.0.1",
+    "grunt": "~1.3.0",
     "grunt-contrib-concat": "~1.0.1",
     "grunt-contrib-copy": "~1.0.0",
     "grunt-contrib-jshint": "~1.1.0",
-    "grunt-contrib-uglify": "~2.0.0",
-    "grunt-sass": "^2.0.0"
+    "grunt-contrib-uglify": "~4.0.1",
+    "grunt-sass": "^3.1.0",
+    "node-sass": "^6.0.1"
   },
   "keywords": [
     "low-code",
