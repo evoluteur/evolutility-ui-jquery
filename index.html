@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-063933E3C2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-063933E3C2');
+    </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -8,7 +15,7 @@
 
     <title>Evolutility-UI-jQuery</title>
     <meta name="description" content="Evolutility-UI-jQuery :: Views which adapt to your data by changing form, volume and structure." /></head>
-    <meta name="keywords" content="low-code UI Backbone model MVC open source metadata driven SPA single page app application generic MDDA MDA CRUD framework Bootstrap" />
+    <meta name="keywords" content="low-code, UI, Backbone, model, MVC, open source, foss, metadata, SPA, generic, MDDA, MDA, CRUD, framework, Bootstrap" />
 
     <link id="bwCSS" href="dist/css/dependencies.min.css" rel="stylesheet" />
     <link href="dist/css/demo.css" rel="stylesheet" />
@@ -73,7 +80,7 @@
     <h3 class="mt20">Sample views</h3>
 
     <div id="evol-views-params" class="demo-controls">
- 
+
         <div><span class="hideIfSmall">See the </span>
             <select id="evolView" class="form-control" style="width:auto">
                 <optgroup label="One = model">
@@ -93,7 +100,7 @@
                     <option value="filter">Filter</option>
                 </optgroup>
             </select>
-        view for a 
+        view for a
             <select id="evolModel" class="form-control" style="width:auto">
                 <option value="todo">To Do</option>
                 <option value="contact">AddressBook</option>
@@ -117,7 +124,7 @@
 <section>
     <h3 class="mt20">From a set of views to a single page app</h3>
 
-    <p>Together the views "browse", "edit", "list" and "filter" provide CRUD (Create, Read, Update, Delete) functionality. 
+    <p>Together the views "browse", "edit", "list" and "filter" provide CRUD (Create, Read, Update, Delete) functionality.
     The other views "cards", "bubbles", "charts" and "mini" make the app more user-friendly and powerful.</p>
 
     <p>Demo applications (using your browser's local storage):
@@ -134,12 +141,12 @@
 
     <h3 class="mt20">UI model to configure the views</h3>
 
-    <p>Views are configured with a UI-model. Each UI-model is the single source of truth for all UI elements in all views of a specific entity. 
+    <p>Views are configured with a UI-model. Each UI-model is the single source of truth for all UI elements in all views of a specific entity.
     It contains a DRY (Don't Repeat Yourself) description of the UI elements on screen and how they map to the model.
     From a single UI-model, many views of an entity can be generated at run-time to browse, edit, filter, export, chart the data (for CRUD and more).</p>
 
-    <p>The "vocabulary" of UI-models is abstracted from the DOM and uses words like 
-            "<a href="doc/ui-model.html#tab">tab</a>", "<a href="doc/ui-model.html#panel">panel</a>" or 
+    <p>The "vocabulary" of UI-models is abstracted from the DOM and uses words like
+            "<a href="doc/ui-model.html#tab">tab</a>", "<a href="doc/ui-model.html#panel">panel</a>" or
             "<a href="doc/ui-model.html#field">field</a>"
              rather than "div", "span", "input"...
         </p>
@@ -168,13 +175,13 @@
        under the MIT license.</p>
 
     <p>For a matching model-driven RESTful API, use <a href="https://github.com/evoluteur/evolutility-server-node" target="esn">Evolutility-Server-Node</a> with Node.js, Express, and Postgres.</p>
-</section>  
+</section>
 <section>
 
     <h3 class="mt20">The meaning of Evolutility</h3>
     <p>In biology, Evolutility means "The faculty possessed by all substances capable of self-nourishment of manifesting the nutritive acts by changes of form, of volume, or of structure."</p>
     <p>This open source project is a UI which changes form, volume and structure. It's DNA is metadata.</p>
-</section> 
+</section>
 
 <div class="clearfix"></div>
 
