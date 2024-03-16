@@ -1,732 +1,894 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+  <head>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-063933E3C2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-063933E3C2");
+    </script>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
 
     <link href="../dist/css/dependencies.min.css" rel="stylesheet" />
     <link href="../dist/css/demo.css" rel="stylesheet" />
     <link href="../dist/css/evolutility-ui-jquery.min.css" rel="stylesheet" />
-    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="icon" type="image/png" href="../favicon.png" />
 
     <title>UI Models :: Evolutility-UI-jQuery</title>
-</head>
-<body>
-
-<div class="evo-header">
-    <div class="evo-logo"><a href="../index.html"><span>evol</span>utility<br/>ui-jquery</a></div>
-    <ul class="evo-head-links">
+  </head>
+  <body>
+    <div class="evo-header">
+      <div class="evo-logo">
+        <a href="../index.html"><span>evol</span>utility<br />ui-jquery</a>
+      </div>
+      <ul class="evo-head-links">
         <li><a href="../demo/index.html">Demos</a></li>
         <li><a href="../doc/index.html" class="sel">Doc</a></li>
         <li class="evo-link2">
-            <ul class="evo-head-links2">
-                <li><a href="views.html">Views</a></li>
-                <li><a class="sel" href="ui-model.html">UI-model</a>
-                    <ul>
-                        <li><a href="#object">Object</a></li>
-                        <li><a href="#field">Field</a></li>
-                        <li><a href="#panel">Panel</a></li>
-                        <li><a href="#panel-list">Panel-list</a></li>
-                        <li><a href="#tab">Tab</a></li>
-                    </ul>
-                </li>
-                <li><a href="controller.html">Controller</a></li>
-            </ul>
+          <ul class="evo-head-links2">
+            <li><a href="views.html">Views</a></li>
+            <li>
+              <a class="sel" href="ui-model.html">UI-model</a>
+              <ul>
+                <li><a href="#object">Object</a></li>
+                <li><a href="#field">Field</a></li>
+                <li><a href="#panel">Panel</a></li>
+                <li><a href="#panel-list">Panel-list</a></li>
+                <li><a href="#tab">Tab</a></li>
+              </ul>
+            </li>
+            <li><a href="controller.html">Controller</a></li>
+          </ul>
         </li>
-        <li class="spaced"><a href="https://github.com/evoluteur/evolutility-ui-jquery" target="_new">GitHub</a></li>
-    </ul>
-    <div class="clearfix"></div>
-</div>
-
-<div class="evo-title2">
-    <h1>UI Model</h1>
-    <div class="list-views">
-        <div>
-            <a href="#object">object</a>
-            <a href="#field">field</a>
-        </div>
-        <div>
-            <a href="#panel">panel</a>
-            <a href="#panel-list">panel-list</a>
-            <a href="#tab">tab</a>
-        </div>
+        <li class="spaced">
+          <a
+            href="https://github.com/evoluteur/evolutility-ui-jquery"
+            target="_new"
+            >GitHub</a
+          >
+        </li>
+      </ul>
+      <div class="clearfix"></div>
     </div>
-</div>
 
+    <div class="evo-title2">
+      <h1>UI Model</h1>
+      <div class="list-views">
+        <div>
+          <a href="#object">object</a>
+          <a href="#field">field</a>
+        </div>
+        <div>
+          <a href="#panel">panel</a>
+          <a href="#panel-list">panel-list</a>
+          <a href="#tab">tab</a>
+        </div>
+      </div>
+    </div>
 
-<div class="evo-content2">
+    <div class="evo-content2">
+      <p>
+        With Evolutility-UI-jQuery views are fully defined by UI models (rather
+        than hand coded templates and custom Javascript code).
+      </p>
 
-<p>With Evolutility-UI-jQuery views are fully defined by UI models (rather than hand coded templates and custom Javascript code).</p>
+      <p>
+        For each Backbone model and collection, a single UI model defines all
+        information necessary to render all views associated to that entity. The
+        UI model maps attributes in the Backbone model to
+        <a href="#field">fields</a> on the screen. It also groups fields into
+        <a href="#panel">panels</a> and panels into <a href="#tab">tabs</a>.
+        Nested collections can also be included as
+        <a href="#panel-list">panel-list</a> to provide master-details
+        capability.
+      </p>
 
-<p>For each Backbone model and collection, a single UI model defines all information necessary to render all views associated to that entity.
-    The UI model maps attributes in the Backbone model to <a href="#field">fields</a> on the screen. It also groups fields into <a href="#panel">panels</a> and panels into <a href="#tab">tabs</a>.
-    Nested collections can also be included as <a href="#panel-list">panel-list</a> to provide master-details capability.
-</p>
+      <p>
+        It is a first draft and it is nor fully implemented yet. It is still a
+        work in progress based on
+        <a
+          href="http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications"
+          target="evomm"
+          >Evolutility minimalist meta-model</a
+        >.
+      </p>
 
-<p>It is a first draft and it is nor fully implemented yet. It is still a work in progress based on
-    <a href="http://www.codeproject.com/Articles/28636/Minimalist-Meta-Model-for-CRUD-Applications" target="evomm">Evolutility minimalist meta-model</a>.</p>
- 
-        <p class="links-bh">Elements: 
-            <a href="#object">object</a> 
-            <a href="#field">field</a> 
-            <a href="#panel">panel</a> 
-            <a href="#panel-list">panel-list</a> 
-            <a href="#tab">tab</a>
-        </p> 
+      <p class="links-bh">
+        Elements:
+        <a href="#object">object</a>
+        <a href="#field">field</a>
+        <a href="#panel">panel</a>
+        <a href="#panel-list">panel-list</a>
+        <a href="#tab">tab</a>
+      </p>
 
-        <p>The names used for elements attributes are usually single words, otherwise they use lower camel case as in "maxLength".</p>
+      <p>
+        The names used for elements attributes are usually single words,
+        otherwise they use lower camel case as in "maxLength".
+      </p>
 
-        <p class="links-bh">Sample UI Model: 
-            <a href="#sample">todo app</a>
-        </p> 
+      <p class="links-bh">
+        Sample UI Model:
+        <a href="#sample">todo app</a>
+      </p>
 
-        <p>&nbsp;</p>
+      <p>&nbsp;</p>
 
-        <span class="evol-required">*</span>: required attribute.<br>
-        <span class="evol-asterix">*</span>: partially or not implemented yet.
+      <span class="evol-required">*</span>: required attribute.<br />
+      <span class="evol-asterix">*</span>: partially or not implemented yet.
 
+      <a name="object" class="evo-anchor">&nbsp;</a>
+      <section>
+        <h1>object</h1>
 
-<a name="object" class="evo-anchor">&nbsp;</a>
-<section>
-<h1>object</h1>
+        <p>
+          An "object" is the UI information mapped to a Backbone model to drive
+          all <a href="views.html">views</a> for that model.
+        </p>
 
-<p>An "object" is the UI information mapped to a Backbone model to drive all <a href="views.html">views</a> for that model.
-
-<table class="table table-bordered t-props">
-    <tbody>
-    <tr>
-        <td>id<span class="evol-required">*</span>
-        </td>
-        <td>UI-model unique ID. It is used as a key to identify the UI-model but never displayed to the user.
-        </td>
-    </tr>
-    <tr>
-        <td>name<span class="evol-required">*</span>
-        </td>
-        <td>User's object name for the Backbone model.
-            <br>Example: "task" for a
-            to do list application.
-        </td>
-    </tr>
-    <tr>
-        <td>namePlural<span class="evol-required">*</span>
-        </td>
-        <td>Plural for the entity name.<br>Example: <code>{name: 'task', namePlural: 'tasks'}</code>
-        </td>
-    </tr>
-    <tr>
-        <td>elements[ ]<span class="evol-required">*</span>
-        </td>
-        <td>
-            Array of tabs or panels which contains fields.
-        </td>
-    </tr>
-    <tr>
-        <td>help<span class="evol-asterix">*</span>
-        </td>
-        <td>Introduction text about for the entity.
-        </td>
-    </tr>
-    <tr>
-        <td>fnBadge</td>
-        <td>id of the field to display the value of as a badge near the items' title. Can also be a function taking the model as a parameter.
-            <br/>Example 1: <code>fnBadge = &quot;price&quot;</code>
-            <br>Example 2: <pre><code>fnBadge = function(model){
+        <table class="table table-bordered t-props">
+          <tbody>
+            <tr>
+              <td>id<span class="evol-required">*</span></td>
+              <td>
+                UI-model unique ID. It is used as a key to identify the UI-model
+                but never displayed to the user.
+              </td>
+            </tr>
+            <tr>
+              <td>name<span class="evol-required">*</span></td>
+              <td>
+                User's object name for the Backbone model. <br />Example: "task"
+                for a to do list application.
+              </td>
+            </tr>
+            <tr>
+              <td>namePlural<span class="evol-required">*</span></td>
+              <td>
+                Plural for the entity name.<br />Example:
+                <code>{name: 'task', namePlural: 'tasks'}</code>
+              </td>
+            </tr>
+            <tr>
+              <td>elements[ ]<span class="evol-required">*</span></td>
+              <td>Array of tabs or panels which contains fields.</td>
+            </tr>
+            <tr>
+              <td>help<span class="evol-asterix">*</span></td>
+              <td>Introduction text about for the entity.</td>
+            </tr>
+            <tr>
+              <td>fnBadge</td>
+              <td>
+                id of the field to display the value of as a badge near the
+                items' title. Can also be a function taking the model as a
+                parameter. <br />Example 1:
+                <code>fnBadge = &quot;price&quot;</code> <br />Example 2:
+                <pre><code>fnBadge = function(model){
     return model.get('orders').length || 0;
 }</code></pre>
-            </td>
-    </tr>
-    <tr>
-        <td>fnTitle</td>
-        <td>id of the field to use for the page title (when using option "$title"). Can also be a function taking model as a parameter.
-            <br/>Example 1: <code>fnTitle = &quot;firstname&quot;</code><br>
-            Exemple 2: <pre><code>fnTitle = function(model){ 
+              </td>
+            </tr>
+            <tr>
+              <td>fnTitle</td>
+              <td>
+                id of the field to use for the page title (when using option
+                "$title"). Can also be a function taking model as a parameter.
+                <br />Example 1: <code>fnTitle = &quot;firstname&quot;</code
+                ><br />
+                Exemple 2:
+                <pre><code>fnTitle = function(model){
     return model.get('firstname')+' '+model.get('lastname')
 }</code></pre>
-        </td>
-    </tr>
-    <tr>
-        <td>fnSearch</td>
-        <td>Function to perform searches on the models. It can also be an array of field ids.<br>
-            Example 1: <code>fnSearch = ['lastname', 'firstname', 'email']</code>
-            <br/>Example 2: <pre><code>fnSearch = function (model){
+              </td>
+            </tr>
+            <tr>
+              <td>fnSearch</td>
+              <td>
+                Function to perform searches on the models. It can also be an
+                array of field ids.<br />
+                Example 1:
+                <code>fnSearch = ['lastname', 'firstname', 'email']</code>
+                <br />Example 2:
+                <pre><code>fnSearch = function (model){
     return model.get('firstname').toLowerCase().indexOf(searchString)>-1 ||
         model.get('lastname').toLowerCase().indexOf(searchString)>-1;
 }</code></pre>
-            </td>
-    </tr>
-    <tr>
-        <td>icon
-        </td>
-        <td>Filename of the records icon (same one for all records).
-            <br />
-            Example: <code>icon =&quot;todo.png&quot;</code>
-        </td>
-    </tr>
-    <tr>
-        <td>fnIcon <span class="evol-asterix">*</span>
-        </td>
-        <td>Function which returns an icon path. Useful when you want different icons for different records based on some field value or calculation.
-            <br />
-            Example: 
-<pre><code>fnIcon = function(model){ 
+              </td>
+            </tr>
+            <tr>
+              <td>icon</td>
+              <td>
+                Filename of the records icon (same one for all records).
+                <br />
+                Example: <code>icon =&quot;todo.png&quot;</code>
+              </td>
+            </tr>
+            <tr>
+              <td>fnIcon <span class="evol-asterix">*</span></td>
+              <td>
+                Function which returns an icon path. Useful when you want
+                different icons for different records based on some field value
+                or calculation.
+                <br />
+                Example:
+                <pre><code>fnIcon = function(model){
     return model.get('type')=='bug'?'todo.png':'enhancement.png';
 }</code></pre>
-        </td>
-    </tr>
-    <tr>
-        <td>summary <span class="evol-asterix">*</span></td>
-        <td>Summary row of data with aggregations like 
-            <br />
-            Example: 
-<pre><code>summary=[
+              </td>
+            </tr>
+            <tr>
+              <td>summary <span class="evol-asterix">*</span></td>
+              <td>
+                Summary row of data with aggregations like
+                <br />
+                Example:
+                <pre><code>summary=[
     {
-        id:'count_completed', 
-        label:'# Completed', 
-        fieldId: 'complete', 
+        id:'count_completed',
+        label:'# Completed',
+        fieldId: 'complete',
         formula: 'count'
     },
     {
-        id:'count_have', 
-        label:'# Have', 
-        fieldId: 'haveNb', 
+        id:'count_have',
+        label:'# Have',
+        fieldId: 'haveNb',
         formula: 'sum'
     }
 ]
 </code></pre>
-        </td>
-    </tr>
-    <tr>
-        <td>searchFields[ ] <span class="evol-asterix">*</span>
-        </td>
-        <td>
-        List of fields which participate in search (array of field ids).
-        </td>
-    </tr>
-    </tbody></table>
+              </td>
+            </tr>
+            <tr>
+              <td>searchFields[ ] <span class="evol-asterix">*</span></td>
+              <td>
+                List of fields which participate in search (array of field ids).
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
 
-</section>
+      <a name="field" class="evo-anchor">&nbsp;</a>
+      <section>
+        <h1>field</h1>
+        <p>Attributes in your Backbone model are mapped to fields in the UI.</p>
+        <p>These fields have the following properties:</p>
 
-<a name="field" class="evo-anchor">&nbsp;</a>
-<section>
-    <h1>field</h1>
-    <p>Attributes in your Backbone model are mapped to fields in the UI.</p>
-    <p>These fields have the following properties:</p>
-
-    <table class="table table-bordered t-props">
-        <tbody>
-
-        <tr class="t-row">
-            <th colspan="2">Identity</th>
-        </tr>
-        <tr>
-            <td>id<span class="evol-required">*</span></td>
-            <td>Field Id in the UI.</td>
-        </tr>
-        <tr>
-            <td>attribute <span class="evol-asterix">*</span> </td>
-            <td>Model attribute mapping to the field.
-                If no value is provided for "attribute", the value of the attribute "id" is used.</td>
-        </tr>
-        <tr>
-            <td>label<span class="evol-required">*</span>
-            </td>
-            <td>Field title in all views. (Can be overridden for specific views with labelList, labelExport...).
-            </td>
-        </tr>
-        <tr>
-            <td>defaultValue
-            </td>
-            <td>Default value for the field when creating a new record.
-            </td>
-        </tr>
-        <tr>
-            <td>value
-            </td>
-            <td>Function to evaluate to render the field content.
-                <br/>i.e.: value = function(model) {return model.escape('name');}
-            </td>
-        </tr>
-        <tr>
-            <td>type<span class="evol-required">*</span>
+        <table class="table table-bordered t-props">
+          <tbody>
+            <tr class="t-row">
+              <th colspan="2">Identity</th>
+            </tr>
+            <tr>
+              <td>id<span class="evol-required">*</span></td>
+              <td>Field Id in the UI.</td>
+            </tr>
+            <tr>
+              <td>attribute <span class="evol-asterix">*</span></td>
+              <td>
+                Model attribute mapping to the field. If no value is provided
+                for "attribute", the value of the attribute "id" is used.
+              </td>
+            </tr>
+            <tr>
+              <td>label<span class="evol-required">*</span></td>
+              <td>
+                Field title in all views. (Can be overridden for specific views
+                with labelList, labelExport...).
+              </td>
+            </tr>
+            <tr>
+              <td>defaultValue</td>
+              <td>Default value for the field when creating a new record.</td>
+            </tr>
+            <tr>
+              <td>value</td>
+              <td>
+                Function to evaluate to render the field content. <br />i.e.:
+                value = function(model) {return model.escape('name');}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                type<span class="evol-required">*</span>
                 <span class="evol-asterix">*</span>
-            </td>
-            <td>
+              </td>
+              <td>
                 <p>The type of the field in the UI.</p>
 
-                <ul class="indent list-unstyled" style="float:left;width:160px">
-                    <li><span data-id="#boolean"><img src="icons/ft-bool.gif" class="Icon">boolean</span></li>
-                    <li><span data-id="#color"><img src="icons/ft-color.gif" class="Icon">color</span></li>
-                    <li><span data-id="#date"><img src="icons/ft-date.gif" class="Icon">date</span></li>
-                    <li><span data-id="#datetime"><img src="icons/ft-datehm.gif" class="Icon">datetime</span><span class="evol-asterix">*</span></li>
-                    <li><span data-id="#decimal"><img src="icons/ft-dec.gif" class="Icon">decimal</span></li>
-                    <li><span data-id="#document"><img src="icons/ft-doc.gif" class="Icon">document</span><span class="evol-asterix">*</span></li>
-                    <li><span data-id="#email"><img src="icons/ft-email.gif" class="Icon">email</span></li>
+                <ul
+                  class="indent list-unstyled"
+                  style="float: left; width: 160px"
+                >
+                  <li>
+                    <span data-id="#boolean"
+                      ><img src="icons/ft-bool.gif" class="Icon" />boolean</span
+                    >
+                  </li>
+                  <li>
+                    <span data-id="#color"
+                      ><img src="icons/ft-color.gif" class="Icon" />color</span
+                    >
+                  </li>
+                  <li>
+                    <span data-id="#date"
+                      ><img src="icons/ft-date.gif" class="Icon" />date</span
+                    >
+                  </li>
+                  <li>
+                    <span data-id="#datetime"
+                      ><img
+                        src="icons/ft-datehm.gif"
+                        class="Icon"
+                      />datetime</span
+                    ><span class="evol-asterix">*</span>
+                  </li>
+                  <li>
+                    <span data-id="#decimal"
+                      ><img src="icons/ft-dec.gif" class="Icon" />decimal</span
+                    >
+                  </li>
+                  <li>
+                    <span data-id="#document"
+                      ><img src="icons/ft-doc.gif" class="Icon" />document</span
+                    ><span class="evol-asterix">*</span>
+                  </li>
+                  <li>
+                    <span data-id="#email"
+                      ><img src="icons/ft-email.gif" class="Icon" />email</span
+                    >
+                  </li>
                 </ul>
-                <ul class="indent list-unstyled" style="float:left;width:160px">
-                    <li><span data-id="#hidden"><img class="Icon" src="icons/ft-hidden.png">hidden</span></li>
-                    <li><span data-id="#html"><img class="Icon" src="icons/ft-htm.gif">html</span><span class="evol-asterix">*</span></li>
-                    <li><span data-id="#image"><img src="icons/ft-img.gif" class="Icon">image</span><span class="evol-asterix">*</span></li>
-                    <li><span data-id="#json"><img class="Icon" src="icons/ft-json.png">json</span><span class="evol-asterix">*</span></li>
-                    <li><span data-id="#url"><img src="icons/ft-url.gif" class="Icon">url</span></li>
-                    <li><span data-id="#lov"><img src="icons/ft-lov.gif" class="Icon">lov (single value)</span></li>
-                    <li><span data-id="#list"><img src="icons/ft-list.png" class="Icon">list (multiple values)</span></li>
+                <ul
+                  class="indent list-unstyled"
+                  style="float: left; width: 160px"
+                >
+                  <li>
+                    <span data-id="#hidden"
+                      ><img
+                        class="Icon"
+                        src="icons/ft-hidden.png"
+                      />hidden</span
+                    >
+                  </li>
+                  <li>
+                    <span data-id="#html"
+                      ><img class="Icon" src="icons/ft-htm.gif" />html</span
+                    ><span class="evol-asterix">*</span>
+                  </li>
+                  <li>
+                    <span data-id="#image"
+                      ><img src="icons/ft-img.gif" class="Icon" />image</span
+                    ><span class="evol-asterix">*</span>
+                  </li>
+                  <li>
+                    <span data-id="#json"
+                      ><img class="Icon" src="icons/ft-json.png" />json</span
+                    ><span class="evol-asterix">*</span>
+                  </li>
+                  <li>
+                    <span data-id="#url"
+                      ><img src="icons/ft-url.gif" class="Icon" />url</span
+                    >
+                  </li>
+                  <li>
+                    <span data-id="#lov"
+                      ><img src="icons/ft-lov.gif" class="Icon" />lov (single
+                      value)</span
+                    >
+                  </li>
+                  <li>
+                    <span data-id="#list"
+                      ><img src="icons/ft-list.png" class="Icon" />list
+                      (multiple values)</span
+                    >
+                  </li>
                 </ul>
-                <ul class="indent list-unstyled" style="float:left;width:160px">
-                    <li><span data-id="#money"><img src="icons/ft-money.gif" class="Icon">money</span></li>
-                    <li><span data-id="#text"><img src="icons/ft-txt.gif" class="Icon">text</span></li>
-                    <li><span data-id="#textmultiline"><img src="icons/ft-txtml.gif" class="Icon">textmultiline</span></li>
-                    <li><span data-id="#integer"><img src="icons/ft-int.gif" class="Icon">integer</span></li>
-                    <li><span data-id="#time"><img src="icons/ft-time.gif" class="Icon">time</span><span class="evol-asterix">*</span></li>
+                <ul
+                  class="indent list-unstyled"
+                  style="float: left; width: 160px"
+                >
+                  <li>
+                    <span data-id="#money"
+                      ><img src="icons/ft-money.gif" class="Icon" />money</span
+                    >
+                  </li>
+                  <li>
+                    <span data-id="#text"
+                      ><img src="icons/ft-txt.gif" class="Icon" />text</span
+                    >
+                  </li>
+                  <li>
+                    <span data-id="#textmultiline"
+                      ><img
+                        src="icons/ft-txtml.gif"
+                        class="Icon"
+                      />textmultiline</span
+                    >
+                  </li>
+                  <li>
+                    <span data-id="#integer"
+                      ><img src="icons/ft-int.gif" class="Icon" />integer</span
+                    >
+                  </li>
+                  <li>
+                    <span data-id="#time"
+                      ><img src="icons/ft-time.gif" class="Icon" />time</span
+                    ><span class="evol-asterix">*</span>
+                  </li>
                 </ul>
 
                 <div class="clearfix"></div>
-            </td>
-        </tr>
-        <tr>
-            <td>list<span class="evol-asterix">*</span>
-            </td>
-            <td>Array of values to select from. Only for fields of type "lov" or "list". <br> <br>
-            Each item in the list must have attributes "id" and "text" to define its key and displayed value.
+              </td>
+            </tr>
+            <tr>
+              <td>list<span class="evol-asterix">*</span></td>
+              <td>
+                Array of values to select from. Only for fields of type "lov" or
+                "list". <br />
                 <br />
-                Example: 
-        <code><pre>list = [
+                Each item in the list must have attributes "id" and "text" to
+                define its key and displayed value.
+                <br />
+                Example:
+                <code>
+                  <pre>
+list = [
             {id:1, text:'1- ASAP'},
             {id:2, text:'2- Urgent'}
-        ]</pre></code>
-                <p>Optionally, items can have an icon specified as "icon" or "glyphicon".<br>
-                Example 2: </p>
-        <code><pre>list = [
+        ]</pre
+                  >
+                </code>
+                <p>
+                  Optionally, items can have an icon specified as "icon" or
+                  "glyphicon".<br />
+                  Example 2:
+                </p>
+                <code>
+                  <pre>
+list = [
             {id:1, text:'1- ASAP', icon:'p1.gif'},
             {id:2, text:'2- Urgent', icon:'p2.gif'}
-        ]</pre></code>
+        ]</pre
+                  >
+                </code>
                 <br />
-                Example 3: 
-        <code><pre>list = [
+                Example 3:
+                <code>
+                  <pre>
+list = [
             {id:1, text:'1- ASAP', glyphicon:'asterisk'},
             {id:2, text:'2- Urgent', glyphicon:'star'}
-        ]</pre></code>
-            </td>
-        </tr>
+        ]</pre
+                  >
+                </code>
+              </td>
+            </tr>
 
-        <tr class="t-row">
-            <th colspan="2">Layout</th>
-        </tr>
-        <tr>
-            <td >css<span class="evol-asterix">*</span>
-            </td>
-            <td>CSS class name for the specific field.
-            </td>
-        </tr>
-        <tr>
-            <td>cssLabel
-            </td>
-            <td>CSS class name for the specific field label (in views Edit, Browse and Mini).
-            </td>
-        </tr>
-        <tr>
-            <td>format<span class="evol-asterix">*</span>
-            </td>
-            <td>Field format (for fields of type boolean, date, decimal, or integer).
+            <tr class="t-row">
+              <th colspan="2">Layout</th>
+            </tr>
+            <tr>
+              <td>css<span class="evol-asterix">*</span></td>
+              <td>CSS class name for the specific field.</td>
+            </tr>
+            <tr>
+              <td>cssLabel</td>
+              <td>
+                CSS class name for the specific field label (in views Edit,
+                Browse and Mini).
+              </td>
+            </tr>
+            <tr>
+              <td>format<span class="evol-asterix">*</span></td>
+              <td>
+                Field format (for fields of type boolean, date, decimal, or
+                integer).
                 <br />
                 Example: <code>format=&quot;'$'#,##0.00&quot;</code>
-            </td>
-        </tr>
-        <tr>
-            <td>height
-            </td>
-            <td>Height of the field, in number of rows (default to 1 for all field except
-                fields of type TextMultilines).
-            </td>
-        </tr>
-        <tr>
-            <td>width
-            </td>
-            <td><p>Width of the field in percentage of the Panel it belongs to.
-                <br/>Default: 100%
-            </p></td>
-        </tr>
-        <tr>
-            <td>img
-            </td>
-            <td>Image to display (for fields of type &quot;boolean&quot; or &quot;url&quot;) in Edit or Browse modes.
-            </td>
-        </tr>
-        <tr>
-            <td>imgEmpty <span class="evol-asterix">*</span>
-            </td>
-            <td>Image to display when the value (path to the picture) is empty or doesn't lead to a valid image (for fields of type &quot;image&quot;).
-            </td>
-        </tr>
-        <tr>
-            <td>labelCards
-            </td>
-            <td>Field label (in Cards view and tooltips). Can be set to an empty string ("") to remove the label.
-            </td>
-        </tr>
-        <tr>
-            <td>labelTrue, labelFalse
-            </td>
-            <td>Only applies to boolean fields. Displayed value for true or false in charts (may be used in other places in the future).
-            </td>
-        </tr>
-        <tr>
-            <td>labelCharts
-            </td>
-            <td>Title of the Chart based on this field (in Charts view).
-            </td>
-        </tr>
-        <tr>
-            <td>typeChart<span class="evol-asterix">*</span>
-            </td>
-            <td>Type of chart used for this fields (in Charts view). Possible values: Pie, vBar, hBar (more later).
-                <br>Note: Only applies for fields which supports charts (fields of type boolean, integer, money, lov).
-            </td>
-        </tr>
+              </td>
+            </tr>
+            <tr>
+              <td>height</td>
+              <td>
+                Height of the field, in number of rows (default to 1 for all
+                field except fields of type TextMultilines).
+              </td>
+            </tr>
+            <tr>
+              <td>width</td>
+              <td>
+                <p>
+                  Width of the field in percentage of the Panel it belongs to.
+                  <br />Default: 100%
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>img</td>
+              <td>
+                Image to display (for fields of type &quot;boolean&quot; or
+                &quot;url&quot;) in Edit or Browse modes.
+              </td>
+            </tr>
+            <tr>
+              <td>imgEmpty <span class="evol-asterix">*</span></td>
+              <td>
+                Image to display when the value (path to the picture) is empty
+                or doesn't lead to a valid image (for fields of type
+                &quot;image&quot;).
+              </td>
+            </tr>
+            <tr>
+              <td>labelCards</td>
+              <td>
+                Field label (in Cards view and tooltips). Can be set to an empty
+                string ("") to remove the label.
+              </td>
+            </tr>
+            <tr>
+              <td>labelTrue, labelFalse</td>
+              <td>
+                Only applies to boolean fields. Displayed value for true or
+                false in charts (may be used in other places in the future).
+              </td>
+            </tr>
+            <tr>
+              <td>labelCharts</td>
+              <td>Title of the Chart based on this field (in Charts view).</td>
+            </tr>
+            <tr>
+              <td>typeChart<span class="evol-asterix">*</span></td>
+              <td>
+                Type of chart used for this fields (in Charts view). Possible
+                values: Pie, vBar, hBar (more later). <br />Note: Only applies
+                for fields which supports charts (fields of type boolean,
+                integer, money, lov).
+              </td>
+            </tr>
 
+            <tr class="t-row">
+              <th colspan="2">Validation</th>
+            </tr>
+            <tr>
+              <td>max</td>
+              <td>
+                Maximum value allowed for the field (N/A for some field types).
+              </td>
+            </tr>
+            <tr>
+              <td>maxLength</td>
+              <td>Maximum number of characters allowed for the field value.</td>
+            </tr>
+            <tr>
+              <td>min</td>
+              <td>
+                Minimum value allowed for the field (only applicable to integer,
+                decimal, money field types).
+              </td>
+            </tr>
+            <tr>
+              <td>minLength</td>
+              <td>
+                Minimum number of characters allowed for the field value to be
+                valid.
+              </td>
+            </tr>
+            <tr>
+              <td>regExp</td>
+              <td>Regular expression to validate the field value against.</td>
+            </tr>
+            <tr>
+              <td>required</td>
+              <td>Determines if the field is required for saving the model.</td>
+            </tr>
+            <tr>
+              <td>unique<span class="evol-asterix">*</span></td>
+              <td>Do not allow duplicate values.</td>
+            </tr>
+            <tr>
+              <td>fnValidate</td>
+              <td>
+                Name of the Javascript custom method for the field validation
+                (validation for required, min, max, type is still performed in
+                addition).
+              </td>
+            </tr>
 
-        <tr class="t-row">
-            <th colspan="2">Validation</th>
-        </tr>
-        <tr>
-            <td>max</td>
-            <td>Maximum value allowed for the field (N/A for some field types).</td>
-        </tr>
-        <tr>
-            <td>maxLength</td>
-            <td>Maximum number of characters allowed for the field value.
-            </td>
-        </tr>
-        <tr>
-            <td>min</td>
-            <td>Minimum value allowed for the field (only applicable to integer, decimal, money field types).</td>
-        </tr>
-        <tr>
-            <td>minLength</td>
-            <td>Minimum number of characters allowed for the field value to be valid.
-            </td>
-        </tr>
-        <tr>
-            <td>regExp
-            </td>
-            <td>Regular expression to validate the field value against.
-            </td>
-        </tr>
-        <tr>
-            <td>required
-            </td>
-            <td>Determines if the field is required for saving the model.
-            </td>
-        </tr>
-        <tr>
-            <td>unique<span class="evol-asterix">*</span>
-            </td>
-            <td>Do not allow duplicate values.
-            </td>
-        </tr>
-        <tr>
-            <td>fnValidate</td>
-            <td>Name of the Javascript custom method for the field validation (validation for required, min, max, type is still performed in addition).</td>
-        </tr>
+            <tr class="t-row">
+              <th colspan="2">Behavior</th>
+            </tr>
+            <tr>
+              <td>help</td>
+              <td>
+                Help tip for the field (only used in Edit, Browse, and Mini
+                views).
+              </td>
+            </tr>
+            <tr>
+              <td>link<span class="evol-asterix">*</span></td>
+              <td>Displays the field as a link to another web page.</td>
+            </tr>
+            <tr>
+              <td>linkLabel<span class="evol-asterix">*</span></td>
+              <td>
+                Display a sentence or an image as the link. Can also be a
+                function (model).
+              </td>
+            </tr>
+            <tr>
+              <td>linkTarget<span class="evol-asterix">*</span></td>
+              <td>
+                Directs to a new tab in the browser (HTML attribute "target").
+              </td>
+            </tr>
+            <tr>
+              <td>optional<span class="evol-asterix">*</span></td>
+              <td>
+                Filter condition to hide the field. <br />Example:
+                function(model){return model.get('type')=='integer';}
+              </td>
+            </tr>
+            <tr>
+              <td>readonly</td>
+              <td>
+                Determines if the field is read only or can be edited (will
+                later have the possibility for fields that can be set at
+                creation but not edited later).
+              </td>
+            </tr>
+            <tr>
+              <td>sortable</td>
+              <td>Column can be sorted by the field value (in "List" view).</td>
+            </tr>
+            <tr>
+              <td>groupable, colorable, sizable</td>
+              <td>
+                Field can be used for grouping/coloring/sizing bubbles (in
+                "Bubble" view).
+              </td>
+            </tr>
+            <tr>
+              <td>tooltip<span class="evol-asterix">*</span></td>
+              <td>Tooltip when the mouse is over the field.</td>
+            </tr>
+            <tr>
+              <td>inCharts</td>
+              <td>
+                Determines if a chart is displayed in the Charts view for
+                grouping by this specific field.
+              </td>
+            </tr>
+            <tr>
+              <td>inMany</td>
+              <td>
+                Determines if the field is shown in views "Many" (List,
+                Card...).
+              </td>
+            </tr>
+            <tr>
+              <td>inExport</td>
+              <td>
+                If set to false, the field will not be available in Export.
+              </td>
+            </tr>
+            <tr>
+              <td>inMini</td>
+              <td>
+                By default fields included in the Mini view are required fields
+                and fields shown in views List and Cards. Setting inMini to true
+                add the field to the Mini view.
+              </td>
+            </tr>
+            <tr>
+              <td>inList, inCards</td>
+              <td>
+                Possibility to override inMany a specific field in view Card or
+                List.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
 
+      <a name="panel" class="evo-anchor">&nbsp;</a>
+      <section>
+        <h1>panel</h1>
 
-        <tr class="t-row">
-            <th colspan="2">Behavior</th>
-        </tr>
-        <tr>
-            <td>help
-            </td>
-            <td>Help tip for the field (only used in Edit, Browse, and Mini views).
-            </td>
-        </tr>
-        <tr>
-            <td>link<span class="evol-asterix">*</span>
-            </td>
-            <td>Displays the field as a link to another web page.
-            </td>
-        </tr>
-        <tr>
-            <td>linkLabel<span class="evol-asterix">*</span>
-            </td>
-            <td>Display a sentence or an image as the link. Can also be a function (model).
-            </td>
-        </tr>
-        <tr>
-            <td>linkTarget<span class="evol-asterix">*</span>
-            </td>
-            <td>Directs to a new tab in the browser (HTML attribute "target").
-            </td>
-        </tr>
-        <tr>
-            <td>optional<span class="evol-asterix">*</span>
-            </td>
-            <td>Filter condition to hide the field.
-                <br>Example: function(model){return model.get('type')=='integer';}
-            </td>
-        </tr>
-        <tr>
-            <td>readonly
-            </td>
-            <td>
-                Determines if the field is read only or can be edited
-                (will later have the possibility for fields that can be set at creation but not edited later).
-            </td>
-        </tr>
-        <tr>
-            <td>sortable
-            </td>
-            <td>Column can be sorted by the field value (in "List" view).
-            </td>
-        </tr>
-        <tr>
-            <td>groupable, colorable, sizable
-            </td>
-            <td>Field can be used for grouping/coloring/sizing bubbles (in "Bubble" view).
-            </td>
-        </tr>
-        <tr>
-            <td>tooltip<span class="evol-asterix">*</span>
-            </td>
-            <td>Tooltip when the mouse is over the field.
-            </td>
-        </tr>
-        <tr>
-            <td>inCharts
-            </td>
-            <td>Determines if a chart is displayed in the Charts view for grouping by this specific field.
-            </td>
-        </tr>
-        <tr>
-            <td>inMany
-            </td>
-            <td>Determines if the field is shown in views "Many" (List, Card...).
-            </td>
-        </tr>
-        <tr>
-            <td>inExport
-            </td>
-            <td>If set to false, the field will not be available in Export.
-            </td>
-        </tr>
-        <tr>
-            <td>inMini
-            </td>
-            <td>By default fields included in the Mini view are required fields and fields shown in views List and Cards. Setting inMini to true add the field to the Mini view.
-            </td>
-        </tr>
-        <tr>
-            <td>inList, inCards
-            </td>
-            <td>Possibility to override inMany a specific field in view Card or List.
-            </td>
-        </tr>
-        </tbody></table>
-</section>
+        <p>
+          The "panel" element is used to group fields together in the forms.
+          Fields are grouped in panels and panels can be grouped in tabs.
+        </p>
 
-<a name="panel" class="evo-anchor">&nbsp;</a>
-<section>
-    <h1>panel</h1>
-
-    <p>The "panel" element is used to group fields together in the forms.
-        Fields are grouped in panels and panels can be grouped in tabs. </p>
-
-    <table class="table table-bordered t-props">
-        <tbody>
-        <tr>
-            <td style="width: 120px; ">id</td>
-            <td>Panel Id in the UI (if not specified, the default is "p-&lt;panel index&gt;").</td>
-        </tr>
-        <tr>
-            <td>css
-            </td>
-            <td>Additional CSS class for the panel.
-            </td>
-        </tr>
-        <tr>
-            <td>cssLabel
-            </td>
-            <td>
-                Additional CSS class for the panel title (label).
-            </td>
-        </tr>
-        <tr>
-            <td>elements[ ]<span class="evol-required">*</span>
-            </td>
-            <td>
-                Array of fields.
-            </td>
-        </tr>
-        <tr>
-            <td>help
-            </td>
-            <td>Introduction text about for the panel and its fields.
-            </td>
-        </tr>
-        <tr>
-            <td>label<span class="evol-required">*</span>
-            </td>
-            <td>Panel title.
-            </td>
-        </tr>
-        <tr>
-            <td>label2
-            </td>
-            <td>Panel sub-title.
-            </td>
-        </tr>
-        <tr>
-            <td>optional<span class="evol-asterix">*</span>
-            </td>
-            <td>
-                Skips the panel from displaying, if every field contained is empty and
-                optional (only applies to the view Browse).
-            </td>
-        </tr>
-        <tr>
-            <td>readonly
-            </td>
-            <td>
-                Makes all fields in the panel read-only (in Edit view).
-            </td>
-        </tr>
-        <tr>
-            <td>width
-            </td>
-            <td>Width of the panel in percentage of the total width of the form.<br />
+        <table class="table table-bordered t-props">
+          <tbody>
+            <tr>
+              <td style="width: 120px">id</td>
+              <td>
+                Panel Id in the UI (if not specified, the default is
+                "p-&lt;panel index&gt;").
+              </td>
+            </tr>
+            <tr>
+              <td>css</td>
+              <td>Additional CSS class for the panel.</td>
+            </tr>
+            <tr>
+              <td>cssLabel</td>
+              <td>Additional CSS class for the panel title (label).</td>
+            </tr>
+            <tr>
+              <td>elements[ ]<span class="evol-required">*</span></td>
+              <td>Array of fields.</td>
+            </tr>
+            <tr>
+              <td>help</td>
+              <td>Introduction text about for the panel and its fields.</td>
+            </tr>
+            <tr>
+              <td>label<span class="evol-required">*</span></td>
+              <td>Panel title.</td>
+            </tr>
+            <tr>
+              <td>label2</td>
+              <td>Panel sub-title.</td>
+            </tr>
+            <tr>
+              <td>optional<span class="evol-asterix">*</span></td>
+              <td>
+                Skips the panel from displaying, if every field contained is
+                empty and optional (only applies to the view Browse).
+              </td>
+            </tr>
+            <tr>
+              <td>readonly</td>
+              <td>Makes all fields in the panel read-only (in Edit view).</td>
+            </tr>
+            <tr>
+              <td>width</td>
+              <td>
+                Width of the panel in percentage of the total width of the
+                form.<br />
                 Example: <code>width=&quot;100&quot;</code> for the full width.
-            </td>
-        </tr>
-        </tbody></table>
-    </section>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
 
-<a name="panel-list" class="evo-anchor">&nbsp;</a>
-<section>
+      <a name="panel-list" class="evo-anchor">&nbsp;</a>
+      <section>
         <h1>panel-list</h1>
 
-    <p>Similar to a panel but used to display a sub-collection (an array of objects). It is the "details" part in a "master-details" (and can have multiple details).</p>
+        <p>
+          Similar to a panel but used to display a sub-collection (an array of
+          objects). It is the "details" part in a "master-details" (and can have
+          multiple details).
+        </p>
 
-    <table class="table table-bordered t-props">
-        <tbody>
-        <tr>
-            <td>attribute<span class="evol-required">*</span></td>
-            <td>Model attribute for the sub-collection.</td>
-        </tr>
-        <tr>
-            <td style="width: 120px; ">id<span class="evol-required">*</span></td>
-            <td>Panel Id in the UI.</td>
-        </tr>
-        <tr>
-            <td>badge<span class="evol-asterix">*</span>
-            </td>
-            <td>Field name or function which value is displayed as a badge in the panel header.
-            </td>
-        </tr>
-        <tr>
-            <td>css
-            </td>
-            <td>CSS class for the panel (replaces of the one specified in the view options). Possible values: "panel-primary", "panel-success", "panel-warning"...
-            </td>
-        </tr>
-        <tr>
-            <td>cssLabel
-            </td>
-            <td>
-                Additional CSS class for the panel title (label).
-            </td>
-        </tr>
-        <tr>
-            <td>elements[ ]<span class="evol-required">*</span>
-            </td>
-            <td>
-                Array of fields in the sub-collection.
-            </td>
-        </tr>
-        <tr>
-            <td>label
-            </td>
-            <td>Panel title.
-            </td>
-        </tr>
-        <tr>
-            <td>label2
-            </td>
-            <td>Panel sub-title.
-            </td>
-        </tr>
-        <tr>
-            <td>readonly<span class="evol-asterix">*</span>
-            </td>
-            <td>
-                Makes all fields in the panel-list read-only (not implemented yet).
-            </td>
-        </tr>
-        <tr>
-            <td>width
-            </td>
-            <td>Width of the panel in percentage of the total width of the form.<br />
+        <table class="table table-bordered t-props">
+          <tbody>
+            <tr>
+              <td>attribute<span class="evol-required">*</span></td>
+              <td>Model attribute for the sub-collection.</td>
+            </tr>
+            <tr>
+              <td style="width: 120px">
+                id<span class="evol-required">*</span>
+              </td>
+              <td>Panel Id in the UI.</td>
+            </tr>
+            <tr>
+              <td>badge<span class="evol-asterix">*</span></td>
+              <td>
+                Field name or function which value is displayed as a badge in
+                the panel header.
+              </td>
+            </tr>
+            <tr>
+              <td>css</td>
+              <td>
+                CSS class for the panel (replaces of the one specified in the
+                view options). Possible values: "panel-primary",
+                "panel-success", "panel-warning"...
+              </td>
+            </tr>
+            <tr>
+              <td>cssLabel</td>
+              <td>Additional CSS class for the panel title (label).</td>
+            </tr>
+            <tr>
+              <td>elements[ ]<span class="evol-required">*</span></td>
+              <td>Array of fields in the sub-collection.</td>
+            </tr>
+            <tr>
+              <td>label</td>
+              <td>Panel title.</td>
+            </tr>
+            <tr>
+              <td>label2</td>
+              <td>Panel sub-title.</td>
+            </tr>
+            <tr>
+              <td>readonly<span class="evol-asterix">*</span></td>
+              <td>
+                Makes all fields in the panel-list read-only (not implemented
+                yet).
+              </td>
+            </tr>
+            <tr>
+              <td>width</td>
+              <td>
+                Width of the panel in percentage of the total width of the
+                form.<br />
                 Example: <code>width=&quot;100&quot;</code> for the full width.
-            </td>
-        </tr>
-        </tbody></table>
-    </section>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
 
-<a name="tab" class="evo-anchor">&nbsp;</a>
-<section>
-    <h1>tab</h1>
-    <p>The "tab" element can be used to group panels and panel-lists.</p>
-    <table class="table table-bordered t-props">
-        <tbody><tr>
-            <td style="width: 120px; ">
-                css
-            </td>
-            <td>
-                Additional CSS class for the tab content.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                cssLabel
-            </td>
-            <td>
-                Additional CSS class for the tab title.
-            </td>
-        </tr>
-        <tr>
-            <td>elements[ ]<span class="evol-required">*</span>
-            </td>
-            <td>
-                Array of panels and panel-lists.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                label<span class="evol-required">*</span>
-            </td>
-            <td>
-                Tab title.
-            </td>
-        </tr>
-        </tbody></table>
-</section>
+      <a name="tab" class="evo-anchor">&nbsp;</a>
+      <section>
+        <h1>tab</h1>
+        <p>The "tab" element can be used to group panels and panel-lists.</p>
+        <table class="table table-bordered t-props">
+          <tbody>
+            <tr>
+              <td style="width: 120px">css</td>
+              <td>Additional CSS class for the tab content.</td>
+            </tr>
+            <tr>
+              <td>cssLabel</td>
+              <td>Additional CSS class for the tab title.</td>
+            </tr>
+            <tr>
+              <td>elements[ ]<span class="evol-required">*</span></td>
+              <td>Array of panels and panel-lists.</td>
+            </tr>
+            <tr>
+              <td>label<span class="evol-required">*</span></td>
+              <td>Tab title.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
 
-<a name="sample" class="evo-anchor">&nbsp;</a>
-<section>
-    <h1>Sample UI-model</h1>
+      <a name="sample" class="evo-anchor">&nbsp;</a>
+      <section>
+        <h1>Sample UI-model</h1>
 
-    <p>See below the UI-model for the "todo app" in <a href="../demo/index.html#todo">Evolutility-UI-jQuery demo</a>.</p>
+        <p>
+          See below the UI-model for the "todo app" in
+          <a href="../demo/index.html#todo">Evolutility-UI-jQuery demo</a>.
+        </p>
 
-    <iframe style="width:100%;height:300px" src="../models/todo.js"></iframe>
+        <iframe
+          style="width: 100%; height: 300px"
+          src="../models/todo.js"
+        ></iframe>
+      </section>
 
+      <p>
+        <br />Evolutility-UI-jQuery at
+        <a
+          href="https://github.com/evoluteur/evolutility-ui-jquery"
+          target="download"
+          >GitHub</a
+        >
+      </p>
 
-</section>
-
-
-<p><br/>Evolutility-UI-jQuery at <a href="https://github.com/evoluteur/evolutility-ui-jquery" target="download">GitHub</a></p>
-
-<div class="footer">&#169; 2020 Olivier Giulieri</div>
-</div>
-
-</body>
-
+      <div class="footer">&#169; 2020 Olivier Giulieri</div>
+    </div>
+  </body>
 </html>

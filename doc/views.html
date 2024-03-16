@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-063933E3C2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-063933E3C2');
+    </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -47,7 +54,7 @@
             <a href="#one-browse"><i class="glyphicon glyphicon-eye-open"></i>Browse</a>
             <a href="#one-edit"><i class="glyphicon glyphicon-edit"></i>Edit</a>
             <a href="#one-mini"><i class="glyphicon glyphicon-th-large"></i>Mini</a>
-            <a href="#one-json"><i class="glyphicon glyphicon-barcode"></i>JSON</a> 
+            <a href="#one-json"><i class="glyphicon glyphicon-barcode"></i>JSON</a>
             - <a href="#one-api">API</a>
         </div>
 
@@ -65,7 +72,7 @@
             <a href="#action-import"><i class="glyphicon glyphicon-cloud-upload"></i>Import</a>
         </div>
     </div>
-    
+
 </div>
 
 <div class="evo-content2">
@@ -119,7 +126,7 @@
 
     <p>Evol.ViewOne provide a set of Backbone Views for to browse, add and edit <strong>one</strong> model.</p>
 
-    <p>Views: 
+    <p>Views:
 
     <span class="evo-links-views">
         <a href="#one-browse"><i class="glyphicon glyphicon-eye-open"></i>Browse</a>,
@@ -153,7 +160,7 @@
     <p><br>API: <a href="#one-api-options">Options</a> - <a href="#one-api-methods">Methods</a> - <a href="#one-api-events">Events</a></p>
 
     </div>
- 
+
     <a name="one-edit" class="evo-anchor">&nbsp;</a>
     <div id="doc-edit">
     <h3><i class="glyphicon glyphicon-edit"></i>&nbsp;Edit <span class="view-fullname">Evol.ViewOne.Edit</span></h3>
@@ -220,7 +227,7 @@
     <h2>Validation</h2>
 
     <p>To validate users input before validation rules automatically apply. These is determined by the field properties in the UI-model.</p>
-   
+
     <ul>
         <li><span class="xmlAttr">type</span> - Field must be of the specified type (Text, Integer, Decimal, Date...).</li>
         <li><span class="xmlAttr">required</span> - Field must have a value.</li>
@@ -232,7 +239,7 @@
         <li><span class="xmlAttr">fnValidate</span> - Custom validation function.</li>
     </ul>
 
-    <p>Validation happens when the user clicks the "Save" button. 
+    <p>Validation happens when the user clicks the "Save" button.
     Invalid fields are flagged and a summary of all fields which didn't pass the validation is displayed.</p>
 
     <p>Validation is used in views <a href="#one-edit">Edit</a> and <a href="#one-mini">Mini (Quick Edit)</a>.</p>
@@ -245,24 +252,24 @@
 <section class="evol-doc-layout">
     <h2>Layout</h2>
 
-    <p>Layouts are used for the views "Browse" and "Edit". Evolutility follows the "flow positioning" method. Elements position is entirely determined by their order in the ui-model, which 
-        does not require any description of the positioning, absolute or relative, of 
-        the user interface on the screen. The ordering of the information and the 
-        internal description of each element (such as field type, width, and height) implies 
+    <p>Layouts are used for the views "Browse" and "Edit". Evolutility follows the "flow positioning" method. Elements position is entirely determined by their order in the ui-model, which
+        does not require any description of the positioning, absolute or relative, of
+        the user interface on the screen. The ordering of the information and the
+        internal description of each element (such as field type, width, and height) implies
         the coordonates of every element on each screen.</p>
-    <p>You can organize fields in panels (sections) on the page. 
-        Panels are placed sequentially, left to right, until a width of 100% is 
-        reached. Once the maximum width is reached, the next panel will appear below 
+    <p>You can organize fields in panels (sections) on the page.
+        Panels are placed sequentially, left to right, until a width of 100% is
+        reached. Once the maximum width is reached, the next panel will appear below
         the previous group of panels.</p>
-    <p>In the following screenshot the form is organized into 4 panels for "Identity" 
-        (width=60%), "Contact Info" (width=40%), "Address" (width=60%), and 
-        "Misc." (width=40%). Each of these panels contains one or several fields.</p> 
+    <p>In the following screenshot the form is organized into 4 panels for "Identity"
+        (width=60%), "Contact Info" (width=40%), "Address" (width=60%), and
+        "Misc." (width=40%). Each of these panels contains one or several fields.</p>
 
     <TABLE cellSpacing="0" cellPadding="0" border="0" >
         <TR>
             <TD vAlign="top">
         <p><img src="screenshots/position-panels.gif" class="pixEvoPos shadow">
-        </p> 
+        </p>
 
             </TD>
             <td>&nbsp;&nbsp;</td>
@@ -276,8 +283,8 @@
     </TABLE>
 
 
-    <p>Inside each panel, fields are placed using the same rule: placed sequentially, 
-        left to right, until a width of 100% is reached.</p> 
+    <p>Inside each panel, fields are placed using the same rule: placed sequentially,
+        left to right, until a width of 100% is reached.</p>
 
     <TABLE cellSpacing="0" cellPadding="0" border="0" >
         <TR>
@@ -305,16 +312,16 @@
             </TD>
         </TR>
     </TABLE>
-         
-    <p>The previous 2 screenshots demonstrate how elements are re-positioned simply by 
+
+    <p>The previous 2 screenshots demonstrate how elements are re-positioned simply by
         changing their width.
     </p>
-    
+
     <p>The "flow positioning" method is also quite flexible as it allows different numbers of fields on different rows which is quite
     useful for cases like an address.</p>
     <TABLE cellSpacing="0" cellPadding="0" border="0" >
         <TR>
-            <TD vAlign="top"><img src="screenshots/position-address.gif" class="pixEvoPos shadow"> 
+            <TD vAlign="top"><img src="screenshots/position-address.gif" class="pixEvoPos shadow">
             </TD>
             <td>&nbsp;&nbsp;</td>
             <TD vAlign="top" class="pl10"><br>
@@ -327,7 +334,7 @@
                 </p>
             </TD>
         </TR>
-    </TABLE> 
+    </TABLE>
 
 <h4>View layout customization with CSS</h4>
 
@@ -345,7 +352,7 @@
 }
 </code></pre>
 </p>
- 
+
     <p>For the demo, in Cards view, cards height is defined in CSS for each entity.</p>
 
 </section>
@@ -408,7 +415,7 @@
     <div id="doc-cards">
     <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Cards <span class="view-fullname">Evol.ViewMany.Cards</span></h3>
 
-    <p>Shows records side by side as cards. A single card can also act as a tooltip when using the 
+    <p>Shows records side by side as cards. A single card can also act as a tooltip when using the
     <a href="#many-bubbles">view Bubbles</a>
     .</p>
 
@@ -432,7 +439,7 @@
     <div id="doc-bubbles">
     <h3><i class="glyphicon glyphicon-adjust"></i>&nbsp;Bubbles <span class="view-fullname">Evol.ViewMany.Bubbles</span></h3>
 
-    <p>The "Bubbles" view displays the data as bubbles with controls to group them and set their color and size (this view uses D3.js). 
+    <p>The "Bubbles" view displays the data as bubbles with controls to group them and set their color and size (this view uses D3.js).
     </p>
     <div class="evol-doc-views">
         <img class="pixEvoView shadow" src="screenshots/many-bubbles.gif"/><br/>&nbsp;
@@ -443,7 +450,7 @@
     collection: myCollection
 });</code></pre>
 
-<div> 
+<div>
     A tooltip with the <a href="#many-cards">Card view</a> of the item is displayed on mouse over.
 
 </div>
